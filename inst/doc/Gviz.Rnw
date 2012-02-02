@@ -1,0 +1,1141 @@
+%\VignetteIndexEntry{Gviz users guide}
+%\VignetteDepends{Gviz}
+%\VignetteKeywords{Visualization}
+%\VignettePackage{Gviz}
+\documentclass[11pt]{article}
+
+\SweaveOpts{keep.source=FALSE,pdf=TRUE,eps=FALSE}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[authoryear,round]{natbib}
+\bibliographystyle{plainnat}
+\usepackage[text={7.2in,9in},centering]{geometry}
+\usepackage{Sweave}
+\setkeys{Gin}{width=0.95\textwidth}
+\usepackage{longtable}
+\usepackage{graphicx}
+
+\newcommand{\R}{{\textsf{R} }}
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\term}[1]{{\emph{#1}}}
+\newcommand{\Rpackage}[1]{\textsf{#1}}
+\newcommand{\Rfunction}[1]{\texttt{#1}}
+\newcommand{\Robject}[1]{\texttt{#1}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Rmethod}[1]{{\textit{#1}}}
+\newcommand{\Rfunarg}[1]{{\textit{#1}}}
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\newcommand{\mgg}[0]{\Rpackage{Gviz} }
+\newcommand{\Reference}[1]{{\texttt{#1}}}
+\newcommand{\link}[1]{{#1}}
+
+
+\author{Florian Hahne\footnote{fhahne@novartis.com}}
+\begin{document}
+\title{The \mgg User Guide}
+
+<<init, echo=FALSE>>=
+options(width=65)
+library(xtable)
+source(system.file("scripts/documentation.R", package="Gviz"))
+addParTable <- function(class, skip=c("showTitle", "size", "background.title"), add=NULL)
+{
+    Parameters <- data.frame("Display Parameter"=names(details[[class]]),
+                             "Description"=details[[class]], check.names=FALSE)
+    align <- "lrp{5in}"
+    if(!is.null(add)){
+        Parameters <- cbind(Parameters, add)
+        align <- c("lp{4in}", "lp{4in}", "lp{4in}", "lp{4in}")
+    }
+    Parameters <- Parameters[order(Parameters[,1]),]
+    Parameters <- apply(Parameters, 2, function(x) gsub("_", "\\_", x, fixed=TRUE))
+    rownames(Parameters) <-  gsub("_", "\\_", rownames(Parameters), fixed=TRUE)
+    sel <- Parameters[,1] %in% skip
+    Parameters[,2] <- gsub("\\code{\\linkS4class{", "\\Rclass{{", Parameters[,2], fixed=TRUE)
+    print(xtable(Parameters[!sel,], align=align), sanitize.text.function=function(x) x, include.rownames=FALSE,
+          floating=FALSE, tabular.environment="longtable")
+    return(invisible())
+}
+@ 
+
+\maketitle
+
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+In order to make sense of genomic data one often aims to plot such
+data in a genome browser, along with a variety of genomic annotation
+features, such as gene or transcript models, CpG island, repeat
+regions, and so on. These features may either be extracted from public
+data bases like ENSEMBL or UCSC, or they may be generated or curated in
+house. Many of the currently available genome browsers do a reasonable
+job in displaying these features, and there are options to connect to
+them from within \R (e.g., using the \Rpackage{rtracklayer}
+package). However, none of these solutions offer the flexibility of
+the full \R graphics system to display large numeric data in a
+multitude of different ways. The \mgg package aims to close this gap
+by providing a structured visualization framework to plot any type of
+data along genomic coordinates. It is loosely based on the
+\Rpackage{GenomeGraphs} package by Steffen Durinck and James Bullard,
+however the complete class hierarchy as well as all the plotting
+methods have been restructured in order to increase performance and
+flexibility. All plotting is done using the grid graphics system, and
+several specialized annotation classes allow to integrate publicly
+available genomic annotation data from sources like UCSC or ENSEMBL.
+
+
+\section{Basic Features}
+
+The fundamental concept behind the \mgg package is similar to the
+approach taken by most genome browsers, in that individual types of
+genomic features or data are represented by separate tracks. Within
+the package, each track constitutes a single object inheriting from
+class \Rclass{gdObject}, and there are constructor functions as well
+as a broad range of methods to interact with and to plot these
+tracks. When combining multiple objects, the individual tracks will
+always share the same genomic coordinate system, thus taking the
+burden of aligning the plot elements from the user.
+
+It is worth mentioning that tracks in the sense of the \mgg package
+are only defined for a single chromosome on a specific genome, 
+at least during the plotting operation. While
+the package imposes no fixed structure on the chromosome or on the
+genome names, it makes sense to stick to a standaradized naming
+paradigm, in particular when fetching additional annotation
+information from online resources. For the remainder of this vignette,
+we will make use of the UCSC genome and chromosome identifiers, e.g.,
+the \Robject{chr7} chromosome on the mouse \Robject{mm9} genome.
+
+The different track classes will be described in more detail in the
+\Reference{Track classes} section further below. For now, let's just
+take a look at a typical \mgg session. We begin our presentation of
+the available functionality by loading the package:
+
+<<loadPackage>>=
+library(Gviz)
+@
+
+The most simple genomic features consists of start and stop
+coordinates, possibly overlapping each other. CpG islands or
+microarray probes are real life examples for this class of
+features. In the Bioconductor world those are most often represented
+as run-length encoded vectors, for instance in the \Rclass{IRanges}
+and \Rclass{GRanges} classes. To seamlessly integrate with other
+Bioconductor packages, we can use the same data structures to generate
+our track objects. A sample set of CpG island coordinates has been
+saved in the \Robject{cpgIslands} object and we can use that for our
+first annotation track object. The constructor function
+\Rfunction{AnnotationTrack} is a convenient helper to create the
+object.
+
+<<AnnotationTrack>>=
+library(IRanges)
+data(cpgIslands)
+chr <- "chr7"
+gen <- "mm9"
+atrack <- AnnotationTrack(cpgIslands, chromosome=chr, genome=gen, name="CpG")
+@
+
+Please note that the \Rfunction{AnnotationTrack} constructor is fairly
+flexible and can accomodate many different types of inputs. For
+instance, the start and end coordinates of the annotation features
+could be passed in as individual arguments \Robject{start} and
+\Robject{end}, as a \Rclass{data.frame} or even as a \Rclass{GRanges}
+object. You may want to consult its manual page for more information.
+
+With our first track object being created we may now proceed to the
+plotting. There is a single function \Rfunction{plotTracks} that
+handles all of this. As we will learn in the remainder of this
+vignette, \Rfunction{plotTracks} is quite powerful and has a number of
+very useful additional arguments. For now we will keep things very
+simple and just plot the single CpG islands annotation track.
+
+<<plotAnnotationTrack, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(atrack)
+@
+
+As you can see, the resulting graph is not particularly
+spectacular. There is a title region showing the track's name on a
+gray background on the left side of the plot and a data region showing
+the seven individual CpG islands on the right. This structure is
+similar for all the available track objects classes and it somewhat
+mimicks the layout of the popular UCSC Genome Browser. If you are not 
+happy with the default settings, the \mgg
+package offers a multitude of options to fine-tune the track
+appearance, which will be shown in the \Reference{Plotting Parameters}
+section.
+
+Appart from the relative distance of the Cpg islands, this
+visualization does not tell us much. One obvious next step would be to
+indicate the genomic coordinates we are currently looking at to
+provide some reference. For this purpose, the \mgg package offers the
+\Rclass{GenomeAxisTrack} class. Object from the class can be created
+using the constructor function of the same name. 
+
+<<GenomeAxisTrack>>=
+gtrack <- GenomeAxisTrack()
+@
+
+Since a \Rclass{GenomeAxisTrack} object is always relative to the
+other tracks that are plotted, there is little need for additional
+arguments. Essentially, the object just tells the
+\Rfunction{plotTracks} function to add a genomic axis to the
+plot. Nonetheless, it represent a separate annotation track just as
+the CpG island track does. We can pass this additional track on to
+\Rfunction{plotTracks} in the form of a list.
+
+<<plotGenomeAxisTrack, fig=TRUE, width=7.5, height=1.1>>=
+plotTracks(list(gtrack, atrack))
+@
+
+You may have realized that the genomic axis does not take up half of
+the available vertical plotting space, but only uses the space
+necessary to fit the axis and labels. Also the title region for this
+track is empty. The \mgg package tries to find reasonable defaults for
+all the parameters controlling the look and feel of a plot so that
+apealing visualizations can be created without much
+tinkering. However, all features on the plot including the relative
+track sizes can also be adjusted manually.
+
+As mentioned before in the beginning of this vignette, a track is
+defined for a particular chromosome on a particular genome. We can
+include this information in our plot by means of a chromosome
+ideogram. An ideogram is a simplified visual representation of a
+chromosome, with the different chromosomal bands indicated by color,
+and the centromer (if present) indicated by the shape. The necessary
+information to produce this visualization is stored in online data
+repositories, for instance at UCSC. The \mgg package offers very
+convenient connections to some of these repositories, and the
+\Rclass{IdeogramTrack} constructor function is one example for such a
+connection. With just the information about a valid UCSC genome and
+chromosome, we can directly fetch the chromosome ideogram information
+and construct a dedicated track object that can be visualized by
+\Rfunction{plotTracks}. Please not that you will need a working
+internet connection for this to work, and that fetching data from UCSC
+can take quite a long time, depending on the server load. The \mgg package
+tries to cache as much data as possible to reduce the bandwidth.
+
+<<showIdeogramTrack, eval=FALSE>>=
+itrack <- IdeogramTrack(genome=gen, chromosome=chr)
+@
+
+<<doIdeogramTrack, echo=FALSE, results=hide>>=
+data(itrack)
+@
+
+Similar to the previous examples, we stick the additional track object
+into a list in order to plot it.
+
+<<plotIdeogramTrack, fig=TRUE, width=7.5, height=1.5>>=
+plotTracks(list(itrack, gtrack, atrack))
+@
+
+Ideogram tracks are the one exception in all of \mgg's track objects
+in that they are not really displayed in the same coordinate system
+like all the other tracks. Instead, the current genomic location is
+indicated on the chromosome by a red box (or a red line if the width
+is too small to fit a box). So far we have only looked at very basic
+annotation features and how to give a point of reference to our
+plots. Naturally, we also want to be able to handle more complex
+genomic features, such as gene models. One potential use case would be
+to utilize gene model information from an existing local
+source. Alternatively, we could dowload such data from one of the
+available online resources like UCSC or ENSEBML, and there are
+constructor functions to handle these tasks. For this example we are
+going to load gene model data from a stored Rclass{data.frame}. The
+track class of choice here is a \Rclass{GeneRegionTrack} object, which
+can be constructed via the constructor function of the same
+name. Similar to the \Rclass{AnnotationTrack} constructor there are
+multiple possible ways to pass in the data.
+
+<<GeneRegionTrack, fig=TRUE, width=7.5, height=3>>=
+data(geneModels)
+grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model")
+plotTracks(list(itrack, gtrack, atrack, grtrack))
+@ 
+
+So far the plotted genomic range has been determined by the input
+tracks. Unless told otherwise, the package will always display the
+region from the leftmost item to the rightmost
+item in any of the tracks.  Of course such a static view on a chromosomal region is of
+rather limited use. We often want to zoom in or out on a particular
+plotting region to see more details or to get a broader overview. To
+that end, \Rfunction{plotTracks} supports the \Robject{from} and
+\Robject{to} arguments that let us choose an arbitrary genomic range
+to plot.
+
+<<zooming, fig=TRUE, width=7.5, height=3>>=
+plotTracks(list(itrack, gtrack, atrack, grtrack), from=25e6, to=28e6)
+@ 
+
+You may have noticed that the layout of the gene model track has
+changed depending on the zoom level. This is a feature of the \mgg
+package, which automatically tries to find the optimal visualization
+settings to make best use of the available space. At the same time,
+when features on a track are too close together to be plotted as
+separate items with the current device resolution, the package will
+try to reasonably merge them in order to avoid overplotting.
+
+So far we have replicated the features of a whole bunch of other
+genome browser tools out there. The real power of the package comes
+with a rather general track type, the
+\Rclass{DataTrack}. \Rclass{DataTrack} object are essentially
+run-length encoded numeric vectors or matrices, and we can use them to
+add all sorts of numeric data to our genomic coordinate plots. There
+are a whole bunch of different visualization options for these tracks,
+from dot plots to histograms to box-and-whisker plots. The individual
+rows in a numeric matrix are considered to be different data groups or
+samples, and the columns are the raster intervals in the genomic
+coordinates. Of course, the data points do not have to be evenly
+spaced; each column is associated to a particular genomic
+location. For demonstration purposes we can create a simple
+\Rclass{DataTrack} object from randomly sampled data.
+
+<<DataTrack, fig=TRUE, width=7.5, height=4>>=
+set.seed(255)
+lim <- c(26463500, 26495000)
+coords <- sort(c(lim[1], sample(seq(from=lim[1], to=lim[2]), 99), lim[2]))
+dat <- runif(100, min=-10, max=10)
+dtrack <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr, 
+                    genome=gen, name="Uniform")
+plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2])
+@ 
+
+The first thing to notice is that the title panel to the right of the
+plot now contains a y-axis indicating the range of the data track. The
+default plotting type for numeric vectors is a simple dot plot. This
+is by far not the only visualization option, and in a sense it is
+waisting quite a lot of information because the run-length encoded
+ranges are not immediately apparent. We can change the plot type by
+supplying the \Robject{type} argument to \Rfunction{plotTracks}. A
+complete description of the available plotting options is given in
+section \Reference{Track classes}, and a more detailed treatment of
+the so-called 'display parameters' that control the look and feel of a
+track is given in the \Reference{Plotting Parameters} section.
+
+<<DataTrackHist, fig=TRUE, width=7.5, height=4>>=
+plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2], type="histogram")
+@ 
+
+As we can see, the data values in the numeric vector are indeed
+matched to the genomic coordinates of the \Rclass{DataTrack}
+object. Such a visualization can be particularly helpful when
+displaying for instance the coverage of NGS reads along a chromosome,
+or to show the measurement values of mapped probes from a micro array
+experiment. This concludes our first introduction into the \mgg
+package. The remainder of this vignette will deal in much more depth
+with the different concepts and the various track classes and plotting
+options.
+
+\section{Plotting parameters}
+
+Although not implicitely told, we have already made use of the
+plotting parameter facilities in the \mgg package, or, as we will call
+them from now on, the 'display parameters'. Display parameters are
+properties of individual track objects (i.e., of any object inheriting
+from the base \Rclass{GdObject} class). They can either be set during
+object instantiation as additional arguments to the constructor
+functions or, for existing track objects, using the
+\Rfunction{displayPars} replacement method. In the former case, all
+named arguments that can not be matched to any of the constructor's
+formal arguments are considered to be display paramters, regardless of
+their type or whether they are defined for a particular track
+class or not. The following code example rebuilds our
+\Rclass{GeneRegionTrack} object with a bunch of display parameters set
+and demonstrates the use of the \Rfunction{displayPars} accessor and
+replacement methods.
+
+<<displayPars1, fig=TRUE, width=7.5, height=3>>=
+grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model", 
+                           showId=TRUE, background.title="brown")
+head(displayPars(grtrack))
+displayPars(grtrack) <- list(background.panel="#FFFEDB")
+head(displayPars(grtrack))
+plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1], to=lim[2])
+@ 
+
+For our gene model track we have now added the gene symbols of the
+different transcripts to the plot and changed the background color of
+both the title and the data panel. There is a third option to set
+display parameters for a single plotting operation (rather than the
+permanent setting in the track object) by passing in additional
+arguments to the \Rfunction{plotTracks} function. We have already made
+use of this feature in the previous data plotting type example. It is
+worth mentioning that all display parameters that are passed along
+with the \Rfunction{plotTracks} function apply to all track objects in
+the plot. For some track objects a particular display parameter may
+not make any sense, and in that case it is simply ignored. Also, the settings
+only apply for one single plotting operations and will not be retained
+in the plotted track objects. They do however get precedence over the
+object-internal parameters. The following line of code exemplifies
+this behaviour.
+
+<<displayPars2, fig=TRUE, width=7.5, height=3>>=
+plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1]-1000, to=lim[2], 
+           background.panel="#FFFEDB", background.title="darkblue")
+@
+
+In order to make full use of the flexible parameter system we need to
+know which display parameters control which aspect of which track
+class. The obvious source for this information are the man pages of
+the respective track classes, which list all available parameters and
+a short description of their effect and default values in the
+\Robject{Display Parameters} section. Alternatively, we can use the
+\Rfunction{availableDisplayPars} function, which prints out the
+available parameters for a class in a list-like structure. The single
+argument to the function is either a class name of a track object
+class, or the object itself, in which case its class is automatically
+detected.
+
+<<displayPars3>>=
+dp <- availableDisplayPars(grtrack)
+tail(dp)
+@ 
+
+As we can see, display parameters can be inherited from parent
+classes. For the regular user this is not important at all, however it
+nicely exemplifies the structure of the class hierarchy in the \mgg
+package.
+
+\section{Track classes}
+
+In this section we will highlight all of the available annotation
+track classes in the \mgg package. For the complete reference of all
+the nuts and bolts, including all the avaialable methods, please see
+the respective class man pages. We will try to keep this vignette up
+to date, but in cases of discrepancies between here and the man pages
+you should assume the latter to be correct.
+
+\subsection{GenomeAxisTrack}
+\Rclass{GenomeAxisTrack} objects can be used to add some reference to
+the currently displayed genomic location to a \mgg plot. In its most
+basic form it is really just a horizontal axis with genomic coordinate
+tickmarks. Using the \Rfunction{GenomeAxisTrack} constructor function
+is the recommended way to instantiate objects from the class. There is
+no need to know in advance about a particular genomic location when
+constructing the object. Instead, the displayed coordinates will be
+determined from the context, e.g., from the \Rfunarg{from} and
+\Rfunarg{to} arguments of the \Rfunction{plotTracks} function, or,
+when plotted together with other track objects, from their genomic
+locations. 
+
+<<GenomeAxisTrackClass1, fig=TRUE, width=7.5, height=0.5>>=
+axisTrack <- GenomeAxisTrack()
+plotTracks(axisTrack, from=1e6, to=9e6)
+@
+
+As an optional feature one can highlight particular regions
+on the axis, for instance to indicated stretches of N nucleotides or
+gaps in genomic alignments. Such regions have to be supplied to the
+optional \Rfunarg{range} argument of the constructor function as
+either an \Rclass{IRanges} or an \Rclass{IRanges} object.
+
+<<GenomeAxisTrackClass2, fig=TRUE, width=7.5, height=0.5>>=
+axisTrack <- GenomeAxisTrack(range=IRanges(start=c(2e6, 4e6), end=c(3e6, 7e6)))
+plotTracks(axisTrack, from=1e6, to=9e6)
+@
+
+\subsubsection*{Display parameters for GenomeAxisTrack objects}
+There are a whole bunch of display parameters to alter the appearance
+of \Rclass{GemomeAxisTrack} plots. For instance, one could add
+directional indicators to the axis using the \Rfunarg{add53} and
+\Rfunarg{add35} parameters.
+
+<<GenomeAxisTrackClass3, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, add53=TRUE, add35=TRUE)
+@
+
+Sometimes the resolution of the tick marks is not sufficient, in which
+case the \Rfunarg{littleTicks} argument can be used to have a more
+fine-grained axis annotation.
+
+<<GenomeAxisTrackClass4, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, add53=TRUE, add35=TRUE, littleTicks=TRUE)
+@
+
+The \mgg package tries to come up with reasonable defaults for the
+axis annotation. In our previous example, the genomic coordinates are
+indicated in megabases. We can control this via the \Rfunarg{exponent}
+parameter, which takes an integer value greater then zero. The
+location of the tick marks are displayed as a fraction of
+$10^{exponent}$.
+
+<<GenomeAxisTrackClass5, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, exponent=4)
+@
+
+Another useful parameter, \Rfunarg{labelPos} controls the arrangement
+of the tick marks. It takes one of the values \code{alternating},
+\code{revAlternating}, \code{above} or \code{below}. For instance we
+could aline all tick marks underneath the axis.
+
+<<GenomeAxisTrackClass6, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, labelPos="below")
+@
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{GenomeAxisTrack}
+class by typing in \code{?GenomeAxisTrack} on the \R command line.
+
+<<GenomeAxisTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("GenomeAxisTrack")
+@ 
+
+\subsection{IdeogramTrack}
+While a genomic axis provides helpful points of reference to a plot,
+it is sometimes important to show the currently displayed region in
+the broader context of a chromosme. Are we looking at distal regions,
+or somewhere close to the centromer? And how much of the complete
+chromosome is covered in our plot. To that end the \mgg package
+defines the \Rclass{IdeogramTrack} class, which is an idealized
+representation of a single chromosome. When plotted, these track
+objects will always show the whole chromosome, regardless of the
+selected genomic region. However, this selection is indicated by a
+box. The chromosomal data necessary to draw the ideogram is not part
+of the \mgg package itself, but it is rather downloaded from an online
+source (UCSC). Thus it is important to use both chromosome and genome
+names that are recognizable in the UCSC data base. You might want to
+consult their webpage (\url{http://genome.ucsc.edu/}) or use the
+\Rfunction{ucscGenomes} function in the \Rpackage{rtracklayer} package
+for a listing of available genomes.
+
+Assuming the chromosome data are available online, a simple call to
+the \Rfunction{IdeogramTrack} constructor function including the
+desired genome and chromosome name are enough to instantiate the
+object. Since the connection to UCSC can be slow, the package tries to
+cache data that has already been downloaded for the duration of the \R
+session. If needed, the user can manually clear the cache by calling
+the \Rfunction{clearSessionCache} function.
+
+<<IdeogramTrackClass1Show, eval=FALSE>>=
+ideoTrack <- IdeogramTrack(genome="hg19", chromosome="chrX")
+plotTracks(ideoTrack, from=85e6, to=129e6)
+@
+
+<<IdeogramTrackClass1Do, fig=TRUE, width=7.5, height=0.5, echo=FALSE, results=hide>>=
+data(itrack)
+plotTracks(ideoTrack, from=85e6, to=129e6)
+@
+
+\subsubsection*{Display parameters for IdeogramTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{IdeogramTrack}
+class by typing in \code{?IdeogramTrack} on the \R command line.
+
+<<IdeogramTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("IdeogramTrack")
+@ 
+
+\subsection{DataTrack}
+Probably the most powerfull of all the track classes in the \mgg
+package are \Rclass{DataTracks}. Essentially they constitute
+run-length encoded numeric vectors or matrices, meaning that one or
+several numeric values are associated to a particular genomic
+coordinate range. These ranges may even be overlapping, for instance
+when looking at results from a running window operation. There can be
+multiple samples in a single data set, in which case the ranges are
+associated to the columns of a numeric matrix rather than a numeric
+vector, and the plotting method provides tools to incoorporate sample
+group information. Thus the starting point for creating
+\Rclass{DataTrack} objects will always be a set of ranges, either in
+the form of an \Rclass{IRanges} or \Rclass{GRanges} object, or
+individually as start and end coordinates or widths. The second
+ingredient is a numeric vector of the same length as the number of
+ranges, or a numeric matrix with the same number of columns. We can
+pass this information, along with the genome and the chromosome
+identifiers, to the \Rfunction{DataTrack} constructor function to
+instantiate an object. We will load our sample data from an
+\Rclass{GRanges} object that comes as part of the \mgg package.
+
+<<DataClass1, fig=TRUE, width=7.5, height=1.5>>=
+data(twoGroups)
+dTrack <- DataTrack(twoGroups, data=t(as.data.frame(elementMetadata(twoGroups))), genome="hg19", 
+                    chromosome="chrX", name="uniform")
+plotTracks(dTrack)
+@
+
+The default visualization for our very simplistic sample
+\Rclass{DataTrack} is a rather unispiring dot plot. The track comes
+with a scale to indicate the range of the numeric values on the
+y-axis, appart from that it looks very much like the previous
+examples. A whole battery of display parameters is to our disposal to
+control the track's look and feel. The most important one is the
+\Rfunarg{type} parameter. It determines the type of plot to use and
+takes one or several of the following values:
+
+<<<types, echo=FALSE, results=tex>>=
+types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "smooth", "histogram", "mountain", "boxplot", "gradient", "heatmap"),
+                    Type=c("dot plot", "lines plot", "dot and lines plot", "lines plot ov average (i.e., mean) values", "stair steps (horizontal first)",
+                           "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "add loess curve", 
+                           "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline", "box and whisker plot",
+                           "false color image of the summarized values", "false color image of the individual values"))
+print(xtable(types, align="lrp{5in}"), sanitize.text.function=function(x) x, include.rownames=FALSE,
+          floating=FALSE, tabular.environment="longtable")
+@ 
+
+Displayed below are the same sample data as before but plotted with the different type settings:
+
+<<typePlots, fig=TRUE, width=7.5, height=7.5, echo=FALSE, results=hide>>=
+pushViewport(viewport(layout=grid.layout(nrow=8, ncol=2)))
+i <- 1
+for(t in types$Value)
+{
+    pushViewport(viewport(layout.pos.col=((i-1)%%2)+1, layout.pos.row=((i-1)%/%2)+1))
+    names(dTrack) <- t
+    plotTracks(dTrack, type=t, add=TRUE, cex.title=0.8, margin=0.5)
+    i <- i+1
+    popViewport(1)
+}
+popViewport(1)
+names(dTrack) <- "uniform"
+@ 
+
+You will notice that some of the plot types work better for univariate
+data while others are clearly designed for multivariate data. The
+\Rfunarg{a} type for instance averages the values at each genomic
+location before plotting the derived values as a line. The decision
+for a particular plot type is totally up to the user, and one could
+even overlay multiple types by supplying a character vector rather
+than a character scalar as the \Rfunarg(type) argument. For example,
+this will combine a boxplot with an average line and a data grid.
+
+<<mutitype, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+plotTracks(dTrack, type=c("boxplot", "a", "g"))
+@ 
+
+\subsubsection*{Data Grouping}
+
+An additional layer of flexibility is added by making use of \mgg's
+grouping functionality. The individual samples (i.e., rows in the data
+matrix) can be grouped together using a factor variable, and, if
+reasonable, this grouping is reflected in the layout of the respective
+track types. For instance our example data could be derived from two
+different sample groups with three replicates each, and we could easily
+integrate this information into our plot.
+
+<<grouping, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("a", "p"))
+@ 
+
+For the dot plot representation the individual group levels are
+indicated by color coding. For the \Rfunarg{a} type, the averages are
+now computed for each group separately and also indicated by two lines
+with similar color coding. Grouping is not supported for all plotting
+types, for example the \Rfunarg{mountain} type already uses color
+coding to convey a different message and for the \Rfunarg{gradient}
+type the data are already collapsed to a single variable. The
+following gives an overview over some of the other groupable
+\Rclass{DataTrack} types. Please note that there are many more display
+parameters that control the layout of both grouped and of ungrouped
+\Rclass{DataTracks}. You may want to check the class' help page for
+details.
+
+<<typeGroupedPlots, fig=TRUE, width=7.5, height=4.2, echo=FALSE, results=hide>>=
+pushViewport(viewport(layout=grid.layout(nrow=6, ncol=1)))
+i <- 1
+for(t in c("a", "s", "smooth", "histogram", "boxplot", "heatmap"))
+{
+    pushViewport(viewport(layout.pos.col=((i-1)%%1)+1, layout.pos.row=((i-1)%/%1)+1))
+    names(dTrack) <- t
+    plotTracks(dTrack, type=t, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
+    i <- i+1
+    popViewport(1)
+}
+popViewport(1)
+names(dTrack) <- "uniform"
+@ 
+
+\subsubsection*{Data transformations}
+
+The \mgg package offers quite some flexibility to transform data on
+the fly. This involves both rescaling operations (each data point is
+transformed on the track's y-axis by a transformation function) as
+well as summarization and smoothing operations (the values for several
+genomic locations are summarized into one derived value on the track's
+x-axis). To illustrate this let's create a significantly bigger
+\Rclass{DataTrack} than the one we used before, containing purely
+syntetic data for only a single sample.
+
+<<biggerdata, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+dat <- sin(seq(pi, 10*pi, len=500))
+dTrack.big <- DataTrack(start=seq(1,100000, len=500), width=15, chromosome="chrX",
+                        genome="hg19", name="sinus", 
+                        data=sin(seq(pi, 5*pi, len=500))*runif(500, 0.5, 1.5))
+plotTracks(dTrack.big, type="hist")
+@ 
+
+Since the available resolution on our screen is limited we can no
+longer distinguish between individual coordinate ranges. The \mgg
+package tries to avoid overplotting by collapsing overlapping ranges
+(assuming the \Rfunarg{collapseTracks} is set to
+\code{TRUE}). However, it is often desirable to summarize the data,
+for instance by binning values into a fixed number of windows and
+subsequent calculation of a summary statistic. This can be archived by
+a combination of the \Rfunarg{window} and \Rfunarg{aggregation}
+display parameters. The former can be an integer value greater than
+zero giving the number of evenly-sized bins to aggregate the data
+in. The latter is supposed to be a user-supplied function that accepts
+a numeric vector as a single input parameter and returns a single
+aggregated numerical value. For simplicity, the most obvious
+aggregation functions can be selected by passing in a character scalar
+rather than a function. Possible values are \code{mean},
+\code{median}, \code{extreme}, \code{sum}, \code{min} and
+\code{max}. The default is to compute the mean value of all the binned
+data points.
+
+<<aggregation, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+plotTracks(dTrack.big, type="hist", window=50)
+@
+
+Instead of binning the data in fixed width bins one can also use the
+\Rfunarg{window} parameter to perform more elaborate running window
+operations. For this to happen the parameter value has to be smaller
+than zero, and the addtional display parameter \Rfunarg{windowSize}
+can be used to control the size of the running window. This operation
+does not change the number of coordinate ranges on the plot, but
+instead the original value at a particular position is replaced by the
+respective sliding window value at the same position. A common use
+case for sliding windows on genomic ranges is to introduce a certain
+degree of smoothing to the data.
+
+<<aggregation2, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+plotTracks(dTrack.big, type="hist", window=-1, windowSize=2500)
+@
+
+In addition to transforming the data on the x-axis we can also apply
+arbitrary transformation functions on the y-axis. One obvious use-case
+would be to log-transform the data prior to plotting. The framework is
+flexible enough however to allow arbitrary transformation
+operations. The mechanism works by providing a function as the
+\Rfunarg{transformation} display parameter, which takes as input a
+numeric vector and returns a transformed numeric vector of the same
+length. The following code for instance truncates the plotted data to
+values greater than zero.
+
+<<transformation, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+plotTracks(dTrack.big, type="l", transformation=function(x){x[x<0] <- 0; x})
+@ 
+
+\subsubsection*{Display parameters for DataTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{DataTrack}
+class by typing in \code{?DataTrack} on the \R command line.
+
+<<DataTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("DataTrack")
+@ 
+
+\subsection{AnnotationTrack}
+
+\Rclass{AnnotationTrack} objects are the multi-purpose tracks in the
+\mgg package. Essentially they consist of one or several genomic
+ranges that can be grouped into composite annotation elements if
+needed. In principle this would be enough to represent everything from
+CpG islands to complex gene models, however for the latter the packge
+defines the specialized \Rclass{GeneRegionTrack} class, which will be
+highlighted in a separate section. Most of the features discussed here
+will also apply to \Rclass{GeneRegionTrack} objects, though. As a
+matter of fact, the \Rclass{GeneRegionTrack} class inherits directly
+from class \Rclass{AnnotationTrack}.
+
+\Rclass{AnnotationTrack} objects are easily instantiated using the
+constructor function of the same name. The necessary building blocks
+are the range coordinates, a chromosome and a genome identifier. Again
+we try to be flexible in the way this information can be passed to the
+function, either in the form of separate function arguments, as
+\Rclass{IRanges} or \Rclass{GRanges} objects. Optionally, we can pass
+in the strand information for the annotation features and some useful
+identifiers. For the full details on the constructor function and the
+accepted arguments see \code{?AnnotationTrack}.
+
+<<anntrack1, fig=TRUE, results=hide, width=7.5, height=0.5>>=
+aTrack <- AnnotationTrack(start=c(10, 40, 120), width=15, chromosome="chrX",
+                          strand=c("+", "*", "-"), 
+                          id=c("Huey", "Dewey", "Louie"), genome="hg19", name="foo")
+plotTracks(aTrack)
+@ 
+
+The ranges are plotted as simple boxes if no strand information is
+available, or as arrows to indicate their direction. We can change the
+range item shapes by setting the \Rfunarg{shape} display parameter. It can
+also be helpful to add the names for the individual features to the
+plot. This can be archived by setting the \Rfunarg{showFeatureId}
+parameter to \code{TRUE}
+
+<<anntrack2, fig=TRUE, results=hide, width=7.5, height=0.5>>=
+plotTracks(aTrack, shape="box", showFeatureId=TRUE)
+@ 
+
+<<anntrack3, fig=TRUE, results=hide, width=7.5, height=0.5>>=
+plotTracks(aTrack, shape="ellipse", showFeatureId=TRUE, fontcolor="darkblue")
+@ 
+
+In this very simplistic example each annotation feature consisted of a
+single range. In real life the genomic annotation features that we
+encounter often consists of several sub-units. We can create such
+composite \Rclass{AnnotationTrack} objects by providing a grouping
+factor to the constructor. It needs to be of similar length as the
+total number of atomic features in the track, i.e, the number of
+genomic ranges that are passed to the constructor. The levels of the
+this factor will be used as internal identifiers for the individual
+composite feature groups, and we can toggle on their printing by
+setting \Rfunarg{showId} to \code{TRUE}.
+
+<<anntrack4, fig=TRUE, results=hide, width=7.5, height=0.5>>=
+aTrack.groups <- AnnotationTrack(start=c(50, 180, 260, 460, 860, 1240), width=c(15,20,40,100,200, 20), 
+                                 chromosome="chrX",
+                                 strand=rep(c("+", "*", "-"), c(1,3,2)), 
+                                 group=rep(c("Huey", "Dewey", "Louie"), c(1,3,2)), 
+                                 genome="hg19", name="foo")
+plotTracks(aTrack.groups, showId=TRUE)
+@ 
+
+Arranging items on the plotting canvas is relatively straight forward
+as long as there are no overlaps between invidiual regions or groups
+of regions. A logical solution to this problem is to stack overlapping
+items in separate horizontal lines, thus extending the height of the
+track to accomodate all of them. This involves some optimization, and
+the \mgg package automatically tries to come up with the most compact
+arrangement. Let's exemplify this feature with a slightly modified
+\Rclass{AnnotationTrack} object.
+
+<<stacking1,  fig=TRUE, results=hide, width=7.5, height=0.5>>=
+aTrack.stacked <- AnnotationTrack(start=c(50, 180, 260, 800, 600, 1240), width=c(15,20,40,100,500, 20), 
+                                 chromosome="chrX",
+                                 strand="*",
+                                 group=rep(c("Huey", "Dewey", "Louie"), c(1,3,2)), 
+                                 genome="hg19", name="foo")
+plotTracks(aTrack.stacked, showId=TRUE)
+@ 
+
+We now have our three annotation feature groups distributed over two
+horizontal lines. One can control the stacking of overlapping items
+using the \Rfunarg{stacking} display parameter. Currently the three
+values \code{squish}, \code{dense} and \code{hide} are
+supported. Horizontal stacking is enabled via the \code{squish}
+option, which also is the default. \code{dense} forces overlapping
+items to be joined in one meta-item and \code{hide} all together
+disables the plotting of \Rclass{AnnotationTrack} items. Please note
+that adding identifiers to the plot only works for the \code{squish}
+option.
+
+<<stacking2,  fig=TRUE, results=hide, width=7.5, height=0.5>>=
+plotTracks(aTrack.stacked, stacking="dense")
+@
+
+In addition to annotation groups there is also the notion of a feature
+type in the \mgg package. Feature types are simply different types of
+annotation regions (e.g., mRNA transcripts, miRNAs, rRNAs, etc.) that
+are indicated by different colors. There is no limit on the number of
+different features, however each element in a grouped annotation item
+needs to be of the same feature type. We can query and set features
+using the \Rfunction{feature} and \Rfunction{feature<-} methods.
+
+<<features>>=
+feature(aTrack.stacked)
+feature(aTrack.stacked)[1:4] <- c("foo", "bar", "bar", "bar")
+@
+
+Unless we tell the \mgg package how to deal with the respective
+feature types they will all be treated similar, i.e., they will be
+plotted using the default color as defined by the \Rfunarg{fill}
+display paramter. To define colors for individual feature types we
+simply have to add them as additional display parameters, where the
+parameter name matches to the feature type and its value is supposed
+to be a valid R color qualifier. Of course this implies that we can
+only use type names that are not already taken by other display
+parameters defined in the package.
+
+
+<<featuresPlot, fig=TRUE, results=hide, width=7.5, height=0.5>>=
+plotTracks(aTrack.stacked, showId=TRUE, foo="darkred", bar="darkgreen")
+@ 
+
+Stacking of annotation items to avoid overplotting only works as long
+as there is enough real estate on the plotting canvas to separate all
+items, i.e., we need all items to be at least a single pixel wide to
+correctly display them. This limitation is automatically enforced by
+the \mgg package, however it implies that unless neighbouring items
+are more than 1 pixel appart we can not distinguish between them and
+will inevitably introduce a certain amount of overplotting. This means
+that on a common screen device we can only look at a very limited
+genomic region of a few kb in full resolution. Given that an average
+chromosome is in the order of a few gb, we still need a reasonable way
+to deal with the overplotting problem despite the item stacking
+functionality. As default, the \mgg package will merge all overlapping
+items into one unified meta-item and only plot that. In order to
+indicate the amount of overplotting that's introduced by this process
+we can use the \Rfunarg{showOverplotting} display parameter. It uses a
+color scale (based on the orginal colors defined for the track), whith
+lighter colors indicating areas of low or no overplotting, and more
+saturated colors indicating areas of high overplotting density. We
+exemplify this feature on an \Rclass{AnnotationTrack} object that
+represents a good portion of a real human chromosome.
+
+<<overplotting,  fig=TRUE, results=hide, width=7.5, height=1>>=
+data("denseAnnTrack")
+plotTracks(denseAnnTrack, showOverplotting=TRUE)
+@ 
+
+\subsubsection*{Display parameters for AnnotationTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{AnnotationTrack}
+class by typing in \code{?AnnotationTrack} on the \R command line.
+
+<<AnnotationTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("AnnotationTrack")
+@ 
+
+\subsection{GeneRegionTrack}
+
+\Rclass{GeneRegionTrack} object are in principle very similar to
+\Rclass{AnnotationTrack} objects. The only difference is that they are
+a little more gene/transcript centric, both in terms of plotting
+layout and user interaction, and that they define a global start and
+end position. The constructor function of the same same is a
+convenient tool to instantiate the object from a variety of different
+sources. In a nutshell we need to pass start and end positions (or the
+width) of each annotation feature in the track and also supply the
+exon, transcript and gene identifiers for each item which will be used
+to create the transcript groupings. For more details about the
+available options see the class's manual page
+(\code{?GeneRegionTrack}). There are a number of accessor methods that
+make it easy to query and replace for instance exon, transcript or
+gene assignments. There is also some support for gene aliases or gene
+symbols which are often times more useful than cryptic data base gene
+identifiers. The following code that re-uses the
+\Rclass{GeneRegionTrack} object from the first section exemplifies
+some of these features.
+
+
+<<generegtrack,  fig=TRUE, results=hide, width=7.5, height=1.5>>=
+data(geneModels)
+grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="foo")
+head(gene(grtrack))
+head(transcript(grtrack))
+head(exon(grtrack))
+head(symbol(grtrack))
+plotTracks(grtrack, showId=TRUE)
+@
+
+<<generegtrack2,  fig=TRUE, results=hide, width=7.5, height=2.5>>=
+plotTracks(grtrack, showId=TRUE, geneSymbols=FALSE)
+@ 
+
+\subsubsection*{Display parameters for GeneRegionTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{GeneRegionTrack}
+class by typing in \code{?GeneRegionTrack} on the \R command line.
+
+<<GeneRegionTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("GeneRegionTrack")
+@ 
+
+\subsection{BiomartGeneRegionTrack}
+
+It is often very useful to quickly download gene annotation
+information from an online repositry rather than having to construct
+it each time from scratch. To this end, the \mgg package defines the
+\Rclass{BiomartGeneRegionTrack} class, which directly extends
+\Rclass{GeneRegionTrack} but provides a direct interface to the
+ENSEMBL Biomart service (yet another interface to the UCSC data base
+content is highlighted in the next section). Rather than
+providing all the bits and pieces for the full gene model, we just
+enter a genome, chromosome and a start and end position on this
+chromosome, and the constructor function
+\Rfunction{BiomartGeneRegionTrack} will automatically contact ENSEMBL,
+fetch the necessary information and build the gene model on the
+fly. Please note that you will need an internet connection for this to
+work, and that contacting Biomart can take a significant amount of
+time depending on usage and network traffic, and that the results are
+almost never going to be returned instantaniously.
+
+<<BiomartGeneRegionTrackShow, eval=FALSE>>=
+biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
+                                  name="ENSEMBL")
+plotTracks(biomTrack)
+@ 
+<<BiomartGeneRegionTrackDo, echo=FALSE, results=hide, width=7.5, height=1, fig=TRUE>>=
+data("biomTrack")
+plotTracks(biomTrack)
+@ 
+
+
+\subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table above in the previous \Rclass{GeneRegionTrack} section
+or the man page of the \Rclass{BiomartGeneRegionTrack} class by typing
+in \code{?BiomartGeneRegionTrack} on the \R command line.
+
+One additional benefit when fetching the data through Biomart is that
+we also receive some information about the annotation feature types,
+which is automatically used for the color coding of the track. The
+following table shows the available feature types.
+
+<<BiomartGeneRegionTrackClassTable, echo=FALSE, results=tex>>=
+addInfo <- t(data.frame(displayPars(biomTrack, names(details[["BiomartGeneRegionTrack"]]))))
+colnames(addInfo) <- "Color"
+addParTable("BiomartGeneRegionTrack", add=addInfo)
+@ 
+
+\subsection{Creating tracks from UCSC data}
+
+The UCSC data bases contain a multitude of genome annotation data for
+dozents of different organisms. Some of those data are very simple
+annotations like CpG island locations or SNP locations. Others are
+more complicated gene models, or even numeric annotations like
+conservation information. In order to provide a unified interface to
+all this information, the \mgg package defines a meta-constructor
+function \Rfunction{UcscTrack}. The idea here is that we can express
+all of the available Ucsc data in one of the package's track types. We
+use the functionality provided in the \Rpackage{rtracklayer} package
+to connect to UCSC and to download the relevant information. As a
+little illustrative example, let's reproduce a view from the famous
+UCSC genome browser using the \mgg package. As a final result we want
+to show something similar to Figure~\ref{fig:UCSC1}.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics{ucsc1.pdf}
+  \label{fig:UCSC1}
+  \caption{A screen shot of a UCSC genome browser view around the FMR1
+    locus on the mouse chromosome.}
+\end{figure}
+
+To start we first need to know about the available data in the UCSC
+data base and about their structure. A good way to do this is to use
+the table browser on the UCSC web site
+(\url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}). Figure~\ref{fig:UCSC2}
+shows the table structure for the first gene model track, the known
+UCSC genes, in the table browser. We can see that there are multiple
+fields, some with genomic locations, other with additional data like
+labels or identifiers. If we go back to the section about the
+\Rclass{GeneRegionTrack} class we remember that we need exactly this
+type of information for the constructor function. So in order to take
+the UCSC data and build an object of class \Rclass{GeneRegionTrack} we
+need a way to map them to the individual constructor arguments. This
+is exactly what the \Rfunction{UcscTrack} meta-constructor is supposed
+to do for us.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics{ucsc2.pdf}
+  \label{fig:UCSC1}
+  \caption{A screen shot of a UCSC table browser view on the UCSC Known Genes track.}
+\end{figure}
+
+It needs to know about the track for which to extract the data (and
+optionally one or several of the tables that make up the collective
+track data, see \code{?UcscTrack} for details), about the genomic
+range including the chromosome for which to extract data, about the
+type of \mgg track that we want to translate this data into, and about
+the individual track columns and their counterparts in the respective
+track class constructor. In our example, the track is called
+\code{knownGene}, the track type to construct is
+\code{GeneRegionTrack}, and the relevant columns are
+\code{exonStarts}, \code{exonEnds}, \code{name} and \code{strand},
+which we will use as the start and end coordinates of the ranges and
+for all the exon, transcript and gene identifiers. Here we make use of
+the high flexibility of the \Rfunction{GeneRegionTrack} constructor in
+the sense that the exon coordinates actually come in the form of a
+comma-separated list, combining all the information for one transcript
+in one row of the table. The function is smart enough to detect this
+and to split the annotation regions accordingly. The full function
+call to create the \Rclass{GeneRegionTrack} from the UCSC data looks
+like this:
+
+<<ucscTrack1, eval=FALSE>>=
+from <- 65921878
+to <- 65980988
+knownGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="knownGene", from=from, to=to,
+                        trackType="GeneRegionTrack", rstarts="exonStarts", rends="exonEnds", gene="name",
+                        symbol="name", transcript="name", strand="strand", fill="#8282d2", name="UCSC Genes")
+@ 
+
+With a similar approach we can construct the next two gene model
+tracks based on the \code{xenoRefGene} and \code{ensGene} data tables.
+
+<<ucscTrack2, eval=FALSE>>=
+refGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="xenoRefGene", from=from, to=to,
+                      trackType="GeneRegionTrack", rstarts="exonStarts", rends="exonEnds", gene="name",
+                      symbol="name2", transcript="name", strand="strand", fill="#8282d2",
+                      stacking="dense", name="Other RefSeq")
+
+ensGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="ensGene", from=from, to=to,
+                      trackType="GeneRegionTrack", rstarts="exonStarts", rends="exonEnds", gene="name",
+                      symbol="name2", transcript="name", strand="strand", fill="#960000",
+                      name="Ensembl Genes")
+@ 
+
+The CpG and SNP tracks are slightly different since a
+\Rclass{GeneRegionTrack} representation would not be particularly
+useful. Instead, we can use \Rclass{AnnotationTrack} objects as
+containers. The overall process using the \Rfunction{UcscTrack}
+meta-constructor remains the same.
+
+<<ucscTrack3, eval=FALSE>>=
+cpgIslands <- UcscTrack(genome="mm9", chromosome="chrX", track="cpgIslandExt", from=from, to=to,
+                        trackType="AnnotationTrack", start="chromStart", end="chromEnd", id="name",
+                        shape="box", fill="#006400", name="CpG Islands")
+
+snpLocations <-  UcscTrack(genome="mm9", chromosome="chrX", track="snp128", from=from, to=to,
+                           trackType="AnnotationTrack", start="chromStart", end="chromEnd", id="name",
+                           feature="func", strand="strand", shape="box", stacking="dense", fill="black",
+                           name="SNPs")
+@ 
+
+Most of UCSC's \Rclass{DataTrack}-like tracks are a little more
+complex and represent a collection of several sub-tracks, with data
+originating from multiple tables. To make sure that we get the correct
+information we have to be a little bit more specific here and also
+define the particular table on the UCSC data base to use.
+
+<<ucscTrack4, eval=FALSE>>=
+conservation <- UcscTrack(genome="mm9", chromosome="chrX", track="Conservation", table="phyloP30wayPlacental",
+                          from=from, to=to, trackType="DataTrack", start="start", end="end", data="score",
+                          type="hist", window="auto", col.histogram="darkblue", fill.histogram="darkblue", 
+                          ylim=c(-3.7, 4), name="Conservation")
+
+gcContent <- UcscTrack(genome="mm9", chromosome="chrX", track="GC Percent", table="gc5Base",
+                       from=from, to=to, trackType="DataTrack", start="start", end="end", data="score",
+                       type="hist", window=-1, windowSize=1500, fill.histogram="black", col.histogram="black",
+                       ylim=c(30, 70), name="GC Percent")
+@ 
+
+To add some reference points we also need a genome axis and an
+\Rclass{IdeogramTrack} of the x chromosome.
+
+<<ucscTrack5, eval=FALSE>>=
+axTrack <- GenomeAxisTrack()
+idxTrack <- IdeogramTrack(genome="mm9", chromosome="chrX")
+@ 
+
+And finally we can plot all of our tracks.
+
+<<ucscTrackLoad, echo=FALSE, results=hide>>=
+data(ucscItems)
+@ 
+
+<<ucscTrack6, fig=TRUE, results=hide, width=7.5, height=5.5>>=
+plotTracks(list(idxTrack, axTrack, knownGenes, refGenes, ensGenes, cpgIslands,
+                gcContent, conservation, snpLocations), from=from, to=to, showTitle=FALSE)
+@ 
+
+
+
+\clearpage
+\section*{SessionInfo}
+The following is the session info that generated this vignette:
+<<session-info>>=
+  sessionInfo()
+@ 
+
+\end{document}
