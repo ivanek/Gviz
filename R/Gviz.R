@@ -361,7 +361,7 @@
                   ax2 <- ax1+(onePx*W)
                   feathers <- IRanges(start=ax1-onePx, end=ax2+onePx)
                   cur.level <- which(y[i]==unique(y))
-                  sel <- findOverlaps(feathers, levels[[cur.level]])@matchMatrix[,"query"]
+                  sel <- queryHits(findOverlaps(feathers, levels[[cur.level]]))
                   if(length(sel))
                   {
                       ax1 <- ax1[-sel]
@@ -642,7 +642,7 @@
 {
     if(!length(GdObject))
         return(NULL)
-    sel <- chromosome(GdObject) == seqnames(GdObject) & start(GdObject)>=from & end(GdObject)<=to
+    sel <- chromosome(GdObject) == seqnames(GdObject) & start(GdObject)>=from & start(GdObject)<=to
     if (sum(sel) > 0) {
       ids <- identifier(GdObject, FALSE)[sel]
       hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & ids!=""
@@ -663,7 +663,7 @@
                               gp=gpar(cex=cex, fontfamily=fontfamily, fonface=fontface, fontsize=fontsize)))
     space <- (as.numeric(convertWidth(stringWidth(txt),"native"))*1.3)
     popViewport(1)
-    newFrom <- min(start(GdObject)[sel]-space*1.6)
+    ## newFrom <- min(start(GdObject)[sel]-space*1.6) 
     return(newFrom)
 }
 

@@ -763,34 +763,36 @@ setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NU
         }
         
         ## Now remove everything except for the overlapping groups by first subselecting all groups in the range...
-        gsel <- unique(c(group(x)[start(x)>=ranges["from"] & end(x)<=ranges["to"]],
-                         group(x)[start(x)<ranges["from"] & end(x)>ranges["to"]]))
+        gsel <- group(x)[queryHits(findOverlaps(range(x), IRanges(ranges["from"], ranges["to"])))]
         x <- x[group(x) %in% gsel]
-        ## ... and then finding everything that overlaps
-        coords <- data.frame(cbind(start(x), end(x)))
-        grps <- sapply(split(coords, group(x)), range)
-        gsel <- group(x) %in% colnames(grps)[subjectHits(findOverlaps(IRanges(ranges["from"], ranges["to"]),
-                                                                      IRanges(grps[1,], grps[2,])))]
-        x <- x[gsel]
-        ## Now only keep the adjancend items if there are any.
-        lsel <- end(x) < ranges["from"]
-        rsel <- start(x) > ranges["to"]
-        ## Nothing to do if everything is within the range
-        if(any(lsel | rsel))
-        {
-            grp <- group(x)
-            if(any(table(grp)>1))
+        ## check if there is anything that overlaps
+        if (length(gsel)) {
+          ## ... and then finding everything that overlaps
+          coords <- data.frame(cbind(start(x), end(x)))
+          grps <- sapply(split(coords, group(x)), range)
+          gsel <- group(x) %in% colnames(grps)[subjectHits(findOverlaps(IRanges(ranges["from"], ranges["to"]),
+                                                                        IRanges(grps[1,], grps[2,])))]
+          x <- x[gsel]
+          ## Now only keep the adjancend items if there are any.
+          lsel <- end(x) < ranges["from"]
+          rsel <- start(x) > ranges["to"]
+          ## Nothing to do if everything is within the range
+          if(any(lsel | rsel))
             {
-                lsel[lsel][unlist(sapply(split(seq_len(sum(lsel)), grp[lsel]), max))] <- FALSE
-                rsel[rsel][unlist(sapply(split(seq_len(sum(rsel)), grp[rsel]), min))] <- FALSE
+              grp <- group(x)
+              if(any(table(grp)>1))
+                {
+                  lsel[lsel][unlist(sapply(split(seq_len(sum(lsel)), grp[lsel]), max))] <- FALSE
+                  rsel[rsel][unlist(sapply(split(seq_len(sum(rsel)), grp[rsel]), min))] <- FALSE
+                }
+              x <- x[!(lsel | rsel),]
             }
-            x <- x[!(lsel | rsel),]
-        }
-        if(sort)
+          if(sort)
             x <- x[order(range(x)),]
-        if(stacks)
+          if(stacks)
             x <- setStacks(x)
-    }
+        }
+      }
     return(x)
 })
 ## For the axis track we may have to clip the highlight ranges on the axis.
@@ -2044,7 +2046,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     vals <- data.frame(values(GdObject), col=cols[as.character(values(GdObject)$type)], stringsAsFactors=FALSE)
     ## For the rounded caps we need  to figure out the overlap with existing bands for proper coloring
     bevel <- 0.02
-    ol <- findOverlaps(range(GdObject), IRanges(start=c(bevel, 1-bevel)*len, width=1))@matchMatrix[,1]
+    ol <- queryHits(findOverlaps(range(GdObject), IRanges(start=c(bevel, 1-bevel)*len, width=1)))
     st <- start(range(GdObject))/len
     stExt <- c(st[1:ol[1]], bevel, st[(ol[1]+1):ol[2]], 1-bevel)
     valsExt <- rbind(vals[1:ol[1],], vals[ol[1],], vals[(ol[1]+1):ol[2],], vals[ol[2],])
