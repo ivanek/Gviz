@@ -1115,7 +1115,7 @@ IdeogramTrack <- function(chromosome, genome, name=.chrName(chromosome)[1], ...)
 {
      if(!token %in% ls(env))
      {
-         res <- eval(expression, env=callEnv)
+         res <- eval(expression, envir=callEnv)
          assign(x=token, value=res, envir=env)
          res
      } else env[[token]]
