@@ -1356,7 +1356,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     exponent <- if(is.null(.dpOrDefault(GdObject, "exponent", NULL)))
     {
         exp <- 0
-        while(all(tck[tck>0]/10^exp > 0.1))
+        while(all(tck[tck>0]/10^exp > 1))
             exp <- exp+3
         exp-3
     } else  max(0, getPar(GdObject, "exponent"))
@@ -1367,9 +1367,9 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     }
     label <- switch(as.character(exponent),
                     "0"=sprintf("%i", as.integer(tckText)),
-                    "3"=sprintf("%g kb", tckText),
-                    "6"=sprintf("%g mb", tckText),
-                    "9"=sprintf("%g gb", tckText),
+                    "3"=sprintf("%s kb", tckText),
+                    "6"=sprintf("%s mb", tckText),
+                    "9"=sprintf("%s gb", tckText),
                     sapply(tckText, function(x) bquote(paste(.(x), " ",10^.(exponent)))))
     ylabs <- y1t + (ifelse(y1t>0, 1, -1) * (textYOff + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex))
     if(is.character(label))
