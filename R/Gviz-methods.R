@@ -586,9 +586,12 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
             newDat <- matrix(runValue(runwin)[seqSel], nrow=1)
             if(nrow(sc)>1)
             {
-                newDat <- rbind(newDat, t(sapply(2:nrow(sc), function(x) {
-                    rm[ind] <- rep(sc[x,], width(GdObject))
-                    suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k=windowSize, endrule="constant")))[seqSel]})))
+                newDat <- rbind(newDat, 
+                	matrix(sapply(2:nrow(sc), function(x) {
+                    	rm[ind] <- rep(sc[x,], width(GdObject))
+                    	suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k=windowSize, endrule="constant")))[seqSel]}), 
+                    	nrow=nrow(sc)-1, byrow=TRUE)
+            	)
             }
             sc <- newDat
         } else {
@@ -1500,7 +1503,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             agFun <- .aggregator(GdObject)
             if(!is.null(groups) && nlevels(groups)>1)
             {
-                valsS <- sapply(split(vals, groups), function(x) agFun(t(matrix(x, ncol=ncol(vals)))))
+                valsS <- matrix(sapply(split(vals, groups), function(x) agFun(t(matrix(x, ncol=ncol(vals))))), nrow=ncol(vals))
                 displayPars(GdObject) <- list(".__valsS"=valsS)
                 if(stacked==TRUE && is.null(ylim))
                 {
