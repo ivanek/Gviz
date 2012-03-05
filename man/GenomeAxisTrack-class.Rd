@@ -59,7 +59,14 @@ GenomeAxisTrack(range=NULL, name="Axis", id, ...)
   
   A \code{GenomeAxisTrack} can be customized using the familiar display
   parameters. By providing a \code{GRanges} or \code{IRanges} object to
-  the constructor, ranges on the axis can be further highlighted.
+  the constructor, ranges on the axis can be further highlighted.\\
+  
+  With the \code{scale} argument a small legend/scale can be shown instead
+  of the entire genomic axis. The scale can either be provided as a fraction
+  (it will be rounded to the nearest human readable absolute value) or absolute
+  and is always displayed in bp, kb, mb or gb units. Note, not some arguments
+  to \code{GenomeAxisTrack} are ignored when a scale is used insterad of the full
+  axis. The scale uses the arguments alpha, lwd, col and cex.
 
 }
 
@@ -299,11 +306,11 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj)}}
+	\item{}{\code{Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -686,6 +693,9 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       track. Can be overridden in the \code{\link{plotTracks}} function.
       Defaults to the ideal size based on the other track settings.} 
 
+    \item{}{\code{scale=NULL}: Numeric, if not NULL a small scale is drawn instead of the full axis,
+     if between 0 and 1 it is interpreted as a fraction of the region (otherwise absolute).}
+
   } 
 
   Additional display parameters are being inherited from the respective
@@ -900,6 +910,18 @@ tags(axTrack)
 axTrack <- plotTracks(axTrack)$foo
 coords(axTrack)
 tags(axTrack)
+
+## adding an axis to another track
+data(cyp2b10)
+grTrack <- GeneRegionTrack(start=26682683, end=26711643,
+		rstart=cyp2b10$start, rends=cyp2b10$end, chromosome=7, genome="mm9",
+		transcript=cyp2b10$transcript, gene=cyp2b10$gene, symbol=cyp2b10$symbol,
+		name="Cyp2b10", strand=cyp2b10$strand)
+		
+plotTracks(list(grTrack, GenomeAxisTrack()))
+plotTracks(list(grTrack, GenomeAxisTrack(scale=.1)))
+plotTracks(list(grTrack, GenomeAxisTrack(scale=5000)))
+
 
 }
 

@@ -3,6 +3,9 @@
 \docType{class}
 \alias{AnnotationTrack-class}
 \alias{AnnotationTrack}
+\alias{DetailsAnnotationTrack-class}
+\alias{DetailsAnnotationTrack}
+\alias{initialize,DetailsAnnotationTrack-method}
 \alias{coerce,AnnotationTrack,UCSCData-method}
 \alias{collapseTrack,AnnotationTrack-method}
 \alias{drawGD,AnnotationTrack-method}
@@ -39,6 +42,10 @@
 
 AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
  id, strand="*", chromosome, genome, stacking="squish", name="AnnotationTrack", ...)
+
+DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
+ id, strand="*", chromosome, genome, stacking="squish", name="DetailsAnnotationTrack",
+ fun=function(...){}, ...)
 
 }
 
@@ -135,11 +142,14 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
-
+      
+  \item{fun}{A function that plots details each element of the AnnotationTrack,
+  see 'DetailsAnnotationTrack' and 'Examples' for details.}
+  
+  
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
     Parameters" section below for details.}
-      
 }
 
 \value{
@@ -179,6 +189,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       \code{\linkS4class{ImageMap}}, inherited from class
       \code{\linkS4class{GdObject}}}
   
+    \item{fun:}{Function called per AnnotationTrack element to plot details.}
   }
   
   Additional display parameters are being inherited from the
@@ -330,7 +341,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       
       \describe{
   
-	\item{}{\code{GenomeGraphs:::collapseTrack(obj)}}
+	\item{}{\code{Gviz:::collapseTrack(obj)}}
   
       }
     }
@@ -372,11 +383,11 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj)}}
+	\item{}{\code{Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -403,7 +414,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::drawGrid(obj, from=10, to=100)}}
+      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
 	
       }
     }
@@ -431,7 +442,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::setStacks(obj, from=1, to=100)}}
+      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -500,7 +511,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::stacks(obj)}}
+      	\item{}{\code{Gviz:::stacks(obj)}}
 	
       }
     }
@@ -1191,6 +1202,30 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 
   } 
 
+  \code{DetailsAnnotationTrack} contains the following additional display parameters:
+  
+  \describe{
+    \item{}{\code{details.size=0.5}: Fraction of the details part}
+    \item{}{\code{details.minWidth=100}: Minium width in pixels for a details panel - does not plot if it's smaller}
+    \item{}{\code{detailsConnector.col="darkgray"}: Color of the line connecting the \code{AnnotstionTrack} item with its details panel}
+    \item{}{\code{detailsConnector.lty="dashed"}: Type of connecting line}
+    \item{}{\code{detailsConnector.lwd=1}: Line width of the connector}
+    \item{}{\code{detailsConnector.pch=20}: Type of the connector's ends (default is filled circles)}
+    \item{}{\code{detailsConnector.cex=1}: Relative size of the connector's end points}
+    \item{}{\code{detailsBorder.lty="solid"}: Line type of the border around each details panel}
+    \item{}{\code{detailsBorder.lwd=1}: Line width of the border}
+    \item{}{\code{detailsBorder.col="darkgray"}: Line color of the border}
+    \item{}{\code{detailsBorder.fill="transparent"}: Background color of the border}
+    \item{}{\code{details.ratio=Inf}: Depending on the dimensions of your plot and the number of
+      details panels these may have very different width and height and these panels
+      are by default glued to each other width no space in betrween. The ratio of width over
+      height can be limited (default is \code{Inf}), and soem space separates the panels. The
+      vertical extension can be controled with the \code{size} and
+      \code{details.size} arguments.}
+    \item{}{\code{detailsFunArgs=list()}: additional arguments that
+      get passed on to the details plotting function.}
+  }
+  
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of \code{AnnotationTrack} objects. 
@@ -1312,7 +1347,51 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 
 }
 
-\author{Florian Hahne}
+\section{DetailsAnnotationTrack}{
+	
+	\code{DetailsAnnotationTrack} directly extends \code{AnnotationTrack}. The purpose
+	of this track type is to add an arbitrary detailed plot with usually quantitative data to
+	each element of an \code{AnnotationTrack} which shows qualitative information,
+	only (an \code{AnnotationTrack} indicates the location of something). This allows
+	a locus wide view of annotation elements together with any kind of details per featurs
+	or elements. This may provide insight on how some complex quantitative measurment or dependency
+	between variables changes accoring to its position in a locius.
+	If the quantitative data is too complex for a \code{DataTrack} e.g.
+	because it requires extra space or a trellis graphics, a
+	\code{DetailsAnnotationTrack} can be used instead. Example: An \code{AnnotationTrack}
+	shows the positions of some probes from a microarray for a given locus, and you want
+	a histogram of the signal intensity distribution from all samples at each of these probes.
+	Another example usage would be to show for each element of an \code{AnnotationTrack}
+	an xyplots of a signals against some clinical measurement
+	(of the same samples) such as blood preassure. The limitation of this type of
+	track is basically only the space of the device you are plotting to.
+	
+	\describe{
+	    \item{}{\code{fun=function(...){}}: This is the function that is called per entry
+	    in the AnnotationTrack object. By default the start, end, strand, chromosome, entry identifier and
+	    it's index are passed as named arguments to this function. The AnnotationTrack object
+	    is sorted internally for visibility, and the \code{index} argument of the function
+	    refers to the index of plotting (i.e. the sorted object so that the index is just a counter).
+	    Additional arguments can be passed with the DetailsAnnotationTrack parameter
+	    \code{detailsFunArgs} (see below). Note that the plot must use grid graphics
+	    (e.g. the 'lattice' package). To access a data object such a matrix or data frame
+	    within the function you can either access a variable in the global environment or
+	    to avoid name space conflicts accessing it via a closure or a specific environment.
+	    To figure out which annotation
+	    element is currently plotted you can use the identifier, or genomic position
+	    (start/end/strand/chromosome) e.g. if the data is in a 'GRanges' object.}
+	    
+		\item{}{\code{detailsFunArgs=list()}: This is a named list from which the elements are
+		passed as named arguments to the plotting function (\code{fun}). See above
+		for the arguments passwd by default. For examples
+		of functions, go to the 'Examples' section.}
+	}
+	
+	See also 'Display Parameters'.
+	
+}
+
+\author{Florian Hahne, Arne Mueller}
 
 \seealso{
 
@@ -1327,6 +1406,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
   \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
+  
 
   \code{\linkS4class{StackedTrack}}
 
@@ -1341,7 +1421,6 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
   \code{\link{plotTracks}}
 
   \code{\link{settings}}
-
 }
 
 \examples{
@@ -1442,6 +1521,36 @@ annTrack <- plotTracks(annTrack)$foo
 coords(annTrack)
 tags(annTrack)
 
+## DetailsAnnotationTrack
+library(lattice) # need to use grid grapics
+
+## generate two random distributions per row (probe/feature)
+## the difference between the distributions increases from probe 1 to 4
+m <- matrix(c(rgamma(400, 1)), ncol=100)
+m[,51:100] <- m[,51:100] + 0:3
+## rownames must be accessible by AnnotationTrack element identifier
+rownames(m) <- identifier(annTrack, lowest=TRUE)
+
+## create a lattice density plot for the values (signals) of the two groups
+## as the chart must be placed into a pre-set grid view port we have to use
+## print without calling plot.new! Note, use a common prefix for all lattice.
+## Avoid wasting space by removing y-axis decorations.
+
+## Note, in this example 'm' will be found in the environment the 'details'
+## function is defined in. To avoid overwriting 'm' you should use a closure
+## or environment to access 'm'. 
+details <- function(identifier, ...) {
+	d = data.frame(signal=m[identifier,], group=rep(c("grp1","grp2"), each=50))
+    print(densityplot(~signal, group=group, data=d, main=identifier,
+	scales=list(draw=FALSE, x=list(draw=TRUE)), ylab="", xlab="",
+	), newpage=FALSE, prefix="plot")
+}
+
+deTrack <- DetailsAnnotationTrack(range=gr, genome="hg19", chromosome=7,
+   name="generic annotation with details per entry", stacking="squish",
+   fun=details, details.ratio=1)
+
+plotTracks(deTrack)
 }
 
 \keyword{classes}

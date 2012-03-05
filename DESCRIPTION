@@ -1,7 +1,7 @@
 Package: Gviz
-Version: 0.99.0
+Version: 0.99.1
 Title: Plotting data and annotation information along genomic coordinates
-Author: Florian Hahne, Steffen Durinck, Robert Ivanek
+Author: Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller
 Maintainer: Florian Hahne <florian.hahne@novartis.com>
 Depends:  R (>= 2.10.0), methods, grid
 Imports: IRanges (>= 1.13.19), rtracklayer (>= 1.15.5), lattice, RColorBrewer, biomaRt (>= 2.11.0), GenomicRanges (>= 1.7.14), AnnotationDbi (>= 1.17.11), Biobase (>= 2.15.3), BiocGenerics (>= 0.1.4)

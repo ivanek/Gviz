@@ -112,12 +112,17 @@
 ##    o par: the name of the displayPar
 ##    o default: a default value for the parameter if it can't be found in GdObject
 ## Value: the value of the displayPar
-.dpOrDefault <- function(GdObject, par, default=NULL)
+.dpOrDefault <- function(GdObject, par, default=NULL, fromPrototype=FALSE)
 {    
-    par <- getPar(GdObject, par)
-    if(is.null(par))
-        par <- default
-    return(par)
+    val <- getPar(GdObject, par)
+    if(is.null(val)) {
+       if (fromPrototype) {
+          val <- Gviz:::.parMappings[[GdObject@name]][[par]]
+       } else {
+          val <- default
+       }
+    }
+    return(val)
 }
 
 
@@ -896,6 +901,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
  
     popViewport(if(panel.only) 1 else 2)
     tc <- as.character(titleCoords[,5])
+    tc[which(tc == "" | is.na(tc) | is.null(tc))] = "NA"
     names(tc) <- tc
     if(!is.null(titleCoords))
     {
@@ -1128,7 +1134,7 @@ devDims <- function(width, height, ncol=12, nrow=8, res=72){
 .makeParMapping <- function()
 {
     classes <-  c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-                  "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack")
+                  "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack")
     defs <-  sapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list"), simplify=FALSE)
     if(is.null(.parMappings))
         assignInNamespace(x=".parMappings", value=defs, ns="Gviz")
@@ -1141,7 +1147,7 @@ availableDisplayPars <- function(class)
     if(!is.character(class))
         class <- class(class)
     class <- match.arg(class, c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-                                "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"))
+                                "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"))
     parents <- names(getClassDef(class)@contains)
     .makeParMapping()
     pars <- .parMappings[c(parents, class)]

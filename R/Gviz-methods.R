@@ -833,7 +833,7 @@ setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=N
 
 
 ##----------------------------------------------------------------------------------------------------------------------------
-## The indivdual bits and pieces of a GenomeGraphs plot are all drawn by separate renderers. Currently, those are a y-axis,
+## The indivdual bits and pieces of a Gviz plot are all drawn by separate renderers. Currently, those are a y-axis,
 ## a grid, and the actual track panel.
 ##----------------------------------------------------------------------------------------------------------------------------
 ## For certain GdObject subclasses we may want to draw a y-axis. For others an axis is meaningless, and the default function
@@ -1304,6 +1304,51 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     }
     ## Plot range if there is any
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
+	
+	## in "scale" mode we just plot a simple scale and return ...
+	scaleLen <- .dpOrDefault(GdObject, "scale", NULL)
+	if(!is.null(scaleLen))
+	{
+		#browser()
+		len = (maxBase-minBase + 1)
+		if (scaleLen > len) {
+			warning(paste("scale (", scaleLen,
+							") cannot be larger than plotted region",
+							len, " - setting to ~5%\n", sep=""))
+			scaleLen = 0.05
+		}
+		xoff = len * 0.03 + minBase
+		v = scaleLen
+		## TODO: for consistency acknowledge the 'exponent' argument if not NULL
+		## currently the exponent for the scale is calculated automatically
+		ex = floor(log10(scaleLen))
+		u = paste(scaleLen, "b")
+		if(scaleLen <= 1 && scaleLen > 0) {
+			scaleLen = len * scaleLen 
+			ex = floor(log10(scaleLen))
+			u = paste(round(scaleLen, -ex), "b")
+			#v = round(scaleLen, -(ex+round(scaleLen/(10^(ex+1))))) #Êrounds to nearest exponent
+			v = round(scaleLen, -ex)
+		}
+		if(ex >=9) {
+			u = paste(v/1e9, "gb")
+		} else if(ex >= 6) {
+			u = paste(v/1e6, "mb")
+		} else if(ex >= 3) {
+			u = paste(v/1e3, "kb")
+		}
+		
+		grid.lines(x=c(xoff, v+xoff), y=c(0,0), default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
+		grid.segments(x0=c(xoff, v+xoff), y0=c(0-tickHeight, 0-tickHeight),
+				x1=c(xoff, v+xoff), y1=c(tickHeight,tickHeight, tickHeight),
+				default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
+		z =  len * 0.01
+		grid.text(label=u, x=v+xoff+z, y=0, just=c("left", "center"),
+				gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
+		popViewport(1)
+		return(invisible(GdObject))
+	}
+	
     if(length(GdObject))
     {
         rfill <- .dpOrDefault(GdObject, "fill.range", "cornsilk3")
@@ -1450,7 +1495,93 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     return(invisible(GdObject))})
 ##----------------------------------------------------------------------------------------------------------------------------
 
+##----------------------------------------------------------------------------------------------------------------------------
+## Draw DetailsAnnotationTrack
+##----------------------------------------------------------------------------------------------------------------------------
+setMethod("drawGD", signature("DetailsAnnotationTrack"),
+		function(GdObject,  minBase, maxBase, prepare=FALSE, ...){	
+			
+			#browser()   
+			if ( prepare ) {
+				GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+				return(invisible(GdObject))
+			}
+			
+			col <- .dpOrDefault(GdObject, "detailsConnector.col", fromPrototype=T)
+			lty <- .dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype=T)
+			lwd <- .dpOrDefault(GdObject, "detailsConnector.lwd", fromPrototype=T)
+			pch <- .dpOrDefault(GdObject, "detailsConnector.pch", fromPrototype=T)
+			cex <- .dpOrDefault(GdObject, "detailsConnector.cex", fromPrototype=T)
+			border.lty <- .dpOrDefault(GdObject, "detailsBorder.lty", fromPrototype=T)
+			border.lwd <- .dpOrDefault(GdObject, "detailsBorder.lwd", fromPrototype=T)
+			border.col <- .dpOrDefault(GdObject, "detailsBorder.col", fromPrototype=T)
+			border.fill <- .dpOrDefault(GdObject, "detailsBorder.fill", fromPrototype=T)
+			minwidth <- .dpOrDefault(GdObject, "details.minWidth", fromPrototype=T)
+			size <- .dpOrDefault(GdObject, "details.size", fromPrototype=T)
+			xyratio <- .dpOrDefault(GdObject, "details.ratio", fromPrototype=T)
+			if ( 0 >= size || size > 1 ) {
+				warning("details.size must be >0 and <1 - reset to 0.5")
+				size = 0.5
+			}
+			
+			len = length(GdObject)
+			if( ((maxBase-minBase)/len)/.pxResolution(coord="x") < minwidth ) {
+				warning("too much detail for availalbe space (plot fewer annotation or increase details.minWidth)!")
+				popViewport(1)
+				GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+				return(GdObject)
+			}
+			#GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+			GdObject <- GdObject[order(start(GdObject))]
+			bins <- stacks(GdObject)
+			stacks <- max(bins)
+			xloc1 <- (end(GdObject) - start(GdObject))/2+start(GdObject)
+			#ord <- order(xloc1, decreasing=FALSE)
+			yloc1 <- (stacks - (bins - 0.5)+1)
+			xloc2 <- ((1/len*seq_len(len))-1/len + (1/len*0.5))
+			yloc2 <- rep(1, len) 
+			
+			## draw details plots (via user supplied function 'fun')
+			pushViewport(viewport(height=size, y=1-size, just=c(0.5, 0)))
+			w = 1
+			v = 0
+			vpl = vpLocation()
+			r =  vpl$size["width"]/len/vpl$size["height"]
+			if ( r > xyratio ) {
+				w = xyratio/r
+				v = ((1/len) - (1/len*w))/2
+			}
+			args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype=T)
+			for ( i in 1:length(GdObject) ) {
+				#pushViewport(viewport(width=1/len, x=(1/len*i)-1/len, just=c(0, 0.5)))
+				pushViewport(viewport(width=1/len*w, x=((1/len*i)-1/len)+(v), just=c(0, 0.5)))
+				grid.rect(gp=gpar(col=border.col, lwd=border.lwd, lty=border.lty, fill=border.fill))
+				args$start = start(GdObject[i])
+				args$end = end(GdObject[i])
+				args$strand = strand(GdObject[i])
+				args$chromosome = chromosome(GdObject[i])
+				args$identifier = identifier(GdObject[i], lowest=TRUE)
+				args$index = i
+				do.call(GdObject@fun, args)
+				popViewport(1)
+			}
+			popViewport(1)
+			
+			## plot AnnotationTrack and connectors to details
+			pushViewport(viewport(xscale=c(minBase, maxBase),
+							yscale=c(1, stacks+1), clip=FALSE,
+							height=1-size, y=0, just=c(.5, 0)))	
+			GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+			grid.segments(x0=unit(xloc1, "native"), x1=xloc2, y0=unit(yloc1, "native"),
+					y1=yloc2, gp=gpar(col=col, lwd=lwd, lty=lty, cex=cex))
+			grid.points(x=unit(xloc2, "npc"), y=unit(yloc2, "npc"), gp=gpar(col=col, cex=cex), pch=pch)
+			grid.points(x=unit(xloc1, "native"), y=unit(yloc1, "native"), gp=gpar(col=col, cex=cex), pch=pch)
+			popViewport(1)
+			
+			return(invisible(GdObject))
+		})
 
+##----------------------------------------------------------------------------------------------------------------------------
 
 
 ##----------------------------------------------------------------------------------------------------------------------------
