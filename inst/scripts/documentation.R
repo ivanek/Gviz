@@ -403,11 +403,13 @@ details <- list(
                                     add53="Logical scalar. Add 5' to 3' direction indicators.",
                                     add35="Logical scalar. Add 3' to 5' direction indicators.",
                                     exponent="Numeric scalar. The exponent for the axis coordinates, e.g., 3 means mb, 6 means gb, etc. The default is to automatically determine the optimal exponent.",
-                                    labelPos="Character vector, one in \"alternating\", \"revAlternating\", \"above\" or \"below\". The vertical positioning of the axis labels.",
+                                    labelPos="Character vector, one in \"alternating\", \"revAlternating\", \"above\" or \"below\". The vertical positioning of the axis labels. If \\code{scale} is not \\code{NULL}, the possible values are \"above\", \"below\" and \"beside\".",
                                     littleTicks="Logical scalar. Add more fine-grained tick marks.",
                                     distFromAxis="Numeric scalar. Control the distance of the axis annotation from the tick marks.",
                                     fontface="Character scalar. The font face for the axis annotation text.",
-                                    fontfamily="Character scalar. The font family for the axis annotation text."),
+                                    fontfamily="Character scalar. The font family for the axis annotation text.",
+                                    scale="Numeric scalar. If not \\code{NULL} a small scale is drawn instead of the full axis, if the value is between 0 and 1 it is interpreted as a fraction of the current plotting region, otherwise as an absolute length value in genomic coordinates."
+                                    ),
                                     
 
                 "AnnotationTrack"=c(fill="Character or integer scalar. The fill color for untyped items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",
@@ -434,6 +436,7 @@ details <- list(
                                     showOverplotting="Logical scalar. Use a color gradient to show the amount of overplotting for collapsed items. This implies that \\code{collapse==TRUE}",
                                     min.width="Numeric scalar. The minimum range width in pixels to display. All ranges are expanded to this size in order to avoid rendering issues. See \\code{\\link{collapsing}} for details.",
                                     alpha="Numeric scalar between 0 and 1. The opacity of the plotting elements, if supported by the device."),
+                
                 "DetailsAnnotationTrack"=c(details.size="Numeric scalar. The fraction of vertical space of the track used for the details section.",
                                            details.minWidth="Numeric scalar. The minium width in pixels for a details panel, if less space is available no details are plotted.",
                                            detailsConnector.col="Character or integer scalar. Color of the line connecting the \\code{AnnotstionTrack} item with its details panel",
@@ -447,6 +450,7 @@ details <- list(
                                            detailsBorder.fill="Character or integer scalar. Background color of the border.",
                                            details.ratio="Numeric scalar.  Depending on the dimensions of your plot and the number of details panels these may have very different width and height and these panels are by default glued to each other width no space in between. The ratio of width over height can be limited (default is \\code{Inf}) resulting in some space separating the panels. The vertical extension can be controled with the \\code{size} and \\code{details.size} arguments.",
                                            detailsFunArgs="List.Additional arguments that get passed on the the details plotting function."),
+                
                 "GeneRegionTrack"=c(fill="Character or integer scalar. The fill color for untyped items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",
                                     col="Character or integer scalar. The border color for all track items.",
                                     lty="Character or integer scalar. The line type for all track items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",

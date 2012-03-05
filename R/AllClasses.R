@@ -847,7 +847,7 @@ setClass("GenomeAxisTrack",
                                   showId=FALSE,
                                   littleTicks=FALSE,
                                   size=NULL,
-								  scale=NULL,
+                                  scale=NULL,
                                   lwd=2)))
 
 ## Only pass on the stuff to the GdObject initializer

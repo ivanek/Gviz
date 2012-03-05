@@ -1305,50 +1305,58 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     ## Plot range if there is any
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
 	
-	## in "scale" mode we just plot a simple scale and return ...
-	scaleLen <- .dpOrDefault(GdObject, "scale", NULL)
-	if(!is.null(scaleLen))
-	{
-		#browser()
-		len = (maxBase-minBase + 1)
-		if (scaleLen > len) {
-			warning(paste("scale (", scaleLen,
-							") cannot be larger than plotted region",
-							len, " - setting to ~5%\n", sep=""))
-			scaleLen = 0.05
-		}
-		xoff = len * 0.03 + minBase
-		v = scaleLen
-		## TODO: for consistency acknowledge the 'exponent' argument if not NULL
-		## currently the exponent for the scale is calculated automatically
-		ex = floor(log10(scaleLen))
-		u = paste(scaleLen, "b")
-		if(scaleLen <= 1 && scaleLen > 0) {
-			scaleLen = len * scaleLen 
-			ex = floor(log10(scaleLen))
-			u = paste(round(scaleLen, -ex), "b")
-			#v = round(scaleLen, -(ex+round(scaleLen/(10^(ex+1))))) #Êrounds to nearest exponent
-			v = round(scaleLen, -ex)
-		}
-		if(ex >=9) {
-			u = paste(v/1e9, "gb")
-		} else if(ex >= 6) {
-			u = paste(v/1e6, "mb")
-		} else if(ex >= 3) {
-			u = paste(v/1e3, "kb")
-		}
-		
-		grid.lines(x=c(xoff, v+xoff), y=c(0,0), default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
-		grid.segments(x0=c(xoff, v+xoff), y0=c(0-tickHeight, 0-tickHeight),
-				x1=c(xoff, v+xoff), y1=c(tickHeight,tickHeight, tickHeight),
-				default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
-		z =  len * 0.01
-		grid.text(label=u, x=v+xoff+z, y=0, just=c("left", "center"),
-				gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
-		popViewport(1)
-		return(invisible(GdObject))
-	}
-	
+    ## in "scale" mode we just plot a simple scale and return ...
+    scaleLen <- .dpOrDefault(GdObject, "scale", NULL)
+    if(!is.null(scaleLen))
+    {
+        ##browser()
+        len <- (maxBase-minBase + 1)
+        if (scaleLen > len) {
+            warning(paste("scale (", scaleLen,
+                          ") cannot be larger than plotted region",
+                          len, " - setting to ~5%\n", sep=""))
+            scaleLen = 0.05
+        }
+        xoff <- len * 0.03 + minBase
+        labelPos <- match.arg(labelPos, c("alternating", "revAlternating", "above", "below", "beside"))
+        v <- scaleLen
+        ## TODO: for consistency acknowledge the 'exponent' argument if not NULL
+        ## currently the exponent for the scale is calculated automatically
+        ex <- floor(log10(scaleLen))
+        u <- paste(scaleLen, "b")
+        if(scaleLen <= 1 && scaleLen > 0) {
+            scaleLen <- len * scaleLen 
+            ex <- floor(log10(scaleLen))
+            u <- paste(round(scaleLen, -ex), "b")
+            ##v <- round(scaleLen, -(ex+round(scaleLen/(10^(ex+1))))) #Êrounds to nearest exponent
+            v <- round(scaleLen, -ex)
+        }
+        if(ex >=9) {
+            u <- paste(v/1e9, "gb")
+        } else if(ex >= 6) {
+            u <- paste(v/1e6, "mb")
+        } else if(ex >= 3) {
+            u <- paste(v/1e3, "kb")
+        }
+        grid.lines(x=c(xoff, v+xoff), y=c(0,0), default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
+        grid.segments(x0=c(xoff, v+xoff), y0=c(0-tickHeight, 0-tickHeight),
+                      x1=c(xoff, v+xoff), y1=c(tickHeight,tickHeight, tickHeight),
+                      default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
+        z <- len * 0.01
+        if(labelPos=="below"){
+            grid.text(label=u, x=xoff+v/2, y=0-(tickHeight/1.5*dfact), just=c("center", "top"),
+                      gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
+        } else if(labelPos=="above")
+            grid.text(label=u, x=xoff+v/2, y=tickHeight/1.5*dfact, just=c("center", "bottom"),
+                      gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
+        } else {
+            grid.text(label=u, x=v+xoff+z, y=0, just=c("left", "center"),
+                      gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
+        }
+        popViewport(1)
+        return(invisible(GdObject))
+    }
+    
     if(length(GdObject))
     {
         rfill <- .dpOrDefault(GdObject, "fill.range", "cornsilk3")
@@ -1390,9 +1398,9 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     tck <- tck[tck<axRange[2]-pxOff*2 & tck>axRange[1]+pxOff*2]
     y0t <- rep(c(1,-1)*pyOff, length(tck))[1:length(tck)]
     y1t <- y0t + rep(c(tickHeight, -tickHeight), length(tck))[1:length(tck)]
-    labelPos <- match.arg(labelPos, c("alternating", "revAlternating", "above", "below"))
-    y0t <- switch(labelPos, "alternating"=y0t, "revAlternating"=-y0t, "above"=abs(y0t), "below"=-abs(y0t))
-    y1t <- switch(labelPos, "alternating"=y1t, "revAlternating"=-y1t, "above"=abs(y1t), "below"=-abs(y1t))
+    labelPos <- match.arg(labelPos, c("alternating", "revAlternating", "above", "below", "beside"))
+    y0t <- switch(labelPos, "alternating"=y0t, "revAlternating"=-y0t, "above"=abs(y0t), "below"=-abs(y0t), "beside"=y0t)
+    y1t <- switch(labelPos, "alternating"=y1t, "revAlternating"=-y1t, "above"=abs(y1t), "below"=-abs(y1t), "beside"=y1t)
     grid.segments(x0=tck, x1=tck, y0=y0t, y1=y1t,  default.units="native", gp=gpar(col=color, alpha=alpha, lwd=lwd, lineend="square"))
     ## The top level tick labels
     tckText <- tck

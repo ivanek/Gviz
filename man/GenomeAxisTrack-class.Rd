@@ -61,12 +61,15 @@ GenomeAxisTrack(range=NULL, name="Axis", id, ...)
   parameters. By providing a \code{GRanges} or \code{IRanges} object to
   the constructor, ranges on the axis can be further highlighted.\\
   
-  With the \code{scale} argument a small legend/scale can be shown instead
-  of the entire genomic axis. The scale can either be provided as a fraction
-  (it will be rounded to the nearest human readable absolute value) or absolute
-  and is always displayed in bp, kb, mb or gb units. Note, not some arguments
-  to \code{GenomeAxisTrack} are ignored when a scale is used insterad of the full
-  axis. The scale uses the arguments alpha, lwd, col and cex.
+  With the \code{scale} display parameter, a small scale indicator can
+  be shown instead of the entire genomic axis. The scale can either be
+  provided as a fraction of the plotting region (it will be rounded to
+  the nearest human readable absolute value) or as an absolute value and
+  is always displayed in bp, kb, mb or gb units. Note that most display
+  parameters for the \code{GenomeAxisTrack} are ignored when a scale is
+  used insterad of the full axis. In particular, only the parameters
+  \code{alpha}, \code{lwd}, \code{col}, \code{cex}, \code{distFromAxis}
+  and \code{labelPos} are used.
 
 }
 
@@ -675,7 +678,8 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
     \item{}{\code{labelPos="alternating"}: Character vector, one in
       "alternating", "revAlternating", "above" or "below". The vertical
-      positioning of the axis labels.} 
+      positioning of the axis labels. If \code{scale} is not \code{NULL},
+      the possible values are "above", "below" and "beside". } 
 
     \item{}{\code{littleTicks=FALSE}: Logical scalar. Add more fine-grained
       tick marks.} 
@@ -693,8 +697,11 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       track. Can be overridden in the \code{\link{plotTracks}} function.
       Defaults to the ideal size based on the other track settings.} 
 
-    \item{}{\code{scale=NULL}: Numeric, if not NULL a small scale is drawn instead of the full axis,
-     if between 0 and 1 it is interpreted as a fraction of the region (otherwise absolute).}
+    \item{}{\code{scale=NULL}: Numeric scalar. If not \code{NULL} a
+     small scale is drawn instead of the full axis, if the value is
+     between 0 and 1 it is interpreted as a fraction of the current
+     plotting region, otherwise as an absolute length value in genomic
+     coordinates.}
 
   } 
 
