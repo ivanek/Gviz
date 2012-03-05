@@ -1,0 +1,9 @@
+A to-do list for the Gviz package
+
+General structure:
+   o introduce file-reference classes that draw genomic coordinates and associated data from bigBed, bigWig, BAM or tabix files
+
+AnnotationTrack/GeneRegionTrack
+   o get the data from TranscriptDb objects
+   o speed up .prepareGene (may need a C code module)
+   o deal with additional annotation features (UTRs, etc.)
