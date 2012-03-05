@@ -440,7 +440,7 @@ plotTracks(axisTrack, from=1e6, to=9e6)
 
 \subsubsection*{Display parameters for GenomeAxisTrack objects}
 There are a whole bunch of display parameters to alter the appearance
-of \Rclass{GemomeAxisTrack} plots. For instance, one could add
+of \Rclass{GenomeAxisTrack} plots. For instance, one could add
 directional indicators to the axis using the \Rfunarg{add53} and
 \Rfunarg{add35} parameters.
 
@@ -474,6 +474,30 @@ could aline all tick marks underneath the axis.
 
 <<GenomeAxisTrackClass6, fig=TRUE, width=7.5, height=0.5>>=
 plotTracks(axisTrack, from=1e6, to=9e6, labelPos="below")
+@
+
+Sometimes a full-blown axis is just too much, and all we really need
+in the plot is a small scale indicator. We can change the appearance
+of the \Rclass{GenomeAxisTrack} object to such a limited
+representation by setting the \Rfunarg{scale} parameter. Typically, this
+will be a numeric value between 0 and 1, which is interpreted as the
+fraction of the plotting region used for the scale. The plotting
+method will apply some rounding to come up with reasonable and
+human-readable values. For even more control we can pass in a value
+larget than 0, which is considered to be an absolute range length. In
+this case, the user is responsible that the scale actually fits in the
+current plotting range.
+
+<<GenomeAxisTrackClass7, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, scale=0.5)
+@
+
+We still have control over the placement of the label via the
+\Rfunarg{labelPos}, parameter, which now takes the values
+\code{above}, \code{below} and \code{beside}.
+
+<<GenomeAxisTrackClass8, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, scale=0.5, labelPos="below")
 @
 
 For a complete listing of all the available display parameters please

@@ -926,9 +926,9 @@ grTrack <- GeneRegionTrack(start=26682683, end=26711643,
 		name="Cyp2b10", strand=cyp2b10$strand)
 		
 plotTracks(list(grTrack, GenomeAxisTrack()))
-plotTracks(list(grTrack, GenomeAxisTrack(scale=.1)))
+plotTracks(list(grTrack, GenomeAxisTrack(scale=0.1)))
 plotTracks(list(grTrack, GenomeAxisTrack(scale=5000)))
-
+plotTracks(list(grTrack, GenomeAxisTrack(scale=0.5, labelPos="below")))
 
 }
 

@@ -1296,8 +1296,16 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     ## In prepare mode we just want to figure out the optimal size
     if(prepare)
     {
-        nsp <- (sum(tickHeight, pyOff*2, textYOff*2 +
-                    (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex)*2*1.3)/pres["y"]
+        nsp <- if(is.null(.dpOrDefault(GdObject, "scale", NULL))){
+            (sum(tickHeight, pyOff*2, textYOff*2 + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex)*2*1.3)/pres["y"]
+        } else {
+            labelPos <- match.arg(labelPos, c("alternating", "revAlternating", "above", "below", "beside"))
+            if(labelPos %in% c("above", "below")){
+                (sum(tickHeight, pyOff*2 + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex)*2)/pres["y"]
+            } else {
+                (sum(tickHeight, pyOff*2 + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex))/pres["y"]
+            }
+        }
         displayPars(GdObject) <- list("neededVerticalSpace"=nsp)
         popViewport(1)
         return(invisible(GdObject))
