@@ -439,7 +439,7 @@ details <- list(
                 
                 "DetailsAnnotationTrack"=c(details.size="Numeric scalar. The fraction of vertical space of the track used for the details section.",
                                            details.minWidth="Numeric scalar. The minium width in pixels for a details panel, if less space is available no details are plotted.",
-                                           detailsConnector.col="Character or integer scalar. Color of the line connecting the \\code{AnnotstionTrack} item with its details panel",
+                                           detailsConnector.col="Character or integer scalar. Color of the line connecting the \\code{AnnotstionTrack} item with its details panel.",
                                            detailsConnector.lty="Character or integer scalar. Type of connecting line.", 
                                            detailsConnector.lwd="Integer scalar. Line width of the connector.",
                                            detailsConnector.pch="Integer scalar. Type of the connector's ends.",        
@@ -448,7 +448,7 @@ details <- list(
                                            detailsBorder.lwd="Integer scalar. Line width of the border.",
                                            detailsBorder.col="Character or integer scalar. Line color of the border.",
                                            detailsBorder.fill="Character or integer scalar. Background color of the border.",
-                                           details.ratio="Numeric scalar.  Depending on the dimensions of your plot and the number of details panels these may have very different width and height and these panels are by default glued to each other width no space in between. The ratio of width over height can be limited (default is \\code{Inf}) resulting in some space separating the panels. The vertical extension can be controled with the \\code{size} and \\code{details.size} arguments.",
+                                           details.ratio="Numeric scalar. By default, the plotting method tries to fill all available space of the details panel tiles. Depending on the dimensions of your plot and the number of tiles this may lead to fairly stretched plots. Restricting the ration of width over height can help to fine tune for somewhat more sane graphics in these cases. Essentially this adds some white space in between individual tiles to force the desired ratio. Together with the \\code{size} and \\code{details.size} arguments, which control the vertical extension of the whole track and of the details section, this allows for some fairly generic resizing of the tiles.",
                                            detailsFunArgs="List.Additional arguments that get passed on the the details plotting function."),
                 
                 "GeneRegionTrack"=c(fill="Character or integer scalar. The fill color for untyped items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",

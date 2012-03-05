@@ -479,14 +479,14 @@ plotTracks(axisTrack, from=1e6, to=9e6, labelPos="below")
 Sometimes a full-blown axis is just too much, and all we really need
 in the plot is a small scale indicator. We can change the appearance
 of the \Rclass{GenomeAxisTrack} object to such a limited
-representation by setting the \Rfunarg{scale} parameter. Typically, this
-will be a numeric value between 0 and 1, which is interpreted as the
-fraction of the plotting region used for the scale. The plotting
+representation by setting the \Rfunarg{scale} parameter. Typically,
+this will be a numeric value between 0 and 1, which is interpreted as
+the fraction of the plotting region used for the scale. The plotting
 method will apply some rounding to come up with reasonable and
 human-readable values. For even more control we can pass in a value
-larget than 0, which is considered to be an absolute range length. In
-this case, the user is responsible that the scale actually fits in the
-current plotting range.
+larger than 0, which is considered to be an absolute range length. In
+this case, the user is responsible for the scale to actually fit in
+the current plotting range.
 
 <<GenomeAxisTrackClass7, fig=TRUE, width=7.5, height=0.5>>=
 plotTracks(axisTrack, from=1e6, to=9e6, scale=0.5)
@@ -991,7 +991,6 @@ data("biomTrack")
 plotTracks(biomTrack)
 @ 
 
-
 \subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
 
 For a complete listing of all the available display parameters please
@@ -1009,6 +1008,116 @@ addInfo <- t(data.frame(displayPars(biomTrack, names(details[["BiomartGeneRegion
 colnames(addInfo) <- "Color"
 addParTable("BiomartGeneRegionTrack", add=addInfo)
 @ 
+
+\subsection{DetailsAnnotationTrack}
+It is sometimes desirable to add more detailed information to
+particular ranges in an \mgg plot for which the notion of genomic
+coordinates no longer makes sense. For instance, the ranges in an
+\Rclass{AnnotationTrack} may represent probe locations on a genome,
+and for each of these probes a number of measurements from multiple
+samples and from different sample groups are available. To this end,
+the \Rclass{DetailsAnnotationTrack} provides a flexible interface to
+further annotate genomic regions with arbitrary additional
+information. This is archived by splitting the
+\Rclass{AnnotationTrack} plotting region into two horizontal sections:
+the lower section containing the range dat in genomic coordinates, and
+the upper one containing the additional data for each of the displayed
+ranges in verticaly tiled panels of equal size. The conenction between
+a range item and its details panel is indicated by connecting
+lines. 
+
+The content of the individual details panels has to be filled in by a
+user-defined plotting function that uses grid (or lattice) plotting
+commands. This function has to accept a number of mandatory
+parameters, notably the start, end, strand, chromosome and identifier
+information for the genomic range, as well as an integer counter
+indicating the index of the currently plotted details tile. This
+information can be used to fetch abtritray details, e.g. from a list,
+and environement or even from a \Rclass{GRanges} object which will
+then be processed and visualized within the plotting function. This
+may sound rather abstract, and for more details please refer to the
+class' help page. For now we just want to demonstrate the
+functionality in a simple little example. We begin by defining a
+\Rclass{GRanges} object containing 4 genomic locations. In our example
+those are considered to be probe locations from a methylation array.
+
+<<DetailsAnnotationTrack1>>=
+probes <- GRanges(seqnames="chr7", ranges=IRanges(start=c(2000000, 2070000, 2100000, 2160000), end=c(2050000, 2130000, 2150000, 2170000)),
+                  strand=c("-", "+", "-", "-"))
+@
+
+For each of these probes we have methylation measurements from a large
+number of different samples in a numeric matrix, and within the
+samples there are two treatment groups. The aim is to compare the
+distribution of measurement values between these two groups at each
+probe locus.
+
+<<DetailsAnnotationTrack2>>=
+methylation <- matrix(c(rgamma(400, 1)), ncol=100, dimnames=list(paste("probe", 1:4, sep=""), NULL))
+methylation[,51:100] <- methylation[,51:100] + 0:3
+sgroups <- rep(c("grp1","grp2"), each=50)
+@
+
+Of course we could use a \Rclass{DataTrack} with the box-plot
+representation for this task, however we do have strand-specific data
+here and some of the probes can be overlapping, so all this
+information would be lost. We are also interested in the particular
+shape of the data distribution, so a density plot representation is
+what we really need. Luckily, the \Rpackage{lattice} package gives us
+a nice \Rfunction{densityplot} function that supports grouping, so all
+that's left to do now is to write a little wrapper that handles the
+extraction of the relevant data from the matrix. This is easily
+archieved by using the range identifiers, which conveniently map to
+the row names of the data matrix.
+
+<<DetailsAnnotationTrack3>>=
+library(lattice) 
+details <- function(identifier, ...) {
+    d <- data.frame(signal=methylation[identifier,], group=sgroups)
+    print(densityplot(~signal, group=group, data=d, main=list(label=identifier, cex=0.7),
+                      scales=list(draw=FALSE, x=list(draw=TRUE)), ylab="", xlab="",
+                      ), newpage=FALSE, prefix="plot")
+}
+@
+
+Finaly, it is as simple as calling the \Rclass{DetailsAnnotationTrack}
+constructor (which mostly resembles the familiar
+\Rclass{AnnotationTrack} constructor), passing along the wrapper function
+and calling \Rfunction{plotTracks}.
+
+<<DetailsAnnotationTrack4, results=hide, width=7.5, height=1, fig=TRUE>>=
+deTrack <- DetailsAnnotationTrack(range=probes, genome="hg19", chromosome=7, id=rownames(methylation),
+                                  name="probe details", stacking="squish",
+                                  fun=details)
+plotTracks(deTrack)
+@
+
+It should be noted here that in our little example we rely on the
+methylation data matrix and the grouping vector to be present in the
+working environment. This is not necessarily the cleanest solution and
+one should consider storing additional data in an evironment, passing
+it along using the \Rfunargs{detailFunArgs} parameter, or making it
+part of the details function in form of a closure. The class' help
+page provides further instructions.
+
+\subsubsection*{Display parameters for DetailsAnnotationTrack objects}
+
+In addtion to the display parameters for the \Rclass{AnnotationTrack}
+class, some additional parameters can be used to control the look and
+feel of the details sections. For a complete listing of all the available display parameters please
+see the tables below and the one above in the \Rclass{AnnotationTrack} section
+or the man page of the \Rclass{DetailsAnnotationTrack} class by typing
+in \code{?DetailsAnnotationTrack} on the \R command line.
+
+<<DetailsAnnotationTrack5, results=hide, width=7.5, height=1, fig=TRUE>>=
+plotTracks(deTrack, details.size=0.25, detailsConnector.pch=NA, detailsConnector.col="darkred", 
+           detailsBorder.fill="#FFE3BF", detailsBorder.col="darkred", shape="box", detailsConnector.lty="dotted")
+@ 
+
+<<DeatailsAnnotationTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("BiomartGeneRegionTrack")
+@ 
+
 
 \subsection{Creating tracks from UCSC data}
 

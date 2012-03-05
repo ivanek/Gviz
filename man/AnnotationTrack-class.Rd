@@ -28,13 +28,16 @@
 \description{
   
   A fairly generic track object for arbitrary genomic range annotations,
-  with the option of grouped track items.
+  with the option of grouped track items. The extended
+  \code{DetailsAnnotationTrack} provides a flexible interface to add
+  user-defined custom information for each range.
 
 }
 
 \section{Objects from the class}{
   
-  Objects can be created using the constructor function \code{AnnotationTrack}.
+  Objects can be created using the constructor function
+  \code{AnnotationTrack} and \code{DetailsAnnotationTrack}.
 
 }
 
@@ -143,8 +146,9 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
       
-  \item{fun}{A function that plots details each element of the AnnotationTrack,
-  see 'DetailsAnnotationTrack' and 'Examples' for details.}
+  \item{fun}{A function that creates custom details plots for each
+    element of the AnnotationTrack, see section 'Details'
+    and 'Examples' for further information.}
   
   
   \item{\dots}{Additional items which will all be interpreted as further
@@ -158,6 +162,91 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
   \code{AnnotationTrack}.
   
 }
+
+
+\section{details}{
+	
+  The \code{DetailsAnnotationTrack} class directly extends
+  \code{AnnotationTrack}. The purpose of this track type is to add an
+  arbitrarily detailed plot section (typically consisting of additional
+  quantitative data) for each range element of an
+  \code{AnnotationTrack}. This allows a locus wide view of annotation
+  elements together with any kind of details per feature or element that
+  may for instance provide insight on how some complex quantitative
+  measurements change accoring to their position in a locus.  If the
+  quantitative data is too complex for a \code{DataTrack} e.g.  because
+  it requires extra space or a trellis-like representation, a
+  \code{DetailsAnnotationTrack} can be used instead. Example: An
+  \code{AnnotationTrack} shows the positions of a number of probes from
+  a microarray, and you want a histogram of the signal intensity
+  distribution derived from all samples at each of these probe
+  location. Another example usage would be to show for each element of
+  an \code{AnnotationTrack} an xy-plot of the signal against some
+  clinical measurement such as blood preassure. The limitation of this
+  type of track is basically only the space of the device you are
+  plotting to.
+	
+  \describe{
+	  
+    \item{}{\code{fun=function(...){}}: A function that is being called
+      for each entry in the \code{AnnotationTrack} object. When called
+      internally by the plotting machinery, a number of arguments are
+      automatically passed on to this function, and the user needs to
+      make sure that they can all be digested (i.e., either have all of
+      them as formal named function arguments, or gobble up everything
+      that is not needed in \dots). These arguments are:
+	    
+      \itemize{
+	      
+	\item{\code{start}: the genomic start coordinate of the range
+	  item.}
+	      
+	\item{\code{end}: the genomic end coordinates of the range
+	  item.}
+	      
+	\item{\code{strand}: the strand information for the range item.}
+	      
+	\item{\code{chromosome}: the chromosome of the range item.}
+	      
+	\item{\code{identifier}: the identifier of the range item, i.e.,
+	  the result of calling \code{identifier(DetailsAnnotationTrack,
+	    lowest=TRUE)}. Typically those identifiers are passed on to
+	  the object constructor during instantiation as the \code{id}
+	  argument.}
+	
+	\item{\code{index}: a counter enumerating the ranges. The
+	  \code{AnnotationTrack} object is sorted internally for
+	  visibility, and the \code{index} argument refers to the index
+	  of plotting.}
+	
+      }
+
+      Additional arguments can be passed to the plotting function by
+      means of the \code{detailsFunArgs} argument (see below). Note that
+      the plot must use grid graphics (e.g. function in the 'lattice'
+      package or low-level grid functions). To access a data object such
+      a matrix or data frame within the function you can either store it
+      as a variable in the global environment or, to avoid name space
+      conflicts, you can make it part of the function environment by
+      means of a closure. Alternatively, you may want to explicitely
+      stick it into an environment or pass it along in the
+      \code{detailsFunArgs} list. To figure out in your custom plotting
+      function which annotation element is currently being plotted you
+      can either use the identifier which has to be unique for each
+      range element, or you may want to use the genomic position
+      (start/end/strand/chromosome) e.g. if the data is stored in a
+      \code{GRanges} object.  }
+
+    \item{}{\code{detailsFunArgs=list()}: This is a named list, and all
+      list elements are passed along to the plotting function \code{fun}
+      as additional named arguments. Please note that all argument names
+      in the list above are reserved and can not be used in the
+      \code{detailsFunArgs} list. For examples of plotting functions,
+      see the 'Examples' section.  }
+    
+  }	
+}
+
 
 \section{Slots}{
   
@@ -189,8 +278,8 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
       \code{\linkS4class{ImageMap}}, inherited from class
       \code{\linkS4class{GdObject}}}
   
-    \item{fun:}{Function called per AnnotationTrack element to plot details.}
-  }
+    \item{\code{fun}:}{A function that is being called for each
+      \code{AnnotationTrack} element to plot details.}  }
   
   Additional display parameters are being inherited from the
   \code{\linkS4class{StackedTrack}} parent class.
@@ -209,7 +298,8 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
 
 \section{Methods}{
 
-  In the following code chunks, \code{obj} is considered to be an object of class \code{AnnotationTrack}.
+  In the following code chunks, \code{obj} is considered to be an object
+  of class \code{AnnotationTrack} or \code{DetailsAnnotationTrack}.
   
   \bold{\emph{Exported in the name space:}}
   
@@ -1202,33 +1292,64 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
 
   } 
 
-  \code{DetailsAnnotationTrack} contains the following additional display parameters:
-  
+  \code{DetailsAnnotationTrack} adds the following additional display parameters:
+
   \describe{
-    \item{}{\code{details.size=0.5}: Fraction of the details part}
-    \item{}{\code{details.minWidth=100}: Minium width in pixels for a details panel - does not plot if it's smaller}
-    \item{}{\code{detailsConnector.col="darkgray"}: Color of the line connecting the \code{AnnotstionTrack} item with its details panel}
-    \item{}{\code{detailsConnector.lty="dashed"}: Type of connecting line}
-    \item{}{\code{detailsConnector.lwd=1}: Line width of the connector}
-    \item{}{\code{detailsConnector.pch=20}: Type of the connector's ends (default is filled circles)}
-    \item{}{\code{detailsConnector.cex=1}: Relative size of the connector's end points}
-    \item{}{\code{detailsBorder.lty="solid"}: Line type of the border around each details panel}
-    \item{}{\code{detailsBorder.lwd=1}: Line width of the border}
-    \item{}{\code{detailsBorder.col="darkgray"}: Line color of the border}
-    \item{}{\code{detailsBorder.fill="transparent"}: Background color of the border}
-    \item{}{\code{details.ratio=Inf}: Depending on the dimensions of your plot and the number of
-      details panels these may have very different width and height and these panels
-      are by default glued to each other width no space in betrween. The ratio of width over
-      height can be limited (default is \code{Inf}), and soem space separates the panels. The
-      vertical extension can be controled with the \code{size} and
-      \code{details.size} arguments.}
-    \item{}{\code{detailsFunArgs=list()}: additional arguments that
-      get passed on to the details plotting function.}
+    \item{}{\code{details.size=0.5}: Numeric scalar. The fraction of
+      vertical space of the track used for the details section.}
+    
+    \item{}{\code{details.minWidth=100}: Numeric scalar. The minium
+      width in pixels for a details panel, if less space is available no
+      details are plotted.}
+    
+    \item{}{\code{detailsConnector.col="darkgray"}: Character or integer
+      scalar. Color of the line connecting the \code{AnnotstionTrack}
+      item with its details panel.}
+  
+    \item{}{\code{detailsConnector.lty="dashed"}: Character or integer
+      scalar. Type of connecting line.}
+    
+    \item{}{\code{detailsConnector.lwd=1}: Integer scalar. Line width of
+      the connector.}
+    
+    \item{}{\code{detailsConnector.pch=20}: Integer scalar. Type of the
+      connector's ends.}
+    
+    \item{}{\code{detailsConnector.cex=1}: Numeric scalar. Relative size
+      of the connector's end points.}
+    
+    \item{}{\code{detailsBorder.lty="solid"}: Character or integer
+      scalar. Line type of the border around each details panel.}
+    
+    \item{}{\code{detailsBorder.lwd=1}: Integer scalar. Line width of
+      the border.}
+    
+    \item{}{\code{detailsBorder.col="darkgray"}: Character or integer
+      scalar. Line color of the border.}
+    
+    \item{}{\code{detailsBorder.fill="transparent"}: Character or
+      integer scalar. Background color of the border.}
+    
+    \item{}{\code{details.ratio=Inf}: Numeric scalar. By default, the
+      plotting method tries to fill all available space of the details
+      panel tiles. Depending on the dimensions of your plot and the
+      number of tiles this may lead to fairly stretched
+      plots. Restricting the ration of width over height can help to
+      fine tune for somewhat more sane graphics in these
+      cases. Essentially this adds some white space in between
+      individual tiles to force the desired ratio. Together with the
+      \code{size} and \code{details.size} arguments, which control the
+      vertical extension of the whole track and of the details section,
+      this allows for some fairly generic resizing of the tiles.}
+  
+    \item{}{\code{detailsFunArgs=list()}: List.Additional arguments that
+      get passed on the the details plotting function.}
+    
   }
   
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{AnnotationTrack} objects. 
+  plotting of \code{AnnotationTrack} \code{DetailsAnnotationTrack} objects. 
 
     \describe{ 
 
@@ -1345,50 +1466,6 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
 
   } 
 
-}
-
-\section{DetailsAnnotationTrack}{
-	
-	\code{DetailsAnnotationTrack} directly extends \code{AnnotationTrack}. The purpose
-	of this track type is to add an arbitrary detailed plot with usually quantitative data to
-	each element of an \code{AnnotationTrack} which shows qualitative information,
-	only (an \code{AnnotationTrack} indicates the location of something). This allows
-	a locus wide view of annotation elements together with any kind of details per featurs
-	or elements. This may provide insight on how some complex quantitative measurment or dependency
-	between variables changes accoring to its position in a locius.
-	If the quantitative data is too complex for a \code{DataTrack} e.g.
-	because it requires extra space or a trellis graphics, a
-	\code{DetailsAnnotationTrack} can be used instead. Example: An \code{AnnotationTrack}
-	shows the positions of some probes from a microarray for a given locus, and you want
-	a histogram of the signal intensity distribution from all samples at each of these probes.
-	Another example usage would be to show for each element of an \code{AnnotationTrack}
-	an xyplots of a signals against some clinical measurement
-	(of the same samples) such as blood preassure. The limitation of this type of
-	track is basically only the space of the device you are plotting to.
-	
-	\describe{
-	    \item{}{\code{fun=function(...){}}: This is the function that is called per entry
-	    in the AnnotationTrack object. By default the start, end, strand, chromosome, entry identifier and
-	    it's index are passed as named arguments to this function. The AnnotationTrack object
-	    is sorted internally for visibility, and the \code{index} argument of the function
-	    refers to the index of plotting (i.e. the sorted object so that the index is just a counter).
-	    Additional arguments can be passed with the DetailsAnnotationTrack parameter
-	    \code{detailsFunArgs} (see below). Note that the plot must use grid graphics
-	    (e.g. the 'lattice' package). To access a data object such a matrix or data frame
-	    within the function you can either access a variable in the global environment or
-	    to avoid name space conflicts accessing it via a closure or a specific environment.
-	    To figure out which annotation
-	    element is currently plotted you can use the identifier, or genomic position
-	    (start/end/strand/chromosome) e.g. if the data is in a 'GRanges' object.}
-	    
-		\item{}{\code{detailsFunArgs=list()}: This is a named list from which the elements are
-		passed as named arguments to the plotting function (\code{fun}). See above
-		for the arguments passwd by default. For examples
-		of functions, go to the 'Examples' section.}
-	}
-	
-	See also 'Display Parameters'.
-	
 }
 
 \author{Florian Hahne, Arne Mueller}
