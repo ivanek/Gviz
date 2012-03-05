@@ -1346,7 +1346,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
         if(labelPos=="below"){
             grid.text(label=u, x=xoff+v/2, y=0-(tickHeight/1.5*dfact), just=c("center", "top"),
                       gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
-        } else if(labelPos=="above")
+        } else if(labelPos=="above"){
             grid.text(label=u, x=xoff+v/2, y=tickHeight/1.5*dfact, just=c("center", "bottom"),
                       gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
         } else {
