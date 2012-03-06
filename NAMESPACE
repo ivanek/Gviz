@@ -73,7 +73,7 @@ importFrom(methods, "@<-", as, callNextMethod, getClass, getClassDef, is, new,
 
 importFrom(RColorBrewer, brewer.pal)
 
-importFrom(rtracklayer, GenomicData)
+importFrom(rtracklayer, GenomicData, ucscGenomes, browserSession)
 
 importFrom(stats, loess.smooth)
 

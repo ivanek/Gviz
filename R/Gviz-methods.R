@@ -72,25 +72,32 @@ setReplaceMethod("values", "DataTrack", function(x, value){
 
 ## Set or extract the chromosome from a RangeTrack object
 setMethod("chromosome", "RangeTrack", function(GdObject) GdObject@chromosome)
+setReplaceMethod("chromosome", "GdObject", function(GdObject, value){
+    return(GdObject)
+})
 setReplaceMethod("chromosome", "RangeTrack", function(GdObject, value){
     GdObject@chromosome <- .chrName(value[1])
     return(GdObject)
 })
 setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
-    message("Updating chromosome band information")
+    ## message("Updating chromosome band information")
     tmp <- IdeogramTrack(genome=genome(GdObject), chromosome=.chrName(value[1]), name=names(GdObject))
     displayPars(tmp) <- displayPars(GdObject)
     return(tmp)
 })
 
-## Set or extract the chromosome from a RangeTrack object
+## Set or extract the genome from a RangeTrack object
 setMethod("genome", "RangeTrack", function(x) x@genome)
+setReplaceMethod("genome", "GdObject", function(x, value){
+    return(x)
+})
 setReplaceMethod("genome", "RangeTrack", function(x, value){
     x@genome <- value[1]
     return(x)
 })
 setReplaceMethod("genome", "IdeogramTrack", function(x, value){
-    message("Updating chromosome band information")
+    if(genome(x)!=value)
+        message("Updating chromosome band information")
     tmp <- IdeogramTrack(genome=value[1], chromosome=chromosome(x), name=names(x))
     displayPars(tmp) <- displayPars(x)
     return(tmp)

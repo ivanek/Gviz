@@ -1042,6 +1042,7 @@ functionality in a simple little example. We begin by defining a
 those are considered to be probe locations from a methylation array.
 
 <<DetailsAnnotationTrack1>>=
+library(GenomicRanges)
 probes <- GRanges(seqnames="chr7", ranges=IRanges(start=c(2000000, 2070000, 2100000, 2160000), end=c(2050000, 2130000, 2150000, 2170000)),
                   strand=c("-", "+", "-", "-"))
 @
@@ -1085,7 +1086,7 @@ constructor (which mostly resembles the familiar
 \Rclass{AnnotationTrack} constructor), passing along the wrapper function
 and calling \Rfunction{plotTracks}.
 
-<<DetailsAnnotationTrack4, results=hide, width=7.5, height=1, fig=TRUE>>=
+<<DetailsAnnotationTrack4, results=hide, width=7.5, height=5, fig=TRUE>>=
 deTrack <- DetailsAnnotationTrack(range=probes, genome="hg19", chromosome=7, id=rownames(methylation),
                                   name="probe details", stacking="squish",
                                   fun=details)
@@ -1096,7 +1097,7 @@ It should be noted here that in our little example we rely on the
 methylation data matrix and the grouping vector to be present in the
 working environment. This is not necessarily the cleanest solution and
 one should consider storing additional data in an evironment, passing
-it along using the \Rfunargs{detailFunArgs} parameter, or making it
+it along using the \Rfunarg{detailFunArgs} parameter, or making it
 part of the details function in form of a closure. The class' help
 page provides further instructions.
 
@@ -1109,13 +1110,13 @@ see the tables below and the one above in the \Rclass{AnnotationTrack} section
 or the man page of the \Rclass{DetailsAnnotationTrack} class by typing
 in \code{?DetailsAnnotationTrack} on the \R command line.
 
-<<DetailsAnnotationTrack5, results=hide, width=7.5, height=1, fig=TRUE>>=
-plotTracks(deTrack, details.size=0.25, detailsConnector.pch=NA, detailsConnector.col="darkred", 
+<<DetailsAnnotationTrack5, results=hide, width=7.5, height=3, fig=TRUE>>=
+plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector.col="darkred", 
            detailsBorder.fill="#FFE3BF", detailsBorder.col="darkred", shape="box", detailsConnector.lty="dotted")
 @ 
 
-<<DeatailsAnnotationTrackClassTable, echo=FALSE, results=tex>>=
-addParTable("BiomartGeneRegionTrack")
+<<DetailsAnnotationTrackClassTableSec, echo=FALSE, results=tex, eval=FALSE>>=
+addParTable("DetailsAnnotationTrack")
 @ 
 
 
@@ -1262,7 +1263,60 @@ plotTracks(list(idxTrack, axTrack, knownGenes, refGenes, ensGenes, cpgIslands,
                 gcContent, conservation, snpLocations), from=from, to=to, showTitle=FALSE)
 @ 
 
+\section{Composite plots for multiple chromosomes}
 
+As mentioned in the introduction section, a set of \mgg tracks has to
+share the same chromosome when plotted, i.e., only a single chromosome
+can be active during a given plotting operation. Consequently, we can
+not directly create plots for multiple chromosomes in a single call to
+the \Rfunction{plotTracks} function. However, since the underlying
+graphical infrastructure of the \mgg package uses grid graphics, we
+can build our own composite plot using multiple consecutive
+\Rfunction{plotTracks} calls. All we need to take care of is an
+adequate layout structure to plot into, and we also need to tell
+\Rfunction{plotTracks} not to clear the graphics device before
+plotting, which can be archieved by setting the function's
+\Rfunarg{add} argument to \code{FALSE}. For details on how to create a
+layout structure in the grid graphics system, please see the help page
+at \code{? grid.layout)}.
+
+We start by creating an \Rclass{AnnotationTrack} objects and a
+\Rclass{DataTrack} object which both contain data for several
+chromosomes.
+
+<<multPlot1>>=
+chroms <- c("chr1", "chr2", "chr3", "chr4")
+maTrack <- AnnotationTrack(range=GRanges(seqnames=chroms, ranges=IRanges(start=1, width=c(100,400,200,1000)),
+                                         strand=c("+", "+", "-", "+")), genome="mm9", chromosome="chr1", name="foo")
+
+mdTrack <- DataTrack(range=GRanges(seqnames=rep(chroms, c(10, 40, 20, 100)),
+                                   ranges=IRanges(start=c(seq(1,100,len=10), seq(1,400,len=40), seq(1, 200, len=20), 
+                                                          seq(1,1000, len=100)), width=9), values=runif(170)), 
+                     data="values", chromosome="chr1", genome="mm9", name="bar")
+@ 
+
+Now we also want a genome axis and an \Rclass{IdeogramTrack} object to indicate the genomic context.
+
+<<multPlot2>>=
+mgTrack <- GenomeAxisTrack(scale=0.5, labelPos="below")
+midTrack <- IdeogramTrack(genome="mm9", chromosome="chr1")
+@ 
+
+Finaly, we build a layout in which the plots for each chromosome are
+placed in a rectangular grid and repeatedly call
+\Rfunction{plotTracks} for each chromosome.
+
+<<multPlot3, fig=TRUE, results=hide, width=7.5, height=7.5>>=
+ncols <- 2
+nrows <- length(chroms)%/%ncols
+grid.newpage()
+pushViewport(viewport(layout=grid.layout(nrows, ncols)))
+for(i in seq_along(chroms)){
+    pushViewport(viewport(layout.pos.col=((i-1)%%ncols)+1, layout.pos.row=(((i)-1)%/%ncols)+1))
+    plotTracks(list(midTrack, maTrack, mdTrack, mgTrack), chromosome=chroms[i], add=TRUE)
+    popViewport(1)
+}
+@ 
 
 \clearpage
 \section*{SessionInfo}
