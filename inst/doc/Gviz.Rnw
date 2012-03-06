@@ -40,10 +40,11 @@
 options(width=65)
 library(xtable)
 source(system.file("scripts/documentation.R", package="Gviz"))
+xtabDetails <- details
 addParTable <- function(class, skip=c("showTitle", "size", "background.title"), add=NULL)
 {
-    Parameters <- data.frame("Display Parameter"=names(details[[class]]),
-                             "Description"=details[[class]], check.names=FALSE)
+    Parameters <- data.frame("Display Parameter"=names(xtabDetails[[class]]),
+                             "Description"=xtabDetails[[class]], check.names=FALSE)
     align <- "lrp{5in}"
     if(!is.null(add)){
         Parameters <- cbind(Parameters, add)
@@ -58,6 +59,10 @@ addParTable <- function(class, skip=c("showTitle", "size", "background.title"), 
           floating=FALSE, tabular.environment="longtable")
     return(invisible())
 }
+
+hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
+hasBiomartConnection <- !is(try(biomaRt::listMarts(), silent=TRUE), "try-error")
+
 @ 
 
 \maketitle
@@ -223,7 +228,11 @@ itrack <- IdeogramTrack(genome=gen, chromosome=chr)
 @
 
 <<doIdeogramTrack, echo=FALSE, results=hide>>=
-data(itrack)
+if(hasUcscConnection){
+    itrack <- IdeogramTrack(genome=gen, chromosome=chr)
+}else{
+    data(itrack)
+}
 @
 
 Similar to the previous examples, we stick the additional track object
@@ -540,7 +549,11 @@ plotTracks(ideoTrack, from=85e6, to=129e6)
 @
 
 <<IdeogramTrackClass1Do, fig=TRUE, width=7.5, height=0.5, echo=FALSE, results=hide>>=
-data(itrack)
+if(hasUcscConnection){
+    ideoTrack <- IdeogramTrack(genome="hg19", chromosome="chrX")
+}else{
+    data(itrack)
+}
 plotTracks(ideoTrack, from=85e6, to=129e6)
 @
 
@@ -987,7 +1000,12 @@ biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, e
 plotTracks(biomTrack)
 @ 
 <<BiomartGeneRegionTrackDo, echo=FALSE, results=hide, width=7.5, height=1, fig=TRUE>>=
-data("biomTrack")
+if(hasBiomartConnection){
+    biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
+                                        name="ENSEMBL")
+}else{
+    data("biomTrack")
+}
 plotTracks(biomTrack)
 @ 
 
@@ -1115,7 +1133,7 @@ plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector
            detailsBorder.fill="#FFE3BF", detailsBorder.col="darkred", shape="box", detailsConnector.lty="dotted")
 @ 
 
-<<DetailsAnnotationTrackClassTableSec, echo=FALSE, results=tex, eval=FALSE>>=
+<<DetailsAnnotationTrackClassTableSec, echo=FALSE, results=tex>>=
 addParTable("DetailsAnnotationTrack")
 @ 
 
@@ -1299,7 +1317,7 @@ Now we also want a genome axis and an \Rclass{IdeogramTrack} object to indicate 
 
 <<multPlot2>>=
 mgTrack <- GenomeAxisTrack(scale=0.5, labelPos="below")
-midTrack <- IdeogramTrack(genome="mm9", chromosome="chr1")
+midTrack <- itrack
 @ 
 
 Finaly, we build a layout in which the plots for each chromosome are
@@ -1313,7 +1331,7 @@ grid.newpage()
 pushViewport(viewport(layout=grid.layout(nrows, ncols)))
 for(i in seq_along(chroms)){
     pushViewport(viewport(layout.pos.col=((i-1)%%ncols)+1, layout.pos.row=(((i)-1)%/%ncols)+1))
-    plotTracks(list(midTrack, maTrack, mdTrack, mgTrack), chromosome=chroms[i], add=TRUE)
+    plotTracks(list(itrack, maTrack, mdTrack, mgTrack), chromosome=chroms[i], add=TRUE)
     popViewport(1)
 }
 @ 

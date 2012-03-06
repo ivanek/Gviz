@@ -1049,7 +1049,9 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
 ##----------------------------------------------------------------------------------------------------------------------
 ## (N)
 setClass("IdeogramTrack", contains = "RangeTrack",
+         representation=representation(bandTable="data.frame"),
          prototype=prototype(name="IdeogramTrack",
+                             bandTable=data.frame(),
                              dp=DisplayPars(size=NULL,
                                             col="red",
                                             fill="#FFE3E6",
@@ -1070,6 +1072,7 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, .
         return(callNextMethod(.Object=.Object, range=GRanges(), genome=NULL, chromosome=NULL, ...))
     chromosome <- .chrName(chromosome)[1]
     sessionInfo <- .cacheGenomes(genome=genome)
+    .Object@bandTable <- sessionInfo$bands
     ranges <- sessionInfo$bands[sessionInfo$bands$chrom==chromosome,]
     if(nrow(ranges)==0)
         stop("Chromosome '", chromosome, "' does not exist on UCSC genome '", genome, "'")

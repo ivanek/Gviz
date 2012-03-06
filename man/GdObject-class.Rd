@@ -15,6 +15,8 @@
 \alias{initialize,GdObject-method}
 \alias{names,GdObject-method}
 \alias{names<-,GdObject,character-method}
+\alias{genome<-,GdObject,character-method}
+\alias{chromosome<-,GdObject,character-method}
 \alias{setPar,GdObject,character-method}
 \alias{setPar,GdObject,list-method}
 \alias{coords,GdObject-method}

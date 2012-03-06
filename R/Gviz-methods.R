@@ -80,7 +80,18 @@ setReplaceMethod("chromosome", "RangeTrack", function(GdObject, value){
     return(GdObject)
 })
 setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
-    ## message("Updating chromosome band information")
+    ## We have changed the class definition to include the bands for all chromosomes, but still want the old objects to work
+    chromosome <- .chrName(value[1])
+    if(.hasSlot(GdObject, "bandTable") && chromosome %in% as.character(GdObject@bandTable$chrom))
+    {
+        ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
+        ranges <- GRanges(seqnames=ranges$name, range=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
+                          name=ranges$name, type=ranges$gieStain)
+        GdObject@range <- ranges
+        itrack@chromosome <- chromosome
+        return(GdObject)
+    }
+    message("Updating chromosome band information")
     tmp <- IdeogramTrack(genome=genome(GdObject), chromosome=.chrName(value[1]), name=names(GdObject))
     displayPars(tmp) <- displayPars(GdObject)
     return(tmp)
