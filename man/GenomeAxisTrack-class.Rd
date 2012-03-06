@@ -68,9 +68,9 @@ GenomeAxisTrack(range=NULL, name="Axis", id, ...)
   is always displayed in bp, kb, mb or gb units. Note that most display
   parameters for the \code{GenomeAxisTrack} are ignored when a scale is
   used insterad of the full axis. In particular, only the parameters
-  \code{alpha}, \code{lwd}, \code{col}, \code{cex}, \code{distFromAxis}
-  and \code{labelPos} are used.
-
+  \code{exponent}, \code{alpha}, \code{lwd}, \code{col}, \code{cex},
+  \code{distFromAxis} and \code{labelPos} are used.
+  
 }
 
 

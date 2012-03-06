@@ -1038,9 +1038,9 @@ the \Rclass{DetailsAnnotationTrack} provides a flexible interface to
 further annotate genomic regions with arbitrary additional
 information. This is archived by splitting the
 \Rclass{AnnotationTrack} plotting region into two horizontal sections:
-the lower section containing the range dat in genomic coordinates, and
+the lower section containing the range data in genomic coordinates, and
 the upper one containing the additional data for each of the displayed
-ranges in verticaly tiled panels of equal size. The conenction between
+ranges in verticaly tiled panels of equal size. The connection between
 a range item and its details panel is indicated by connecting
 lines. 
 

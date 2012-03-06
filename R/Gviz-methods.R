@@ -876,7 +876,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         ylim <- ylim+c(-1,1) 
     yscale <- extendrange(r=ylim, f=0.05)
     vpTitleAxis <- viewport(x=0.95, width=0, yscale=yscale, just=0)
-    hSpaceAvail <- vpLocation()$isize["width"]/6
+	hSpaceAvail <- vpLocation()$isize["width"]/6
     pushViewport(vpTitleAxis)
     col <- .dpOrDefault(GdObject, "col.axis", "white")
     acex <- .dpOrDefault(GdObject, "cex.axis", NULL)
@@ -1335,9 +1335,9 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     scaleLen <- .dpOrDefault(GdObject, "scale", NULL)
     if(!is.null(scaleLen))
     {
-        ##browser()
         len <- (maxBase-minBase + 1)
-        if (scaleLen > len) {
+        if(scaleLen>len)
+		{
             warning(paste("scale (", scaleLen,
                           ") cannot be larger than plotted region",
                           len, " - setting to ~5%\n", sep=""))
@@ -1345,31 +1345,35 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
         }
         xoff <- len * 0.03 + minBase
         labelPos <- match.arg(labelPos, c("alternating", "revAlternating", "above", "below", "beside"))
-        v <- scaleLen
-        ## TODO: for consistency acknowledge the 'exponent' argument if not NULL
-        ## currently the exponent for the scale is calculated automatically
-        ex <- floor(log10(scaleLen))
-        u <- paste(scaleLen, "b")
-        if(scaleLen <= 1 && scaleLen > 0) {
-            scaleLen <- len * scaleLen 
-            ex <- floor(log10(scaleLen))
-            u <- paste(round(scaleLen, -ex), "b")
-            ##v <- round(scaleLen, -(ex+round(scaleLen/(10^(ex+1))))) #Êrounds to nearest exponent
-            v <- round(scaleLen, -ex)
-        }
-        if(ex >=9) {
+		if(scaleLen<=1 && scaleLen>0) { # calculate and round the scale 
+			scaleLen <- len * scaleLen
+			ex <- .dpOrDefault(GdObject, "exponent", floor(log10(scaleLen)))
+			v <- round(scaleLen, -ex)
+			if(v==0)  v <- scaleLen
+		} else { # if the scale is an absolute value don't round
+			ex <- .dpOrDefault(GdObject, "exponent", floor(log10(scaleLen)))
+			v <- scaleLen
+		}
+	
+		## work out exponent/unit
+        if(ex==9) {
             u <- paste(v/1e9, "gb")
-        } else if(ex >= 6) {
+        } else if(ex==6) {
             u <- paste(v/1e6, "mb")
-        } else if(ex >= 3) {
+        } else if(ex==3) {
             u <- paste(v/1e3, "kb")
-        }
+        } else if(ex>0)  {
+			u <- bquote(paste(.(v/10^ex), " ",10^.(ex)))
+		} else {
+			u = v
+		}
         grid.lines(x=c(xoff, v+xoff), y=c(0,0), default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
         grid.segments(x0=c(xoff, v+xoff), y0=c(0-tickHeight, 0-tickHeight),
                       x1=c(xoff, v+xoff), y1=c(tickHeight,tickHeight, tickHeight),
                       default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
         z <- len * 0.01
-        if(labelPos=="below"){
+        if(labelPos=="below")
+		{
             grid.text(label=u, x=xoff+v/2, y=0-(tickHeight/1.5*dfact), just=c("center", "top"),
                       gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
         } else if(labelPos=="above"){
