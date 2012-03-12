@@ -1275,9 +1275,12 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
 			.Object <- setCoverage(.Object)
     if(coverageOnly)
     {
-        from <- min(unlist(lapply(.Object@coverage, function(y) if(length(y)) min(start(y)))))
-        to <- max(unlist(lapply(.Object@coverage, function(y) if(length(y)) max(end(y)))))
-        .Object@range <- GRanges(range=IRanges(start=from, end=to), strand="*", seqnames=1:2)
+      ## from <- min(unlist(lapply(.Object@coverage, function(y) if(length(y)) min(start(y)))))
+      ## to <- max(unlist(lapply(.Object@coverage, function(y) if(length(y)) max(end(y)))))
+      from <- min(start(range(.Object)))
+      to <- max(end(range(.Object)))
+        .Object@range <- GRanges(range=IRanges(start=from, end=to),
+                                 strand=names(.Object@coverage), seqnames=.Object@chromosome)
         .Object@coverageOnly <- coverageOnly
     }
     return(.Object)

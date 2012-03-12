@@ -739,6 +739,7 @@ setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, s
         rsel[min(length(x), min(which(rsel))+1)] <- FALSE
     if(any(lsel) || any(rsel))
         x <- x[!(lsel | rsel),]
+
     if(sort)
         x <- x[order(range(x)),]
     return(x)
@@ -837,9 +838,15 @@ setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=N
         if(is.null(to))
             to <- max(unlist(lapply(x@coverage, function(y) if(length(y)) max(start(y)))))
         x@coverage <- lapply(x@coverage, function(y){runValue(y)[end(y)<from | start(y)>to] <- 0; y})
-        from <- min(unlist(lapply(x@coverage, function(y) if(length(y)) head(start(y),2)[2])))
+        x@coverage <- lapply(x@coverage, function(y){ if (length(y) < to) y <- c(y, Rle(0, to-length(y))); y})
+        ## 
+        ##from <- min(unlist(lapply(x@coverage, function(y) if (length(y)) head(start(y), 2)[2])))
+        if (max(unlist(lapply(x@coverage, function(y) {length(runLength(y)[runValue(y)!=0])}))))
+        {
+        from <- min(unlist(lapply(x@coverage, function(y) if(length(y)) head(start(y)[runValue(y)!=0],1))))
         to <- max(unlist(lapply(x@coverage, function(y) if(length(y)) tail(end(y),2)[1])))
-        x@range <- GRanges(range=IRanges(start=from, end=to), strand="*", seqnames=1:2)
+        }
+        x@range <- GRanges(range=IRanges(start=from, end=to), strand=names(x@coverage), seqnames=x@chromosome)
     }else{
         x <- callNextMethod(x=x, from=from, to=to, sort=sort, stacks=stacks)
     }
@@ -2040,19 +2047,19 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     radv <- rad / if(loc["width"] < loc["height"]) c(1,loc[2]/loc[1]) else c(loc[1]/loc[2],1)
     if(subset)
         GdObject <- subset(GdObject, from=minBase, to=maxBase)
-    if(!length(GdObject))
+    ## If type is 'coverage' all we need to do is compute a coverage vector, create dummy DataTracks and pass everything on
+    if(detail=="coverage")
     {
-        ## No reads, but we still need the strand separator
+      if (!any(unlist(lapply(GdObject@coverage, function(y) runValue(y)!=0))))
+        {
+        ## Nothing there, but we still need the strand separator
         panel.abline(h=0.5, col="lightgray", lwd=2)
         grid.circle(xx, c(0.25, 0.75), rad, gp=gpar(fill="lightgray", col="lightgray"))
         grid.segments(c(rep(xx-radv[1]+(radv[1]/2),2), xx), c(0.25, 0.75, 0.75-(radv[2]/2)),
                       c(rep(xx+radv[1]-(radv[1]/2),2), xx), c(0.25, 0.75, 0.75+radv[2]/2),
                       gp=gpar(col="white", lwd=2, lineend="square"), default.units="native")
         return(invisible(GdObject))
-    }
-    ## If type is 'coverage' all we need to do is compute a coverage vector, create dummy DataTracks and pass everything on
-    if(detail=="coverage")
-    {
+      } else {
         ## We want to distinguish between strands, so an extra spitting step is needed for this to work
         val <- c(0, max(unlist(sapply(c("+", "-"), function(x) if(length(coverage(GdObject, strand=x)))
                                max(coverage(GdObject, strand=x)) else NULL))))
@@ -2064,7 +2071,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
         {
             cov <- coverage(GdObject, strand=s)
             pushViewport(viewport(height=0.5, y=ifelse(s=="-", 0, 0.5), just=c("center", "bottom")))
-            sel <- suppressWarnings(runValue(cov)>0)
+            sel <- suppressWarnings(runValue(cov)!=0) #changed from >
             dtr <- if(any(sel)) DataTrack(start=start(cov)[sel], end=end(cov)[sel], data=runValue(cov)[sel],
                                           name=names(GdObject), genome=genome(GdObject), chromosome=chromosome(GdObject)) else
             DataTrack(name=names(GdObject), genome=genome(GdObject), chromosome=chromosome(GdObject))
@@ -2080,9 +2087,20 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
                       c(rep(xx+radv[1]-(radv[1]/2),2), xx), c(0.25, 0.75, 0.75+radv[2]/2),
                       gp=gpar(col="white", lwd=2, lineend="square"), default.units="native")
         return(invisible(GdObject))
+      }
     }
     if(detail=="reads")
     {
+        if(!length(GdObject))
+        {
+            ## No reads, but we still need the strand separator
+            panel.abline(h=0.5, col="lightgray", lwd=2)
+            grid.circle(xx, c(0.25, 0.75), rad, gp=gpar(fill="lightgray", col="lightgray"))
+            grid.segments(c(rep(xx-radv[1]+(radv[1]/2),2), xx), c(0.25, 0.75, 0.75-(radv[2]/2)),
+                          c(rep(xx+radv[1]-(radv[1]/2),2), xx), c(0.25, 0.75, 0.75+radv[2]/2),
+                          gp=gpar(col="white", lwd=2, lineend="square"), default.units="native")
+            return(invisible(GdObject))
+        } else {  
         if(GdObject@coverageOnly){
             pushViewport(viewport())
             grid.text("Coverage information only for this object.\nUnable to plot read details.",
@@ -2136,6 +2154,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
                       c(rep(xx+radv[1]-(radv[1]/2),2), xx), c(recMid, recMid[2]+radv[2]/2),
                       gp=gpar(col="white", lwd=2, lineend="square"), default.units="native")
         popViewport(1)
+      }
     }
     return(invisible(GdObject))
 })
