@@ -440,7 +440,7 @@ name="DataTrack", ...)
       
       \describe{
   
-	\item{}{\code{GenomeGraphs:::collapseTrack(obj)}}
+	\item{}{\code{Gviz:::collapseTrack(obj)}}
   
       }
     }
@@ -482,11 +482,11 @@ name="DataTrack", ...)
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj)}}
+	\item{}{\code{Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -514,7 +514,7 @@ name="DataTrack", ...)
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::drawAxis(obj)}}
+      	\item{}{\code{Gviz:::drawAxis(obj)}}
 	
       }
     }
@@ -552,7 +552,7 @@ name="DataTrack", ...)
       
       \describe{
 
-	\item{}{\code{GenomeGraphs:::drawGrid(obj)}}
+	\item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }

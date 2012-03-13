@@ -555,7 +555,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       
       \describe{
   
-	\item{}{\code{GenomeGraphs:::collapseTrack(obj)}}
+	\item{}{\code{Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -609,11 +609,11 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj)}}
+	\item{}{\code{Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -640,7 +640,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::drawGrid(obj, from=10, to=100)}}
+      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
 	
       }
     }
@@ -668,7 +668,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::setStacks(obj, from=1, to=100)}}
+      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -725,7 +725,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::stacks(obj)}}
+      	\item{}{\code{Gviz:::stacks(obj)}}
 	
       }
     }

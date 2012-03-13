@@ -344,7 +344,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
   
-	\item{}{\code{GenomeGraphs:::collapseTrack(obj)}}
+	\item{}{\code{Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -591,7 +591,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawAxis(obj)}}
+	\item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -618,7 +618,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       
       \describe{
 
-	\item{}{\code{GenomeGraphs:::drawGrid(obj)}}
+	\item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }

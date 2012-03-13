@@ -334,7 +334,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::drawAxis(obj)}}
+      	\item{}{\code{Gviz:::drawAxis(obj)}}
 	
       }
     }
@@ -376,11 +376,11 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj)}}
+	\item{}{\code{Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -406,7 +406,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::drawGrid(obj, from=10, to=100)}}
+      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
 	
       }
     }
@@ -487,7 +487,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::setStacks(obj)}}
+      	\item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
@@ -503,7 +503,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::stacks(obj)}}
+      	\item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }

@@ -42,7 +42,7 @@
 
 \description{
 
-  The virtual parent class for all track items in the GenomeGraphs
+  The virtual parent class for all track items in the Gviz
   package that contain some form of genomic ranges.
   
 }
@@ -795,7 +795,7 @@
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawAxis(obj)}}
+	\item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -822,7 +822,7 @@
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGrid(obj)}}
+	\item{}{\code{Gviz:::drawGrid(obj)}}
 	
       }
     }

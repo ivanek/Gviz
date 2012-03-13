@@ -77,6 +77,11 @@ IdeogramTrack(chromosome, genome, name=.chrName(chromosome)[1], ...)
       inherited from class \code{\linkS4class{StackedTrack}} containing
       the chromosome band information. This slot is filled automatically
       by the initializer method.}
+    
+    \item{\code{bandTable}:}{Object of
+    class\code{\linkS4class{data.frame}} containing the chromosome band
+    information in the format of UCSC. This slot is filled automatically
+    by the initializer.}
 
     \item{\code{chromosome}:}{Object of class \code{"character"},
       inherited from class \code{\linkS4class{StackedTrack}} defining
@@ -326,11 +331,11 @@ IdeogramTrack(chromosome, genome, name=.chrName(chromosome)[1], ...)
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj)}}
+	\item{}{\code{Gviz:::drawGD(obj)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, minBase=1, maxBase=100)}}
+	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=TRUE,
+	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
 	
       }
@@ -804,7 +809,7 @@ IdeogramTrack(chromosome, genome, name=.chrName(chromosome)[1], ...)
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawAxis(obj)}}
+	\item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -831,7 +836,7 @@ IdeogramTrack(chromosome, genome, name=.chrName(chromosome)[1], ...)
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGrid(obj)}}
+	\item{}{\code{Gviz:::drawGrid(obj)}}
 	
       }
     }

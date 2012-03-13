@@ -15,8 +15,8 @@
 \alias{initialize,GdObject-method}
 \alias{names,GdObject-method}
 \alias{names<-,GdObject,character-method}
-\alias{genome<-,GdObject,character-method}
-\alias{chromosome<-,GdObject,character-method}
+\alias{genome<-,GdObject-method}
+\alias{chromosome<-,GdObject-method}
 \alias{setPar,GdObject,character-method}
 \alias{setPar,GdObject,list-method}
 \alias{coords,GdObject-method}
@@ -32,7 +32,7 @@
 
 \description{
   
-  The virtual parent class for all track items in the GenomeGraphs
+  The virtual parent class for all track items in the Gviz
   package.  This class definition contains all the common entities that
   are needed for a track to be plotted. During object instantiation for
   any of the sub-classes inheriting from \code{GdObject}, this class'
@@ -342,7 +342,7 @@
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawAxis(obj)}}
+	\item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -369,7 +369,7 @@
       
       \describe{
 
-	\item{}{\code{GenomeGraphs:::drawGrid(obj)}}
+	\item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }

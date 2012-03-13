@@ -18,7 +18,7 @@
 
 \description{
   
-  The virtual parent class for all track types in the GenomeGraphs
+  The virtual parent class for all track types in the Gviz
   package which contain potentially overlapping annotation items that
   have to be stacked when plotted.
 
@@ -169,7 +169,7 @@
       
       \describe{
 	
-	\item{}{\code{GenomeGraphs:::drawGD(obj, prepare=FALSE)}}
+	\item{}{\code{Gviz:::drawGD(obj, prepare=FALSE)}}
 	  
       }
     }
@@ -196,7 +196,7 @@
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::setStacks(obj)}}
+      	\item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
@@ -212,7 +212,7 @@
       
       \describe{
 	
-      	\item{}{\code{GenomeGraphs:::stacks(obj)}}
+      	\item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }
