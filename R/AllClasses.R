@@ -13,6 +13,7 @@ setClassUnion("DfOrNULL", c("data.frame", "NULL"))
 setClassUnion("MartOrNULL", c("Mart", "NULL"))
 setClassUnion("FactorOrCharacterOrNULL", c("factor", "character", "NULL"))
 setClassUnion("NumericOrNULL", c("numeric", "NULL"))
+setClassUnion("ListOrEnv", c("list", "environment"))
 setClassUnion("GRangesOrIRanges", c("GRanges", "IRanges"))
 setClassUnion("NULLOrMissing", c("NULL", "missing"))
 ##----------------------------------------------------------------------------------------------------------------------
@@ -66,11 +67,13 @@ setClassUnion("ImageMapOrNULL", c("ImageMap", "NULL"))
 ##
 ## A class to control the plotting parameters for GdObjects
 ## Slots :
-##    o pars: an environment containing parameter key value pairs
-##       The class uses pass by reference semantic, allowing to update the object
-##       without reassigning to a symbol.
+##    o pars: an environment or a list containing parameter key value pairs
+##       The initial idea was for the class to uses pass by reference semantic, allowing to update the object
+##       without reassigning to a symbol. However this turned out to be problematic whenever a GdObject was
+##       copied and to avoid confusion with the users about unwanted side-effects we decided to deprecate this
+##       feature.
 ##----------------------------------------------------------------------------------------------------------------------
-setClass("DisplayPars", representation(pars="environment"))
+setClass("DisplayPars", representation(pars="ListOrEnv"))
 
 ## The initializer needs to create the environment, we can't take this
 ## directly from the class prototype since this would result in using
@@ -81,9 +84,7 @@ setMethod("initialize", "DisplayPars", function(.Object, ...) {
   n <- names(args)
   if(any(n == ""))
     stop("All supplied arguments must be named.")
-  for(i in seq_along(args))
-    assign(names(args)[i], args[[i]], e)
-  .Object@pars <- e
+  .Object@pars <- args
   return(.Object)
 })
 
@@ -93,41 +94,62 @@ DisplayPars <- function(...)
   return(new("DisplayPars", ...))
 }
 
+## Update function and deprecation message to show that an old environment-based
+## DisplayParameter object has been updated to a list-based object.
+.updateDp <- function(x, interactive=TRUE)
+{
+    if(interactive)
+        message("Note that the behaviour of the 'setPar' method has changed. You need to reassign the result to an ",
+                "object for the side effects to happen. Pass-by-reference semantic is no longer supported.")
+    if(class(x@pars)=="environment")
+    {
+        x@pars <- as.list(x@pars) 
+        message("The DisplayPars object has been updated to a list-based representation.")
+    }
+    return(x)
+}
+
 ## The accessor methods for the DisplayPars class. (they need to be in
 ## here because they are being called in the prototypes). For the
 ## setter method, the input can either be a named list, or a single
-## keyword/value pair. Since the DisplayPars class is implemented as
-## an environment, we essentially get pass by reference semantic here,
-## and the object can be modified without the need to reassign to a
-## symbol. For consitancy with the R paradigm, 'setPar' still returns
-## the modified object, and a standard 'DisplayPars<-' replacement
-## method is also defined. The getter methods either return the list
+## keyword/value pair. The DisplayPars class was first implemented as
+## an environment, so we essentially had pass by reference semantic here,
+## and the object could be modified without the need to reassign to a
+## symbol. However this somewhat broke the the R paradigm, and 'setPar'
+## has been deprecated in favour of the more standard 'DisplayPars<-'
+## replacement method. The getter methods either return the list
 ## of all parameters, or a subset of parameters if their names are
 ## provided as a character vector.  Please note that for convenience
 ## the result is unlisted if only a single parameter is queried.
 setMethod("setPar", signature("DisplayPars", "list"), 
-          function(x, value) {
-            for(i in seq_along(value))
-              assign(names(value)[i], value[[i]], x@pars)
-            return(invisible(x))
+          function(x, value, interactive=TRUE) {
+              x <- .updateDp(x, interactive)
+              x@pars[names(value)] <- value
+              return(x)
           })
 
 setMethod("setPar", signature("DisplayPars", "character"), 
-          function(x, name, value) {
-            x@pars[[name]] <- value
-            return(invisible(x))
+          function(x, name, value, interactive=TRUE) {
+              x <- .updateDp(x, interactive)
+              x@pars[[name]] <- value
+              return(x)
           })
 
 setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, value) {
-  x <- setPar(x, value)
+  x <- setPar(x, value, interactive=FALSE)
   return(x)
 })
 
 setMethod("getPar", c("DisplayPars", "character"),
-          function(x, name)
-          {
-            name <- intersect(name, ls(x@pars, all.names=TRUE))
-            tmp <- mget(name, x@pars)
+          function(x, name){
+              if(class(x@pars)=="environment")
+              {
+                  name <- intersect(name, ls(x@pars, all.names=TRUE))
+                  tmp <- mget(name, x@pars)
+              }else{
+                  name <- intersect(name, names(x@pars))
+                  tmp <- x@pars[name]
+              }
             tmp <- if(is.list(tmp) && length(tmp)==1) tmp[[1]] else tmp
             return(if(length(tmp)) tmp else NULL)
           })
@@ -252,19 +274,21 @@ setClass("GdObject",
 
 ## We need to set and query DisplayPars in the the initializer, hence
 ## the appropriate methods have to be defined here first.
-setMethod("setPar", signature("GdObject", "character"), function(x, name, value) {
-  setPar(x@dp, name, value)
-  return(x)
+setMethod("setPar", signature("GdObject", "character"), function(x, name, value, interactive=TRUE) {
+    newDp <- setPar(x@dp, name, value, interactive=interactive)
+    x@dp <- newDp
+    return(x)
 })
 
-setMethod("setPar", signature("GdObject", "list"), function(x, value) {
-  setPar(x@dp, value)
-  return(x)
+setMethod("setPar", signature("GdObject", "list"), function(x, value, interactive=TRUE) {
+    newDp <- setPar(x@dp, value, interactive=interactive)
+    x@dp <- newDp
+    return(x)
 })
 
 setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, value) {
-  x <- setPar(x, value)
-  return(x)
+    x <- setPar(x, value, interactive=FALSE)
+    return(x)
 })
 
 setMethod("getPar", c("GdObject", "character"), function(x, name) getPar(x@dp, name))		 
@@ -286,11 +310,11 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
     ## now rebuild the slot to get a new environment 
     pars <- getPar(.Object)
     .Object@dp <- DisplayPars()
-    setPar(.Object, pars)
+    .Object <- setPar(.Object, pars, interactive=FALSE)
     if(!missing(name))
     .Object@name <- if(is.null(name)) "" else name
     ## Finally clobber up everything that's left
-    setPar(.Object, list(...))
+    .Object <- setPar(.Object, list(...), interactive=FALSE)
     return(.Object)
 })
 ##----------------------------------------------------------------------------------------------------------------------
@@ -462,7 +486,8 @@ setClass("AnnotationTrack",
                                             showFeatureId=FALSE,
                                             shape="arrow",
                                             rotation=0,
-                                            showOverplotting=FALSE)))
+                                            showOverplotting=FALSE,
+                                            mergeGroups=FALSE)))
                                            
 ## Essentially we just check for the correct GRanges columns here
 setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
@@ -594,17 +619,19 @@ setClass("GeneRegionTrack",
                              dp=DisplayPars(fill="orange",
                                             geneSymbols=TRUE,
                                             showExonId=FALSE,
+                                            collapseTranscripts=FALSE,
                                             shape=c("smallArrow", "box"))))
                                            
 
 ## Making sure all the display parameter defaults are being set
-setMethod("initialize", "GeneRegionTrack", function(.Object, ...){
+setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...){
     if(is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome))
         return(.Object)
     ## the diplay parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "GeneRegionTrack")
-    ##.Object <- callNextMethod(.Object=.Object, ...)
+    .Object@start <- start
+    .Object@end <- end
     .Object <- callNextMethod()
     return(.Object)
 })
@@ -641,9 +668,9 @@ GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, 
                          defaults=list(feature="unknown", id=NULL, exon=NULL, transcript=NULL, gene=NULL,
                                    symbol=NULL, strand=strand, density=1), chromosome=chromosome)
     if(missing(start))
-        start <- if(!length(range)) NULL else min(stats::start(range))
+        start <- if(!length(range)) NULL else min(IRanges::start(range))
     if(missing(end))
-        end <- if(!length(range)) NULL else max(stats::end(range))
+        end <- if(!length(range)) NULL else max(IRanges::end(range))
     new("GeneRegionTrack", start=start, end=end, chromosome=chromosome, range=range,
         name=name, genome=genome, stacking=stacking, ...)
 }
@@ -711,7 +738,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
     .Object <- .updatePars(.Object, "BiomartGeneRegionTrack")
     if(missing(start) || missing(end))
     {
-        setPar(.Object, "size", 0)
+        .Object <- setPar(.Object, "size", 0, interactive=FALSE)
         return(.Object)
                                         #return(callNextMethod(.Object=.Object, range=GRanges(), ...))
     }
@@ -749,7 +776,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                          rank=as.numeric(ens$rank))
     }
     if(length(range)==0)
-        setPar(.Object, "size", 0)
+        .Object <- setPar(.Object, "size", 0, interactive=FALSE)
     .Object <- callNextMethod(.Object=.Object, range=range, ...)
     return(.Object)
 })

@@ -1288,7 +1288,11 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
       This implies that \code{collapse==TRUE}} 
 
     \item{}{\code{size=1}: Numeric scalar. The relative size of the
-      track. Can be overridden in the \code{\link{plotTracks}} function.} 
+      track. Can be overridden in the \code{\link{plotTracks}}
+      function.} 
+
+    \item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
+      overlapping groups if \code{collapse==TRUE}.}
 
   } 
 

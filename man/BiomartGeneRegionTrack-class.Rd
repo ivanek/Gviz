@@ -1321,7 +1321,10 @@ genome=NULL, stacking="squish", filters=list(), name="BiomartGeneRegionTrack", .
           are implemented.} 
 
         \item{}{\code{showExonId=FALSE}: Logical scalar. Control whether
-          to plot the individual exon identifiers.} 
+          to plot the individual exon identifiers.}
+
+	\item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
+	  overlapping groups if \code{collapse==TRUE}.}
 
       } 
 
@@ -1388,7 +1391,10 @@ genome=NULL, stacking="squish", filters=list(), name="BiomartGeneRegionTrack", .
 
         \item{}{\code{size=1}: Numeric scalar. The relative size of
           the track. Can be overridden in the \code{\link{plotTracks}}
-          function.} 
+          function.}
+
+	\item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
+	  overlapping groups if \code{collapse==TRUE}.}
 
       } 
 

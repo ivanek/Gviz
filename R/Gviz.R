@@ -299,7 +299,8 @@
     ## First everything that is still a box
     osel <- abs(B[,1]-A[,1]) < min.width | !strand %in% c("+", "-")
     xx <-  c(A[osel,1], B[osel,1], B[osel,1], A[osel,1])
-    offset <-  ifelse(strand[osel] %in% c("+", "-"), (abs(B[osel,2]-A[osel,2])*H/2), 0)
+    ##offset <-  ifelse(strand[osel] %in% c("+", "-"), (abs(B[osel,2]-A[osel,2])*H/2), 0)
+    offset <- (abs(B[osel,2]-A[osel,2])*H/2)
     yy <- c(rep(A[osel,2]+offset, 2), rep(B[osel,2]-offset, 2))
     id <- rep(seq_len(sum(osel)), 4)
     pars <- data.frame(fill=fill, col=col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[osel,]
@@ -382,7 +383,7 @@
           if(!is.null(fx1) && length(fx1))
               grid.segments(fx1, fy1, fx2, fy2, default.units="native", gp=gpar(col=scol, lwd=lwd, lty=lty, alpha=alpha))
       }
-      grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha))
+      grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
   }
 
 
@@ -586,7 +587,7 @@
 .resize <- function(r, min.width=2, diff=.pxResolution(coord="x"))
 {
     if(min.width>0){
-        minXDiff <- min.width*diff
+        minXDiff <- ceiling(min.width*diff)
         ## Extend all ranges to at least minXDiff
         xdiff <- width(r)
         xsel <- xdiff < minXDiff
@@ -780,21 +781,10 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
 {
     if(!is.list(trackList))
         trackList <- list(trackList)
-    ## We want to gobble up everything in ... as potential gpars, however only in the scope of this function, and
-    ## since gpars are stored in an environment we need to copy it here.
-    trackList <- lapply(trackList, function(x){
-        oldPars <- displayPars(x)
-        x@dp@pars <- new.env()
-        displayPars(x) <- oldPars
-        displayPars(x) <- list(...)
-        st <- displayPars(x, "stacking")
-        if(!is.null(st) && is(x, "stackedTrack"))
-            stacking(x) <- st
-        if(!is.null(chromosome))
-            chromosome(x) <- chromosome
-        return(x)
-    })
-    ## If no ranges are given we take the absolute min/max of all tracks
+    ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
+    ## size, resolution or plotting ranges
+    trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, ...)
+    ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
     if(!panel.only && !add)
         grid.newpage()
     ranges <- .defaultRange(trackList, from=from, to=to, extend.left=extend.left, extend.right=extend.right, annotation=TRUE)
@@ -803,7 +793,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     map <- vector(mode="list", length=length(trackList))
     titleCoords <- NULL
     names(map) <- rev(sapply(trackList, names))
-    ## Now we can subset all the objects in the list to the current boundaries and recompute the stacking
+    ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
     trackList <- lapply(trackList, subset, from=ranges["from"], to=ranges["to"])
     trackList <- lapply(trackList, setStacks, from=ranges["from"], to=ranges["to"])
     ## Open a fresh page and set up the bounding box, unless add==TRUE

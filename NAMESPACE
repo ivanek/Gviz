@@ -13,7 +13,9 @@ importClassesFrom(IRanges, IRanges, GroupedIRanges, NormalIRanges)
 
 importClassesFrom(methods, ANY, character, className, data.frame, environment,
                   integer, list, logical, matrix, missing, "NULL", ".NULL",
-                  numeric, ObjectsWithPackage, ordered, signature)
+                  numeric, ObjectsWithPackage, ordered, signature, namedList,
+                  listOfMethods, ".environment", sourceEnvironment, envRefClass,
+                  refObjectGenerator)
 
 importClassesFrom(rtracklayer, UCSCData)
 
@@ -35,7 +37,7 @@ importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   Rle, rownames, "rownames<-", runmean, runValue, "runValue<-",
                   score, sort, split, start, "start<-", sub, subjectHits,
                   substring, t, tolower, unlist, values, "values<-", which,
-                  which.max, width, "width<-")
+                  which.max, width, "width<-", elementMetadata, endoapply)
 
 importMethodsFrom(methods, coerce, initialize, show)
 

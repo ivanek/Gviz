@@ -37,6 +37,7 @@ setGeneric("coords",  function(ImageMap, ...) standardGeneric("coords"))
 setGeneric("tags",  function(ImageMap, ...) standardGeneric("tags"))
 
 ## Prepare tracks for plotting
+setGeneric("consolidateTrack", function(GdObject, ...) standardGeneric("consolidateTrack"))
 setGeneric("collapseTrack", function(GdObject, ...) standardGeneric("collapseTrack"))
 setGeneric("stacking", function(GdObject, ...) standardGeneric("stacking"))
 setGeneric("stacking<-", function(GdObject, value) standardGeneric("stacking<-"))

@@ -1317,7 +1317,7 @@ Now we also want a genome axis and an \Rclass{IdeogramTrack} object to indicate 
 
 <<multPlot2>>=
 mgTrack <- GenomeAxisTrack(scale=0.5, labelPos="below")
-midTrack <- itrack
+chromosome(itrack) <- "chr1"
 @ 
 
 Finaly, we build a layout in which the plots for each chromosome are

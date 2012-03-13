@@ -88,7 +88,7 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
         ranges <- GRanges(seqnames=ranges$name, range=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
                           name=ranges$name, type=ranges$gieStain)
         GdObject@range <- ranges
-        itrack@chromosome <- chromosome
+        GdObject@chromosome <- chromosome
         return(GdObject)
     }
     message("Updating chromosome band information")
@@ -283,7 +283,7 @@ setReplaceMethod("stacking", c("StackedTrack", "character"),
                      pt <- getClass("StackedTrack")@prototype
                      if(!all(value %in% pt@stackingValues))
                          stop("Problem initializing StackedTrack,  need the following values for 'stacking':",
-                              paste(pt@stackingValues, collapase=", "), "\n")
+                              paste(pt@stackingValues, collapse=", "), "\n")
                      GdObject@stacking <- value
                      displayPars(GdObject) <- list(stacking=value)
                      return(GdObject)
@@ -298,14 +298,13 @@ setReplaceMethod("stacking", c("StackedTrack", "character"),
 ## can be dependent on the available space (if feature annotation is added) we need to be able to recompute this before
 ## we start the actual plotting. For the different sub-classes of StackedTracks we need different behaviour of setStacks:
 ##   o StackedTrack: there are no groups, so each feature can be treated separately
-##   o AnnotationTrack: features can be grouped, in which case we have to avoid overlapping of the whole group region,
-##      i.e, from the start of the first group item to the end of the last
-##   o GeneRegionTrack: in addition to grouping (in this case transcripts) we have to factor in additional space before
-##      each group if transcript annotation is enabled (gpar showId==TRUE). To do so we need to figure out the current
+##   o AnnotationTrack and GeneRegionTrack: features can be grouped, in which case we have to avoid overlapping of the whole group region,
+##      i.e, from the start of the first group item to the end of the last. In addition to grouping we have to factor in additional space
+##      before each group if group/transcript annotation is enabled (gpar showId==TRUE). To do so we need to figure out the current
 ##      fontsize on the device, which means that a device already has to be open and the appropriate viewport has been
 ##      pushed to the stack. Hence we have to call setStacks immediately before the actual plotting.
-## stacks should return a vector of stacks, where each factor level of the vector indicates membeship
-## to a particular stacking level.
+## 'stacks' should return a vector of stacks, where each factor level of the vector indicates membeship
+## to a particular stacking level. 'setStacks' returns the updated GdObject.
 ##----------------------------------------------------------------------------------------------------------------------------
 setMethod("stacks", "StackedTrack", 
           function(GdObject) if(length(GdObject@stacks)) GdObject@stacks else NULL)
@@ -321,22 +320,23 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, from, to) {
     {
         bins <- rep(1, length(GdObject))
     } else {
-        ids <- identifier(GdObject, FALSE)
-        hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & ids!=""
-        uid <- make.unique(identifier(GdObject, lowest=TRUE))
+        uid <- if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE))
+            sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, lowest=TRUE))
         gp <- group(GdObject)
         needsGrp <- any(duplicated(gp))
-        if(needsGrp){
-            groups <- split(range(GdObject), gp)
-            uidSplit <- split(uid, gp)
-            ## FIXME: This is the rate-limitting step (about 60% of the time spent for the whole track plotting), would be nice to speed this up somehow...
-            groupRanges <- sapply(groups, function(x) c(from=min(start(x)), to=max(end(x)), len=length(x)))
+        gRanges <- if(!length(gp)){
+            IRanges()
+        }else{
+            if(needsGrp){
+                groups <- split(range(GdObject), gp)
+                uidSplit <- split(uid, gp)
+                unlist(range(groups))
+            }else{
+                range(GdObject)
+            }
         }
-        if(any(hasAnno))
+        if(.dpOrDefault(GdObject, "__hasAnno", FALSE))
         {
-            txt <- paste(ids, " ")
-            txt[!hasAnno] <- ""
-            identifier(GdObject) <- txt
             cex <- .dpOrDefault(GdObject, "cex", 1) * .dpOrDefault(GdObject, "cex.symbol", 0.7)
             fontfamily <- .dpOrDefault(GdObject, "fontfamily", 1)
             fontsize <- .dpOrDefault(GdObject, "fontsize", 12)
@@ -345,20 +345,14 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, from, to) {
                                       gp=gpar(cex=cex, fontfamily=fontfamily, fonface=fontface, fontsize=fontsize)))
             if(needsGrp)
             {
-                ids <- sapply(split(identifier(GdObject), gp), function(x) x[1])
-                gRanges <- IRanges(start=groupRanges["from",]-(as.numeric(convertWidth(stringWidth(ids),"native"))*1.3),
-                                   end=groupRanges["to",], names=names(groups))
+                ids <- sapply(split(identifier(GdObject), gp), head, 1)
+                start(gRanges) <- start(gRanges)-(as.numeric(convertWidth(stringWidth(ids),"native"))*1.3)
             } else {
-                gRanges <- range(GdObject)
                 start(gRanges) <- start(gRanges)-(as.numeric(convertWidth(stringWidth(identifier(GdObject)),"native"))*1.3)
             }
             popViewport(1)
-        } else {
-            gRanges <- if(needsGrp){ if(length(groups)) IRanges(start=groupRanges["from",], end=groupRanges["to",],
-                                                                names=names(groups)) else IRanges() } else {
-                                                                    range(GdObject)}
-        }
-        bins <- if(needsGrp) rep(disjointBins(gRanges), groupRanges["len",]) else disjointBins(gRanges)
+        } 
+        bins <- if(needsGrp) rep(disjointBins(gRanges), sapply(groups, length)) else disjointBins(gRanges)
         names(bins) <- if(needsGrp) unlist(uidSplit) else uid
         bins <- bins[uid]
     }
@@ -406,23 +400,58 @@ setMethod("score", signature("DataTrack"), function(x, from=NULL, to=NULL, sort=
 
 
 
-smartCollapse <- function(GdObject)
-{
-    collapse <- .dpOrDefault(GdObject, "collapse", TRUE)
-    min.width <- .dpOrDefault(GdObject, "min.width", 2)
-    min.distance <- .dpOrDefault(GdObject, "min.distance", 2)
-    diff <- .pxResolution(coord="x")
-    r <- ranges(GdObject)
-    r <- .resize(r, min.width, diff)
-    cv <- coverage(r)[[chromosome(GdObject)]]
-    dt <- DataTrack(start=start(cv), end=end(cv), data=runValue(cv), chromosome=chromosome(GdObject),
-                    genome=genome(GdObject), name=names(GdObject))
-}
+##----------------------------------------------------------------------------------------------------------------------------
+## Before starting of the plotting operation there are a bunch of housekeeping task that should be performed on each
+## track, and the mileage may vary between track types, hence we add a layer of abstraction here by using a method.
+## Available arguments are:
+##    o GdObject: the input track object
+##    o chromosome: the currently active chromosome which may have to set for a RangeTrack object
+##    o ...: additional arguments that are considered to be display parameters
+##----------------------------------------------------------------------------------------------------------------------------
+## For all track types we want to update the display parameters
+setMethod("consolidateTrack", signature(GdObject="GdObject"),
+          function(GdObject, ...) {
+              pars <- list(...)
+              pars <- pars[names(pars)!=""]
+              displayPars(GdObject) <- pars
+              return(GdObject)
+          })
+## For RangeTracks we want to set the chromosome
+setMethod("consolidateTrack", signature(GdObject="RangeTrack"),
+          function(GdObject, chromosome, ...) {
+              if(!is.null(chromosome))
+                  chromosome(GdObject) <- chromosome
+              GdObject <- callNextMethod()
+              return(GdObject)
+          })
+## For StackedTracks we want to set the stacking (which could have been passed in as a display parameter)
+setMethod("consolidateTrack", signature(GdObject="StackedTrack"),
+          function(GdObject, ...) {
+              GdObject <- callNextMethod()
+              st <- displayPars(GdObject, "stacking")
+              if(!is.null(st))
+                  stacking(GdObject) <- st
+              return(GdObject)
+          })
+## For AnnotationTracks we need to add some spacing between the group lables and the terminal group items
+setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"),
+          function(GdObject, ...) {
+              GdObject <- callNextMethod()
+              ids <- identifier(GdObject)
+              hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & !all(ids=="")
+              displayPars(GdObject) <- list("__hasAnno"=hasAnno)
+              if(any(hasAnno)) {
+                  txt <- paste(ids, " ")
+                  txt[!hasAnno] <- ""
+                  identifier(GdObject) <- txt
+              }
+              return(GdObject)
+          })
+##----------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
+              
+##----------------------------------------------------------------------------------------------------------------------------
 ## There is a natural limit of what can be plotted as individual features caused by the maximum resolution of the device.
 ## Essentially no object can be smaller than the equivalent of a single pixel on the screen or whatever a pixel corresponds
 ## to on other devices.
@@ -433,97 +462,162 @@ smartCollapse <- function(GdObject)
 ## objects can be modified to whatever is desired. Please note that this method is called after the drawing viewport has been
 ## pushed, and hence all the coordinate systems are already in place.
 ## Available arguments are:
-##    o GdObject: the input GeneRegionTrack track object
+##    o GdObject: the input AnnotationTrack or GeneRegionTrack track object
 ##    o min.width: the minimum width in pixel, everything that's smaller will be expanded to this size.
 ##    o min.distance: the minimum distance between two features in pixels below which to start collapsing track items.
 ##    o collapse: logical, collapse overlapping items into a single meta-item.
 ##    o diff: the equivalent of 1 pixel in the native coordinate system.
 ##    o xrange: the data range on the x axis. Can be used for some preliminary subsetting to speed things up
 ##----------------------------------------------------------------------------------------------------------------------------
+## A slightly quicker function to compute overlaps between two GRanges objects
+.myFindOverlaps <- function(gr1, gr2)
+{
+    gr1 <- sort(gr1)
+    gr2 <- sort(gr2)
+    gr1 <- split(gr1, seqnames(gr1))
+    gr2 <-split(gr2, seqnames(gr2))
+    queryHits(findOverlaps(ranges(gr1), ranges(gr2)))
+}
+## Find all elements in a GRanges object 'grange' width distance smaller than 'minXDist' and merge them along with their additional
+## elementMetadata. 'elements' is a frequency table of items per group, and it is needed to figure out whether all items of a given
+## group have been merged. 'GdObject' is the input tack object from which certain information has to be extracted. The output of this
+## function is a list with elements
+##   o range: the updated GRanges object
+##   o needsRestacking: logical flag indicating whether stacks have to be recomputed
+##   o split: the original merged annotation (need to workon this, currently not needed)
+##   o merged: logical vector indicating which of the elements in 'range' constitute fully merged groups 
+.collapseAnnotation <- function(grange, minXDist, elements, GdObject)
+{
+    needsRestacking <- FALSE
+    annoSplit <- merged <- NULL
+    anno <- as.data.frame(grange)
+    cols <- c("strand", "density", "gdensity", "feature", "id", "start", "end", if(class(GdObject)=="GeneRegionTrack")
+              c("gene", "exon", "transcript", "symbol", "rank") else "group")
+    missing <- which(!cols %in% colnames(anno))
+    for(i in missing)
+        anno[,cols[missing]] <- if(cols[i]=="density") 1 else NA
+    if(minXDist<1)
+    {
+        ## We have to fake smaller ranges because reduce will merge also neigbouring ranges
+        width(grange) <- width(grange)-1
+        rRed <- reduce(grange, min.gapwidth=minXDist)
+        width(rRed) <- width(rRed)+1
+        width(grange) <- width(grange)+1
+    } else {
+        rRed <- reduce(grange, min.gapwidth=minXDist)
+    }
+    if(length(rRed) < length(grange))
+    {
+        ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
+        ## is processed in a sane way.
+        needsRestacking <- TRUE
+        mapping <- .myFindOverlaps(rRed, grange)
+        ## We start by finding the items that have not been reduced
+        identical <- mapping %in% which(table(mapping)==1)
+        newVals <- anno[identical,cols]
+        ## Here we hijack the seqnames column to indicate whether the whole group has been merged
+        if(nrow(newVals)){
+            newVals$seqnames <- elements[as.character(anno[identical,"seqnames"])]==1
+            newVals$gdensity <- ifelse(elements[as.character(anno[identical,"seqnames"])]==1, 1, NA)
+        }
+        ## Now find out which original items have been merged
+        grange <- grange[!identical]
+        rRed <- rRed[-(mapping[identical])]
+        index <- mapping[!identical]
+        annoSplit <- split(anno[!identical,], index)
+        cid <- function(j) sprintf("[Cluster_%i]  ", j)
+        newVals <- rbind(newVals, as.data.frame(t(sapply(seq_along(annoSplit), function(i){
+            x <- annoSplit[[i]]
+            if(class(GdObject)=="GeneRegionTrack"){
+                c(strand=ifelse(length(unique(x[,"strand"]))==1, as.character(x[1,"strand"]), "*"),
+                  density=sum(as.integer(x[,"density"])),
+                  gdensity=ifelse(is.na(head(x[,"gdensity"], 1)), 1, sum(as.integer(x[,"gdensity"]))),
+                  feature=ifelse(length(unique(x[,"feature"]))==1, as.character(x[1,"feature"]), "composite"),
+                  id=ifelse(length(unique(x[,"id"]))==1, as.character(x[1,"id"]), cid(i)),
+                  start=min(x[,"start"]),
+                  end=max(x[,"end"]),
+                  gene=ifelse(length(unique(x[,"gene"]))==1, as.character(x[1,"gene"]), cid(i)),
+                  exon=ifelse(length(unique(x[,"exon"]))==1, as.character(x[1,"exon"]), cid(i)),
+                  transcript=ifelse(length(unique(x[,"transcript"]))==1, as.character(x[1,"transcript"]), cid(i)),
+                  symbol=ifelse(length(unique(x[,"symbol"]))==1, as.character(x[1,"symbol"]), cid(i)),
+                  rank=min(as.integer(x[,"rank"])), seqnames=as.vector(nrow(x)==elements[x[1,"seqnames"]]))
+            }else{
+                c(strand=ifelse(length(unique(x[,"strand"]))==1, as.character(x[1,"strand"]), "*"),
+                  density=sum(as.integer(x[,"density"])),
+                  gdensity=ifelse(is.na(head(x[,"gdensity"], 1)) , 1, sum(as.integer(x[,"gdensity"]))),
+                  feature=ifelse(length(unique(x[,"feature"]))==1, as.character(x[1,"feature"]), "composite"),
+                  id=ifelse(length(unique(x[,"id"]))==1, as.character(x[1,"id"]), cid(i)),
+                  start=min(x[,"start"]),
+                  end=max(x[,"end"]),
+                  group=ifelse(length(unique(x[,"group"]))==1, as.character(x[1,"group"]), cid(i)),
+                  seqnames=as.vector(nrow(x)==elements[x[1,"seqnames"]]))
+            }
+        })), stringsAsFactors=FALSE))
+        merged <- as.logical(newVals$seqnames)
+        grange <- GRanges(seqnames=chromosome(GdObject), strand=newVals[, "strand"],
+                          range=IRanges(start=as.integer(newVals[, "start"]), end=as.integer(newVals[, "end"])))
+        cnMatch <- match(c(colnames(values(GdObject)), "gdensity"), colnames(newVals))
+        elementMetadata(grange) <-
+            if(any(is.na(cnMatch))) newVals[, setdiff(colnames(newVals), c("strand", "start", "end", "seqnames"))] else newVals[, cnMatch]
+    }else{
+        grange2 <-  GRanges(seqnames=chromosome(GdObject), strand=strand(grange), range=ranges(grange))
+        elementMetadata(grange2) <- elementMetadata(grange)
+        grange <- grange2
+    }
+    return(list(range=grange, needsRestacking=needsRestacking, split=annoSplit, merged=merged))
+}
+
 ## For AnnotationTracks we need to collapse the all regions along with the additional annotation.
 ## For GeneRegionTracks we essentially need to do the same thing as for AnnotationTracks, however the additional annotation columns
-## are quite different. If stacking is turned on
-## we don't need to collapse across group boundaries. Those will anyways be separated in different rows. However, since
-## collapseTrack is called after the stacks have been split we don't have to deal with it here.
+## are quite different. We do this in multiple turn with increasing levels of complexity:
+##    1.) merge all individual items within a group that can no longer be separated
+##    2.) merge overlapping groups with just a single remaining item (optional, if mergeGroups==TRUE)
 setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),        
           function(GdObject, diff=.pxResolution(coord="x"), xrange) {
               collapse <- .dpOrDefault(GdObject, "collapse", TRUE)
               min.width <- .dpOrDefault(GdObject, "min.width", 2)
               min.distance <- .dpOrDefault(GdObject, "min.distance", 2)
-              GdObject <- GdObject[order(range(GdObject))]
+              minXDist <- ceiling(min.distance*diff)
               r <- ranges(GdObject)
-              ## Collapse overlapping ranges (less than minXDist space between them) including the associated attributes using
-              ## "|" as separator. For both "strand" and "feature" we take the first available entry, which is not optimal but
-              ## seems to be the sanest thing to do here...
+              ## Compute native coordinate equivalent to 1 pixel and resize
+              rNew <- .resize(r, min.width, diff)
+              needsRestacking <- any(r!=rNew)
+              r <- rNew
+              ## Collapse all items within a group to a single meta-item if (if collapseTranscripts==TRUE)
+              if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE)){
+                  newVals <- unlist(endoapply(split(values(r), gene(GdObject)), head, 1))
+                  newVals$exon <- NA
+                  newVals$transcript <- newVals$gene
+                  r <- unlist(range(split(r, gene(GdObject))))
+                  elementMetadata(r) <- newVals
+                  GdObject@range <- r
+              }
+              ## Collapse overlapping ranges (less than minXDist space between them) and process the annotation data
               if(collapse)
               {
-                  minXDist <- min.distance*diff
-                  rr <- ranges(r)
-                  if(minXDist<1)
-                  {
-                      ## We have to fake smaller ranges because reduce will merge also neigbouring ranges
-                      width(rr) <- width(rr)-1
-                      rr <- reduce(rr, min.gapwidth=minXDist)
-                      width(rr) <- width(rr)+1
-                  } else {
-                      rr <- reduce(rr, min.gapwidth=minXDist)
+                  ## Merge all items in those groups for which no individual items can be separated
+                  elements <- table(group(GdObject))
+                  rr <- GRanges(seqnames=as.character(group(GdObject)), ranges=IRanges(start=start(r), end=end(r)), strand=strand(r))
+                  elementMetadata(rr) <- elementMetadata(r)
+                  rr <- sort(unique(rr))
+                  mergedAnn <- .collapseAnnotation(rr, minXDist, elements, GdObject)
+                  needsRestacking <- needsRestacking || mergedAnn$needsRestacking
+                  ## Now we take a look whether there are any groups that could be merged (if mergeGroups is TRUE)
+                  if(.dpOrDefault(GdObject, "mergeGroups", FALSE) && any(mergedAnn$merged)){
+                      rr <- sort(mergedAnn$range[mergedAnn$merged])
+                      strand(rr) <- "*"
+                      mergedAnn2 <- .collapseAnnotation(rr, minXDist, elements, GdObject)
+                      needsRestacking <- needsRestacking || mergedAnn2$needsRestacking
+                      mergedAnn$range <- c(mergedAnn$range[!mergedAnn$merged], mergedAnn2$range)
                   }
-                  if(length(rr) < length(r))
-                  {
-                      startInd <- sort(unique(sapply(start(rr), function(x) min(which(start(r)==x)))))
-                      startInd <-  if(tail(startInd,1) == length(r)) c(startInd, length(r)+1) else c(startInd, length(r))
-                      vsplit <- split(cbind(values(GdObject), strand=I(as.character(strand(GdObject)))),
-                                      cut(seq_len(length(r)), startInd, iclude.lowest=TRUE, right=FALSE))
-                      if(is(GdObject, "GeneRegionTrack"))
-                      {
-                          newValsId <- as.data.frame(t(sapply(vsplit, function(x)
-                                                              c(gene=as.character(paste(paste(gsub("  $", "", unique(x$gene)), collapse="|"),
-                                                                                        "  ", sep="")),
-                                                                transcript=as.character(paste(unique(x$transcript), collapse="|")),
-                                                                symbol=as.character(paste(paste(gsub("  $", "", unique(x$symbol)), collapse="|"),
-                                                                                                "  ", sep="")),                     
-                                                                exon=as.character(paste(unique(x$exon), collapse="|"))))),
-                                                     stringsAsFactors=FALSE)
-                          rcnams <- c(setdiff(colnames(values(GdObject)), c("gene", "transcript", "symbol", "exon")), "strand") 
-                      } else {
-                          newValsId <- as.data.frame(t(sapply(vsplit, function(x)
-                                                              c(id=as.character(paste(unique(x$id), collapse="|")),
-                                                                group=as.character(paste(paste(gsub("  $", "", unique(x$group)), collapse="|"),
-                                                                                         "  ", sep=""))))),
-                                                     stringsAsFactors=FALSE)
-                          rcnams <- c(setdiff(colnames(values(GdObject)), c("id", "group")), "strand")
-                      }
-                      newValsRest <- t(sapply(vsplit, function(x) sapply(x[1,rcnams], as.character)))
-                      colnames(newValsRest) <- rcnams
-                      newVals <- data.frame(newValsId, newValsRest, stringsAsFactors=FALSE)
-                      str <- newVals$strand
-                      newVals <- newVals[,colnames(values(GdObject))]
-                      if(.dpOrDefault(GdObject, "showOverplotting", FALSE))
-                      {
-                          ## Calculate colors indicating the amount of overplotting
-                          dens <- sapply(vsplit, nrow)
-                          if(length(dens)>1 && any(dens>1) && length(unique(dens))!=1)
-                          {
-                              #minSat <- max(0.25, 1/max(dens))
-                              #saturation <- minSat+((dens-min(dens))/diff(range(dens))/(1/(1-minSat)))
-                              #baseCol <- rgb2hsv(col2rgb(.dpOrDefault(GdObject, "col.overplotting",
-                              #                                        Gviz:::.DEFAULT_OVERPLOT_COL)))
-                              #desatCols <- sapply(saturation, function(x) hsv(baseCol[1], x, baseCol[3]))
-                              #newVals$feature[dens>1] <- paste("__desatCol", dens[dens>1], sep="")
-                              #names(desatCols) <- newVals$feature
-                              #displayPars(GdObject) <- as.list(desatCols[dens>1])
-                              newVals[, "density"] <- dens
-                          }
-                      }
-                      r <- GRanges(seqnames=chromosome(GdObject), strand=str, range=rr)
-                      elementMetadata(r)<- newVals
-                  }
+                  r <- mergedAnn$range
               }
-              ## Compute native coordinate equivalent to 1 pixel and resize
-              r <- .resize(r, min.width, diff)
-              ## Reconstuct the RangedData object and return
+              ## Reconstuct the track object and return
               GdObject@range <- r
+              if(needsRestacking)
+                  GdObject <- setStacks(GdObject, xrange[1], xrange[2])
               return(GdObject)})
+
 
 
 .aggregator <- function(GdObject)
@@ -717,7 +811,6 @@ setMethod("collapseTrack", signature(GdObject="GenomeAxisTrack"),
 ##----------------------------------------------------------------------------------------------------------------------------
 ## The default is not to clip at all
 setMethod("subset", signature(x="GdObject"), function(x, ...) x)
-setMethod("subset", signature(x="IdeogramTrack"), function(x, ...) x)
 ## For normal ranges we clip everything outside of the boundaries (keeping one extra item left and right
 ## in order to assure continuation)
 setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, ...){
@@ -739,7 +832,6 @@ setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, s
         rsel[min(length(x), min(which(rsel))+1)] <- FALSE
     if(any(lsel) || any(rsel))
         x <- x[!(lsel | rsel),]
-
     if(sort)
         x <- x[order(range(x)),]
     return(x)
@@ -996,12 +1088,16 @@ setMethod("drawGrid", signature(GdObject="AlignedReadTrack"), function(GdObject,
 ##    In prepare mode: nothing is plotted but the object is prepared for plotting bases on the available space. The return
 ##       value of the method in this mode should always be the updated object. If nothing needs to be prepared, i.e., if the
 ##       plotting is independent from the available space, simply return the original object
-##    In plotting mode: the object is plotted. Return value is the nout object with optional HTML image map information
+##    In plotting mode: the object is plotted. Return value is the object with optional HTML image map information
 ##    added to the imageMap slot
 ## Since subsetting can be potentially expensive when the data are large we want to minimize this operation. Essentially it
-## should be done once right at the start, in wich case the subsetting argument can be set to FALSE
+## should be done only once before any other plotting or computation starts, hence we expect the GdObject in the drawGD
+## methods to already be trimmed to the correct size
 ##----------------------------------------------------------------------------------------------------------------------------
 
+##----------------------------------------------------------------------------------------------------------------------------
+## The default method for all StackedTrack types which always should be called (this has to be done explicitely using
+## callNextMethod)
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Although the stacking type is not stored as a displayParameter we still want to check whether it is
 ## included there and set the actual stacking of the object accordingly
@@ -1014,7 +1110,6 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
 ##----------------------------------------------------------------------------------------------------------------------------
 
 
-
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Draw gene models as found in AnnotationTracks or GeneRegionTracks
 ##----------------------------------------------------------------------------------------------------------------------------
@@ -1024,183 +1119,118 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
 ## can be painfully slow...
 ## Because all of the y coordinates are calculated in the coordinate system of the current
 ## viewport for the respective stack we have to add offset values.
-.prepareGene <- function(GdObject, toDraw=list(), offset=0, minBase, maxBase, diff=.pxResolution(coord="x"), ...)
+
+## Compute the coordinates and colors for all track items (e.g. exons in a GeneRegionTrack)
+.boxes <- function(GdObject, offsets)
 {
-    ## Usually we only proceed if there is something to draw, otherwise we want to return
-    ## the unmodified input list items, hence we rbind NULL values
-    td.bar <- td.bartext <- NULL
-    if(!length(GdObject) || stacking(GdObject) == "hide")
-        return(toDraw)
-    if(missing(minBase))
-        minBase <- min(start(GdObject))-10
-    if(missing(maxBase))
-        maxBase <- max(end(GdObject))+10
     ylim <- c(0, 1)
     middle <- mean(ylim)
     space <- diff(ylim)/8
-    shape <- .dpOrDefault(GdObject, "shape", "arrow")
-    ## The 'exon' structure first
+    shape <- .dpOrDefault(GdObject, "shape", "arrow")  
     color <- .getBiotypeColor(GdObject)
-    boxes <- data.frame(cx1=start(GdObject), cy1=ylim[1]+space+offset, cx2=end(GdObject), cy2=ylim[2]-space+offset,
-                        fill=color, strand=strand(GdObject), text=identifier(GdObject, lowest=TRUE),
-                        textX=(start(GdObject)+end(GdObject))/2, textY=middle+offset,
-                        ##.getImageMap(cbind(start(GdObject), middle-(space*3)+offset, end(GdObject), middle+(space*3)+offset)),
-                        .getImageMap(cbind(start(GdObject), ylim[1]+space+offset, end(GdObject), ylim[2]-space+offset)),
+    id <- identifier(GdObject, lowest=TRUE)
+    sel <- grepl("\\[Cluster_[0-9]*\\]", id)
+    id[sel] <- sprintf("%i merged %s", as.integer(.getAnn(GdObject, "density")[sel]), ifelse(class(GdObject)=="AnnotationTrack", "features", "exons"))
+    boxes <- data.frame(cx1=start(GdObject), cy1=ylim[1]+space+offsets, cx2=end(GdObject), cy2=ylim[2]-space+offsets,
+                        fill=color, strand=strand(GdObject), text=id, textX=(start(GdObject)+end(GdObject))/2, textY=middle+offsets,
+                        .getImageMap(cbind(start(GdObject), ylim[1]+space+offsets, end(GdObject), ylim[2]-space+offsets)),
                         start=start(GdObject), end=end(GdObject), values(GdObject), stringsAsFactors=FALSE)
-    rownames(boxes) <- make.unique(identifier(GdObject, TRUE))
-    ## Combine grouped elements for connecting bars and optional text
-    gp <- gsub("  $", "", group(GdObject))
-    gTab <- table(gp)
-    gSize <- gTab>1
-    needsGrp <- any(gSize)
-    sel <- gp %in% names(which(gSize))
-    ## Prepare a data.frame to hold the group annotation if needed
-    if(.dpOrDefault(GdObject, "showId", FALSE)){
-        td.bartext <- as.data.frame(matrix(ncol=3, nrow=length(gTab),
-                                           dimnames=list(names(gTab), c("txt", "x", "y"))),
-                                    stringsAsFactors=FALSE)
-        td.bartext$y <- middle+offset
-        if(sum(!gSize)>0)
-            td.bartext[names(which(!gSize)), c("txt", "x")] <- data.frame(identifier(GdObject)[!sel], start(GdObject)[!sel],
-                                                                          stringsAsFactors=FALSE)
+    rownames(boxes) <- if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE))
+            sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, lowest=TRUE))
+    return(boxes)
+}
+
+## Compute the coordinates for the bars connecting grouped items and the group labels
+.barsAndLabels <- function(GdObject)
+{
+    bins <- stacks(GdObject)
+    stacks <- max(bins)
+    res <- .pxResolution(coord="x")
+    gp <- group(GdObject)
+    grpSplit <- split(range(GdObject), gp)
+    grpRanges <- unlist(range(grpSplit))
+    needBar <- sapply(grpSplit, length)>1 & width(grpRanges) > res
+    ## If we draw the bar from start to end of the range we sometimes see little overlaps that extend beyond the first or last item.
+    ## In order to fix this, we just substract the equivalent of min.width pixels from both ends of each group range
+    min.swidth <- res*.dpOrDefault(GdObject, "min.width", 2)
+    nstart <- start(grpRanges[needBar])+min.swidth
+    nend <- end(grpRanges[needBar])-min.swidth
+    sel <- (nend-nstart)>0
+    start(grpRanges[needBar][sel]) <- nstart[sel]
+    end(grpRanges[needBar][sel]) <- nend[sel]
+    strand <- sapply(split(strand(GdObject), gp), function(x){
+        tmp <- unique(x)
+        if(length(tmp)>1) "*" else tmp
+    })
+    yloc <- sapply(split((stacks-bins)+1, gp), function(x) unique(x))+0.5
+    color <- if(length(grep("__desatCol", values(GdObject)$feature[1])))
+        .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL) else sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
+    bars <- data.frame(sx1=start(grpRanges)[needBar], sx2=end(grpRanges)[needBar], y=yloc[needBar], strand=strand[needBar],
+                      col=color[needBar], stringsAsFactors=FALSE)
+    labs <- sapply(split(identifier(GdObject), gp), head, 1)
+    lsel <- grepl("\\[Cluster_[0-9]*\\]", labs)
+    if(any(lsel)){
+        gdens <- as.integer(sapply(split(.getAnn(GdObject, "gdensity"), gp), head, 1))
+        labs[lsel] <- sprintf("%i merged %s  ", gdens[lsel], ifelse(class(GdObject)=="AnnotationTrack", "groups", "gene models"))
     }
-    if(needsGrp){
-        
-        GdRanges <- ranges(GdObject[sel])
-        values(GdRanges)$color <- .getBiotypeColor(GdObject)[sel]
-        values(GdRanges)$identifier <- identifier(GdObject)[sel]
-        groups <- as.list(split(GdRanges, gp[sel]))
-        nrs <- ifelse(any(c("arrow", "smallArrow") %in% shape), sum(gSize), sum(pmax(2, gTab[gSize]-1))*2)
-        td.bar <- as.data.frame(matrix(ncol=5, nrow=nrs,
-                                       dimnames=list(NULL, c("sx1", "sx2", "y", "strand", "col"))),
-                                stringsAsFactors=FALSE)
-        td.bar$y <- offset+0.5
-        ## Some special treatment for collapsed items. Not sure whether we want to keep this here...
-        compGrps <- grep("|", names(groups), fixed=TRUE)
-        if(stacking(GdObject)=="dense" && length(compGrps))
-        {
-            cg <- groups[compGrps]
-            groups <- groups[-compGrps]
-            cgn <- strsplit(names(cg), "|", fixed=TRUE)
-        }
-        min.swidth <- diff*.dpOrDefault(GdObject, "min.width", 2)*3
-        ind <- 1
-        for(ng in names(groups)){
-            g <- groups[[ng]]
-            r <- ranges(g)
-            if(stacking(GdObject)=="dense" && length(compGrps))
-            {
-                intersect <- sapply(cgn, function(x, y) y %in% x, ng)
-                r <-  sort(c(r, IRanges(unlist(lapply(cg[intersect], start)), unlist(lapply(cg[intersect], end)))))
-            }
-            color <- unique(values(g)$color)
-            end <- end(r)
-            start <- start(r)
-            from <- end[-length(r)]
-            us <- unique(as.character(strand(g)))
-            if(length(us)!=1)
-                us <- "*"
-            fact <- if(us=="+") 1/4 else 3/4
-            yspace <- if(us=="+") space else -space
-            to <- from+((start[-1]-end[-length(r)])*fact)
-            if(length(from))
-            {
-                ## Bars connecting the indiviual 'exons'
-                if(!"arrow" %in% shape && !"smallArrow" %in% shape) {
-                    diffs <- start[-1]-from
-                    wsel <- (diffs<min.swidth)+1
-                    lf <- length(from)*2
-                    td.bar[ind:(ind+lf-1), "sx1"] <- c(from, to)
-                    td.bar[ind:(ind+lf-1), "sx2"] <- c(to, start[-1])
-                    td.bar[ind:(ind+lf-1), "col"] <- rep(color[1], lf)
-                    td.bar[ind:(ind+lf-1), "strand"] <- rep(us, lf)
-                    ind <- ind+lf
-                } else {
-                    td.bar[ind, "sx1"] <- min(start)+(min.swidth/3)
-                    td.bar[ind, "sx2"] <- max(end)-(min.swidth/3)
-                    td.bar[ind, "col"] <- if(length(grep("__desatCol", values(g)$feature[1])))
-                        .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL) else color[1]
-                    td.bar[ind, "strand"] <- us
-                    ind <- ind+1
-                }
-                
-            }
-            ## The optional 'exon' annotation
-            if(.dpOrDefault(GdObject, "showId", FALSE))
-            {
-                td.bartext[ng, c("txt", "x")] <- data.frame(paste(values(g)[1, "identifier"], " "), min(start),
-                                                            stringsAsFactors=FALSE)
-            }
-        } ## end for
-    } 
-    ## Finally we append all new coordinates/values to the input list
-    toDraw[["box"]] <- rbind(toDraw[["box"]], boxes)
-    toDraw[["bar"]] <- rbind(toDraw[["bar"]], td.bar)
-    toDraw[["bartext"]] <- rbind(toDraw[["bartext"]], td.bartext)
-    return(toDraw)
+    offs <- rep(min.swidth, length(grpRanges))
+    offs[sapply(grpSplit, length)<=1] <- 0
+    labels <- data.frame(txt=labs, x=start(grpRanges)-offs, y=yloc, stringsAsFactors=FALSE)
+    return(list(bars=bars, labels=labels))
 }
 
 ## The actual drawing method
 setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...){
     imageMap(GdObject) <- NULL
-    ## In prepare mode all we need to do is set up the stacks, so we can quit after this point.
-    if(prepare){
-        GdObject <- callNextMethod()
-        if(subset)
-            GdObject <- subset(GdObject, from=minBase, to=maxBase)
-        return(invisible(GdObject))
-    }
-    ## In plotting mode we have to deal with stacks one by one
-    if(subset)
-        GdObject <- subset(GdObject, from=minBase, to=maxBase)
     if(!length(GdObject))
         return(invisible(GdObject))
+    ## In prepare mode we need to make sure that the stacking information is updated from the optional display parameter (by calling
+    ## the StackedTrack drawGD method) and also perform the collapsing of track items which could potentially lead to re-stacking.
+    if(prepare){
+        GdObject <- callNextMethod()
+        bins <- stacks(GdObject)
+        stacks <- max(bins)
+        ## We need to collapse the track object based on the current screen resolution (note that this may trigger re-stacking)
+        pushViewport(dataViewport(xData=c(minBase, maxBase), extension=0, yscale=c(1, stacks+1), clip=TRUE))
+        GdObject <- collapseTrack(GdObject, diff=.pxResolution(coord="x"), xrange=c(minBase, maxBase))
+        popViewport(1)
+        return(invisible(GdObject))
+    }
+    ## If there are too many stacks for the available device resolution we cast an error
     bins <- stacks(GdObject)
     stacks <- max(bins)
-    ids <- identifier(GdObject)
-    hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & ids!=""
-    if(any(hasAnno)) {
-        txt <- paste(ids, " ")
-        txt[!hasAnno] <- ""
-        identifier(GdObject) <- txt
-    }
-    ## We first calculate all coordinates and values...
-    toDraw <- list()
     pushViewport(dataViewport(xData=c(minBase, maxBase), extension=0,
                               yscale=c(1, stacks+1), clip=TRUE))
     res <- .pxResolution(coord="x")
     curVp <- vpLocation()
-    if(curVp$size["width"]/stacks < .dpOrDefault(GdObject, "min.height", 3))
+    if(curVp$size["height"]/stacks < .dpOrDefault(GdObject, "min.height", 3))
         stop("Too many stacks to draw. Either increase the device size or limit the drawing to a smaller region.")
-    groups <- rev(split(GdObject, bins))
-    ## We need to collapse the track object based on the current screen resolution...
-    groups <- lapply(groups, collapseTrack, diff=res, xrange=c(minBase, maxBase))
-    ## ... adjust the color saturation to indicate overplotting...
+    ## We adjust the color saturation to indicate overplotting if necessary
     if(.dpOrDefault(GdObject, "showOverplotting", FALSE))
     {
-        dens <- as.numeric(unlist(lapply(groups, function(x) values(x)$density)))
+        dens <- as.numeric(values(GdObject)$density)
         if(length(unique(dens))!=1)
         {
             minSat <- max(0.25, 1/max(dens))
             minDens <- min(dens)
             rDens <- diff(range(dens))
-            groups <- lapply(groups, function(x){
-                dens <- as.numeric(values(x)$density)
-                saturation <- minSat+((dens-minDens)/rDens/(1/(1-minSat)))
-                bc <- unique(.getBiotypeColor(x))
-                baseCol <- rgb2hsv(col2rgb(bc))
-                desatCols <- unlist(lapply(saturation, function(x) hsv(baseCol[1,], x, baseCol[3,])))
-                names(desatCols) <- paste(unique(feature(x)), rep(dens, each=length(bc)), sep="_")
-                feature(x) <- paste(feature(x), dens, sep="_")
-                desatCols <- desatCols[unique(names(desatCols))]
-                displayPars(x) <- as.list(desatCols)
-                x
-            })
+            saturation <- minSat+((dens-minDens)/rDens/(1/(1-minSat)))
+            bc <- unique(.getBiotypeColor(GdObject))
+            baseCol <- rgb2hsv(col2rgb(bc))
+            desatCols <- unlist(lapply(saturation, function(x) hsv(baseCol[1,], x, baseCol[3,])))
+            names(desatCols) <- paste(unique(feature(GdObject)), rep(dens, each=length(bc)), sep="_")
+            feature(GdObject) <- paste(feature(GdObject), dens, sep="_")
+            desatCols <- desatCols[unique(names(desatCols))]
+            displayPars(GdObject) <- as.list(desatCols)
         }
     }
-    ## ... precompute all the drawing elements...
-    for(i in seq_len(stacks))
-        toDraw <- .prepareGene(groups[[i]], toDraw=toDraw, offset=i, minBase=minBase, maxBase=maxBase, diff=res)
+    ## Now we can pre-compute all the coordinates and settings for the elements to be drawn...
+    if(.dpOrDefault(GdObject, "break", FALSE))
+        browser()
+    box <- .boxes(GdObject, (stacks-bins)+1)
+    barsAndLab <- .barsAndLabels(GdObject)
+    bar <- barsAndLab$bars
+    bartext <- barsAndLab$labels
     ## ... and then draw whatever is needed
     shape <- .dpOrDefault(GdObject, "shape", "arrow")
     border <- .dpOrDefault(GdObject, "col", "transparent")[1]
@@ -1219,14 +1249,12 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     fontsize.group <- .dpOrDefault(GdObject, "fontsize.group", fontsize)
     fontface.group  <- .dpOrDefault(GdObject, "fontface.group", fontface)
     fontfamily.group <- .dpOrDefault(GdObject, "fontfamily.group", fontfamily)
-    box <- toDraw[["box"]]
-    if(!is.null(box)){
-        bar <- toDraw[["bar"]]
-        if(!is.null(bar))
+    if(nrow(box)>0){
+        if(nrow(bar)>0)
             .arrowBar(bar$sx1, bar$sx2, y=bar$y, bar$strand, box[,1:4, drop=FALSE], col=bar$col, lwd=lwd, lty=lty,
                       alpha=alpha, barOnly=(!"smallArrow" %in% .dpOrDefault(GdObject, "shape", "box") || stacking(GdObject)=="dense"),
                       diff=res, min.height=.dpOrDefault(GdObject, "min.height", 3))
-        if("box" %in% shape)
+        if("box" %in% shape || ("smallArrow" %in% shape && !"arrow" %in% shape))
             grid.rect(box$cx2, box$cy1, width=box$cx2-box$cx1, height=box$cy2-box$cy1,
                       gp=gpar(col=border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha),
                       default.units="native", just=c("right", "bottom"))
@@ -1236,26 +1264,27 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
                          gp=gpar(col=border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha),
                          default.units="native")
         }
-        if(any(c("arrow", "smallArrow") %in% shape)){
+        if("arrow" %in% shape && !"box" %in% shape){
             .filledArrow(box[,1:4], col=border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha, strand=box$strand, min.width=6*res)
         }
         if(.dpOrDefault(GdObject, "showFeatureId", FALSE))
             grid.text(box$text, box$textX, box$textY, rot=rotation,
                       gp=gpar(col=fontcolor, cex=cex, fontsize=fontsize, fontface=fontface, lineheight=lineheight,
                               fontfamily=fontfamily), default.units="native", just=c("center", "center"))
-        bartext <- toDraw[["bartext"]]
-        if(!is.null(bartext) && stacking(GdObject)!="dense")
+      
+        if(.dpOrDefault(GdObject, "showId", FALSE) && nrow(bartext)>0 && stacking(GdObject)!="dense")
             grid.text(bartext$txt, bartext$x, bartext$y, gp=gpar(col=fontcolor.group, cex=cex.group, fontsize=fontsize.group,
                                                                  fontface=fontface.group, fontfamily=fontfamily.group),
                       default.units="native", just=c("right", "center"))
     }
     popViewport(1)
-    ## Set up the image map
-    im <- if(!is.null(toDraw$box)) {
-        coords <- as.matrix(toDraw$box[,c("x1", "y1", "x2", "y2"),drop=FALSE])
-        restCols <- setdiff(colnames(toDraw$box), c("x1", "x2", "y1", "y2", "cx1", "cx2", "cy1", "cy2", "textX", "textY"))
+    ## Finaly we set up the image map
+    ## FIXME: we may want to record the merging information here
+    im <- if(!is.null(box)) {
+        coords <- as.matrix(box[,c("x1", "y1", "x2", "y2"),drop=FALSE])
+        restCols <- setdiff(colnames(box), c("x1", "x2", "y1", "y2", "cx1", "cx2", "cy1", "cy2", "textX", "textY"))
         tags <- sapply(restCols, function(x){
-            tmp <- as.character(toDraw$box[,x])
+            tmp <- as.character(box[,x])
             names(tmp) <- rownames(coords)
             tmp}, simplify=FALSE)
         tags$title <- gsub(" +", "", identifier(GdObject))
@@ -1264,15 +1293,13 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     return(invisible(GdObject))
 })
 
-## For a GeneRegionTrack we just set the showExonId alias
+## For a GeneRegionTrack we just set the showExonId alias and then call the AnnotationTrack method
 setMethod("drawGD", signature("GeneRegionTrack"), function(GdObject,  ...){
     displayPars(GdObject) <- list(showFeatureId=as.vector(displayPars(GdObject, "showExonId")))
-    callNextMethod(GdObject, ...)
+    GdObject <- callNextMethod(GdObject, ...)
+    return(invisible(GdObject))
 })
 ##----------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
 

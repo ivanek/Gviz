@@ -83,6 +83,12 @@ IdeogramTrack(chromosome, genome, name=.chrName(chromosome)[1], ...)
     information in the format of UCSC. This slot is filled automatically
     by the initializer.}
 
+    \item{\code{bandTable}:}{Object of class
+      \code{\linkS4class{data.frame}} containing the chromosome band
+      information for all chromosomes. This slot is filled automatically
+      by the initializer method and only exists to prevent having to
+      redo the rtracklayer query ervery time the chromosome is changed.}
+
     \item{\code{chromosome}:}{Object of class \code{"character"},
       inherited from class \code{\linkS4class{StackedTrack}} defining
       the ideogram's chromosome.}
