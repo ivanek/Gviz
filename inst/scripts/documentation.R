@@ -436,7 +436,7 @@ details <- list(
                                     showOverplotting="Logical scalar. Use a color gradient to show the amount of overplotting for collapsed items. This implies that \\code{collapse==TRUE}",
                                     min.width="Numeric scalar. The minimum range width in pixels to display. All ranges are expanded to this size in order to avoid rendering issues. See \\code{\\link{collapsing}} for details.",
                                     alpha="Numeric scalar between 0 and 1. The opacity of the plotting elements, if supported by the device.",
-                                    mergeGroups"Logical scalar. Merge fully overlapping groups if \\code{collapse==TRUE}."),
+                                    mergeGroups="Logical scalar. Merge fully overlapping groups if \\code{collapse==TRUE}."),
                 
                 "DetailsAnnotationTrack"=c(details.size="Numeric scalar. The fraction of vertical space of the track used for the details section.",
                                            details.minWidth="Numeric scalar. The minium width in pixels for a details panel, if less space is available no details are plotted.",

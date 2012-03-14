@@ -743,8 +743,8 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                                         #return(callNextMethod(.Object=.Object, range=GRanges(), ...))
     }
     ## changing start and end positions to capture genes on the edges.
-    .Object@start <- start - 2000
-    .Object@end <- end + 2000
+    sstart <- start - 2000
+    send <- end + 2000
     ## fetching data from Biomart
     .Object@biomart <- biomart
     chr <- list(...)$chromosome
@@ -753,7 +753,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
         attributes <- c("ensembl_gene_id","ensembl_transcript_id","ensembl_exon_id","exon_chrom_start",
                         "exon_chrom_end", "rank", "strand", "external_gene_id", "gene_biotype", "chromosome_name")
         filterNames <- c("chromosome_name", "start", "end", names(filters))
-        filterValues <- c(list(gsub("^chr", "", chr), .Object@start, .Object@end), as.list(filters))
+        filterValues <- c(list(gsub("^chr", "", chr), sstart, send), as.list(filters))
         strand <- .strandName(list(...)$strand, extended=TRUE)
         if(strand %in% 0:1)
         {
@@ -777,7 +777,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
     }
     if(length(range)==0)
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
-    .Object <- callNextMethod(.Object=.Object, range=range, ...)
+    .Object <- callNextMethod(.Object=.Object, range=range, start=start, end=end, ...)
     return(.Object)
 })
 

@@ -13,6 +13,7 @@
 \alias{stacking<-}
 \alias{stacks}
 \alias{subset,StackedTrack-method}
+\alias{[,StackedTrack,ANY,ANY-method}
 
 \title{StackedTrack class and methods}
 
