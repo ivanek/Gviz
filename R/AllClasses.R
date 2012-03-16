@@ -627,7 +627,8 @@ setClass("DetailsAnnotationTrack",
                                             detailsBorder.col="darkgray",
                                             detailsBorder.fill="transparent",
                                             details.ratio=Inf,
-                                            detailsFunArgs=list())
+                                            detailsFunArgs=list(),
+                                            groupDetails=FALSE)
                              ))
 
 DetailsAnnotationTrack <- function(...) AnnotationTrack(...)

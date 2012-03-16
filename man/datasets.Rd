@@ -20,6 +20,7 @@
 \alias{snpLocations}
 \alias{to}
 \alias{ctrack}
+\alias{geneDetails}
 \docType{data}
 \title{
 Data sets

@@ -265,10 +265,22 @@ setReplaceMethod("imageMap", signature("GdObject", "ImageMapOrNULL"), function(G
 ## Context-dependent meta-accessors to the identifier data of a AnnotationTrack and a GeneRegionTrack. For the former, those will
 ## be the content of the id column in the elementMetadata slot of the GRanges object, for the latter, either the gene ids
 ## (if gpar geneSymbols==FALSE) or the human-readable gene symbols (if gpar geneSymbols==TRUE). If lowest==TRUE the lowest-level
-## annotation is returned, i.e., exon ids  for GeneRegionTracks and id for AnnotationTracks. 
-setMethod("identifier", "AnnotationTrack", function(GdObject, lowest=FALSE)  if(lowest) .getAnn(GdObject, "id") else group(GdObject))
-setMethod("identifier", "GeneRegionTrack", function(GdObject, lowest=FALSE)
-          if(lowest) exon(GdObject) else if(.dpOrDefault(GdObject, "geneSymbols", TRUE)) symbol(GdObject) else gene(GdObject))
+## annotation is returned, i.e., exon ids  for GeneRegionTracks and id for AnnotationTracks. When using the identifiers as group
+## labels we want to add some white space to separate the label from the last item in the group. This can be done by setting
+## add.space=TRUE (is ignored if lowest==TRUE)
+setMethod("identifier", "AnnotationTrack", function(GdObject, lowest=FALSE, add.space=FALSE){
+    id <- if(lowest) .getAnn(GdObject, "id") else group(GdObject)
+    if(!lowest && add.space && .dpOrDefault(GdObject, ".__hasAnno", TRUE))
+        id[id!=""] <- paste(id[id!=""], "  ", sep="")
+    return(id)
+})
+setMethod("identifier", "GeneRegionTrack", function(GdObject, lowest=FALSE, add.space=FALSE){
+    id <- if(lowest) exon(GdObject) else if(.dpOrDefault(GdObject, "geneSymbols", TRUE)){
+        symbol(GdObject)} else gene(GdObject)
+    if(!lowest && add.space && .dpOrDefault(GdObject, ".__hasAnno", TRUE))
+        id[id!=""] <- paste(id[id!=""], "  ", sep="")
+    return(id)
+})        
 setReplaceMethod("identifier", c("AnnotationTrack", "character"), function(GdObject, value){
     group(GdObject) <- value
     return(GdObject)})
@@ -340,7 +352,7 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, from, to) {
                 range(GdObject)
             }
         }
-        if(.dpOrDefault(GdObject, "__hasAnno", FALSE))
+        if(.dpOrDefault(GdObject, ".__hasAnno", FALSE))
         {
             cex <- .dpOrDefault(GdObject, "cex", 1) * .dpOrDefault(GdObject, "cex.symbol", 0.7)
             fontfamily <- .dpOrDefault(GdObject, "fontfamily", 1)
@@ -350,10 +362,10 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, from, to) {
                                       gp=gpar(cex=cex, fontfamily=fontfamily, fonface=fontface, fontsize=fontsize)))
             if(needsGrp)
             {
-                ids <- sapply(split(identifier(GdObject), gp), head, 1)
+                ids <- sapply(split(identifier(GdObject, add.space=TRUE), gp), head, 1)
                 start(gRanges) <- start(gRanges)-(as.numeric(convertWidth(stringWidth(ids),"native"))*1.3)
             } else {
-                start(gRanges) <- start(gRanges)-(as.numeric(convertWidth(stringWidth(identifier(GdObject)),"native"))*1.3)
+                start(gRanges) <- start(gRanges)-(as.numeric(convertWidth(stringWidth(identifier(GdObject, add.space=TRUE)),"native"))*1.3)
             }
             popViewport(1)
         } 
@@ -414,44 +426,35 @@ setMethod("score", signature("DataTrack"), function(x, from=NULL, to=NULL, sort=
 ##    o ...: additional arguments that are considered to be display parameters
 ##----------------------------------------------------------------------------------------------------------------------------
 ## For all track types we want to update the display parameters
-setMethod("consolidateTrack", signature(GdObject="GdObject"),
-          function(GdObject, ...) {
-              pars <- list(...)
-              pars <- pars[names(pars)!=""]
-              displayPars(GdObject) <- pars
-              return(GdObject)
-          })
+setMethod("consolidateTrack", signature(GdObject="GdObject"), function(GdObject, ...) {
+    pars <- list(...)
+    pars <- pars[names(pars)!=""]
+    displayPars(GdObject) <- pars
+    return(GdObject)
+})
 ## For RangeTracks we want to set the chromosome
-setMethod("consolidateTrack", signature(GdObject="RangeTrack"),
-          function(GdObject, chromosome, ...) {
-              if(!is.null(chromosome))
-                  chromosome(GdObject) <- chromosome
-              GdObject <- callNextMethod()
-              return(GdObject)
-          })
+setMethod("consolidateTrack", signature(GdObject="RangeTrack"), function(GdObject, chromosome, ...) {
+    if(!is.null(chromosome))
+        chromosome(GdObject) <- chromosome
+    GdObject <- callNextMethod()
+    return(GdObject)
+})
 ## For StackedTracks we want to set the stacking (which could have been passed in as a display parameter)
-setMethod("consolidateTrack", signature(GdObject="StackedTrack"),
-          function(GdObject, ...) {
-              GdObject <- callNextMethod()
-              st <- displayPars(GdObject, "stacking")
-              if(!is.null(st))
-                  stacking(GdObject) <- st
-              return(GdObject)
-          })
-## For AnnotationTracks we need to add some spacing between the group lables and the terminal group items
-setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"),
-          function(GdObject, ...) {
-              GdObject <- callNextMethod()
-              ids <- identifier(GdObject)
-              hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & !all(ids=="")
-              displayPars(GdObject) <- list("__hasAnno"=hasAnno)
-              if(any(hasAnno)) {
-                  txt <- paste(ids, " ")
-                  txt[!hasAnno] <- ""
-                  identifier(GdObject) <- txt
-              }
-              return(GdObject)
-          })
+setMethod("consolidateTrack", signature(GdObject="StackedTrack"), function(GdObject, ...) {
+    GdObject <- callNextMethod()
+    st <- displayPars(GdObject, "stacking")
+    if(!is.null(st))
+        stacking(GdObject) <- st
+    return(GdObject)
+})
+## For AnnotationTracks we need to determine whether there is group label annotation or not
+setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"), function(GdObject, ...) {
+    GdObject <- callNextMethod()
+    ids <- identifier(GdObject)
+    hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & !all(ids=="")
+    displayPars(GdObject) <- list(".__hasAnno"=hasAnno)
+    return(GdObject)
+})
 ##----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -574,6 +577,8 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"),
 ##    2.) merge overlapping groups with just a single remaining item (optional, if mergeGroups==TRUE)
 setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),        
           function(GdObject, diff=.pxResolution(coord="x"), xrange) {
+              ## We first add the original unmodified GdObject as a display parameter to be able to reference back if we ever need to
+              displayPars(GdObject) <- list(".__OriginalGdObject"=.deepCopyPars(GdObject))
               collapse <- .dpOrDefault(GdObject, "collapse", TRUE)
               min.width <- .dpOrDefault(GdObject, "min.width", 2)
               min.distance <- .dpOrDefault(GdObject, "min.distance", 2)
@@ -1168,7 +1173,7 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
         .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL) else sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
     bars <- data.frame(sx1=start(grpRanges)[needBar], sx2=end(grpRanges)[needBar], y=yloc[needBar], strand=strand[needBar],
                       col=color[needBar], stringsAsFactors=FALSE)
-    labs <- sapply(split(identifier(GdObject), gp), head, 1)
+    labs <- sapply(split(identifier(GdObject, add.space=TRUE), gp), head, 1)
     lsel <- grepl("\\[Cluster_[0-9]*\\]", labs)
     if(any(lsel)){
         gdens <- as.integer(sapply(split(.getAnn(GdObject, "gdensity"), gp), head, 1))
@@ -1289,7 +1294,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
             tmp <- as.character(box[,x])
             names(tmp) <- rownames(coords)
             tmp}, simplify=FALSE)
-        tags$title <- gsub(" +", "", identifier(GdObject))
+        tags$title <- identifier(GdObject)
         ImageMap(coords=coords, tags=tags) } else NULL
     imageMap(GdObject) <- im
     return(invisible(GdObject))
@@ -1572,25 +1577,46 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Draw DetailsAnnotationTrack
 ##----------------------------------------------------------------------------------------------------------------------------
+## Create a data.frame with the distinct details function arguments (like start, end, ...)
+.buildArgsDf <- function(GdObject)
+{
+      groupDetails <- .dpOrDefault(GdObject, "groupDetails", FALSE)
+      rr <- if(groupDetails) unlist(range(split(ranges(GdObject), group(GdObject)))) else ranges(GdObject)
+      args <- data.frame(start=as.integer(start(rr)), end=as.integer(end(rr)), strand=as.character(strand(rr)),
+                         chromosome=as.character(seqnames(rr)),
+                         identifier=as.character(if(groupDetails) names(rr) else identifier(GdObject, lowest=TRUE)),
+                         stringsAsFactors=FALSE)
+      return(args)
+}
+
+
 setMethod("drawGD", signature("DetailsAnnotationTrack"),
           function(GdObject,  minBase, maxBase, prepare=FALSE, ...){
+              adf <- .buildArgsDf(GdObject)
               args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype=TRUE)
-              if ( prepare ) {
+              groupDetails <- .dpOrDefault(GdObject, "groupDetails", FALSE)
+              if(prepare){
                   GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
                   GdObject <- GdObject[order(start(GdObject))]
-                  select <- sapply(seq_len(length(GdObject)), function(i){
-                      args$start <- start(GdObject[i])
-                      args$end <- end(GdObject[i])
-                      args$strand <- strand(GdObject[i])
-                      args$chromosome <- chromosome(GdObject[i])
-                      args$identifier <- identifier(GdObject[i], lowest=TRUE)
-                      args$index <- i
-                      args$GdObject <- GdObject
+                  indices <- if(groupDetails) seq_len(length(unique(group(GdObject)))) else seq_len(length(GdObject))
+                  pushViewport(viewport(xscale=c(minBase, maxBase)))
+                  hasWarned <- FALSE
+                  select <- sapply(indices, function(i){
+                      iargs <- as.list(adf[i,])
+                      iargs$index <- i
+                      iargs$GdObject <- GdObject
+                      iargs$GdObject.original <- .dpOrDefault(GdObject, ".__OriginalGdObject", GdObject)
+                      args <- c(args[setdiff(names(args), names(iargs))], iargs)
                       res <- do.call(GdObject@selectFun, args)
-                      if(length(res)!=1 || !is.logical(res))
-                          stop("The result of function selectFun has to be a single logical value")
+                      if(length(res)!=1 || !is.logical(res) || is.na(res)){
+                          if(!hasWarned)
+                              warning("The result of function 'selectFun' has to be a single logical value. Forcing the value to 'TRUE'")
+                          hasWarned <<- TRUE
+                          res <- TRUE
+                      }
                       res
                   })
+                  popViewport(1)
                   displayPars(GdObject) <- list(".__select"=select)
                   return(invisible(GdObject))
               }
@@ -1612,8 +1638,7 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
               }
               selection <- .dpOrDefault(GdObject, ".__select", rep(TRUE, length(GdObject)))
               len <- sum(selection)
-             
-              bins <- stacks(GdObject)
+              bins <- if(!groupDetails) stacks(GdObject) else sapply(split(stacks(GdObject) , group(GdObject)), unique)
               stacks <- max(bins)
               if(len>0){
                   if( ((maxBase-minBase)/len)/.pxResolution(coord="x") < minwidth ) {
@@ -1622,7 +1647,8 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                       GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
                       return(GdObject)
                   }
-                  xloc1 <- (end(GdObject) - start(GdObject))/2+start(GdObject)
+                  rr <- if(groupDetails) unlist(range(split(ranges(GdObject), group(GdObject)))) else ranges(GdObject)
+                  xloc1 <- (end(rr) - start(rr))/2+start(rr)
                   yloc1 <- (stacks - (bins - 0.5)+1)
                   xloc2 <- ((1/len*seq_len(len))-1/len + (1/len*0.5))
                   yloc2 <- rep(1, len) 
@@ -1636,21 +1662,28 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                       w <- xyratio/r
                       v <- ((1/len) - (1/len*w))/2
                   }
+                  indices <- if(groupDetails) seq_len(length(unique(group(GdObject)))) else seq_len(length(GdObject))
                   j <- 1
-                  for(i in seq_len(length(GdObject))[selection]) {
+                  pres <- list()
+                  hasError <- FALSE
+                  for(i in indices[selection]) {
                       pushViewport(viewport(width=1/len*w, x=((1/len*j)-1/len)+(v), just=c(0, 0.5)))
                       grid.rect(gp=gpar(col=border.col, lwd=border.lwd, lty=border.lty, fill=border.fill))
-                      args$start <- start(GdObject[i])
-                      args$end <- end(GdObject[i])
-                      args$strand <- strand(GdObject[i])
-                      args$chromosome <- chromosome(GdObject[i])
-                      args$identifier <- identifier(GdObject[i], lowest=TRUE)
-                      args$index <- i
-                      args$GdObject <- GdObject
-                      do.call(GdObject@fun, args)
+                      iargs <- as.list(adf[i,])
+                      iargs$index <- i
+                      iargs$GdObject <- GdObject
+                      iargs$GdObject.original <- .dpOrDefault(GdObject, ".__OriginalGdObject", GdObject)
+                      args <- c(args[setdiff(names(args), names(iargs))], iargs)
+                      pres[[j]] <- try(do.call(GdObject@fun, args), silent=TRUE)
+                      if(is(pres[[j]], "try-error")){
+                          hasError <- TRUE
+                          grid.segments(x0=c(0.1,0.1), x1=c(0.9,0.9), y0=c(0.9,0.1), y1=c(0.1,0.9), gp=gpar(col="red", lwd=3))
+                      }
                       popViewport(1)
                       j <- j+1
                   }
+                  if(hasError)
+                      warning("There have been errors in the detail plotting function:\n", paste(pres, collapse="\n"))
                   popViewport(1)
                   ## plot AnnotationTrack and connectors to details
                   pushViewport(viewport(xscale=c(minBase, maxBase),

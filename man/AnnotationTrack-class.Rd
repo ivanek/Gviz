@@ -176,7 +176,12 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 	of plotting.}
 
        \item{\code{GdObject}: a reference to the currently plotted
-       \code{DetailsAnnotationTrack} object.}
+	 \code{DetailsAnnotationTrack} object.}
+
+        \item{\code{GdObject.original}: a reference to the
+          \code{DetailsAnnotationTrack} before any processing like item
+          collapsing has taken place. Essentially, this is the track
+          object as it exists in your working environment.}
       
     }
     
@@ -1373,8 +1378,11 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       vertical extension of the whole track and of the details section,
       this allows for some fairly generic resizing of the tiles.}
   
-    \item{}{\code{detailsFunArgs=list()}: List.Additional arguments that
+    \item{}{\code{detailsFunArgs=list()}: List. Additional arguments that
       get passed on the the details plotting function.}
+
+    \item{}{\code{groupDetails=FALSE}: Logial scalar. Plot details for
+      feature groups rather than for individual features.}
     
   }
   

@@ -1213,6 +1213,57 @@ it along using the \Rfunarg{detailFunArgs} parameter, or making it
 part of the details function in form of a closure. The class' help
 page provides further instructions.
 
+Another use case for the \Rclass{DetailsAnnotationTrack} class is to
+deal with the problem of very different feature sizes within a single
+track. For instance, we may be looking at a rather large genomic
+region containing one big transcript with many widely spaced exons and
+a bunch of smaller, more compact transcripts. In this case it would be
+helpful to provide a zoomed in version of those smaller
+transcripts. In order to achieve this we can make use of the class'
+\code{groupDetails} display parameter, which applies the detail
+plotting function over each range group rather than over individual
+range items. First we define a function that selects those groups with
+a plotted size smaller than 10 pixels. We make use of the unexported
+function \code{.pxResolution} here to come up with the mapping between
+pixel coordinates and genomic coordinates.
+
+<<DetailsAnnotationTrack5>>=
+selFun <- function(identifier, start, end, track, GdObject, ...){
+    gcount <- table(group(GdObject))
+    ## This computes the width of 2 pixels in genomic coordinates
+    pxRange <- Gviz:::.pxResolution(min.width=20, coord="x")
+    return((end-start)<pxRange && gcount[identifier]==1)
+}
+@
+
+The actual detail plotting function is fairly trivial. In the details
+viewport we simply call \code{plotTracks} function on the subset of
+items from each group that has been selected before without plotting
+the track titles, and also add a scale indicator for some
+reference. It is worth mentioning however that we need to extract the
+ranges of the zoomed in track items from the unmodified track object
+(the \code{Gdobject.original} argument in the details function)
+because the object that is plotted in the lower panel contains only
+the collapsed ranges.
+
+<<DetailsAnnotationTrack6>>=
+detFun <- function(identifier, GdObject.original, ...){
+    plotTracks(list(GenomeAxisTrack(scale=0.3, labelPos="below", size=0.2, cex=0.7), GdObject.original[group(GdObject.original)==identifier]), 
+               add=TRUE, showTitle=FALSE)
+}
+@ 
+
+Finally, we load some sample data, turn it into a \code{DetailsAnnotationTrack} object and plot it.
+
+<<DetailsAnnotationTrack7, results=hide, width=7.5, height=2, fig=TRUE>>=
+data(geneDetails)
+deTrack2 <- AnnotationTrack(range=geneDetails, chromosome=chr, genome=gen, fun=detFun, selectFun=selFun,
+                            groupDetails=TRUE, details.size=0.3, detailsConnector.cex=0.5, detailsConnector.lty="dotted",
+                            shape=c("smallArrow", "arrow"), showId=TRUE)
+plotTracks(deTrack2, extend.left=90000)
+@ 
+
+
 \subsubsection*{Display parameters for DetailsAnnotationTrack objects}
 
 In addtion to the display parameters for the \Rclass{AnnotationTrack}
