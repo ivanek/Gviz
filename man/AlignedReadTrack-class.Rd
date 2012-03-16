@@ -15,7 +15,8 @@
 \alias{split,AlignedReadTrack-method}
 \alias{subset,AlignedReadTrack-method}
 
-\title{AlignedReadTrack class and methods}
+\title{AlignedReadTrack class and methods (NOTE: THIS IS STILL IN
+  DEVELOPMENT AND SUBJECT TO CHANGE)}
 
 \description{
   

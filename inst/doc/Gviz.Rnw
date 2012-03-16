@@ -898,26 +898,121 @@ as there is enough real estate on the plotting canvas to separate all
 items, i.e., we need all items to be at least a single pixel wide to
 correctly display them. This limitation is automatically enforced by
 the \mgg package, however it implies that unless neighbouring items
-are more than 1 pixel appart we can not distinguish between them and
+are more than one pixel appart we can not distinguish between them and
 will inevitably introduce a certain amount of overplotting. This means
 that on a common screen device we can only look at a very limited
 genomic region of a few kb in full resolution. Given that an average
 chromosome is in the order of a few gb, we still need a reasonable way
 to deal with the overplotting problem despite the item stacking
 functionality. As default, the \mgg package will merge all overlapping
-items into one unified meta-item and only plot that. In order to
-indicate the amount of overplotting that's introduced by this process
-we can use the \Rfunarg{showOverplotting} display parameter. It uses a
-color scale (based on the orginal colors defined for the track), whith
-lighter colors indicating areas of low or no overplotting, and more
-saturated colors indicating areas of high overplotting density. We
-exemplify this feature on an \Rclass{AnnotationTrack} object that
-represents a good portion of a real human chromosome.
+items into one unified meta-item and only plot that (see 'Collapse'
+section below for details). In order to indicate the amount of
+overplotting that was introduced by this process we can use the
+\Rfunarg{showOverplotting} display parameter. It uses a color scale
+(based on the orginal colors defined for the track), with lighter
+colors indicating areas of low or no overplotting, and more saturated
+colors indicating areas of high overplotting density. We exemplify
+this feature on an \Rclass{AnnotationTrack} object that represents a
+good portion of a real human chromosome.
 
-<<overplotting,  fig=TRUE, results=hide, width=7.5, height=1>>=
+<<overplotting,  fig=TRUE, results=hide, width=7.5, height=0.75>>=
 data("denseAnnTrack")
 plotTracks(denseAnnTrack, showOverplotting=TRUE)
 @ 
+
+
+
+\subsubsection*{Collapsing}
+All track types that inherit from class \code{AnnotationTrack} support
+the collapsing of overlapping track items, either because they have
+initially been defined as overlapping coordinates, or because the
+current device resolution does not allow to sufficiently separate
+them. For instance, two elements of a feature group may be separated
+by 100 base pairs on the genomic scale, however when plotted to the
+screen, those 100 base pairs translate to a distance of less than one
+pixel. In this case we can no longer show the items as two separate
+entitites. One solution to this problem would be to allow for
+arbitrary overplotting, in which case the last one of the overlapping
+items that is drawn on the device wins. This is not optimal in many
+ways, and it also poses a significant burden on the graphical engine
+because a lot of stuff has to be drawn which no one will ever see.
+
+To this end the \mgg package provides an infrastructure to reasonably
+collapse overlappig items, thereby adjusting the information content
+that can be shown to the available device resolution. By default this
+feature is turned on, and the user does not have to worry too much
+about it. However, one should be aware of the consequences this may
+have on a given visualization. If you absolutely do not want
+collapsing to take place, you may completely turn it off by setting
+the display parameter \code{collapse} to \code{FALSE}. Please note
+that by doing this the \code{showOverplotting} parameter will also
+stop working. If you opt in, there is some considerable amount of
+detailed control to fine tune the collapsing to your needs.
+
+Lets start with a small example track for which element collapsing has
+been turned off and no adjustments to the ranges have been made. We
+plot both the item identifiers and the group identifiers to exemplify
+what is going on.
+
+<<collapse1, fig=TRUE, results=hide, width=7.5, height=0.85>>=
+data(collapseTrack)
+plotTracks(ctrack, extend.left=1800)
+@ 
+
+The first thing to notice is that the for item \code{d} we do see the
+item identifier but not the range itself. This is due to the fact that
+the with of the item is smaller than a single pixel, and hence the
+graphics system can not display it. There are also the two items
+\code{e} and \code{f} which seem to overlay each other completely, and
+another two items which appear to be one joined item (\code{k} and
+\code{l}). Again, this is a resolution issue as their relative
+distance is smaller than a single pixel, so all we see is a single
+range and some ugly overplotted identifiers. We can control the first
+issue by setting the minimum pixel width of a plotted item to be one
+pixel using the \code{min.width} display parameter.
+
+<<collapse2, fig=TRUE, results=hide, width=7.5, height=0.85>>=
+plotTracks(ctrack, extend.left=1800, min.width=1)
+@ 
+
+Now the item \code{d} has a plotable size and can be drawn to the
+device. The overplotted items are still rather anoying, but the only way to
+get rid of those is to turn item collapsing back on.
+ 
+<<collapse3, fig=TRUE, results=hide, width=7.5, height=0.85>>=
+plotTracks(ctrack, extend.left=1800, min.width=1, collapse=TRUE)
+@
+
+Now all items that could not be separated by at least one pixel have
+been merged into a single meta-item, and the software has taken care
+of the identifiers for you, too. The merging operation is aware of the
+grouping information, so no two groups where joint together. Sometimes
+a single pixel width or a single pixel distance is not enough to get a
+good visualization. In these cases one could decide to enforce even
+larger vakues. We can do this not only for the minimum width, but
+also for the minimum distance by setting the \code{min.distance}
+parameter.
+
+<<collapse4, fig=TRUE, results=hide, width=7.5, height=0.85>>=
+plotTracks(ctrack, extend.left=1800, min.width=3, min.distance=5, collapse=TRUE)
+@
+
+This time also the two items \code{b} and \code{c} have been merged,
+and all ranges are now at least 3 pixels wide. Depending on the
+density of items on the plot even this reduction can be
+insufficient. Because we did not merge complete groups we might still
+end up with quite a lot of stacks to accomodate all the
+information. To this end the display parameter \code{mergeGroups} can
+be used to disable absolute group separation. Rather than blindly
+merging all groups (as it is done when \code{stacking='dense'})
+however, the software will only join those overlapping group ranges
+for which all items are already merged into a single meta item.
+
+<<collapse5, fig=TRUE, results=hide, width=7.5, height=0.65>>=
+plotTracks(ctrack, extend.left=1800, min.width=3, min.distance=5, collapse=TRUE,
+           mergeGroups=TRUE)
+@
+
 
 \subsubsection*{Display parameters for AnnotationTrack objects}
 
@@ -931,7 +1026,7 @@ addParTable("AnnotationTrack")
 
 \subsection{GeneRegionTrack}
 
-\Rclass{GeneRegionTrack} object are in principle very similar to
+\Rclass{GeneRegionTrack} objects are in principle very similar to
 \Rclass{AnnotationTrack} objects. The only difference is that they are
 a little more gene/transcript centric, both in terms of plotting
 layout and user interaction, and that they define a global start and
@@ -1099,15 +1194,14 @@ details <- function(identifier, ...) {
 }
 @
 
-Finaly, it is as simple as calling the \Rclass{DetailsAnnotationTrack}
-constructor (which mostly resembles the familiar
-\Rclass{AnnotationTrack} constructor), passing along the wrapper function
-and calling \Rfunction{plotTracks}.
+Finaly, it is as simple as calling the \Rclass{AnnotationTrack}
+constructor, passing along the wrapper function and calling
+\Rfunction{plotTracks}.
 
 <<DetailsAnnotationTrack4, results=hide, width=7.5, height=5, fig=TRUE>>=
-deTrack <- DetailsAnnotationTrack(range=probes, genome="hg19", chromosome=7, id=rownames(methylation),
-                                  name="probe details", stacking="squish",
-                                  fun=details)
+deTrack <- AnnotationTrack(range=probes, genome="hg19", chromosome=7, id=rownames(methylation),
+                           name="probe details", stacking="squish",
+                           fun=details)
 plotTracks(deTrack)
 @
 

@@ -19,6 +19,7 @@
 \alias{refGenes}
 \alias{snpLocations}
 \alias{to}
+\alias{ctrack}
 \docType{data}
 \title{
 Data sets

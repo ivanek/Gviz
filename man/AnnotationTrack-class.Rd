@@ -37,18 +37,15 @@
 \section{Objects from the class}{
   
   Objects can be created using the constructor function
-  \code{AnnotationTrack} and \code{DetailsAnnotationTrack}.
+  \code{AnnotationTrack}.
 
 }
 
 \usage{
 
 AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
- id, strand="*", chromosome, genome, stacking="squish", name="AnnotationTrack", ...)
-
-DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
- id, strand="*", chromosome, genome, stacking="squish", name="DetailsAnnotationTrack",
- fun=function(...){}, ...)
+ id, strand="*", chromosome, genome, stacking="squish", name="AnnotationTrack",
+ fun, selectFun, ...)
 
 }
 
@@ -145,11 +142,71 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
+
+  \item{fun}{A function that is being called
+    for each entry in the \code{AnnotationTrack} object. See section
+    'Details' and 'Examples' for further information. When called
+    internally by the plotting machinery, a number of arguments are
+    automatically passed on to this function, and the user needs to make
+    sure that they can all be digested (i.e., either have all of them as
+    formal named function arguments, or gobble up everything that is not
+    needed in \dots). These arguments are:
+    
+    \itemize{
       
-  \item{fun}{A function that creates custom details plots for each
-    element of the AnnotationTrack, see section 'Details'
-    and 'Examples' for further information.}
+      \item{\code{start}: the genomic start coordinate of the range
+	item.}
+      
+      \item{\code{end}: the genomic end coordinates of the range
+	item.}
+      
+      \item{\code{strand}: the strand information for the range item.}
+      
+      \item{\code{chromosome}: the chromosome of the range item.}
+      
+      \item{\code{identifier}: the identifier of the range item, i.e.,
+	the result of calling \code{identifier(DetailsAnnotationTrack,
+	  lowest=TRUE)}. Typically those identifiers are passed on to
+	the object constructor during instantiation as the \code{id}
+	argument.}
+
+      \item{\code{index}: a counter enumerating the ranges. The
+	\code{AnnotationTrack} object is sorted internally for
+	visibility, and the \code{index} argument refers to the index
+	of plotting.}
+
+       \item{\code{GdObject}: a reference to the currently plotted
+       \code{DetailsAnnotationTrack} object.}
+      
+    }
+    
+    Additional arguments can be passed to the plotting function by means
+    of the \code{detailsFunArgs} argument (see below). Note that the
+    plot must use grid graphics (e.g. function in the 'lattice' package
+    or low-level grid functions). To access a data object such a matrix
+    or data frame within the function you can either store it as a
+    variable in the global environment or, to avoid name space
+    conflicts, you can make it part of the function environment by means
+    of a closure. Alternatively, you may want to explicitely stick it
+    into an environment or pass it along in the \code{detailsFunArgs}
+    list. To figure out in your custom plotting function which
+    annotation element is currently being plotted you can either use the
+    identifier which has to be unique for each range element, or you may
+    want to use the genomic position (start/end/strand/chromosome)
+    e.g. if the data is stored in a \code{GRanges} object.
   
+  }
+
+  \item{selectFun}{A function that is being called
+    for each entry in the \code{AnnotationTrack} object with exactly
+    the same arguments as in \code{fun}. The purpose of this function
+    is to decide for each track element whether details should be
+    drawn, and consequently it has to return a single logical
+    scalar. If the return value is \code{TRUE}, details will be drawn
+    for the item, if it is \code{FALSE}, the details strip for the
+    item is omitted.
+  
+  }
   
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
@@ -159,7 +216,10 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
 \value{
 
   The return value of the constructor function is a new object of class
-  \code{AnnotationTrack}.
+  \code{AnnotationTrack} or of class \code{DetailsAnnotationTrack},
+  depending on the constructor arguments. Typically the user will not
+  have to be troubled with this distinction and can rely on the
+  constructor to make the right choice.
   
 }
 
@@ -174,7 +234,7 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
   elements together with any kind of details per feature or element that
   may for instance provide insight on how some complex quantitative
   measurements change accoring to their position in a locus.  If the
-  quantitative data is too complex for a \code{DataTrack} e.g.  because
+  quantitative data is too complex for a \code{DataTrack} e.g. because
   it requires extra space or a trellis-like representation, a
   \code{DetailsAnnotationTrack} can be used instead. Example: An
   \code{AnnotationTrack} shows the positions of a number of probes from
@@ -182,69 +242,27 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
   distribution derived from all samples at each of these probe
   location. Another example usage would be to show for each element of
   an \code{AnnotationTrack} an xy-plot of the signal against some
-  clinical measurement such as blood preassure. The limitation of this
-  type of track is basically only the space of the device you are
-  plotting to.
-	
-  \describe{
-	  
-    \item{}{\code{fun=function(...){}}: A function that is being called
-      for each entry in the \code{AnnotationTrack} object. When called
-      internally by the plotting machinery, a number of arguments are
-      automatically passed on to this function, and the user needs to
-      make sure that they can all be digested (i.e., either have all of
-      them as formal named function arguments, or gobble up everything
-      that is not needed in \dots). These arguments are:
-	    
-      \itemize{
-	      
-	\item{\code{start}: the genomic start coordinate of the range
-	  item.}
-	      
-	\item{\code{end}: the genomic end coordinates of the range
-	  item.}
-	      
-	\item{\code{strand}: the strand information for the range item.}
-	      
-	\item{\code{chromosome}: the chromosome of the range item.}
-	      
-	\item{\code{identifier}: the identifier of the range item, i.e.,
-	  the result of calling \code{identifier(DetailsAnnotationTrack,
-	    lowest=TRUE)}. Typically those identifiers are passed on to
-	  the object constructor during instantiation as the \code{id}
-	  argument.}
-	
-	\item{\code{index}: a counter enumerating the ranges. The
-	  \code{AnnotationTrack} object is sorted internally for
-	  visibility, and the \code{index} argument refers to the index
-	  of plotting.}
-	
-      }
+  clinical measurement such as blood preassure. The limitation for
+  applications of this type of track is basically only the available
+  space of the device you are plotting to.
 
-      Additional arguments can be passed to the plotting function by
-      means of the \code{detailsFunArgs} argument (see below). Note that
-      the plot must use grid graphics (e.g. function in the 'lattice'
-      package or low-level grid functions). To access a data object such
-      a matrix or data frame within the function you can either store it
-      as a variable in the global environment or, to avoid name space
-      conflicts, you can make it part of the function environment by
-      means of a closure. Alternatively, you may want to explicitely
-      stick it into an environment or pass it along in the
-      \code{detailsFunArgs} list. To figure out in your custom plotting
-      function which annotation element is currently being plotted you
-      can either use the identifier which has to be unique for each
-      range element, or you may want to use the genomic position
-      (start/end/strand/chromosome) e.g. if the data is stored in a
-      \code{GRanges} object.  }
-
-    \item{}{\code{detailsFunArgs=list()}: This is a named list, and all
-      list elements are passed along to the plotting function \code{fun}
-      as additional named arguments. Please note that all argument names
-      in the list above are reserved and can not be used in the
-      \code{detailsFunArgs} list. For examples of plotting functions,
-      see the 'Examples' section.  }
-    
-  }	
+  This flexibility is possible by utilizing a simple function model to
+  perform all the detailed plotting. The functionality of this plotting
+  function \code{fun} is totally up to the user, and the function
+  environment is prepared in a way that all necessary information about
+  the plotted annotation feature is available. To restrict the details
+  section to only selected number of annotation features one can supply
+  another function \code{selectFun}, which decides for each feature
+  separatly whether details are available or not. Finally, an arbitrary
+  number of additional arguments can be passed on to these two function
+  by means of the \code{detailsFunArgs} display parameter. This is
+  expected to be a named list, and all list elements are passed along to
+  the plotting function \code{fun} and to the selector function
+  \code{selectFun} as additional named arguments. Please note that some
+  argument names like \code{start}, \code{end} or \code{identifier} are
+  reserved and can not be used in the \code{detailsFunArgs} list. For
+  examples of plotting functions, see the 'Examples' section.
+	
 }
 
 
@@ -279,7 +297,13 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
       \code{\linkS4class{GdObject}}}
   
     \item{\code{fun}:}{A function that is being called for each
-      \code{AnnotationTrack} element to plot details.}  }
+      \code{AnnotationTrack} element to plot details.}
+
+    \item{\code{selectFun}:}{A function that is being called for each
+      \code{AnnotationTrack} element to decide whether details need to
+      be plotted.}
+  
+  }
   
   Additional display parameters are being inherited from the
   \code{\linkS4class{StackedTrack}} parent class.
@@ -292,7 +316,10 @@ DetailsAnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, gr
   
   Class \code{"\linkS4class{RangeTrack}"}, by class "StackedTrack", distance 2.
   
-  Class \code{"\linkS4class{GdObject}"}, by class "StackedTrack", distance 3.
+  Class \code{"\linkS4class{GdObject}"}, by class "StackedTrack",
+  distance3.
+
+  \code{DetailsAnnotationTrack} directly extends \code{AnnotationTrack}.
   
 }
 
@@ -1627,12 +1654,22 @@ details <- function(identifier, ...) {
 	), newpage=FALSE, prefix="plot")
 }
 
-deTrack <- DetailsAnnotationTrack(range=gr, genome="hg19", chromosome=7,
+deTrack <- AnnotationTrack(range=gr, genome="hg19", chromosome=7,
    name="generic annotation with details per entry", stacking="squish",
    fun=details, details.ratio=1)
 
 plotTracks(deTrack)
+
+set.seed(1234)
+deTrack <- AnnotationTrack(range=gr, genome="hg19", chromosome=7,
+   name="generic annotation with details per entry",
+   stacking="squish",fun=details,
+    details.ratio=1, selectFun=function(...){sample(c(FALSE, TRUE), 1)})
+
+plotTracks(deTrack)
+
 }
+
 
 \keyword{classes}
 

@@ -491,26 +491,20 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"),
 ##   o needsRestacking: logical flag indicating whether stacks have to be recomputed
 ##   o split: the original merged annotation (need to workon this, currently not needed)
 ##   o merged: logical vector indicating which of the elements in 'range' constitute fully merged groups 
-.collapseAnnotation <- function(grange, minXDist, elements, GdObject)
+.collapseAnnotation <- function(grange, minXDist, elements, GdObject, offset=0)
 {
     needsRestacking <- TRUE
     annoSplit <- merged <- NULL
     anno <- as.data.frame(grange)
+    for(i in colnames(anno))
+        if(is.factor(anno[,i]))
+            anno[,i] <- as.character(anno[,i])
     cols <- c("strand", "density", "gdensity", "feature", "id", "start", "end", if(is(GdObject, "GeneRegionTrack"))
               c("gene", "exon", "transcript", "symbol", "rank") else "group")
     missing <- which(!cols %in% colnames(anno))
     for(i in missing)
         anno[,cols[missing]] <- if(cols[i]=="density") 1 else NA
-    if(minXDist<1)
-    {
-        ## We have to fake smaller ranges because reduce will merge also neigbouring ranges
-        width(grange) <- width(grange)-1
-        rRed <- reduce(grange, min.gapwidth=minXDist)
-        width(rRed) <- width(rRed)+1
-        width(grange) <- width(grange)+1
-    } else {
-        rRed <- reduce(grange, min.gapwidth=minXDist)
-    }
+    rRed <- reduce(grange, min.gapwidth=minXDist)
     if(length(rRed) < length(grange))
     {
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
@@ -530,7 +524,7 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"),
         rRed <- rRed[-(mapping[identical])]
         index <- mapping[!identical]
         annoSplit <- split(anno[!identical,], index)
-        cid <- function(j) sprintf("[Cluster_%i]  ", j)
+        cid <- function(j) sprintf("[Cluster_%i]  ", j+offset)
         ## FIXME: We could speed this up by running it in C
         newVals <- rbind(newVals, as.data.frame(t(sapply(seq_along(annoSplit), function(i){
             x <- annoSplit[[i]]
@@ -570,7 +564,7 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"),
         elementMetadata(grange2) <- elementMetadata(grange)
         grange <- grange2
     }
-    return(list(range=grange, needsRestacking=needsRestacking, split=annoSplit, merged=merged))
+    return(list(range=grange, needsRestacking=needsRestacking, split=annoSplit, merged=merged, offset=length(annoSplit)))
 }
 
 ## For AnnotationTracks we need to collapse the all regions along with the additional annotation.
@@ -583,7 +577,7 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
               collapse <- .dpOrDefault(GdObject, "collapse", TRUE)
               min.width <- .dpOrDefault(GdObject, "min.width", 2)
               min.distance <- .dpOrDefault(GdObject, "min.distance", 2)
-              minXDist <- ceiling(min.distance*diff)
+              minXDist <- max(0, ceiling(min.distance*diff))
               r <- ranges(GdObject)
               ## Compute native coordinate equivalent to 1 pixel and resize
               rNew <- .resize(r, min.width, diff)
@@ -612,7 +606,7 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
                   if(.dpOrDefault(GdObject, "mergeGroups", FALSE) && any(mergedAnn$merged)){
                       rr <- sort(mergedAnn$range[mergedAnn$merged])
                       strand(rr) <- "*"
-                      mergedAnn2 <- .collapseAnnotation(rr, minXDist, elements, GdObject)
+                      mergedAnn2 <- .collapseAnnotation(rr, minXDist, elements, GdObject, mergedAnn$offset)
                       needsRestacking <- needsRestacking || mergedAnn2$needsRestacking
                       mergedAnn$range <- c(mergedAnn$range[!mergedAnn$merged], mergedAnn2$range)
                   }
@@ -1136,7 +1130,7 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
     color <- .getBiotypeColor(GdObject)
     id <- identifier(GdObject, lowest=TRUE)
     sel <- grepl("\\[Cluster_[0-9]*\\]", id)
-    id[sel] <- sprintf("%i merged %s", as.integer(.getAnn(GdObject, "density")[sel]),
+    id[sel] <- sprintf("%i merged\n%s", as.integer(.getAnn(GdObject, "density")[sel]),
                        ifelse(class(GdObject) %in% c("AnnotationTrack", "DetailsAnnotationTrack"), "features", "exons"))
     boxes <- data.frame(cx1=start(GdObject), cy1=ylim[1]+space+offsets, cx2=end(GdObject), cy2=ylim[2]-space+offsets,
                         fill=color, strand=strand(GdObject), text=id, textX=(start(GdObject)+end(GdObject))/2, textY=middle+offsets,
@@ -1579,76 +1573,98 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
 ## Draw DetailsAnnotationTrack
 ##----------------------------------------------------------------------------------------------------------------------------
 setMethod("drawGD", signature("DetailsAnnotationTrack"),
-          function(GdObject,  minBase, maxBase, prepare=FALSE, ...){	
+          function(GdObject,  minBase, maxBase, prepare=FALSE, ...){
+              args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype=TRUE)
               if ( prepare ) {
                   GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                  GdObject <- GdObject[order(start(GdObject))]
+                  select <- sapply(seq_len(length(GdObject)), function(i){
+                      args$start <- start(GdObject[i])
+                      args$end <- end(GdObject[i])
+                      args$strand <- strand(GdObject[i])
+                      args$chromosome <- chromosome(GdObject[i])
+                      args$identifier <- identifier(GdObject[i], lowest=TRUE)
+                      args$index <- i
+                      args$GdObject <- GdObject
+                      res <- do.call(GdObject@selectFun, args)
+                      if(length(res)!=1 || !is.logical(res))
+                          stop("The result of function selectFun has to be a single logical value")
+                      res
+                  })
+                  displayPars(GdObject) <- list(".__select"=select)
                   return(invisible(GdObject))
               }
-              col <- .dpOrDefault(GdObject, "detailsConnector.col", fromPrototype=T)
-              lty <- .dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype=T)
-              lwd <- .dpOrDefault(GdObject, "detailsConnector.lwd", fromPrototype=T)
-              pch <- .dpOrDefault(GdObject, "detailsConnector.pch", fromPrototype=T)
-              cex <- .dpOrDefault(GdObject, "detailsConnector.cex", fromPrototype=T)
-              border.lty <- .dpOrDefault(GdObject, "detailsBorder.lty", fromPrototype=T)
-              border.lwd <- .dpOrDefault(GdObject, "detailsBorder.lwd", fromPrototype=T)
-              border.col <- .dpOrDefault(GdObject, "detailsBorder.col", fromPrototype=T)
-              border.fill <- .dpOrDefault(GdObject, "detailsBorder.fill", fromPrototype=T)
-              minwidth <- .dpOrDefault(GdObject, "details.minWidth", fromPrototype=T)
-              size <- .dpOrDefault(GdObject, "details.size", fromPrototype=T)
-              xyratio <- .dpOrDefault(GdObject, "details.ratio", fromPrototype=T)
+              col <- .dpOrDefault(GdObject, "detailsConnector.col", fromPrototype=TRUE)
+              lty <- .dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype=TRUE)
+              lwd <- .dpOrDefault(GdObject, "detailsConnector.lwd", fromPrototype=TRUE)
+              pch <- .dpOrDefault(GdObject, "detailsConnector.pch", fromPrototype=TRUE)
+              cex <- .dpOrDefault(GdObject, "detailsConnector.cex", fromPrototype=TRUE)
+              border.lty <- .dpOrDefault(GdObject, "detailsBorder.lty", fromPrototype=TRUE)
+              border.lwd <- .dpOrDefault(GdObject, "detailsBorder.lwd", fromPrototype=TRUE)
+              border.col <- .dpOrDefault(GdObject, "detailsBorder.col", fromPrototype=TRUE)
+              border.fill <- .dpOrDefault(GdObject, "detailsBorder.fill", fromPrototype=TRUE)
+              minwidth <- .dpOrDefault(GdObject, "details.minWidth", fromPrototype=TRUE)
+              size <- .dpOrDefault(GdObject, "details.size", fromPrototype=TRUE)
+              xyratio <- .dpOrDefault(GdObject, "details.ratio", fromPrototype=TRUE)
               if ( 0 >= size || size > 1 ) {
                   warning("details.size must be >0 and <1 - reset to 0.5")
                   size = 0.5
               }
-              len = length(GdObject)
-              if( ((maxBase-minBase)/len)/.pxResolution(coord="x") < minwidth ) {
-                  warning("too much detail for availalbe space (plot fewer annotation or increase details.minWidth)!")
-                  popViewport(1)
-                  GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
-                  return(GdObject)
-              }
-              GdObject <- GdObject[order(start(GdObject))]
+              selection <- .dpOrDefault(GdObject, ".__select", rep(TRUE, length(GdObject)))
+              len <- sum(selection)
+             
               bins <- stacks(GdObject)
               stacks <- max(bins)
-              xloc1 <- (end(GdObject) - start(GdObject))/2+start(GdObject)
-              yloc1 <- (stacks - (bins - 0.5)+1)
-              xloc2 <- ((1/len*seq_len(len))-1/len + (1/len*0.5))
-              yloc2 <- rep(1, len) 
-              ## draw details plots (via user supplied function 'fun')
-              pushViewport(viewport(height=size, y=1-size, just=c(0.5, 0)))
-              w <- 1
-              v <- 0
-              vpl <- vpLocation()
-              r <- vpl$size["width"]/len/vpl$size["height"]
-              if ( r > xyratio ) {
-                  w <- xyratio/r
-                  v <- ((1/len) - (1/len*w))/2
-              }
-              args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype=T)
-              for ( i in 1:length(GdObject) ) {
-                  pushViewport(viewport(width=1/len*w, x=((1/len*i)-1/len)+(v), just=c(0, 0.5)))
-                  grid.rect(gp=gpar(col=border.col, lwd=border.lwd, lty=border.lty, fill=border.fill))
-                  args$start = start(GdObject[i])
-                  args$end = end(GdObject[i])
-                  args$strand = strand(GdObject[i])
-                  args$chromosome = chromosome(GdObject[i])
-                  args$identifier = identifier(GdObject[i], lowest=TRUE)
-                  args$index = i
-                  do.call(GdObject@fun, args)
+              if(len>0){
+                  if( ((maxBase-minBase)/len)/.pxResolution(coord="x") < minwidth ) {
+                      warning("too much detail for available space (plot fewer annotation or increase details.minWidth)!")
+                      popViewport(1)
+                      GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                      return(GdObject)
+                  }
+                  xloc1 <- (end(GdObject) - start(GdObject))/2+start(GdObject)
+                  yloc1 <- (stacks - (bins - 0.5)+1)
+                  xloc2 <- ((1/len*seq_len(len))-1/len + (1/len*0.5))
+                  yloc2 <- rep(1, len) 
+                  ## draw details plots (via user supplied function 'fun')
+                  pushViewport(viewport(height=size, y=1-size, just=c(0.5, 0)))
+                  w <- 1
+                  v <- 0
+                  vpl <- vpLocation()
+                  r <- vpl$size["width"]/len/vpl$size["height"]
+                  if ( r > xyratio ) {
+                      w <- xyratio/r
+                      v <- ((1/len) - (1/len*w))/2
+                  }
+                  j <- 1
+                  for(i in seq_len(length(GdObject))[selection]) {
+                      pushViewport(viewport(width=1/len*w, x=((1/len*j)-1/len)+(v), just=c(0, 0.5)))
+                      grid.rect(gp=gpar(col=border.col, lwd=border.lwd, lty=border.lty, fill=border.fill))
+                      args$start <- start(GdObject[i])
+                      args$end <- end(GdObject[i])
+                      args$strand <- strand(GdObject[i])
+                      args$chromosome <- chromosome(GdObject[i])
+                      args$identifier <- identifier(GdObject[i], lowest=TRUE)
+                      args$index <- i
+                      args$GdObject <- GdObject
+                      do.call(GdObject@fun, args)
+                      popViewport(1)
+                      j <- j+1
+                  }
                   popViewport(1)
+                  ## plot AnnotationTrack and connectors to details
+                  pushViewport(viewport(xscale=c(minBase, maxBase),
+                                        yscale=c(1, stacks+1), clip=FALSE,
+                                        height=1-size, y=0, just=c(.5, 0)))
+                  GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                  grid.segments(x0=unit(xloc1[selection], "native"), x1=xloc2, y0=unit(yloc1[selection], "native"),
+                                y1=yloc2, gp=gpar(col=col, lwd=lwd, lty=lty, cex=cex))
+                  grid.points(x=unit(xloc2, "npc"), y=unit(yloc2, "npc"), gp=gpar(col=col, cex=cex), pch=pch)
+                  grid.points(x=unit(xloc1[selection], "native"), y=unit(yloc1[selection], "native"), gp=gpar(col=col, cex=cex), pch=pch)
+                  popViewport(1)
+              }else{
+                  GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...) 
               }
-              popViewport(1)
-              ## plot AnnotationTrack and connectors to details
-              pushViewport(viewport(xscale=c(minBase, maxBase),
-                                    yscale=c(1, stacks+1), clip=FALSE,
-                                    height=1-size, y=0, just=c(.5, 0)))	
-              GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
-              grid.segments(x0=unit(xloc1, "native"), x1=xloc2, y0=unit(yloc1, "native"),
-                            y1=yloc2, gp=gpar(col=col, lwd=lwd, lty=lty, cex=cex))
-              grid.points(x=unit(xloc2, "npc"), y=unit(yloc2, "npc"), gp=gpar(col=col, cex=cex), pch=pch)
-              grid.points(x=unit(xloc1, "native"), y=unit(yloc1, "native"), gp=gpar(col=col, cex=cex), pch=pch)
-              popViewport(1)
-              
               return(invisible(GdObject))
           })
 ##----------------------------------------------------------------------------------------------------------------------------
