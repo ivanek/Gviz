@@ -1292,7 +1292,6 @@ names(arTrack)
 names(arTrack) <- "foo"
 plotTracks(arTrack)
 
-\dontrun{
 ## Subsetting and splitting
 subTrack <- subset(arTrack, from=110, to=130)
 length(subTrack)
@@ -1330,7 +1329,6 @@ stacking(arTrack) <- "dense"
 ## coercion
 as(arTrack, "data.frame")
 
-}
 }
 \keyword{classes}
 

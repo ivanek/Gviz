@@ -171,7 +171,6 @@ setMethod("[", signature(x="DataTrack"), function(x, i, j) {
 setMethod("[", signature(x="AlignedReadTrack"), function(x, i) {
     if(x@coverageOnly)
         stop("This AlignedReadTrack object contains coverage information only and can not be subset")
-    x <- callNextMethod(x,i)
     x@range <- x@range[i,]
     x <- setCoverage(x)
     return(x)})
