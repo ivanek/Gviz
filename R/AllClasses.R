@@ -1322,6 +1322,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
         args$start <- from
         args$end <- to
     }
+    args <- lapply(args, function(x) if(!length(x))  NULL else x)
     trackObject <- do.call(trackType, args=c(list(chromosome=chromosome, genome=genome, name=name), args))
     return(trackObject)
   }
