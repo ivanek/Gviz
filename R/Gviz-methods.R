@@ -1752,7 +1752,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             agFun <- .aggregator(GdObject)
             if(!is.null(groups) && nlevels(groups)>1)
             {
-                valsS <- matrix(sapply(split(vals, groups), function(x) agFun(t(matrix(x, ncol=ncol(vals))))), nrow=ncol(vals))
+                valsS <- if(ncol(vals)) matrix(sapply(split(vals, groups),
+                                                      function(x) agFun(t(matrix(x, ncol=ncol(vals))))), nrow=ncol(vals)) else{
+                    matrix(nrow=nlevels(groups), ncol=0, dimnames=list(levels(groups)))}
                 displayPars(GdObject) <- list(".__valsS"=valsS)
                 if(stacked==TRUE && is.null(ylim))
                 {
@@ -1817,27 +1819,15 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                                           ".__legFactors"=legFactors)
             popViewport(1)
         }
-        #popViewport(1)
         return(invisible(GdObject))
     }
-    ## We only proceed if there is something to draw within the ranges, but still may have to add the grid
+    ## We only proceed if there is something to draw within the ranges, but still may have to add the grid and the legend.
+    ## Legend drawing causes another viewport for all the other graphics to be opened and will be called after all other
+    ## drawing has finished, hence we call it in on.exit
     if(subset)
         GdObject <- subset(GdObject, from=minBase, to=maxBase)
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
-    if(!length(GdObject))
-    {
-        if ("g" %in% type)
-            panel.grid(h=.dpOrDefault(GdObject, "h", -1), v=.dpOrDefault(GdObject, "v", -1),
-                       col=.dpOrDefault(GdObject, "col.grid", "#e6e6e6"), lty=.dpOrDefault(GdObject, "lty.grid", 1),
-                       lwd=.dpOrDefault(GdObject, "lwd.grid", 1), alpha=alpha)
-        return(invisible(GdObject))
-    }
-    vals <- values(GdObject)
-    ylim <- .dpOrDefault(GdObject, "ylim", range(vals, na.rm=TRUE, finite=TRUE))
-    if(diff(ylim)==0)
-        ylim <- ylim+c(-1,1)
-    ylimExt <- extendrange(r=ylim, f=0.05)
-    ## The optional legend is plotted underneath the data
+    ## The optional legend is plotted below the data
     grpLevels <- .dpOrDefault(GdObject, ".__groupLevels")
     if(.dpOrDefault(GdObject, "legend", FALSE)){
         lSpace <- getPar(GdObject, ".__verticalSpace")
@@ -1876,9 +1866,20 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                  }
                  popViewport(2)
              })
-    } else {
-        #on.exit(popViewport(1))
     }
+    if(!length(GdObject))
+    {
+        if ("g" %in% type)
+            panel.grid(h=.dpOrDefault(GdObject, "h", -1), v=.dpOrDefault(GdObject, "v", -1),
+                       col=.dpOrDefault(GdObject, "col.grid", "#e6e6e6"), lty=.dpOrDefault(GdObject, "lty.grid", 1),
+                       lwd=.dpOrDefault(GdObject, "lwd.grid", 1), alpha=alpha)
+        return(invisible(GdObject))
+    }
+    vals <- values(GdObject)
+    ylim <- .dpOrDefault(GdObject, "ylim", range(vals, na.rm=TRUE, finite=TRUE))
+    if(diff(ylim)==0)
+        ylim <- ylim+c(-1,1)
+    ylimExt <- extendrange(r=ylim, f=0.05)
     pushViewport(viewport(xscale=c(minBase, maxBase), yscale=ylimExt, clip=TRUE))
     ## The plotting parameters, some defaults from the lattice package first
     plot.symbol <- trellis.par.get("plot.symbol")
