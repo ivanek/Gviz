@@ -42,7 +42,7 @@ importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
 importMethodsFrom(methods, coerce, initialize, show)
 
 importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-",
-                  ucscTableQuery)
+                  ucscTableQuery, trackNames, tableNames)
 
 importFrom(Biobase, listLen, rowMax, rowMin)
 
