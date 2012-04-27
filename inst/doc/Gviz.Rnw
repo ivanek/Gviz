@@ -493,7 +493,7 @@ this will be a numeric value between 0 and 1, which is interpreted as
 the fraction of the plotting region used for the scale. The plotting
 method will apply some rounding to come up with reasonable and
 human-readable values. For even more control we can pass in a value
-larger than 0, which is considered to be an absolute range length. In
+larger than 1, which is considered to be an absolute range length. In
 this case, the user is responsible for the scale to actually fit in
 the current plotting range.
 
@@ -606,7 +606,7 @@ takes one or several of the following values:
 
 <<<types, echo=FALSE, results=tex>>=
 types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "smooth", "histogram", "mountain", "boxplot", "gradient", "heatmap"),
-                    Type=c("dot plot", "lines plot", "dot and lines plot", "lines plot ov average (i.e., mean) values", "stair steps (horizontal first)",
+                    Type=c("dot plot", "lines plot", "dot and lines plot", "lines plot of average (i.e., mean) values", "stair steps (horizontal first)",
                            "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "add loess curve", 
                            "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline", "box and whisker plot",
                            "false color image of the summarized values", "false color image of the individual values"))

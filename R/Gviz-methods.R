@@ -964,7 +964,7 @@ setMethod("drawAxis", signature(GdObject="DataTrack"), function(GdObject, ...) {
     type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
                                                             "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
                       several.ok=TRUE)
-    if(.dpOrDefault(GdObject, "legend", FALSE)){
+    if(as.logical(.dpOrDefault(GdObject, "legend", FALSE)) && !is.null(getPar(GdObject, ".__groupLevels"))){
          pushViewport(viewport(y=1, height=unit(1, "npc") - unit(getPar(GdObject, ".__verticalSpace"), "inches"),
                               just=c(0.5, 1)))
          on.exit(popViewport(1))
@@ -1169,7 +1169,7 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
     })
     yloc <- sapply(split((stacks-bins)+1, gp), function(x) unique(x))+0.5
     color <- if(length(grep("__desatCol", values(GdObject)$feature[1])))
-        .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL) else sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
+        .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL) else sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
     bars <- data.frame(sx1=start(grpRanges)[needBar], sx2=end(grpRanges)[needBar], y=yloc[needBar], strand=strand[needBar],
                       col=color[needBar], stringsAsFactors=FALSE)
     labs <- sapply(split(identifier(GdObject, add.space=TRUE), gp), head, 1)
@@ -1250,7 +1250,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     rotation <- .dpOrDefault(GdObject, "rotation", 0)
     fontcolor <- .dpOrDefault(GdObject, "fontcolor", "white")[1]
     cex <- .dpOrDefault(GdObject, "cex", 1)
-    fontcolor.group <- .dpOrDefault(GdObject, "fontcolor.group", Gviz:::.DEFAULT_SHADED_COL)[1]
+    fontcolor.group <- .dpOrDefault(GdObject, "fontcolor.group", .DEFAULT_SHADED_COL)[1]
     cex.group <- .dpOrDefault(GdObject, "cex", 1) * .dpOrDefault(GdObject, "cex.group", 0.6)
     fontsize.group <- .dpOrDefault(GdObject, "fontsize.group", fontsize)
     fontface.group  <- .dpOrDefault(GdObject, "fontface.group", fontface)
@@ -1787,9 +1787,11 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         }
         ## If we want a legend we have to figure out how much vertical space is needed
         grps <- .dpOrDefault(GdObject, "groups")
-        if(is.null(grps) || length(setdiff(type, c("gradient", "mountain", "grid"))) == 0)
+        if(!is.factor(grps))
+            grps <- factor(grps)
+        if(is.null(grps) || length(grps)==1 || length(setdiff(type, c("gradient", "mountain", "grid"))) == 0)
             displayPars(GdObject) <- list(legend=FALSE)
-        if(.dpOrDefault(GdObject, "legend", FALSE)){
+        if(as.logical(as.logical(.dpOrDefault(GdObject, "legend", FALSE))) && nlevels(grps)>1){
             cex <- .dpOrDefault(GdObject, "cex.legend", 0.8)
             fontsize <- .dpOrDefault(GdObject, "fontsize.legend", 12)
             fontface <- .dpOrDefault(GdObject, "fontface.legend", 1)
@@ -1798,7 +1800,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             pushViewport(viewport(width=unit(1, "npc")-unit(0.2,"inches"),
                                   gp=gpar(cex=cex, fontsize=fontsize, fontface=fontface,
                                           lineheight=lineheight)))
-            grps <- levels(factor(grps))
+            grps <- levels(grps)
             legInfo <- .legendInfo()[type,, drop=FALSE]
             for(i in colnames(legInfo))
                 legInfo[,i] <- any(legInfo[,i]) && !any(duplicated(pcols[[i]][1:length(grps)]))
@@ -1829,7 +1831,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
     ## The optional legend is plotted below the data
     grpLevels <- .dpOrDefault(GdObject, ".__groupLevels")
-    if(.dpOrDefault(GdObject, "legend", FALSE)){
+    if(as.logical(.dpOrDefault(GdObject, "legend", FALSE)) && !is.null(grpLevels)){
         lSpace <- getPar(GdObject, ".__verticalSpace")
         pushViewport(viewport(y=1, height=unit(1, "npc") - unit(lSpace, "inches"),
                               just=c(0.5, 1)))
@@ -1840,7 +1842,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                  fontface <- .dpOrDefault(GdObject, "fontface.legend", 1)
                  lineheight <- .dpOrDefault(GdObject, "lineheight.legend", 1)
                  fontfamily <- .dpOrDefault(GdObject, "fontfamily.legend", 1)
-                 fontcolor <- .dpOrDefault(GdObject, "fontcolor.legend", Gviz:::.DEFAULT_SHADED_COL)
+                 fontcolor <- .dpOrDefault(GdObject, "fontcolor.legend", .DEFAULT_SHADED_COL)
                  pushViewport(viewport(y=0, height=unit(lSpace, "inches"), just=c(0.5, 0),
                                        gp=gpar(cex=cex, fontsize=fontsize, fontface=fontface, fontcolor=fontcolor,
                                                lineheight=lineheight)))
@@ -1854,7 +1856,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                      pushViewport(viewport(width=1/dims[2], height=1/dims[1], x=(1/dims[2])*(col-1), y=1-((1/dims[1])*(row-1)), just=c(0,1)))
                      if(length(setdiff(legFactors, c("col")))==0){
                          grid.rect(width=unit(boxSize, "inches"), height=unit(boxSize, "inches"), x=0, just=c(0, 0.5),
-                                   gp=gpar(fill=pcols$col[i], col=Gviz:::.DEFAULT_SHADED_COL))
+                                   gp=gpar(fill=pcols$col[i], col=.DEFAULT_SHADED_COL))
                      } else {
                          if(any(c("pch", "col.symbol") %in% legFactors))
                              panel.points(unit(boxSize/2, "inches"), 0.5, pch=pcols$pch[i], cex=pcols$cex[i], col=pcols$col.symbol[i])
