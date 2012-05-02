@@ -1005,7 +1005,11 @@ name="DataTrack", ...)
       aggregated value. Alternatively, one of the predefined options
       \code{mean}, \code{median} \code{sum}, \code{min}, \code{max} or
       \code{extreme} can be supplied as a character scalar. Defaults
-      to \code{mean}.} 
+      to \code{mean}.}
+    
+     \item{}{\code{aggregateGroups=FALSE}:Logical scalar. Aggregate the
+       values within a sample group using the aggregation funnction
+       specified in the \code{aggregate}parameter.}
 
     \item{}{\code{amount=NULL}: Numeric scalar. Amount of jittering in
       xy-type plots. See \code{\link{panel.xyplot}} for details.} 

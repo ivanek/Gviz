@@ -1064,6 +1064,7 @@ setClass("DataTrack",
                                             groups=NULL,
                                             separator=0,
                                             aggregation="mean",
+                                            aggregateGroups=FALSE,
                                             ylim=NULL,
                                             na.rm=FALSE)))
 

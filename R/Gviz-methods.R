@@ -54,7 +54,7 @@ setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
 setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x)), stringsAsFactors=FALSE))
 setMethod("values", "GenomeAxisTrack", function(x) as.data.frame(values(ranges(x)), stringsAsFactors=FALSE))
-setMethod("values", "DataTrack", function(x) x@data[,seqnames(x) == chromosome(x), drop=FALSE])
+setMethod("values", "DataTrack", function(x) if(sum(dim(x@data))==0) x@data else x@data[,seqnames(x) == chromosome(x), drop=FALSE])
 setReplaceMethod("values", "DataTrack", function(x, value){
     if(!is.matrix(value))
     {
@@ -735,7 +735,19 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
         }
         GdObject@range <- r
         GdObject@data <- sc
-    } 
+    }
+    ## If groups need to be averaged we have to do it here
+    groups <- .dpOrDefault(GdObject, "groups")
+    if(!is.null(groups) && .dpOrDefault(GdObject, "aggregateGroups", FALSE)){
+        if(!is.factor(groups))
+            groups <- factor(groups)
+        agFun <- .aggregator(GdObject)
+        dat <- values(GdObject)
+        rownames(dat) <- groups
+        datNew <- t(sapply(levels(groups), function(x) agFun(t(dat[groups==x,,drop=FALSE])), USE.NAMES=FALSE))
+        GdObject@data <- datNew
+        displayPars(GdObject) <- list(groups=levels(groups))
+    }
     ## Compute native coordinate equivalent to 1 pixel and resize
     r <- .resize(r, min.width, diff)
     ## Collapse overlapping ranges (less than minXDist space between them) including the associated attributes using

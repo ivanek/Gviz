@@ -8,6 +8,8 @@
 .chrName <- function(x)
 {
     x <- sapply(x, function(y){
+        if(!getOption("ucscChromosomeNames"))
+            return(as.character(y))
         xx <- suppressWarnings(as.integer(y))
         if(!is.na(xx))
             y <- xx
@@ -1190,3 +1192,7 @@ availableDisplayPars <- function(class)
 .DEFAULT_LINE_COL <- "black"
 .DEFAULT_SHADED_COL <- "#808080"
 .DEFAULT_SYMBOL_COL <- "#0080FF"
+
+
+## We store some preset in the options on package load
+.onLoad = function(...){options("ucscChromosomeNames"=TRUE)}
