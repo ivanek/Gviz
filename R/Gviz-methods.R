@@ -1820,7 +1820,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             boxSize <-  if(length(setdiff(legFactors, c("col", "cex")))==0) 0.1 else 0.3
             spacing <- 0.1
             hspacing <- 0.02
-            lengths <- as.numeric(convertWidth(stringWidth(grps),"inches"))
+            lengths <- as.numeric(convertWidth(stringWidth(grps),"inches"))/cex
             heights <- as.numeric(convertWidth(stringHeight(grps),"inches"))
             colWidth <- max(lengths + boxSize + spacing*2)
             availSpace <- vpLocation()$isize
