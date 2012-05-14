@@ -1875,7 +1875,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                          if(any(c("lwd", "lty", "col.lines") %in% legFactors))
                              panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i])
                      }
-                     grid.text(x=unit(boxSize+spacing, "inches"), just=c(0, 0.5), label=grpLevels[i], gp=gpar(col=fontcolor))
+                     panel.text(x=unit(boxSize+spacing, "inches"), y=0.5, adj=c(0, 0.5), label=grpLevels[i], gp=gpar(col=fontcolor))
                      popViewport(1)
                  }
                  popViewport(2)

@@ -67,7 +67,7 @@ importFrom(grid, convertHeight, convertWidth, convertX, convertY,
 importFrom(IRanges, IRanges)
 
 importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
-           panel.points, panel.polygon, panel.segments, panel.xyplot,
+           panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
            trellis.par.get)
 
 importFrom(methods, "@<-", as, callNextMethod, getClass, getClassDef, is, new,
