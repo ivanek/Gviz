@@ -1820,7 +1820,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             boxSize <-  if(length(setdiff(legFactors, c("col", "cex")))==0) 0.1 else 0.3
             spacing <- 0.1
             hspacing <- 0.02
-            lengths <- as.numeric(convertWidth(stringWidth(grps),"inches"))/cex
+            lengths <- as.numeric(convertUnit(stringWidth(grps),"inches"))
             heights <- as.numeric(convertWidth(stringHeight(grps),"inches"))
             colWidth <- max(lengths + boxSize + spacing*2)
             availSpace <- vpLocation()$isize
@@ -1873,9 +1873,10 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                          if(any(c("pch", "col.symbol") %in% legFactors))
                              panel.points(unit(boxSize/2, "inches"), 0.5, pch=pcols$pch[i], cex=pcols$cex[i], col=pcols$col.symbol[i])
                          if(any(c("lwd", "lty", "col.lines") %in% legFactors))
-                             panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i])
+                             ##panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i])
+                             grid.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), gp=gpar(col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i]))
                      }
-                     panel.text(x=unit(boxSize+spacing, "inches"), y=0.5, adj=c(0, 0.5), label=grpLevels[i], gp=gpar(col=fontcolor))
+                     grid.text(x=unit(boxSize+spacing, "inches"), y=0.5, adj=c(0, 0.5), label=grpLevels[i], gp=gpar(col=fontcolor))
                      popViewport(1)
                  }
                  popViewport(2)
