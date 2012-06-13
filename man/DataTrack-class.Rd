@@ -20,6 +20,8 @@
 \alias{strand,DataTrack-method}
 \alias{subset,DataTrack-method}
 \alias{strand<-,DataTrack-method}
+\alias{coerce,DataTrack,data.frame-method}
+\alias{coerce,GRanges,DataTrack-method}
 
 \title{DataTrack class and methods}
 
@@ -47,49 +49,95 @@ name="DataTrack", ...)
 }
 
 \arguments{
-  
-  \item{range}{An object of class \code{\linkS4class{IRanges}} or
-    \code{\linkS4class{GRanges}} containing the data coordinates, or an
-    object of class \code{data.frame} with the two mandatory columns
-    'start' and 'end' to be coerced into an \code{IRanges} object. The
-    coordinates (i.e., the length of the \code{IRanges} object) have to
-    match the columns of the data matrix (see below).
-    
-    Alternatively, the \code{range} argument may be missing, in which
-    case the relevant information has to be provided as individual
-    function arguments (see below).
 
+  We tried to keep instantiation of \code{DataTrack} objects as flexible
+  as possible to accomodate different use cases. For instance, one
+  natural way to create a \code{DataTrack} is from an existing
+  \code{\linkS4class{GRanges}} object. In other cases it might be more
+  appropriate to build the object using individual function arguments.
+  
+  \item{range}{
+    
+    An optional meta argument to handle the different input types. If
+    the \code{range} argument is missing, all the relevant information
+    to create the object has to be provided as individual function
+    arguments (see below).
+
+    The different input options are:
+
+    \describe{ 
+
+      \item{}{A \code{GRanges} object: essentially all the necessary
+	information to create a \code{DataTrack} can be contained in a
+	single \code{GRanges} object. The track's coordinates are taken
+	from the \code{start}, \code{end} and \code{seqnames} slots, and
+	the numeric data values can be extracted from additional
+	\code{elementMetadata} columns (please note that non-numeric
+	columns are being ignored with a warning). As a matter of fact,
+	calling the constructor on a \code{GRanges} object without
+	further arguments, e.g.  \code{DataTrack(range=obj)} is
+	equivalent to calling the coerce method \code{as(obj,
+	"DataTrack")}. Alternatively, the \code{GRanges} object may only
+	contain the coordinate information, in which case the numeric
+	data part is expected to be present in the separate \code{data}
+	argument, and the ranges have to match the dimensions of the
+	data matrix. If \code{data} is not \code{NULL}, this will always
+	take precedence over anything defined in the \code{range}
+	argument. See below for details.}
+
+      \item{}{An \code{\linkS4class{IRanges}} object: this is very
+	similar to the above case, except that the numeric data part has
+	to be provided in the separate \code{data} argument. Also the
+	chromosome information must be provided in the
+	\code{chromosome} argument, because neither of the two can
+	be directly encoded in an \code{IRange} object.}
+
+      \item{}{A \code{data.frame} object: the \code{data.frame} needs to
+	contain at least the two mandatory columns \code{start} and
+	\code{end} with the range coordinates. It may also contain a
+	\code{chromosome} column with the chromosome information for
+	each range. If missing it will be drawn from the separate
+	\code{chromosome} argument. All additional numeric columns will
+	be interpreted as data columns, unless the \code{data} argument
+	is explicitely provided.}
+	
+    }
   }
 
   \item{start, end, width}{Integer vectors, giving the start and the end
     end coordinates for the individual track items, or their width. Two
     of the three need to be specified, and have to be of equal length or
-    of length one, in which case this value will be recycled. Otherwise,
-    the usual R recycling rules for vectors do not apply.}
+    of length one, in which case the single value will be recycled
+    accordingly. Otherwise, the usual R recycling rules for vectors do
+    not apply and the function will cast an error.}
   
-  \item{data}{A numeric matrix of data points with number of columns
+  \item{data}{A numeric matrix of data points with the number of columns
     equal to the number of coordinates in \code{range}, or a numeric
-    vector of appropriate length that will be coerced in such a one-row
-    matrix. Each individual row is supposed to contain data of a given
-    sample, where the coordinates for each single observation are
-    constant across samples. Depending on the plotting type of the data
-    (see 'Details' and 'Display Parameters' sections), sample grouping
-    or data aggregation may be available. Alternatively, this can be a
-    character vector of column names that point into the element
-    metadata of the \code{range} object. Naturally, this is only
-    supported if \code{range} is of class \code{\linkS4class{GRanges}}.}
+    vector of appropriate length that will be coerced into such a
+    one-row matrix. Each individual row is supposed to contain data for
+    a given sample, where the coordinates for each single observation
+    are constant across samples. Depending on the plotting type of the
+    data (see 'Details' and 'Display Parameters' sections), sample
+    grouping or data aggregation may be available. Alternatively, this
+    can be a character vector of column names that point into the
+    element metadata of the \code{range} object for
+    subsetting. Naturally, this is only supported when the \code{range}
+    argument is of class \code{GRanges}.}
   
   \item{strand}{Character vector, the strand information for the
     individual track items. Currently this has to be unique for the
-    whole track.}
+    whole track and doesn't really have any visible consequences, but we
+    might decide to make \code{DataTracks} strand-specific at a later
+    stage.}
   
   \item{chromosome}{The chromosome on which the track's genomic ranges
-    are defined. A valid UCSC chromosome identifier. Please note that at
-    this stage only syntactic checking takes place, i.e., the argument
-    value needs to be a single integer, numeric character or a character
-    of the form \code{chrx}, where \code{x} may be any possible
-    string. The user has to make sure that the respective chromosome is
-    indeed defined for the the track's genome.}
+    are defined. A valid UCSC chromosome identifier if
+    \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
+    case only syntactic checking takes place, i.e., the argument value
+    needs to be an integer, numeric character or a character of
+    the form \code{chrx}, where \code{x} may be any possible string. The
+    user has to make sure that the respective chromosome is indeed
+    defined for the the track's genome.}
 
   \item{genome}{The genome on which the track's ranges are
     defined. Usually this is a valid UCSC genome identifier, however
@@ -1323,56 +1371,56 @@ name="DataTrack", ...)
 
   \describe{
     
-    \item{p:}{Simple xy-plot.}
+    \item{}{\code{p}: simple xy-plot.}
     
-    \item{l:}{Lines plot. In the case of multiple samples this plotting
-    type is not overly usefull since the points in the data matrix are
-    connected in column-wise order. Type \code{a} might be more
-    appropriate in these situations.}
+    \item{}{\code{l}: lines plot. In the case of multiple samples this
+      plotting type is not overly usefull since the points in the data
+      matrix are connected in column-wise order. Type \code{a} might be
+      more appropriate in these situations.}
 
-    \item{b:}{Combination of xy-plot and lines plot.}
+    \item{}{\code{b}: combination of xy-plot and lines plot.}
 
-    \item{a:}{Lines plot of the column-wise average values.}
+    \item{}{\code{a}: lines plot of the column-wise average values.}
 
-    \item{s:}{Sort and connect data points along the x-axis}
+    \item{}{\code{s}: sort and connect data points along the x-axis}
 
-    \item{S:}{Sort and connect data points along the y-axis}
+    \item{}{\code{S}: sort and connect data points along the y-axis}
 
-    \item{g:}{Add grid lines. To ensure a consitant look and feel across
-      multiple tracks, grid lines should preferentially be added by using
-      the \code{grid} display parameter.}
+    \item{}{\code{g}: add grid lines. To ensure a consitant look and
+      feel across multiple tracks, grid lines should preferentially be
+      added by using the \code{grid} display parameter.}
 
-    \item{r:}{Add a regression line to the plot.}
+    \item{}{\code{r}: add a regression line to the plot.}
     
-    \item{h:}{Histogram-like vertical lines centered in the middle of the
-      coordinate ranges.}
+    \item{}{\code{h}: histogram-like vertical lines centered in the
+      middle of the coordinate ranges.}
         
-    \item{smooth:}{Add a loess fit to the plot. The following display
-      parameters can be used to control the loess calculation:
+    \item{}{\code{smooth}: add a loess fit to the plot. The following
+      display parameters can be used to control the loess calculation:
       \code{span, degree, family, evaluation}. See
       \code{\link{panel.loess}} for details.}
 
-    \item{histogram:}{Plot data as a histogram, where the width of the
-      histogram bars reflects the width of the genomic ranges in the
-      \code{range} slot.}
+    \item{}{\code{histogram}: plot data as a histogram, where the width
+      of the histogram bars reflects the width of the genomic ranges in
+      the \code{range} slot.}
 
-    \item{mountain:}{Plot a smoothed version of the data relative to a
-      baseline, as defined by the \code{baseline} display parameter. The
-      following display parameters can be used to control the smoothing:
-      \code{span, degree, family, evaluation}. See
+    \item{}{\code{mountain}: plot a smoothed version of the data
+      relative to a baseline, as defined by the \code{baseline} display
+      parameter. The following display parameters can be used to control
+      the smoothing: \code{span, degree, family, evaluation}. See
       \code{\link{panel.loess}} for details. The layout of the plot can
       be further customized via the following display parameters:
       \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 
 
-    \item{boxplot:}{Plot the data as box-and-whisker plots. The layout of
-      the plot can be further customized via the following display
-      parameters: \code{box.ratio, box.width, varwidt, notch,
-	notch.frac, levels.fos, stats, coef, do.out}. See
+    \item{}{\code{boxplot}: plot the data as box-and-whisker
+      plots. The layout of the plot can be further customized via the
+      following display parameters: \code{box.ratio, box.width, varwidt,
+      notch, notch.frac, levels.fos, stats, coef, do.out}. See
       \code{\link{panel.bwplot}} for details.}
     
     
-    \item{gradient:}{Collapse the data across samples and plot this
+    \item{}{\code{gradient}: collapse the data across samples and plot this
       average value as a color-coded gradient. Essenitally this is
       similar to the heatmap-type plot of a single sample. The layout of
       the plot can be further customized via the display parameters
@@ -1380,22 +1428,14 @@ name="DataTrack", ...)
       gradient colors as well as the gradient base colors,
       respectively.}
     
-    \item{heatmap:}{Plot the color-coded values for all samples in the
-      form of a heatmap. The data for individual samples can be visually
-      separated by setting the \code{separator} display parameter. It's
-      value is taken as the amount of spacing in pixels in between two
-      heatmap rows. The layout of the plot can be further customized via
-      the display parameters \code{ncolor} and \code{gradient} which
-      control the number of gradient colors as well as the gradient base
-      colors, respectively.}
-
-
-    \item{aggregation:}{The aggregation function to be used when
-      averaging in windows or across collapsed items. Either a function
-      which should condense a numeric vector into a single number, or
-      one of the predefined options as character scalars \code{"mean"},
-      \code{"median"} or \code{"sum"} for mean, median or summation,
-      respectively. Defaults to computing mean values for each sample.}
+    \item{}{\code{heatmap}: plot the color-coded values for all samples
+      in the form of a heatmap. The data for individual samples can be
+      visually separated by setting the \code{separator} display
+      parameter. It's value is taken as the amount of spacing in pixels
+      in between two heatmap rows. The layout of the plot can be further
+      customized via the display parameters \code{ncolor} and
+      \code{gradient} which control the number of gradient colors as
+      well as the gradient base colors, respectively.}
     
   }
 
@@ -1409,10 +1449,20 @@ name="DataTrack", ...)
   The \code{window} display parameter can be used to aggregate the data
   prior to plotting. Its value is taken as the number of equal-sized
   windows along the genomic coordinates of the track for which to
-  compute average values. The special value 'auto' can be used to
+  compute average values. The special value \code{auto} can be used to
   automatically determine a reasonable number of windows which can be
   particularly useful when plotting very large genomic regions with many
-  data points. 
+  data points.
+
+  The \code{aggregation} parameter can be set to define the aggregation
+  function to be used when averaging in windows or across collapsed
+  items. It takes the form of either a function which should condense a
+  numeric vector into a single number, or one of the predefined options
+  as character scalars \code{"mean"}, \code{"median"} or \code{"sum"}
+  for mean, median or summation, respectively. Defaults to computing
+  mean values for each sample. Note that the predefined options can be
+  much faster because they are optimized to work on large numeric
+  tables.
   
 }
 
@@ -1458,10 +1508,28 @@ name="DataTrack", ...)
 
 \examples{
 
-# Object construction
+## Object construction:
+## from individual arguments
+dat <- matrix(runif(400), nrow=4)
 dtTrack <- DataTrack(start=seq(1,1000, len=100), width=10,
-data=matrix(runif(400), nrow=4), chromosome=1, genome="mm9",
+data=dat, chromosome=1, genome="mm9",
 name="random data")
+
+## from GRanges
+library(GenomicRanges)
+gr <- GRanges(seqnames="chr1", ranges=IRanges(seq(1,1000, len=100),
+width=10))
+values(gr) <- t(dat)
+dtTrack <- DataTrack(range=gr, genome="mm9", name="random data")
+
+## from IRanges
+dtTrack <- DataTrack(range=ranges(gr), data=dat, genome="mm9",
+name="random data", chromosome=1)
+
+## from a data.frame
+df <- as.data.frame(gr)
+colnames(df)[1] <- "chromosome"
+dtTrack <- DataTrack(range=df,  genome="mm9", name="random data")
 
 \dontshow{
 ## For some annoying reason the postscript device does not know about

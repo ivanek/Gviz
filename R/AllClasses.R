@@ -814,7 +814,6 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
     {
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
         return(.Object)
-                                        #return(callNextMethod(.Object=.Object, range=GRanges(), ...))
     }
     ## changing start and end positions to capture genes on the edges.
     sstart <- start - 2000
@@ -1093,13 +1092,10 @@ setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ..
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
-DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand="*",
+DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome=NULL, strand="*",
                       genome="all", name="DataTrack", ...)
 {
     ## Some default checking
-    if(missing(chromosome))
-        stop("A chromosome must be specified for this annotation track.")
-    chromosome <- .chrName(chromosome)[1]
     if(length(unique(strand))>1)
         stop("The strand has to be unique for all ranges in a DataTrack object.")
     ## Build a GRanges object from the inputs
@@ -1116,18 +1112,31 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
             mt <- is.na(match(data, colnames(values(range))))
             if(any(mt))
                 warning("Unable to match data columns: ", paste(data[mt], collapse=","))
-            mt2 <- sapply(values(range)[,data[!mt], drop=FALSE], is.numeric)
-            if(any(!mt2))
-                 warning("Non-numeric data columns: ", paste(data[!mt2], collapse=","))
-            data <- t(as.data.frame(values(range)[,data[!mt][mt2], drop=FALSE]))
+            ## mt2 <- sapply(values(range)[,data[!mt], drop=FALSE], is.numeric)
+            ## if(any(!mt2))
+            ##      warning("Non-numeric data columns: ", paste(data[!mt2], collapse=","))
+            data <- as.data.frame(values(range)[,data[!mt], drop=FALSE])
         }
-        odim <- if(is.null(dim(data))) c(1, length(data)) else dim(data)
-        if(!is.numeric(data))
-            data <- as.numeric(as.character(data))
-        dim(data) <- odim
-        if(ncol(data) != length(range))
-            stop("The columns in the 'data' matrix must match the genomic regions.")
-    } else data <- matrix(nrow=0, ncol=0)
+        if(is.null(dim(data)))
+            dim(data) <- c(1, length(data))
+        if(is.matrix(data))
+            data <- as.data.frame(t(data))
+    } else {
+        data <- if(ncol(values(range))) as.data.frame(values(range)) else matrix(nrow=0, ncol=0)
+    }
+    for(i in seq_along(data)){
+        if(is.character(data[,i]))
+            data[,i] <- type.convert(data[,i], as.is=TRUE)
+    }
+    isNum <- sapply(data, is.numeric)
+    if(any(!isNum))
+        warning(sprintf("The following non-numeric data column%s been dropped: %s", ifelse(sum(!isNum)>1, "s have", " has"),
+                        paste(colnames(data)[!isNum], collapse=", ")))
+    data <- t(data[,isNum, drop=FALSE])
+    if(ncol(data) != length(range))
+        stop("The columns in the 'data' matrix must match the genomic regions.")
+    if(missing(chromosome) || is.null(chromosome))
+        chromosome <- .chrName(as.character(seqnames(range)[1]))
     values(range) <- NULL
     new("DataTrack", chromosome=chromosome, strand=strand, range=range,
         name=name, genome=genome, data=data, ...)

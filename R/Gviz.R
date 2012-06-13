@@ -7,9 +7,10 @@
 ## Value: the UCSC character name 
 .chrName <- function(x)
 {
-    x <- sapply(x, function(y){
-        if(!getOption("ucscChromosomeNames"))
-            return(as.character(y))
+    if(!getOption("ucscChromosomeNames"))
+        return(as.character(x))
+    xu <- unique(x)
+    xum <- sapply(xu, function(y){
         xx <- suppressWarnings(as.integer(y))
         if(!is.na(xx))
             y <- xx
@@ -18,11 +19,13 @@
         substring(y, 1,3) <- tolower(substring(y, 1,3))
         head <- sapply(y, substring, 1,3) == "chr"
         if(!all(head))
-            stop(sprintf("Invalid chromosome identifier%s '%s'",
+            stop(sprintf(paste("Invalid chromosome identifier%s '%s'\nPlease consider setting options(ucscChromosomeNames=FALSE)",
+                               "to allow for arbitrary chromosome identifiers."),
                          ifelse(sum(!head)>1, "s", ""),
                          paste(y[!head], collapse=", ")))
         y})
-    return(x)
+    names(xum) <- xu
+    return(as.vector(xum[as.character(x)]))
 }
 
 

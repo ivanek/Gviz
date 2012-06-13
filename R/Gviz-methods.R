@@ -54,7 +54,12 @@ setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
 setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x)), stringsAsFactors=FALSE))
 setMethod("values", "GenomeAxisTrack", function(x) as.data.frame(values(ranges(x)), stringsAsFactors=FALSE))
-setMethod("values", "DataTrack", function(x) if(sum(dim(x@data))==0) x@data else x@data[,seqnames(x) == chromosome(x), drop=FALSE])
+setMethod("values", "DataTrack", function(x, all=FALSE){
+    if(sum(dim(x@data))==0) x@data else{
+        sel <- if(all) rep(TRUE, ncol(x@data)) else seqnames(x) == chromosome(x)
+        x@data[,sel, drop=FALSE]
+    }
+})
 setReplaceMethod("values", "DataTrack", function(x, value){
     if(!is.matrix(value))
     {
@@ -2456,6 +2461,15 @@ setAs("GeneRegionTrack", "UCSCData",
 setAs("RangeTrack", "data.frame",
           function(from, to) as(as(ranges(from), "DataFrame"), "data.frame"))
 
+setAs("DataTrack", "data.frame", function(from, to){
+    tmp <- as.data.frame(ranges(from))
+    colnames(tmp)[1] <- "chromosome"
+    tmp <- cbind(tmp, as.data.frame(t(values(from, all=TRUE))))
+    return(tmp)
+})
+
+setAs("GRanges", "DataTrack", function(from, to) DataTrack(range=from))
+
 setAs("InferredDisplayPars", "list",
           function(from, to) {ll <- from@.Data; names(ll) <- names(from); ll})
 
@@ -2571,7 +2585,7 @@ setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrN
 ## For data.frames we need to check for additional arguments (like feature, group, etc.), the chromosome information
 ## and create the final GRanges object
 setMethod(".buildRange", signature("data.frame"),
-          function(range, asIRanges=FALSE, args=list(), defaults=list(), chromosome, ...){
+          function(range, asIRanges=FALSE, args=list(), defaults=list(), chromosome=NULL, ...){
               if(asIRanges){
                   range <- .fillWithDefaults(range, defaults, args, len=nrow(range), ignore=setdiff(names(defaults), c("start", "end")))
                   return(IRanges(start=as.integer(range$start), end=as.integer(range$end)))
@@ -2579,9 +2593,12 @@ setMethod(".buildRange", signature("data.frame"),
               mandArgs <- c("start", "end", names(defaults))
               missing <- setdiff(mandArgs, colnames(range))
               range <- .fillWithDefaults(range, defaults[missing], args[missing], len=nrow(range))
-              snames <- if(missing(chromosome)){ if(is.null(range$id)) "dummy" else range$id } else chromosome
+              snames <- if(missing(chromosome) || is.null(chromosome)){
+                  if(is.null(range$chromosome)){if(is.null(range$id)) stop("Unable to find chromosome information in any of the arguments") else{
+                      range$id}} else range$chromosome} else chromosome
+              snames <- .chrName(snames)
               grange <- GRanges(ranges=IRanges(start=range$start, end=range$end), strand=range$strand, seqnames=snames)
-              elementMetadata(grange) <- range[,setdiff(colnames(range), c("start", "end", "strand"))]
+              elementMetadata(grange) <- range[,setdiff(colnames(range), c("start", "end", "strand", "width", "chromosome"))]
               return(grange)})
 
 
@@ -2606,11 +2623,12 @@ setMethod(".buildRange", signature("GRanges"),
 
 ## For IRanges we need to deal with additional arguments (like feature, group, etc.) and create the final GRanges object
 setMethod(".buildRange", signature("IRanges"),
-          function(range, asIRanges=FALSE, args=list(), defaults=list(), chromosome, strand, ...){
+          function(range, asIRanges=FALSE, args=list(), defaults=list(), chromosome=NULL, strand, ...){
               if(asIRanges)
                   return(range)
-              range <- GRanges(seqnames=if(missing(chromosome)) "dummy" else chromosome, range=range,
-                               strand=if(!is.null(args$strand)) args$strand else "*")
+              if(missing(chromosome) || is.null(chromosome))
+                  stop("Unable to find chromosome information in any of the arguments")
+              range <- GRanges(seqnames=.chrName(chromosome), range=range, strand=if(!is.null(args$strand)) args$strand else "*")
               if(length(range))
               {
                   vals <- .fillWithDefaults(defaults=defaults, args=args, len=(length(range)), by=NULL, ignore="strand")
