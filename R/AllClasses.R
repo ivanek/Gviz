@@ -1132,7 +1132,8 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
     if(any(!isNum))
         warning(sprintf("The following non-numeric data column%s been dropped: %s", ifelse(sum(!isNum)>1, "s have", " has"),
                         paste(colnames(data)[!isNum], collapse=", ")))
-    data <- t(data[,isNum, drop=FALSE])
+    if(sum(dim(data))>0)
+        data <- t(data[,isNum, drop=FALSE])
     if(ncol(data) != length(range))
         stop("The columns in the 'data' matrix must match the genomic regions.")
     if(missing(chromosome) || is.null(chromosome))

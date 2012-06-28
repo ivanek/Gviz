@@ -749,7 +749,7 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
         agFun <- .aggregator(GdObject)
         dat <- values(GdObject)
         rownames(dat) <- groups
-        datNew <- t(sapply(levels(groups), function(x) agFun(t(dat[groups==x,,drop=FALSE])), USE.NAMES=FALSE))
+        datNew <- matrix(t(sapply(levels(groups), function(x) agFun(t(dat[groups==x,,drop=FALSE])), USE.NAMES=FALSE)), nrow=nlevels(groups))
         GdObject@data <- datNew
         displayPars(GdObject) <- list(groups=levels(groups))
     }
@@ -1462,8 +1462,8 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
                       default.units="native", just=c("center", "center"))
         ## Calculate the coordinates for the image map
         map <- as.matrix(.getImageMap(coords))
-        rownames(map) <- paste("region", seq_len(nrow(map)), sep="_")
-        tags <- lapply(list(title=rownames(map), start=as.character(start(GdObject)), end=as.character(end(GdObject))),
+        rownames(map) <- make.unique(ids)
+        tags <- lapply(list(title=ids, start=as.character(start(GdObject)), end=as.character(end(GdObject))),
                        function(x){ names(x) <- rownames(map); x})
         imageMap(GdObject) <- ImageMap(coords=map, tags=tags) 
     }
