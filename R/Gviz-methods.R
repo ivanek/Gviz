@@ -1462,6 +1462,8 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
                       default.units="native", just=c("center", "center"))
         ## Calculate the coordinates for the image map
         map <- as.matrix(.getImageMap(coords))
+        if(is.null(ids))
+            ids <- as.character(seq_len(nrow(map)))
         rownames(map) <- make.unique(ids)
         tags <- lapply(list(title=ids, start=as.character(start(GdObject)), end=as.character(end(GdObject))),
                        function(x){ names(x) <- rownames(map); x})
