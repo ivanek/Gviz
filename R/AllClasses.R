@@ -1137,7 +1137,7 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
     if(ncol(data) != length(range))
         stop("The columns in the 'data' matrix must match the genomic regions.")
     if(missing(chromosome) || is.null(chromosome))
-        chromosome <- .chrName(as.character(seqnames(range)[1]))
+        chromosome <- if(sum(dim(data))>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     values(range) <- NULL
     new("DataTrack", chromosome=chromosome, strand=strand, range=range,
         name=name, genome=genome, data=data, ...)
