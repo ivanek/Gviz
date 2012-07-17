@@ -17,6 +17,7 @@
 \alias{names<-,GdObject,character-method}
 \alias{genome<-,GdObject-method}
 \alias{chromosome<-,GdObject-method}
+\alias{isActiveSeq<-,GdObject-method}
 \alias{setPar,GdObject,character-method}
 \alias{setPar,GdObject,list-method}
 \alias{coords,GdObject-method}

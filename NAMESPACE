@@ -9,6 +9,8 @@ importClassesFrom(biomaRt, Mart)
 
 importClassesFrom(GenomicRanges, GRanges)
 
+importClassesFrom(GenomicFeatures, "TranscriptDb")
+
 importClassesFrom(IRanges, IRanges, GroupedIRanges, NormalIRanges)
 
 importClassesFrom(methods, ANY, character, className, data.frame, environment,
@@ -27,6 +29,8 @@ importMethodsFrom(BiocGenerics, cbind, duplicated, eval, intersect, lapply,
                   mapply, order, paste, pmax, pmin, rbind, sapply, setdiff,
                   table, tapply, unique)
 
+importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transcriptsBy, transcripts)
+
 importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-",
                   seqlengths, seqnames, strand, "strand<-")
 
@@ -37,7 +41,8 @@ importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   Rle, rownames, "rownames<-", runmean, runValue, "runValue<-",
                   score, sort, split, start, "start<-", sub, subjectHits,
                   substring, t, tolower, unlist, values, "values<-", which,
-                  which.max, width, "width<-", elementMetadata, endoapply)
+                  which.max, width, "width<-", elementMetadata, endoapply,
+                  elementLengths)
 
 importMethodsFrom(methods, coerce, initialize, show)
 

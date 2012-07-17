@@ -10,6 +10,7 @@
 \alias{chromosome}
 \alias{chromosome<-,RangeTrack-method}
 \alias{chromosome<-}
+\alias{isActiveSeq,RangeTrack-method}
 \alias{coerce,RangeTrack,data.frame-method}
 \alias{end,RangeTrack-method}
 \alias{end<-,RangeTrack-method}

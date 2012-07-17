@@ -22,6 +22,8 @@
 \alias{setStacks,AnnotationTrack-method}
 \alias{show,AnnotationTrack-method}
 \alias{subset,AnnotationTrack-method}
+\alias{coerce,GRanges,AnnotationTrack-method}
+\alias{coerce,GRangesList,AnnotationTrack-method}
 
 \title{AnnotationTrack class and methods}
 
@@ -50,95 +52,130 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 }
 
 \arguments{
+
+  \code{AnnotationTrack} object can be created from a variety of
+  different inputs in order to nicely embed the package into the
+  existing Bioconductor landscape. Since the main components of this
+  class are essentially genomic ranges, the obvious Bioconductor
+  representation is most likely a \code{\linkS4class{GRanges}} object,
+  or, for grouped elements, a \code{\linkS4class{GRangesList}}. However,
+  in certain cases it may be desirable to build the object from
+  individual function arguments.
   
-  \item{range}{An object of class \code{\linkS4class{GRanges}},
-    \code{\linkS4class{IRanges}} or a \code{data.frame} which will be
-    coerced into one. In the former case, there should be at least the
-    following two columns present as \code{elementMetadata}:
-		
-    \describe{
-      
-      \item{}{\code{feature}: a factor indicating the feature type for a
-	given track item. When plotting the track to the device and if a
-	display parameter with the same name as the value of
-	\code{feature} is set, this will be used as the track item's
-	fill color. See \code{\link{grouping}} for details.}
-			
-      \item{}{\code{group}: a factor indicating group membership for a
-	given track item. All items in the same group will be connected
-	when plotting to the device.  See \code{\link{grouping}} for
-	details.}
-			
-      \item{}{\code{id}: a character identifier for a given track
-	item. It's value will be used as the identifier tag when
-	plotting to the device if the display parameter
-	\code{showFeatureId=TRUE}.}
-  
-    }
-		
-    If \code{range} is a \code{data.frame} it needs to contain at least
-    the columns mentioned above as well as these three additional columns:
-		
+  \item{range}{
+    
+    An optional meta argument to handle the different input types. If
+    the \code{range} argument is missing, all the relevant information
+    to create the object has to be provided as individual function
+    arguments (see below).
+
+    The different input options for \code{range} are:
+
     \describe{
 
-      \item{}{\code{start}, \code{end}: the start and end coordinates
-	for the track items.}
-      
-      \item{}{\code{strand}: the strand information for the track
-	items. It may be provided in the form \code{+} for the Watson
-	strand, \code{-} for the Crick strand or \code{*} for either one
-	of the two.}
-      
+      \item{}{A \code{GRanges} object: the genomic ranges for the
+	\code{Annotation} track as well as the optional additional
+	\code{elementMetadata} columns \code{feature}, \code{group} and
+	\code{id} (see description of the individual function parameters
+	below for details). Calling the constructor on a \code{GRanges}
+	object without further arguments, e.g.
+	\code{AnnotationTrack(range=obj)} is equivalent to calling the coerce
+	method \code{as(obj, "AnnotationTrack")}.}
+
+      \item{}{A \code{GRangesList} object: this is very similar to the
+	previous case, except that the grouping information that is part
+	of the list structure is preserved in the
+	\code{AnnotationTrack}. I.e., all the elements within one list
+	item receive the same group id. For consistancy, there is also a
+	coercion method from \code{GRangesLists} \code{as(obj,
+	"AnnotationTrack")}.}
+
+      \item{}{An \code{\linkS4class{IRanges}} object: almost identical
+	to the \code{GRanges} case, except that the chromosome and
+	strand information as well as all additional data has to be
+	provided in the separate \code{chromosome}, \code{strand},
+	\code{feature}, \code{group} or \code{id} arguments, because it
+	can not be directly encoded in an \code{IRange} object. Note
+	that only the former two are mandatory (if not provided
+	explicitely the more or less reasonable default values
+	\code{chromosome=NA} and \code{strand=*} are used. }
+
+      \item{}{A \code{data.frame} object: the \code{data.frame} needs to
+	contain at least the two mandatory columns \code{start} and
+	\code{end} with the range coordinates. It may also contain a
+	\code{chromosome} and a \code{strand} column with the chromosome
+	and strand information for each range. If missing it will be
+	drawn from the separate \code{chromosome} or \code{strand}
+	arguments. In addition, the \code{feature}, \code{group} and
+	\code{id} data can be provided as additional columns. The above
+	comments about potential default values also apply here.}
+
     }
-    
-    Alternatively, the \code{range} argument may be missing, in which
-    case the relevant information has to be provided as individual
-    function arguments (see below).
-    
   }
-	
+  
   \item{start, end, width}{Integer vectors, giving the start and the end
     end coordinates for the individual track items, or their width. Two
     of the three need to be specified, and have to be of equal length or
-    of length one, in which case this value will be recycled. Otherwise,
-    the usual R recycling rules for vectors do not apply.}
+    of length one, in which case this single value will be
+    recycled. Otherwise, the usual R recycling rules for vectors do not
+    apply here.}
 
   \item{feature}{Factor (or other vector that can be coerced into one),
-    giving the feature types for the individual track items. Needs to be
-    of equal length as the \code{start, end} or \code{width} vectors, or
-    of length 1.}
+    giving the feature types for the individual track items. When
+    plotting the track to the device, if a display parameter with the
+    same name as the value of \code{feature} is set, this will be used
+    as the track item's fill color. See \code{\link{grouping}} for
+    details.  Needs to be of equal length as the provided genomic
+    coordinates, or of length 1.}
 
   \item{group}{Factor (or other vector that can be coerced into one),
-    giving the group memberships for the individual track items.  Needs
-    to be of equal length as the \code{start, end} or \code{width}
-    vectors, or of length 1.}
+    giving the group memberships for the individual track items. When
+    plotting to the device, all items in the same group will be
+    connected.  See \code{\link{grouping}} for details. Needs to be of
+    equal length as the provided genomic coordinates, or of length 1.}
 
-  \item{id}{Character vector of track item identifiers. Needs to be of
-    equal length as the \code{start, end} or \code{width} vectors, or of
-    length 1.}
+  \item{id}{Character vector of track item identifiers. When plotting to
+    the device, it's value will be used as the identifier tag if the
+    display parameter \code{showFeatureId=TRUE}. Needs to be of equal
+    length as the provided genomic ranges, or of length 1.}
 
   \item{strand}{Character vector, the strand information for the
-    individual track items.  Needs to be of equal length as the
-    \code{start, end} or \code{width} vectors, or of length 1. Please
-    note that grouped items need to be on the same strand, and erroneous
-    entries will result in casting of an error.}
+    individual track items. It may be provided in the form \code{+} for
+    the Watson strand, \code{-} for the Crick strand or \code{*} for
+    either one of the two. Needs to be of equal length as the provided
+    genomic coordinates, or of length 1. Please note that grouped items
+    need to be on the same strand, and erroneous entries will result in
+    casting of an error.}
 
   \item{chromosome}{The chromosome on which the track's genomic ranges
-    are defined. A valid UCSC chromosome identifier. Please note that at
-    this stage only syntactic checking takes place, i.e., the argument
-    value needs to be a single integer, numeric character or a character
-    of the form \code{chrx}, where \emph{x} may be any
-    possible string. The user has to make sure that the respective
-    chromosome is indeed defined for the the track's genome.}
+    are defined. A valid UCSC chromosome identifier if
+    \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
+    case only syntactic checking takes place, i.e., the argument value
+    needs to be an integer, numeric character or a character of the form
+    \code{chrx}, where \code{x} may be any possible string. The user has
+    to make sure that the respective chromosome is indeed defined for
+    the the track's genome. If not provided here, the constructor will
+    try to construct the chromosome information based on the available
+    inputs, and as a last resort will fall back to the value
+    \code{chrNA}. Please note that by definition all objects in the
+    \code{Gviz} package can only have a single active chromosome at a
+    time (although internally the information for more than one
+    chromosome may be present), and the user has to call the
+    \code{chromosome<-} replacement method in order to change to a
+    different active chromosome.}
 
   \item{genome}{The genome on which the track's ranges are
     defined. Usually this is a valid UCSC genome identifier, however
-    this is not being formally checked at this point.}
+    this is not being formally checked at this point. If not provided
+    here the constructor will try to extract this information from the
+    provided input, and eventually will fall back to the default value
+    of \code{NA}.}
 
   \item{stacking}{The stacking type for overlapping items of the
     track. One in \code{c(hide, dense, squish, pack,full)}. Currently,
-    only hide (don't show the track items, squish (make best use of the
-    available space) and dense (no stacking at all) are implemented.}
+    only squish (make best use of the available space), dense (no
+    stacking, collapse overlapping ranges), and hide (do not show any
+    track items at all) are implemented.}
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
@@ -667,7 +704,9 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       
       
     \item{chromosome}{\code{signature(GdObject="AnnotationTrack")}:
-      return the chromosome for which the track is defined.
+       return the currently active chromosome for which the track is
+       defined. For consistancy with other Bioconductor packages, the
+       \code{isActiveSeq} alias is also provided.
       
       \emph{Usage:}
       
@@ -683,9 +722,12 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
     }
     
     \item{chromosome<-}{\code{signature(GdObject="AnnotationTrack")}:
-      replace the value of the track's chromosome. This has to be a
-      valid UCSC chromosome identifier or an integer or character
-      scalar that can be reasonably coerced into one.
+       replace the value of the track's active chromosome. This has to
+       be a valid UCSC chromosome identifier or an integer or character
+       scalar that can be reasonably coerced into one, unless
+       \code{options(ucscChromosomeNames=FALSE)}. For consistancy with
+       other Bioconductor packages, the \code{isActiveSeq<-} alias is
+       also provided.
       
       \emph{Usage:}
       
@@ -1540,6 +1582,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 }
 
 \examples{
+## An empty object
+AnnotationTrack()
 
 ## Construct from individual arguments
 st <- c(2000000, 2070000, 2100000, 2160000)
@@ -1558,9 +1602,14 @@ annTrack <- AnnotationTrack(range=df, genome="hg19", chromosome=7, name="generic
 
 ## Or from a GRanges object
 gr <- GenomicRanges::GRanges(seqnames="chr7", range=IRanges::IRanges(start=df$start, end=df$end), strand=str)
+genome(gr) <- "hg19"
 IRanges::elementMetadata(gr) <- df[,-(1:3)]
-annTrack <- AnnotationTrack(range=gr, genome="hg19", chromosome=7, name="generic annotation", 
-                             stacking="squish")
+annTrack <- AnnotationTrack(range=gr, name="generic annotation",
+stacking="squish")
+
+## Finally from a GRangesList
+grl <- split(gr, values(gr)$group)
+AnnotationTrack(grl)
 
 \dontshow{
 ## For some annoying reason the postscript device does not know about

@@ -101,6 +101,11 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     displayPars(tmp) <- displayPars(GdObject)
     return(tmp)
 })
+setMethod("isActiveSeq", "RangeTrack", function(x) chromosome(x))
+setReplaceMethod("isActiveSeq", "GdObject", function(x, value){
+    chromosome(x) <- value
+    return(x)
+})
 
 ## Set or extract the genome from a RangeTrack object
 setMethod("genome", "RangeTrack", function(x) x@genome)
@@ -2472,6 +2477,13 @@ setAs("DataTrack", "data.frame", function(from, to){
 
 setAs("GRanges", "DataTrack", function(from, to) DataTrack(range=from))
 
+setAs("GRanges", "AnnotationTrack", function(from, to) AnnotationTrack(range=from))
+setAs("GRangesList", "AnnotationTrack", function(from, to) AnnotationTrack(range=from))
+
+setAs("GRanges", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
+setAs("GRangesList", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
+setAs("TranscriptDb", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
+
 setAs("InferredDisplayPars", "list",
           function(from, to) {ll <- from@.Data; names(ll) <- names(from); ll})
 
@@ -2496,7 +2508,7 @@ setMethod("tail", "InferredDisplayPars", function(x, n=10, ...){
 
 
 ##---------------------------------------------------------------------------------
-## Helper method to build a GRanges object from the input arguments.
+## Helper methods to build a GRanges object from the input arguments.
 ##---------------------------------------------------------------------------------
 ## Coordinates for grouped elements may be passed in as comma-separated values (e.g. "1,5,9"), in which case
 ## we need to split and convert to numerics. This also implies that the additional arguments (like feature, group, etc.)
@@ -2600,7 +2612,9 @@ setMethod(".buildRange", signature("data.frame"),
                       range$id}} else range$chromosome} else chromosome
               snames <- .chrName(snames)
               grange <- GRanges(ranges=IRanges(start=range$start, end=range$end), strand=range$strand, seqnames=snames)
-              elementMetadata(grange) <- range[,setdiff(colnames(range), c("start", "end", "strand", "width", "chromosome"))]
+              if("genome" %in% colnames(range))
+                  genome(grange) <- as.character(range$genome)
+              elementMetadata(grange) <- range[,setdiff(colnames(range), c("start", "end", "strand", "width", "chromosome", "genome"))]
               return(grange)})
 
 
@@ -2616,8 +2630,8 @@ setMethod(".buildRange", signature("GRanges"),
                   for(a in mandArgs)
                   {
                       if(is.null(vals[[a]]))
-                          vals[[a]] <-  if(is.null(defaults[[a]])) stop("The mandatory column '", a, "' is missing with no default") else {
-                              defaults[[a]]}
+                          vals[[a]] <-  if(is.null(args[[a]])){if(is.null(defaults[[a]])) stop("The mandatory column '", a, "' is missing with no default") else {
+                              defaults[[a]]}} else {args[[a]]}
                   }
                   elementMetadata(range) <- vals
               }
@@ -2637,6 +2651,50 @@ setMethod(".buildRange", signature("IRanges"),
                   elementMetadata(range) <- vals
               }
               return(range)})
+
+## For GRangesLists we capture the grouping information from the list structure, unlist and use the GRanges method
+setMethod(".buildRange", signature("GRangesList"),
+          function(range, groupId="group", ...){
+              grps <- rep(names(range), elementLengths(range))
+              range <- unlist(range)
+              names(range) <- NULL
+              values(range)[[groupId]] <- grps
+              return(.buildRange(range=range, ...))})
+
+## For TranscriptDb objects we extract the grouping information and use the GRanges method
+setMethod(".buildRange", signature("TranscriptDb"),
+          function(range, groupId="transcript", tstart, tend, chromosome, ...){
+            
+              ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
+              if(!is.null(chromosome)){
+                  sl <- seqlengths(range)
+                  if(is.null(tstart))
+                      tstart <- rep(1, length(chromosome))
+                  if(is.null(tend)){
+                      tend <- sl[chromosome]+1
+                      tend[is.na(tend)] <- tstart[is.na(tend)]+1
+                  }
+                  sRange <- GRanges(seqnames=chromosome, ranges=IRanges(start=tstart, end=tend))
+              }
+              t2e <- exonsBy(range, "tx")
+              tids <- rep(names(t2e), elementLengths(t2e))
+              t2e <- unlist(t2e)
+              values(t2e)[["tx_id"]] <- tids
+              g2t <- transcriptsBy(range, "gene")
+              gids <- rep(names(g2t), elementLengths(g2t))
+              g2t <- unlist(g2t)
+              values(g2t)[["gene_id"]] <- gids
+              vals <- merge(as.data.frame(values(t2e)[,c("exon_id", "tx_id", "exon_rank")]), as.data.frame(values(g2t)), by="tx_id", all=TRUE)
+              colnames(vals) <- c("transcript", "exon", "rank", "symbol", "gene")
+              txs <- as.data.frame(values(transcripts(range, columns = c("tx_id", "tx_name"))))
+              rownames(txs) <- txs[, "tx_id"]
+              vals$symbol <- txs[as.character(vals$transcript),"tx_name"]
+              vals$id <- vals$exon
+              range <- t2e
+              values(range) <- vals
+              if(!is.null(chromosome))
+                  range <- subsetByOverlaps(range, sRange)
+              return(.buildRange(range=range, chromosome=chromosome, ...))})
 ##---------------------------------------------------------------------------------
 
 

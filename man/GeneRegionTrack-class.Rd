@@ -27,6 +27,9 @@
 \alias{transcript<-,GeneRegionTrack,character-method}
 \alias{transcript}
 \alias{transcript<-}
+\alias{coerce,GRanges,GeneRegionTrack-method}
+\alias{coerce,GRangesList,GeneRegionTrack-method}
+\alias{coerce,TranscriptDb,GeneRegionTrack-method}
 
 \title{GeneRegionTrack class and methods}
 
@@ -48,77 +51,103 @@
 
 GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
                feature="unknown", exon=feature, transcript=feature, gene=feature,
-               symbol=feature, chromosome, genome, stacking="squish",
-               name="GeneRegionTrack", start, end, ...)
+               symbol=feature, chromosome=NULL, genome, stacking="squish",
+               name="GeneRegionTrack", start=NULL, end=NULL, ...)
 
 }
 
 \arguments{
 
-   \item{range}{An object of class \code{\linkS4class{GRanges}},
-    \code{\linkS4class{IRanges}} or a \code{data.frame} which will be
-    coerced into one. In the former case, there may be one or more of
-    the following columns present as \code{elementMetadata}:
-		
+  Since \code{GeneRegionTrack} object are essentially just a specific
+  type of \code{\linkS4class{AnnotationTrack}}, their constructors are
+  quite similar. However, in the case of the \code{GeneRegionTrack}
+  certain assumptions are made about the type of grouping on different
+  levels (see the \code{Details} section for more information). The
+  natural representation for gene model in the Bioconductor world are
+  \code{\linkS4class{TranscriptDb}} objects, and we tried to make it as
+  straight forward as possible to create \code{GeneRegionTracks}
+  starting from those. Building the object from individual function
+  arguments is of course still possible.
+  
+  \item{range}{
+    
+    An optional meta argument to handle the different input types. If
+    the \code{range} argument is missing, all the relevant information
+    to create the object has to be provided as individual function
+    arguments (see below).
+
+    The different input options for \code{range} are:
+
     \describe{
       
-      \item{}{\code{feature}: a factor indicating the feature type for a
-	given track item. When plotting the track to the device and if a
-	display parameter with the same name as the value of
-	\code{feature} is set, this will be used as the track item's
-	fill color. See \code{\link{grouping}} for details.}
-
-      \item{}{\code{gene}: a factor for the gene identifier of a given
-	track item..}
-			
-      \item{}{\code{transcript}: a factor for the transcript identifier
-	of a given track item. All items with the same transcript
-	identifier will be connected when plotting to the device.  See
-	\code{\link{grouping}} for details. Will be used as labels when
-	\code{showId=TRUE}, and \code{geneSymbol=FALSE}.}
-			
-      \item{}{\code{exon}: a factor with the exon identifier for a given
-	track item. It's value will be used as the identifier tag when
-	plotting to the device if the display parameter
-	\code{showExonId=TRUE}.}
-
-      \item{}{\code{symbol}: a factor with human-readable gene name
-	aliases which will be used as labels when
-	\code{showId=TRUE}, and \code{geneSymbol=TRUE}.}
-  
-    }
-		
-    If \code{range} is a \code{data.frame} it needs to contain at least
-    the columns mentioned above as well as these three additional columns:
-		
-    \describe{
-
-      \item{}{\code{start}, \code{end}: the start and end coordinates
-	for the track items.}
+      \item{}{A \code{TranscriptDb} object: all the necessary gene model
+	information including exon locations, transcript groupings and
+	associated gene ids are contained in \code{TranscriptDb}
+	objects, and the coercion between the two is almost completely
+	automated. If desired, the data to be fetch from the
+	\code{TranscriptDb} object can be restricted using the
+	constructor's \code{chromosome}, \code{start} and \code{end}
+	arguments. See below for details. A direct coercion method
+	\code{as(obj, "GeneRegionTrack")} is also available.}
       
-      \item{}{\code{strand}: the strand information for the track
-	items. It may be provided in the form \code{+} for the Watson
-	strand, \code{-} for the Crick strand or \code{*} for either one
-	of the two.}
-      
-    }
-    
-    Alternatively, the \code{range} argument may be missing, in which
-    case the relevant information has to be provided as individual
-    function arguments (see below).
-    
-  }
-	
-  
-  \item{start}{An integer scalar with the genomic start coordinates for
-    the gene model range. If this is missing, the default value will
-    automatically be the smallest value in \code{rstarts}.}
-  
-  \item{end}{An integer scalar with the genomic end coordinates for
-    the gene model range. If this is missing, the default value will
-    automatically be the largest value in \code{rends}.}
+      \item{}{A \code{GRanges} object: the genomic ranges for the
+	\code{GeneRegion} track as well as the optional additional
+	\code{elementMetadata} columns \code{feature},
+	\code{transcript}, \code{gene}, \code{exon} and \code{symbol}
+	(see description of the individual function parameters below for
+	details). Calling the constructor on a \code{GRanges} object
+	without further arguments, e.g.
+	\code{GeneRegionTrack(range=obj)} is equivalent to calling the
+	coerce method \code{as(obj, "GeneRegionTrack")}.}
 
+      \item{}{A \code{GRangesList} object: this is very similar to the
+	previous case, except that the grouping information that is part
+	of the list structure is preserved in the
+	\code{GeneRegionTrack}. I.e., all the elements within one list
+	item receive the same group id. For consistancy, there is also a
+	coercion method from \code{GRangesLists} \code{as(obj,
+	"GeneRegionTrack")}. Please note that unless the necessary
+	information about gene ids, symbols, etc. is present in the
+	individual \code{GRanges} meta data slots, the object will not
+	be particularly useful, because all the identifiers will be set
+	to a common default value.}
+
+      \item{}{An \code{\linkS4class{IRanges}} object: almost identical
+	to the \code{GRanges} case, except that the chromosome and
+	strand information as well as all additional data has to be
+	provided in the separate \code{chromosome}, \code{strand},
+	\code{feature}, \code{transcript},\ code{symbol}, \code{exon} or
+	\code{gene} arguments, because it can not be directly encoded in
+	an \code{IRange} object. Note that only the former two are
+	mandatory (if not provided explicitely the more or less
+	reasonable default values \code{chromosome=NA} and
+	\code{strand=*} are used, but not providing information about
+	the gene-to-transcript relationship or the human-readble symbols
+	renders a lot of the class' functionality useles.}
+
+      \item{}{A \code{data.frame} object: the \code{data.frame} needs to
+	contain at least the two mandatory columns \code{start} and
+	\code{end} with the range coordinates. It may also contain a
+	\code{chromosome} and a \code{strand} column with the chromosome
+	and strand information for each range. If missing it will be
+	drawn from the separate \code{chromosome} or \code{strand}
+	arguments. In addition, the \code{feature}, \code{exon},
+	\code{transcript}, \code{gene} and \code{symbol} data can be
+	provided as additional columns. The above comments about
+	potential default values also apply here.}
+
+    }
+  }	
   
+  \item{start, end}{An integer scalar with the genomic start or end
+    coordinate for the gene model range. If those is missing, the
+    default value will automatically be the smallest (or largest value,
+    respectively) in \code{rstarts} for the currently active
+    chromosome. When building a \code{GeneRegionTrack} from a
+    \code{TranscriptDb} object, these arguments can be used to subset
+    the desired annotation data by genomic coordinates. Please note that
+    in that case the \code{chromosome} parameter must also be set.}
+
   \item{rstarts}{An integer vector of the start coordinates for the
     actual gene model items, i.e., for the individual exons. The
     relationship between exons is handled via the \code{gene} and
@@ -141,36 +170,62 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
     \code{rends} to specify the range coordinates.}
 
    \item{feature}{Factor (or other vector that can be coerced into one),
-    giving the feature types for the individual track exons.}
+    giving the feature types for the individual track exons.  When
+    plotting the track to the device, if a display parameter with the
+    same name as the value of \code{feature} is set, this will be used
+    as the track item's fill color. See \code{\link{grouping}} for
+    details.}
 
-  \item{exon}{Character vector of exon identifiers.}
+  \item{exon}{Character vector of exon identifiers. It's values will be
+    used as the identifier tag when plotting to the device if the
+    display parameter \code{showExonId=TRUE}.}
 
   \item{strand}{Character vector, the strand information for the
-    individual track exons. Please note that all items within a single
+    individual track exons. It may be provided in the form \code{+} for
+    the Watson strand, \code{-} for the Crick strand or \code{*} for
+    either one of the two. Please note that all items within a single
     gene or transcript model need to be on the same strand, and
     erroneous entries will result in casting of an error.}
 
   \item{transcript}{Factor (or other vector that can be coerced into
     one), giving the transcript memberships for the individual track
-    exons.}
+    exons. All items with the same transcript identifier will be
+    visually connected when plotting to the device.  See
+    \code{\link{grouping}} for details. Will be used as labels when
+    \code{showId=TRUE}, and \code{geneSymbol=FALSE}.}
 
   \item{gene}{Factor (or other vector that can be coerced into one),
     giving the gene memberships for the individual track exons.}
 
-  \item{symbol}{Factor (or other vector that can be coerced into one),
-    giving the associated gene symbols for the individual track exons.}
-    
-  \item{chromosome}{The chromosome on which the track's genomic ranges
-    are defined. A valid UCSC chromosome identifier. Please note that at
-    this stage only syntactic checking takes place, i.e., the arguments
-    value needs to be a single integer, numeric character or a character
-    of the form \code{chrx}, where \code{x} may be any possible
-    string. The user has to make sure that the respective chromosome is
-    indeed defined for the the track's genome.}
-  
+  \item{symbol}{ A factor with human-readable gene name aliases which
+    will be used as labels when \code{showId=TRUE}, and
+    \code{geneSymbol=TRUE}.}
+
+   \item{chromosome}{The chromosome on which the track's genomic ranges
+    are defined. A valid UCSC chromosome identifier if
+    \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
+    case only syntactic checking takes place, i.e., the argument value
+    needs to be an integer, numeric character or a character of the form
+    \code{chrx}, where \code{x} may be any possible string. The user has
+    to make sure that the respective chromosome is indeed defined for
+    the the track's genome. If not provided here, the constructor will
+    try to construct the chromosome information based on the available
+    inputs, and as a last resort will fall back to the value
+    \code{chrNA}. Please note that by definition all objects in the
+    \code{Gviz} package can only have a single active chromosome at a
+    time (although internally the information for more than one
+    chromosome may be present), and the user has to call the
+    \code{chromosome<-} replacement method in order to change to a
+    different active chromosome. When creating a \code{GeneRegionTrack}
+    from a \code{TranscriptDb} object, the value of this parameter can
+    be used to subset the data to fetch by chromosome.}
+
   \item{genome}{The genome on which the track's ranges are
     defined. Usually this is a valid UCSC genome identifier, however
-    this is not being formally checked at this point.}
+    this is not being formally checked at this point. If not provided
+    here the constructor will try to extract this information from the
+    provided input, and eventually will fall back to the default value
+    of \code{NA}.}
   
   \item{stacking}{The stacking type for overlapping items of the
     track. One in \code{c(hide, dense, squish, pack,full)}. Currently,
@@ -190,11 +245,11 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
 
   A track containing all gene models in a particular region. The data
   are usually fetched dynamially from an online data store, but it is
-  also possible to manully construct objects from local data. Particular
-  data sources should be implemented as sub-classes, and
-  \code{GeneRegionTrack} is just the commone denominator that is being
-  used for plotting later on. There are several levels of data
-  associated to a \code{GeneRegionTrack}:
+  also possible to manully construct objects from local
+  data. Connections to particular online data sources should be
+  implemented as sub-classes, and \code{GeneRegionTrack} is just the
+  commone denominator that is being used for plotting later on. There
+  are several levels of data associated to a \code{GeneRegionTrack}:
 
  \describe{
 
@@ -203,7 +258,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
      may be extracted using the \code{exon} method.}
    
     \item{transcript level:}{identifiers are stored in the transcript
-      column of the \code{\linkS4class{GRanges}} object.  Data may be
+      column of the \code{\linkS4class{GRanges}} object. Data may be
       extracted using the \code{transcript} method.}
       
     \item{gene level:}{identifiers are stored in the gene column of the
@@ -1599,6 +1654,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
 
 \examples{
 
+## The empty object
+GeneRegionTrack()
+
 ## Load some sample data
 data(cyp2b10)
 
@@ -1607,6 +1665,14 @@ grTrack <- GeneRegionTrack(start=26682683, end=26711643,
 rstart=cyp2b10$start, rends=cyp2b10$end, chromosome=7, genome="mm9",
 transcript=cyp2b10$transcript, gene=cyp2b10$gene, symbol=cyp2b10$symbol,
 name="Cyp2b10", strand=cyp2b10$strand)
+
+## From a TranscriptDb object
+library(GenomicFeatures)
+samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
+txdb <- loadDb(samplefile)
+GeneRegionTrack(txdb)
+GeneRegionTrack(txdb, chromosome="chr4", start=40000, end=50000)
+
 
 \dontshow{
 ## For some annoying reason the postscript device does not know about
@@ -1680,6 +1746,10 @@ group(grTrack)
 group(subTrack) <- "Group 1"
 transcript(subTrack)
 plotTracks(subTrack)
+
+## Collapsing transcripts
+plotTracks(grTrack, collapseTranscripts=TRUE, showId=TRUE,
+extend.left=10000, shape="arrow")
 
 ## Stacking
 stacking(grTrack)

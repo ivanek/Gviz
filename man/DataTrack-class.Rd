@@ -43,7 +43,7 @@
 
 \usage{
 
-DataTrack(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand="*", genome="all",
+DataTrack(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand="*", genome,
 name="DataTrack", ...)
 
 }
@@ -63,33 +63,34 @@ name="DataTrack", ...)
     to create the object has to be provided as individual function
     arguments (see below).
 
-    The different input options are:
+    The different input options for \code{range} are:
 
     \describe{ 
 
       \item{}{A \code{GRanges} object: essentially all the necessary
 	information to create a \code{DataTrack} can be contained in a
 	single \code{GRanges} object. The track's coordinates are taken
-	from the \code{start}, \code{end} and \code{seqnames} slots, and
-	the numeric data values can be extracted from additional
-	\code{elementMetadata} columns (please note that non-numeric
-	columns are being ignored with a warning). As a matter of fact,
-	calling the constructor on a \code{GRanges} object without
-	further arguments, e.g.  \code{DataTrack(range=obj)} is
-	equivalent to calling the coerce method \code{as(obj,
-	"DataTrack")}. Alternatively, the \code{GRanges} object may only
-	contain the coordinate information, in which case the numeric
-	data part is expected to be present in the separate \code{data}
-	argument, and the ranges have to match the dimensions of the
-	data matrix. If \code{data} is not \code{NULL}, this will always
-	take precedence over anything defined in the \code{range}
-	argument. See below for details.}
+	from the \code{start}, \code{end} and \code{seqnames} slots, the
+	genome information from the genome slot, and the numeric data
+	values can be extracted from additional \code{elementMetadata}
+	columns (please note that non-numeric columns are being ignored
+	with a warning). As a matter of fact, calling the constructor on
+	a \code{GRanges} object without further arguments, e.g.
+	\code{DataTrack(range=obj)} is equivalent to calling the coerce
+	method \code{as(obj, "DataTrack")}. Alternatively, the
+	\code{GRanges} object may only contain the coordinate
+	information, in which case the numeric data part is expected to
+	be present in the separate \code{data} argument, and the ranges
+	have to match the dimensions of the data matrix. If \code{data}
+	is not \code{NULL}, this will always take precedence over
+	anything defined in the \code{range} argument. See below for
+	details.}
 
       \item{}{An \code{\linkS4class{IRanges}} object: this is very
-	similar to the above case, except that the numeric data part has
-	to be provided in the separate \code{data} argument. Also the
-	chromosome information must be provided in the
-	\code{chromosome} argument, because neither of the two can
+	similar to the above case, except that the numeric data part now
+	always has to be provided in the separate \code{data}
+	argument. Also the chromosome information must be provided in
+	the \code{chromosome} argument, because neither of the two can
 	be directly encoded in an \code{IRange} object.}
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
@@ -134,14 +135,25 @@ name="DataTrack", ...)
     are defined. A valid UCSC chromosome identifier if
     \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
     case only syntactic checking takes place, i.e., the argument value
-    needs to be an integer, numeric character or a character of
-    the form \code{chrx}, where \code{x} may be any possible string. The
-    user has to make sure that the respective chromosome is indeed
-    defined for the the track's genome.}
+    needs to be an integer, numeric character or a character of the form
+    \code{chrx}, where \code{x} may be any possible string. The user has
+    to make sure that the respective chromosome is indeed defined for
+    the the track's genome. If not provided here, the constructor will
+    try to construct the chromosome information based on the available
+    inputs, and as a last resort will fall back to the value
+    \code{chrNA}. Please note that by definition all objects in the
+    \code{Gviz} package can only have a single active chromosome at a
+    time (although internally the information for more than one
+    chromosome may be present), and the user has to call the
+    \code{chromosome<-} replacement method in order to change to a
+    different active chromosome.}
 
   \item{genome}{The genome on which the track's ranges are
     defined. Usually this is a valid UCSC genome identifier, however
-    this is not being formally checked at this point.}
+    this is not being formally checked at this point. If not provided
+    here the constructor will try to extract this information from the
+    provided input, and eventually will fall back to the default value
+    of \code{NA}.}
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
@@ -605,8 +617,10 @@ name="DataTrack", ...)
       }
     }
 
-    \item{chromosome}{\code{signature(GdObject="DataTrack")}:
-      return the chromosome for which the track is defined.
+    \item{chromosome}{\code{signature(GdObject="DataTrack")}: return the
+      currently active chromosome for which the track is defined. For
+      consistancy with other Bioconductor packages, the
+      \code{isActiveSeq} alias is also provided.
       
       \emph{Usage:}
       
@@ -621,10 +635,13 @@ name="DataTrack", ...)
       }
     }
     
-    \item{chromosome<-}{\code{signature(GdObject="DataTrack")}:
-      replace the value of the track's chromosome. This has to be a
-      valid UCSC chromosome identifier or an integer or character
-      scalar that can be reasonably coerced into one.
+    \item{chromosome<-}{\code{signature(GdObject="DataTrack")}: replace
+      the value of the track's active chromosome. This has to be a valid
+      UCSC chromosome identifier or an integer or character scalar that
+      can be reasonably coerced into one, unless
+      \code{options(ucscChromosomeNames=FALSE)}. For consistancy with
+      other Bioconductor packages, the \code{isActiveSeq<-} alias is
+      also provided.
       
       \emph{Usage:}
       
@@ -1056,8 +1073,8 @@ name="DataTrack", ...)
       to \code{mean}.}
     
      \item{}{\code{aggregateGroups=FALSE}:Logical scalar. Aggregate the
-       values within a sample group using the aggregation funnction
-       specified in the \code{aggregate}parameter.}
+       values within a sample group using the aggregation function
+       specified in the \code{aggregate} parameter.}
 
     \item{}{\code{amount=NULL}: Numeric scalar. Amount of jittering in
       xy-type plots. See \code{\link{panel.xyplot}} for details.} 
@@ -1509,6 +1526,10 @@ name="DataTrack", ...)
 \examples{
 
 ## Object construction:
+
+## An empty object
+DataTrack()
+
 ## from individual arguments
 dat <- matrix(runif(400), nrow=4)
 dtTrack <- DataTrack(start=seq(1,1000, len=100), width=10,

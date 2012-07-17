@@ -909,10 +909,18 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
 
 
 
-
-
-
-
+## Try to extract the (unique) genome information from a GRanges objects with the possibility to fall back to a default value
+.getGenomeFromGRange <- function(range, default=NULL){
+    gn <- genome(range)
+    if(length(unique(gn))>1)
+        warning("Only a single genome is supported for this object. Ignoring additional genome information")
+    if(length(gn)==0 || all(is.na(gn))){
+        if(is.null(default))
+            stop("A genome must be supplied when creating this object.")
+        return(default[1])
+    }
+    return(gn[1])
+}
 
 
 
