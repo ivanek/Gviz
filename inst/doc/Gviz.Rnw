@@ -4,6 +4,8 @@
 %\VignettePackage{Gviz}
 \documentclass[11pt]{article}
 
+\usepackage[utf8]{inputenc} 
+
 \SweaveOpts{keep.source=FALSE,pdf=TRUE,eps=FALSE}
 
 \usepackage{hyperref}
@@ -157,7 +159,7 @@ gen <- genome(cpgIslands)
 atrack <- AnnotationTrack(cpgIslands, name="CpG")
 @
 
-Please note that the \Rfunction{AnnotationTrack} constructor (as mo§st
+Please note that the \Rfunction{AnnotationTrack} constructor (as most
 constructors in this package) is fairly flexible and can accomodate
 many different types of inputs. For instance, the start and end
 coordinates of the annotation features could be passed in as
@@ -364,21 +366,20 @@ options.
 
 \section{Plotting parameters}
 
-Although not implicitely told, we have already made use of the
-plotting parameter facilities in the \mgg package, or, as we will call
-them from now on, the 'display parameters'. Display parameters are
-properties of individual track objects (i.e., of any object inheriting
-from the base \Rclass{GdObject} class). They can either be set during
-object instantiation as additional arguments to the constructor
-functions or, for existing track objects, using the
+Although not implicitely mentioned before, we have already made use of
+the plotting parameter facilities in the \mgg package, or, as we will
+call them from now on, the 'display parameters'. Display parameters
+are properties of individual track objects (i.e., of any object
+inheriting from the base \Rclass{GdObject} class). They can either be
+set during object instantiation as additional arguments to the
+constructor functions or, for existing track objects, using the
 \Rfunction{displayPars} replacement method. In the former case, all
 named arguments that can not be matched to any of the constructor's
 formal arguments are considered to be display paramters, regardless of
-their type or whether they are defined for a particular track
-class or not. The following code example rebuilds our
-\Rclass{GeneRegionTrack} object with a bunch of display parameters set
-and demonstrates the use of the \Rfunction{displayPars} accessor and
-replacement methods.
+their type or whether they are defined for a particular track class or
+not. The following code example rebuilds our \Rclass{GeneRegionTrack}
+object with a bunch of display parameters and demonstrates the use of
+the \Rfunction{displayPars} accessor and replacement methods.
 
 <<displayPars1, fig=TRUE, width=7.5, height=3>>=
 grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model", 
@@ -396,14 +397,14 @@ display parameters for a single plotting operation (rather than the
 permanent setting in the track object) by passing in additional
 arguments to the \Rfunction{plotTracks} function. We have already made
 use of this feature in the previous data plotting type example. It is
-worth mentioning that all display parameters that are passed along
-with the \Rfunction{plotTracks} function apply to all track objects in
-the plot. For some track objects a particular display parameter may
-not make any sense, and in that case it is simply ignored. Also, the settings
-only apply for one single plotting operations and will not be retained
-in the plotted track objects. They do however get precedence over the
-object-internal parameters. The following line of code exemplifies
-this behaviour.
+worth mentioning that all display parameters which are passed along
+with the \Rfunction{plotTracks} function apply to \emph{all} track
+objects in the plot. For some objects classes a particular display
+parameter may not make any sense, and in that case it is simply
+ignored. Also, the settings only apply for one single plotting
+operation and will not be retained in the plotted track objects. They
+do however get precedence over the object-internal parameters. The
+following line of code exemplifies this behaviour.
 
 <<displayPars2, fig=TRUE, width=7.5, height=3>>=
 plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1]-1000, to=lim[2], 
@@ -413,14 +414,14 @@ plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1]-1000, to=lim[2],
 In order to make full use of the flexible parameter system we need to
 know which display parameters control which aspect of which track
 class. The obvious source for this information are the man pages of
-the respective track classes, which list all available parameters and
-a short description of their effect and default values in the
-\Robject{Display Parameters} section. Alternatively, we can use the
-\Rfunction{availableDisplayPars} function, which prints out the
-available parameters for a class in a list-like structure. The single
-argument to the function is either a class name of a track object
-class, or the object itself, in which case its class is automatically
-detected.
+the respective track classes, which list all available parameters
+along with a short description of their effect and default values in
+the \Robject{Display Parameters} section. Alternatively, we can use
+the \Rfunction{availableDisplayPars} function, which prints out the
+available parameters for a class as well as their default values in a
+list-like structure. The single argument to the function is either a
+class name of a track object class, or the object itself, in which
+case its class is automatically detected.
 
 <<displayPars3>>=
 dp <- availableDisplayPars(grtrack)
