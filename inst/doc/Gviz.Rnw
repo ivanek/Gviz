@@ -32,7 +32,7 @@
 \newcommand{\link}[1]{{#1}}
 
 
-\author{Florian Hahne\footnote{fhahne@novartis.com}}
+\author{Florian Hahne\footnote{florian.hahne@novartis.com}}
 \begin{document}
 \title{The \mgg User Guide}
 
@@ -75,21 +75,22 @@ In order to make sense of genomic data one often aims to plot such
 data in a genome browser, along with a variety of genomic annotation
 features, such as gene or transcript models, CpG island, repeat
 regions, and so on. These features may either be extracted from public
-data bases like ENSEMBL or UCSC, or they may be generated or curated in
-house. Many of the currently available genome browsers do a reasonable
-job in displaying these features, and there are options to connect to
-them from within \R (e.g., using the \Rpackage{rtracklayer}
-package). However, none of these solutions offer the flexibility of
-the full \R graphics system to display large numeric data in a
-multitude of different ways. The \mgg package aims to close this gap
-by providing a structured visualization framework to plot any type of
-data along genomic coordinates. It is loosely based on the
-\Rpackage{GenomeGraphs} package by Steffen Durinck and James Bullard,
-however the complete class hierarchy as well as all the plotting
-methods have been restructured in order to increase performance and
-flexibility. All plotting is done using the grid graphics system, and
-several specialized annotation classes allow to integrate publicly
-available genomic annotation data from sources like UCSC or ENSEMBL.
+data bases like ENSEMBL or UCSC, or they may be generated or curated
+in-house. Many of the currently available genome browsers do a
+reasonable job in displaying genome annotation data, and there are
+options to connect to some them from within \R (e.g., using the
+\Rpackage{rtracklayer} package). However, none of these solutions
+offer the flexibility of the full \R graphics system to display large
+numeric data in a multitude of different ways. The \mgg package aims
+to close this gap by providing a structured visualization framework to
+plot any type of data along genomic coordinates. It is loosely based
+on the \Rpackage{GenomeGraphs} package by Steffen Durinck and James
+Bullard, however the complete class hierarchy as well as all the
+plotting methods have been restructured in order to increase
+performance and flexibility. All plotting is done using the grid
+graphics system, and several specialized annotation classes allow to
+integrate publicly available genomic annotation data from sources like
+UCSC or ENSEMBL.
 
 
 \section{Basic Features}
@@ -98,26 +99,37 @@ The fundamental concept behind the \mgg package is similar to the
 approach taken by most genome browsers, in that individual types of
 genomic features or data are represented by separate tracks. Within
 the package, each track constitutes a single object inheriting from
-class \Rclass{gdObject}, and there are constructor functions as well
+class \Rclass{GdObject}, and there are constructor functions as well
 as a broad range of methods to interact with and to plot these
 tracks. When combining multiple objects, the individual tracks will
 always share the same genomic coordinate system, thus taking the
 burden of aligning the plot elements from the user.
 
-It is worth mentioning that tracks in the sense of the \mgg package
-are only defined for a single chromosome on a specific genome, 
-at least during the plotting operation. While
-the package imposes no fixed structure on the chromosome or on the
-genome names, it makes sense to stick to a standaradized naming
-paradigm, in particular when fetching additional annotation
-information from online resources. For the remainder of this vignette,
-we will make use of the UCSC genome and chromosome identifiers, e.g.,
-the \Robject{chr7} chromosome on the mouse \Robject{mm9} genome.
+It is worth mentioning that at a given time tracks in the sense of the
+\mgg package are only defined for a single chromosome on a specific
+genome, at least during the plotting operation. You will later see
+that a track may still contain information for multiple chromosomes,
+however most of this is hidden except for the currently active
+chromosome, and the user will have to explicitely switch the chromsome
+to access the inactive parts. While the package in principle imposes
+no fixed structure on the chromosome or on the genome names, it makes
+sense to stick to a standaradized naming paradigm, in particular when
+fetching additional annotation information from online resources. By
+default this is enforced by a global option
+\code{ucscChromosomeNames}, which is set during package loading and
+which causes the package to check all supplied chromosome names for
+validity in the sense of the UCSC definition (chromosomes have to
+start with the \term{chr} string). You may decide to turn this feature
+off by calling \code{options(ucscChromosomeNames=FALSE)}. For the
+remainder of this vignette however, we will make use of the UCSC
+genome and chromosome identifiers, e.g., the \Robject{chr7} chromosome
+on the mouse \Robject{mm9} genome.
 
 The different track classes will be described in more detail in the
 \Reference{Track classes} section further below. For now, let's just
-take a look at a typical \mgg session. We begin our presentation of
-the available functionality by loading the package:
+take a look at a typical \mgg session to get an idea of what this is
+all about. We begin our presentation of the available functionality by
+loading the package:
 
 <<loadPackage>>=
 library(Gviz)
@@ -137,19 +149,27 @@ first annotation track object. The constructor function
 object.
 
 <<AnnotationTrack>>=
-library(IRanges)
+library(GenomicRanges)
 data(cpgIslands)
-chr <- "chr7"
-gen <- "mm9"
-atrack <- AnnotationTrack(cpgIslands, chromosome=chr, genome=gen, name="CpG")
+class(cpgIslands)
+chr <- as.character(unique(seqnames(cpgIslands)))
+gen <- genome(cpgIslands)
+atrack <- AnnotationTrack(cpgIslands, name="CpG")
 @
 
-Please note that the \Rfunction{AnnotationTrack} constructor is fairly
-flexible and can accomodate many different types of inputs. For
-instance, the start and end coordinates of the annotation features
-could be passed in as individual arguments \Robject{start} and
-\Robject{end}, as a \Rclass{data.frame} or even as a \Rclass{GRanges}
-object. You may want to consult its manual page for more information.
+Please note that the \Rfunction{AnnotationTrack} constructor (as mo§st
+constructors in this package) is fairly flexible and can accomodate
+many different types of inputs. For instance, the start and end
+coordinates of the annotation features could be passed in as
+individual arguments \Robject{start} and \Robject{end}, as a
+\Rclass{data.frame} or even as an \Rclass{IRanges} or
+\Rclass{GRangesList} object. Furthermore, a whole bunch of coercion
+methods are available for the more traditional package users that
+should allow operations along the lines of \code{as(obj,
+  'AnnotationTrack')}. You may want to consult the class' manual page
+for more information, or take a look at the \Reference{Bioconductor
+  integration} section for a listing of the most common data
+structures and their respective counterparts in the \mgg package.
 
 With our first track object being created we may now proceed to the
 plotting. There is a single function \Rfunction{plotTracks} that
@@ -177,8 +197,8 @@ Appart from the relative distance of the Cpg islands, this
 visualization does not tell us much. One obvious next step would be to
 indicate the genomic coordinates we are currently looking at to
 provide some reference. For this purpose, the \mgg package offers the
-\Rclass{GenomeAxisTrack} class. Object from the class can be created
-using the constructor function of the same name. 
+\Rclass{GenomeAxisTrack} class. Objects from the class can be created
+using the constructor function of the same name.
 
 <<GenomeAxisTrack>>=
 gtrack <- GenomeAxisTrack()
@@ -199,29 +219,30 @@ plotTracks(list(gtrack, atrack))
 You may have realized that the genomic axis does not take up half of
 the available vertical plotting space, but only uses the space
 necessary to fit the axis and labels. Also the title region for this
-track is empty. The \mgg package tries to find reasonable defaults for
-all the parameters controlling the look and feel of a plot so that
-apealing visualizations can be created without much
+track is empty. In general, the \mgg package tries to find reasonable
+defaults for all the parameters controlling the look and feel of a
+plots so that apealing visualizations can be created without much
 tinkering. However, all features on the plot including the relative
 track sizes can also be adjusted manually.
 
-As mentioned before in the beginning of this vignette, a track is
-defined for a particular chromosome on a particular genome. We can
-include this information in our plot by means of a chromosome
-ideogram. An ideogram is a simplified visual representation of a
-chromosome, with the different chromosomal bands indicated by color,
-and the centromer (if present) indicated by the shape. The necessary
-information to produce this visualization is stored in online data
-repositories, for instance at UCSC. The \mgg package offers very
-convenient connections to some of these repositories, and the
-\Rclass{IdeogramTrack} constructor function is one example for such a
-connection. With just the information about a valid UCSC genome and
-chromosome, we can directly fetch the chromosome ideogram information
-and construct a dedicated track object that can be visualized by
-\Rfunction{plotTracks}. Please not that you will need a working
-internet connection for this to work, and that fetching data from UCSC
-can take quite a long time, depending on the server load. The \mgg package
-tries to cache as much data as possible to reduce the bandwidth.
+As mentioned before in the beginning of this vignette, a plotted track
+is always defined for exactly one chromosome on a particular
+genome. We can include this information in our plot by means of a
+chromosome ideogram. An ideogram is a simplified visual representation
+of a chromosome, with the different chromosomal staining bands
+indicated by color, and the centromer (if present) indicated by the
+shape. The necessary information to produce this visualization is
+stored in online data repositories, for instance at UCSC. The \mgg
+package offers very convenient connections to some of these
+repositories, and the \Rclass{IdeogramTrack} constructor function is
+one example for such a connection. With just the information about a
+valid UCSC genome and chromosome, we can directly fetch the chromosome
+ideogram information and construct a dedicated track object that can
+be visualized by \Rfunction{plotTracks}. Please not that you will need
+an established internet connection for this to work, and that fetching
+data from UCSC can take quite a long time, depending on the server
+load. The \mgg package tries to cache as much data as possible to
+reduce the bandwidth in future queries.
 
 <<showIdeogramTrack, eval=FALSE>>=
 itrack <- IdeogramTrack(genome=gen, chromosome=chr)
@@ -243,22 +264,23 @@ plotTracks(list(itrack, gtrack, atrack))
 @
 
 Ideogram tracks are the one exception in all of \mgg's track objects
-in that they are not really displayed in the same coordinate system
-like all the other tracks. Instead, the current genomic location is
-indicated on the chromosome by a red box (or a red line if the width
-is too small to fit a box). So far we have only looked at very basic
-annotation features and how to give a point of reference to our
-plots. Naturally, we also want to be able to handle more complex
-genomic features, such as gene models. One potential use case would be
-to utilize gene model information from an existing local
-source. Alternatively, we could dowload such data from one of the
-available online resources like UCSC or ENSEBML, and there are
-constructor functions to handle these tasks. For this example we are
-going to load gene model data from a stored Rclass{data.frame}. The
-track class of choice here is a \Rclass{GeneRegionTrack} object, which
-can be constructed via the constructor function of the same
-name. Similar to the \Rclass{AnnotationTrack} constructor there are
-multiple possible ways to pass in the data.
+in the sense that they are not really displayed on the same coordinate
+system like all the other tracks. Instead, the current genomic
+location is indicated on the chromosome by a red box (or, as in this
+case, a red line if the width is too small to fit a box). So far we
+have only looked at very basic annotation features and how to give a
+point of reference to our plots. Naturally, we also want to be able to
+handle more complex genomic features, such as gene models. One
+potential use case would be to utilize gene model information from an
+existing local source. Alternatively, we could dowload such data from
+one of the available online resources like UCSC or ENSEBML, and there
+are constructor functions to handle these tasks. For this example we
+are going to load gene model data from a stored
+\Rclass{data.frame}. The track class of choice here is a
+\Rclass{GeneRegionTrack} object, which can be created via the
+constructor function of the same name. Similar to the
+\Rclass{AnnotationTrack} constructor there are multiple possible ways
+to pass in the data.
 
 <<GeneRegionTrack, fig=TRUE, width=7.5, height=3>>=
 data(geneModels)
@@ -298,10 +320,10 @@ are a whole bunch of different visualization options for these tracks,
 from dot plots to histograms to box-and-whisker plots. The individual
 rows in a numeric matrix are considered to be different data groups or
 samples, and the columns are the raster intervals in the genomic
-coordinates. Of course, the data points do not have to be evenly
-spaced; each column is associated to a particular genomic
-location. For demonstration purposes we can create a simple
-\Rclass{DataTrack} object from randomly sampled data.
+coordinates. Of course, the data points (or rather the data ranges) do
+not have to be evenly spaced; each column is associated with a
+particular genomic location. For demonstration purposes we can create
+a simple \Rclass{DataTrack} object from randomly sampled data.
 
 <<DataTrack, fig=TRUE, width=7.5, height=4>>=
 set.seed(255)
@@ -314,16 +336,17 @@ plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2]
 @ 
 
 The first thing to notice is that the title panel to the right of the
-plot now contains a y-axis indicating the range of the data track. The
-default plotting type for numeric vectors is a simple dot plot. This
-is by far not the only visualization option, and in a sense it is
-waisting quite a lot of information because the run-length encoded
-ranges are not immediately apparent. We can change the plot type by
-supplying the \Robject{type} argument to \Rfunction{plotTracks}. A
-complete description of the available plotting options is given in
-section \Reference{Track classes}, and a more detailed treatment of
-the so-called 'display parameters' that control the look and feel of a
-track is given in the \Reference{Plotting Parameters} section.
+plot now contains a y-axis indicating the range of the displayed
+data. The default plotting type for numeric vectors is a simple dot
+plot. This is by far not the only visualization option, and in a sense
+it is waisting quite a lot of information because the run-length
+encoded ranges are not immediately apparent. We can change the plot
+type by supplying the \Robject{type} argument to
+\Rfunction{plotTracks}. A complete description of the available
+plotting options is given in section \Reference{Track classes}, and a
+more detailed treatment of the so-called 'display parameters' that
+control the look and feel of a track is given in the
+\Reference{Plotting Parameters} section.
 
 <<DataTrackHist, fig=TRUE, width=7.5, height=4>>=
 plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2], type="histogram")
@@ -1424,7 +1447,9 @@ data(ucscItems)
 <<ucscTrack6, fig=TRUE, results=hide, width=7.5, height=5.5>>=
 plotTracks(list(idxTrack, axTrack, knownGenes, refGenes, ensGenes, cpgIslands,
                 gcContent, conservation, snpLocations), from=from, to=to, showTitle=FALSE)
-@ 
+@
+
+\section{Bioconductor integration}
 
 \section{Composite plots for multiple chromosomes}
 
