@@ -814,7 +814,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       
       
     \item{chromosome}{\code{signature(GdObject="GeneRegionTrack")}:
-      return the chromosome for which the track is defined.
+      return the currently active chromosome for which the track is
+       defined. For consistancy with other Bioconductor packages, the
+       \code{isActiveSeq} alias is also provided.
       
       \emph{Usage:}
       
@@ -830,9 +832,12 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
     }
     
     \item{chromosome<-}{\code{signature(GdObject="GeneRegionTrack")}:
-      replace the value of the track's chromosome. This has to be a
-      valid UCSC chromosome identifier or an integer or character
-      scalar that can be reasonably coerced into one.
+      replace the value of the track's active chromosome. This has to
+       be a valid UCSC chromosome identifier or an integer or character
+       scalar that can be reasonably coerced into one, unless
+       \code{options(ucscChromosomeNames=FALSE)}. For consistancy with
+       other Bioconductor packages, the \code{isActiveSeq<-} alias is
+       also provided.
       
       \emph{Usage:}
       
