@@ -91,7 +91,7 @@
         size <- if(length(type)==1L){ if(type=="gradient") 1 else if(type=="heatmap") nrow(values(x)) else 5} else 5
         return(size)
     }
-    if(is(x, "GenomeAxisTrack") || is(x, "IdeogramTrack"))
+    if(is(x, "GenomeAxisTrack") || is(x, "IdeogramTrack") || is(x, "SequenceTrack"))
     {
         nv <- displayPars(x, "neededVerticalSpace")
         size <- displayPars(x, "size")
@@ -787,7 +787,15 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     if(!is.list(trackList))
         trackList <- list(trackList)
     ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
-    ## size, resolution or plotting ranges
+    ## size, resolution or plotting ranges. Chromosomes should all be the same for all tracks, if not we will force them to
+    ## be set to the first one that can be detected
+    chrms <- unlist(lapply(trackList, Gviz::chromosome))
+    if(is.null(chromosome)){
+        chrms <- if(!is.null(chrms)) chrms[gsub("^chr", "", chrms)!="NA"] else chrms
+        chromosome <- chrms[[1]]
+        if(!is.null(chrms) && length(unique(chrms))!=1)
+            warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '", chromosome, "'", sep="")
+    }
     trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, ...)
     ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
     if(!panel.only && !add)
@@ -889,9 +897,10 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         tmp <- drawGD(trackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], subset=FALSE)
         if(!is.null(tmp))
             map[[(length(map)+1)-i]] <- tmp
-        popViewport(2)
+        popViewport(1)
         if(.dpOrDefault(trackList[[i]], "frame", FALSE))
             grid.rect(gp=gpar(col=.dpOrDefault(trackList[[i]], "col.frame", Gviz:::.DEFAULT_SHADED_COL)))
+        popViewport(1)
     }
  
     popViewport(if(panel.only) 1 else 2)
@@ -1150,7 +1159,8 @@ availableDisplayPars <- function(class)
     if(!is.character(class))
         class <- class(class)
     class <- match.arg(class, c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-                                "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"))
+                                "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack",
+                                "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNSStringSetTrack"))
     parents <- names(getClassDef(class)@contains)
     .makeParMapping()
     pars <- .parMappings[c(parents, class)]

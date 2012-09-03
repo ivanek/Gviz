@@ -13,6 +13,7 @@
 \alias{length,GenomeAxisTrack-method}
 \alias{range,GenomeAxisTrack-method}
 \alias{ranges,GenomeAxisTrack-method}
+\alias{ranges<-,GenomeAxisTrack-method}
 \alias{show,GenomeAxisTrack-method}
 \alias{start,GenomeAxisTrack-method}
 \alias{start<-,GenomeAxisTrack-method}

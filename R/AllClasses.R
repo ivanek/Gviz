@@ -16,6 +16,7 @@ setClassUnion("NumericOrNULL", c("numeric", "NULL"))
 setClassUnion("ListOrEnv", c("list", "environment"))
 setClassUnion("GRangesOrIRanges", c("GRanges", "IRanges"))
 setClassUnion("NULLOrMissing", c("NULL", "missing"))
+setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -469,6 +470,7 @@ setClass("AnnotationTrack",
                              name="AnnotationTrack",
                              dp=DisplayPars(fill="lightblue",
                                             col="transparent",
+                                            col.line="darkgray",
                                             lty="solid",
                                             lwd=1,
                                             lex=1,
@@ -689,10 +691,13 @@ setClass("GeneRegionTrack",
                              end=0,
                              name="GeneRegionTrack",
                              dp=DisplayPars(fill="orange",
+                                            min.distance=0,
+                                            col=NULL,
                                             geneSymbols=TRUE,
                                             showExonId=FALSE,
                                             collapseTranscripts=FALSE,
-                                            shape=c("smallArrow", "box"))))
+                                            shape=c("smallArrow", "box"),
+                                            thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "miRNA", "lincRNA"))))
                                            
 
 ## Making sure all the display parameter defaults are being set
@@ -1382,7 +1387,7 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
     .makeParMapping()
     .Object <- .updatePars(.Object, "AlignedReadTrack")
     .Object <- callNextMethod()
-			.Object <- setCoverage(.Object)
+    .Object <- setCoverage(.Object)
     if(coverageOnly)
     {
       ## from <- min(unlist(lapply(.Object@coverage, function(y) if(length(y)) min(start(y)))))
@@ -1436,3 +1441,128 @@ AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chrom
 
 
 
+##----------------------------------------------------------------------------------------------------------------------
+## SequenceTrack:
+## 
+## A generic track to visualize nucleotide sequences. This class is virtual.
+## Slots:
+##    o chromosome: a character vector giving the active chromosome for which the 
+##	 track is defined. Valid chromosome names are: 
+##          - a single numeric character
+##	    - a string, starting with 'chr', followed by any additional characters
+##    o genome: character giving the reference genome for which the track is defined.
+## A bunch of DisplayPars are set during object instantiation:
+##    o foo: bar
+setClass("SequenceTrack",
+         representation=representation("VIRTUAL",
+                                       chromosome="character",
+                                       genome="character"),
+         contains="GdObject",
+         prototype=prototype(name="Sequence",
+                             dp=DisplayPars(size=NULL,
+                                            fontcolor=getBioColor("DNA_BASES_N"),
+                                            fontsize=10,
+                                            fontface=2,
+                                            lwd=2,
+                                            col="darkgray",
+                                            min.width=2,
+                                            showTitle=FALSE,
+                                            background.title="transparent",
+                                            noLetters=FALSE,
+                                            complement=FALSE,
+                                            add53=FALSE),
+                             genome=as.character(NA),
+                             chromosome="chrNA"))
+
+## Essentially we just update the display parameters here and set the chromosome and the genome
+setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, ...) {
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "SequenceTrack")
+     if(!missing(chromosome) && !is.null(chromosome)){
+        .Object@chromosome <- .chrName(chromosome)[1]
+    }
+    if(missing(genome) || is.null(genome))
+        genome <- as.character(NA)
+    .Object@genome <- genome
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
+})
+
+## We want the following behaviour in the constructor:
+##   a) sequence is missing (NULL) => build SequenceDNAStringSetTrack with chromosome NA and genome as supplied or NA if missing
+##   b) sequence is DNAStringSet => build SequenceDNAStringSetTrack where chromosome is names(sequence)[1] or the supplied
+##      chromosome if available, and genome as supplied or NA if missing
+##   c) sequence is BSgenome => build SequenceBSgenomeTrack where chromosome is seqnames(sequence)[1] or the supplied
+##      chromosome if available, and genome is the supplied genome or the one extracted from the BSgenome object
+SequenceTrack <- function(sequence=NULL, chromosome=NULL, genome, name="Sequence", ...){
+    if(is(sequence, "BSgenome")){
+        if(missing(genome))
+            genome <- providerVersion(sequence)
+        if(is.null(chromosome))
+            chromosome <- seqnames(sequence)[1]
+        obj <- new("SequenceBSgenomeTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
+    }else{
+        if(missing(genome))
+            genome <- as.character(NA)
+        if(!is.null(sequence)){
+            if(is.null(names(sequence)))
+                stop("The sequences in the DNAStringSet must be named")
+            if(any(duplicated(names(sequence))))
+                stop("The sequence names in the DNAStringSet must be unique")
+            if(is.null(chromosome))
+                chromosome <- names(sequence)[1]
+        }
+        obj <- new("SequenceDNAStringSetTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
+    }
+     return(obj)  
+}
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## SequenceDNAStringSetTrack:
+## 
+## A track to visualize nucleotide sequences that are stored in a DNSStringSet
+## Slots:
+##    o sequence: a DNAStringSet object that contains all the sequence data
+##----------------------------------------------------------------------------------------------------------------------
+setClass("SequenceDNAStringSetTrack",
+         representation=representation(sequence="DNAStringSet"),
+         contains="SequenceTrack",
+         prototype=prototype(sequence=DNAStringSet()))
+
+setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
+    if(missing(sequence) || is.null(sequence))
+        sequence <- DNAStringSet()
+    .Object@sequence <- sequence
+    .Object <- callNextMethod(.Object, ...)
+     return(.Object)
+})
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## SequenceBSgenomeTrack:
+## 
+## A track to visualize nucleotide sequences that are stored in a BSgenome package
+## Slots:
+##    o sequence: a DNAStringSet object that contains all the sequence data
+##    o pointerCache: an environemnt to hold pointers to the BSgenome sequences to prevent garbage collection. This
+##       will only be filled once the individual sequences have been accessed for the first time
+##----------------------------------------------------------------------------------------------------------------------
+setClass("SequenceBSgenomeTrack",
+         representation=representation(sequence="BSgenomeOrNULL", pointerCache="environment"),
+         contains="SequenceTrack",
+         prototype=prototype(sequence=NULL))
+
+setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL, ...) {
+    .Object@sequence <- sequence
+    .Object@pointerCache <- new.env()
+    .Object <- callNextMethod(.Object, ...)
+     return(.Object)
+})
+
+##----------------------------------------------------------------------------------------------------------------------

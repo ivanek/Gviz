@@ -7,7 +7,11 @@
 
 importClassesFrom(biomaRt, Mart)
 
+importClassesFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString)
+
 importClassesFrom(GenomicRanges, GRanges)
+
+importClassesFrom(BSgenome, BSgenome)
 
 importClassesFrom(GenomicFeatures, "TranscriptDb")
 
@@ -29,15 +33,17 @@ importMethodsFrom(BiocGenerics, cbind, duplicated, eval, intersect, lapply,
                   mapply, order, paste, pmax, pmin, rbind, sapply, setdiff,
                   table, tapply, unique)
 
+importMethodsFrom(BSgenome, providerVersion)
+
 importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transcriptsBy, transcripts)
 
 importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-",
-                  seqlengths, seqnames, strand, "strand<-")
+                  seqlengths, seqnames, seqlevels, seqinfo, strand, "strand<-", seqnameStyle)
 
 importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
-                  "colnames<-", coverage, diff, disjointBins, end, "end<-",
+                  "colnames<-", coverage, diff, disjointBins, end, "end<-", range,
                   findOverlaps, findRun, gsub, ifelse, "%in%", levels, match,
-                  mean, ncol, nlevels, nrow, queryHits, ranges, reduce, rev,
+                  mean, ncol, nlevels, nrow, queryHits, ranges, "ranges<-", reduce, rev,
                   Rle, rownames, "rownames<-", runmean, runValue, "runValue<-",
                   score, sort, split, start, "start<-", sub, subjectHits,
                   substring, t, tolower, unlist, values, "values<-", which,
@@ -50,6 +56,8 @@ importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-",
                   ucscTableQuery, trackNames, tableNames)
 
 importFrom(Biobase, listLen, rowMax, rowMin)
+
+importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement)
 
 importFrom(BiocGenerics, getObjectSlots)
 
@@ -69,7 +77,7 @@ importFrom(grid, convertHeight, convertWidth, convertX, convertY,
            popViewport, pushViewport, stringHeight, stringWidth, unit,
            upViewport, viewport)
 
-importFrom(IRanges, IRanges)
+importFrom(IRanges, IRanges, subseq)
 
 importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
@@ -84,6 +92,8 @@ importFrom(rtracklayer, GenomicData, ucscGenomes, browserSession)
 
 importFrom(stats, loess.smooth)
 
+importFrom(biovizBase, getBioColor)
+
 importFrom(utils, assignInNamespace, browseURL, head, write.table)
 
 export(".chrName",
@@ -94,6 +104,7 @@ export(".chrName",
        "BiomartGeneRegionTrack",
        "DataTrack",
        "DisplayPars",
+       "drawGD",
        "GeneRegionTrack",
        "GenomeAxisTrack",
        "IdeogramTrack",
@@ -102,7 +113,8 @@ export(".chrName",
        "availableDisplayPars",
        "clearSessionCache",
        "exportTracks",
-       "plotTracks")
+       "plotTracks",
+       "SequenceTrack")
 
 exportClasses("AlignedReadTrack",
               "AnnotationTrack",
@@ -113,7 +125,8 @@ exportClasses("AlignedReadTrack",
               "GeneRegionTrack",
               "GenomeAxisTrack",
               "IdeogramTrack",
-              "ImageMap")
+              "ImageMap",
+              "SequenceTrack")
 
 exportMethods("[",
               "as.list",
@@ -152,6 +165,9 @@ exportMethods("[",
               "range",
               "ranges",
               "score",
+              "seqnames",
+              "seqlevels",
+              "seqinfo",
               "setPar",
               "split",
               "stacking",
@@ -161,6 +177,7 @@ exportMethods("[",
               "start<-",
               "strand",
               "strand<-",
+              "subseq",
               "subset",
               "symbol",
               "symbol<-",

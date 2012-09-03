@@ -312,6 +312,18 @@ when features on a track are too close together to be plotted as
 separate items with the current device resolution, the package will
 try to reasonably merge them in order to avoid overplotting.
 
+When zooming further in it may become intersting to take a look at the
+actual genomic sequence at a given position, and the \mgg package
+provides the track class \Rclass{SequenceTrack} that let's you do
+that. It can draw the necessary sequence information from one of the 
+\Rclass{BSgenome} packages.
+
+<<zooming2, fig=TRUE, width=7.5, height=3.1>>=
+library(BSgenome.Hsapiens.UCSC.hg19)
+strack <- SequenceTrack(Hsapiens, chromosome=chr)
+plotTracks(list(itrack, gtrack, atrack, grtrack, strack), from=26450430, to=26450490, cex=0.8)
+@ 
+
 So far we have replicated the features of a whole bunch of other
 genome browser tools out there. The real power of the package comes
 with a rather general track type, the
@@ -723,6 +735,16 @@ popViewport(2)
 names(dTrack) <- "uniform"
 @ 
 
+If we need to display some additional information about the individual
+group levels we can make use of the \Rfunarg{legend} display parameter
+to add a simple legend to the plot. Depending on the plot type and on
+some of the other display parameters, the look of this legend may vary
+slightly.
+
+<<groupingLegend, fig=TRUE, results=hide, width=7.5, height=1.5>>=
+plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("a", "p"), legend=TRUE)
+@ 
+
 \subsubsection*{Data transformations}
 
 The \mgg package offers quite some flexibility to transform data on
@@ -1102,8 +1124,8 @@ exon, transcript and gene identifiers for each item which will be used
 to create the transcript groupings. A somewhat special case is to
 build a \Rclass{GeneRegionTrack} object directly from one of the
 popular \Rclass{TranscriptDb} objects, an option that is treated in
-more detail below. For more information about the available options
-see the class's manual page (\code{?GeneRegionTrack}).
+more detail below. For more information about all the available
+options see the class's manual page (\code{?GeneRegionTrack}).
 
 There are a number of accessor methods that make it easy to query and
 replace for instance exon, transcript or gene assignments. There is
@@ -1165,7 +1187,31 @@ from the \Rclass{TranscriptDb} object. Please note that while the
 or \Rfunarg{end} without the chromosome information will not work.
 
 <<tdb2grt2>>=
-GeneRegionTrack(txdb, chromosome="chr4", start=40000, end=60000)
+txTr <- GeneRegionTrack(txdb, chromosome="chr6", start=300000, end=350000)
+@
+
+A nice bonus when building \Rclass{GeneRegionTracks} from
+\Rclass{TranscriptDb} objects is that we get additional information
+about coding and non-coding regions of the transcripts, i.e.,
+coordinates of the 5' and 3' UTRs and of the CDS regions. The class'
+plotting method can use this inforamtion to distinguish between coding
+and non-coding regions based on the shape of the feature. All coding
+regions are plotted just as we have seen in the previous examples,
+whereas the non-coding regions are drawn as slighly thinner boxes. The
+distinction between coding and non-coding is made on the basis of the
+object's \code{feature} values in combination with a special display
+parameter \code{thinBoxFeature} that enumerates all feature types that
+are to be treated as non-coding. Obviously this feature is available
+to all \Rclass{GeneRegionTracks}, not only the ones that were build
+from \Rclass{TranscriptDb} objects. However, the coding information
+has to be added manually and the default value of the
+\code{thinBoxFeature} parameter may not be sufficient to cover all
+possible cases. It is up to the user to come up with a complete
+list of non-coding feature types depending on the source of the data.
+
+<<generegtrack3,  fig=TRUE, results=hide, width=7.5, height=0.25>>=
+feature(txTr)
+plotTracks(txTr, showId=TRUE, extend.left=1000)
 @
 
 \subsubsection*{Display parameters for GeneRegionTrack objects}
@@ -1202,7 +1248,7 @@ biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, e
                                   name="ENSEMBL")
 plotTracks(biomTrack)
 @ 
-<<BiomartGeneRegionTrackDo, echo=FALSE, results=hide, width=7.5, height=1, fig=TRUE>>=
+<<BiomartGeneRegionTrackDo, echo=FALSE, results=hide, width=7.5, height=1.25, fig=TRUE>>=
 if(hasBiomartConnection){
     biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
                                         name="ENSEMBL")
@@ -1210,6 +1256,17 @@ if(hasBiomartConnection){
     data("biomTrack")
 }
 plotTracks(biomTrack)
+@
+
+You may have noticed in the above plot that the track includes
+\code{feature} information which is displayed by the different feature
+colors and box sizes. This information has been automatically
+extracted from Biomart and the respective color coding is part of the
+class' definition. We can highlight the feature classes even more by
+using similarly colored bars to connect the grouped elements.
+
+<<BiomartGeneRegionTrackCol, width=7.5, height=1.25, fig=TRUE>>=
+plotTracks(biomTrack, col.line=NULL)
 @ 
 
 \subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
@@ -1219,10 +1276,11 @@ see the table above in the previous \Rclass{GeneRegionTrack} section
 or the man page of the \Rclass{BiomartGeneRegionTrack} class by typing
 in \code{?BiomartGeneRegionTrack} on the \R command line.
 
-One additional benefit when fetching the data through Biomart is that
-we also receive some information about the annotation feature types,
-which is automatically used for the color coding of the track. The
-following table shows the available feature types.
+As mentioned above, one additional benefit when fetching the data
+through Biomart is that we also receive some information about the
+annotation feature types, which is automatically used for the color
+coding of the track. The following table shows the available feature
+types.
 
 <<BiomartGeneRegionTrackClassTable, echo=FALSE, results=tex>>=
 addInfo <- t(data.frame(displayPars(biomTrack, names(details[["BiomartGeneRegionTrack"]]))))
@@ -1388,6 +1446,98 @@ plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector
 
 <<DetailsAnnotationTrackClassTableSec, echo=FALSE, results=tex>>=
 addParTable("DetailsAnnotationTrack")
+@ 
+
+
+\subsection{SequenceTrack}
+So far we have displayed all kinds of ranges on a genome, but never
+really looked at the underlying genomic sequence. To that end, the
+\mgg package defines the \Rclass{SequenceTrack} class which can hold
+genomic sequence information derived from either a
+\Rclass{DNAStringSet} object of, even more convenient, from one of the
+\Rclass{BSgenome} packages. There is not formal checking of the
+track's genome, so it is up to the user to provide reasonable inputs
+to the class' constructor. As with all the other track types, the
+constructor has the same name as the class. In this example we build a
+\Rclass{SequenceTrack} from the human hg19 UCSC genome.
+
+<<SequenceTrack1>>=
+library(BSgenome.Hsapiens.UCSC.hg19)
+sTrack <- SequenceTrack(Hsapiens)
+sTrack
+@ 
+
+Here we retain the same benefits as for regular \Rclass{BSgenome}
+objects in that the actual sequence is only loaded into memory when a
+particular chromosome is first accessed. Plotting the track yields the
+expected result: a character representation of the genomic sequence in
+the current plot window. It may be worth noting that the color scheme
+that is used to encode the indvidual nucleotides is defined in the
+\Rpackage{biovizBase} package and the user is referred to its
+documentation for more details.
+
+<<SequenceTrack2, results=hide, width=7.5, height=0.5, fig=TRUE>>=
+plotTracks(sTrack, chromosome=1, from=20000, to=20050)
+@ 
+
+Sometimes it may be too busy to plot both the sequence letters and the
+color coding, and we can assign arbitrary colors by setting the
+\code{fontcolor} display parameter. The convention here is that we
+need to supply a named vector, with one entry for each of the five
+possible nucleotides (A, C, T, G, and N). If any of the entries is
+missing, the respective letter will not be drawn at all.
+
+<<SequenceTrack3, results=hide, width=7.5, height=0.5, fig=TRUE>>=
+fcol <- c(A="darkgray", C="darkgray", T="darkgray", G="darkgray")
+plotTracks(sTrack, chromosome=1, from=20000, to=20050, fontcolor=fcol)
+@ 
+
+In this case we are plotting the sequence on the forward strand and we
+may want to make this clear by adding direction indicators.
+
+<<SequenceTrack4, results=hide, width=7.5, height=0.5, fig=TRUE>>=
+plotTracks(sTrack, chromosome=1, from=20000, to=20050, add53=TRUE)
+@ 
+
+If instead we plot the complement sequence on the reverse strand, the
+indicators are automatically adjusted.
+
+<<SequenceTrack5, results=hide, width=7.5, height=0.3, fig=TRUE>>=
+plotTracks(sTrack, chromosome=1, from=20000, to=20050, add53=TRUE, complement=TRUE)
+@ 
+
+So far we have been able to fit the sequence onto our plotting device
+without overplotting. I.e., all the letters nicely fit in to their
+respective position in the genomic coordinate system. However this
+restricts us to very small windows which we can reasonably display. A
+much more compact version of the same information is to use colored
+boxes rather than individual letters. Those boxes can be stacked much
+closer together, which increases the possible window size quite a
+bit. The user does not really need to worry about this as the plotting
+method will automatically make a reasonable decision based on the
+available space.
+
+<<SequenceTrack6, results=hide, width=7.5, height=0.3, fig=TRUE>>=
+plotTracks(sTrack, chromosome=1, from=20000, to=20100)
+@ 
+
+For added flexibility one can set the \code{noLetters} display
+paramter to \code{TRUE} to always force the drawing of boxes.  Of
+course also the colored box represenation of a sequence has its
+limits, and if we cross the threshold when individual boxes can not be
+separated anymore, the plotting method falls back to drawing a single
+line indicating the presence of a sequence at the given position.
+
+<<SequenceTrack7, results=hide, width=7.5, height=0.3, fig=TRUE>>=
+plotTracks(sTrack, chromosome=1, from=20000, to=201000)
+@
+
+Finally, the selected font size is also contributing to the available
+space, and we can cram a little more sequence into a given window by
+decreasing it.
+
+<<SequenceTrack8, results=hide, width=7.5, height=0.3, fig=TRUE>>=
+plotTracks(sTrack, chromosome=1, from=20000, to=20100, cex=0.5)
 @ 
 
 
@@ -1595,7 +1745,7 @@ mdTrack <- DataTrack(range=GRanges(seqnames=rep(chroms, c(10, 40, 20, 100)),
 Now we also want a genome axis and an \Rclass{IdeogramTrack} object to indicate the genomic context.
 
 <<multPlot2>>=
-mgTrack <- GenomeAxisTrack(scale=0.5, labelPos="below", exponent=3)
+mgTrack <- GenomeAxisTrack(scale=50, labelPos="below", exponent=3)
 chromosome(itrack) <- "chr1"
 @ 
 

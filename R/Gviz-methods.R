@@ -3,14 +3,27 @@
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Extract the full GRanges object from the range slot of an object inheriting from RangeTrack
 setMethod("ranges", "RangeTrack", function(x) x@range)
+setReplaceMethod("ranges", "RangeTrack", function(x, value) {
+    x@range <- value
+    return(x)})
 setMethod("ranges", "GenomeAxisTrack", function(x) x@range)
+setReplaceMethod("ranges", "GenomeAxisTrack", function(x, value) {
+    x@range <- value
+    return(x)})
+
 
 ## Extract the IRanges part of the GRanges object from the range slot of an object inheriting from RangeTrack
 setMethod("range", "RangeTrack", function(x) ranges(x@range))
 setMethod("range", "GenomeAxisTrack", function(x) ranges(x@range))
 
-## seqnames from the range track
+## seqnames, levels and infofrom the range track
 setMethod("seqnames", "RangeTrack", function(x) as.character(seqnames(ranges(x))))
+setMethod("seqnames", "SequenceDNAStringSetTrack", function(x) as.character(names(x@sequence)))
+setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames(x@sequence)))
+setMethod("seqlevels", "RangeTrack", function(x) unique(seqnames(x)))
+setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence)>0])
+setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames)
+setMethod("seqinfo", "RangeTrack", function(x) table(seqnames(x)))
 
 ## Min and max ranges
 setMethod("min", "RangeTrack", function(x) min(start(x)))
@@ -42,13 +55,18 @@ setMethod("start", "GenomeAxisTrack", function(x) if(length(x)) start(range(x)) 
 setMethod("end", "GenomeAxisTrack", function(x) if(length(x)) end(range(x)) else NULL)
 setMethod("width", "GenomeAxisTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
 setMethod("start", "IdeogramTrack", function(x) NULL)
+setMethod("start", "SequenceTrack", function(x) NULL)
 setMethod("end", "IdeogramTrack", function(x) NULL)
+setMethod("end", "SequenceTrack", function(x) NULL)
 setMethod("width", "IdeogramTrack", function(x) NULL)
+setMethod("width", "SequenceTrack", function(x) NULL)
 
 ## Return the number of individual annotation items (independent of any grouping) in a RangeTrack
 setMethod("length", "RangeTrack", function(x) sum(seqnames(x) == chromosome(x)))
 setMethod("length", "GenomeAxisTrack", function(x) length(ranges(x)))
 setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
+setMethod("length", "SequenceTrack", function(x)
+          if(chromosome(x) %in% seqnames(x)) length(x@sequence[[chromosome(x)]]) else 0)
 
 ## Extract the elementMetadata slot from the GRanges object of an object inheriting from RangeTrack as a data.frame.
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
@@ -72,15 +90,70 @@ setReplaceMethod("values", "DataTrack", function(x, value){
     return(x)
 })
 
-                 
-               
+
+## Extract a subsequence from a SequenceTrack. For performance reasons we restrict this to a maximum
+## of one million nucleotides (which is already more than plenty...)
+setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
+    padding <- "-"
+    if(!is.na(start[1]+end[1]+width[1])){
+        warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
+        width <- NA
+    }
+    ## We want start and end to be set if width is provided
+    if(!is.na(width[1])){
+        if(is.na(start) && is.na(end))
+            stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
+        if(is.na(start))
+            start <- end-width[1]+1
+        if(is.na(end))
+            end <- start+width[1]-1
+    }
+    w <- length(x)
+    if(is.na(start))
+        start <- 1
+    if(w>0){
+        if(is.na(end))
+            end <- w
+        rstart <- max(1, start[1], na.rm=TRUE)
+        rend <- max(rstart, min(end[1], w, na.rm=TRUE))
+    }else{
+        if(is.na(end))
+            end <- start
+        rend <- end
+        rstart <- start
+    }
+    if(rend<rstart)
+        stop("'end' has to be bigger than 'start'")
+    if((rend-rstart+1)>10e6)
+        stop("Sequence is too big! Unable to extract")
+    finalSeq <- rep(DNAString(padding), end-start+1)
+    if(chromosome(x) %in% seqnames(x) && rend>rstart){
+        chrSeq <- x@sequence[[chromosome(x)]]
+        seq <- subseq(chrSeq, start=rstart, end=rend)
+        if(is(x, "SequenceBSgenomeTrack")) seq <- unmasked(seq)
+        subseq(finalSeq, ifelse(start<1, abs(start)+2, 1), width=rend-rstart+1) <- seq
+    }
+    if(is(x, "SequenceBSgenomeTrack") && chromosome(x) %in% seqnames(x))
+        x@pointerCache[[chromosome(x)]] <- x@sequence[[chromosome(x)]]
+    if(.dpOrDefault(x, "complement", FALSE))
+        finalSeq <- complement(finalSeq)
+    return(finalSeq)
+})
+
+
 
 ## Set or extract the chromosome from a RangeTrack object
+setMethod("chromosome", "GdObject", function(GdObject) return(NULL))
 setMethod("chromosome", "RangeTrack", function(GdObject) GdObject@chromosome)
+setMethod("chromosome", "SequenceTrack", function(GdObject) GdObject@chromosome)
 setReplaceMethod("chromosome", "GdObject", function(GdObject, value){
     return(GdObject)
 })
 setReplaceMethod("chromosome", "RangeTrack", function(GdObject, value){
+    GdObject@chromosome <- .chrName(value[1])
+    return(GdObject)
+})
+setReplaceMethod("chromosome", "SequenceTrack", function(GdObject, value){
     GdObject@chromosome <- .chrName(value[1])
     return(GdObject)
 })
@@ -109,6 +182,7 @@ setReplaceMethod("isActiveSeq", "GdObject", function(x, value){
 
 ## Set or extract the genome from a RangeTrack object
 setMethod("genome", "RangeTrack", function(x) x@genome)
+setMethod("genome", "SequenceTrack", function(x) x@genome)
 setReplaceMethod("genome", "GdObject", function(x, value){
     return(x)
 })
@@ -342,7 +416,7 @@ setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
     return(GdObject)
 })
 setMethod("setStacks", "AnnotationTrack", function(GdObject, from, to) {
-    if(!.needsStacking(GdObject))
+    if(!.needsStacking(GdObject) || length(GdObject)==0)
     {
         bins <- rep(1, length(GdObject))
     } else {
@@ -441,8 +515,14 @@ setMethod("consolidateTrack", signature(GdObject="GdObject"), function(GdObject,
     displayPars(GdObject) <- pars
     return(GdObject)
 })
-## For RangeTracks we want to set the chromosome
+## For RangeTracks and SequenceTracks we want to set the chromosome
 setMethod("consolidateTrack", signature(GdObject="RangeTrack"), function(GdObject, chromosome, ...) {
+    if(!is.null(chromosome))
+        chromosome(GdObject) <- chromosome
+    GdObject <- callNextMethod()
+    return(GdObject)
+})
+setMethod("consolidateTrack", signature(GdObject="SequenceTrack"), function(GdObject, chromosome, ...) {
     if(!is.null(chromosome))
         chromosome(GdObject) <- chromosome
     GdObject <- callNextMethod()
@@ -516,7 +596,7 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"), function(Gd
     missing <- which(!cols %in% colnames(anno))
     for(i in missing)
         anno[,cols[missing]] <- if(cols[i]=="density") 1 else NA
-    rRed <- reduce(grange, min.gapwidth=minXDist)
+    rRed <- if(length(grange)>1) reduce(grange, min.gapwidth=minXDist) else grange
     if(length(rRed) < length(grange))
     {
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
@@ -713,11 +793,10 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
             if(nrow(sc)>1)
             {
                 newDat <- rbind(newDat, 
-                	matrix(sapply(2:nrow(sc), function(x) {
-                    	rm[ind] <- rep(sc[x,], width(GdObject))
-                    	suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k=windowSize, endrule="constant")))[seqSel]}), 
-                    	nrow=nrow(sc)-1, byrow=TRUE)
-            	)
+                                matrix(sapply(2:nrow(sc), function(x) {
+                                    rm[ind] <- rep(sc[x,], width(GdObject))
+                                    suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k=windowSize, endrule="constant", na.rm=TRUE)))[seqSel]}), 
+                                       nrow=nrow(sc)-1, byrow=TRUE))
             }
             sc <- newDat
         } else {
@@ -885,8 +964,8 @@ setMethod("subset", signature(x="StackedTrack"), function(x, from=NULL, to=NULL,
         x <- setStacks(x)
     return(x)
 })
-## In order to keep the grouping information for track regions in the clipped areas we also have to
-## keep, for each group, the min-1 and max+1 items.
+## In order to keep the grouping information for track regions in the clipped areas we have to
+## keep all group elements that overlap with the range
 setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE){
     ## Subset to a single chromosome first
     csel <- seqnames(x) != chromosome(x)
@@ -901,38 +980,15 @@ setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NU
                 x <- setStacks(x)
             return(x)
         }
-        
         ## Now remove everything except for the overlapping groups by first subselecting all groups in the range...
-        gsel <- group(x)[queryHits(findOverlaps(range(x), IRanges(ranges["from"], ranges["to"])))]
+        granges <- unlist(range(split(ranges(x), group(x))))
+        gsel <- names(granges)[subjectHits(findOverlaps(GRanges(seqnames=chromosome(x), ranges=IRanges(ranges["from"], ranges["to"])), granges))]
         x <- x[group(x) %in% gsel]
-        ## check if there is anything that overlaps
-        if (length(gsel)) {
-          ## ... and then finding everything that overlaps
-          coords <- data.frame(cbind(start(x), end(x)))
-          grps <- sapply(split(coords, group(x)), range)
-          gsel <- group(x) %in% colnames(grps)[subjectHits(findOverlaps(IRanges(ranges["from"], ranges["to"]),
-                                                                        IRanges(grps[1,], grps[2,])))]
-          x <- x[gsel]
-          ## Now only keep the adjancend items if there are any.
-          lsel <- end(x) < ranges["from"]
-          rsel <- start(x) > ranges["to"]
-          ## Nothing to do if everything is within the range
-          if(any(lsel | rsel))
-            {
-              grp <- group(x)
-              if(any(table(grp)>1))
-                {
-                  lsel[lsel][unlist(sapply(split(seq_len(sum(lsel)), grp[lsel]), max))] <- FALSE
-                  rsel[rsel][unlist(sapply(split(seq_len(sum(rsel)), grp[rsel]), min))] <- FALSE
-                }
-              x <- x[!(lsel | rsel),]
-            }
-          if(sort)
+        if(sort)
             x <- x[order(range(x)),]
-          if(stacks)
+        if(stacks)
             x <- setStacks(x)
-        }
-      }
+    }
     return(x)
 })
 ## For the axis track we may have to clip the highlight ranges on the axis.
@@ -1080,19 +1136,20 @@ setMethod("drawGrid", signature(GdObject="AlignedReadTrack"), function(GdObject,
 			detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("coverage", "reads"))
 			if(detail=="coverage"){
                             GdObject <- subset(GdObject, from=from, to=to)
-                            cov <- coverage(GdObject, strand="*")
-                            val <- if(length(cov)) runValue(cov) else 1
                             ## We have to figure out the data range, taking transformation into account
-                            ylim <- .dpOrDefault(GdObject, "ylim") 
-                            if(is.null(ylim))
-                            {
-                                ylim <- c(0, range(val, finite=TRUE, na.rm=TRUE)[2])
+                            ylim <- .dpOrDefault(GdObject, "ylim")
+                            if (is.null(ylim)) {
+                                maxs <- sapply(c("+", "-"), function(s) {
+                                    cvr <- coverage(GdObject, strand=s)
+                                    if (length(cvr)) max(cvr, na.rm=TRUE, finite=TRUE) else 0L
+                                })
+                                y.max <- max(maxs, na.rm=TRUE, finite=TRUE)
+                                ylim <- c(0, if (y.max == 0) 1 else y.max)
                                 trans <- displayPars(GdObject, "transformation")[[1]]
-                                if(!is.null(trans))
+                                if (!is.null(trans))
                                     ylim <- c(0, trans(ylim[2]))
-                            }	
-                            for(s in c("+", "-"))
-                            {
+                            }
+                            for(s in c("+", "-")) {
                                 pushViewport(viewport(height=0.5, y=ifelse(s=="-", 0, 0.5), just=c("center", "bottom")))
                                 dummy <- DataTrack(start=rep(mean(c(from, to)),2), end=rep(mean(c(from, to)),2), data=ylim,
                                                    genome=genome(GdObject), chromosome=chromosome(GdObject))
@@ -1102,9 +1159,9 @@ setMethod("drawGrid", signature(GdObject="AlignedReadTrack"), function(GdObject,
                                 drawGrid(dummy, from=from, to=to)
                                 popViewport(1)
                             }
-			} 
+                        }
                         return(NULL)
-		})
+                    })
 ##----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1152,6 +1209,11 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
     ylim <- c(0, 1)
     middle <- mean(ylim)
     space <- diff(ylim)/8
+    if (inherits(GdObject, "GeneRegionTrack")) {
+        thinBox <- .dpOrDefault(GdObject, "thinBoxFeature", c("utr", "ncRNA", "utr3", "utr5", "miRNA", "lincRNA"))
+        space <- ifelse(feature(GdObject) %in% thinBox, space + ((middle -
+                                                                  space) / 2), space)
+    }
     shape <- .dpOrDefault(GdObject, "shape", "arrow")  
     color <- .getBiotypeColor(GdObject)
     id <- identifier(GdObject, lowest=TRUE)
@@ -1261,7 +1323,10 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     bartext <- barsAndLab$labels
     ## ... and then draw whatever is needed
     shape <- .dpOrDefault(GdObject, "shape", "arrow")
-    border <- .dpOrDefault(GdObject, "col", "transparent")[1]
+    border <- .dpOrDefault(GdObject, "col")[1]
+    col.line <- .dpOrDefault(GdObject, "col.line")[1]
+    if(is.null(border))
+        border <- ifelse(is(GdObject, "GeneRegionTrack"), NA, "transparent")
     lwd <- .dpOrDefault(GdObject, "lwd", 2)
     lty <- .dpOrDefault(GdObject, "lty", 1)
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
@@ -1279,17 +1344,19 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     fontfamily.group <- .dpOrDefault(GdObject, "fontfamily.group", fontfamily)
     if(nrow(box)>0){
         if(nrow(bar)>0)
-            .arrowBar(bar$sx1, bar$sx2, y=bar$y, bar$strand, box[,1:4, drop=FALSE], col=bar$col, lwd=lwd, lty=lty,
+            .arrowBar(bar$sx1, bar$sx2, y=bar$y, bar$strand, box[,1:4, drop=FALSE],
+                      col=if(is.null(col.line)) bar$col else rep(col.line, length(bar$col)), lwd=lwd, lty=lty,
                       alpha=alpha, barOnly=(!"smallArrow" %in% .dpOrDefault(GdObject, "shape", "box") || stacking(GdObject)=="dense"),
                       diff=res, min.height=.dpOrDefault(GdObject, "min.height", 3))
         if("box" %in% shape || ("smallArrow" %in% shape && !"arrow" %in% shape))
             grid.rect(box$cx2, box$cy1, width=box$cx2-box$cx1, height=box$cy2-box$cy1,
-                      gp=gpar(col=border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha),
+                      gp=gpar(col=if(is.na(border)) box$fill else border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha),
                       default.units="native", just=c("right", "bottom"))
+       
         if("ellipse" %in% shape){
             ellCoords <- .box2Ellipse(box)
             grid.polygon(x=ellCoords$x1, y=ellCoords$y1, id=ellCoords$id,
-                         gp=gpar(col=border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha),
+                         gp=gpar(col=if(is.na(border)) box$fill else border, fill=box$fill, lwd=lwd, lty=lty, alpha=alpha),
                          default.units="native")
         }
         if("arrow" %in% shape && !"box" %in% shape){
@@ -1590,7 +1657,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
                   just=c("right", "top"), gp=gpar(cex=cex*.75, fontface=fontface),
                   default.units="native")
         grid.text(label=expression("5'"), x=axRange[2]+textXOff, y=-pyOff,
-                  just=c("left", "top"), gp=gpar(cex=lcex, fontface=fontface),
+                  just=c("left", "top"), gp=gpar(cex=cex*0.75, fontface=fontface),
                   default.units="native")
     }
     popViewport()
@@ -2291,6 +2358,8 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     imageMap(GdObject) <- NULL
     chrnam <- paste("Chromosome", gsub("chr", "", chromosome(GdObject)))
     cex <- .dpOrDefault(GdObject, "cex", 1)
+    if(.dpOrDefault(GdObject, "break", FALSE))
+        browser()
     ## Nothing to do if there are no ranges in the object
     if(!length(GdObject))
         return(invisible(GdObject))
@@ -2414,6 +2483,73 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
 })
 ##----------------------------------------------------------------------------------------------------------------------------
 
+##----------------------------------------------------------------------------------------------------------------------------
+## Draw a SequenceTrack
+##----------------------------------------------------------------------------------------------------------------------------
+setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
+    fcol <- .dpOrDefault(GdObject, "fontcolor", getBioColor("DNA_BASES_N"))
+    cex <- max(0.3, .dpOrDefault(GdObject, "cex", 1))
+    if(.dpOrDefault(GdObject, "break", FALSE))
+        browser()
+    pushViewport(viewport(xscale=c(minBase, maxBase), clip=TRUE,
+                          gp=gpar(alpha=.dpOrDefault(GdObject, "alpha", 1),
+                                  fontsize=.dpOrDefault(GdObject, "fontsize", 12),
+                                  fontface=.dpOrDefault(GdObject, "fontface", 2),
+                                  lineheight=.dpOrDefault(GdObject, "lineheight", 1),
+                                  fontfamily=.dpOrDefault(GdObject, "fontfamily", 1),
+                                  cex=cex)))
+    if(prepare){
+        pres <- .pxResolution()
+        nsp <-  max(as.numeric(convertHeight(stringHeight(stringWidth(DNA_ALPHABET)),"native")))
+        nsp <- nsp/pres["y"]*2
+        displayPars(GdObject) <- list("neededVerticalSpace"=nsp)
+        popViewport(1)
+        return(invisible(GdObject))
+    }
+    imageMap(GdObject) <- NULL
+    delta <- maxBase-minBase
+    if(delta==0)
+        return(invisible(GdObject))
+    lwidth <- max(as.numeric(convertUnit(stringWidth(DNA_ALPHABET),"inches")))
+    perLetter <- vpLocation()$isize["width"]/(maxBase-minBase+1)
+    diff <- .pxResolution(.dpOrDefault(GdObject, "min.width", 2), coord="x")
+    ## FIXME: Need to deal with sequences that are too long.
+    if(diff>1 || (maxBase-minBase+1)>=10e6){
+        grid.lines(x=unit(c(minBase, maxBase), "native"), y=0.5,
+                   gp=gpar(col=.dpOrDefault(GdObject, "col", "darkgray"),
+                               lwd=.dpOrDefault(GdObject, "lwd", 2)))
+    }else{
+       
+        sequence <- as.character(as(subseq(GdObject, start=minBase, end=maxBase-1), "Rle"))
+        at <- seq((minBase+0.5), maxBase - 1 + 0.5, by=1)
+        sequence[sequence=="-"] <- ""
+        if(perLetter<0.5 && .dpOrDefault(GdObject, "add53", FALSE))
+            sequence[c(1, length(sequence))] <- ""
+        col <- fcol[toupper(sequence)]
+        if(lwidth<perLetter && !.dpOrDefault(GdObject, "noLetters", FALSE)){
+            grid.text(x=unit(at, "native"), y=0.5, label=sequence, rot=.dpOrDefault(GdObject, "rotation", 0),
+                      gp=gpar(col=col))
+        } else {
+            grid.rect(x=unit(at, "native"), y=0.05, width=unit(1, "native"), height=0.9,
+                      gp=gpar(fill=col, col="white"), just=c(0.5, 0))
+        }
+    }
+    ## The direction indicators
+    if(.dpOrDefault(GdObject, "add53", FALSE))
+    {
+        if(.dpOrDefault(GdObject, "complement", FALSE)){
+            grid.text(label=expression("3'"), x=unit(minBase+0.1, "native"), just=c(0, 0.5), gp=gpar(col="#808080", cex=0.8))
+            grid.text(label=expression("5'"), x=unit(maxBase-0.1, "native"), just=c(1, 0.5), gp=gpar(col="#808080", cex=0.8))
+        }else{
+            grid.text(label=expression("5'"), x=unit(minBase+0.1, "native"), just=c(0, 0.5), gp=gpar(col="#808080", cex=0.8))
+            grid.text(label=expression("3'"), x=unit(maxBase-0.1, "native"), just=c(1, 0.5), gp=gpar(col="#808080", cex=0.8))
+        }
+    }
+    popViewport(1)
+    return(invisible(GdObject))
+})
+##----------------------------------------------------------------------------------------------------------------------------
+
 
 
 
@@ -2489,6 +2625,8 @@ setAs("InferredDisplayPars", "list",
 
 setAs("DisplayPars", "list", function(from, to) as.list(from@pars))
 
+setAs("DNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
+
 setMethod("as.list", "DisplayPars", function(x) as(x, "list"))
 
 setMethod("as.list", "InferredDisplayPars", function(x) as(x, "list"))
@@ -2502,6 +2640,7 @@ setMethod("tail", "InferredDisplayPars", function(x, n=10, ...){
     sel <- max(1, length(x)-n):length(x)
     return(new("InferredDisplayPars", name=x@name, inheritance=x@inheritance[sel],
                structure(x@.Data[sel], names=names(x)[sel])))})
+
 
 ##---------------------------------------------------------------------------------
 
@@ -2664,9 +2803,17 @@ setMethod(".buildRange", signature("GRangesList"),
 ## For TranscriptDb objects we extract the grouping information and use the GRanges method
 setMethod(".buildRange", signature("TranscriptDb"),
           function(range, groupId="transcript", tstart, tend, chromosome, ...){
-            
               ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
+              noSubset <- is.null(tstart) && is.null(tend)
               if(!is.null(chromosome)){
+                  chromosome <- .chrName(chromosome)
+                  ## Seems like TranscriptDb objects use pass by reference for the active chromosomes, so we have to
+                  ## restore the old values after we are done
+                  oldAct <- isActiveSeq(range)
+                  oldRange <- range
+                  on.exit(isActiveSeq(oldRange)[seqlevels(oldRange)] <- oldAct)
+                  isActiveSeq(range)[seqlevels(range)] <- FALSE
+                  isActiveSeq(range) <- structure(rep(TRUE, length(unique(chromosome))), names=unique(chromosome))
                   sl <- seqlengths(range)
                   if(is.null(tstart))
                       tstart <- rep(1, length(chromosome))
@@ -2676,25 +2823,55 @@ setMethod(".buildRange", signature("TranscriptDb"),
                   }
                   sRange <- GRanges(seqnames=chromosome, ranges=IRanges(start=tstart, end=tend))
               }
-              t2e <- exonsBy(range, "tx")
-              tids <- rep(names(t2e), elementLengths(t2e))
-              t2e <- unlist(t2e)
-              values(t2e)[["tx_id"]] <- tids
+              ## First the mapping of internal transcript ID to transcript name
+              txs <- as.data.frame(values(transcripts(range, columns = c("tx_id", "tx_name"))))
+              rownames(txs) <- txs[, "tx_id"]
+              ## Now the CDS ranges
+              t2c <- cdsBy(range, "tx")
+              names(t2c) <- txs[names(t2c), 2]
+              tids <- rep(names(t2c), elementLengths(t2c))
+              t2c <- unlist(t2c)
+              if(length(t2c)){
+                  t2c$tx_id <- tids
+                  t2c$feature_type <- "CDS"
+              }
+              ## And the 5'UTRS
+              t2f <- fiveUTRsByTranscript(range)
+              names(t2f) <- txs[names(t2f), 2]
+              tids <- rep(names(t2f), elementLengths(t2f))
+              t2f <- unlist(t2f)
+              if(length(t2f)){
+                  t2f$tx_id <- tids
+                  t2f$feature_type <- "utr5"
+              }
+              ## And finally the 3'UTRS
+              t2t <- threeUTRsByTranscript(range)
+              names(t2t) <- txs[names(t2t), 2]
+                  tids <- rep(names(t2t), elementLengths(t2t))
+                  t2t <- unlist(t2t)
+              if(length(t2t)){
+                  t2t$tx_id <- tids
+                  t2t$feature_type <- "utr3"
+              }
+              ## Now we can merge the three back together (we need to change the column names of t2c to make them all the same)
+              colnames(values(t2c))[1:2] <- c("exon_id", "exon_name")
+              t2e <- c(t2c, t2f, t2t)
+              if(length(t2e)==0)
+                  return(GRanges())
+              ## Add the gene level annotation
               g2t <- transcriptsBy(range, "gene")
               gids <- rep(names(g2t), elementLengths(g2t))
               g2t <- unlist(g2t)
               values(g2t)[["gene_id"]] <- gids
-              vals <- merge(as.data.frame(values(t2e)[,c("exon_id", "tx_id", "exon_rank")]), as.data.frame(values(g2t)), by="tx_id", all=TRUE)
-              colnames(vals) <- c("transcript", "exon", "rank", "symbol", "gene")
-              txs <- as.data.frame(values(transcripts(range, columns = c("tx_id", "tx_name"))))
-              rownames(txs) <- txs[, "tx_id"]
-              vals$symbol <- txs[as.character(vals$transcript),"tx_name"]
-              vals$id <- vals$exon
+              values(t2e)$gene_id <- gids[match(values(t2e)$tx_id, as.character(txs[as.character(values(g2t)$tx_id),2]))]
+              vals <- values(t2e)[c("tx_id", "exon_id", "exon_rank", "feature_type", "tx_id", "gene_id")]
+              colnames(vals) <- c("transcript", "exon", "rank", "feature", "symbol", "gene")
+              ## Finally we re-assign, subset if necessary, and sort
               range <- t2e
               values(range) <- vals
-              if(!is.null(chromosome))
+              if(!noSubset && !is.null(chromosome))
                   range <- subsetByOverlaps(range, sRange)
-              return(.buildRange(range=range, chromosome=chromosome, ...))})
+              return(.buildRange(range=sort(range), chromosome=chromosome, ...))})
 ##---------------------------------------------------------------------------------
 
 
@@ -2715,42 +2892,70 @@ setMethod("tags", "GdObject", function(ImageMap) tags(imageMap(ImageMap)))
 ##---------------------------------------------------------------------------------
 ## Show methods for the various classes
 ##---------------------------------------------------------------------------------
+
+## A helper function to plot information regarding additional features on other chromosomes
+.addFeatInfo <- function(object, addfeat){
+    freqs <- table(seqnames(object))
+    freqs <- freqs[setdiff(names(freqs), chromosome(object))]
+    nrChr <- length(freqs)
+    msg <- sprintf("There %s %s additional annotation feature%s on %s further chromosome%s%s",
+                   ifelse(addfeat>1, "are", "is"),
+                   addfeat,
+                   ifelse(addfeat>1, "s", ""),
+                   nrChr,
+                   ifelse(nrChr>1, "s", ""),
+                   ifelse(nrChr==1, sprintf(" (%s)", names(freqs)), ""))
+    if(nrChr>1){
+        msg <- if(nrChr>10){
+            c(msg, paste("  ", head(names(freqs), 5), ": ", head(freqs, 5), sep="", collapse="\n"),
+              "  ...", paste("  ", tail(names(freqs), 5), ": ", tail(freqs, 5), sep="", collapse="\n"))
+        }else{
+            c(msg, paste("  ", names(freqs), ": ", freqs, " features", sep="", collapse="\n"))
+        }
+        msg <- c(msg, paste("Call seqlevels(obj) to list all available chromosomes",
+                            "or seqinfo(obj) for more detailed output"))
+    }
+    return(msg)
+}
+
+## A helper function to plot general information about an AnnotationTrack
+.annotationTrackInfo <- function(object){
+    msg <- sprintf(paste("| genome: %s\n| active chromosome: %s\n",
+                         "| annotation features: %s", sep=""),
+                   genome(object),
+                   chromosome(object),
+                   length(object))
+    addfeat <- length(object@range)-length(object)
+    if(addfeat>0)
+        msg <- c(msg, .addFeatInfo(object, addfeat), "Call chromosome(obj) <- 'chrId' to change the active chromosome")
+    return(paste(msg, collapse="\n"))
+}
+
 setMethod("show",signature(object="DataTrack"),
           function(object){
-              cat(sprintf(paste("Data track '%s' at %i position%s containing %i sample%s mapping",
-                                "to chromosome %s on the %s strand of the %s genome:\n"),
-                          names(object), length(object),
-                          ifelse(length(object)==1, "", "s"),
-                          nrow(values(object)),
-                          ifelse(nrow(values(object))==1, "", "s"),
-                          gsub("^chr", "", chromosome(object)),
-                          strand(object)[1], genome(object)), "\n")
-              print(ranges(object)[chromosome(object) == seqnames(object)])
+              msg <- sprintf(paste("DataTrack '%s'\n| genome: %s\n| active chromosome: %s\n",
+                                   "| positions: %s\n| samples:%s\n| strand: %s", sep=""),
+                             names(object),
+                             genome(object),
+                             chromosome(object),
+                             length(object),
+                             nrow(values(object)),
+                             strand(object)[1])
+              addfeat <- ncol(object@data)-length(object)
+              if(addfeat>0)
+                  msg <- c(msg, .addFeatInfo(object, addfeat), "Call chromosome(obj) <- 'chrId' to change the active chromosome")
+              cat(paste(msg, collapse="\n"), "\n")
           })
 
-setMethod("show",signature(object="AnnotationTrack"),
-          function(object){
-              cat(sprintf(paste("Annotation track '%s' containing %i item%s and mapping",
-                                "to chromosome %s of the %s genome:\n"),
-                          names(object), length(object),
-                          ifelse(length(object)==1, "", "s"),
-                          gsub("^chr", "", chromosome(object)),
-                          genome(object)), "\n")
-              print(ranges(object)[chromosome(object) == seqnames(object)])
-          })
 
-setMethod("show",signature(object="GeneRegionTrack"),
-          function(object) {
-              cat(sprintf(paste("Gene region '%s' ranging from bp %i to bp %i ",
-                                "of chromosome %s of the %s genome containing %i object%s:\n"),
-                          names(object), object@start, object@end,
-                          gsub("^chr", "", chromosome(object)),
-                          genome(object), length(object),
-                          ifelse(length(object)==1, "", "s")))
-              print(ranges(object)[chromosome(object) == seqnames(object)])
-          })
-
-setMethod("show",signature(object="GenomeAxisTrack"),
+## We have to show the name, genome and currently active chromosome, and, if more ranges are available on additional
+## chromosomes some information about that
+setMethod("show", signature(object="AnnotationTrack"), function(object)
+          cat(sprintf("AnnotationTrack '%s'\n%s\n", names(object), .annotationTrackInfo(object))))
+setMethod("show", signature(object="GeneRegionTrack"), function(object)
+          cat(sprintf("GeneRegionTrack '%s'\n%s\n", names(object), .annotationTrackInfo(object))))
+  
+setMethod("show", signature(object="GenomeAxisTrack"),
           function(object) {
               cat(sprintf("Genome axis '%s'\n", names(object)))
               if(.dpOrDefault(object, "add53", FALSE))
@@ -2773,6 +2978,46 @@ setMethod("show",signature(object="IdeogramTrack"),
 							  gsub("^chr", "", chromosome(object)),
 							  genome(object)), "\n")
                       })
+
+## A helper function to print general information about SequenceTracks
+.sequenceTrackInfo <- function(object){
+    msg <- sprintf(paste("Sequence track '%s':\n",
+                         "| genome: %s\n",
+                         "| chromosomes: %s\n",
+                         "| active chromosome: %s (%s nulceotides)\n", sep=""),
+                   names(object),
+                   genome(object),
+                   length(seqnames(object)),
+                   chromosome(object),
+                   length(object))
+    if(length(seqnames(object))>1)
+        msg <- paste(msg, "Call seqnames() to list all available chromosomes\n",
+                     "Call chromosome()<- to change the active chromosome\n", sep="")
+    return(msg)
+}
+
+## We need to show the name, genome, information about the source BSgenome object as well as the currently active chromosome
+setMethod("show",signature(object="SequenceBSgenomeTrack"),
+		  function(object){
+                      cat(.sequenceTrackInfo(object),
+                          sprintf(paste("Parent BSgenome object:\n",
+                                        "| organism: %s (%s)\n",
+                                        "| provider: %s\n",
+                                        "| provider version: %s\n",
+                                        "| release date: %s\n",
+                                        "| release name: %s\n",
+                                        "| package name: %s\n", sep=""),
+                                  organism(object@sequence),
+                                  object@sequence@species,
+                                  provider(object@sequence),
+                                  providerVersion(object@sequence),
+                                  releaseDate(object@sequence),
+                                  releaseName(object@sequence),
+                                  object@sequence@seqs_pkgname), sep="")
+                  })
+
+## Here we only need the name, genome and currently active chromosome information
+setMethod("show", signature(object="SequenceDNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
   
 setMethod("show",signature(object="AlignedReadTrack"),
 		  function(object){

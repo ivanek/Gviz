@@ -28,6 +28,10 @@
 \alias{position,RangeTrack-method}
 \alias{range,RangeTrack-method}
 \alias{ranges,RangeTrack-method}
+\alias{ranges<-,RangeTrack-method}
+\alias{seqnames,RangeTrack-method}
+\alias{seqlevels,RangeTrack-method}
+\alias{seqinfo,RangeTrack-method}
 \alias{split,RangeTrack-method}
 \alias{start,RangeTrack-method}
 \alias{start<-,RangeTrack-method}

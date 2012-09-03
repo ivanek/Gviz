@@ -14,6 +14,10 @@
 \alias{group,GdObject-method}
 \alias{initialize,GdObject-method}
 \alias{names,GdObject-method}
+\alias{drawGD}
+\alias{drawGD,DetailsAnnotationTrack-method}
+\alias{drawGD,GeneRegionTrack-method}
+\alias{drawGD,SequenceTrack-method}
 \alias{names<-,GdObject,character-method}
 \alias{genome<-,GdObject-method}
 \alias{chromosome<-,GdObject-method}
@@ -23,6 +27,7 @@
 \alias{coords,GdObject-method}
 \alias{coords,NULL-method}
 \alias{tags,GdObject-method}
+\alias{chromosome,GdObject-method}
 \alias{tags,NULL-method}
 \alias{coords}
 \alias{tags}

@@ -84,11 +84,15 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
 	information including exon locations, transcript groupings and
 	associated gene ids are contained in \code{TranscriptDb}
 	objects, and the coercion between the two is almost completely
-	automated. If desired, the data to be fetch from the
+	automated. If desired, the data to be fetched from the
 	\code{TranscriptDb} object can be restricted using the
 	constructor's \code{chromosome}, \code{start} and \code{end}
 	arguments. See below for details. A direct coercion method
-	\code{as(obj, "GeneRegionTrack")} is also available.}
+	\code{as(obj, "GeneRegionTrack")} is also available. A nice
+	added benefit of this input option is that the UTR and coding
+	region information that is part of the original
+	\code{TranscriptDb} object is retained in the
+	\code{GeneRegionTrack}.}
       
       \item{}{A \code{GRanges} object: the genomic ranges for the
 	\code{GeneRegion} track as well as the optional additional
@@ -272,6 +276,15 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       value for the coloring.}
   
   }
+
+  \code{GeneRegionTrack} objects also know about coding regions and
+  non-coding regions (e.g., UTRs) in a transctipt, and will indicate
+  those by using different shapes (wide boxes for all coding regions,
+  thinner boxes for non-coding regions). This is archived by setting the
+  \code{feature} values of the object for non-coding elements to one of
+  the options that are provided in the \code{thinBoxFeature} display
+  parameters. All other elements are expected to be coding elements.
+  
 }
 
 \value{
@@ -1406,7 +1419,19 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   \code{\link{settings}} for details on setting graphical parameters
-  for tracks. \describe{ 
+  for tracks. \describe{
+
+    \item{}{\code{min.distance=0}: Numeric scalar. The minimum pixel
+      distance before collapsing range items, only if
+      \\code{collapse==TRUE}. See \\code{\\link{collapsing}} for
+      details. Note that a value larger than 0 may lead to UTR regions
+      being merged to CDS regions, which in most cases is not particularly
+      useful.}
+
+    \item{}{\code{col=NULL}: Character or integer scalar. The border
+      color for all items. Defaults to using the same color as in
+      \code{fill}, also taking into account different track
+      \code{features}.}
 
     \item{}{\code{fill="orange"}: Character or integer scalar. The fill
       color for untyped items. This is also used to connect grouped
@@ -1428,6 +1453,11 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       model. Essentially, this will only keep the start location of the
       first exon and the end location of the last exon from all
       transcripts of a gene.}
+
+      \item{}{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5",
+	  "miRNA", "lincRNA")}: Character vector. A listing of feature
+	  types that should be drawn with thin boxes. Typically those
+	  are non-coding elements.}
 
   } 
 
@@ -1623,7 +1653,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
 }
 
 
-\author{Florian Hahne}
+\author{Florian Hahne, Steve Lianoglou}
 
 \seealso{
 
@@ -1672,11 +1702,14 @@ transcript=cyp2b10$transcript, gene=cyp2b10$gene, symbol=cyp2b10$symbol,
 name="Cyp2b10", strand=cyp2b10$strand)
 
 ## From a TranscriptDb object
-library(GenomicFeatures)
+if(require(GenomicFeatures)){
 samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
 txdb <- loadDb(samplefile)
 GeneRegionTrack(txdb)
-GeneRegionTrack(txdb, chromosome="chr4", start=40000, end=50000)
+GeneRegionTrack(txdb, chromosome="chr6", start=300000,
+end=350000)
+}
+
 
 
 \dontshow{

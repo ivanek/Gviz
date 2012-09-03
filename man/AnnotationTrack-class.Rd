@@ -1296,7 +1296,9 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   \code{\link{settings}} for details on setting graphical parameters
-  for tracks. \describe{ 
+  for tracks.
+
+  \describe{ 
 
     \item{}{\code{cex=1}: Numeric scalar. The font expansion factor
       for item identifiers.} 
@@ -1305,7 +1307,12 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
       factor for the group-level annotation.} 
 
     \item{}{\code{col="transparent"}: Character or integer scalar. The
-      border color for all track items.} 
+      border color for all track items.}
+
+     \item{}{\code{col="darkgray"}: Character scalar. The color used for
+       connecting lines between grouped items. Defaults to a dark gray,
+       but if set to \code{NULL} the same color as for the first item in
+       the group is used.}
 
     \item{}{\code{fill="lightblue"}: Character or integer scalar. The
       fill color for untyped items. This is also used to connect grouped
@@ -1516,8 +1523,10 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 
         \item{}{\code{min.height=3}: Numeric scalar. The minimum range
           height in pixels to display. All ranges are expanded to this
-          size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.} 
+          size in order to avoid rendering issues. See
+          \code{\link{collapsing}} for details. For feathered bars
+          indicating the strandedness of grouped items this also
+          controls the height of the arrow feathers.}
 
         \item{}{\code{min.width=1}: Numeric scalar. The minimum range
           width in pixels to display. All ranges are expanded to this
