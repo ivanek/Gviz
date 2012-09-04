@@ -1309,10 +1309,10 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
     \item{}{\code{col="transparent"}: Character or integer scalar. The
       border color for all track items.}
 
-     \item{}{\code{col="darkgray"}: Character scalar. The color used for
-       connecting lines between grouped items. Defaults to a dark gray,
-       but if set to \code{NULL} the same color as for the first item in
-       the group is used.}
+    \item{}{\code{col.line="darkgray"}: Character scalar. The color used for
+      connecting lines between grouped items. Defaults to a dark gray,
+      but if set to \code{NULL} the same color as for the first item in
+      the group is used.}
 
     \item{}{\code{fill="lightblue"}: Character or integer scalar. The
       fill color for untyped items. This is also used to connect grouped
@@ -1475,10 +1475,6 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
           \code{grid==TRUE}.} 
-
-        \item{}{\code{col.line=NULL}: Integer or character scalar.
-          Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.} 
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the

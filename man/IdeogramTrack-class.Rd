@@ -25,8 +25,8 @@
 \description{
   
   A class to represent the schematic display of a chromosome, also known
-  as an ideogram. The respective information is directly fetched from
-  UCSC.
+  as an ideogram. The respective information is typically directly
+  fetched from UCSC.
 
 }
 
@@ -38,24 +38,36 @@
 
 \usage{
 
-IdeogramTrack(chromosome, genome, name=.chrName(chromosome)[1], ...)
+IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
 }
 
 \arguments{
   
   \item{chromosome}{The chromosome for which to create the ideogram. Has
-    to be a valid UCSC chromosome identifier of the form
-    \code{chrx}, or a single integer or numeric character. The
-    user has to make sure that the respective chromosome is indeed
-    defined for the the track's genome.}
+    to be a valid UCSC chromosome identifier of the form \code{chrx}, or
+    a single integer or numeric character unless
+    \code{option(ucscChromosomeNames=FALSE)}. The user has to make sure
+    that the respective chromosome is indeed defined for the the track's
+    genome.}
 
-  \item{genome}{The genome on which to create the ideogram. This
-    has to be a valid UCSC genome identifier.}
+  \item{genome}{The genome on which to create the ideogram. This has to
+    be a valid UCSC genome identifier if the ideogram data is to be
+    fetched from the UCSC repository.}
 
   \item{name}{Character scalar of the track's name used in the title
-    panel when plotting.}
+    panel when plotting. Defaults to the selected chromosome.}
 
+  \item{bands}{A \code{data.frame} with the cytoband information for all
+    available chromosomes on the genome similar to the data that would
+    be fetched from UCSC. The table needs to contain the mandatory
+    columns \code{chrom}, \code{chromStart}, \code{chromEnd},
+    \code{name} and \code{gieStain} with the chromosome name, cytoband
+    start and end coordinates, cytoband name and coloring information,
+    respectively. This can be used when no connection to the internet is
+    available or when the cytoband information has been cached locally
+    to avoid the somewhat slow connection to UCSC.}
+    
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters.}
   

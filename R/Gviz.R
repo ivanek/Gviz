@@ -1,3 +1,25 @@
+## Check the class and structure of an object
+.checkClass <- function (x, class, length = NULL, verbose = FALSE, mandatory = TRUE){
+    if (mandatory && missing(x)) 
+        stop("Argument '", substitute(x), "' is missing with no default", 
+             call. = verbose)
+    msg <- paste("'", substitute(x), "' must be an object of class ", 
+        paste("'", class, "'", sep = "", collapse = " or "), 
+        sep = "")
+    fail <- !any(sapply(class, function(c, y) is(y, c), x))
+    if (!is.null(length) && length(x) != length) {
+        if (!is.null(x)) {
+            fail <- TRUE
+            msg <- paste(msg, "of length", length)
+        }
+    }
+    if (fail) 
+        stop(msg, call. = verbose)
+    else invisible(NULL)
+}
+
+
+
 ## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified 
 ## chromosome name as understood by UCSC. Accepted inputs are:
 ##    - a single integer or a character coercable to one

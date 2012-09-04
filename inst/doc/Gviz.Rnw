@@ -1209,7 +1209,7 @@ has to be added manually and the default value of the
 possible cases. It is up to the user to come up with a complete
 list of non-coding feature types depending on the source of the data.
 
-<<generegtrack3,  fig=TRUE, results=hide, width=7.5, height=0.25>>=
+<<generegtrack4,  fig=TRUE, results=hide, width=7.5, height=0.25>>=
 feature(txTr)
 plotTracks(txTr, showId=TRUE, extend.left=1000)
 @

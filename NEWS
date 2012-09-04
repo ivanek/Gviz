@@ -1,0 +1,51 @@
+CHANGES IN VERSION 1.2.0
+-------------------------
+
+NEW FEATURES
+
+    o A SequenceTrack class has been added to draw genomic sequence
+      information on a Gviz plot. Possible inputs for the track are
+      DNAStringSet objects or directly from BSgenome packages.
+
+    o GeneRegionTracks can now deal with coding and non-coding regions
+      by means of the feature property in combination with the
+      thinBoxFeature display parameter.
+
+   
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Updated the show methods for most tracks to give more meaningful
+      and more compact information about the track's
+      content. Availablability of data on other chromosomes than the
+      currently active one should now be indicated.
+
+    o IdeogramTracks can now be constructed from a cytoband table via
+      the new bands argument in the constructor.
+
+    o AnnotationTrack objects now by default draw connecting lines in
+      a light gray color. This feature can be controlled via the
+      col.line display parameter.
+
+    o Sliding window summarization can now deal with NA values.
+
+    o Exporting drawGD from the name space now to allow for
+      sub-classing of GdObjects in other packages.
+
+    o When building GeneRegionTracks from TrasncriptDb objects, the
+      information about UTRs and coding regions is now retained.
+
+
+BUG FIXES
+
+    o When zooming into the emty space between two grouped features,
+      the connecting line will now be plotted for all classes inheriting
+      from AnnotationTrack.
+
+    o An error in calculating ylims when drawing AlignedReadTracks has
+      been fixed.
+
+    o Numerous other little fixes that mainly aim at improving
+      performance.
+
+  

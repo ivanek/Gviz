@@ -1478,7 +1478,12 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
           factor for the group-level annotation.} 
 
         \item{}{\code{col="transparent"}: Character or integer scalar.
-          The border color for all track items.} 
+          The border color for all track items.}
+	
+	\item{}{\code{col.line="darkgray"}: Character scalar. The color used for
+	  connecting lines between grouped items. Defaults to a dark gray,
+	  but if set to \code{NULL} the same color as for the first item in
+	  the group is used.}
 
         \item{}{\code{fontcolor="white"}: Character or integer scalar.
           The font color for item identifiers.} 
@@ -1571,10 +1576,6 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
           \code{grid==TRUE}.} 
-
-        \item{}{\code{col.line=NULL}: Integer or character scalar.
-          Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.} 
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the

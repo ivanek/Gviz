@@ -1178,21 +1178,34 @@ setClass("IdeogramTrack", contains = "RangeTrack",
                                             bevel=0.45)))
 
 ## Grab the chromosome band and length information from UCSC and fill the ranges slot.
-setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, ...){
+setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, bands, name, ...){
     ## the diplay parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "IdeogramTrack")
-    if(missing(genome) || missing(chromosome))
+    if(is.null(bands) && (missing(genome) || missing(chromosome)))
         return(callNextMethod(.Object=.Object, range=GRanges(), genome=NULL, chromosome=NULL, ...))
-    chromosome <- .chrName(chromosome)[1]
-    sessionInfo <- .cacheGenomes(genome=genome)
-    .Object@bandTable <- sessionInfo$bands
-    ranges <- sessionInfo$bands[sessionInfo$bands$chrom==chromosome,]
-    if(nrow(ranges)==0)
+    if(is.null(bands)){
+        sessionInfo <- .cacheGenomes(genome=genome)
+        .Object@bandTable <- sessionInfo$bands
+        bands <- sessionInfo$bands
+    }else{
+        .checkClass(bands, "data.frame")
+        cols <- c("chrom", "chromStart", "chromEnd", "name", "gieStain") 
+        miss <- ! cols %in% colnames(bands)
+        if(any(miss))
+            stop(sprintf("The following column%s missing from the bands table: %s",
+                         ifelse(sum(miss)>1, "s are", " is"), paste(cols[miss], collapse=", ")))
+        .Object@bandTable <- bands
+    }
+    chromosome <- if(is.null(chromosome)) as.character(bands[1, "chrom"]) else .chrName(chromosome)[1]
+    bands <- bands[bands$chrom==chromosome,]
+    if(nrow(bands)==0)
         stop("Chromosome '", chromosome, "' does not exist on UCSC genome '", genome, "'")
-    ranges <- GRanges(seqnames=ranges$name, range=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
-                      name=ranges$name, type=ranges$gieStain)
-    .Object <- callNextMethod(.Object=.Object, range=ranges, genome=genome, chromosome=chromosome, ...)
+    if(is.null(name))
+        name <- .chrName(chromosome)[1]
+    ranges <- GRanges(seqnames=as.character(bands$name), range=IRanges(start=bands$chromStart, end=bands$chromEnd),
+                      name=as.character(bands$name), type=as.character(bands$gieStain))
+    .Object <- callNextMethod(.Object=.Object, range=ranges, genome=genome, chromosome=chromosome, name=name, ...)
     return(.Object)
 })
 
@@ -1201,10 +1214,9 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, .
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
-IdeogramTrack <- function(chromosome, genome, name=.chrName(chromosome)[1], ...){
+IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
     if(missing(genome)) stop("Need to specify genome for creating an IdeogramTrack")
-    if(missing(chromosome)) stop("Need to specify chromosome for creating an IdeogramTrack")
-    new("IdeogramTrack", chromosome=chromosome, genome=genome, name=name, ...)
+    new("IdeogramTrack", chromosome=chromosome, genome=genome, name=name, bands=bands, ...)
 }
 ##----------------------------------------------------------------------------------------------------------------------
 

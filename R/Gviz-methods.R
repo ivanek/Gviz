@@ -2399,11 +2399,8 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     if(!missing(minBase) && !missing(maxBase))
         grid.rect(minBase/len, 0.1, width=min(1,(maxBase-minBase)/len), height=0.8, just=c("left","bottom"),
                   gp=gpar(col="transparent", fill=fill))
-    ## Color mapping for the bands, grayscale for regular and red for centrosome/repetetive regions
-    gpcols <- unique(grep("gpos", values(GdObject)$type, value=TRUE))
-    posCol <- if(length(gpcols)==1) 50 else sort(as.integer(gsub("gpos", "", gpcols)))
-    cols <- c("white", colorRampPalette(c("white","black"))(100)[posCol], "black", rep("darkred", 2))
-    names(cols) <- c("gneg", paste("gpos", if(length(gpcols)==1) "" else posCol, sep=""), "gvar", "acen", "stalk")
+    ## Color mapping for the bands taken from the biovizBase package
+    cols <- getBioColor("CYTOBAND")
     vals <- data.frame(values(GdObject), col=cols[as.character(values(GdObject)$type)], stringsAsFactors=FALSE)
     ## For the rounded caps we need  to figure out the overlap with existing bands for proper coloring
     bevel <- 0.02
