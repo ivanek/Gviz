@@ -2841,18 +2841,38 @@ setMethod(".buildRange", signature("TranscriptDb"),
                   t2f$tx_id <- tids
                   t2f$feature_type <- "utr5"
               }
-              ## And finally the 3'UTRS
+              ## And the 3'UTRS
               t2t <- threeUTRsByTranscript(range)
               names(t2t) <- txs[names(t2t), 2]
-                  tids <- rep(names(t2t), elementLengths(t2t))
-                  t2t <- unlist(t2t)
+              tids <- rep(names(t2t), elementLengths(t2t))
+              t2t <- unlist(t2t)
               if(length(t2t)){
                   t2t$tx_id <- tids
                   t2t$feature_type <- "utr3"
               }
+              ## And finally all the non-coding transcripts
+              nt2e <- exonsBy(range, "tx")
+              names(nt2e) <- txs[names(nt2e), 2]
+              nt2e <- nt2e[!names(nt2e) %in% c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)]
+              tids <- rep(names(nt2e), elementLengths(nt2e))
+              nt2e <- unlist(nt2e)
+              if(length(nt2e)){
+                  nt2e$tx_id <- tids
+                  nt2e$feature_type <- "ncRNA"
+              }
               ## Now we can merge the three back together (we need to change the column names of t2c to make them all the same)
               colnames(values(t2c))[1:2] <- c("exon_id", "exon_name")
-              t2e <- c(t2c, t2f, t2t)
+              ## t2e <- c(t2c, t2f, t2t, nt2e) ## This is super-slow, much more efficient if we build the GRanges object from the individual bits and pieces
+              vals <- DataFrame(exon_id=c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
+                                exon_name=c(values(t2c)$exon_name, values(t2f)$exon_name, values(t2t)$exon_name, values(nt2e)$exon_name),
+                                exon_rank=c(values(t2c)$exon_rank, values(t2f)$exon_rank, values(t2t)$exon_rank, values(nt2e)$exon_rank),
+                                tx_id=c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id, values(nt2e)$tx_id),
+                                feature_type=c(values(t2c)$feature_type, values(t2f)$feature_type, values(t2t)$feature_type, values(nt2e)$feature_type))
+              t2e <- GRanges(seqnames=c(seqnames(t2c), seqnames(t2f), seqnames(t2t), seqnames(nt2e)),
+                             ranges=IRanges(start=c(start(t2c), start(t2f), start(t2t), start(nt2e)),
+                                            end=c(end(t2c), end(t2f), end(t2t), end(nt2e))),
+                             strand=c(strand(t2c), strand(t2f), strand(t2t), strand(nt2e)))
+              values(t2e) <- vals
               if(length(t2e)==0)
                   return(GRanges())
               ## Add the gene level annotation
@@ -2863,6 +2883,8 @@ setMethod(".buildRange", signature("TranscriptDb"),
               values(t2e)$gene_id <- gids[match(values(t2e)$tx_id, as.character(txs[as.character(values(g2t)$tx_id),2]))]
               vals <- values(t2e)[c("tx_id", "exon_id", "exon_rank", "feature_type", "tx_id", "gene_id")]
               colnames(vals) <- c("transcript", "exon", "rank", "feature", "symbol", "gene")
+              ## Add the genome information
+              genome(t2e) <- unique(genome(range))
               ## Finally we re-assign, subset if necessary, and sort
               range <- t2e
               values(range) <- vals
