@@ -360,6 +360,7 @@ setMethod("identifier", "AnnotationTrack", function(GdObject, lowest=FALSE, add.
 setMethod("identifier", "GeneRegionTrack", function(GdObject, lowest=FALSE, add.space=FALSE){
     id <- if(lowest) exon(GdObject) else if(.dpOrDefault(GdObject, "geneSymbols", TRUE)){
         symbol(GdObject)} else gene(GdObject)
+    id[is.na(id)] <- "NA"
     if(!lowest && add.space && .dpOrDefault(GdObject, ".__hasAnno", TRUE))
         id[id!=""] <- paste(id[id!=""], "  ", sep="")
     return(id)
