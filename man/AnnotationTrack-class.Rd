@@ -1439,8 +1439,21 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
   parent classes. Note that not all of them may have an effect on the
   plotting of \code{AnnotationTrack} \code{DetailsAnnotationTrack} objects. 
 
-    \describe{ 
+  \describe{
 
+    \item{}{\code{\linkS4class{StackedTrack}}:
+      
+      \describe{ 
+
+	\item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
+	  y-ordering of stacked items. I.e., features that are plotted on
+	  the bottom-most stacks will be moved to the top-most stack and
+	  vice versa.}
+
+      }
+      
+    }
+    
     \item{}{\code{\linkS4class{GdObject}}: 
 
       \describe{ 

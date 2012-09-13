@@ -346,7 +346,8 @@ details <- list(
                             fontfamily.legend="Integer or character scalar. The font family for the legend text.",
                             lineheight.legend="Numeric scalar. The line height for the legend text.",
                             fontcolor.legend="Integer or character scalar. The font color for the legend text."),
-                
+
+                StackedTrack=c(reverseStacking="Logical flag. Reverse the y-ordering of stacked items. I.e., features that are plotted on the bottom-most stacks will be moved to the top-most stack and vice versa."),
                 
                 GdObject=c(fontsize="Numeric scalar. The font size for all text.",
                            fontface="Integer or character scalar. The font face for all text.",

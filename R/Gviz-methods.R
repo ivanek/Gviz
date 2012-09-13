@@ -1290,8 +1290,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     ## If there are too many stacks for the available device resolution we cast an error
     bins <- stacks(GdObject)
     stacks <- max(bins)
-    pushViewport(dataViewport(xData=c(minBase, maxBase), extension=0,
-                              yscale=c(1, stacks+1), clip=TRUE))
+    yscale <- if(.dpOrDefault(GdObject, "reverseStacking", FALSE)) c(1, stacks+1) else c(stacks+1, 1)
+    pushViewport(dataViewport(xData=c(minBase, maxBase), extension=0, yscale=yscale, clip=TRUE))
     res <- .pxResolution(coord="x")
     curVp <- vpLocation()
     if(curVp$size["height"]/stacks < .dpOrDefault(GdObject, "min.height", 3))

@@ -406,7 +406,7 @@ setClass("StackedTrack",
          prototype=prototype(name="StackedTrack",
                              stacking="squish",
                              stackingValues=c("hide", "dense", "squish", "pack", "full"),
-                             dp=DisplayPars()),					  
+                             dp=DisplayPars(reverseStacking=FALSE)),					  
          contains="RangeTrack")
 
 ## Need to fill the stacks slot here, don't want to recompute all the time

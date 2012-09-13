@@ -11,7 +11,11 @@ NEW FEATURES
       by means of the feature property in combination with the
       thinBoxFeature display parameter.
 
-   
+    o StackedTracks now have a new display parameter 'reverseStacking'
+      which reverts the horizontal ordering of stacked items. If set
+      to TRUE, the lowest items are moved to the top of the stack, and
+      vice versa.
+
 
 SIGNIFICANT USER-VISIBLE CHANGES
 

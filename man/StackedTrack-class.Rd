@@ -857,10 +857,23 @@
 }
 
 
-\section{Display Parameters}{ 
+\section{Display Parameters}{
 
-  No formal display parameters are defined for objects of class
-  \code{StackedTrack}. 
+  The following display parameters are set for objects of class
+  \code{AnnotationTrack} upon instantiation, unless one or more of them
+  have already been set by one of the optional sub-class initializers,
+  which always get precedence over these global defaults. See
+  \code{\link{settings}} for details on setting graphical parameters
+  for tracks.
+
+  \describe{ 
+
+    \item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
+      y-ordering of stacked items. I.e., features that are plotted on
+      the bottom-most stacks will be moved to the top-most stack and
+      vice versa.}
+
+  }
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
