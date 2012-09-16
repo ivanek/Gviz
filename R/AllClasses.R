@@ -563,7 +563,7 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
                         defaults=list(feature="unknown", group=group, id=id, strand=strand, density=1),
                         chromosome=chromosome)
     genome <- if(missing(genome)) .getGenomeFromGRange(range, "NA") else genome
-    genome(range) <- genome
+    genome(range) <- unname(genome)
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     ## And finally the object instantiation, we have to distinguis between DetailsAnnotationTracks and normal ones
@@ -746,7 +746,7 @@ GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, 
     if(is.null(end))
         end <- if(!length(range)) NULL else max(IRanges::end(range))
     genome <- if(missing(genome)) .getGenomeFromGRange(range, "NA") else genome
-    genome(range) <- genome
+    genome(range) <- unname(genome)
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     new("GeneRegionTrack", start=start, end=end, chromosome=chromosome[1], range=range,
@@ -851,7 +851,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                          gene=as.character(ens$gene_id), exon=as.character(ens$exon_id),
                          transcript=as.character(ens$transcript_id), symbol=as.character(ens$symbol),
                          rank=as.numeric(ens$rank))
-        genome(range) <- list(...)$genome[1]
+        genome(range) <- unname(list(...)$genome[1])
     }
     if(length(range)==0)
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
@@ -1321,7 +1321,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
     if(missing(to))
         to <- sessionInfo$chrInfo[chromosome]
     gr <- GRanges(ranges=IRanges(start=from, end=to), seqnames=chromosome)
-    genome(gr) <- genome
+    genome(gr) <- unname(genome)
     query <- ucscTableQuery(sessionInfo$session, sessionInfo$track, gr)
     if(!is.null(table))
     {
