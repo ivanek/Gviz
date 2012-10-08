@@ -163,7 +163,7 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     if(.hasSlot(GdObject, "bandTable") && chromosome %in% as.character(GdObject@bandTable$chrom))
     {
         ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
-        ranges <- GRanges(seqnames=ranges$name, range=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
+        ranges <- GRanges(seqnames=ranges$name, ranges=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
                           name=ranges$name, type=ranges$gieStain)
         GdObject@range <- ranges
         GdObject@chromosome <- chromosome
@@ -188,6 +188,7 @@ setReplaceMethod("genome", "GdObject", function(x, value){
 })
 setReplaceMethod("genome", "RangeTrack", function(x, value){
     x@genome <- value[1]
+    genome(ranges(x)) <- as.vector(value[1])
     return(x)
 })
 setReplaceMethod("genome", "IdeogramTrack", function(x, value){
