@@ -604,7 +604,8 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"), function(Gd
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
         ## is processed in a sane way.
         needsRestacking <- TRUE
-        mapping <- .myFindOverlaps(rRed, grange)
+        ##mapping <- .myFindOverlaps(rRed, grange)
+        mapping <- queryHits(findOverlaps(rRed, grange))
         ## We start by finding the items that have not been reduced
         identical <- mapping %in% which(table(mapping)==1)
         newVals <- anno[identical,cols]
@@ -920,7 +921,7 @@ setMethod("collapseTrack", signature(GdObject="GenomeAxisTrack"),
 setMethod("subset", signature(x="GdObject"), function(x, ...) x)
 ## For normal ranges we clip everything outside of the boundaries (keeping one extra item left and right
 ## in order to assure continuation)
-setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, ...){
+setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, use.defaults=TRUE, ...){
     ## Not needed anymore...
     ## Subset to a single chromosome first
     if(drop){
@@ -930,7 +931,7 @@ setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, s
     }
     if(!length(x))
         return(x)
-    ranges <- .defaultRange(x, from=from, to=to)
+    ranges <- if(use.defaults) .defaultRange(x, from=from, to=to) else c(from=ifelse(is.null(from), -Inf, from), to=ifelse(is.null(to), Inf, to))
     lsel <- end(x) < ranges["from"]
     if(any(lsel))
         lsel[max(0, max(which(lsel))-1)] <- FALSE   
@@ -944,7 +945,7 @@ setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, s
     return(x)
 })
 ## For data tracks we cut exactly, and also reduce to the current chromosome unless told explicitely not to
-setMethod("subset", signature(x="DataTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, ...){
+setMethod("subset", signature(x="DataTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, use.defaults=TRUE, ...){
     ## Subset to a single chromosome first
     if(drop){
         csel <- seqnames(x) != chromosome(x)
@@ -953,7 +954,7 @@ setMethod("subset", signature(x="DataTrack"), function(x, from=NULL, to=NULL, so
     }
     if(!length(x))
         return(x)
-    ranges <- .defaultRange(x, from=from, to=to)
+    ranges <- if(use.defaults) .defaultRange(x, from=from, to=to) else c(from=ifelse(is.null(from), -Inf, from), to=ifelse(is.null(to), Inf, to))
     x <- x[,start(x)>=ranges["from"] & end(x)<=ranges["to"]]
     if(sort)
         x <- x[,order(range(x))]
@@ -968,7 +969,7 @@ setMethod("subset", signature(x="StackedTrack"), function(x, from=NULL, to=NULL,
 })
 ## In order to keep the grouping information for track regions in the clipped areas we have to
 ## keep all group elements that overlap with the range
-setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE){
+setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE, use.defaults=TRUE){
     ## Subset to a single chromosome first
     csel <- seqnames(x) != chromosome(x)
     if(any(csel))
@@ -976,8 +977,8 @@ setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NU
     if(length(x))
     {
         ## Nothing to do if everything is within the range
-        ranges <- .defaultRange(x, from=from, to=to)
-        if(!any(end(x)<ranges["from"] | start(x)> ranges["to"])){
+        ranges <- if(use.defaults) .defaultRange(x, from=from, to=to) else c(from=ifelse(is.null(from), -Inf, from), to=ifelse(is.null(to), Inf, to))
+        if(!(any(end(x)<ranges["from"] | start(x)> ranges["to"]))){
             if(stacks)
                 x <- setStacks(x)
             return(x)

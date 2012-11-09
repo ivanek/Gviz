@@ -808,6 +808,10 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
 {
     if(!is.list(trackList))
         trackList <- list(trackList)
+    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first
+    if(!is.null(from) || !(is.null(to))){
+        trackList <- lapply(trackList, subset, from=from, to=to, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
+    }
     ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
     ## size, resolution or plotting ranges. Chromosomes should all be the same for all tracks, if not we will force them to
     ## be set to the first one that can be detected
