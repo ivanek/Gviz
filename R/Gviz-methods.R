@@ -2570,7 +2570,8 @@ setAs("AnnotationTrack", "UCSCData",
               new("UCSCData", GenomicData(ranges, chrom=chromosome(from),
                                           id=gsub(" ", "_", vals$id),
                                           name=gsub(" ", "_", as.character(vals$id)), itemRgb=color,
-                                          genome=genome(from), strand=strand),
+                                          genome=genome(from), strand=strand,
+                                          asRangedData=TRUE),
                   trackLine = line)   
           })
 
@@ -2597,7 +2598,8 @@ setAs("GeneRegionTrack", "UCSCData",
               new("UCSCData", GenomicData(IRanges(start, end), chrom=chromosome(from),
                                           id=id, name=name, itemRgb=color, blockCount=blocks,
                                           blockSizes=bsizes, blockStarts=bstarts,
-                                          genome=genome(from), strand=strand),
+                                          genome=genome(from), strand=strand,
+                                          asRangedData=TRUE),
                   trackLine = line)   
           })
           
