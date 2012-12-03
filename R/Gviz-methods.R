@@ -2354,6 +2354,18 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     return(coords)
 }
 
+
+## A more generic method to come up with colors for chromosome bands that still relies a bit on biovizBase
+.getBioColorIdeo <- function(type){
+    type <- as.character(type)
+    ocols <- getBioColor("CYTOBAND")
+    cols <- c(ocols[c("gneg", "stalk", "acen")], gpos=unname(ocols["gpos100"]), gvar=unname(ocols["gpos100"]))
+    gpcols <- unique(grep("gpos", type, value=TRUE))
+    crmp <- colorRampPalette(c(cols["gneg"], cols["gpos"]))(100)
+    posCols <- setNames(crmp[as.integer(gsub("gpos", "", gpcols))], gpcols)
+    return(c(cols, posCols))
+}
+
 ## The actual drawing method
 setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
     imageMap(GdObject) <- NULL
@@ -2401,7 +2413,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         grid.rect(minBase/len, 0.1, width=min(1,(maxBase-minBase)/len), height=0.8, just=c("left","bottom"),
                   gp=gpar(col="transparent", fill=fill))
     ## Color mapping for the bands taken from the biovizBase package
-    cols <- getBioColor("CYTOBAND")
+    cols <- .getBioColorIdeo(values(GdObject)$type)
     vals <- data.frame(values(GdObject), col=cols[as.character(values(GdObject)$type)], stringsAsFactors=FALSE)
     ## For the rounded caps we need  to figure out the overlap with existing bands for proper coloring
     bevel <- 0.02
