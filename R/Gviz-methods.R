@@ -1812,6 +1812,8 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
 }
 
 setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
+    if(.dpOrDefault(GdObject, "break", FALSE))
+        browser()
     imageMap(GdObject) <- NULL
     type <- .dpOrDefault(GdObject, "type", "p")
     type <- match.arg(type, c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",

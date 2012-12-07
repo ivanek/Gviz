@@ -793,12 +793,14 @@ setClass("BiomartGeneRegionTrack",
                                             Mt_rRNA="yellow",
                                             Mt_tRNA="darkgoldenrod",
                                             Mt_tRNA_pseudogene="darkgoldenrod1",
-                                            protein_coding="gold4",
+                                            protein_coding="orange",
+                                            utr5="orange",
+                                            utr3="orange",
                                             pseudogene="brown1",         
                                             retrotransposed="blueviolet",
                                             rRNA="darkolivegreen1",
                                             rRNA_pseudogene="darkolivegreen" ,   
-                                            scRNA="darkorange",
+                                            scRNA="gold4",
                                             scRNA_pseudogene="darkorange2",
                                             snoRNA="cyan",           
                                             snoRNA_pseudogene="cyan2",
@@ -828,7 +830,8 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
     if (!is.null(.Object@biomart))
     {
         attributes <- c("ensembl_gene_id","ensembl_transcript_id","ensembl_exon_id","exon_chrom_start",
-                        "exon_chrom_end", "rank", "strand", "external_gene_id", "gene_biotype", "chromosome_name")
+                        "exon_chrom_end", "rank", "strand", "external_gene_id", "gene_biotype", "chromosome_name",
+                        "5_utr_start", "5_utr_end", "3_utr_start", "3_utr_end", "phase")
         filterNames <- c("chromosome_name", "start", "end", names(filters))
         filterValues <- c(list(gsub("^chr", "", chr), sstart, send), as.list(filters))
         strand <- .strandName(list(...)$strand, extended=TRUE)
@@ -842,7 +845,38 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                      mart=.Object@biomart, uniqueRows=TRUE)
         colnames(ens) <- c("gene_id","transcript_id","exon_id","start",
                            "end", "rank", "strand", "symbol", "biotype",
-                           "chromosome_name")
+                           "chromosome_name", "u5s", "u5e", "u3s", "u3e", "phase")
+        ## We may have to split exons if they contain UTRs
+        hasUtr <- !is.na(ens$u5s) | !is.na(ens$u3s)
+        ensUtr <- ens[hasUtr,, drop=FALSE]
+        ensUtr$feature <- ifelse(is.na(ensUtr$u5s), "utr3", "utr5")
+        ensUtr$us <- ifelse(ensUtr$feature=="utr3", ensUtr$u3s, ensUtr$u5s)
+        ensUtr$ue <- ifelse(ensUtr$feature=="utr3", ensUtr$u3e, ensUtr$u5e)
+        ensUtr$u5e <- ensUtr$u5s <- ensUtr$u3e <- ensUtr$u3s <- NULL
+        allUtr <- ensUtr$us == ensUtr$start & ensUtr$ue == ensUtr$end
+        utrFinal <- ensUtr[allUtr,, drop=FALSE]
+        ensUtr <- ensUtr[!allUtr,, drop=FALSE]
+        ensUtrS <- split(ensUtr, ifelse(ensUtr$start==ensUtr$us, "left", "right"))
+        utrFinal <- rbind(utrFinal, do.call(rbind, lapply(names(ensUtrS), function(i){
+            y <- ensUtrS[[i]]
+            if(nrow(y)==0)
+                return(NULL)
+            yy <- y[rep(1:nrow(y), each=2),]
+            sel <- seq(1, nrow(yy), by=2)
+            yy[sel, "end"] <- if(i=="left") yy[sel, "ue"] else yy[sel, "us"]-1
+            yy[sel, "feature"] <-  yy[sel, ifelse(i=="left", "feature", "biotype")]
+            yy[sel, "phase"] <-  if(i=="left") -1 else 0
+            sel <- seq(2, nrow(yy), by=2)
+            yy[sel, "start"] <- if(i=="left") yy[sel, "ue"]+1 else yy[sel, "us"]
+            yy[sel, "feature"] <-  yy[sel, ifelse(i=="left", "biotype", "feature")]
+            yy[sel, "phase"] <- if(i=="left") yy[sel, "phase"] else -1
+            yy
+        })))
+        utrFinal$biotype <- utrFinal$feature
+        keep <-  c("gene_id","transcript_id","exon_id","start",
+                   "end", "rank", "strand", "symbol", "biotype",
+                   "chromosome_name", "phase")
+        ens <- rbind(ens[!hasUtr,keep, drop=FALSE], utrFinal[,keep])
         if(nrow(ens)) {
             ens$space <- chr
         }
@@ -850,8 +884,9 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                          strand=ens$strand, feature=as.character(ens$biotype),
                          gene=as.character(ens$gene_id), exon=as.character(ens$exon_id),
                          transcript=as.character(ens$transcript_id), symbol=as.character(ens$symbol),
-                         rank=as.numeric(ens$rank))
+                         rank=as.numeric(ens$rank), phase=as.integer(ens$phase))
         suppressWarnings(genome(range) <- unname(list(...)$genome[1]))
+        range <- sort(range)
     }
     if(length(range)==0)
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)

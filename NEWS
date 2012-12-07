@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.3.2
+-------------------------
+
+NEW FEATURES
+
+    o BiomartGeneRegionTracks will now make use of the available CDS
+    information in Ensembl.
+
+
+
 CHANGES IN VERSION 1.2.0
 -------------------------
 
