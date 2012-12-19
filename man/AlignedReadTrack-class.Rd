@@ -35,7 +35,7 @@
 
 \usage{
 
-AlignedReadTrack(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand="+", genome,
+AlignedReadTrack(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand, genome,
 stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
 }

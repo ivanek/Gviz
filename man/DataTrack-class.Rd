@@ -9,6 +9,7 @@
 \alias{drawAxis,DataTrack-method}
 \alias{drawGD,DataTrack-method}
 \alias{initialize,DataTrack-method}
+\alias{initialize,ReferenceDataTrack-method}
 \alias{score,DataTrack-method}
 \alias{show,DataTrack-method}
 \alias{split,DataTrack-method}
@@ -19,6 +20,7 @@
 \alias{range,DataTrack-method}
 \alias{strand,DataTrack-method}
 \alias{subset,DataTrack-method}
+\alias{subset,ReferenceDataTrack-method}
 \alias{strand<-,DataTrack-method}
 \alias{coerce,DataTrack,data.frame-method}
 \alias{coerce,GRanges,DataTrack-method}
@@ -43,8 +45,8 @@
 
 \usage{
 
-DataTrack(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand="*", genome,
-name="DataTrack", ...)
+DataTrack(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand, genome,
+name="DataTrack", importFunction, stream=FALSE, ...)
 
 }
 
@@ -101,6 +103,13 @@ name="DataTrack", ...)
 	\code{chromosome} argument. All additional numeric columns will
 	be interpreted as data columns, unless the \code{data} argument
 	is explicitely provided.}
+
+       \item{}{A \code{character} scalar: in this case the value of the
+	\code{range} argument is considered to be a file path to an
+	annotation file on disk. A range of file types are supported by
+	the \code{Gviz} package as identified by the file extension. See
+	the \code{importFunction} documentation below for further
+	details.}
 	
     }
   }
@@ -158,6 +167,47 @@ name="DataTrack", ...)
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
 
+  \item{importFunction}{A user-defined function to be used to import the
+    data from a file. This only applies when the \code{range} argument
+    is a character string with the path to the input data file. The
+    function needs to accept an argument \code{file} containing the file
+    path and has to return a proper \code{GRanges} object with the data
+    part attached as numeric \code{elementMetadata} columns. Essentially
+    the process is equivalent to constructing a \code{DataTrack}
+    directly from a \code{GRanges} object in that non-numeric columns
+    will be dropped, and further subsetting can be archived by means of
+    the \code{data} argument. A set of default import functions is
+    already implemented in the package for a number of different file
+    types, and one of these defaults will be picked automatically based
+    on the extension of the input file name. If the extension can not be
+    mapped to any of the existing import function, an error is raised
+    asking for a user-defined import function. Currently the following
+    file types can be imported with the default functions: \code{wig},
+    \code{bigWig}, \code{bedGraph} and \code{bam}.
+
+    Some file types support indexing by genomic coordinates (e.g.,
+    \code{bigWig} and \code{bam}), and it makes sense to only load the
+    part of the file that is needed for plotting. To this end, the
+    \code{Gviz} package defines the derived \code{ReferenceDataTrack}
+    class, which supports streaming data from the file system. The user
+    typically does not have to deal with this distinction but may rely
+    on the constructor function to make the right choice as long as the
+    default import functions are used. However, once a user-defined import
+    function has been provided and if this function adds support for
+    indexed files, you will have to make the constructor aware of this
+    fact by setting the \code{stream} argument to \code{TRUE}. Please
+    note that in this case the import function needs to accept a second
+    mandatory argument \code{selection} which is a \code{GRanges} object
+    containing the dimensions of the plotted genomic range. As before,
+    the function has to return an appropriate \code{GRanges} object.}
+
+  \item{stream}{A logical flag indicating that the user-provided import
+    function can deal with indexed files and knows how to process the
+    additional \code{selection} argument when accessing the data on
+    disk. This causes the constructor to return a
+    \code{ReferenceDataTrack} object which will grab the necessary data
+    on the fly during each plotting operation.}
+
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters.}
   
@@ -166,7 +216,7 @@ name="DataTrack", ...)
 \value{
 
   The return value of the constructor function is a new object of class
-  \code{DataTrack}.
+  \code{DataTrack} or \code{ReferenceDataTrack}.
   
 }
    
@@ -1532,9 +1582,8 @@ DataTrack()
 
 ## from individual arguments
 dat <- matrix(runif(400), nrow=4)
-dtTrack <- DataTrack(start=seq(1,1000, len=100), width=10,
-data=dat, chromosome=1, genome="mm9",
-name="random data")
+dtTrack <- DataTrack(start=seq(1,1000, len=100), width=10, data=dat,
+chromosome=1, genome="mm9", name="random data")
 
 ## from GRanges
 library(GenomicRanges)

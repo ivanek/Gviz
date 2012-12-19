@@ -6,6 +6,7 @@
 \alias{DetailsAnnotationTrack-class}
 \alias{DetailsAnnotationTrack}
 \alias{initialize,DetailsAnnotationTrack-method}
+\alias{initialize,ReferenceAnnotationTrack-method}
 \alias{coerce,AnnotationTrack,UCSCData-method}
 \alias{collapseTrack,AnnotationTrack-method}
 \alias{drawGD,AnnotationTrack-method}
@@ -22,6 +23,7 @@
 \alias{setStacks,AnnotationTrack-method}
 \alias{show,AnnotationTrack-method}
 \alias{subset,AnnotationTrack-method}
+\alias{subset,ReferenceAnnotationTrack-method}
 \alias{coerce,GRanges,AnnotationTrack-method}
 \alias{coerce,GRangesList,AnnotationTrack-method}
 
@@ -31,8 +33,8 @@
   
   A fairly generic track object for arbitrary genomic range annotations,
   with the option of grouped track items. The extended
-  \code{DetailsAnnotationTrack} provides a flexible interface to add
-  user-defined custom information for each range.
+  \code{DetailsAnnotationTrack} provides a more flexible interface to
+  add user-defined custom information for each range.
 
 }
 
@@ -45,9 +47,10 @@
 
 \usage{
 
-AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
- id, strand="*", chromosome, genome, stacking="squish", name="AnnotationTrack",
- fun, selectFun, ...)
+AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
+                group, id, strand, chromosome, genome,
+                stacking="squish", name="AnnotationTrack", fun,
+                selectFun, importFunction, stream=FALSE, ...)
 
 }
 
@@ -92,13 +95,13 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 
       \item{}{An \code{\linkS4class{IRanges}} object: almost identical
 	to the \code{GRanges} case, except that the chromosome and
-	strand information as well as all additional data has to be
+	strand information as well as all additional metadata has to be
 	provided in the separate \code{chromosome}, \code{strand},
 	\code{feature}, \code{group} or \code{id} arguments, because it
 	can not be directly encoded in an \code{IRange} object. Note
-	that only the former two are mandatory (if not provided
+	that none of those inputs are mandatory, and if not provided
 	explicitely the more or less reasonable default values
-	\code{chromosome=NA} and \code{strand=*} are used. }
+	\code{chromosome=NA} and \code{strand="*"} are used. }
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
 	contain at least the two mandatory columns \code{start} and
@@ -109,6 +112,13 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
 	arguments. In addition, the \code{feature}, \code{group} and
 	\code{id} data can be provided as additional columns. The above
 	comments about potential default values also apply here.}
+
+      \item{}{A \code{character} scalar: in this case the value of the
+	\code{range} argument is considered to be a file path to an
+	annotation file on disk. A range of file types are supported by
+	the \code{Gviz} package as identified by the file extension. See
+	the \code{importFunction} documentation below for further
+	details.}
 
     }
   }
@@ -249,6 +259,28 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
     item is omitted.
   
   }
+
+  \item{importFunction}{A user-defined function to be used to import the
+    data from a file. This only applies when the \code{range} argument
+    is a character string with the path to the input data file. The
+    function needs to accept an argument \code{x} containing the file
+    path and has to return a proper \code{GRanges} object with all the
+    necessary \code{elementMetadata} columns set. A set of default
+    import functions is already implemented in the package for a number
+    of different file types, and one of these defaults will be picked
+    automatically based on the extension of the input file name. If the
+    extension can not be mapped to any of the existing import function,
+    an error is raised asking for a user-defined import function via
+    this argument. Currently the following file types can be imported
+    with the default functions: \code{gff}, \code{gff1}, \code{gff2},
+    \code{gff3}, \code{bed}, \code{bam}.}
+
+  \item{stream}{A logical flag indicating that the user-provided import
+    function can deal with indexed files and knows how to process the
+    additional \code{selection} argument when accessing the data on
+    disk. This causes the constructor to return a
+    \code{ReferenceAnnotationTrack} object which will grab the necessary data
+    on the fly during each plotting operation.}
   
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
@@ -1622,8 +1654,7 @@ annTrack <- AnnotationTrack(range=df, genome="hg19", chromosome=7, name="generic
 gr <- GenomicRanges::GRanges(seqnames="chr7", range=IRanges::IRanges(start=df$start, end=df$end), strand=str)
 genome(gr) <- "hg19"
 IRanges::elementMetadata(gr) <- df[,-(1:3)]
-annTrack <- AnnotationTrack(range=gr, name="generic annotation",
-stacking="squish")
+annTrack <- AnnotationTrack(range=gr, name="generic annotation", stacking="squish")
 
 ## Finally from a GRangesList
 grl <- split(gr, values(gr)$group)

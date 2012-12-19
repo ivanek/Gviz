@@ -160,6 +160,11 @@ setMethod("getPar", c("DisplayPars", "missing"), function(x) as.list(x@pars))
 setMethod("displayPars", c("DisplayPars", "missing"), function(x) getPar(x))
 
 setMethod("displayPars", c("DisplayPars", "character"), function(x, name) getPar(x, name))
+
+setMethod("as.list", "DisplayPars", function(x) as(x, "list"))
+
+setAs("DisplayPars", "list", function(from, to) if(!is.null(from)) as.list(from@pars) else list())
+
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -173,6 +178,11 @@ setMethod("displayPars", c("DisplayPars", "character"), function(x, name) getPar
 ##    o inheritance: a character vector indicating the inheritance structure
 ##----------------------------------------------------------------------------------------------------------------------
 setClass("InferredDisplayPars", representation(name="character", inheritance="character"), contains="list")
+
+setMethod("as.list", "InferredDisplayPars", function(x) as(x, "list"))
+
+setAs("InferredDisplayPars", "list",
+          function(from, to) {ll <- from@.Data; names(ll) <- names(from); ll})
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -308,7 +318,7 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
     ## update the default parameters first
     .makeParMapping()
     .Object <- .updatePars(.Object, "GdObject")
-    ## now rebuild the slot to get a new environment 
+    ## now rebuild the slot to get a new environment
     pars <- getPar(.Object)
     .Object@dp <- DisplayPars()
     .Object <- setPar(.Object, pars, interactive=FALSE)
@@ -367,6 +377,50 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
 })
 ##----------------------------------------------------------------------------------------------------------------------
 
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## ReferenceTrack:
+##
+## Parent class for all tracks that provide a reference to data somewhere on the file system. This class is virtual
+## and only exists for the purpose of dispatching
+## Slots:
+##   o stream: the import function to stream data of the disk. Needs to be able to handle the two mandatory arguments
+##      'file' (a character containing a valid file path) and 'selection' (a GRanges object with the genomic region to plot)
+##   o reference: the path to the file containing the data
+##   o mapping: a default mapping between elementMetadata columns of the returned GRanges object from the import function
+##      and the elemenMetadata columns that make up the final track object
+##   o args: a list with the passed in constructor arguments during object instantiation. Those will be needed when
+##     fetching the data in order to fill all necessary slots
+##   o defaults: a list with the relevant default values to be used when neither 'mapping' nor 'args' provides the
+##     necessary information
+setClass("ReferenceTrack",  representation=representation("VIRTUAL",
+                                                          stream="function",
+                                                          reference="character",
+                                                          mapping="list",
+                                                          args="list",
+                                                          defaults="list"),
+         prototype=prototype(stream=function(x, selection){},
+                             reference="~",
+                             mapping=list()),
+         validity=function(object){
+             msg <- NULL
+             if(!all(c("file", "selection") %in% names(formals(object@stream))))
+                 msg <- "The streaming function in the 'stream' slot needs to define two arguments, 'file' and 'selection'"
+             if(!file.exists(object@reference))
+                 msg <- c(msg, sprintf("The referenced file '%s' does not exist", object@reference))
+             return(if(is.null(msg)) TRUE else msg)
+         })
+setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, mapping, args, defaults) {
+    .Object@stream <- stream
+    .Object@reference <- reference
+    .Object@mapping <- mapping
+    .Object@args <- args
+    .Object@defaults <- defaults
+    validObject(.Object)
+    return(.Object)
+})
+##----------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -512,15 +566,19 @@ setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
     return(.Object)
 })
 
-.myUnique <- function(x)
-{
-	if(length(x)<2)
-		return(x)
-	vals <- split(data.frame(id=as.character(x), ind=seq_along(x), stringsAsFactors=FALSE), as.character(x))
-	xUnique <- unlist(sapply(vals, function(y) if(nrow(y)<2) y$id else paste(y$id, seq_len(nrow(y)), sep="")))
-	ind <- unlist(sapply(vals, function(y) y$ind))
-	return(xUnique[ind])
-}
+## The file-based version of the AnnotationTrack class. This will mainly provide a means to dispatch to
+## a special 'subset' method which should stream the necessary data from disk. 
+setClass("ReferenceAnnotationTrack", contains=c("AnnotationTrack", "ReferenceTrack"))
+
+## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
+## multiple inheritence has some strange features with regards to method selection
+setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, reference, mapping=list(),
+                                                             args=list(), defaults=list(), ...) {
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
+                                                            mapping=mapping, args=args, defaults=defaults)
+    .Object <- callNextMethod()
+    return(.Object)
+})
 
 ## Constructor. The following arguments are supported:
 ##    o range: a data.frame or a GRanges object containing the information
@@ -544,33 +602,56 @@ setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as further DisplayParameters
 ## (N)
-AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, feature, group,
-                            id, strand="*", chromosome, genome, stacking="squish", name="AnnotationTrack",
-                            fun, selectFun, ...)
+AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, feature, group, id, strand, chromosome,
+                            genome, stacking="squish", name="AnnotationTrack", fun, selectFun, importFunction,
+                            stream=FALSE, ...)
 {
     ## Some defaults
-    n <- max(c(length(start), length(end), length(width), nrow(range), length(range)))
-    if(missing(feature))
-        feature <- rep("unknown", n)
-    if(missing(id))
-        id <- make.unique(as.character(feature))
-    if(missing(group))
-       group <- seq_len(n)
-    group <- gsub("|", "", group, fixed=TRUE)
-    # Build a GRanges object from the inputs
+    covars <- .getCovars(range)
+    isStream <- FALSE
+    if(!is.character(range)){
+        n <- max(c(length(start), length(end), length(width)), nrow(covars))
+        if(is.null(covars[["feature"]]) && missing(feature))
+            feature <- rep("unknown", n)
+        if(is.null(covars[["id"]]) && missing(id))
+            id <- make.unique(rep(if(!is.null(feature)) as.character(feature) else covars[["feature"]], n)[1:n])
+        if(is.null(covars[["group"]]) && missing(group))
+            group <- seq_len(n)
+    }
+    ## Build a GRanges object from the inputs
+    .missingToNull(c("feature", "group", "id", "strand", "chromosome", "importFunction", "genome"))
+    args <- list(feature=feature, group=group, id=id, strand=strand, chromosome=chromosome, genome=genome)
+    defs <- list(feature="unknown", group="unknown", id="unknown", strand="*", density=1, chromosome="chrNA", genome=NA)
     range <- .buildRange(range=range, groupId="group", start=start, end=end, width=width,
-                        args=list(feature=feature, group=group, id=id, strand=strand),
-                        defaults=list(feature="unknown", group=group, id=id, strand=strand, density=1),
-                        chromosome=chromosome)
-    genome <- if(missing(genome)) .getGenomeFromGRange(range, "NA") else genome[1]
-    suppressWarnings(genome(range) <- unname(genome))
+                         args=args, defaults=defs, chromosome=chromosome, trackType="AnnotationTrack",
+                         importFun=importFunction, stream=stream)
+    if(is.list(range)){
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
+    }
+    ## Pipes have a special meaning for merged groups, so we can't have them in the initial group vector
+    mcols(range)[["group"]] <- gsub("|", "", mcols(range)[["group"]], fixed=TRUE)
+    ## If no chromosome was explicitely asked for we just take the first one in the GRanges object
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-    ## And finally the object instantiation, we have to distinguis between DetailsAnnotationTracks and normal ones
+    ## And finally the object instantiation, we have to distinguish between DetailsAnnotationTracks and normal ones
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
     if(missing(fun))
     {
-        return(new("AnnotationTrack", chromosome=chromosome[1], range=range,
-                   name=name, genome=genome[1], stacking=stacking, ...))
+        if(!isStream){
+            return(new("AnnotationTrack", chromosome=chromosome[1], range=range,
+                       name=name, genome=genome, stacking=stacking, ...))
+        }else{
+            ## A bit hackish but for some functions we may want to know which track type we need but at the
+            ## same time we do not want to enforce this as an additional argument
+            e <- new.env()
+            e[["._trackType"]] <- "AnnotationTrack"
+            environment(slist[["stream"]]) <- e
+            return(new("ReferenceAnnotationTrack", chromosome=chromosome[1], range=range,
+                       name=name, genome=genome, stacking=stacking, stream=slist[["stream"]], reference=slist[["reference"]],
+                       mapping=slist[["mapping"]], args=args, defaults=defs, ...))
+        }
     }else{
         if(!is.function(fun))
             stop("'fun' must be a function")
@@ -579,7 +660,7 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
         if(!is.function(selectFun))
             stop("'selectFun' must be a function")
         return(new("DetailsAnnotationTrack", chromosome=chromosome[1], range=range,
-                   name=name, genome=genome[1], stacking=stacking, fun=fun, selectFun=selectFun, ...))
+                   name=name, genome=genome, stacking=stacking, fun=fun, selectFun=selectFun, ...))
     }
 }
 ##----------------------------------------------------------------------------------------------------------------------
@@ -698,7 +779,8 @@ setClass("GeneRegionTrack",
                                             showExonId=FALSE,
                                             collapseTranscripts=FALSE,
                                             shape=c("smallArrow", "box"),
-                                            thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "miRNA", "lincRNA"))))
+                                            thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA",
+                                                             "three_prime_UTR", "five_prime_UTR"))))
                                            
 
 ## Making sure all the display parameter defaults are being set
@@ -714,13 +796,28 @@ setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...){
     return(.Object)
 })
 
+## The file-based version of the GeneRegionTrack class. This will mainly provide a means to dispatch to
+## a special 'subset' method which should stream the necessary data from disk. 
+setClass("ReferenceGeneRegionTrack", contains=c("GeneRegionTrack", "ReferenceTrack"))
+
+## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
+## multiple inheritence has some strange features with regards to method selection
+setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, reference, mapping=list(),
+                                                             args=list(), defaults=list(), ...) {
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
+                                                            mapping=mapping, args=args, defaults=defaults)
+    .Object <- callNextMethod()
+    return(.Object)
+})
+
 ## Constructor. The following arguments are supported:
-##    o start, end: numeric vectors of the track start and end coordinates
+##    o range: one in a whole number of differerent potential inputs upon which the .buildRanges method will dispatch
+##    o start, end: numeric vectors of the track start and end coordinates. 
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
-##    o rstarts, rends: integer vector of exon start and end locations, or a character vector of
+##    o rstarts, rends, rwidths: integer vectors of exon start and end locations or widths, or a character vector of
 ##      comma-delimited exon locations, one vector element for each transcript
-##    o strand, rstarts, rends, rwidths, feature, exon, transcript, gene, symbol: vectors of equal length containing
-##       the exon strand, start, end, biotype, exon id, transcript id, gene id and human-readable gene symbol
+##    o strand, feature, exon, transcript, gene, symbol, chromosome: vectors of equal length containing
+##       the exon strand, biotype, exon id, transcript id, gene id, human-readable gene symboland chromosome information
 ##    o stacking: character controlling the stacking of overlapping items. One in 'hide', 
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o name: the name of the track. This will be used for the title panel.
@@ -729,28 +826,53 @@ setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...){
 ##    o delim: the delimiter if coordinates are in a list
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
-## FIXME: Need to deal with UTRs here at some point
-GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
-                            feature="unknown", exon=feature, transcript=feature, gene=feature, symbol=feature, chromosome=NULL,
-                            genome, stacking="squish", name="GeneRegionTrack", start=NULL, end=NULL, ...)
+GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand, feature, exon,
+                            transcript, gene, symbol, chromosome, genome, stacking="squish",
+                            name="GeneRegionTrack", start=NULL, end=NULL, importFunction, stream=FALSE, ...)
 {
+    ## Some defaults
+    covars <- if(is.data.frame(range)) range else if(is(range, "GRanges")) as.data.frame(mcols(range)) else data.frame()
+    isStream <- FALSE
+    if(!is.character(range)){
+        n <- if(is.null(range)) max(c(length(start), length(end), length(width))) else if(is(range, "data.frame")) nrow(range) else length(range)
+        if(is.null(covars[["feature"]]) && missing(feature))
+            feature <- rep("unknown", n)
+        if(is.null(covars[["exon"]]) && missing(exon))
+            exon <- make.unique(rep(if(!missing(feature) && !is.null(feature)) as.character(feature) else covars[["feature"]], n)[1:n])
+        if(is.null(covars[["transcript"]]) && missing(transcript))
+            transcript <- paste("transcript", seq_len(n), sep="_")
+        if(is.null(covars[["gene"]]) && missing(gene))
+            gene <- paste("gene", seq_len(n), sep="_")
+    }
     ## Build a GRanges object from the inputs
-    range <- .buildRange(range=range, groupId="transcript", start=rstarts, end=rends, width=rwidths,
-                         args=list(feature=feature, id=exon, exon=exon, transcript=transcript, gene=gene,
-                                   symbol=symbol, strand=strand),
-                         defaults=list(feature="unknown", id=NULL, exon=NULL, transcript=NULL, gene=NULL,
-                                   symbol=NULL, strand=strand, density=1), chromosome=chromosome,
-                         tstart=start, tend=end)
+    .missingToNull(c("feature", "exon", "transcript", "gene", "symbol", "strand", "chromosome", "importFunction", "genome"))
+    args=list(feature=feature, id=exon, exon=exon, transcript=transcript, gene=gene, symbol=symbol, strand=strand,
+              chromosome=chromosome, genome=genome)
+    defs <- list(feature="unknown", id="unknown", exon="unknown", transcript="unknown", genome=NA,
+                 gene="unknown", symbol="unknown", strand="*", density=1, chromosome="chrNA")
+    range <- .buildRange(range=range, groupId="transcript", start=rstarts, end=rends, width=rwidths, args=args, defaults=defs,
+                         chromosome=chromosome, tstart=start, tend=end, trackType="GeneRegionTrack", importFun=importFunction,
+                         genome=genome)
+    if(is.list(range)){
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
+    }
     if(is.null(start))
         start <- if(!length(range)) NULL else min(IRanges::start(range))
     if(is.null(end))
         end <- if(!length(range)) NULL else max(IRanges::end(range))
-    genome <- if(missing(genome)) .getGenomeFromGRange(range, "NA") else genome[1]
-    suppressWarnings(genome(range) <- unname(genome))
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-    new("GeneRegionTrack", start=start, end=end, chromosome=chromosome[1], range=range,
-        name=name, genome=genome[1], stacking=stacking, ...)
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    if(!isStream){
+        return(new("GeneRegionTrack", start=start, end=end, chromosome=chromosome[1], range=range,
+                   name=name, genome=genome, stacking=stacking, ...))
+    }else{
+        return(new("ReferenceGeneRegionTrack", start=start, end=end, chromosome=chromosome[1], range=range,
+                   name=name, genome=genome, stacking=stacking, stream=slist[["stream"]],
+                   reference=slist[["reference"]], mapping=slist[["mapping"]], args=args, defaults=defs, ...))
+    }
 }
 ##----------------------------------------------------------------------------------------------------------------------
 
@@ -810,8 +932,8 @@ setClass("BiomartGeneRegionTrack",
                                             V_segment="aquamarine")))
 
 ## Retrieving information from Biomart.
-setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), ...){
-    if(is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome))
+setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome, strand, ...){
+    if((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome))
         return(.Object)
     ## the diplay parameter defaults
     .makeParMapping()
@@ -826,15 +948,14 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
     send <- end + 2000
     ## fetching data from Biomart
     .Object@biomart <- biomart
-    chr <- list(...)$chromosome
     if (!is.null(.Object@biomart))
     {
         attributes <- c("ensembl_gene_id","ensembl_transcript_id","ensembl_exon_id","exon_chrom_start",
                         "exon_chrom_end", "rank", "strand", "external_gene_id", "gene_biotype", "chromosome_name",
                         "5_utr_start", "5_utr_end", "3_utr_start", "3_utr_end", "phase")
         filterNames <- c("chromosome_name", "start", "end", names(filters))
-        filterValues <- c(list(gsub("^chr", "", chr), sstart, send), as.list(filters))
-        strand <- .strandName(list(...)$strand, extended=TRUE)
+        filterValues <- c(list(gsub("^chr", "", chromosome), sstart, send), as.list(filters))
+        strand <- .strandName(strand, extended=TRUE)
         if(strand %in% 0:1)
         {
             filterNames <- c(filterNames, "strand")
@@ -877,20 +998,20 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                    "end", "rank", "strand", "symbol", "biotype",
                    "chromosome_name", "phase")
         ens <- rbind(ens[!hasUtr,keep, drop=FALSE], utrFinal[,keep])
-        if(nrow(ens)) {
-            ens$space <- chr
-        }
-        range <- GRanges(seqnames=.chrName(ens$chromosome_name), ranges=IRanges(start=ens$start, end=ens$end),
+        prefix <- ifelse(!grepl("^chr", chromosome) && getOption("ucscChromosomeNames"), "chr", "")
+        range <- GRanges(seqnames=paste(prefix, .chrName(ens$chromosome_name), sep="")[seq_len(nrow(ens))],
+                         ranges=IRanges(start=ens$start, end=ens$end),
                          strand=ens$strand, feature=as.character(ens$biotype),
                          gene=as.character(ens$gene_id), exon=as.character(ens$exon_id),
                          transcript=as.character(ens$transcript_id), symbol=as.character(ens$symbol),
                          rank=as.numeric(ens$rank), phase=as.integer(ens$phase))
-        suppressWarnings(genome(range) <- unname(list(...)$genome[1]))
+        suppressWarnings(genome(range) <- unname(genome[1]))
         range <- sort(range)
     }
     if(length(range)==0)
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
-    .Object <- callNextMethod(.Object=.Object, range=range, start=start, end=end, ...)
+    .Object <- callNextMethod(.Object=.Object, range=range, start=start, end=end,
+                              genome=genome, chromosome=chromosome, strand=strand, ...)
     return(.Object)
 })
 
@@ -907,10 +1028,13 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
-BiomartGeneRegionTrack <- function(start, end, biomart, chromosome, strand="*", genome=NULL,
+BiomartGeneRegionTrack <- function(start, end, biomart, chromosome, strand, genome,
                                    stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
 {
     ## Some default checking
+    .missingToNull(c("genome"))
+    if(missing(strand))
+        strand <- "*"
     if(missing(start) || missing(end))
         stop("Need to specify a start and end for creating a BiomartGeneRegionTrack.")
     if(missing(chromosome))
@@ -1072,7 +1196,7 @@ setClass("DataTrack",
                                             pch=20,
                                             family="symmetric",
                                             evaluation=50,
-                                            col=trellis.par.get("superpose.line")$col,
+                                            col=trellis.par.get("superpose.line")[["col"]],
                                             col.mountain=NULL,
                                             lwd.mountain=NULL,
                                             lty.mountain=NULL,
@@ -1119,6 +1243,19 @@ setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ..
     return(.Object)
 })
 
+## The file-based version of the DataTrack class. This will mainly provide a means to dispatch to
+## a special 'subset' method which should stream the necessary data from disk. 
+setClass("ReferenceDataTrack", contains=c("DataTrack", "ReferenceTrack"))
+
+## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
+## multiple inheritence has some strange features with regards to method selection
+setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, reference, mapping=list(),
+                                                       args=list(), defaults=list(), ...) {
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
+                                                            mapping=mapping, args=args, defaults=defaults)
+    .Object <- callNextMethod()
+    return(.Object)
+})
 
 ## Constructor. The following arguments are supported:
 ##    o range: an object of class 'GRanges' containing the data coordinates, or an object of class data.frame
@@ -1133,17 +1270,27 @@ setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ..
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
-DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome=NULL, strand="*",
-                      genome, name="DataTrack", ...)
+DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand, genome,
+                      name="DataTrack", importFunction, stream=FALSE, ...)
 {
-    ## Some default checking
-    if(length(unique(strand))>1)
-        stop("The strand has to be unique for all ranges in a DataTrack object.")
     ## Build a GRanges object from the inputs
-    wasGR <- is(range, "GRanges")
-    range <- .buildRange(range=range, start=start, end=end, width=width,
-                         args=list(strand=strand), defaults=list(strand=strand),
-                         asIRanges=FALSE, chromosome=chromosome)
+    wasGR <- is(range, "GRanges") || is.character(range)
+    fromFile <- is.character(range)
+    isStream <- FALSE
+    .missingToNull(c("strand", "chromosome", "importFunction", "genome"))
+    args <- list(strand=strand, chromosome=chromosome, genome=genome)
+    defs <- list(strand="*", chromosome="chrNA")
+    range <- .buildRange(range=range, start=start, end=end, width=width, args=args, defaults=defs,
+                         asIRanges=FALSE, chromosome=chromosome, genome=NA, trackType="DataTrack",
+                         importFun=importFunction, stream=stream)
+    if(is.list(range)){
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
+    }
+    ## Some default checking
+    if(length(unique(strand(range)))>1)
+        stop("The strand has to be unique for all ranges in a DataTrack object.")
     if(!missing(data))
     {
         if(is.character(data))
@@ -1162,25 +1309,24 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
     } else {
         data <- if(ncol(values(range))) as.data.frame(values(range)) else matrix(nrow=0, ncol=0)
     }
-    for(i in seq_along(data)){
-        if(is.character(data[,i]))
-            data[,i] <- type.convert(data[,i], as.is=TRUE)
-    }
-    isNum <- sapply(data, is.numeric)
-    if(any(!isNum))
-        warning(sprintf("The following non-numeric data column%s been dropped: %s", ifelse(sum(!isNum)>1, "s have", " has"),
-                        paste(colnames(data)[!isNum], collapse=", ")))
-    if(sum(dim(data))>0){
-        data <- t(data[,isNum, drop=FALSE])
-        if(ncol(data) != length(range))
-            stop("The columns in the 'data' matrix must match the genomic regions.")
-    }
+    data <- .prepareDtData(data, len=length(range))
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
     values(range) <- NULL
-    genome <- if(missing(genome)) .getGenomeFromGRange(range, "NA") else genome
-    new("DataTrack", chromosome=chromosome, strand=strand, range=range,
-        name=name, genome=genome[1], data=data, ...)
+    if(!isStream){
+        return(new("DataTrack", chromosome=chromosome, strand=as.character(strand(range)), range=range,
+                   name=name, genome=genome, data=data, ...))
+    }else{
+        ## A bit hackish but for some functions we may want to know which track type we need but at the
+        ## same time we do not want to enforce this as an additional argument
+        e <- new.env()
+        e[["._trackType"]] <- "DataTrack"
+        environment(slist[["stream"]]) <- e
+        return(new("ReferenceDataTrack", chromosome=chromosome, strand=as.character(strand(range)), range=range,
+                   name=name, genome=genome, data=data, stream=slist[["stream"]], reference=slist[["reference"]],
+                   mapping=slist[["mapping"]], args=args, defaults=defs, ...))
+    }
 }
 ##----------------------------------------------------------------------------------------------------------------------
 
@@ -1197,6 +1343,8 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
 ##    o fontcolor, fontface, fontfamily, fonsize, lineheight, cex : the color, family, face, size, lineheight and
 ##       expansion factor for the chromosome name text
 ##    o showId: indicate the chromosome name next to the ideogram
+##    o showBandId: show the identifiers of the chromosome bands
+##    o cex.bands: character expansion factor for the chromosome band information
 ##    o bevel: the amount of beveling at the ends of the ideogram. A number between 0 and 1.
 ##----------------------------------------------------------------------------------------------------------------------
 ## (N)
@@ -1213,6 +1361,8 @@ setClass("IdeogramTrack", contains = "RangeTrack",
                                             showTitle=FALSE,
                                             background.title="transparent",
                                             showId=TRUE,
+                                            showBandId=FALSE,
+                                            cex.bands=0.7,
                                             bevel=0.45)))
 
 ## Grab the chromosome band and length information from UCSC and fill the ranges slot.
@@ -1277,10 +1427,12 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
 ##    o from: the starting and end coordinates of the track data
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
+
 ## A simple caching mechanism for UCSC session information. The overhead for establishing a connection to UCSC is
 ## quite significant and we can shave off 5 to 10 seconds here by caching sessions and associated information
 ## for a particular genome and chromosome.
 .ucscCache <- new.env()
+.ensemblCache <- new.env()
 .doCache <- function(token, expression, env, callEnv=environment())
 {
      if(!token %in% ls(env))
@@ -1337,7 +1489,10 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
 }
 
 ## empty the session cache
-clearSessionCache <- function() assignInNamespace(".ucscCache", new.env(), ns="Gviz")
+clearSessionCache <- function(){
+    assignInNamespace(".ucscCache", new.env(), ns="Gviz")
+    assignInNamespace(".ensemblCache", new.env(), ns="Gviz")
+}
 
     
 
@@ -1366,7 +1521,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
     if(is.null(name))
       name <- if(is.null(table)) track else paste(sessionInfo$track, table)
     tableDat <- if(trackType=="DataTrack"){
-        tmp <- try(track(query), silent=TRUE)
+        tmp <- try(track(query, asRangedData=FALSE), silent=TRUE)
         if(is(tmp, "try-error")){
             warning(tmp)
             data.frame()
@@ -1467,23 +1622,22 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as further DisplayParameters
 ## (N)
-AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand="+", genome, stacking="squish", 
+AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand, genome, stacking="squish", 
                              name="AlignedReadTrack", coverageOnly=FALSE, ...)
 {
-    if(missing(chromosome))
-        stop("A chromosome must be specified for this annotation track.")
-    if(missing(genome))
-        stop("A genome must be specified for this annotation track.")
-    chromosome <- .chrName(chromosome)[1]
+    .missingToNull(c("strand", "chromosome", "genome"))
     ## Build a GRanges object from the inputs
     range <- .buildRange(range=range, start=start, end=end, width=width,
-                         args=list(strand=strand),
-                         defaults=list(strand=strand), chromosome=chromosome)
+                         args=list(strand=strand, genome=genome, chromosome=chromosome),
+                         defaults=list(strand="+", genome=NA, chromosome="chrNA"), chromosome=chromosome,
+                         trackType="AlignedReadTrack")
     str <- unique(as.character(GenomicRanges::strand(range)))
     if("*" %in% str)
         stop("Only '+' and '-' strand information is allowed for AlignedReadTrack objects.")
+    if(missing(chromosome) || is.null(chromosome))
+        chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     ## And finally the object instantiation
-    return(new("AlignedReadTrack", chromosome=chromosome, range=range, name=name, genome=genome,
+    return(new("AlignedReadTrack", chromosome=chromosome, range=range, name=name, genome=genome(range)[1],
                stacking=stacking, coverageOnly=coverageOnly, ...))
 }
 ##----------------------------------------------------------------------------------------------------------------------

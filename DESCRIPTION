@@ -1,10 +1,10 @@
 Package: Gviz
-Version: 1.3.2
+Version: 1.3.4
 Title: Plotting data and annotation information along genomic coordinates
 Author: Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou>
 Maintainer: Florian Hahne <florian.hahne@novartis.com>
 Depends:  R (>= 2.10.0), methods, grid
-Imports: IRanges (>= 1.13.19), rtracklayer (>= 1.15.5), lattice, RColorBrewer, biomaRt (>= 2.11.0), GenomicRanges (>= 1.7.14), AnnotationDbi (>= 1.17.11), Biobase (>= 2.15.3), BiocGenerics (>= 0.1.4), GenomicFeatures (>= 1.9.7), BSgenome (>= 1.25.1), Biostrings (>= 2.25.1), biovizBase (>= 1.5.7)
+Imports: IRanges (>= 1.13.19), rtracklayer (>= 1.15.5), lattice, RColorBrewer, biomaRt (>= 2.11.0), GenomicRanges (>= 1.7.14), AnnotationDbi (>= 1.17.11), Biobase (>= 2.15.3), BiocGenerics (>= 0.1.4), GenomicFeatures (>= 1.9.7), BSgenome (>= 1.25.1), Biostrings (>= 2.25.1), biovizBase (>= 1.5.7), Rsamtools(>= 1.11.1)
 Suggests: xtable, GenomicFeatures, BSgenome.Hsapiens.UCSC.hg19
 biocViews: Visualization, Microarray
 Description: Genomic data analyses requires integrated visualization of known genomic information and new experimental data.  Gviz uses the biomaRt and the rtracklayer packages to perform live annotation queries to Ensembl and UCSC and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.

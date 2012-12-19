@@ -250,7 +250,8 @@ setMethod("[", signature(x="DataTrack"), function(x, i, j) {
     if(!missing(j))
     {
         x@range <- x@range[j,]
-        x@data <- x@data[,j, drop=FALSE]
+        if(ncol(x@data)>0)
+            x@data <- x@data[,j, drop=FALSE]
     }
     return(x)})
 setMethod("[", signature(x="AlignedReadTrack"), function(x, i) {
@@ -471,17 +472,20 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, from, to) {
 ## mean of the range. If numeric values are associated to positions we have to be able to extract those as well.
 ##----------------------------------------------------------------------------------------------------------------------------
 ## The geometric mean of annotation ranges
-setMethod("position", signature("RangeTrack"), definition=function(GdObject, from=NULL, to=NULL, sort=FALSE)
+setMethod("position", signature("RangeTrack"), definition=function(GdObject, from=NULL, to=NULL, sort=FALSE, ...)
       {
-          GdObject <- subset(GdObject, from=from, to=to, sort=sort)
-          return(apply(cbind(start(GdObject), end(GdObject)), 1, mean))
+          if(!is.null(from) && !is.null(to))
+              GdObject <- subset(GdObject, from=from, to=to, sort=sort, ...)
+          pos <- if(length(GdObject)) rowMeans(cbind(start(GdObject), end(GdObject))) else numeric()
+          return(pos)
       })
 setMethod("position", signature("IdeogramTrack"), definition=function(GdObject, ...) NULL)
      
 ## The numeric values of data tracks
-setMethod("score", signature("DataTrack"), function(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE)
+setMethod("score", signature("DataTrack"), function(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE, ...)
       {
-          x <- subset(x, from=from, to=to, sort=sort)
+          if(!is.null(from) && !is.null(to))
+              x <- subset(x, from=from, to=to, sort=sort, ...)
           vals <- values(x)
           ## apply data transformation if one is set up
           trans <- .dpOrDefault(x, "transformation")
@@ -919,6 +923,7 @@ setMethod("collapseTrack", signature(GdObject="GenomeAxisTrack"),
 ##----------------------------------------------------------------------------------------------------------------------------
 ## The default is not to clip at all
 setMethod("subset", signature(x="GdObject"), function(x, ...) x)
+
 ## For normal ranges we clip everything outside of the boundaries (keeping one extra item left and right
 ## in order to assure continuation)
 setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, use.defaults=TRUE, ...){
@@ -944,7 +949,8 @@ setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, s
         x <- x[order(range(x)),]
     return(x)
 })
-## For data tracks we cut exactly, and also reduce to the current chromosome unless told explicitely not to
+
+## For DataTracks we cut exactly, and also reduce to the current chromosome unless told explicitely not to
 setMethod("subset", signature(x="DataTrack"), function(x, from=NULL, to=NULL, sort=FALSE, drop=TRUE, use.defaults=TRUE, ...){
     ## Subset to a single chromosome first
     if(drop){
@@ -959,17 +965,37 @@ setMethod("subset", signature(x="DataTrack"), function(x, from=NULL, to=NULL, so
     if(sort)
         x <- x[,order(range(x))]
     return(x)
-})                    
+})
+
+## ReferenceDataTracks need to stream the data from file and then pass the results on to the next method
+setMethod("subset", signature(x="ReferenceDataTrack"), function(x, from, to, chromosome, ...){
+    ## We only need to reach out into the referenced file once if the range is already contained in the object
+    if(missing(from) || is.null(from) || missing(to) || is.null(to))
+        stop("Need both start and end location to subset a ReferenceDataTrack")
+    if(missing(chromosome) || is.null(chromosome))
+        chromosome <- Gviz::chromosome(x)
+    subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
+    if(length(ranges(x))==0 || !all(ranges(x) %in% subRegion)){
+        vals <- x@stream(x@reference, subRegion)
+        x@range <- vals
+        mcols(x@range) <- NULL
+        x@data <- .prepareDtData(if(ncol(values(vals))) as.data.frame(values(vals)) else matrix(nrow=0, ncol=0), length(vals))
+        chromosome(x) <- chromosome[1]
+    }
+    return(callNextMethod(x=x, from=from, to=to, drop=FALSE, ...))
+})
+
 ## Only recompute the stacks here
-setMethod("subset", signature(x="StackedTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE){
+setMethod("subset", signature(x="StackedTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE, ...){
     x <- callNextMethod(x=x, from=from, to=to, sort=sort)
     if(stacks)
         x <- setStacks(x)
     return(x)
 })
+
 ## In order to keep the grouping information for track regions in the clipped areas we have to
 ## keep all group elements that overlap with the range
-setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE, use.defaults=TRUE){
+setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE, use.defaults=TRUE, ...){
     ## Subset to a single chromosome first
     csel <- seqnames(x) != chromosome(x)
     if(any(csel))
@@ -994,6 +1020,44 @@ setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NU
     }
     return(x)
 })
+
+## ReferenceDataTracks need to stream the data from file and then pass the results on to the next method
+setMethod("subset", signature(x="ReferenceAnnotationTrack"), function(x, from, to, chromosome, ...){
+    ## We only need to reach out into the referenced file once if the range is already contained in the object
+    if(missing(from) || is.null(from) || missing(to) || is.null(to))
+        stop("Need both start and end location to subset a ReferenceAnnotationTrack")
+    if(missing(chromosome) || is.null(chromosome))
+        chromosome <- Gviz::chromosome(x)
+    subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
+    if(length(ranges(x))==0 || all(ranges(x) %in% subRegion)){
+        vals <- x@stream(x@reference, subRegion)
+        x@range <- vals
+        colnames(mcols(vals)) <- paste(colnames(mcols(vals)), "orig", sep="__.__")
+        defMap <- x@mapping
+        args <- x@args
+        for(i in names(defMap)){
+            if(is.character(args[[i]]) && length(args[[i]])==1 && paste(args[[i]], "orig", sep="__.__") %in% colnames(mcols(vals))){
+                defMap[[i]] <- args[[i]]
+                args[[i]] <- NULL
+            }
+            mt <- match(paste(defMap[[i]], "orig", sep="__.__"), colnames(mcols(vals)))
+            mt <- mt[!is.na(mt)][1]
+            if(!is.na(mt))
+                mcols(vals)[[i]] <- mcols(vals)[,mt]
+        }
+        mcols(x@range) <- mcols(vals)[, !grepl("__.__", colnames(mcols(vals))), drop=FALSE]
+        x@range <- .buildRange(x@range, args=x@args, defaults=x@defaults, trackType="AnnotationTrack")
+        chromosome(x) <- chromosome[1]
+    }
+    return(callNextMethod(x=x, from=from, to=to, drop=FALSE, ...))
+})
+
+## FIXME: Still needs to be implemented
+setMethod("subset", signature(x="ReferenceGeneRegionTrack"), function(x, ...){
+    warning("ReferenceGeneRegionTrack objects are not supported yet.")
+    return(callNextMethod())
+})
+
 ## For the axis track we may have to clip the highlight ranges on the axis.
 setMethod("subset", signature(x="GenomeAxisTrack"), function(x, from=NULL, to=NULL, sort=FALSE, ...){
     if(!length(x))
@@ -1006,8 +1070,9 @@ setMethod("subset", signature(x="GenomeAxisTrack"), function(x, from=NULL, to=NU
         x <- x[order(range(x)),]
     return(x)
 })
+
 ## If the object only stores coverage we subset that, otherwise we can use the RangeTrack method
-setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE){
+setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=NULL, sort=FALSE, stacks=FALSE, ...){
     if(x@coverageOnly)
     {
         if(is.null(from))
@@ -1434,7 +1499,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     labelPos <- .dpOrDefault(GdObject, "labelPos", "alternating")
     lwdAdd <- (lwd-1)/2
     tickHeight <- (ifelse(littleTicks, 2, 1) * 3 * dfact + lwdAdd) * pres["y"]
-    ids <- values(GdObject)$id
+    ids <- as.character(values(GdObject)$id)
     showIds <- .dpOrDefault(GdObject, "showId", FALSE) && !is.null(ids) && !all(ids=="")
     rcex <- .dpOrDefault(GdObject, "cex.id", 0.7)
     rcol <- .dpOrDefault(GdObject, "col.id", "white")
@@ -1537,9 +1602,9 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
                       default.units="native", just=c("center", "center"))
         ## Calculate the coordinates for the image map
         map <- as.matrix(.getImageMap(coords))
-        if(is.null(ids))
+        if(is.null(ids) || length(ids)==0)
             ids <- as.character(seq_len(nrow(map)))
-        rownames(map) <- make.unique(ids)
+        rownames(map) <- make.unique(as.character(ids))
         tags <- lapply(list(title=ids, start=as.character(start(GdObject)), end=as.character(end(GdObject))),
                        function(x){ names(x) <- rownames(map); x})
         imageMap(GdObject) <- ImageMap(coords=map, tags=tags) 
@@ -1854,7 +1919,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 displayPars(GdObject) <- list(".__valsS"=valsS)
                 if(stacked==TRUE && is.null(ylim))
                 {
-                    ylim <- range(unlist(apply(valsS, 1, function(x){
+                    ylim <- suppressWarnings(range(unlist(apply(valsS, 1, function(x){
                         x <- x[!is.na(x)]
                         sel <- x>=0
                         tmp <- NULL
@@ -1865,7 +1930,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                             if(any(!sel))
                                 tmp <- c(max(x[!sel]), tmp, sum(x[!sel]))
                         }
-                        tmp})))
+                        tmp}))))
                     if(length(type)>1)
                         ylim <- range(c(ylim, vals))
                     displayPars(GdObject) <- list(ylim=ylim)
@@ -1975,9 +2040,11 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         return(invisible(GdObject))
     }
     vals <- values(GdObject)
-    ylim <- .dpOrDefault(GdObject, "ylim", range(vals, na.rm=TRUE, finite=TRUE))
+    ylim <- suppressWarnings(.dpOrDefault(GdObject, "ylim", range(vals, na.rm=TRUE, finite=TRUE)))
     if(diff(ylim)==0)
         ylim <- ylim+c(-1,1)
+    if(all(is.infinite(ylim)))
+        ylim <- c(0,1)
     ylimExt <- extendrange(r=ylim, f=0.05)
     pushViewport(viewport(xscale=c(minBase, maxBase), yscale=ylimExt, clip=TRUE))
     ## The plotting parameters, some defaults from the lattice package first
@@ -2358,6 +2425,17 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     return(coords)
 }
 
+## A more generic method to come up with colors for chromosome bands that still relies a bit on biovizBase
+.getBioColorIdeo <- function(type){
+    type <- as.character(type)
+    ocols <- getBioColor("CYTOBAND")
+    cols <- c(ocols[c("gneg", "stalk", "acen")], gpos=unname(ocols["gpos100"]), gvar=unname(ocols["gpos100"]))
+    gpcols <- unique(grep("gpos", type, value=TRUE))
+    crmp <- colorRampPalette(c(cols["gneg"], cols["gpos"]))(100)
+    posCols <- setNames(crmp[as.integer(gsub("gpos", "", gpcols))], gpcols)
+    return(c(cols, posCols))
+}
+
 ## The actual drawing method
 setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
     imageMap(GdObject) <- NULL
@@ -2405,7 +2483,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         grid.rect(minBase/len, 0.1, width=min(1,(maxBase-minBase)/len), height=0.8, just=c("left","bottom"),
                   gp=gpar(col="transparent", fill=fill))
     ## Color mapping for the bands taken from the biovizBase package
-    cols <- getBioColor("CYTOBAND")
+    cols <- .getBioColorIdeo(values(GdObject)$type)
     vals <- data.frame(values(GdObject), col=cols[as.character(values(GdObject)$type)], stringsAsFactors=FALSE)
     ## For the rounded caps we need  to figure out the overlap with existing bands for proper coloring
     bevel <- 0.02
@@ -2454,7 +2532,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
     grid.polygon(rc[,1], rc[,2], gp=gpar(col=tail(valsExt[,"col"],1), fill=tail(valsExt[,"col"],1)))
     lcol <- "black"; lwd <- 1; lty <- 1
-    ## And finally some outlines
+    ## Now some outlines
     grid.lines(lc[,1], lc[,2], gp=gpar(col=lcol, lwd=lwd, lty=lty))
     grid.lines(rc[,1], rc[,2],gp= gpar(col=lcol, lwd=lwd, lty=lty))
     if(length(cent))
@@ -2471,7 +2549,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         y1 <- y0
     }
     grid.segments(x0, y0, x1, y1, gp=gpar(col=lcol, lwd=lwd, lty=lty))
-    ## Finally the outlines of the box
+    ## The outlines of the box
     if(!missing(minBase) && !missing(maxBase))
     {
         col <- .dpOrDefault(GdObject, "col", "red")
@@ -2479,6 +2557,19 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         lty <- .dpOrDefault(GdObject, "lty", "solid")
         grid.rect(minBase/len, 0.1, width=min(1,(maxBase-minBase)/len), height=0.8, just=c("left","bottom"),
                   gp=gpar(col=col, fill="transparent", lwd=lwd, lty=lty))
+    }
+    ## Finally the band annotation if we need it
+    if(.dpOrDefault(GdObject, "showBandId", FALSE)){
+        bn <- as.character(values(GdObject)$name)
+        cval <- rgb2hsv(col2rgb(cols[as.character(values(GdObject)$type)]))["v", ]
+        tcol <- ifelse(cval>0.9, "black", "white")
+        bwidth <- (c(st[-1], 1)-st)/2
+        cex.bands <- .dpOrDefault(GdObject, "cex.bands", 0.7)
+        sspace <- as.numeric(convertUnit(unit(0.01, "inches"), "native"))
+        swidth <- as.numeric(convertWidth(stringWidth(bn), "native"))*cex.bands+sspace
+        sel <- swidth<bwidth
+        if(any(sel))
+            grid.text(x=(st+bwidth)[sel], y=0.5, label=bn[sel], hjust=0.5, gp=gpar(col=tcol[sel], cex=cex.bands))
     }
     popViewport(1)
     return(invisible(GdObject))
@@ -2624,16 +2715,7 @@ setAs("GRanges", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=fro
 setAs("GRangesList", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
 setAs("TranscriptDb", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
 
-setAs("InferredDisplayPars", "list",
-          function(from, to) {ll <- from@.Data; names(ll) <- names(from); ll})
-
-setAs("DisplayPars", "list", function(from, to) as.list(from@pars))
-
 setAs("DNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
-
-setMethod("as.list", "DisplayPars", function(x) as(x, "list"))
-
-setMethod("as.list", "InferredDisplayPars", function(x) as(x, "list"))
 
 setMethod("head", "InferredDisplayPars", function(x, n=10, ...){
     sel <- 1:min(n, length(x))
@@ -2704,7 +2786,7 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
             if(length(val)==1)
                 val <- rep(val, len)
             if(!length(val) %in% c(len, sum(by)))
-                stop("Number of elements in '", a, "' is invalid")
+                stop("Number of elements in argument '", a, "' is invalid")
             if(!is.null(by) && length(val)!=sum(by)) rep(val, by) else val
         }
     }
@@ -2713,7 +2795,7 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
 
 ## For numeric vectors we can immediately create a data frame after some sanity checking and pass that on to the next method.
 setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrNULL", "NumericOrNULL"),
-          function(range, start, end, width, asIRanges=FALSE, by=NULL, len, args=list(), defaults=list(), ...){
+          function(range, start, end, width, asIRanges=FALSE, by=NULL, len, args, defaults, ...){
               range <- data.frame()
               ## Some of the arguments are mutually exclusive and we want to catch this here.
               if(is.null(width))
@@ -2737,47 +2819,66 @@ setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrN
                       return(IRanges(start=as.integer(start), end=as.integer(end)))
                   range <- .fillWithDefaults(data.frame(start=as.integer(start), end=as.integer(end)), defaults, args, len, by)
               }
-              return(.buildRange(range=range, asIRanges=asIRanges, args=list(), defaults=list(), ...))})
+              return(.buildRange(range=range, asIRanges=asIRanges, args=args["genome"], defaults=defaults, ...))})
 
 ## For data.frames we need to check for additional arguments (like feature, group, etc.), the chromosome information
 ## and create the final GRanges object
 setMethod(".buildRange", signature("data.frame"),
-          function(range, asIRanges=FALSE, args=list(), defaults=list(), chromosome=NULL, ...){
+          function(range, asIRanges=FALSE, args=list(), defaults=list(), chromosome=NULL, trackType, ...){
               if(asIRanges){
-                  range <- .fillWithDefaults(range, defaults, args, len=nrow(range), ignore=setdiff(names(defaults), c("start", "end")))
+                  range <- .fillWithDefaults(range, defaults, args, len=nrow(range), ignore=setdiff(names(defaults), c("start", "end", "genome")))
                   return(IRanges(start=as.integer(range$start), end=as.integer(range$end)))
               }
-              mandArgs <- c("start", "end", names(defaults))
-              missing <- setdiff(mandArgs, colnames(range))
+              mandArgs <- c("start", "end", "genome", names(defaults))
+              ## Not quite sure how whether exisiting chromosome information in a GRanges object should generally have precedence over the
+              ## chromosome constructor, but probably that should be the case
+              if("chromosome" %in% colnames(range))
+                  args$chromosome <- NULL
+              missing <- setdiff(union(setdiff(mandArgs, c(colnames(range))), names(which(!sapply(args, is.null)))), "genome")
               range <- .fillWithDefaults(range, defaults[missing], args[missing], len=nrow(range))
-              snames <- if(missing(chromosome) || is.null(chromosome)){
-                  if(is.null(range$chromosome)){if(is.null(range$id)) stop("Unable to find chromosome information in any of the arguments") else{
-                      range$id}} else range$chromosome} else chromosome
-              snames <- .chrName(snames)
-              grange <- GRanges(ranges=IRanges(start=range$start, end=range$end), strand=range$strand, seqnames=snames)
-              if("genome" %in% colnames(range))
-                  genome(grange) <- as.character(range$genome)
-              elementMetadata(grange) <- range[,setdiff(colnames(range), c("start", "end", "strand", "width", "chromosome", "genome"))]
+              range$chromosome <- .chrName(as.character(range$chromosome))
+              grange <- GRanges(ranges=IRanges(start=range$start, end=range$end), strand=range$strand, seqnames=range$chromosome)
+              mcols(grange) <- range[,setdiff(colnames(range), c("start", "end", "strand", "width", "chromosome", "genome", "seqnames",
+                                                                           "ranges", "seqlevels", "seqlengths", "isCircular", "element"))]
+              if(trackType != "DataTrack")
+                  mcols(grange) <- mcols(grange)[, intersect(names(defaults), colnames(mcols(grange)))]
+              suppressWarnings(genome(grange) <- unname(if(is.null(args[["genome"]])) defaults[["genome"]] else as.character(args[["genome"]])[[1]]))
               return(grange)})
 
 
 ## For GRanges we just need to check for the existence of additional arguments (like feature, group, etc.)
 setMethod(".buildRange", signature("GRanges"),
-          function(range, asIRanges=FALSE, args=list(), defaults=list(), ...){
+          function(range, asIRanges=FALSE, args=list(), defaults=list(), trackType=NULL, ...){
               if(asIRanges)
                   return(ranges(range))
               if(length(range))
               {
-                  mandArgs <- setdiff(names(defaults), "strand")
-                  vals <- values(range)
-                  for(a in mandArgs)
-                  {
-                      if(is.null(vals[[a]]))
-                          vals[[a]] <-  if(is.null(args[[a]])){if(is.null(defaults[[a]])) stop("The mandatory column '", a, "' is missing with no default") else {
-                              defaults[[a]]}} else {args[[a]]}
+                  mandArgs <- names(defaults)
+                  ## Not quite sure how whether exisiting chromosome information in a GRanges object should generally have precedence over the
+                  ## chromosome constructor, but probably that should be the case
+                  args$chromosome <- NULL
+                  range <- renameSeqlevels(range, setNames(.chrName(seqlevels(range)), seqlevels(range)))
+                  missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!sapply(args, is.null)))), "genome")
+                  newVars <- .fillWithDefaults(DataFrame(chromosome=as.character(seqnames(range)), strand=as.character(strand(range)), mcols(range)),
+                                               defaults[missing], args[missing], len=length(range))
+                  if(any(c("start", "end", "strand", "chromosome") %in% colnames(newVars))){
+                      gen <- genome(range)
+                      range <- GRanges(seqnames=if(is.null(newVars[["chromosome"]])) seqnames(range) else (newVars[["chromosome"]]),
+                                       strand=if(is.null(newVars[["strand"]])) strand(range) else (newVars[["strand"]]),
+                                       ranges=IRanges(start=if(is.null(newVars[["start"]])) start(range) else (newVars[["start"]]),
+                                                      end=if(is.null(newVars[["end"]])) end(range) else (newVars[["end"]])))
+                      if(length(unique(gen)) != 1)
+                          warning("Tracks can only be defined for a single genome. Forcing all reads to belong to genome '", gen[1], "'")
+                      defaults[["genome"]] <- as.character(gen)[1]
                   }
-                  elementMetadata(range) <- vals
+                  mcols(range) <- newVars[, setdiff(colnames(newVars),  c("start", "end", "strand", "width", "chromosome", "genome", "seqnames",
+                                                                          "ranges", "seqlevels", "seqlengths", "isCircular", "element")), drop=FALSE]
               }
+              if(trackType != "DataTrack")
+                  mcols(range) <- mcols(range)[, intersect(names(defaults), colnames(mcols(range)))]
+              ## The genome information may or may not be encoded in the GRanges object at this time but we want it in there for sure
+              genome <- if(!is.null(args[["genome"]])) args[["genome"]] else .getGenomeFromGRange(range, defaults[["genome"]])
+              suppressWarnings(genome(range) <- unname(genome))[1]
               return(range)})
 
 ## For IRanges we need to deal with additional arguments (like feature, group, etc.) and create the final GRanges object
@@ -2801,12 +2902,12 @@ setMethod(".buildRange", signature("GRangesList"),
               grps <- rep(names(range), elementLengths(range))
               range <- unlist(range)
               names(range) <- NULL
-              values(range)[[groupId]] <- grps
+              mcols(range)[[groupId]] <- grps
               return(.buildRange(range=range, ...))})
 
 ## For TranscriptDb objects we extract the grouping information and use the GRanges method
 setMethod(".buildRange", signature("TranscriptDb"),
-          function(range, groupId="transcript", tstart, tend, chromosome, ...){
+          function(range, groupId="transcript", tstart, tend, chromosome, args, ...){
               ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
               noSubset <- is.null(tstart) && is.null(tend)
               if(!is.null(chromosome)){
@@ -2897,7 +2998,232 @@ setMethod(".buildRange", signature("TranscriptDb"),
               values(range) <- vals
               if(!noSubset && !is.null(chromosome))
                   range <- subsetByOverlaps(range, sRange)
-              return(.buildRange(range=sort(range), chromosome=chromosome, ...))})
+              args <- list(genome=genome(range)[1])
+              return(.buildRange(range=sort(range), chromosome=chromosome, args=args, ...))})
+
+
+## An import function for gff3 files that tries to resolve the parent-child relationship
+## between genes, transcripts and exons
+.import.gff3 <- function(file){
+    dat <- import.gff3(file, asRangedData=FALSE)
+    res <- try({
+        genes <- tolower(dat$type) == "gene"
+        ginfo <- mcols(dat[genes, ])
+        dat <- dat[!genes]
+        transcripts <- tolower(dat$type) == "mrna"
+        tinfo <- mcols(dat[transcripts, ])
+        dat <- dat[!transcripts]
+        mt <- match(as.character(dat$Parent), as.character(tinfo$ID))
+        if(!all(is.na(mt))){
+            if(!"transcript_id" %in% colnames(mcols(dat)))
+                mcols(dat)[["transcript_id"]] <- tinfo[mt, "ID"]
+            if(!"transcript_name" %in% colnames(mcols(dat)))
+                mcols(dat)[["transcript_name"]] <- tinfo[mt, "Name"]
+            mt2 <- match(as.character(tinfo[mt, "Parent"]), as.character(ginfo$ID))
+            if(!all(is.na(mt2))){
+                if(!"gene_id" %in% colnames(mcols(dat)))
+                    mcols(dat)[["gene_id"]] <- ginfo[mt2, "ID"]
+                if(!"gene_name" %in% colnames(mcols(dat)))
+                    mcols(dat)[["gene_name"]] <- ginfo[mt2, "Name"]
+            }
+        }
+        if(all(is.na(mcols(dat)[["ID"]])))
+            mcols(dat)[["ID"]] <- paste("item", seq_along(dat), sep="_")
+        if(!"exon_id" %in% colnames(mcols(dat)))
+            mcols(dat)[["exon_id"]] <- mcols(dat)[["ID"]]
+        if(!is.null(mcols(dat)[["gene_name"]]) && all(is.na(mcols(dat)[["gene_name"]])))
+            mcols(dat)[["gene_name"]] <- NULL
+        if(all(is.na(mcols(dat)[["transcript_name"]])))
+            mcols(dat)[["transcript_name"]] <- NULL
+        dat
+    })
+    if(is(res, "try-error")){
+        warning(sprintf(paste("File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
+                              "Results may not be what you expected!"), file))
+        res <- dat
+    }
+    return(res)
+}
+
+## An import function for bigWig files that knowns how to deal with missing seqnames
+.import.bw <- function(file, selection){
+    bwf <- BigWigFile(path.expand(file))
+    if(missing(selection)){
+        rr <- import.bw(con=bwf, asRangedData=FALSE)
+    }else{
+        si <- seqinfo(bwf)
+        rr <- if(!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(bwf))){
+            GRanges(seqnames(selection)[1], ranges=IRanges(1,2), score=1)[0] }else{
+                import.bw(con=bwf, selection=selection, asRangedData=FALSE)}
+    }
+    return(rr)
+}
+
+.import.bam <- function(file, selection){
+    if(!file.exists(paste(file, "bai", sep=".")))
+        stop("Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
+             "library(Rsamtools)\n\tindexBam(\"", file, "\")")
+    sinfo <- scanBamHeader(file)[[1]]
+    if(parent.env(environment())[["._trackType"]] == "DataTrack"){
+        res <- if(!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)){
+            mcols(selection) <- DataFrame(score=0)
+            selection
+        }else{
+            param <- ScanBamParam(what=c("pos", "qwidth"), which=selection, flag=scanBamFlag(isUnmappedQuery=FALSE))
+            x <- scanBam(file, param=param)[[1]]
+            cov <- coverage(IRanges(x[["pos"]], width=x[["qwidth"]]))
+            GRanges(seqnames=seqnames(selection), ranges=IRanges(start=start(cov), end=end(cov)), strand="*", score=runValue(cov))
+        }
+    } else {
+        res <- if(!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)){
+            mcols(selection) <- DataFrame(id="NA", group="NA")
+            selection[0]
+        }else{
+            param <- ScanBamParam(what=c("pos", "qwidth", "strand", "qname"), which=selection, flag=scanBamFlag(isUnmappedQuery=FALSE))
+            x <- scanBam(file, param=param)[[1]]
+            GRanges(seqnames=seqnames(selection), ranges=IRanges(start=x[["pos"]], width=x[["qwidth"]]), strand=x[["strand"]],
+                    id=make.unique(x[["qname"]]), group=x[["qname"]])
+        }
+    }
+    return(res)
+}
+    
+    
+
+## A mapping of (lower-cased) file extensions to import function calls. Most of those are already implemented in the rtracklayer package.
+## If no mapping is found an error will be raised suggesting to provide a user-defined import function.
+.registerImportFun <- function(file){
+    fileExt <- .fileExtension(file)
+    file <- path.expand(file)
+    return(switch(fileExt,
+                  "gff"=import.gff(file, asRangedData=FALSE),
+                  "gff1"=import.gff1(file, asRangedData=FALSE),
+                  "gff2"=import.gff2(file, asRangedData=FALSE),
+                  "gff3"=.import.gff3(file),
+                  "gtf"=import.gff2(file, asRangedData=FALSE),
+                  "bed"=import.bed(file, asRangedData=FALSE),
+                  "bedgraph"=import.bedGraph(file, asRangedData=FALSE),
+                  "wig"=import.wig(file, asRangedData=FALSE),
+                  "bw"=.import.bw,
+                  "bigwig"=.import.bw,
+                  "2bit"=import.2bit(file, asRangedData=FALSE),
+                  "bam"=.import.bam,
+                  stop(sprintf("No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
+                               fileExt))))
+}
+                   
+
+## Get the file extension for a file, taking into account potential gzipping
+.fileExtension <- function(file){
+    if(!grepl("\\.", file))
+        stop("Unable to identify extension for file '", file, "'")
+     ext <- sub(".*\\.", "", sub("\\.gz$|\\.gzip$", "", basename(file)))
+    if(ext=="")
+        stop("Unable to identify extension for file '", file, "'")
+    return(tolower(ext))
+}
+
+## Return the default mappings between elementMetadata slots of an imported GRanges object and the elementMetadata
+## slots of the track's GRanges object.
+.defaultVarMap <- function(inputType, trackType, stream, fromUser){
+    vm <- list(gtf=list(GeneRegionTrack=list(feature="type",
+                                             gene=c("gene_id", "gene_name"),
+                                             exon=c("exon_name", "exon_id"),
+                                             transcript=c("transcript_name", "transcript_id"),
+                                             symbol=c("gene_name", "gene_id"))),
+               gff=list(AnnotationTrack=list(feature="type",
+                                             group="group"),
+                        GeneRegionTrack=list(featuer="type",
+                                             transcript="group")),
+               gff1=list(AnnotationTrack=list(feature="type",
+                                              group=group),
+                        GeneRegionTrack=list(feature="type",
+                                             transcript="group")),
+               gff2=list(AnnotationTrack=list(feature="type"),
+                        GeneRegionTrack=list(feature="type",
+                                             gene=c("gene_id", "gene_name"),
+                                             exon=c("exon_name", "exon_id"),
+                                             symbol=c("gene_name", "gene_id"))),
+               gff3=list(AnnotationTrack=list(feature="type",
+                                              group="Parent"),
+                         GeneRegionTrack=list(feature="type",
+                                              gene=c("gene_id", "gene_name"),
+                                              exon=c("exon_name", "exon_id", "ID"),
+                                              transcript=c("transcript_name", "transcript_id", "Parent"),
+                                              symbol=c("gene_name", "gene_id", "Name", "Alias"))),
+               bedgraph=list(DataTrack=list(score="score")),
+               wig=list(DataTrack=list(score="score")),
+               bed=list(AnnotationTrack=list(feature="itemRgb")),
+               bigwig=list(DataTrack=list(score="score",
+                                          .stream=TRUE)),
+               bw=list(DataTrack=list(score="score",
+                                      .stream=TRUE)),
+               bam=list(DataTrack=list(score="score",
+                                      .stream=TRUE),
+                        AnnotationTrack=list(id="id",
+                                             group="group",
+                                             .stream=TRUE)))
+    if(fromUser){
+        vm[[inputType]] <- setNames(list(list(".stream"=stream)), trackType)
+    }else{
+        if(is.null(vm[[inputType]]) || is.null(vm[[inputType]][[trackType]])){
+            warning(sprintf(paste("There are no default mappings from %s files to %s. Please provide a manual mapping",
+                                  "in the track constructor if you haven't already done so."),
+                            inputType, trackType))
+            vm[[inputType]] <- setNames(list(list(".stream"=stream)), trackType)
+        }
+    }
+    return(vm[[inputType]][[trackType]])
+}
+    
+
+## For character scalars the data need to be extracted from a file and we have to deal with parser functions
+## and column assignments here. 
+setMethod(".buildRange", signature("character"),
+          function(range, importFun=NULL, trackType, stream=FALSE, args, defaults, ...){
+              .checkClass(range, "character", 1)
+              .checkClass(importFun, c("NULL", "function"), mandatory=FALSE)
+              .checkClass(stream, "logical", 1)
+              ## We first check for the default column mapping and whether this is a streaming file
+              defMap <- .defaultVarMap(.fileExtension(range), trackType, stream, !is.null(importFun))
+              isStream <- !is.null(defMap[[".stream"]]) && defMap[[".stream"]]
+              defMap[[".stream"]] <- NULL
+              if(!isStream){
+                  data <- if(is.null(importFun)) .registerImportFun(range) else{
+                      if(!"file" %in% names(formals(importFun)))
+                          stop("The user-defined import function needs to define a 'file' argument")
+                      importFun(range)
+                  }
+                  if(!is(data, "GRanges"))
+                      stop("The import function did not provide a valid GRanges object. Unable to build track from file '",
+                           range, "'")
+                  if(trackType=="DataTrack"){
+                      ## For data tracks we take all numeric data columns regardless of any mapping
+                      mc <- .prepareDtData(as.data.frame(mcols(data)), length(data))
+                      mcols(data) <- t(mc)
+                  } else {
+                      ## For the rest we use the mapping as provided by the constructor
+                      colnames(mcols(data)) <- paste(colnames(mcols(data)), "orig", sep="__.__")
+                      for(i in names(defMap)){
+                          if(is.character(args[[i]]) && length(args[[i]])==1 && paste(args[[i]], "orig", sep="__.__") %in% colnames(mcols(data))){
+                              defMap[[i]] <- args[[i]]
+                              args[[i]] <- NULL
+                          }
+                          mt <- match(paste(defMap[[i]], "orig", sep="__.__"), colnames(mcols(data)))
+                          mt <- mt[!is.na(mt)][1]
+                          if(!is.na(mt))
+                              mcols(data)[[i]] <- mcols(data)[,mt]
+                      }
+                      mcols(data) <- mcols(data)[, !grepl("__.__", colnames(mcols(data))), drop=FALSE]
+                  }
+                  args[["chromosome"]] <- as.character(seqnames(data))
+                  args[["strand"]] <- as.character(strand(data))
+                  return(.buildRange(range=data, args=args, defaults=defaults, trackType=trackType, ...))
+                  }else{
+                  return(list(reference=path.expand(range), mapping=defMap,
+                              stream=if(is.null(importFun)) .registerImportFun(range) else importFun))
+              }
+          })
 ##---------------------------------------------------------------------------------
 
 

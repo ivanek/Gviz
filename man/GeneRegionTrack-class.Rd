@@ -18,6 +18,7 @@
 \alias{identifier,GeneRegionTrack-method}
 \alias{identifier<-,GeneRegionTrack,character-method}
 \alias{initialize,GeneRegionTrack-method}
+\alias{initialize,ReferenceGeneRegionTrack-method}
 \alias{show,GeneRegionTrack-method}
 \alias{symbol,GeneRegionTrack-method}
 \alias{symbol<-,GeneRegionTrack,character-method}
@@ -30,6 +31,7 @@
 \alias{coerce,GRanges,GeneRegionTrack-method}
 \alias{coerce,GRangesList,GeneRegionTrack-method}
 \alias{coerce,TranscriptDb,GeneRegionTrack-method}
+\alias{subset,ReferenceGeneRegionTrack-method}
 
 \title{GeneRegionTrack class and methods}
 
@@ -49,25 +51,26 @@
 
 \usage{
 
-GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
-               feature="unknown", exon=feature, transcript=feature, gene=feature,
-               symbol=feature, chromosome=NULL, genome, stacking="squish",
-               name="GeneRegionTrack", start=NULL, end=NULL, ...)
+GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
+               strand, feature, exon, transcript, gene, symbol,
+               chromosome, genome, stacking="squish",
+               name="GeneRegionTrack", start=NULL, end=NULL,
+               importFunction, stream=FALSE, ...)
 
 }
 
 \arguments{
 
-  Since \code{GeneRegionTrack} object are essentially just a specific
-  type of \code{\linkS4class{AnnotationTrack}}, their constructors are
-  quite similar. However, in the case of the \code{GeneRegionTrack}
-  certain assumptions are made about the type of grouping on different
-  levels (see the \code{Details} section for more information). The
-  natural representation for gene model in the Bioconductor world are
-  \code{\linkS4class{TranscriptDb}} objects, and we tried to make it as
-  straight forward as possible to create \code{GeneRegionTracks}
-  starting from those. Building the object from individual function
-  arguments is of course still possible.
+  Since \code{GeneRegionTrack} objects are essentially just a specific
+  type of \code{\linkS4class{AnnotationTrack}} objects, their
+  constructors are quite similar. However, in the case of the
+  \code{GeneRegionTrack} certain assumptions are made about the type of
+  grouping on different levels (see the \code{Details} section for more
+  information). The natural representation for gene models in the
+  Bioconductor world are \code{\linkS4class{TranscriptDb}} objects, and
+  we tried to make it as straight forward as possible to create
+  \code{GeneRegionTracks} starting from those. Building the object from
+  individual function arguments is of course still possible.
   
   \item{range}{
     
@@ -120,9 +123,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
 	to the \code{GRanges} case, except that the chromosome and
 	strand information as well as all additional data has to be
 	provided in the separate \code{chromosome}, \code{strand},
-	\code{feature}, \code{transcript},\ code{symbol}, \code{exon} or
+	\code{feature}, \code{transcript}, \code{symbol}, \code{exon} or
 	\code{gene} arguments, because it can not be directly encoded in
-	an \code{IRange} object. Note that only the former two are
+	an \code{IRanges} object. Note that only the former two are
 	mandatory (if not provided explicitely the more or less
 	reasonable default values \code{chromosome=NA} and
 	\code{strand=*} are used, but not providing information about
@@ -133,23 +136,31 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
 	contain at least the two mandatory columns \code{start} and
 	\code{end} with the range coordinates. It may also contain a
 	\code{chromosome} and a \code{strand} column with the chromosome
-	and strand information for each range. If missing it will be
-	drawn from the separate \code{chromosome} or \code{strand}
-	arguments. In addition, the \code{feature}, \code{exon},
-	\code{transcript}, \code{gene} and \code{symbol} data can be
-	provided as additional columns. The above comments about
-	potential default values also apply here.}
+	and strand information for each range. If missing, this
+	information will be drawn from the constructor's
+	\code{chromosome} or \code{strand} arguments. In addition, the
+	\code{feature}, \code{exon}, \code{transcript}, \code{gene} and
+	\code{symbol} data can be provided as columns in the
+	\code{data.frame}. The above comments about potential default
+	values also apply here.}
+
+      \item{}{A \code{character} scalar: in this case the value of the
+	\code{range} argument is considered to be a file path to an
+	annotation file on disk. A range of file types are supported by
+	the \code{Gviz} package as identified by the file extension. See
+	the \code{importFunction} documentation below for further
+	details.}
 
     }
   }	
   
   \item{start, end}{An integer scalar with the genomic start or end
-    coordinate for the gene model range. If those is missing, the
-    default value will automatically be the smallest (or largest value,
-    respectively) in \code{rstarts} for the currently active
-    chromosome. When building a \code{GeneRegionTrack} from a
+    coordinate for the gene model range. If those are missing, the
+    default value will automatically be the smallest (or largest) value,
+    respectively in \code{rstarts} and \code{rends} for the currently
+    active chromosome. When building a \code{GeneRegionTrack} from a
     \code{TranscriptDb} object, these arguments can be used to subset
-    the desired annotation data by genomic coordinates. Please note that
+    the desired annotation data by genomic coordinates. Please note this
     in that case the \code{chromosome} parameter must also be set.}
 
   \item{rstarts}{An integer vector of the start coordinates for the
@@ -177,8 +188,12 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
     giving the feature types for the individual track exons.  When
     plotting the track to the device, if a display parameter with the
     same name as the value of \code{feature} is set, this will be used
-    as the track item's fill color. See \code{\link{grouping}} for
-    details.}
+    as the track item's fill color. Additionally, the feature type
+    defines whether an element in the \code{GeneRegionTrack} is
+    considered to be coding or non-coding. The details section as well
+    as the section about the \code{thinBoxFeature} display parameter
+    further below has more information on this. See also
+    \code{\link{grouping}} for details.}
 
   \item{exon}{Character vector of exon identifiers. It's values will be
     used as the identifier tag when plotting to the device if the
@@ -213,7 +228,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
     \code{chrx}, where \code{x} may be any possible string. The user has
     to make sure that the respective chromosome is indeed defined for
     the the track's genome. If not provided here, the constructor will
-    try to construct the chromosome information based on the available
+    try to build the chromosome information based on the available
     inputs, and as a last resort will fall back to the value
     \code{chrNA}. Please note that by definition all objects in the
     \code{Gviz} package can only have a single active chromosome at a
@@ -222,13 +237,14 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
     \code{chromosome<-} replacement method in order to change to a
     different active chromosome. When creating a \code{GeneRegionTrack}
     from a \code{TranscriptDb} object, the value of this parameter can
-    be used to subset the data to fetch by chromosome.}
+    be used to subset the data to fetch only transcripts from a single
+    chromosome.}
 
   \item{genome}{The genome on which the track's ranges are
     defined. Usually this is a valid UCSC genome identifier, however
     this is not being formally checked at this point. If not provided
     here the constructor will try to extract this information from the
-    provided input, and eventually will fall back to the default value
+    provided inputs, and eventually will fall back to the default value
     of \code{NA}.}
   
   \item{stacking}{The stacking type for overlapping items of the
@@ -238,6 +254,28 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
   
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
+
+  \item{importFunction}{A user-defined function to be used to import the
+    data from a file. This only applies when the \code{range} argument
+    is a character string with the path to the input data file. The
+    function needs to accept an argument \code{x} containing the file
+    path and has to return a proper \code{GRanges} object with all the
+    necessary \code{elementMetadata} columns set. A set of default
+    import functions is already implemented in the package for a number
+    of different file types, and one of these defaults will be picked
+    automatically based on the extension of the input file name. If the
+    extension can not be mapped to any of the existing import function,
+    an error is raised asking for a user-defined import function via
+    this argument. Currently the following file types can be imported
+    with the default functions: \code{gff}, \code{gff1}, \code{gff2},
+    \code{gff3}, \code{gtf}.}
+
+  \item{stream}{A logical flag indicating that the user-provided import
+    function can deal with indexed files and knows how to process the
+    additional \code{selection} argument when accessing the data on
+    disk. This causes the constructor to return a
+    \code{ReferenceGeneRegionTrack} object which will grab the necessary data
+    on the fly during each plotting operation.}
 
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
@@ -271,19 +309,19 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
       or the \code{symbol} methods.}
     
     \item{transcript-type level:}{information is stored in the feature
-      column of the \code{\linkS4class{GRanges}} object.  If a display
+      column of the \code{\linkS4class{GRanges}} object. If a display
       parameter of the same name is specified, the software will use its
       value for the coloring.}
   
   }
 
   \code{GeneRegionTrack} objects also know about coding regions and
-  non-coding regions (e.g., UTRs) in a transctipt, and will indicate
+  non-coding regions (e.g., UTRs) in a transcript, and will indicate
   those by using different shapes (wide boxes for all coding regions,
   thinner boxes for non-coding regions). This is archived by setting the
   \code{feature} values of the object for non-coding elements to one of
   the options that are provided in the \code{thinBoxFeature} display
-  parameters. All other elements are expected to be coding elements.
+  parameters. All other elements are considered to be coding elements.
   
 }
 
@@ -309,7 +347,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand="*",
     \item{\code{stacking}:}{Object of class \code{"character"},
       inherited from class \code{\linkS4class{StackedTrack}}}
 
-    \item{\code{stacks}:}{Object of class \code{"environment"},
+    \item{\code{stacks}:}{Object of class \code{"numeric"},
       inherited from class \code{\linkS4class{StackedTrack}}}
 
     \item{\code{range}:}{Object of class \code{\linkS4class{GRanges}},

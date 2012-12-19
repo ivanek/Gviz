@@ -631,12 +631,13 @@
 
 
 
-## Helper function to translate from a UCSC genome name to a Biomart data set
+## Helper function to translate from a UCSC genome name to a Biomart data set. This also caches the mart
+## object in order to speed up subsequent calls
 ## Arguments:
 ##    o genome: character giving the UCSC genome
 ## Value: A BiomaRt connection object
 .genome2Dataset <- function(genome)
-  {
+{
     ds <- c("mm9"="mmusculus_gene_ensembl",
             "hg19"="hsapiens_gene_ensembl",
             "felCat4"="fcatus_gene_ensembl",
@@ -665,10 +666,12 @@
             "ce6"="celegans_gene_ensembl",
             "sacCer2"="scerevisiae_gene_ensembl")
     if(!tolower(genome) %in% tolower(names(ds)))
-      stop("Unable to automatically determine Biomart data set for UCSC genome '", genome, "'")
-    bm <- useMart("ensembl", dataset=ds[match(tolower(genome), tolower(names(ds)))])
+        stop("Unable to automatically determine Biomart data set for UCSC genome '", genome, "'")
+    thisDs <- ds[match(tolower(genome), tolower(names(ds)))]
+    cenv <- environment()
+    bm <- .doCache(thisDs, expression(useMart("ensembl", dataset=thisDs)), .ensemblCache, cenv)
     return(bm)
-  }
+}
 
 
 .annotationSpace <- function(GdObject, from, to)
@@ -808,19 +811,21 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
 {
     if(!is.list(trackList))
         trackList <- list(trackList)
-    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first
-    if(!is.null(from) || !(is.null(to))){
-        trackList <- lapply(trackList, subset, from=from, to=to, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
-    }
     ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
     ## size, resolution or plotting ranges. Chromosomes should all be the same for all tracks, if not we will force them to
     ## be set to the first one that can be detected
     chrms <- unlist(lapply(trackList, Gviz::chromosome))
     if(is.null(chromosome)){
         chrms <- if(!is.null(chrms)) chrms[gsub("^chr", "", chrms)!="NA"] else chrms
-        chromosome <- chrms[[1]]
+        chromosome <- head(chrms, 1)
+        if(length(chromosome)==0)
+            chromosome <- "chrNA"
         if(!is.null(chrms) && length(unique(chrms))!=1)
             warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '", chromosome, "'", sep="")
+    }
+    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first
+    if(!is.null(from) || !(is.null(to))){
+        trackList <- lapply(trackList, subset, from=from, to=to, chromosome=chromosome, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
     }
     trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, ...)
     ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
@@ -833,7 +838,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     titleCoords <- NULL
     names(map) <- rev(sapply(trackList, names))
     ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
-    trackList <- lapply(trackList, subset, from=ranges["from"], to=ranges["to"])
+    trackList <- lapply(trackList, subset, from=ranges["from"], to=ranges["to"], chromosome=chromosome)
     trackList <- lapply(trackList, setStacks, from=ranges["from"], to=ranges["to"])
     ## Open a fresh page and set up the bounding box, unless add==TRUE
     if(!panel.only) {
@@ -1173,8 +1178,8 @@ devDims <- function(width, height, ncol=12, nrow=8, res=72){
 {
     classes <-  c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
                   "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack")
-    defs <-  sapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list"), simplify=FALSE)
-    if(is.null(.parMappings))
+    defs <- try(sapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list"), simplify=FALSE), silent=TRUE)
+    if(!is(defs, "try-error") && is.null(.parMappings))
         assignInNamespace(x=".parMappings", value=defs, ns="Gviz")
 }
 .parMappings <- NULL
@@ -1243,3 +1248,59 @@ availableDisplayPars <- function(class)
 
 ## We store some preset in the options on package load
 .onLoad = function(...){options("ucscChromosomeNames"=TRUE)}
+
+
+## A helper function to replace missing function arguments in a list with NULL values. The function environment needs
+## to be passed in as argument 'env' for this to work.
+.missingToNull <- function(symbol, env=parent.frame()){
+    for(i in symbol){
+        mis <- try(do.call(missing, args=list(i), envir=env), silent=TRUE)
+        if(!is(mis, "try-error") && mis)
+            assign(i, NULL, env)
+    }
+}
+
+
+## build a covariates data.frame from a variety of different inputs
+.getCovars <- function(x){
+    if(is.data.frame(x)){
+        x
+    }else{
+        if(is(x, "GRanges")){
+            as.data.frame(mcols(x))
+        }else{
+            if(is(x, "GRangesList")){
+                as.data.frame(mcols(unlist(x)))
+            }else{
+                data.frame()
+                ## stop(sprintf("Don't know how to extract covariates from a %s object", class(x)))
+            }
+        }
+    }
+}
+
+
+## Prepare a data.frame or matrix containing the data for a DataTrack object. This involves trying to coerce
+## and dropping non-numeric columns with a warning
+.prepareDtData <- function(data, len=0){
+    if(ncol(data) && nrow(data)){
+        for(i in seq_along(data)){
+            if(is.character(data[,i]))
+                data[,i] <- type.convert(data[,i], as.is=TRUE)
+        }
+        isNum <- sapply(data, is.numeric)
+        if(any(!isNum))
+            warning(sprintf("The following non-numeric data column%s been dropped: %s", ifelse(sum(!isNum)>1, "s have", " has"),
+                            paste(colnames(data)[!isNum], collapse=", ")))
+        if(sum(dim(data))>0){
+            data <- t(data[,isNum, drop=FALSE])
+        }
+    }else{
+        data <- matrix(ncol=len, nrow=0)
+    }
+    if(all(is.na(data)))
+        data <- matrix(ncol=len, nrow=0)
+    if(ncol(data) != len)
+        stop("The columns in the 'data' matrix must match the genomic regions.")
+    return(data)
+}

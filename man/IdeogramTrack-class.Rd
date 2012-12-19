@@ -907,8 +907,14 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
       chromosome name text.} 
 
     \item{}{\code{showId=TRUE}: Logical scalar. Indicate the chromosome
-      name next to the ideogram.} 
+      name next to the ideogram.}
+    
+    \item{}{\code{showBandId=TRUE}: Logical scalar. Show the identifier
+      for the chromosome bands if there is space for it.}
 
+    \item{}{\code{cex.bands=0.7}: Numeric scalar. The  font expansion
+      factor for the chromosome band identifier text.} 
+    
     \item{}{\code{showTitle=FALSE}: Logical scalar. Plot a title panel.
       Defaults to omit the title panel.} 
 

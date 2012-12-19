@@ -23,8 +23,8 @@
 
 \usage{
 
-BiomartGeneRegionTrack(start, end, biomart, chromosome, strand="*",
-genome=NULL, stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
+BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
+stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
 
 }
 

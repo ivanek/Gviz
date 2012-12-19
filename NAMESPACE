@@ -37,8 +37,9 @@ importMethodsFrom(BSgenome, providerVersion)
 
 importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transcriptsBy, transcripts)
 
-importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-",
-                  seqlengths, seqnames, seqlevels, seqinfo, strand, "strand<-", seqnameStyle)
+importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-", mcols, "mcols<-",
+                  seqlengths, seqnames, seqlevels, seqinfo, strand, "strand<-", seqnameStyle,
+                  renameSeqlevels)
 
 importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   "colnames<-", coverage, diff, disjointBins, end, "end<-", range,
@@ -52,8 +53,12 @@ importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
 
 importMethodsFrom(methods, coerce, initialize, show)
 
-importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-",
-                  ucscTableQuery, trackNames, tableNames)
+importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
+                  ucscTableQuery, trackNames, tableNames, import, import.gff,
+                  import.gff1, import.gff2, import.gff3, import.2bit, import.bed15,
+                  import.bw, import.ucsc, import.bed, import.bedGraph, import.chain,
+                  import.wig, seqinfo)
+
 
 importFrom(Biobase, listLen, rowMax, rowMin)
 
@@ -64,6 +69,8 @@ importFrom(BiocGenerics, getObjectSlots)
 importFrom(biomaRt, getBM, useMart)
 
 importFrom(GenomicRanges, GRanges)
+
+importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam)
 
 importFrom(graphics, par)
 
@@ -77,7 +84,7 @@ importFrom(grid, convertHeight, convertWidth, convertX, convertY,
            popViewport, pushViewport, stringHeight, stringWidth, unit,
            upViewport, viewport)
 
-importFrom(IRanges, IRanges, subseq)
+importFrom(IRanges, IRanges, subseq, DataFrame)
 
 importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
@@ -88,7 +95,7 @@ importFrom(methods, "@<-", as, callNextMethod, getClass, getClassDef, is, new,
 
 importFrom(RColorBrewer, brewer.pal)
 
-importFrom(rtracklayer, GenomicData, ucscGenomes, browserSession)
+importFrom(rtracklayer, GenomicData, ucscGenomes, browserSession, BigWigFile)
 
 importFrom(stats, loess.smooth)
 

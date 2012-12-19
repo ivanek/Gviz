@@ -4,7 +4,19 @@ CHANGES IN VERSION 1.3.2
 NEW FEATURES
 
     o BiomartGeneRegionTracks will now make use of the available CDS
-    information in Ensembl.
+      information in Ensembl.
+
+    o The constructors to the AnnotationTrack, GeneRegionTrack,
+      DataTrack and SequenceTrack classes now accept a character
+      scalar that points to a file on the file system. A number of
+      default parser functions have been implemented to read the
+      standard file types. Alternatively, a user-defined import
+      function can be provided. This feature also supports streaming
+      from indexed file types like BAM or bigWig, in which case the
+      data is fetched dynamically upon each plotting operation.
+
+    o The mart object in BiomartGeneRegionTrack objects is now cached
+      in order to speed up subsequent queries to the same mart.  
 
 
 
@@ -26,7 +38,6 @@ NEW FEATURES
       to TRUE, the lowest items are moved to the top of the stack, and
       vice versa.
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o Updated the show methods for most tracks to give more meaningful
@@ -46,10 +57,10 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o Exporting drawGD from the name space now to allow for
       sub-classing of GdObjects in other packages.
 
-    o When building GeneRegionTracks from TrasncriptDb objects, the
+    o When building GeneRegionTracks from TranscriptDb objects the
       information about UTRs and coding regions is now retained.
 
-
+   
 BUG FIXES
 
     o When zooming into the emty space between two grouped features,
