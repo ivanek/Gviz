@@ -479,8 +479,16 @@ optional \Rfunarg{range} argument of the constructor function as
 either an \Rclass{GRanges} or an \Rclass{IRanges} object.
 
 <<GenomeAxisTrackClass2, fig=TRUE, width=7.5, height=0.5>>=
-axisTrack <- GenomeAxisTrack(range=IRanges(start=c(2e6, 4e6), end=c(3e6, 7e6)))
+axisTrack <- GenomeAxisTrack(range=IRanges(start=c(2e6, 4e6), end=c(3e6, 7e6), 
+                                           names=rep("N-stretch", 2)))
 plotTracks(axisTrack, from=1e6, to=9e6)
+@
+
+If names have been supplied with the \Rfunarg{range} argument, those
+can also be added to the plot.
+
+<<GenomeAxisTrackClass2a, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(axisTrack, from=1e6, to=9e6, showId=TRUE)
 @
 
 \subsubsection*{Display parameters for GenomeAxisTrack objects}
@@ -601,6 +609,16 @@ setting the \Rfunarg{showId} display parameter to \code{FALSE}.
 <<IdeogramTrackClass2, fig=TRUE, width=7.5, height=0.5>>=
 plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE)
 @
+
+The chromosome bands in the ideogram come with a unique identifier,
+and we can add this information to the plot, at least for those bands
+that are wide enought to accomodate the text.
+
+<<IdeogramTrackClass2, fig=TRUE, width=7.5, height=0.5>>=
+plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE, showBandId=TRUE, cex.bands=0.5)
+@
+
+
 
 \subsubsection*{Display parameters for IdeogramTrack objects}
 
