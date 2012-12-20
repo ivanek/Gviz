@@ -62,7 +62,7 @@ importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
 
 importFrom(Biobase, listLen, rowMax, rowMin)
 
-importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement)
+importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET)
 
 importFrom(BiocGenerics, getObjectSlots)
 
@@ -70,7 +70,7 @@ importFrom(biomaRt, getBM, useMart)
 
 importFrom(GenomicRanges, GRanges)
 
-importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam)
+importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa)
 
 importFrom(graphics, par)
 
@@ -95,7 +95,7 @@ importFrom(methods, "@<-", as, callNextMethod, getClass, getClassDef, is, new,
 
 importFrom(RColorBrewer, brewer.pal)
 
-importFrom(rtracklayer, GenomicData, ucscGenomes, browserSession, BigWigFile)
+importFrom(rtracklayer, GenomicData, ucscGenomes, browserSession, BigWigFile, FastaFile, TwoBitFile)
 
 importFrom(stats, loess.smooth)
 

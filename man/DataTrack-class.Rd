@@ -12,6 +12,8 @@
 \alias{initialize,ReferenceDataTrack-method}
 \alias{score,DataTrack-method}
 \alias{show,DataTrack-method}
+\alias{show,ReferenceDataTrack-method}
+\alias{length,ReferenceDataTrack-method}
 \alias{split,DataTrack-method}
 \alias{values,DataTrack-method}
 \alias{values<-,DataTrack-method}
@@ -183,7 +185,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     mapped to any of the existing import function, an error is raised
     asking for a user-defined import function. Currently the following
     file types can be imported with the default functions: \code{wig},
-    \code{bigWig}, \code{bedGraph} and \code{bam}.
+    \code{bigWig/bw}, \code{bedGraph} and \code{bam}.
 
     Some file types support indexing by genomic coordinates (e.g.,
     \code{bigWig} and \code{bam}), and it makes sense to only load the

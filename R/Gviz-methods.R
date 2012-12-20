@@ -67,6 +67,9 @@ setMethod("length", "GenomeAxisTrack", function(x) length(ranges(x)))
 setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
 setMethod("length", "SequenceTrack", function(x)
           if(chromosome(x) %in% seqnames(x)) length(x@sequence[[chromosome(x)]]) else 0)
+setMethod("length", "ReferenceAnnotationTrack", function(x) 0)
+setMethod("length", "ReferenceGeneRegionTrack", function(x) 0)
+setMethod("length", "ReferenceDataTrack", function(x) 0)
 
 ## Extract the elementMetadata slot from the GRanges object of an object inheriting from RangeTrack as a data.frame.
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
@@ -138,6 +141,20 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
     if(.dpOrDefault(x, "complement", FALSE))
         finalSeq <- complement(finalSeq)
     return(finalSeq)
+})
+
+setMethod("subseq", "ReferenceSequenceTrack", function(x, start=NA, end=NA, width=NA){
+    ## We want start and end to be set if width is provided
+    if(!is.na(width[1])){
+        if(is.na(start) && is.na(end))
+            stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
+        if(is.na(start))
+            start <- end-width[1]+1
+        if(is.na(end))
+            end <- start+width[1]-1
+    }
+    x@sequence <- x@stream(file=x@reference, selection=GRanges(chromosome(x), ranges=IRanges(start, end)))
+    return(callNextMethod(x=x, start=start, end=end, width=width))
 })
 
 
@@ -3087,6 +3104,35 @@ setMethod(".buildRange", signature("TranscriptDb"),
     }
     return(res)
 }
+
+.import.fasta <- function(file, selection, strict=TRUE){
+    ffile <- FastaFile(file)
+    if(!file.exists(paste(file, "fai", sep="."))){
+        if(strict){
+            stop("Unable to find index for fasta file '", file, "'. You can build an index using the following command:\n\t",
+                 "library(Rsamtools)\n\tindexFa(\"", file, "\")")
+        }else{
+            return(readDNAStringSet(file))
+        }
+    }
+    idx <- scanFaIndex(file)
+    if(!as.character(seqnames(selection)[1]) %in% as.character(seqnames(idx))){
+         return(DNAStringSet())
+    }else{
+        return(scanFa(file, selection))
+    }
+}
+
+.import.2bit <- function(file, selection){
+    tbf <- TwoBitFile(file)
+    if(!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(tbf))){
+        return(DNAStringSet())
+    }else{
+        tmp <- import(tbf, which=selection)
+        names(tmp) <- as.character(seqnames(selection)[1])
+        return(tmp)
+    }
+}
     
     
 
@@ -3106,7 +3152,6 @@ setMethod(".buildRange", signature("TranscriptDb"),
                   "wig"=import.wig(file, asRangedData=FALSE),
                   "bw"=.import.bw,
                   "bigwig"=.import.bw,
-                  "2bit"=import.2bit(file, asRangedData=FALSE),
                   "bam"=.import.bam,
                   stop(sprintf("No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
                                fileExt))))
@@ -3270,19 +3315,6 @@ setMethod("tags", "GdObject", function(ImageMap) tags(imageMap(ImageMap)))
     return(msg)
 }
 
-## A helper function to plot general information about an AnnotationTrack
-.annotationTrackInfo <- function(object){
-    msg <- sprintf(paste("| genome: %s\n| active chromosome: %s\n",
-                         "| annotation features: %s", sep=""),
-                   genome(object),
-                   chromosome(object),
-                   length(object))
-    addfeat <- length(object@range)-length(object)
-    if(addfeat>0)
-        msg <- c(msg, .addFeatInfo(object, addfeat), "Call chromosome(obj) <- 'chrId' to change the active chromosome")
-    return(paste(msg, collapse="\n"))
-}
-
 setMethod("show",signature(object="DataTrack"),
           function(object){
               msg <- sprintf(paste("DataTrack '%s'\n| genome: %s\n| active chromosome: %s\n",
@@ -3300,12 +3332,49 @@ setMethod("show",signature(object="DataTrack"),
           })
 
 
+## A helper function to plot general information about an AnnotationTrack
+.annotationTrackInfo <- function(object){
+    msg <- sprintf(paste("| genome: %s\n| active chromosome: %s\n",
+                         "| annotation features: %s", sep=""),
+                   genome(object),
+                   chromosome(object),
+                   length(object))
+    addfeat <- length(object@range)-length(object)
+    if(addfeat>0)
+        msg <- c(msg, .addFeatInfo(object, addfeat), "Call chromosome(obj) <- 'chrId' to change the active chromosome")
+    return(paste(msg, collapse="\n"))
+}
+
 ## We have to show the name, genome and currently active chromosome, and, if more ranges are available on additional
 ## chromosomes some information about that
 setMethod("show", signature(object="AnnotationTrack"), function(object)
           cat(sprintf("AnnotationTrack '%s'\n%s\n", names(object), .annotationTrackInfo(object))))
+
 setMethod("show", signature(object="GeneRegionTrack"), function(object)
           cat(sprintf("GeneRegionTrack '%s'\n%s\n", names(object), .annotationTrackInfo(object))))
+
+## A helper function to plot general information about a ReferenceTrack
+.referenceTrackInfo <- function(object, type){
+    cat(sprintf("%s '%s'\n| genome: %s\n| referenced file: %s\n",
+                type,
+                names(object),
+                genome(object),
+                object@reference))
+    if(length(object@mapping) && type != "ReferenceDataTrack")
+        cat(sprintf( "| mapping: %s\n",  paste(names(object@mapping), as.character(object@mapping), sep="=", collapse=", ")))
+}
+
+setMethod("show",  signature(object="ReferenceAnnotationTrack"), function(object)
+    .referenceTrackInfo(object, "ReferenceAnnotationTrack"))
+
+setMethod("show",  signature(object="ReferenceDataTrack"), function(object)
+    .referenceTrackInfo(object, "ReferenceDataTrack"))
+
+setMethod("show",  signature(object="ReferenceGeneRegionTrack"), function(object)
+    .referenceTrackInfo(object, "ReferenceGeneRegionTrack"))
+
+setMethod("show",  signature(object="ReferenceSequenceTrack"), function(object)
+    .referenceTrackInfo(object, "ReferenceSequenceTrack"))
   
 setMethod("show", signature(object="GenomeAxisTrack"),
           function(object) {

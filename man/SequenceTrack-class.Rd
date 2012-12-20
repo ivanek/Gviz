@@ -8,6 +8,8 @@
 \alias{end,SequenceTrack-method}
 \alias{genome,SequenceTrack-method}
 \alias{initialize,SequenceTrack-method}
+\alias{initialize,ReferenceSequenceTrack-method}
+\alias{subseq,ReferenceSequenceTrack-method}
 \alias{initialize,SequenceBSgenomeTrack-method}
 \alias{initialize,SequenceDNAStringSetTrack-method}
 \alias{seqlevels,SequenceBSgenomeTrack-method}
@@ -41,20 +43,41 @@
 
 \usage{
 
-SequenceTrack(sequence = NULL, chromosome = NULL, genome, name = "Sequence", ...)
+SequenceTrack(sequence=NULL, chromosome=NULL, genome, name="Sequence",
+importFunction, stream=FALSE, ...)
 
 }
 
 \arguments{
   
-  \item{sequence}{Either an object of class \code{\linkS4class{DNAStringSet}} or an
-    object of class \code{\linkS4class{BSgenome}}. In the former case,
-    the individual \code{\linkS4class{DNAString}}s are considered to be
-    the different chromosome sequences. In the latter case, the
-    \code{Gviz} package tries to follow the \code{BSgenome} philosophy
-    in that the respective chromosome sequences are only realized once
-    they are first accessed.}
+  \item{sequence}{
 
+    A meta argument to handle the different input types, making the
+    construction of a \code{SequenceTrack} as flexible as possible.
+    
+    The different input options for \code{sequence} are:
+    
+    \describe{ 
+      
+      \item{}{An object of class \code{\linkS4class{DNAStringSet}}. The
+	individual \code{\linkS4class{DNAString}}s are considered to be
+	the different chromosome sequences.}
+      
+      \item{}{An object of class \code{\linkS4class{BSgenome}}. The
+	\code{Gviz} package tries to follow the \code{BSgenome}
+	philosophy in that the respective chromosome sequences are only
+	realized once they are first accessed.}
+      
+      \item{}{A \code{character} scalar: in this case the value of the
+	\code{sequence} argument is considered to be a file path to an
+	annotation file on disk. A range of file types are supported by
+	the \code{Gviz} package as identified by the file extension. See
+	the \code{importFunction} documentation below for further
+	details.}
+
+    }
+  }
+      
   \item{chromosome}{The currently active chromosome of the track. A
     valid UCSC chromosome identifier if
     \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
@@ -80,6 +103,43 @@ SequenceTrack(sequence = NULL, chromosome = NULL, genome, name = "Sequence", ...
   
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
+
+   \item{importFunction}{A user-defined function to be used to import the
+    sequence data from a file. This only applies when the \code{sequence} argument
+    is a character string with the path to the input data file. The
+    function needs to accept an argument \code{file} containing the file
+    path and has to return a proper \code{DNAStringSet} object with the
+    sequence information per chromosome. A set of default import functions is
+    already implemented in the package for a number of different file
+    types, and one of these defaults will be picked automatically based
+    on the extension of the input file name. If the extension can not be
+    mapped to any of the existing import function, an error is raised
+    asking for a user-defined import function. Currently the following
+    file types can be imported with the default functions:
+    \code{fa/fasta} and \code{2bit}.
+
+    Both file types support indexing by genomic coordinates, and it
+    makes sense to only load the part of the file that is needed for
+    plotting. To this end, the \code{Gviz} package defines the derived
+    \code{ReferenceSequenceTrack} class, which supports streaming data
+    from the file system. The user typically does not have to deal with
+    this distinction but may rely on the constructor function to make
+    the right choice as long as the default import functions are
+    used. However, once a user-defined import function has been provided
+    and if this function adds support for indexed files, you will have
+    to make the constructor aware of this fact by setting the
+    \code{stream} argument to \code{TRUE}. Please note that in this case
+    the import function needs to accept a second mandatory argument
+    \code{selection} which is a \code{GRanges} object containing the
+    dimensions of the plotted genomic range. As before, the function has
+    to return an appropriate \code{DNAStringSet} object.}
+
+  \item{stream}{A logical flag indicating that the user-provided import
+    function can deal with indexed files and knows how to process the
+    additional \code{selection} argument when accessing the data on
+    disk. This causes the constructor to return a
+    \code{ReferenceSequenceTrack} object which will grab the necessary
+    data on the fly during each plotting operation.}
   
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
@@ -90,8 +150,8 @@ SequenceTrack(sequence = NULL, chromosome = NULL, genome, name = "Sequence", ...
 \value{
 
   The return value of the constructor function is a new object of class
-  \code{SequenceDNAStringSetTrack} or of class
-  \code{SequenceBSgenomeTrack} depending on the constructor
+  \code{SequenceDNAStringSetTrack}, \code{SequenceBSgenomeTrack} ore
+  \code{ReferenceSequenceTrack}, depending on the constructor
   arguments. Typically the user will not have to be troubled with this
   distinction and can rely on the constructor to make the right choice.
   

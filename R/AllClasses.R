@@ -411,7 +411,8 @@ setClass("ReferenceTrack",  representation=representation("VIRTUAL",
                  msg <- c(msg, sprintf("The referenced file '%s' does not exist", object@reference))
              return(if(is.null(msg)) TRUE else msg)
          })
-setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, mapping, args, defaults) {
+setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, mapping=list(),
+                                                   args=list(), defaults=list()) {
     .Object@stream <- stream
     .Object@reference <- reference
     .Object@mapping <- mapping
@@ -1699,27 +1700,63 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
 ##      chromosome if available, and genome as supplied or NA if missing
 ##   c) sequence is BSgenome => build SequenceBSgenomeTrack where chromosome is seqnames(sequence)[1] or the supplied
 ##      chromosome if available, and genome is the supplied genome or the one extracted from the BSgenome object
-SequenceTrack <- function(sequence=NULL, chromosome=NULL, genome, name="Sequence", ...){
+SequenceTrack <- function(sequence=NULL, chromosome=NULL, genome, name="Sequence", importFunction, stream=FALSE, ...){
     if(is(sequence, "BSgenome")){
         if(missing(genome))
             genome <- providerVersion(sequence)
         if(is.null(chromosome))
             chromosome <- seqnames(sequence)[1]
         obj <- new("SequenceBSgenomeTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
-    }else{
+    }else if(is(sequence, "DNAStringSet")){
         if(missing(genome))
             genome <- as.character(NA)
-        if(!is.null(sequence)){
-            if(is.null(names(sequence)))
-                stop("The sequences in the DNAStringSet must be named")
-            if(any(duplicated(names(sequence))))
-                stop("The sequence names in the DNAStringSet must be unique")
-            if(is.null(chromosome))
-                chromosome <- names(sequence)[1]
-        }
+        if(is.null(names(sequence)))
+            stop("The sequences in the DNAStringSet must be named")
+        if(any(duplicated(names(sequence))))
+            stop("The sequence names in the DNAStringSet must be unique")
+        if(is.null(chromosome))
+            chromosome <- names(sequence)[1]
         obj <- new("SequenceDNAStringSetTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
+    } else if(is.character(sequence)){
+        sequence <- sequence[1]
+        if(!file.exists(sequence))
+            stop(sprintf("'%s' is not a valid file.", sequence))
+        ext <- .fileExtension(sequence)
+        if(missing(genome))
+            genome <- as.character(NA)
+        obj <- if(missing(importFunction) && ext %in% c("fa", "fasta")){
+            if(!file.exists(paste(sequence, "fai", sep="."))){
+                new("SequenceDNAStringSetTrack", sequence=readDNAStringSet(sequence), chromosome=chromosome,
+                    genome=genome, name=name, ...)
+            }else{
+                new("ReferenceSequenceTrack", chromosome=chromosome, genome=genome, name=name,
+                    stream=.import.fasta, reference=path.expand(sequence), ...)
+            }
+        }else if(missing(importFunction) && ext == "2bit"){
+            new("ReferenceSequenceTrack", chromosome=chromosome, genome=genome, name=name,
+                stream=.import.2bit, reference=path.expand(sequence), ...)
+        }else{
+            if(missing(importFunction)){
+                stop(sprintf("No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
+                             ext))
+            }else{
+                if(!stream){
+                    seq <- importFunction(file=sequence)
+                    if(!is(seq, "DNAStringSet"))
+                        stop("The import function did not provide a valid DNAStringSet object. Unable to build track from file '",
+                             sequence, "'")
+                    new("SequenceDNAStringSetTrack", sequence=importFunction(file=sequence), chromosome=chromosome,
+                        genome=genome, name=name, ...)
+                }else{
+                    new("ReferenceSequenceTrack", chromosome=chromosome, genome=genome, name=name,
+                        stream=importFunction, reference=path.expand(sequence), ...)
+                }
+            }
+        }
+    }else{
+        stop("Argument sequence must be of class 'BSgenome', 'DNAStringSet' or 'character'")
     }
-     return(obj)  
+    return(obj)  
 }
 ##----------------------------------------------------------------------------------------------------------------------
 
@@ -1770,3 +1807,20 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL
 })
 
 ##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## ReferenceSequenceTrack:
+## 
+## The file-based version of the ReferenceTrack class. This will mainly provide a means to dispatch to
+## a special 'subseq' method which should stream the necessary data from disk. 
+setClass("ReferenceSequenceTrack", contains=c("SequenceDNAStringSetTrack", "ReferenceTrack"))
+
+## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
+## multiple inheritence has some strange features with regards to method selection
+setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream)
+    .Object <- callNextMethod()
+    return(.Object)
+})
