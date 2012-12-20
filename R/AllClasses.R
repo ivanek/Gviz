@@ -1700,16 +1700,18 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
 ##      chromosome if available, and genome as supplied or NA if missing
 ##   c) sequence is BSgenome => build SequenceBSgenomeTrack where chromosome is seqnames(sequence)[1] or the supplied
 ##      chromosome if available, and genome is the supplied genome or the one extracted from the BSgenome object
-SequenceTrack <- function(sequence=NULL, chromosome=NULL, genome, name="Sequence", importFunction, stream=FALSE, ...){
+SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", importFunction, stream=FALSE, ...){
+    .missingToNull(c("chromosome", "genome", "sequence"))
+    if(is.null(sequence)){
+        return(new("SequenceDNAStringSetTrack", chromosome=chromosome, genome=genome, name=name, ...))
+    }
     if(is(sequence, "BSgenome")){
-        if(missing(genome))
+        if(is.null(genome))
             genome <- providerVersion(sequence)
         if(is.null(chromosome))
             chromosome <- seqnames(sequence)[1]
         obj <- new("SequenceBSgenomeTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
     }else if(is(sequence, "DNAStringSet")){
-        if(missing(genome))
-            genome <- as.character(NA)
         if(is.null(names(sequence)))
             stop("The sequences in the DNAStringSet must be named")
         if(any(duplicated(names(sequence))))
@@ -1722,8 +1724,6 @@ SequenceTrack <- function(sequence=NULL, chromosome=NULL, genome, name="Sequence
         if(!file.exists(sequence))
             stop(sprintf("'%s' is not a valid file.", sequence))
         ext <- .fileExtension(sequence)
-        if(missing(genome))
-            genome <- as.character(NA)
         obj <- if(missing(importFunction) && ext %in% c("fa", "fasta")){
             if(!file.exists(paste(sequence, "fai", sep="."))){
                 new("SequenceDNAStringSetTrack", sequence=readDNAStringSet(sequence), chromosome=chromosome,

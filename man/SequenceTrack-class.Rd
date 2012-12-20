@@ -43,7 +43,7 @@
 
 \usage{
 
-SequenceTrack(sequence=NULL, chromosome=NULL, genome, name="Sequence",
+SequenceTrack(sequence, chromosome, genome, name="Sequence",
 importFunction, stream=FALSE, ...)
 
 }
