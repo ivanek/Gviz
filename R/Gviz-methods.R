@@ -1795,15 +1795,16 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                   displayPars(GdObject) <- list(".__select"=select)
                   return(invisible(GdObject))
               }
-              col <- .dpOrDefault(GdObject, "detailsConnector.col", fromPrototype=TRUE)
-              lty <- .dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype=TRUE)
-              lwd <- .dpOrDefault(GdObject, "detailsConnector.lwd", fromPrototype=TRUE)
-              pch <- .dpOrDefault(GdObject, "detailsConnector.pch", fromPrototype=TRUE)
-              cex <- .dpOrDefault(GdObject, "detailsConnector.cex", fromPrototype=TRUE)
-              border.lty <- .dpOrDefault(GdObject, "detailsBorder.lty", fromPrototype=TRUE)
-              border.lwd <- .dpOrDefault(GdObject, "detailsBorder.lwd", fromPrototype=TRUE)
-              border.col <- .dpOrDefault(GdObject, "detailsBorder.col", fromPrototype=TRUE)
-              border.fill <- .dpOrDefault(GdObject, "detailsBorder.fill", fromPrototype=TRUE)
+              n = length(GdObject)
+              col <- rep(.dpOrDefault(GdObject, "detailsConnector.col", fromPrototype=TRUE), n)[1:n]
+              lty <- rep(.dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype=TRUE), n)[1:n]
+              lwd <- rep(.dpOrDefault(GdObject, "detailsConnector.lwd", fromPrototype=TRUE), n)[1:n]
+              pch <- rep(.dpOrDefault(GdObject, "detailsConnector.pch", fromPrototype=TRUE), n)[1:n]
+              cex <- rep(.dpOrDefault(GdObject, "detailsConnector.cex", fromPrototype=TRUE), n)[1:n]
+              border.lty <- rep(.dpOrDefault(GdObject, "detailsBorder.lty", fromPrototype=TRUE), n)[1:n]
+              border.lwd <- rep(.dpOrDefault(GdObject, "detailsBorder.lwd", fromPrototype=TRUE), n)[1:n]
+              border.col <- rep(.dpOrDefault(GdObject, "detailsBorder.col", fromPrototype=TRUE), n)[1:n]
+              border.fill <-rep(.dpOrDefault(GdObject, "detailsBorder.fill", fromPrototype=TRUE), n)[1:n]
               minwidth <- .dpOrDefault(GdObject, "details.minWidth", fromPrototype=TRUE)
               size <- .dpOrDefault(GdObject, "details.size", fromPrototype=TRUE)
               xyratio <- .dpOrDefault(GdObject, "details.ratio", fromPrototype=TRUE)
@@ -1843,14 +1844,14 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                   hasError <- FALSE
                   for(i in indices[selection]) {
                       pushViewport(viewport(width=1/len*w, x=((1/len*j)-1/len)+(v), just=c(0, 0.5)))
-                      grid.rect(gp=gpar(col=border.col, lwd=border.lwd, lty=border.lty, fill=border.fill))
+                      grid.rect(gp=gpar(col=border.col[i], lwd=border.lwd[i], lty=border.lty[i], fill=border.fill[i]))
                       iargs <- as.list(adf[i,])
                       iargs$index <- i
                       iargs$GdObject <- GdObject
                       iargs$GdObject.original <- .dpOrDefault(GdObject, ".__OriginalGdObject", GdObject)
                       args <- c(args[setdiff(names(args), names(iargs))], iargs)
-                      pres[[j]] <- try(do.call(GdObject@fun, args), silent=TRUE)
-                      if(is(pres[[j]], "try-error")){
+                      pres[[as.character(j)]] <- try(do.call(GdObject@fun, args), silent=TRUE)
+                      if(!is.null(pres) && is(pres[[as.character(j)]], "try-error")){
                           hasError <- TRUE
                           grid.segments(x0=c(0.1,0.1), x1=c(0.9,0.9), y0=c(0.9,0.1), y1=c(0.1,0.9), gp=gpar(col="red", lwd=3))
                       }
