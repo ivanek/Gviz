@@ -90,7 +90,7 @@ importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
            trellis.par.get)
 
-importFrom(methods, "@<-", as, callNextMethod, getClass, getClassDef, is, new,
+importFrom(methods, as, callNextMethod, getClass, getClassDef, is, new,
            "slot<-", slotNames)
 
 importFrom(RColorBrewer, brewer.pal)
