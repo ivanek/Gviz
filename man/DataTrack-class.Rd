@@ -13,7 +13,6 @@
 \alias{score,DataTrack-method}
 \alias{show,DataTrack-method}
 \alias{show,ReferenceDataTrack-method}
-\alias{length,ReferenceDataTrack-method}
 \alias{split,DataTrack-method}
 \alias{values,DataTrack-method}
 \alias{values<-,DataTrack-method}

@@ -67,9 +67,9 @@ setMethod("length", "GenomeAxisTrack", function(x) length(ranges(x)))
 setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
 setMethod("length", "SequenceTrack", function(x)
           if(chromosome(x) %in% seqnames(x)) length(x@sequence[[chromosome(x)]]) else 0)
-setMethod("length", "ReferenceAnnotationTrack", function(x) 0)
-setMethod("length", "ReferenceGeneRegionTrack", function(x) 0)
-setMethod("length", "ReferenceDataTrack", function(x) 0)
+## setMethod("length", "ReferenceAnnotationTrack", function(x) 0)
+## setMethod("length", "ReferenceGeneRegionTrack", function(x) 0)
+## setMethod("length", "ReferenceDataTrack", function(x) 0)
 
 ## Extract the elementMetadata slot from the GRanges object of an object inheriting from RangeTrack as a data.frame.
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
@@ -1047,23 +1047,8 @@ setMethod("subset", signature(x="ReferenceAnnotationTrack"), function(x, from, t
         chromosome <- Gviz::chromosome(x)
     subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
     if(length(ranges(x))==0 || all(ranges(x) %in% subRegion)){
-        vals <- x@stream(x@reference, subRegion)
-        x@range <- vals
-        colnames(mcols(vals)) <- paste(colnames(mcols(vals)), "orig", sep="__.__")
-        defMap <- x@mapping
-        args <- x@args
-        for(i in names(defMap)){
-            if(is.character(args[[i]]) && length(args[[i]])==1 && paste(args[[i]], "orig", sep="__.__") %in% colnames(mcols(vals))){
-                defMap[[i]] <- args[[i]]
-                args[[i]] <- NULL
-            }
-            mt <- match(paste(defMap[[i]], "orig", sep="__.__"), colnames(mcols(vals)))
-            mt <- mt[!is.na(mt)][1]
-            if(!is.na(mt))
-                mcols(vals)[[i]] <- mcols(vals)[,mt]
-        }
-        mcols(x@range) <- mcols(vals)[, !grepl("__.__", colnames(mcols(vals))), drop=FALSE]
-        x@range <- .buildRange(x@range, args=x@args, defaults=x@defaults, trackType="AnnotationTrack")
+        cMap <- .resolveColMapping(x@stream(x@reference, subRegion), x@args, x@mapping)
+        x@range <- .buildRange(cMap$data, args=cMap$args, defaults=x@defaults, trackType="AnnotationTrack")
         chromosome(x) <- chromosome[1]
     }
     return(callNextMethod(x=x, from=from, to=to, drop=FALSE, ...))
@@ -3020,209 +3005,6 @@ setMethod(".buildRange", signature("TranscriptDb"),
               return(.buildRange(range=sort(range), chromosome=chromosome, args=args, ...))})
 
 
-## An import function for gff3 files that tries to resolve the parent-child relationship
-## between genes, transcripts and exons
-.import.gff3 <- function(file){
-    dat <- import.gff3(file, asRangedData=FALSE)
-    res <- try({
-        genes <- tolower(dat$type) == "gene"
-        ginfo <- mcols(dat[genes, ])
-        dat <- dat[!genes]
-        transcripts <- tolower(dat$type) == "mrna"
-        tinfo <- mcols(dat[transcripts, ])
-        dat <- dat[!transcripts]
-        mt <- match(as.character(dat$Parent), as.character(tinfo$ID))
-        if(!all(is.na(mt))){
-            if(!"transcript_id" %in% colnames(mcols(dat)))
-                mcols(dat)[["transcript_id"]] <- tinfo[mt, "ID"]
-            if(!"transcript_name" %in% colnames(mcols(dat)))
-                mcols(dat)[["transcript_name"]] <- tinfo[mt, "Name"]
-            mt2 <- match(as.character(tinfo[mt, "Parent"]), as.character(ginfo$ID))
-            if(!all(is.na(mt2))){
-                if(!"gene_id" %in% colnames(mcols(dat)))
-                    mcols(dat)[["gene_id"]] <- ginfo[mt2, "ID"]
-                if(!"gene_name" %in% colnames(mcols(dat)))
-                    mcols(dat)[["gene_name"]] <- ginfo[mt2, "Name"]
-            }
-        }
-        if(all(is.na(mcols(dat)[["ID"]])))
-            mcols(dat)[["ID"]] <- paste("item", seq_along(dat), sep="_")
-        if(!"exon_id" %in% colnames(mcols(dat)))
-            mcols(dat)[["exon_id"]] <- mcols(dat)[["ID"]]
-        if(!is.null(mcols(dat)[["gene_name"]]) && all(is.na(mcols(dat)[["gene_name"]])))
-            mcols(dat)[["gene_name"]] <- NULL
-        if(all(is.na(mcols(dat)[["transcript_name"]])))
-            mcols(dat)[["transcript_name"]] <- NULL
-        dat
-    })
-    if(is(res, "try-error")){
-        warning(sprintf(paste("File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
-                              "Results may not be what you expected!"), file))
-        res <- dat
-    }
-    return(res)
-}
-
-## An import function for bigWig files that knowns how to deal with missing seqnames
-.import.bw <- function(file, selection){
-    bwf <- BigWigFile(path.expand(file))
-    if(missing(selection)){
-        rr <- import.bw(con=bwf, asRangedData=FALSE)
-    }else{
-        si <- seqinfo(bwf)
-        rr <- if(!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(bwf))){
-            GRanges(seqnames(selection)[1], ranges=IRanges(1,2), score=1)[0] }else{
-                import.bw(con=bwf, selection=selection, asRangedData=FALSE)}
-    }
-    return(rr)
-}
-
-.import.bam <- function(file, selection){
-    if(!file.exists(paste(file, "bai", sep=".")))
-        stop("Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
-             "library(Rsamtools)\n\tindexBam(\"", file, "\")")
-    sinfo <- scanBamHeader(file)[[1]]
-    if(parent.env(environment())[["._trackType"]] == "DataTrack"){
-        res <- if(!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)){
-            mcols(selection) <- DataFrame(score=0)
-            selection
-        }else{
-            param <- ScanBamParam(what=c("pos", "qwidth"), which=selection, flag=scanBamFlag(isUnmappedQuery=FALSE))
-            x <- scanBam(file, param=param)[[1]]
-            cov <- coverage(IRanges(x[["pos"]], width=x[["qwidth"]]))
-            GRanges(seqnames=seqnames(selection), ranges=IRanges(start=start(cov), end=end(cov)), strand="*", score=runValue(cov))
-        }
-    } else {
-        res <- if(!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)){
-            mcols(selection) <- DataFrame(id="NA", group="NA")
-            selection[0]
-        }else{
-            param <- ScanBamParam(what=c("pos", "qwidth", "strand", "qname"), which=selection, flag=scanBamFlag(isUnmappedQuery=FALSE))
-            x <- scanBam(file, param=param)[[1]]
-            GRanges(seqnames=seqnames(selection), ranges=IRanges(start=x[["pos"]], width=x[["qwidth"]]), strand=x[["strand"]],
-                    id=make.unique(x[["qname"]]), group=x[["qname"]])
-        }
-    }
-    return(res)
-}
-
-.import.fasta <- function(file, selection, strict=TRUE){
-    ffile <- FastaFile(file)
-    if(!file.exists(paste(file, "fai", sep="."))){
-        if(strict){
-            stop("Unable to find index for fasta file '", file, "'. You can build an index using the following command:\n\t",
-                 "library(Rsamtools)\n\tindexFa(\"", file, "\")")
-        }else{
-            return(readDNAStringSet(file))
-        }
-    }
-    idx <- scanFaIndex(file)
-    if(!as.character(seqnames(selection)[1]) %in% as.character(seqnames(idx))){
-         return(DNAStringSet())
-    }else{
-        return(scanFa(file, selection))
-    }
-}
-
-.import.2bit <- function(file, selection){
-    tbf <- TwoBitFile(file)
-    if(!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(tbf))){
-        return(DNAStringSet())
-    }else{
-        tmp <- import(tbf, which=selection)
-        names(tmp) <- as.character(seqnames(selection)[1])
-        return(tmp)
-    }
-}
-    
-    
-
-## A mapping of (lower-cased) file extensions to import function calls. Most of those are already implemented in the rtracklayer package.
-## If no mapping is found an error will be raised suggesting to provide a user-defined import function.
-.registerImportFun <- function(file){
-    fileExt <- .fileExtension(file)
-    file <- path.expand(file)
-    return(switch(fileExt,
-                  "gff"=import.gff(file, asRangedData=FALSE),
-                  "gff1"=import.gff1(file, asRangedData=FALSE),
-                  "gff2"=import.gff2(file, asRangedData=FALSE),
-                  "gff3"=.import.gff3(file),
-                  "gtf"=import.gff2(file, asRangedData=FALSE),
-                  "bed"=import.bed(file, asRangedData=FALSE),
-                  "bedgraph"=import.bedGraph(file, asRangedData=FALSE),
-                  "wig"=import.wig(file, asRangedData=FALSE),
-                  "bw"=.import.bw,
-                  "bigwig"=.import.bw,
-                  "bam"=.import.bam,
-                  stop(sprintf("No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
-                               fileExt))))
-}
-                   
-
-## Get the file extension for a file, taking into account potential gzipping
-.fileExtension <- function(file){
-    if(!grepl("\\.", file))
-        stop("Unable to identify extension for file '", file, "'")
-     ext <- sub(".*\\.", "", sub("\\.gz$|\\.gzip$", "", basename(file)))
-    if(ext=="")
-        stop("Unable to identify extension for file '", file, "'")
-    return(tolower(ext))
-}
-
-## Return the default mappings between elementMetadata slots of an imported GRanges object and the elementMetadata
-## slots of the track's GRanges object.
-.defaultVarMap <- function(inputType, trackType, stream, fromUser){
-    vm <- list(gtf=list(GeneRegionTrack=list(feature="type",
-                                             gene=c("gene_id", "gene_name"),
-                                             exon=c("exon_name", "exon_id"),
-                                             transcript=c("transcript_name", "transcript_id"),
-                                             symbol=c("gene_name", "gene_id"))),
-               gff=list(AnnotationTrack=list(feature="type",
-                                             group="group"),
-                        GeneRegionTrack=list(featuer="type",
-                                             transcript="group")),
-               gff1=list(AnnotationTrack=list(feature="type",
-                                              group=group),
-                        GeneRegionTrack=list(feature="type",
-                                             transcript="group")),
-               gff2=list(AnnotationTrack=list(feature="type"),
-                        GeneRegionTrack=list(feature="type",
-                                             gene=c("gene_id", "gene_name"),
-                                             exon=c("exon_name", "exon_id"),
-                                             symbol=c("gene_name", "gene_id"))),
-               gff3=list(AnnotationTrack=list(feature="type",
-                                              group="Parent"),
-                         GeneRegionTrack=list(feature="type",
-                                              gene=c("gene_id", "gene_name"),
-                                              exon=c("exon_name", "exon_id", "ID"),
-                                              transcript=c("transcript_name", "transcript_id", "Parent"),
-                                              symbol=c("gene_name", "gene_id", "Name", "Alias"))),
-               bedgraph=list(DataTrack=list(score="score")),
-               wig=list(DataTrack=list(score="score")),
-               bed=list(AnnotationTrack=list(feature="itemRgb")),
-               bigwig=list(DataTrack=list(score="score",
-                                          .stream=TRUE)),
-               bw=list(DataTrack=list(score="score",
-                                      .stream=TRUE)),
-               bam=list(DataTrack=list(score="score",
-                                      .stream=TRUE),
-                        AnnotationTrack=list(id="id",
-                                             group="group",
-                                             .stream=TRUE)))
-    if(fromUser){
-        vm[[inputType]] <- setNames(list(list(".stream"=stream)), trackType)
-    }else{
-        if(is.null(vm[[inputType]]) || is.null(vm[[inputType]][[trackType]])){
-            warning(sprintf(paste("There are no default mappings from %s files to %s. Please provide a manual mapping",
-                                  "in the track constructor if you haven't already done so."),
-                            inputType, trackType))
-            vm[[inputType]] <- setNames(list(list(".stream"=stream)), trackType)
-        }
-    }
-    return(vm[[inputType]][[trackType]])
-}
-    
-
 ## For character scalars the data need to be extracted from a file and we have to deal with parser functions
 ## and column assignments here. 
 setMethod(".buildRange", signature("character"),
@@ -3249,23 +3031,22 @@ setMethod(".buildRange", signature("character"),
                       mcols(data) <- t(mc)
                   } else {
                       ## For the rest we use the mapping as provided by the constructor
-                      colnames(mcols(data)) <- paste(colnames(mcols(data)), "orig", sep="__.__")
-                      for(i in names(defMap)){
-                          if(is.character(args[[i]]) && length(args[[i]])==1 && paste(args[[i]], "orig", sep="__.__") %in% colnames(mcols(data))){
-                              defMap[[i]] <- args[[i]]
-                              args[[i]] <- NULL
-                          }
-                          mt <- match(paste(defMap[[i]], "orig", sep="__.__"), colnames(mcols(data)))
-                          mt <- mt[!is.na(mt)][1]
-                          if(!is.na(mt))
-                              mcols(data)[[i]] <- mcols(data)[,mt]
-                      }
-                      mcols(data) <- mcols(data)[, !grepl("__.__", colnames(mcols(data))), drop=FALSE]
+                      ## are available
+                      cmap <- .resolveColMapping(data, args, defMap)
+                      args <- cmap$args
+                      data <- cmpa$data
                   }
                   args[["chromosome"]] <- as.character(seqnames(data))
                   args[["strand"]] <- as.character(strand(data))
                   return(.buildRange(range=data, args=args, defaults=defaults, trackType=trackType, ...))
-                  }else{
+              }else{
+                  if(trackType!="DataTrack"){
+                      for(i in names(defMap)){
+                          if(is.character(args[[i]]) && length(args[[i]])==1){
+                              defMap[[i]] <- args[[i]]
+                          }
+                      }
+                  }
                   return(list(reference=path.expand(range), mapping=defMap,
                               stream=if(is.null(importFun)) .registerImportFun(range) else importFun))
               }
@@ -3356,10 +3137,11 @@ setMethod("show", signature(object="GeneRegionTrack"), function(object)
 
 ## A helper function to plot general information about a ReferenceTrack
 .referenceTrackInfo <- function(object, type){
-    cat(sprintf("%s '%s'\n| genome: %s\n| referenced file: %s\n",
+    cat(sprintf("%s '%s'\n| genome: %s\n| active chromosome: %s\n| referenced file: %s\n",
                 type,
                 names(object),
                 genome(object),
+                chromosome(object),
                 object@reference))
     if(length(object@mapping) && type != "ReferenceDataTrack")
         cat(sprintf( "| mapping: %s\n",  paste(names(object@mapping), as.character(object@mapping), sep="=", collapse=", ")))

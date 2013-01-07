@@ -3,15 +3,31 @@
 \docType{class}
 \alias{ReferenceTrack-class}
 \alias{ReferenceTrack}
+\alias{availableDefaultMapping}
 \alias{initialize,ReferenceTrack-method}
 
 \title{ReferenceTrack class and methods}
 
 \description{
   
-  The virtual parent class for all track items in the Gviz package
-  designed to stream data off the file system. This class merely exists
-  for dispatching purpose.
+  A class allow for on-demand streaming of data off the file system.
+
+}
+
+\usage{
+
+availableDefaultMapping(file, trackType)
+
+}
+
+\arguments{
+  
+  \item{file}{A character scalar with a file name or just a file
+    extension.}
+
+  \item{trackType}{A character scalar with one of the available track
+  types in the package.}
+
 
 }
 
@@ -63,6 +79,15 @@
       initialize the object.}
     
   }
+}
+
+\details{
+
+  The \code{availableDefaultMappings} function can be used to find out
+  whether the package defines a mapping scheme between one of the many
+  supported input file types and the \code{elementMetadata} columns of
+  the tracks's \code{GRanges} objects.
+  
 }
 
 

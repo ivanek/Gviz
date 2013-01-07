@@ -38,7 +38,7 @@
 \begin{document}
 \title{The \mgg User Guide}
 
-<<init, echo=FALSE>>=
+<<init, echo=FALSE, results=hide>>=
 options(width=65)
 library(xtable)
 source(system.file("scripts/documentation.R", package="Gviz"))
@@ -763,6 +763,123 @@ slightly.
 plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("a", "p"), legend=TRUE)
 @ 
 
+\subsubsection*{Building DataTrack objects from files}
+A number of standard file types exist that all store numeric data
+along genomic coordinates. We have tried to make such files accessible
+in the \mgg package by providing additional options to the
+\Rfunction{DataTrack} constructor function. In the previous examples
+the \Rfunarg{range} argument was a \Rclass{GRanges} object. Instead,
+we can also pass in the path to a file on disk by means of a character
+scalar. The \Rclass{DataTrack} class supports the most common file
+types like \code{wig}, \code{bigWig} or \code{bedGraph}, but also
+knows how to deal with \code{bam} files. You may have realized that
+some of these files are indexed, and we have taken the approach to
+stream the data from indexed files on the fly when it is needed for
+plotting.
+
+However let's first start with the simple example of a \code{bedGraph}
+file. These files support a single data sample, and thus are
+equivalent to a \code{GRanges} object with a single numeric
+\code{elementMetadata} column. \code{bedGraph} files are not indexed,
+so we have to load the whole file content when instantiating the
+object.
+
+<<filedt1, fig=TRUE, width=7.5, height=1>>=
+bgFile <- system.file("extdata/test.bedGraph", package="Gviz")
+dTrack2 <- DataTrack(range=bgFile, genome="hg19", type="l", chromosome="chr19", name="bedGraph")
+class(dTrack2)
+plotTracks(dTrack2)
+@ 
+
+As we can see the constructor has returned a regular
+\Rclass{DataTrack} object. The function to be used in order to read
+the data off the file has been automatically choosen by the package
+based on the file extension of the input file. Of course the number of
+these supported standard file types is limited, and a user may want to
+import a non-standard file through the same mechanism. To this end,
+the \Rclass{DataTrack} constructor defines an additional argument
+called \Rfunarg{importFunction}. As the name suggests, the value of
+this argument is a function which needs to handle the mandatory
+\Rfunarg{file} argument. Upon evaluation this argument will be filled
+in with the path to the data file, and the user-defined function needs
+to provide all logic necessary to parse that file into a valid
+\Rclass{GRanges} object. From this point on everything will happen just
+as if the \Rfunarg{range} argument had been this \Rclass{GRanges}
+object. In other words, numeric \code{elementMetadata} columns will be
+shown as individual samples and non-numeric columns will be silently
+ignored. We can examplify this in the next code chunk. Note that the
+\mgg package is using functionality from the \Rpackage{rtracklayer}
+package for most of the file import operations, just as we do here in
+more manual way.
+
+<<filedt2>>=
+library(rtracklayer)
+dTrack3 <-  DataTrack(range=bgFile, genome="hg19", type="l", chromosome="chr19", name="bedGraph",
+                      importFunction=function(file) import(con=file, asRangedData=FALSE))
+identical(dTrack2, dTrack3)
+@
+
+So far one could have easily done the whole process in two separate
+steps: first import the data from the file into a \Rclass{GRanges}
+object and then provided this object to the constructor. The real
+power of the file support in the \mgg package comes with streaming
+from indexed files. As mentioned before, only the relevant part of the
+data has to be loaded during the plotting operation, so the underlying
+data files may be quite large without decreasing the performance or
+causing too big of a memory footprint. We will exemplify this feature
+here using a small \code{bam} file that is provided with the
+package. \code{bam} files contain alignments of sequences (typically
+from a next generation sequencing experiment) to a common
+reference. The most natural representation of such data in a
+\Rclass{DataTrack} is to look at the alignment coverage at a given
+position only and to encode this in a single \code{elementMetadata}
+column.
+
+<<filedt3, fig=TRUE, width=7.5, height=1>>=
+bamFile <- system.file("extdata/test.bam", package="Gviz")
+dTrack4 <- DataTrack(range=bamFile, genome="hg19", type="l", name="Coverage", window=-1, chromosome="chr1")
+class(dTrack4)
+dTrack4
+plotTracks(dTrack4, from=189990000, to=190000000)
+@
+
+As seen in the previous code chunk, the \code{dTrack4} object is now
+of class \Rclass{ReferenceDataTrack}. For the user this distinction is
+not particularly relevant with the exception that the
+\Rfunction{length} method for this class almost always returns
+\code{0} because the content of the object is only realized during the
+plotting operation. Obviously, streaming from the disk comes with a
+price in that file access is much slower than accessing RAM, however
+the file indexing allows for fairly rapid data retrieval, and other
+processes during the plotting operation tend to be much more costly,
+anyways. It is woth mentioning however that each plotting operation
+will cause reading off the file, and there are currently no caching
+mechanisms in place to avoid that. Nevertheless, plotting a larger
+chunk of the \code{bam} file still finishes in a reasonable time
+interval.
+
+<<filedt4, fig=TRUE, width=7.5, height=1>>=
+plotTracks(dTrack4, chromosome="chr1", from=189891483, to=190087517)
+@ 
+
+Of course users can provided their own file parsing function just like
+we showed in the previous example. The import function now needs to be
+able to deal with a second mandatory argument \Rfunarg{selection},
+which is a \Rclass{GRanges} object giving the genomic interval that
+has to be imported from the file. In addition one needs to tell the
+\Rclass{DataTrack} constructor that data should be streamed off a file
+by setting the \Rfunarg{stream} argument to \code{TRUE}.
+
+<<filedt5>>=
+myImportFun <- function(file, selection){
+    ## do something here
+}
+DataTrack(range=bamFile, genome="hg19", type="l", name="Coverage", window=-1, chromosome="chr1",
+          importFunction=myImportFun, stream=TRUE)
+@ 
+
+
+
 \subsubsection*{Data transformations}
 
 The \mgg package offers quite some flexibility to transform data on
@@ -1114,6 +1231,64 @@ for which all items are already merged into a single meta item.
 <<collapse5, fig=TRUE, results=hide, width=7.5, height=0.65>>=
 plotTracks(ctrack, extend.left=1800, min.width=3, min.distance=5, collapse=TRUE,
            mergeGroups=TRUE)
+@
+
+\subsubsection*{Building AnnotationTrack objects from files}
+Just like we showed before for \Rclass{DataTrack} objects it is
+possible to stream the data for an \Rclass{AnnotationTrack} object off
+the file system. We will again use the \code{bam} file as an
+example. This time the default import function reads the coordinates
+of all the sequence alignments from the file and even knows how to
+deal with grouped elements.
+
+<<fileat1, fig=TRUE, width=7.5, height=1>>=
+aTrack2 <- AnnotationTrack(range=bamFile, genome="hg19", name="Reads", chromosome="chr1")
+class(aTrack2)
+aTrack2
+plotTracks(aTrack2, from=189995000, to=190000000)
+@
+
+Since \Rclass{AnnotationTrack} objects are somewhat more complicated
+than \Rclass{DataTrack} objects, the constructor provides another
+level of flexibility when reading the data from a file. More
+specifically, the user has the ability to map the provided
+\Rclass{elementMetadata} columns of the \Rclass{GRanges} object that is
+returned by the import function to the respective columns in the final
+\Rclass{AnnotationTrack} object. If no explicit mapping is provided, 
+the package will try to find a default mapping based on the input file
+type and the desired track type. The current mapping of a track is
+displayed by its \Rfunction{show} method as can be seen above. The
+mechanism for changing this default mapping is quite straight forward:
+if the values in the relevant constructor arguments (in this case
+\Rfunarg{group}, \Rfunarg{id} and \Rfunarg{feature}) are character
+scalars, the \Rclass{elementMetadata} columns of the \Rclass{GRanges}
+object that is returned by the import function are mapped against
+their values. For instance we can map the \code{id} column to the
+\code{group} attribute and thus suppress the grouping of sequence
+alignments that originate from the same sequencing read.
+
+<<fileat2, fig=TRUE, width=7.5, height=1>>=
+aTrack3 <- AnnotationTrack(range=bamFile, genome="hg19", name="Reads", chromosome="chr1", group="id")
+aTrack3
+plotTracks(aTrack3, from=189995000, to=190000000)
+@
+
+Please note that if no \Rclass{elementMetadata} can be mapped to the
+constructor arguments their values are assumed to be normal character
+scalars and they will be recycled accordingly to fill the track's
+slots. One can ask for the package's default mappings by using the
+\Rfunction{availableDefaultMapping} function.
+
+<<fileat3>>=
+availableDefaultMapping(bamFile, "AnnotationTrack")
+@
+
+We can now plot both the \Rclass{DataTrack} representation as well as
+the \code{AnnotationTrack} representation of the \code{bam} file
+together to prove that the underlying data are indeed identical.
+
+<<fileat4, fig=TRUE, width=7.5, height=2>>=
+plotTracks(list(dTrack4, aTrack2), from=189990000, to=190000000)
 @
 
 
@@ -1702,7 +1877,7 @@ plotTracks(list(idxTrack, axTrack, knownGenes, refGenes, ensGenes, cpgIslands,
                 gcContent, conservation, snpLocations), from=from, to=to, showTitle=FALSE)
 @
 
-\section{Bioconductor integration}
+\section{Bioconductor integration and file support}
 This short section is supposed to give a very brief overview over the
 different track classes in the \mgg package and how those can be
 constructed from the typical Bioconductor classes that deal with
@@ -1713,17 +1888,53 @@ a track class' documentation should provide all the possible options.
   \hline
   Gviz class & Bioconductor class & Method\\
   \hline                        
-  AnnotationTrack & IRanges & Constructor + additional arguments \\
+  AnnotationTrack & data.frame & Constructor \\
+   & IRanges & Constructor + additional arguments \\
    & GRanges & Constructor or setAs method, additional data in elementMetadata \\
    & GRangesList & Constructor or setAs method \\
   \hline
-  GeneRegionTrack & IRanges & Constructor + additonal arguments \\
+  GeneRegionTrack & data.frame & Constructor \\
+   & IRanges & Constructor + additonal arguments \\
    & GRanges & Constructor or setAs method, additional data in elementMetadata \\
    & GRangesList & Constructor or setAs method, additional data in elementMetadata \\
    & TranscriptDb & Constructor or setAs method \\
   \hline
-  DataTrack & IRanges & Constructor + additional data matrix \\
+  DataTrack & data.frame & Constructor \\
+   & IRanges & Constructor + additional data matrix \\
    & GRanges & Constructor or setAs method, numeric data in elementMetadata \\
+  \hline
+  SequenceTrack & DNAStringSet & Constructor \\
+   & BSgenome & Constructor \\
+  \hline
+\end{longtable}
+
+We have seen in previous examples that the \mgg package supports quite
+a wide range of standard file types as inputs for the class'
+constructor functions. In this section we summarize the file support
+for the different track classes in one place.
+
+\begin{longtable}{ l | l | l | c | p{6.5cm} }
+  \hline
+  Gviz class & File type & Extension & Streaming & Details\\
+  \hline
+  AnnotationTrack & BED & \code{.bed} & -- & Genomic locations from the mandatory \code{chrom}, \code{chromStart} and \code{chromEnd} fields, and optionally the strand from the \code{strand} field. If present, the information in the \code{name} field is mapped to track item ids, and \code{itemRgb} is mapped to track item feature type. All other fields are currently ignored.\\
+  & GFF & \code{.gff}, \code{.gff1} & -- & Only the following basic GFF fields are recognized: \code{seqname}, \code{start}, \code{end}, \code{end}, \code{strand}, \code{feature} (mapped to track item feature type) and \code{group} (to allow for track item grouping). \\
+  & GFF2 & \code{.gff2} & -- & Same as above, but feature grouping information may be provided either as \code{Group} or \code{Parent} attribute. Feature ids are mapped to one of the \code{ID}, \code{Name} or \code{Alias} attributes.\\
+  & GFF3 & \code{.gff3} & -- & Same as above, but feature grouping information has to be provided as the \code{Parent} attribute.\\
+  & BAM & \code{.bam} & $\surd$ & Only start and end locations as well as the strand information for the reads are used. Read identifiers are used for track item grouping.\\
+  \hline
+  GeneRegionTrack & GTF & \code{.gtf} & -- & A somewhat looser format definition for \code{gtf} files is applied here where gene, transcript and exon identifiers and names can be parsed from the \code{gene\_id}, \code{gene\_name}, \code{transcript\_id}, \code{transcript\_name}, \code{exon\_id} or \code{exon\_id} attributes.\\
+  & GFF & \code{.gff}, \code{.gff1} & -- & This only supports very limited item grouping and thus complete gene models can not be properly encoded.\\
+  & GFF2 & \code{.gff2} & -- & In most instances this is identical to the \code{GTF} standard and it could make sense to rename the file accordingly.\\
+  & GFF3 & \code{.gff3} & -- & The gene-to-transcript and transcript-to-exon relationships are encoded in the \code{parent} and \code{type} attributes and the parser tries to accomodate most of the exisiting GFF3 variants.\\
+  \hline
+  DataTrack & BedGraph & \code{.bedGraph} & -- & \\
+  & WIG & \code{.wig} & -- & \\
+  & BigWig & \code{.bigWig}, \code{.bw} & $\surd$ & \\
+  & BAM & \code{.bam} & $\surd$ & Read coverage only is extracted from the \code{bam} file.\\
+  \hline
+  SequenceTrack & FASTA & \code{.fa}, \code{fasta} & $(\surd)$ & Streaming only possible if an index file is found in the same directory as the original fasta file.\\
+  & 2Bit & \code{.2bit} & $\surd$ & \\
   \hline
 \end{longtable}
 
@@ -1743,7 +1954,7 @@ adequate layout structure to plot into, and we also need to tell
 plotting, which can be archieved by setting the function's
 \Rfunarg{add} argument to \code{FALSE}. For details on how to create a
 layout structure in the grid graphics system, please see the help page
-at \code{? grid.layout)}.
+at \code{?grid.layout)}.
 
 We start by creating an \Rclass{AnnotationTrack} objects and a
 \Rclass{DataTrack} object which both contain data for several

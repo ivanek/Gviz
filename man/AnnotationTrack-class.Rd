@@ -23,7 +23,6 @@
 \alias{setStacks,AnnotationTrack-method}
 \alias{show,AnnotationTrack-method}
 \alias{show,ReferenceAnnotationTrack-method}
-\alias{length,ReferenceAnnotationTrack-method}
 \alias{subset,AnnotationTrack-method}
 \alias{subset,ReferenceAnnotationTrack-method}
 \alias{coerce,GRanges,AnnotationTrack-method}

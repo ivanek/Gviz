@@ -21,7 +21,6 @@
 \alias{initialize,ReferenceGeneRegionTrack-method}
 \alias{show,GeneRegionTrack-method}
 \alias{show,ReferenceGeneRegionTrack-method}
-\alias{length,ReferenceGeneRegionTrack-method}
 \alias{symbol,GeneRegionTrack-method}
 \alias{symbol<-,GeneRegionTrack,character-method}
 \alias{symbol}
