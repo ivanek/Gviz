@@ -21,7 +21,7 @@ importClassesFrom(methods, ANY, character, className, data.frame, environment,
                   integer, list, logical, matrix, missing, "NULL", ".NULL",
                   numeric, ObjectsWithPackage, ordered, signature, namedList,
                   listOfMethods, ".environment", sourceEnvironment, envRefClass,
-                  refObjectGenerator)
+                  refObjectGenerator, refGeneratorSlot, localRefClass)
 
 importClassesFrom(rtracklayer, UCSCData)
 
@@ -44,7 +44,7 @@ importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-", mcols,
 importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   "colnames<-", coverage, diff, disjointBins, end, "end<-", range,
                   findOverlaps, findRun, gsub, ifelse, "%in%", levels, match,
-                  mean, ncol, nlevels, nrow, queryHits, ranges, "ranges<-", reduce, rev,
+                  mean, ncol, nrow, queryHits, ranges, "ranges<-", reduce, rev,
                   Rle, rownames, "rownames<-", runmean, runValue, "runValue<-",
                   score, sort, split, start, "start<-", sub, subjectHits,
                   substring, t, tolower, unlist, values, "values<-", which,
