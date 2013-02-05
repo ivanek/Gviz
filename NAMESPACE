@@ -46,7 +46,7 @@ importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   score, sort, split, start, "start<-", sub, subjectHits,
                   substring, t, tolower, unlist, values, "values<-", which,
                   which.max, width, "width<-", elementMetadata, endoapply,
-                  elementLengths)
+                  elementLengths, overlapsAny)
 
 
 importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,

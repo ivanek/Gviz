@@ -992,7 +992,7 @@ setMethod("subset", signature(x="ReferenceDataTrack"), function(x, from, to, chr
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- Gviz::chromosome(x)
     subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
-    if(length(ranges(x))==0 || !all(ranges(x) %in% subRegion)){
+    if(length(ranges(x))==0 || !all(overlapsAny(ranges(x),subRegion))){
         vals <- x@stream(x@reference, subRegion)
         x@range <- vals
         mcols(x@range) <- NULL
@@ -1046,7 +1046,7 @@ setMethod("subset", signature(x="ReferenceAnnotationTrack"), function(x, from, t
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- Gviz::chromosome(x)
     subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
-    if(length(ranges(x))==0 || all(ranges(x) %in% subRegion)){
+    if(length(ranges(x))==0 || all(overlapsAny(ranges(x),subRegion))){
         cMap <- .resolveColMapping(x@stream(x@reference, subRegion), x@args, x@mapping)
         x@range <- .buildRange(cMap$data, args=cMap$args, defaults=x@defaults, trackType="AnnotationTrack")
         chromosome(x) <- chromosome[1]
@@ -1110,7 +1110,7 @@ setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=N
 setMethod("drawAxis", signature(GdObject="GdObject"), function(GdObject, ...) return(NULL))
 setMethod("drawAxis", signature(GdObject="DataTrack"), function(GdObject, ...) {
     type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                                                            "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
+                                                            "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
                       several.ok=TRUE)
     if(as.logical(.dpOrDefault(GdObject, "legend", FALSE)) && !is.null(getPar(GdObject, ".__groupLevels"))){
          pushViewport(viewport(y=1, height=unit(1, "npc") - unit(getPar(GdObject, ".__verticalSpace"), "inches"),
@@ -1885,7 +1885,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     imageMap(GdObject) <- NULL
     type <- .dpOrDefault(GdObject, "type", "p")
     type <- match.arg(type, c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                              "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
+                              "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
                       several.ok=TRUE)
     ## Grouping may be useful for some of the plot types, may be ignored for others
     vals <- values(GdObject)
@@ -2088,6 +2088,20 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         lty.mountain <- .dpOrDefault(GdObject, "lty.mountain", pcols$lty)[1]
         .panel.mountain(x, y, col=col.mountain, fill=fill.mountain, span=span, degree=degree, family=family,
                         evaluation=evaluation, lwd=lwd.mountain, lty=lty.mountain, col.line=col.mountain, alpha=alpha,
+                        baseline=mbaseline)
+        if(!is.na(mbaseline))
+            panel.abline(h=mbaseline, col=col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
+    }
+    ## The special type 'polygon' has to be handled separately
+    if("polygon" %in% type) {
+        mbaseline <- if(is.null(baseline)) 0 else baseline[1]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
+        col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
+        lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
+        lty.mountain <- .dpOrDefault(GdObject, "lty.mountain", pcols$lty)[1]
+        .panel.polygon(x, y, col=col.mountain, fill=fill.mountain, lwd=lwd.mountain,
+                        lty=lty.mountain, col.line=col.mountain, alpha=alpha,
                         baseline=mbaseline)
         if(!is.na(mbaseline))
             panel.abline(h=mbaseline, col=col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)

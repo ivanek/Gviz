@@ -1161,7 +1161,7 @@ GenomeAxisTrack <- function(range=NULL, name="Axis", id, ...)
 ##       parameters controlling the boxplot appearance
 ##    o size: the relative size of the track
 ##    o type: the plot type, one or several in c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-##       "histogram", "mountain", "h", "boxplot", "gradient", "heatmap")
+##       "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon")
 ##    o cex: the default pixel size
 ##    o ncolor, gradient: the number of colors and the base colors for the gradient type
 ##    o collpase: collapse overlapping ranges

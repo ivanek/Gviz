@@ -108,7 +108,7 @@
     }
     if(is(x, "DataTrack") && is.null(displayPars(x, "size"))){
         type <- match.arg(.dpOrDefault(x, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
+                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
                           several.ok=TRUE)
         size <- if(length(type)==1L){ if(type=="gradient") 1 else if(type=="heatmap") nrow(values(x)) else 5} else 5
         return(size)
@@ -163,7 +163,7 @@
         objects <- list(objects)
     atrack <- sapply(objects, function(x){
         type <- match.arg(.dpOrDefault(x, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                                                         "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
+                                                         "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
                           several.ok=TRUE)
         is(x, "NumericTrack") && !(length(type)==1L && (type=="gradient" || type=="heatmap")) || 
 				(is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
@@ -513,6 +513,66 @@
                default.units="native", ...)
 }
 
+## A lattice-style panel function to draw polygons (like coverage)
+## Arguments:
+##    o x, y: the x and y coordinates form the plot
+##    o lwd, lty, col: color, with and type of the plot lines
+##    o fill: fill colors for areas above and under the baseline, a vector of length two
+##    o col.line: color of the baseline
+##    o baseline: the y value of the horizontal baseline
+##    o alpha: the transparancy
+## Value: the function is called for its side-effect of drawing on the graphics device
+.panel.polygon <- function (x, y, lwd=plot.line$lwd, lty=plot.line$lty, col,
+                            col.line=plot.line$col, baseline, fill, alpha=1, ...) 
+{
+  x <- as.numeric(x)
+  y <- as.numeric(y)
+  fill <- rep(fill,2)
+  ok <- is.finite(x) & is.finite(y)
+  if (sum(ok) < 1) 
+    return()
+  if (!missing(col)) {
+    if (missing(col.line)) 
+      col.line <- col
+  }
+  x <- x[ok]
+  y <- y[ok]
+  plot.line <- trellis.par.get("plot.line")
+  changePoint = NULL
+  tmp <- as.integer(y<baseline)
+  for(i in seq_along(tmp))
+    if(i>1 && tmp[i]!= tmp[i-1])
+      changePoint = c(changePoint, i)
+  m <- (y[changePoint] - y[changePoint-1]) / (x[changePoint] - x[changePoint-1])
+  xCross <- ((baseline-y[changePoint-1])/m) + x[changePoint-1]
+  newX <- newY <- NULL
+  j <- 1
+  x <- c(x, tail(x,1))
+  y <- c(y, baseline)
+  xvals <- x[1]
+  yvals <- baseline
+  for(i in seq_along(x)) {
+    if(i==length(x)) {
+      xvals <- c(xvals, x[i])
+      yvals <- c(yvals, baseline)
+      fcol <- if(mean(yvals)<baseline) fill[1] else fill[2]
+      panel.polygon(xvals, yvals, fill=fcol, col=fcol, border=fcol, alpha=alpha)
+    } else if(i %in% changePoint) {
+      xvals <- c(xvals, xCross[j])
+      yvals <- c(yvals, baseline)
+      fcol <- if(mean(yvals)<baseline) fill[1] else fill[2]
+      panel.polygon(xvals, yvals, fill=fcol, col=fcol, border=fcol, alpha=alpha)
+      xvals <- c(xCross[j], x[i])
+      yvals <- c(baseline, y[i])
+      j <- j+1
+    } else {
+      xvals <- c(xvals, x[i])
+      yvals <- c(yvals, y[i])
+    }
+  }
+  grid.lines(x=x, y=y, gp=gpar(col=col.line, lty=lty, lwd=lwd, alpha=alpha),
+               default.units="native", ...)
+}
 
 
 ## A lattice-style panel function to draw box and whisker plots with groups
