@@ -1,10 +1,10 @@
 ## Check the class and structure of an object
 .checkClass <- function (x, class, length = NULL, verbose = FALSE, mandatory = TRUE){
-    if (mandatory && missing(x)) 
-        stop("Argument '", substitute(x), "' is missing with no default", 
+    if (mandatory && missing(x))
+        stop("Argument '", substitute(x), "' is missing with no default",
              call. = verbose)
-    msg <- paste("'", substitute(x), "' must be an object of class ", 
-        paste("'", class, "'", sep = "", collapse = " or "), 
+    msg <- paste("'", substitute(x), "' must be an object of class ",
+        paste("'", class, "'", sep = "", collapse = " or "),
         sep = "")
     fail <- !any(sapply(class, function(c, y) is(y, c), x))
     if (!is.null(length) && length(x) != length) {
@@ -13,20 +13,20 @@
             msg <- paste(msg, "of length", length)
         }
     }
-    if (fail) 
+    if (fail)
         stop(msg, call. = verbose)
     else invisible(NULL)
 }
 
 
 
-## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified 
+## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified
 ## chromosome name as understood by UCSC. Accepted inputs are:
 ##    - a single integer or a character coercable to one
 ##    - a character, starting with 'chr' (case insensitive)
 ## Arguments:
 ##    o x: a character string to be converted to a valid UCSC chromosome name
-## Value: the UCSC character name 
+## Value: the UCSC character name
 .chrName <- function(x)
 {
     if(!getOption("ucscChromosomeNames"))
@@ -85,7 +85,7 @@
     fw <- diff(xscale)
     fh <- diff(yscale)
     u2px <- function(x) ((x - xscale[1])/fw *size[1]) + loc$location[1]
-    u2py <- function(y) (devSize[2] - loc$location[2]) - ((y - yscale[1])/fh *size[2]) 
+    u2py <- function(y) (devSize[2] - loc$location[2]) - ((y - yscale[1])/fh *size[2])
     return(data.frame(x1=u2px(coordinates[,1]), y1=u2py(coordinates[,4]),
                       x2=u2px(coordinates[,3]), y2=u2py(coordinates[,2]),
                       stringsAsFactors=FALSE))
@@ -140,7 +140,7 @@
 ##    o default: a default value for the parameter if it can't be found in GdObject
 ## Value: the value of the displayPar
 .dpOrDefault <- function(GdObject, par, default=NULL, fromPrototype=FALSE)
-{    
+{
     val <- getPar(GdObject, par)
     if(is.null(val)) {
        if (fromPrototype) {
@@ -165,7 +165,7 @@
         type <- match.arg(.dpOrDefault(x, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
                           several.ok=TRUE)
-        is(x, "NumericTrack") && !(length(type)==1L && (type=="gradient" || type=="heatmap")) || 
+        is(x, "NumericTrack") && !(length(type)==1L && (type=="gradient" || type=="heatmap")) ||
 				(is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
     return(atrack & sapply(objects, .dpOrDefault, "showAxis", TRUE))
 }
@@ -234,17 +234,17 @@
                 if(!is(GdObject, "NumericTrack") && !is(GdObject, "AlignedReadTrack"))
                     return(NULL)
                 yvals <- if(is(GdObject, "AlignedReadTrack")) runValue(coverage(GdObject, strand="*")) else values(GdObject)
-                ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals)) 
+                ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals))
                                      range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
                 if(diff(ylim)==0)
-                    ylim <- ylim+c(-1,1) 
+                    ylim <- ylim+c(-1,1)
                 yscale <- extendrange(r=ylim, f=0.05)
                 at <- pretty(yscale)
                 at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
                 max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
             }))
             hAxSpaceNeeded <- (max(axTicks))/wfac
-            title.width <- title.width +  hAxSpaceNeeded 
+            title.width <- title.width +  hAxSpaceNeeded
         }
     } else {
         title.width <- nwrap <- cex <- NA
@@ -256,7 +256,7 @@
 
 
 
-## This coerces likely inputs for the genomic strand  to a unified 
+## This coerces likely inputs for the genomic strand  to a unified
 ## strand name. Accepted inputs are:
 ##    o a single integer, where values <=0 indicate the plus strand, and values >=1 indicate the minus strand
 ##    o a character, either "+" or "-"
@@ -270,16 +270,16 @@
         x <- min(c(1,max(c(0, as.integer(x)))))
       } else if(is.character(x)) {
         x <- match(x, c("+", "-"))-1
-        if(any(is.na(x))) 
-          stop("The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)") 
+        if(any(is.na(x)))
+          stop("The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)")
       }
     } else {
       if(is.numeric(x)) {
         x <- min(c(2,max(c(0, as.integer(x)))))
       } else if(is.character(x)) {
         x <- min(c(2, match(x, c("+", "-", "+-", "-+", "*"))-1))
-        if(any(is.na(x))) 
-          stop("The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)") 
+        if(any(is.na(x)))
+          stop("The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)")
       }
     }
     x
@@ -422,7 +422,7 @@
 ## Value: a color character
 .getBiotypeColor <- function(GdObject) {
     defCol <- .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL)
-    col <- sapply(as.character(values(GdObject)[, "feature"]), 
+    col <- sapply(as.character(values(GdObject)[, "feature"]),
                   function(x) .dpOrDefault(GdObject, x)[1], simplify=FALSE)
     needsDef <- sapply(col, is.null)
     col[needsDef] <- rep(defCol, sum(needsDef))[1:sum(needsDef)]
@@ -460,20 +460,20 @@
 ## Value: the function is called for its side-effect of drawing on the graphics device
 .panel.mountain <- function (x, y, span=2/3, degree=1, family=c("symmetric", "gaussian"), evaluation=50,
                              lwd=plot.line$lwd, lty=plot.line$lty, col, col.line=plot.line$col,
-                             baseline, fill, alpha=1, ...) 
+                             baseline, fill, alpha=1, ...)
 {
   x <- as.numeric(x)
   y <- as.numeric(y)
   fill <- rep(fill,2)
   ok <- is.finite(x) & is.finite(y)
-  if (sum(ok) < 1) 
+  if (sum(ok) < 1)
     return()
   if (!missing(col)) {
-    if (missing(col.line)) 
+    if (missing(col.line))
       col.line <- col
   }
   plot.line <- trellis.par.get("plot.line")
-  smooth <- loess.smooth(x[ok], y[ok], span = span, family = family, 
+  smooth <- loess.smooth(x[ok], y[ok], span = span, family = family,
                          degree = degree, evaluation = evaluation)
   tmp <- as.integer(smooth$y<baseline)
   changePoint = NULL
@@ -523,16 +523,16 @@
 ##    o alpha: the transparancy
 ## Value: the function is called for its side-effect of drawing on the graphics device
 .panel.polygon <- function (x, y, lwd=plot.line$lwd, lty=plot.line$lty, col,
-                            col.line=plot.line$col, baseline, fill, alpha=1, ...) 
+                            col.line=plot.line$col, baseline, fill, alpha=1, ...)
 {
   x <- as.numeric(x)
   y <- as.numeric(y)
   fill <- rep(fill,2)
   ok <- is.finite(x) & is.finite(y)
-  if (sum(ok) < 1) 
+  if (sum(ok) < 1)
     return()
   if (!missing(col)) {
-    if (missing(col.line)) 
+    if (missing(col.line))
       col.line <- col
   }
   x <- x[ok]
@@ -579,20 +579,20 @@
 ## Arguments: see ? panel.bwplot for details
 ## Value: the function is called for its side-effect of drawing on the graphics device
 .panel.bwplot <- function (x, y, box.ratio=1, box.width=box.ratio/(1+box.ratio), lwd, lty, fontsize,
-                           pch, col, alpha, cex, font, fontfamily, fontface, fill, varwidth=FALSE, notch=FALSE, 
-                           notch.frac = 0.5, ..., levels.fos=sort(unique(x)), 
-                           stats=boxplot.stats, coef=1.5, do.out=TRUE) 
+                           pch, col, alpha, cex, font, fontfamily, fontface, fill, varwidth=FALSE, notch=FALSE,
+                           notch.frac = 0.5, ..., levels.fos=sort(unique(x)),
+                           stats=boxplot.stats, coef=1.5, do.out=TRUE)
 {
-  if (all(is.na(x) | is.na(y))) 
+  if (all(is.na(x) | is.na(y)))
     return()
   x <- as.numeric(x)
   y <- as.numeric(y)
   cur.limits <- current.panel.limits()
   xscale <- cur.limits$xlim
   yscale <- cur.limits$ylim
-  if (!notch) 
+  if (!notch)
     notch.frac <- 0
-  blist <- tapply(y, factor(x, levels = levels.fos), stats, 
+  blist <- tapply(y, factor(x, levels = levels.fos), stats,
                   coef = coef, do.out = do.out)
   blist.stats <- t(sapply(blist, "[[", "stats"))
   blist.out <- lapply(blist, "[[", "out")
@@ -602,16 +602,16 @@
     blist.n <- sapply(blist, "[[", "n")
     blist.height <- sqrt(blist.n/maxn) * blist.height
   }
-  blist.conf <- if (notch) 
+  blist.conf <- if (notch)
     sapply(blist, "[[", "conf")
   else t(blist.stats[, c(2, 4), drop = FALSE])
   ybnd <- cbind(blist.stats[, 3], blist.conf[2, ], blist.stats[, 4], blist.stats[, 4], blist.conf[2, ],
                 blist.stats[,3], blist.conf[1, ], blist.stats[, 2], blist.stats[, 2], blist.conf[1, ], blist.stats[, 3])
   xleft <- levels.fos - blist.height/2
   xright <- levels.fos + blist.height/2
-  xbnd <- cbind(xleft + notch.frac * blist.height/2, xleft, 
-                xleft, xright, xright, xright - notch.frac * blist.height/2, 
-                xright, xright, xleft, xleft, xleft + notch.frac * 
+  xbnd <- cbind(xleft + notch.frac * blist.height/2, xleft,
+                xleft, xright, xright, xright - notch.frac * blist.height/2,
+                xright, xright, xleft, xleft, xleft + notch.frac *
                 blist.height/2)
   xs <- matrix(NA_real_, nrow = nrow(xbnd) * 2, ncol = ncol(xbnd))
   ys <- matrix(NA_real_, nrow = nrow(xbnd) * 2, ncol = ncol(xbnd))
@@ -619,29 +619,29 @@
   ys[seq(along.with = levels.fos, by = 2), ] <- ybnd[seq(along.with = levels.fos),]
   panel.polygon(t(xs), t(ys), lwd=lwd, lty=lty, col = fill, alpha=alpha, border=col)
   panel.segments(rep(levels.fos, 2), c(blist.stats[, 2], blist.stats[, 4]), rep(levels.fos, 2),
-                 c(blist.stats[,1], blist.stats[, 5]), col=col, alpha=alpha, 
+                 c(blist.stats[,1], blist.stats[, 5]), col=col, alpha=alpha,
                  lwd=lwd, lty=lty)
-  panel.segments(levels.fos - blist.height/2, c(blist.stats[, 1], blist.stats[, 5]), levels.fos + blist.height/2, 
+  panel.segments(levels.fos - blist.height/2, c(blist.stats[, 1], blist.stats[, 5]), levels.fos + blist.height/2,
                  c(blist.stats[, 1], blist.stats[, 5]), col=col, alpha=alpha, lwd=lwd, lty=lty)
   if (all(pch == "|")) {
-    mult <- if (notch) 
+    mult <- if (notch)
       1 - notch.frac
     else 1
-    panel.segments(levels.fos - mult * blist.height/2, 
-                   blist.stats[, 3], levels.fos + mult * blist.height/2, 
-                   blist.stats[, 3], lwd=lwd, lty=lty, 
+    panel.segments(levels.fos - mult * blist.height/2,
+                   blist.stats[, 3], levels.fos + mult * blist.height/2,
+                   blist.stats[, 3], lwd=lwd, lty=lty,
                    col=col, alpha = alpha)
   }
   else {
-    panel.points(x = levels.fos, y = blist.stats[, 3], 
-                 pch = pch, col = col, alpha = alpha, cex = cex, 
-                 fontfamily = fontfamily, fontface = lattice:::chooseFace(fontface, 
+    panel.points(x = levels.fos, y = blist.stats[, 3],
+                 pch = pch, col = col, alpha = alpha, cex = cex,
+                 fontfamily = fontfamily, fontface = lattice:::chooseFace(fontface,
                                             font), fontsize = fontsize)
   }
-  panel.points(x = rep(levels.fos, sapply(blist.out, length)), 
-               y = unlist(blist.out), pch=pch, col=col, 
-               alpha=alpha, cex=cex, 
-               fontfamily=fontfamily, fontface = lattice:::chooseFace(fontface, 
+  panel.points(x = rep(levels.fos, sapply(blist.out, length)),
+               y = unlist(blist.out), pch=pch, col=col,
+               alpha=alpha, cex=cex,
+               fontfamily=fontfamily, fontface = lattice:::chooseFace(fontface,
                                         font), fontsize = fontsize)
 }
 
@@ -759,7 +759,7 @@
                               gp=gpar(cex=cex, fontfamily=fontfamily, fonface=fontface, fontsize=fontsize)))
     space <- (as.numeric(convertWidth(stringWidth(txt),"native"))*1.3)
     popViewport(1)
-    ## newFrom <- min(start(GdObject)[sel]-space*1.6) 
+    ## newFrom <- min(start(GdObject)[sel]-space*1.6)
     return(newFrom)
 }
 
@@ -777,7 +777,7 @@
     tto <- lapply(GdObject, function(x){tmp <- end(x); if(is(x, "RangeTrack")) tmp <- tmp[seqnames(x)==chromosome(x)]; tmp})
     tto <- if(is.null(unlist(tto))) Inf else max(sapply(tto[listLen(tto)>0], max))
     if((is.null(from) || is.null(to)) && ((is.infinite(tfrom) || is.infinite(tto)) || is(GdObject, "GenomeAxisTrack")))
-        stop("Unable to determine plotting ranges from the supplied track(s)")  
+        stop("Unable to determine plotting ranges from the supplied track(s)")
     range <- extendrange(r=c(tfrom, tto), f=factor)
     range[1] <- max(1, range[1])
     wasNull <- FALSE
@@ -840,7 +840,7 @@
     lwd.grid <- .dpOrDefault(GdObject, "lwd.grid", 1)
     return(list(col=col, col.line=col.line, col.symbol=col.symbol, col.baseline=col.baseline,
                 col.grid=col.grid, col.histogram=col.histogram, fill=fill, fill.histogram=fill.histogram,
-                lwd=lwd, lty=lty, pch=pch, cex=cex, lwd.grid=lwd.grid, lty.grid=lty.grid))     
+                lwd=lwd, lty=lty, pch=pch, cex=cex, lwd.grid=lwd.grid, lty.grid=lty.grid))
 }
 
 
@@ -955,7 +955,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             pushViewport(vpTitle)
             grid.rect(gp=gpar(fill=fill, col="white"))
             needAxis <- .needsAxis(trackList[[i]])
-            drawAxis(trackList[[i]], ranges["from"], ranges["to"], subset=FALSE) 
+            drawAxis(trackList[[i]], ranges["from"], ranges["to"], subset=FALSE)
             tit <- spaceSetup$nwrap[i]
             titleCoords <- rbind(titleCoords, cbind(.getImageMap(cbind(0,0,1,1)),
                                                     title=names(trackList[[i]])))
@@ -993,7 +993,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             grid.rect(gp=gpar(col=.dpOrDefault(trackList[[i]], "col.frame", Gviz:::.DEFAULT_SHADED_COL)))
         popViewport(1)
     }
- 
+
     popViewport(if(panel.only) 1 else 2)
     tc <- as.character(titleCoords[,5])
     tc[which(tc == "" | is.na(tc) | is.null(tc))] = "NA"
@@ -1057,7 +1057,7 @@ exportTracks <- function(tracks, range, chromosome, file)
 }
 
 ## This funcion is broken in the rtracklayer package
-.expBed <- function (object, con, variant = c("base", "bedGraph", "bed15"), color, append) 
+.expBed <- function (object, con, variant = c("base", "bedGraph", "bed15"), color, append)
 {
     variant <- match.arg(variant)
     name <- strand <- thickStart <- thickEnd <- color <- NULL
@@ -1065,40 +1065,40 @@ exportTracks <- function(tracks, range, chromosome, file)
     df <- data.frame(chrom(object), start(object) - 1, end(object))
     score <- score(object)
     if (!is.null(score)) {
-        if (!is.numeric(score) || any(is.na(score))) 
+        if (!is.numeric(score) || any(is.na(score)))
             stop("Scores must be non-NA numeric values")
     }
     if (variant == "bedGraph") {
-        if (is.null(score)) 
+        if (is.null(score))
             score <- 0
         df$score <- score
     }
     else {
         blockSizes <- object$blockSizes
             blockStarts <- object$blockStarts
-        if (variant == "bed15" && is.null(blockSizes)) 
+        if (variant == "bed15" && is.null(blockSizes))
             blockStarts <- blockSizes <- ""
         if (!is.null(blockSizes) || !is.null(blockStarts)) {
-            if (is.null(blockSizes)) 
+            if (is.null(blockSizes))
                 stop("'blockStarts' specified without 'blockSizes'")
-            if (is.null(blockStarts)) 
+            if (is.null(blockStarts))
                 stop("'blockSizes' specified without 'blockStarts'")
             lastBlock <- function(x) sub(".*,", "", x)
             lastSize <- lastBlock(blockSizes)
             lastStart <- lastBlock(blockStarts)
-            if (any(df[[2]] + as.integer(lastSize) + as.integer(lastStart) != df[[3]]) || 
-                any(sub(",.*", "", blockStarts) != 0)) 
+            if (any(df[[2]] + as.integer(lastSize) + as.integer(lastStart) != df[[3]]) ||
+                any(sub(",.*", "", blockStarts) != 0))
                 stop("blocks must span entire feature")
             blockCount <- sapply(strsplit(blockSizes, ","), length)
         }
-        if (is.null(color)) 
+        if (is.null(color))
             color <- object$itemRgb
-        if (is.null(color) && !is.null(blockCount)) 
+        if (is.null(color) && !is.null(blockCount))
             color <- "0"
         else if (!is.null(color)) {
             nacol <- is.na(color)
             colmat <- col2rgb(color)
-            color <- paste(colmat[1, ], colmat[2, ], colmat[3, 
+            color <- paste(colmat[1, ], colmat[2, ], colmat[3,
                                                             ], sep = ",")
             color[nacol] <- "0"
         }
@@ -1112,12 +1112,12 @@ exportTracks <- function(tracks, range, chromosome, file)
         if (!is.null(thickStart) && is.null(strand)) {
             strand <- rep(NA, nrow(object))
         }
-        if (!is.null(strand) && is.null(score)) 
+        if (!is.null(strand) && is.null(score))
             score <- 0
         name <- object$name
-        if (is.null(name)) 
+        if (is.null(name))
             name <- rownames(object)
-        if (!is.null(score) && is.null(name)) 
+        if (!is.null(score) && is.null(name))
             name <- rep(NA, nrow(object))
         df$name <- name
         df$score <- score
@@ -1137,7 +1137,7 @@ exportTracks <- function(tracks, range, chromosome, file)
     scipen <- getOption("scipen")
     options(scipen = 100)
     on.exit(options(scipen = scipen))
-    write.table(df, con, sep = "\t", col.names = FALSE, row.names = FALSE, 
+    write.table(df, con, sep = "\t", col.names = FALSE, row.names = FALSE,
                 quote = FALSE, na = ".", append = append)
 }
 
@@ -1491,8 +1491,8 @@ availableDisplayPars <- function(class)
         return(tmp)
     }
 }
-    
-    
+
+
 
 ## A mapping of (lower-cased) file extensions to import function calls. Most of those are already implemented in the rtracklayer package.
 ## If no mapping is found an error will be raised suggesting to provide a user-defined import function.
@@ -1514,7 +1514,7 @@ availableDisplayPars <- function(class)
                   stop(sprintf("No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
                                fileExt))))
 }
-                   
+
 
 ## Get the file extension for a file, taking into account potential gzipping
 .fileExtension <- function(file){
@@ -1552,7 +1552,7 @@ availableDefaultMapping <- function(file, trackType){
                         GeneRegionTrack=list(feature="type",
                                              transcript="group")),
                gff2=list(AnnotationTrack=list(feature="type",
-                                              group=c("group", "Parent"), 
+                                              group=c("group", "Parent"),
                                               id=c("ID", "Name", "Alias")),
                         GeneRegionTrack=list(feature="type",
                                              gene=c("gene_id", "gene_name"),
