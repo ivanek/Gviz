@@ -1132,7 +1132,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{}{\code{baseline=NULL}: Numeric scalar. Y-axis position of
       an optional baseline. This parameter has a special meaning for
-      mountain-type plots, see the 'Details' section in
+      mountain-type and polygon-type plots, see the 'Details' section in
       \code{\linkS4class{DataTrack}} for more information.} 
 
     \item{}{\code{box.ratio=1}: Numeric scalar. Parameter controlling
@@ -1154,7 +1154,8 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       color in histogram-type plots.} 
 
     \item{}{\code{col.mountain=NULL}: Character scalar. Line color in
-      mountain-type plots, defaults to the setting of \code{col}.} 
+      mountain-type and polygon-type plots, defaults to the setting of
+      \code{col}.}  
 
     \item{}{\code{collapse=FALSE}: Logical scalar. Collapse overlapping
       ranges and aggregate the underlying data.} 
@@ -1183,7 +1184,8 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{fill}.} 
 
     \item{}{\code{fill.mountain=c("#CCFFFF", "#FFCCFF")}: Character
-      vector of length 2. Fill color in mountain-type plots.} 
+      vector of length 2. Fill color in mountain-type and polygon-type
+      plots.}
 
     \item{}{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
       "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")}: Character
@@ -1209,13 +1211,15 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{lty}.} 
 
     \item{}{\code{lty.mountain=NULL}: Character or numeric scalar. Line
-      type in mountain-type plots, defaults to the setting of \code{lty}.} 
+      type in mountain-type and polygon-type plots, defaults to the
+      setting of \code{lty}.} 
 
     \item{}{\code{lwd.baseline=NULL}: Numeric scalar. Line width of
       the optional baseline, defaults to the setting of \code{lwd}.} 
 
     \item{}{\code{lwd.mountain=NULL}: Numeric scalar. Line width in
-      mountain-type plots, defaults to the setting of \code{lwd}.} 
+      mountain-type and polygon-type plots, defaults to the setting of
+      \code{lwd}.} 
 
     \item{}{\code{min.distance=0}: Numeric scalar. The mimimum distance
       in pixel below which to collapse ranges.} 
@@ -1263,9 +1267,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{}{\code{type="p"}: Character vector. The plot type, one or
       several in \code{c("p","l", "b", "a", "s", "g", "r", "S", "smooth",
-      "histogram", "mountain", "h", "boxplot", "gradient", "heatmap")}.
-      See 'Details' section in \code{\linkS4class{DataTrack}} for more
-      information on the individual plotting types.} 
+      "histogram", "mountain", "polygon", "h", "boxplot", "gradient",
+      "heatmap")}. See 'Details' section in
+      \code{\linkS4class{DataTrack}} for more information on the
+      individual plotting types.}
 
     \item{}{\code{varwidth=FALSE}: Logical scalar. Parameter controlling
       the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
@@ -1479,6 +1484,13 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{\link{panel.loess}} for details. The layout of the plot can
       be further customized via the following display parameters:
       \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
+
+    \item{}{\code{polygon}: plot data as a polygon (similar to
+      \code{mountain}-type but without smoothing). Data are plotted relative
+      to a baseline, as defined by the \code{baseline} display
+      parameter. The layout of the plot can be further customized via
+      the following display parameters: \code{col.mountain,
+      lwd.mountain, lty.mountain, fill.mountain}.}
 
 
     \item{}{\code{boxplot}: plot the data as box-and-whisker

@@ -2271,7 +2271,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                  jitter.x=.dpOrDefault(GdObject, "jitter.x", FALSE), jitter.y=.dpOrDefault(GdObject, "jitter.y", FALSE),
                  factor=.dpOrDefault(GdObject, "factor", 0.5), amount=.dpOrDefault(GdObject, "amount"),
                  subscripts=seq_along(x), alpha=alpha)
-    if(!"mountain" %in% type && !is.null(baseline) && !is.na(baseline))
+    if(!any(c("mountain","polygon") %in% type) && !is.null(baseline) && !is.na(baseline))
         panel.abline(h=baseline, col=pcols$col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
     popViewport(1)
     return(invisible(GdObject))

@@ -669,10 +669,11 @@ control the track's look and feel. The most important one is the
 takes one or several of the following values:
 
 <<<types, echo=FALSE, results=tex>>=
-types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "smooth", "histogram", "mountain", "boxplot", "gradient", "heatmap"),
+types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "smooth", "histogram", "mountain", "polygon", "boxplot", "gradient", "heatmap"),
                     Type=c("dot plot", "lines plot", "dot and lines plot", "lines plot of average (i.e., mean) values", "stair steps (horizontal first)",
                            "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "add loess curve", 
-                           "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline", "box and whisker plot",
+                           "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline", 
+                           "'polygon-type' plot relative to a baseline", "box and whisker plot",
                            "false color image of the summarized values", "false color image of the individual values"))
 print(xtable(types, align="lrp{5in}"), sanitize.text.function=function(x) x, include.rownames=FALSE,
           floating=FALSE, tabular.environment="longtable")
@@ -726,14 +727,14 @@ For the dot plot representation the individual group levels are
 indicated by color coding. For the \Rfunarg{a} type, the averages are
 now computed for each group separately and also indicated by two lines
 with similar color coding. Grouping is not supported for all plotting
-types, for example the \Rfunarg{mountain} type already uses color
-coding to convey a different message and for the \Rfunarg{gradient}
-type the data are already collapsed to a single variable. The
-following gives an overview over some of the other groupable
-\Rclass{DataTrack} types. Please note that there are many more display
-parameters that control the layout of both grouped and of ungrouped
-\Rclass{DataTracks}. You may want to check the class' help page for
-details.
+types, for example the \Rfunarg{mountain} and \Rfunarg{polygon} type
+already use color coding to convey a different message and for the
+\Rfunarg{gradient} type the data are already collapsed to a single
+variable. The following gives an overview over some of the other
+groupable \Rclass{DataTrack} types. Please note that there are many
+more display parameters that control the layout of both grouped and of
+ungrouped \Rclass{DataTracks}. You may want to check the class' help
+page for details.
 
 <<typeGroupedPlots, fig=TRUE, width=7.5, height=4.9, echo=FALSE, results=hide>>=
 pushViewport(viewport(layout=grid.layout(nrow=7, ncol=1)))
