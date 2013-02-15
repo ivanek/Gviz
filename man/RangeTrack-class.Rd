@@ -42,6 +42,7 @@
 \alias{width<-,RangeTrack-method}
 \alias{min,RangeTrack-method}
 \alias{max,RangeTrack-method}
+\alias{consolidateTrack,RangeTrack-method}
 
 \title{RangeTrack class and methods}
 

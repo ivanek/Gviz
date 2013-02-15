@@ -241,7 +241,7 @@
                 at <- pretty(yscale)
                 at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
                 atSpace <- max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
-                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
+                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth", "polygon",
                                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
                                   several.ok=TRUE)
                 if(any(c("heatmap", "gradient") %in% type)){

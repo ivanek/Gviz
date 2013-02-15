@@ -33,6 +33,8 @@
 \alias{tags}
 \alias{imageMap,GdObject-method}
 \alias{imageMap}
+\alias{consolidateTrack}
+\alias{consolidateTrack,GdObject-method}
 
 \title{GdObject class and methods}
 

@@ -21,6 +21,7 @@
 \alias{subseq,SequenceTrack-method}
 \alias{coerce,DNAString,Rle-method}
 \alias{width,SequenceTrack-method}
+\alias{consolidateTrack,SequenceTrack-method}
 
 
 \title{SequenceTrack class and methods}

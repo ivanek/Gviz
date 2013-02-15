@@ -14,6 +14,7 @@
 \alias{stacks}
 \alias{subset,StackedTrack-method}
 \alias{[,StackedTrack,ANY,ANY-method}
+\alias{consolidateTrack,StackedTrack-method}
 
 \title{StackedTrack class and methods}
 

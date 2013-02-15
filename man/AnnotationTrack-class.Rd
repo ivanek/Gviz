@@ -27,6 +27,7 @@
 \alias{subset,ReferenceAnnotationTrack-method}
 \alias{coerce,GRanges,AnnotationTrack-method}
 \alias{coerce,GRangesList,AnnotationTrack-method}
+\alias{consolidateTrack,AnnotationTrack-method}
 
 \title{AnnotationTrack class and methods}
 
