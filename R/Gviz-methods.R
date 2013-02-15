@@ -2905,7 +2905,7 @@ setMethod(".buildRange", signature("GRanges"),
                   args$chromosome <- NULL
                   range <- renameSeqlevels(range, setNames(.chrName(seqlevels(range)), seqlevels(range)))
                   missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!sapply(args, is.null)))), "genome")
-                  newVars <- .fillWithDefaults(DataFrame(chromosome=as.character(seqnames(range)), strand=as.character(strand(range)), mcols(range)),
+                  newVars <- .fillWithDefaults(DataFrame(chromosome=as.character(seqnames(range)), strand=as.character(strand(range)), mcols(range), check.names=FALSE),
                                                defaults[missing], args[missing], len=length(range))
                   if(any(c("start", "end", "strand", "chromosome") %in% colnames(newVars))){
                       gen <- genome(range)
