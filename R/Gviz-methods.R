@@ -1108,27 +1108,31 @@ setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=N
 ## For certain GdObject subclasses we may want to draw a y-axis. For others an axis is meaningless, and the default function
 ## will return NULL without plotting anything.
 setMethod("drawAxis", signature(GdObject="GdObject"), function(GdObject, ...) return(NULL))
+
 setMethod("drawAxis", signature(GdObject="DataTrack"), function(GdObject, ...) {
-    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                                                            "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
-                      several.ok=TRUE)
     if(as.logical(.dpOrDefault(GdObject, "legend", FALSE)) && !is.null(getPar(GdObject, ".__groupLevels"))){
-         pushViewport(viewport(y=1, height=unit(1, "npc") - unit(getPar(GdObject, ".__verticalSpace"), "inches"),
+        pushViewport(viewport(y=1, height=unit(1, "npc") - unit(getPar(GdObject, ".__verticalSpace"), "inches"),
                               just=c(0.5, 1)))
-         on.exit(popViewport(1))
+        on.exit(popViewport(1))
     }
-    if(length(type)==1L && (type=="gradient" || type=="heatmap")) return(NULL) else callNextMethod()
+    if(.dpOrDefault(GdObject, "showAxis", TRUE)) {
+	callNextMethod()
+    } else {
+	return(NULL)
+    }
 })
+
 setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, from, to, ...) {
+    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
+                                                             "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
+                      several.ok=TRUE)
     yvals <- values(GdObject)
     ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals)) 
-    	 range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
+                         range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
     if(diff(ylim)==0)
         ylim <- ylim+c(-1,1) 
+    hSpaceAvail <- vpLocation()$isize["width"]/6
     yscale <- extendrange(r=ylim, f=0.05)
-    vpTitleAxis <- viewport(x=0.95, width=0, yscale=yscale, just=0)
-	hSpaceAvail <- vpLocation()$isize["width"]/6
-    pushViewport(vpTitleAxis)
     col <- .dpOrDefault(GdObject, "col.axis", "white")
     acex <- .dpOrDefault(GdObject, "cex.axis", NULL)
     acol <- .dpOrDefault(GdObject, "col.axis", "white")
@@ -1141,10 +1145,35 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         vSpaceAvail <- abs(diff(range(at)))/abs(diff(yscale))*vpLocation()$isize["height"]
         acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
     }
-    suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
-    grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
-    popViewport(1)
+    ## if any of the types are gradient or heatmap we want the gradient scale
+    if(any(type %in% c("gradient", "heatmap"))){
+        ## viewport to hold the color strip
+	vpTitleAxis <- viewport(x=0.75, width=0.15, yscale=yscale, just=0)
+	pushViewport(vpTitleAxis)
+	## create color palette
+	ncolor <- .dpOrDefault(GdObject, "ncolor", 100)
+        palette <- colorRampPalette(.dpOrDefault(GdObject, "gradient", brewer.pal(9, "Blues")))(ncolor)
+	## draw a rectangle for each color
+        if(all(type %in% c("gradient", "heatmap"))){
+            suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
+            grid.rect(y=unit(seq(ylim[1],ylim[2],length.out=ncolor+1),"native")[-(ncolor+1)], x=unit(0, "npc")-unit(1, "points"),
+                      width=unit(1, "npc")+unit(1, "points"), height=1/ncolor, gp=gpar(fill=palette, lty=0), just=c("left","bottom"))
+        }else{
+            grid.rect(y=unit(seq(ylim[1],ylim[2],length.out=ncolor+1),"native")[-(ncolor+1)], x=0,
+                      width=1, height=1/ncolor, gp=gpar(fill=palette, lty=0), just=c("left","bottom"))
+            suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
+            grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
+        }
+	popViewport(1)
+    } else {
+	vpTitleAxis <- viewport(x=0.95, width=0.2, yscale=yscale, just=0)
+	pushViewport(vpTitleAxis)
+	suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
+	grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
+	popViewport(1)
+    }
 })
+
 setMethod("drawAxis", signature(GdObject="AlignedReadTrack"), function(GdObject, from, to, subset=TRUE) {
     detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("coverage", "reads"))
     if(detail!="coverage") return(NULL) else {

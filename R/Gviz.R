@@ -171,7 +171,6 @@
 }
 
 
-
 ## Helper function to set up the text size based on the available space
 ## Arguments:
 ##    o trackList: a list of GdObjects
@@ -241,7 +240,14 @@
                 yscale <- extendrange(r=ylim, f=0.05)
                 at <- pretty(yscale)
                 at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
-                max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
+                atSpace <- max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
+                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
+                                                                         "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
+                                  several.ok=TRUE)
+                if(any(c("heatmap", "gradient") %in% type)){
+                    atSpace <- atSpace + 0.3 * atSpace
+                }
+                atSpace
             }))
             hAxSpaceNeeded <- (max(axTicks))/wfac
             title.width <- title.width +  hAxSpaceNeeded
@@ -704,7 +710,7 @@
             "galGal3"="ggallus_gene_ensembl",
             "panTro2"="ptroglodytes_gene_ensembl",
             "bosTau4"="btaurus_gene_ensembl",
-            "canFam2"="cfamiliaris_gene_ensembl",
+            "canFam3"="cfamiliaris_gene_ensembl",
             "loxAfr3"="lafricana_gene_ensembl",
             "fr2"="trubripes_gene_ensembl",
             "cavPor3"="cporcellus_gene_ensembl",
@@ -720,7 +726,7 @@
             "gasAcu1"="gaculeatus_gene_ensembl",
             "tetNig2"="tnigroviridis_gene_ensembl",
             "xenTro2"="xtropicalis_gene_ensembl",
-            "danRer6"="drerio_gene_ensembl",
+            "danRer7"="drerio_gene_ensembl",
             "ci2"="cintestinalis_gene_ensembl",
             "dm3"="dmelanogaster_gene_ensembl",
             "ce6"="celegans_gene_ensembl",

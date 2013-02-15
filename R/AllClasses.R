@@ -1483,7 +1483,8 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
                                 expression({tmp <- browserSession()
                                             genome(tmp) <- genome
                                             tmp}), env, cenv)
-            query <- ucscTableQuery(session, "cytoBandIdeo")
+            query <-  tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error=function(e)
+                               stop("There doesn't seem to be any cytoband data available for genome '", genome, "' at UCSC."))
             getTable(query)}), env, cenv)
     }
     return(list(availableGenomes=genomes, bands=bands))

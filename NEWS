@@ -1,4 +1,4 @@
-CHANGES IN VERSION 1.3.2
+CHANGES IN VERSION 1.4.0
 -------------------------
 
 NEW FEATURES
@@ -16,7 +16,12 @@ NEW FEATURES
       data is fetched dynamically upon each plotting operation.
 
     o The mart object in BiomartGeneRegionTrack objects is now cached
-      in order to speed up subsequent queries to the same mart.  
+      in order to speed up subsequent queries to the same mart.
+
+    o When plotting DataTracks with type 'gradient' or 'heatmap', a
+      color scale is plotted next to the regular y-axis to indicate
+      the mapping of numeric values in the false color range. Thanks
+      to Mark Heron for his code contribution.
 
 
 
