@@ -1145,24 +1145,54 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         vSpaceAvail <- abs(diff(range(at)))/abs(diff(yscale))*vpLocation()$isize["height"]
         acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
     }
+    nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))
+    if(type=="heatmap" && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+        groups <- .dpOrDefault(GdObject, "groups")
+        sn <- if(is.null(groups)) rownames(values(GdObject)) else rev(unlist(split(rownames(values(GdObject)), factor(groups))))
+        cex.sn <- .dpOrDefault(GdObject, "cex.sampleNames", acex)
+        col.cn <- .dpOrDefault(GdObject, "col.sampleNames", "white")
+        wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(10, "points"), "npc"))) * cex.sn
+        samNames <- viewport(x=1, width=wd, just=1, yscale=c(-0.05, 1.05))
+        pushViewport(samNames)
+        nr <- nrow(values(GdObject))
+        yy <- head(seq(0.05, 0.95, len=nr+1), -1)
+        yy <- yy + diff(yy)[[1]]/2
+        grid.text(x=rep(0.5, nr), y=yy, label=rev(sn), just=0.5, gp=gpar(cex=cex.sn, col=col.cn))
+        popViewport(1)
+        samAxis <- viewport(x=1-wd, width=1-wd, just=1)
+        pushViewport(samAxis)
+        on.exit(popViewport(1))
+    }
     ## if any of the types are gradient or heatmap we want the gradient scale
     if(any(type %in% c("gradient", "heatmap"))){
         ## viewport to hold the color strip
-	vpTitleAxis <- viewport(x=0.75, width=0.15, yscale=yscale, just=0)
-	pushViewport(vpTitleAxis)
-	## create color palette
-	ncolor <- .dpOrDefault(GdObject, "ncolor", 100)
-        palette <- colorRampPalette(.dpOrDefault(GdObject, "gradient", brewer.pal(9, "Blues")))(ncolor)
-	## draw a rectangle for each color
-        if(all(type %in% c("gradient", "heatmap"))){
-            suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
-            grid.rect(y=unit(seq(ylim[1],ylim[2],length.out=ncolor+1),"native")[-(ncolor+1)], x=unit(0, "npc")-unit(1, "points"),
-                      width=unit(1, "npc")+unit(1, "points"), height=1/ncolor, gp=gpar(fill=palette, lty=0), just=c("left","bottom"))
-        }else{
-            grid.rect(y=unit(seq(ylim[1],ylim[2],length.out=ncolor+1),"native")[-(ncolor+1)], x=0,
-                      width=1, height=1/ncolor, gp=gpar(fill=palette, lty=0), just=c("left","bottom"))
-            suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
-            grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
+        shift <- ifelse(all(type %in% c("gradient", "heatmap")), 1, 0)
+        pcols <- .getPlottingFeatures(GdObject)
+        ncolor <- .dpOrDefault(GdObject, "ncolor", 100)
+        vpAxisCont <- viewport(x=unit(1, "npc")-unit(2-shift, "points"), width=unit(1, "npc")-unit(2-shift, "points"), just=1)
+        pushViewport(vpAxisCont)
+        for(i in seq_len(nlevs)){
+            ## create color palette
+            palette <- colorRampPalette(c("white", pcols$col[i]))(ncolor+5)[-(1:5)]
+            pshift <- ifelse(i==nlevs, 1-shift, 0)
+            vpTitleAxis <- viewport(x=unit(1, "npc")-unit(4*(i-1), "points"), width=unit(4+pshift, "points"),
+                                    yscale=yscale, just=1)
+            pushViewport(vpTitleAxis)
+            ## draw a rectangle for each color
+            if(all(type %in% c("gradient", "heatmap"))){
+                if(i==nlevs)
+                    suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
+                grid.rect(y=unit(seq(ylim[1],ylim[2],length.out=ncolor+1),"native")[-(ncolor+1)], x=unit(0, "npc")-unit(1, "points"),
+                          width=1, height=1/ncolor, gp=gpar(fill=palette, lty=0), just=c("left","bottom"))
+            }else{
+                grid.rect(y=unit(seq(ylim[1],ylim[2],length.out=ncolor+1),"native")[-(ncolor+1)], x=0,
+                          width=1, height=1/ncolor, gp=gpar(fill=palette, lty=0), just=c("left","bottom"))
+                if(i==nlevs){
+                    suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
+                    grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
+                }
+            }
+            popViewport(1)
         }
 	popViewport(1)
     } else {
@@ -1284,6 +1314,9 @@ setMethod("drawGrid", signature(GdObject="AlignedReadTrack"), function(GdObject,
 ## Although the stacking type is not stored as a displayParameter we still want to check whether it is
 ## included there and set the actual stacking of the object accordingly
 setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if(debug || debug=="prepare")
+        browser()
     st <- .dpOrDefault(GdObject, "stacking")
     if(!is.null(st))
         stacking(GdObject) <- st
@@ -1306,8 +1339,10 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
 .boxes <- function(GdObject, offsets)
 {
     ylim <- c(0, 1)
+    h <- diff(ylim)
     middle <- mean(ylim)
-    space <- diff(ylim)/8
+    sh <- max(0, min(h, .dpOrDefault(GdObject, "stackHeight", 0.75)))
+    space <- (h-(h*sh))/2
     if (inherits(GdObject, "GeneRegionTrack")) {
         thinBox <- .dpOrDefault(GdObject, "thinBoxFeature", c("utr", "ncRNA", "utr3", "utr5", "miRNA", "lincRNA"))
         space <- ifelse(feature(GdObject) %in% thinBox, space + ((middle -
@@ -1319,8 +1354,8 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
     sel <- grepl("\\[Cluster_[0-9]*\\]", id)
     id[sel] <- sprintf("%i merged\n%s", as.integer(.getAnn(GdObject, "density")[sel]),
                        ifelse(class(GdObject) %in% c("AnnotationTrack", "DetailsAnnotationTrack"), "features", "exons"))
-    boxes <- data.frame(cx1=start(GdObject), cy1=ylim[1]+space+offsets, cx2=end(GdObject), cy2=ylim[2]-space+offsets,
-                        fill=color, strand=strand(GdObject), text=id, textX=(start(GdObject)+end(GdObject))/2, textY=middle+offsets,
+    boxes <- data.frame(cx1=start(GdObject), cy1=ylim[1]+space+offsets, cx2=start(GdObject)+width(GdObject), cy2=ylim[2]-space+offsets,
+                        fill=color, strand=strand(GdObject), text=id, textX=start(GdObject)+(width(GdObject)/2), textY=middle+offsets,
                         .getImageMap(cbind(start(GdObject), ylim[1]+space+offsets, end(GdObject), ylim[2]-space+offsets)),
                         start=start(GdObject), end=end(GdObject), values(GdObject), stringsAsFactors=FALSE)
     rownames(boxes) <- if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE))
@@ -1370,6 +1405,9 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
 
 ## The actual drawing method
 setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...){
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if(debug || debug=="prepare")
+        browser()
     imageMap(GdObject) <- NULL
     if(!length(GdObject))
         return(invisible(GdObject))
@@ -1385,6 +1423,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         popViewport(1)
         return(invisible(GdObject))
     }
+    if(debug || debug=="draw")
+        browser()
     ## If there are too many stacks for the available device resolution we cast an error
     bins <- stacks(GdObject)
     stacks <- max(bins)
@@ -1414,8 +1454,6 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
     }
     ## Now we can pre-compute all the coordinates and settings for the elements to be drawn...
-    if(.dpOrDefault(GdObject, "break", FALSE))
-        browser()
     box <- .boxes(GdObject, (stacks-bins)+1)
     barsAndLab <- .barsAndLabels(GdObject)
     bar <- barsAndLab$bars
@@ -1500,7 +1538,37 @@ setMethod("drawGD", signature("GeneRegionTrack"), function(GdObject,  ...){
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Draw a genome axis
 ##----------------------------------------------------------------------------------------------------------------------------
+.expLabel <- function(GdObject, tckText, prune=FALSE){
+    tck <- tckText
+    exponent <- if(is.null(.dpOrDefault(GdObject, "exponent", NULL))){
+        exp <- 0
+        while(all(tck[tck>0]/10^exp >= 1))
+            exp <- exp+3
+        exp-3
+    } else  max(0, getPar(GdObject, "exponent"))
+    if(exponent > 0){
+        tckText <- tckText/(10^exponent)
+    }
+    if(prune){
+        tmp <- as.character(tckText)
+        count <- max(nchar(gsub("*.\\.", "", tmp)))
+        while(count>1 && !any(duplicated(round(tckText, count)))){
+            count <- count-1
+        }
+        tckText <- round(tckText, count+1)
+    }
+    return(switch(as.character(exponent),
+                  "0"=sprintf("%i", as.integer(tckText)),
+                  "3"=sprintf("%s kb", tckText),
+                  "6"=sprintf("%s mb", tckText),
+                  "9"=sprintf("%s gb", tckText),
+                  sapply(tckText, function(x) bquote(paste(.(x), " ",10^.(exponent))))))
+ }
+
 setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if((is.logical(debug) && debug) || debug=="prepare")
+        browser()
     ## Nothing to do if the coordinate width is 0, so we can quit right away
     imageMap(GdObject) <- NULL
     if((maxBase-minBase)==0)
@@ -1556,6 +1624,8 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
         popViewport(1)
         return(invisible(GdObject))
     }
+    if((is.logical(debug) && debug) || debug=="draw")
+        browser()
     ## Plot range if there is any
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
 	
@@ -1583,32 +1653,21 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
 			v <- scaleLen
 		}
 	
-		## work out exponent/unit
-        if(ex==9) {
-            u <- paste(v/1e9, "gb")
-        } else if(ex==6) {
-            u <- paste(v/1e6, "mb")
-        } else if(ex==3) {
-            u <- paste(v/1e3, "kb")
-        } else if(ex>0)  {
-			u <- bquote(paste(.(v/10^ex), " ",10^.(ex)))
-		} else {
-			u = v
-		}
+        ## work out exponent/unit
+        label <- .expLabel(GdObject, v)
         grid.lines(x=c(xoff, v+xoff), y=c(0,0), default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
         grid.segments(x0=c(xoff, v+xoff), y0=c(0-tickHeight, 0-tickHeight),
                       x1=c(xoff, v+xoff), y1=c(tickHeight,tickHeight, tickHeight),
                       default.units="native", gp=gpar(col=color, lwd=lwd, alpha=alpha))
         z <- len * 0.01
-        if(labelPos=="below")
-		{
-            grid.text(label=u, x=xoff+v/2, y=0-(tickHeight/1.5*dfact), just=c("center", "top"),
-                      gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
+        if(labelPos=="below"){
+            grid.text(label=if(is.character(label)) label else label[[1]], x=xoff+v/2, y=0-(tickHeight/1.5*dfact),
+                      just=c("center", "top"), gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
         } else if(labelPos=="above"){
-            grid.text(label=u, x=xoff+v/2, y=tickHeight/1.5*dfact, just=c("center", "bottom"),
+            grid.text(label=if(is.character(label)) label else label[[1]], x=xoff+v/2, y=tickHeight/1.5*dfact, just=c("center", "bottom"),
                       gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
         } else {
-            grid.text(label=u, x=v+xoff+z, y=0, just=c("left", "center"),
+            grid.text(label=if(is.character(label)) label else label[[1]], x=v+xoff+z, y=0, just=c("left", "center"),
                       gp=gpar(alpha=alpha, col=color, cex=cex, fontface=fontface), default.units="native")
         }
         popViewport(1)
@@ -1663,35 +1722,17 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     y1t <- switch(labelPos, "alternating"=y1t, "revAlternating"=-y1t, "above"=abs(y1t), "below"=-abs(y1t), "beside"=y1t)
     grid.segments(x0=tck, x1=tck, y0=y0t, y1=y1t,  default.units="native", gp=gpar(col=color, alpha=alpha, lwd=lwd, lineend="square"))
     ## The top level tick labels
-    tckText <- tck
-    formatValue <- "d"
-    exponent <- max(0, .dpOrDefault(GdObject, "exponent", NULL))
-    exponent <- if(is.null(.dpOrDefault(GdObject, "exponent", NULL)))
-    {
-        exp <- 0
-        while(all(tck[tck>0]/10^exp > 1))
-            exp <- exp+3
-        exp-3
-    } else  max(0, getPar(GdObject, "exponent"))
-    if(exponent > 0){
-        tckText <- tckText/(10^exponent)
-        if(!exponent %in% c(3, 6, 9))
-            formatValue <- "g"
-    }
-    label <- switch(as.character(exponent),
-                    "0"=sprintf("%i", as.integer(tckText)),
-                    "3"=sprintf("%s kb", tckText),
-                    "6"=sprintf("%s mb", tckText),
-                    "9"=sprintf("%s gb", tckText),
-                    sapply(tckText, function(x) bquote(paste(.(x), " ",10^.(exponent)))))
+    label <- .expLabel(GdObject, tck)
     ylabs <- y1t + (ifelse(y1t>0, 1, -1) * (textYOff + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex))
-    if(is.character(label))
-        grid.text(label=label, x=tck, y=ylabs, just=c("centre", "centre"),
+    ttck <- if(min(diff(tck))==1) tck+0.5 else tck
+    if(is.character(label)){
+        grid.text(label=label, x=ttck, y=ylabs, just=c("centre", "centre"),
                   gp=gpar(cex=cex, fontface=fontface), default.units="native")
-    else
+    }else{
         for(i in seq_along(label))
-             grid.text(label=label[[i]], x=tck[i], y=ylabs[i], just=c("centre", "centre"),
-                       gp=gpar(cex=cex, fontface=fontface), default.units="native")
+            grid.text(label=label[[i]], x=ttck[i], y=ylabs[i], just=c("centre", "centre"),
+                      gp=gpar(cex=cex, fontface=fontface), default.units="native")
+    }
     ## The scecond level ticks and labels if necessary
     if (.dpOrDefault(GdObject, "littleTicks", FALSE) && length(tck)>1)
     {
@@ -1724,12 +1765,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
         {
             grid.segments(x0=ltck[sel], x1=ltck[sel], y0=y0lt[sel], y1=y1lt[sel],  default.units="native",
                           gp=gpar(col=color, alpha=alpha, lwd=lwd, lineend="square"))
-            ltckText <- ltck[sel]
-            if(exponent > 0)
-                ltckText <- ltckText/(10^exponent)
-            llabel <- switch(as.character(exponent),
-                             "0"=sprintf("%i", as.integer(ltckText)),
-                             sprintf("%g", ltckText))
+            llabel <- .expLabel(GdObject, ltck[sel], prune=TRUE)
             ytlabs <- y1lt + (ifelse(y1lt>0, 1, -1) * (textYOff + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*lcex))
             if(is.character(label))
                 grid.text(label=llabel, x=ltck[sel], y=ytlabs[sel], just=c("centre", "centre"),
@@ -1781,6 +1817,9 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
 
 setMethod("drawGD", signature("DetailsAnnotationTrack"),
           function(GdObject,  minBase, maxBase, prepare=FALSE, ...){
+              debug <- .dpOrDefault(GdObject, "debug", FALSE)
+              if((is.logical(debug) && debug) || debug=="prepare")
+                  browser()
               adf <- .buildArgsDf(GdObject)
               args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype=TRUE)
               groupDetails <- .dpOrDefault(GdObject, "groupDetails", FALSE)
@@ -1809,7 +1848,9 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                   displayPars(GdObject) <- list(".__select"=select)
                   return(invisible(GdObject))
               }
-              n = length(GdObject)
+              if((is.logical(debug) && debug) || debug=="draw")
+                  browser()
+              n <- length(GdObject)
               col <- rep(.dpOrDefault(GdObject, "detailsConnector.col", fromPrototype=TRUE), n)[1:n]
               lty <- rep(.dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype=TRUE), n)[1:n]
               lwd <- rep(.dpOrDefault(GdObject, "detailsConnector.lwd", fromPrototype=TRUE), n)[1:n]
@@ -1909,7 +1950,8 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
 }
 
 setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
-    if(.dpOrDefault(GdObject, "break", FALSE))
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if((is.logical(debug) && debug) || debug=="prepare")
         browser()
     imageMap(GdObject) <- NULL
     type <- .dpOrDefault(GdObject, "type", "p")
@@ -2016,6 +2058,322 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         }
         return(invisible(GdObject))
     }
+    if((is.logical(debug) && debug) || debug=="draw")
+        browser()
+    ## We only proceed if there is something to draw within the ranges, but still may have to add the grid and the legend.
+    ## Legend drawing causes another viewport for all the other graphics to be opened and will be called after all other
+    ## drawing has finished, hence we call it in on.exit
+    if(subset)
+        GdObject <- subset(GdObject, from=minBase, to=maxBase)
+    alpha <- .dpOrDefault(GdObject, "alpha", 1)
+    ## The optional legend is plotted below the data
+    grpLevels <- .dpOrDefault(GdObject, ".__groupLevels")
+    if(as.logical(.dpOrDefault(GdObject, "legend", FALSE)) && !is.null(grpLevels)){
+        lSpace <- getPar(GdObject, ".__verticalSpace")
+        pushViewport(viewport(y=1, height=unit(1, "npc") - unit(lSpace, "inches"),
+                              just=c(0.5, 1)))
+        on.exit({popViewport(1)
+                 cex <- .dpOrDefault(GdObject, "cex.legend", 0.8)
+                 legFactors <- .dpOrDefault(GdObject, ".__legFactors", character())
+                 fontsize <- .dpOrDefault(GdObject, "fontsize.legend", 12)
+                 fontface <- .dpOrDefault(GdObject, "fontface.legend", 1)
+                 lineheight <- .dpOrDefault(GdObject, "lineheight.legend", 1)
+                 fontfamily <- .dpOrDefault(GdObject, "fontfamily.legend", 1)
+                 fontcolor <- .dpOrDefault(GdObject, "fontcolor.legend", .DEFAULT_SHADED_COL)
+                 pushViewport(viewport(y=0, height=unit(lSpace, "inches"), just=c(0.5, 0),
+                                       gp=gpar(cex=cex, fontsize=fontsize, fontface=fontface, fontcolor=fontcolor,
+                                               lineheight=lineheight)))
+                 pushViewport(viewport(width=unit(1, "npc") - unit(0.1, "inches"), height=unit(1, "npc") - unit(0.1, "inches")))
+                 boxSize <- getPar(GdObject, ".__boxSize")
+                 spacing <- getPar(GdObject, ".__spacing")
+                 dims <- getPar(GdObject, ".__layoutDims")
+                 for(i in seq_along(grpLevels)){
+                     row <- (((i)-1) %/% dims[2])+1
+                     col <- (((i)-1) %% dims[2])+1
+                     pushViewport(viewport(width=1/dims[2], height=1/dims[1], x=(1/dims[2])*(col-1), y=1-((1/dims[1])*(row-1)), just=c(0,1)))
+                     if(length(setdiff(legFactors, c("col")))==0){
+                         grid.rect(width=unit(boxSize, "inches"), height=unit(boxSize, "inches"), x=0, just=c(0, 0.5),
+                                   gp=gpar(fill=pcols$col[i], col=.DEFAULT_SHADED_COL))
+                     } else {
+                         if(any(c("pch", "col.symbol") %in% legFactors))
+                             panel.points(unit(boxSize/2, "inches"), 0.5, pch=pcols$pch[i], cex=pcols$cex[i], col=pcols$col.symbol[i])
+                         if(any(c("lwd", "lty", "col.lines") %in% legFactors))
+                             ##panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i])
+                             grid.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), gp=gpar(col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i]))
+                     }
+                     grid.text(x=unit(boxSize+spacing, "inches"), y=0.5, just=c(0, 0.5), label=grpLevels[i], gp=gpar(col=fontcolor))
+                     popViewport(1)
+                 }
+                 popViewport(2)
+             })
+    }
+    if(!length(GdObject))
+    {
+        if ("g" %in% type)
+            panel.grid(h=.dpOrDefault(GdObject, "h", -1), v=.dpOrDefault(GdObject, "v", -1),
+                       col=.dpOrDefault(GdObject, "col.grid", "#e6e6e6"), lty=.dpOrDefault(GdObject, "lty.grid", 1),
+                       lwd=.dpOrDefault(GdObject, "lwd.grid", 1), alpha=alpha)
+        return(invisible(GdObject))
+    }
+    vals <- values(GdObject)
+    ylim <- suppressWarnings(.dpOrDefault(GdObject, "ylim", range(vals, na.rm=TRUE, finite=TRUE)))
+    if(diff(ylim)==0)
+        ylim <- ylim+c(-1,1)
+    if(all(is.infinite(ylim)))
+        ylim <- c(0,1)
+    ylimExt <- extendrange(r=ylim, f=0.05)
+    pushViewport(viewport(xscale=c(minBase, maxBase), yscale=ylimExt, clip=TRUE))
+    ## The plotting parameters, some defaults from the lattice package first
+    plot.symbol <- trellis.par.get("plot.symbol")
+    superpose.symbol <- trellis.par.get("superpose.symbol")
+    superpose.line <- trellis.par.get("superpose.line")
+    groups <- rep(groups, ncol(vals))
+    ## For loess calculation we need some settings
+    span <- .dpOrDefault(GdObject, "span", 1/5)
+    degree <- .dpOrDefault(GdObject, "degree", 1)
+    family <- .dpOrDefault(GdObject, "family", c("symmetric", "gaussian"))
+    evaluation <- .dpOrDefault(GdObject, "evaluation", 50)
+    font <- .dpOrDefault(GdObject, "font", if (is.null(groups)) plot.symbol$font else superpose.symbol$font)
+    fontface <- .dpOrDefault(GdObject, "fontface", if (is.null(groups)) plot.symbol$fontface else superpose.symbol$fontface)
+    fontsize <- .dpOrDefault(GdObject, "fontsize", if (is.null(groups)) plot.symbol$fontsize else superpose.symbol$fontsize)
+    ## An optional baseline to be added
+    baseline <- .dpOrDefault(GdObject, "baseline")
+    lwd.baseline <- .dpOrDefault(GdObject, "lwd.baseline", pcols$lwd[1])
+    lty.baseline <- .dpOrDefault(GdObject, "lty.baseline", pcols$lty[1])
+    ## The actual plotting values
+    pos <- position(GdObject)
+    x <- rep(pos, each=nrow(vals))
+    y <- as.numeric(vals)
+    ## A grid should always be plotted first, so we need to catch this here
+    wg <- match("g", type, nomatch = NA_character_)
+    if (!is.na(wg)) {
+        panel.grid(h=.dpOrDefault(GdObject, "h", -1), v=.dpOrDefault(GdObject, "v", -1),
+                   col=pcols$col.grid, lty=pcols$lty.grid, lwd=pcols$lwd.grid)
+        type <- type[-wg]
+    }
+    ## The special type 'mountain' has to be handled separately
+    if("mountain" %in% type) {
+        mbaseline <- if(is.null(baseline)) 0 else baseline[1]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
+        col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
+        lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
+        lty.mountain <- .dpOrDefault(GdObject, "lty.mountain", pcols$lty)[1]
+        .panel.mountain(x, y, col=col.mountain, fill=fill.mountain, span=span, degree=degree, family=family,
+                        evaluation=evaluation, lwd=lwd.mountain, lty=lty.mountain, col.line=col.mountain, alpha=alpha,
+                        baseline=mbaseline)
+        if(!is.na(mbaseline))
+            panel.abline(h=mbaseline, col=col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
+    }
+    ## The special type 'polygon' has to be handled separately
+    if("polygon" %in% type) {
+        mbaseline <- if(is.null(baseline)) 0 else baseline[1]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
+        col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
+        lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
+        lty.mountain <- .dpOrDefault(GdObject, "lty.mountain", pcols$lty)[1]
+        .panel.polygon(x, y, col=col.mountain, fill=fill.mountain, lwd=lwd.mountain,
+                        lty=lty.mountain, col.line=col.mountain, alpha=alpha,
+                        baseline=mbaseline)
+        if(!is.na(mbaseline))
+            panel.abline(h=mbaseline, col=col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
+    }
+    ## Also the type 'boxplot' is handled up front
+    if("boxplot" %in% type)
+    {
+        box.ratio <- .dpOrDefault(GdObject, "box.ratio", 1)
+        box.width <- .dpOrDefault(GdObject, "box.width", (min(diff(unique(sort(x))))*0.5)/box.ratio)
+        diff <- .pxResolution(coord="x")
+        if(!is.null(groups))
+        {
+            tw <- min(width(GdObject))
+            spacer <- diff
+            nb <- nlevels(groups)
+            bw <- .dpOrDefault(GdObject, "box.width", (tw-(nb+2)*spacer)/nb)
+            bcex <- min(pcols$cex[1], (bw/diff)/20)
+            by <- lapply(split(vals, groups), matrix, ncol=ncol(vals))
+            for(j in seq_along(by))
+            {
+                xx <- rep(start(GdObject)+(j*spacer)+(j*bw), each=nrow(by[[j]]))-(bw/2)
+                .panel.bwplot(xx, as.numeric(by[[j]]), box.ratio=box.ratio, box.width=(bw/2)/box.ratio, pch=pcols$pch[1],
+                              lwd=pcols$lwd[1], lty=pcols$lty[1], fontsize=fontsize,
+                              col=pcols$col.histogram, cex=bcex, font=font, fontfamily=font, fontface=fontface,
+                              fill=pcols$col[j], varwidth=.dpOrDefault(GdObject, "varwidth", FALSE), 
+                              notch=.dpOrDefault(GdObject, "notch", FALSE), notch.frac=.dpOrDefault(GdObject, "notch.frac", 0.5),
+                              levels.fos=.dpOrDefault(GdObject, "level.fos", sort(unique(xx))), 
+                              stats=.dpOrDefault(GdObject, "stats", boxplot.stats), coef=.dpOrDefault(GdObject, "coef", 1.5), 
+                              do.out=.dpOrDefault(GdObject, "do.out", TRUE), alpha=alpha)
+            }
+            diffY <- .pxResolution(coord="y", 2)
+            outline <- apply(vals, 2, range)
+            grid.rect(start(GdObject), outline[1,]-diffY, width=width(GdObject), height=abs(outline[2,]-outline[1,])+(2*diffY),
+                  gp=gpar(col=pcols$col.histogram, fill="transparent", alpha=alpha, lty="dotted"),
+                  default.units="native", just=c("left", "bottom"))
+        } else {
+            bcex <- min(pcols$cex[1], ((box.width*2)/diff)/20)
+            .panel.bwplot(x, y, box.ratio=box.ratio, box.width=box.width, pch=pcols$pch[1],
+                          lwd=pcols$lwd[1], lty=pcols$lty[1], fontsize=fontsize,
+                          col=pcols$col.histogram, cex=bcex, font=font, fontfamily=font, fontface=fontface,
+                          fill=pcols$fill[1], varwidth=.dpOrDefault(GdObject, "varwidth", FALSE), 
+                          notch=.dpOrDefault(GdObject, "notch", FALSE), notch.frac=.dpOrDefault(GdObject, "notch.frac", 0.5),
+                          levels.fos=.dpOrDefault(GdObject, "level.fos", sort(unique(x))), 
+                          stats=.dpOrDefault(GdObject, "stats", boxplot.stats), coef=.dpOrDefault(GdObject, "coef", 1.5), 
+                          do.out=.dpOrDefault(GdObject, "do.out", TRUE), alpha=alpha)
+        }
+    }
+    ## 'histogram' fills up the full range area if its width is > 1
+    if("histogram" %in% type)
+    {
+        ylimSort <- sort(ylimExt)
+        yy <- if(ylimSort[1]<=0 && ylimSort[2]>=0) 0 else ylimSort[1]
+        if(!is.null(groups) && nlevels(groups)>1)
+        {
+            valsS <- displayPars(GdObject, ".__valsS")
+            if(stacked)
+            {
+                curMinPos <- curMaxPos <- rep(yy, nrow(valsS))
+                for(s in seq_len(ncol(valsS)))
+                {
+                    if(!all(is.na(valsS[,s])))
+                    {
+                        sel <- !is.na(valsS[,s]) & valsS[,s]>=0
+                        yyy <- curMinPos
+                        yyy[sel] <- curMaxPos[sel]
+                        offset <- yyy
+                        offset[offset!=yy] <- 0
+                        grid.rect(start(GdObject), yyy, width=width(GdObject), height=valsS[,s]-offset,
+                                  gp=gpar(col="transparent", fill=pcols$col[s], lwd=pcols$lwd[1], lty=pcols$lty[1], alpha=alpha), default.units="native",
+                                  just=c("left", "bottom"))
+                        curMaxPos[sel] <- curMaxPos[sel]+(valsS[sel,s]-offset[sel])
+                        curMinPos[!sel] <- curMinPos[!sel]+(valsS[!sel,s]-offset[!sel])
+                    }
+                }
+                diff <- .pxResolution(coord="x", pcols$lwd[1]+1)
+                tooNarrow <- width(GdObject)<diff
+                if(!all(tooNarrow))
+                    grid.rect(start(GdObject)[!tooNarrow], curMinPos[!tooNarrow], width=width(GdObject)[!tooNarrow],
+                              height=(curMaxPos-curMinPos)[!tooNarrow],
+                              gp=gpar(fill="transparent", col=pcols$col.histogram, lwd=pcols$lwd[1], lty=pcols$lty[1], alpha=alpha),
+                              default.units="native", just=c("left", "bottom"))
+            } else {
+                spacer <- .pxResolution(min.width=1, coord="x")
+                yOff <- .pxResolution(min.width=1, coord="y")
+                outline <- apply(valsS, 1, function(x) range(c(yy, x), na.rm=TRUE))
+                grid.rect(start(GdObject), outline[1,]-yOff, width=width(GdObject), height=apply(outline, 2, diff)+(yOff*2),
+                          gp=gpar(col=pcols$col.histogram, fill=pcols$fill.histogram, lwd=pcols$lwd[1], lty=pcols$lty[1], alpha=alpha), default.units="native",
+                          just=c("left", "bottom"))
+                len <- ncol(valsS)
+                subW <- (width(GdObject)-(spacer*(len+1)))/len
+                sel <- subW > spacer
+                ## FIXME: how do we treat this if there is not enough space to plot?
+                sel <- !logical(length(subW))
+                if(any(sel))
+                {
+                    subW <- subW[sel]
+                    valsS <- valsS[sel,]
+                    subX <- rep(start(GdObject)[sel], len) + (subW * rep(seq_len(len)-1, each=sum(sel))) +
+                        (spacer * rep(seq_len(len), each=sum(sel)))
+                    grid.rect(subX, yy, width=rep(subW, len), height=valsS-yy,
+                              gp=gpar(col="transparent", fill=rep(pcols$col[1:len], each=sum(sel)),
+                                      lwd=pcols$lwd[1], lty=pcols$lty[1], alpha=alpha), default.units="native",
+                              just=c("left", "bottom"))
+                }
+            }
+        } else {
+            agFun <- .aggregator(GdObject)
+            valsS <- agFun(t(vals))
+            grid.rect(start(GdObject), yy, width=width(GdObject), height=valsS-yy,
+                      gp=gpar(col=pcols$col.histogram, fill=pcols$fill.histogram, lwd=pcols$lwd[1], lty=pcols$lty[1], alpha=alpha), default.units="native",
+                      just=c("left", "bottom"))
+        }
+    }
+    ## gradient summarizes the data as a color gradient
+    if("gradient" %in% type)
+    {
+        ncolor <- .dpOrDefault(GdObject, "ncolor", 100)
+        gradient <- colorRampPalette(.dpOrDefault(GdObject, "gradient", brewer.pal(9, "Blues")))(ncolor)
+        valsScaled <- .z2icol(colMeans(vals, na.rm=TRUE), ncolor, sort(ylim))
+        grid.rect(start(GdObject), sort(ylim)[1], width=width(GdObject), height=abs(diff(ylim)),
+                  gp=gpar(col=gradient[valsScaled], fill=gradient[valsScaled], alpha=alpha),
+                  default.units="native", just=c("left", "bottom"))
+    }
+    ## heatmap does the same, but for each sample individually
+    if("heatmap" %in% type)
+    {
+        ncolor <- .dpOrDefault(GdObject, "ncolor", 100)
+        valsScaled <- .z2icol(vals, ncolor, sort(ylim))
+        nr <- nrow(vals)
+        yy <- seq(min(ylim), max(ylim), len=nr+1)[-1]
+        ydiff <- .pxResolution(coord="y")
+        separator <- .dpOrDefault(GdObject, "separator", 0)*ydiff
+        if(!is.null(groups))
+        {
+            valsS <- split(vals, groups)
+            freq <- table(factor(displayPars(GdObject, "groups")))
+            cmf <- c(0, cumsum(freq))
+            for(s in seq_along(valsS))
+            {
+                gradient <- colorRampPalette(c("white", pcols$col[s]))(ncolor+5)[-(1:5)]
+                valsScaled <- .z2icol(valsS[[s]], ncolor, sort(ylim))
+                grid.rect(rep(start(GdObject), each=freq[s]), yy[(cmf[s]+1):cmf[s+1]], width=rep(width(GdObject), each=freq[s]),
+                  height=max(ydiff, abs(diff(ylim))*(1/nr)-separator),
+                  gp=gpar(col=gradient[valsScaled], fill=gradient[valsScaled], alpha=alpha),
+                  default.units="native", just=c("left", "top"))
+            }
+        } else {
+            gradient <- colorRampPalette(.dpOrDefault(GdObject, "gradient", brewer.pal(9, "Blues")))(ncolor)
+            grid.rect(rep(start(GdObject), each=nr), rev(yy), width=rep(width(GdObject), each=nr),
+                      height=max(ydiff, abs(diff(ylim))*(1/nr)-separator),
+                      gp=gpar(col=gradient[valsScaled], fill=gradient[valsScaled], alpha=alpha),
+                      default.units="native", just=c("left", "top"))
+        }
+    }
+    ## The rest uses the lattice panel function
+    na.rm <- .dpOrDefault(GdObject, "na.rm", FALSE)
+    sel <- is.na(y)
+    if(na.rm && any(sel))
+    {
+        x <- x[!sel]
+        y <- y[!sel]
+        groups <- groups[!sel]
+    }
+    panel.xyplot(x, y, type=type, groups=groups, pch=pcols$pch, col=pcols$col, col.line=pcols$col.line, col.symbol=pcols$col.symbol,
+                 font=font, fontfamily=font, fontface=fontface, lty=pcols$lty, cex=pcols$cex, fill=pcols$fill, lwd=pcols$lwd, horizontal=FALSE,
+                 span=span, degree=degree, family=family, evaluation=evaluation,
+                 jitter.x=.dpOrDefault(GdObject, "jitter.x", FALSE), jitter.y=.dpOrDefault(GdObject, "jitter.y", FALSE),
+                 factor=.dpOrDefault(GdObject, "factor", 0.5), amount=.dpOrDefault(GdObject, "amount"),
+                 subscripts=seq_along(x), alpha=alpha)
+    if(!any(c("mountain","polygon") %in% type) && !is.null(baseline) && !is.na(baseline))
+        panel.abline(h=baseline, col=pcols$col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
+    popViewport(1)
+    return(invisible(GdObject))
+})
+##----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+##----------------------------------------------------------------------------------------------------------------------------
+## Draw a AlignedRead track
+##----------------------------------------------------------------------------------------------------------------------------
+setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if((is.logical(debug) && debug) || debug=="prepare")
+        browser()
+    imageMap(GdObject) <- NULL
+    detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("reads", "coverage"))
+    ## Nothing to do in prepare mode if detail is not 'reads', so we can quit right away, else we need to set the stacking info
+    if(prepare){
+        if(detail=="read"){
+            if(subset)
+                GdObject <- subset(GdObject, from=minBase, to=maxBase)
+            ##GdObject <- setStacks(GdObject)
+        }
+        return(invisible(GdObject))
+    }
+    if((is.logical(debug) && debug) || debug=="draw")
+        browser()
     ## We only proceed if there is something to draw within the ranges, but still may have to add the grid and the legend.
     ## Legend drawing causes another viewport for all the other graphics to be opened and will be called after all other
     ## drawing has finished, hence we call it in on.exit
@@ -2314,6 +2672,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
 ## Draw a AlignedRead track
 ##----------------------------------------------------------------------------------------------------------------------------
 setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if((is.logical(debug) && debug) || debug=="prepare")
+        browser()
     imageMap(GdObject) <- NULL
     detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("reads", "coverage"))
     ## Nothing to do in prepare mode if detail is not 'reads', so we can quit right away, else we need to set the stacking info
@@ -2325,6 +2686,8 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
         }
         return(invisible(GdObject))
     }
+    if((is.logical(debug) && debug) || debug=="draw")
+        browser()
     ## In plotting mode we either show all the reads (time-consuming), or the coverage only
     rad <- 0.015
     xx <- -0.01
@@ -2453,7 +2816,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
 ## Draw an ideogram track
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Helper function to compute coordinates for a rounded ideogram cap
-.roundedCap <- function(bl, tr, side=c("left", "right"), bevel=0.4, n=100)
+.roundedCap <- function(bl, tr, st, vals, side=c("left", "right"), bevel=0.4, n=100)
 {
     side <- match.arg(side)
     bevel <- max(1/n, min(bevel, 0.5))
@@ -2467,6 +2830,20 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     }else{
         coords[,1] <- (1-coords[,1])*abs(diff(c(bl[1], tr[1])))+bl[1]
         coords[,2] <- (1-coords[,2])*abs(diff(c(bl[2], tr[2])))+bl[2]
+    }
+    lcS <- split(as.data.frame(coords), cut(coords[,1], st, right=TRUE, include.lowest=TRUE, labels=FALSE), drop=TRUE)
+    first <- TRUE
+    shift <- ifelse(side=="left", 0, 1)
+    for(j in names(lcS)){
+        xx <- lcS[[j]][,1]
+        yy <- lcS[[j]][,2]
+        if(!first){
+            prev <- lcS[[as.numeric(j)-1]]
+            xx <- c(tail(prev[,1], 1), xx, tail(prev[,1], 1))
+            yy <- c(1-tail(prev[,2], 1), yy, tail(prev[,2], 1))
+        }
+        grid.polygon(xx, yy, gp=gpar(col=vals[as.numeric(j)+shift,"col"], fill=vals[as.numeric(j)+shift,"col"]))
+        first <- FALSE
     }
     return(coords)
 }
@@ -2484,11 +2861,12 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
 
 ## The actual drawing method
 setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if((is.logical(debug) && debug) || debug=="prepare")
+        browser()
     imageMap(GdObject) <- NULL
     chrnam <- paste("Chromosome", gsub("chr", "", chromosome(GdObject)))
     cex <- .dpOrDefault(GdObject, "cex", 1)
-    if(.dpOrDefault(GdObject, "break", FALSE))
-        browser()
     ## Nothing to do if there are no ranges in the object
     if(!length(GdObject))
         return(invisible(GdObject))
@@ -2505,6 +2883,8 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         displayPars(GdObject) <- list("neededVerticalSpace"=nsp)
         return(invisible(GdObject))
     }
+    if((is.logical(debug) && debug) || debug=="draw")
+        browser()
     ## Do we need some space for the chromosome name?
     if(.dpOrDefault(GdObject, "showId", TRUE))
     {
@@ -2535,6 +2915,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     bevel <- 0.02
     ol <- queryHits(findOverlaps(range(GdObject), IRanges(start=c(bevel, 1-bevel)*len, width=1)))
     st <- start(range(GdObject))/len
+    ed <- end(range(GdObject))/len
     stExt <- c(st[1:ol[1]], bevel, st[(ol[1]+1):ol[2]], 1-bevel)
     valsExt <- rbind(vals[1:ol[1],], vals[ol[1],], vals[(ol[1]+1):ol[2],], vals[ol[2],])
     if(ol[2]<length(st)){
@@ -2573,23 +2954,21 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
                      gp=gpar(col=cols["acen"], fill=cols["acen"]))
     }
     ## Now the caps
-    lc <- .roundedCap(c(stExt[1], margin), c(stExt[ls], 1-margin), side="left", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
-    grid.polygon(lc[,1], lc[,2], gp=gpar(col=valsExt[1,"col"], fill=valsExt[1,"col"]))
-    rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
-    grid.polygon(rc[,1], rc[,2], gp=gpar(col=tail(valsExt[,"col"],1), fill=tail(valsExt[,"col"],1)))
+    lc <- .roundedCap(c(stExt[1], margin), c(stExt[ls], 1-margin), st, vals, side="left", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
+    rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), ed, vals, side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
     lcol <- "black"; lwd <- 1; lty <- 1
     ## Now some outlines
     grid.lines(lc[,1], lc[,2], gp=gpar(col=lcol, lwd=lwd, lty=lty))
     grid.lines(rc[,1], rc[,2],gp= gpar(col=lcol, lwd=lwd, lty=lty))
     if(length(cent))
     {
-        x0 <- c(rep(stExt[2], 2), rep(stExt[max(cent)+1],2), rep(stExt[min(cent)],2), rep(stExt[max(cent)],2))
+        x0 <- c(rep(max(lc[,1]), 2), rep(stExt[max(cent)+1],2), rep(stExt[min(cent)],2), rep(stExt[max(cent)],2))
         y0 <-  c(rep(c(margin, (1-margin)), 3), 0.5, 0.5)  
         x1 <- c(rep(stExt[min(cent)],2), rep(tail(stExt, 1),2), rep(stExt[min(cent)]+wd[min(cent)],2),
                 rep(stExt[max(cent)]+wd[max(cent)],2))
         y1 <-  c(rep(c(margin, (1-margin)), 2), 0.5, 0.5, margin, (1-margin))
     } else {
-        x0 <- rep(stExt[2], 2)
+        x0 <- rep(max(lc[,1]), 2)
         y0 <- c(margin, (1-margin))
         x1 <- rep(max(stExt), 2)
         y1 <- y0
@@ -2626,10 +3005,11 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
 ## Draw a SequenceTrack
 ##----------------------------------------------------------------------------------------------------------------------------
 setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    if((is.logical(debug) && debug) || debug=="prepare")
+        browser()
     fcol <- .dpOrDefault(GdObject, "fontcolor", getBioColor("DNA_BASES_N"))
     cex <- max(0.3, .dpOrDefault(GdObject, "cex", 1))
-    if(.dpOrDefault(GdObject, "break", FALSE))
-        browser()
     pushViewport(viewport(xscale=c(minBase, maxBase), clip=TRUE,
                           gp=gpar(alpha=.dpOrDefault(GdObject, "alpha", 1),
                                   fontsize=.dpOrDefault(GdObject, "fontsize", 12),
@@ -2645,6 +3025,8 @@ setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxB
         popViewport(1)
         return(invisible(GdObject))
     }
+    if((is.logical(debug) && debug) || debug=="draw")
+        browser()
     imageMap(GdObject) <- NULL
     delta <- maxBase-minBase
     if(delta==0)

@@ -1142,7 +1142,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
 
     \item{}{\code{cex=0.7}: Numeric scalar. The default pixel size for
-      plotting symbols.} 
+      plotting symbols.}
+
+    \item{}{\code{cex.sampleNames=NULL}:Numeric scalar. The size factor
+      for the sample names text in heatmap plots. Defaults to an automatic
+      setting.}
 
     \item{}{\code{coef=1.5}: Numeric scalar. Parameter controlling the
       boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
@@ -1155,7 +1159,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{}{\code{col.mountain=NULL}: Character scalar. Line color in
       mountain-type and polygon-type plots, defaults to the setting of
-      \code{col}.}  
+      \code{col}.}
+
+    \item{}{\code{col.sampleNames="white"}:Character or integer
+      scalar. The color used for the sample names in heatmap plots.}
 
     \item{}{\code{collapse=FALSE}: Logical scalar. Collapse overlapping
       ranges and aggregate the underlying data.} 
@@ -1240,7 +1247,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       plotting symbols.} 
 
     \item{}{\code{separator=0}: Numeric scalar. Number of pixels used
-      to separate individual samples in heatmap-type plots.} 
+      to separate individual samples in heatmap-type plots.}
+
+    \item{}{\code{showSampleNames=FALSE}:Boolean. Display the names of
+      the individual samples in a heatmap plot.}
 
     \item{}{\code{size=NULL}: Numeric scalar. The relative size of the
       track. Can be overridden in the \code{\link{plotTracks}} function.

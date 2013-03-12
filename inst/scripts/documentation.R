@@ -347,9 +347,13 @@ details <- list(
                             fontface.legend="Integer or character scalar. The font face for the legend text.",
                             fontfamily.legend="Integer or character scalar. The font family for the legend text.",
                             lineheight.legend="Numeric scalar. The line height for the legend text.",
-                            fontcolor.legend="Integer or character scalar. The font color for the legend text."),
+                            fontcolor.legend="Integer or character scalar. The font color for the legend text.",
+                            showSampleNames="Boolean. Display the names of the individual samples in a heatmap plot.",
+                            cex.sampleNames="Numeric scalar. The size factor for the sample names text in heatmap plots. Defaults to an automatic setting.",
+                            col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots."),
 
-                StackedTrack=c(reverseStacking="Logical flag. Reverse the y-ordering of stacked items. I.e., features that are plotted on the bottom-most stacks will be moved to the top-most stack and vice versa."),
+                StackedTrack=c(reverseStacking="Logical flag. Reverse the y-ordering of stacked items. I.e., features that are plotted on the bottom-most stacks will be moved to the top-most stack and vice versa.",
+                               stackHeight="Numeric between 0 and 1. Controls the vertical size and spacing between stacked elements. The number defines the proportion of the total available space for the stack that is used to draw the glyphs. E.g., a value of 0.5 means that half of the available vertical drawing space (for each stacking line) is used for the glyphs, and thus one quarter of the available space each is used for spacing above and below the glyph. Defaults to 0.75."),
                 
                 GdObject=c(fontsize="Numeric scalar. The font size for all text.",
                            fontface="Integer or character scalar. The font face for all text.",

@@ -23,7 +23,31 @@ NEW FEATURES
       the mapping of numeric values in the false color range. Thanks
       to Mark Heron for his code contribution.
 
+    o Sample names can now be shown in heatmap-type plots by setting
+      the 'showSampleNames' display parameter.
 
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Complete refactoring of the automatic font size adjustments to
+      provide more reasonable defaults.
+
+    o Tick labels on the genomic axis are now show in between tick
+      marks when zoomed in to single nucleotide level.
+
+BUG FIXES
+
+    o Fixed a bug in IdeogramTracks where all bands in the rounded
+      caps at the edges of the Ideogram were missing.
+
+    o The way genomic ranges are plotted is now according to the Lego
+      block model suggested by Herve. This is only relevant when zooming
+      in to the level of single nucleotides.
+
+    o Tick labels on the genome axis show only significant digits now.
+
+    o Sample ordering in heatmap plots is now correct.
+
+    o Numerous little fixes.
 
 CHANGES IN VERSION 1.2.0
 -------------------------

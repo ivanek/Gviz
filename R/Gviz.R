@@ -165,8 +165,7 @@
         type <- match.arg(.dpOrDefault(x, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
                           several.ok=TRUE)
-        is(x, "NumericTrack") && !(length(type)==1L && (type=="gradient" || type=="heatmap")) ||
-				(is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
+        is(x, "NumericTrack") || (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
     return(atrack & sapply(objects, .dpOrDefault, "showAxis", TRUE))
 }
 
@@ -199,7 +198,7 @@
     {
         ## Figure out the fontsize for the titles based on available space. If the space is too small (<atLeast)
         ## we don't plot any text, and we also limit to 'maximum' to avoid overblown labels. If the displayPars
-        ## 'cex.title' or 'cex.axis are not NULL, those overrides everything else.
+        ## 'cex.title' or 'cex.axis are not NULL, those override everything else.
         nn <- sapply(trackList, names)
         nwrap <- sapply(nn, function(x) paste(strwrap(x, 10), collapse="\n"))
         needAxis <- .needsAxis(trackList)
@@ -245,7 +244,13 @@
                                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
                                   several.ok=TRUE)
                 if(any(c("heatmap", "gradient") %in% type)){
-                    atSpace <- atSpace + 0.3 * atSpace
+                    nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))-1
+                    atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches"))*nlevs
+                }
+                if(type=="heatmap" && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+                    sn <- rownames(values(GdObject))
+                    wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(10, "points"), "inches")))
+                    atSpace <- atSpace + (wd * .dpOrDefault(GdObject, "cex.sampleNames", 0.5))
                 }
                 atSpace
             }))

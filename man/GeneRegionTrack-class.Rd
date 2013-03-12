@@ -1590,6 +1590,15 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 	  the bottom-most stacks will be moved to the top-most stack and
 	  vice versa.}
 
+	\item{}{\code{stackHeight=0.75}: Numeric between 0 and 1. Controls
+	  the vertical size and spacing between stacked elements. The number
+	  defines the proportion of the total available space for the stack
+	  that is used to draw the glyphs. E.g., a value of 0.5 means that
+	  half of the available vertical drawing space (for each stacking
+	  line) is used for the glyphs, and thus one quarter of the available
+	  space each is used for spacing above and below the glyph. Defaults
+	  to 0.75.}
+
       }
       
     }

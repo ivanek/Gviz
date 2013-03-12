@@ -461,7 +461,8 @@ setClass("StackedTrack",
          prototype=prototype(name="StackedTrack",
                              stacking="squish",
                              stackingValues=c("hide", "dense", "squish", "pack", "full"),
-                             dp=DisplayPars(reverseStacking=FALSE)),					  
+                             dp=DisplayPars(reverseStacking=FALSE,
+                                            stackHeight=0.75)),					  
          contains="RangeTrack")
 
 ## Need to fill the stacks slot here, don't want to recompute all the time
@@ -1230,7 +1231,10 @@ setClass("DataTrack",
                                             aggregation="mean",
                                             aggregateGroups=FALSE,
                                             ylim=NULL,
-                                            na.rm=FALSE)))
+                                            na.rm=FALSE,
+                                            showSampleNames=FALSE,
+                                            cex.sampleNames=NULL,
+                                            col.sampleNames="white")))
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ...){
