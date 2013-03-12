@@ -321,7 +321,7 @@ that. It can draw the necessary sequence information from one of the
 <<zooming2, fig=TRUE, width=7.5, height=3.1>>=
 library(BSgenome.Hsapiens.UCSC.hg19)
 strack <- SequenceTrack(Hsapiens, chromosome=chr)
-plotTracks(list(itrack, gtrack, atrack, grtrack, strack), from=26450430, to=26450490, cex=0.8)
+plotTracks(list(itrack, gtrack, atrack, grtrack, strack), from=26591822, to=26591852, cex=0.8)
 @ 
 
 So far we have replicated the features of a whole bunch of other
@@ -341,7 +341,7 @@ a simple \Rclass{DataTrack} object from randomly sampled data.
 
 <<DataTrack, fig=TRUE, width=7.5, height=4>>=
 set.seed(255)
-lim <- c(26463500, 26495000)
+lim <- c(26880000, 26890000)
 coords <- sort(c(lim[1], sample(seq(from=lim[1], to=lim[2]), 99), lim[2]))
 dat <- runif(100, min=-10, max=10)
 dtrack <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr, 
@@ -399,7 +399,7 @@ grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Mo
 head(displayPars(grtrack))
 displayPars(grtrack) <- list(background.panel="#FFFEDB")
 head(displayPars(grtrack))
-plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1], to=lim[2])
+plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1]-120000, to=lim[2]+10000)
 @ 
 
 For our gene model track we have now added the gene symbols of the
@@ -419,7 +419,7 @@ do however get precedence over the object-internal parameters. The
 following line of code exemplifies this behaviour.
 
 <<displayPars2, fig=TRUE, width=7.5, height=3>>=
-plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1]-1000, to=lim[2], 
+plotTracks(list(itrack, gtrack, atrack, grtrack), from=lim[1]-120000, to=lim[2]+10000, 
            background.panel="#FFFEDB", background.title="darkblue")
 @
 
@@ -614,7 +614,7 @@ The chromosome bands in the ideogram come with a unique identifier,
 and we can add this information to the plot, at least for those bands
 that are wide enought to accomodate the text.
 
-<<IdeogramTrackClass2, fig=TRUE, width=7.5, height=0.5>>=
+<<IdeogramTrackClass3, fig=TRUE, width=7.5, height=0.5>>=
 plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE, showBandId=TRUE, cex.bands=0.5)
 @
 
@@ -707,6 +707,21 @@ this will combine a boxplot with an average line and a data grid.
 
 <<mutitype, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 plotTracks(dTrack, type=c("boxplot", "a", "g"))
+@ 
+
+For the heatmap-type plotting type we arrange all the data in a
+well-structured two-dimensional matrix which gives us the oportunity
+to add a little extra information about the individual
+samples. Depending on how the \Rclass{DataTrack} was created in the
+first place we can choose to display the sample names (which in our
+case correspond to the column names of the input \Rclass{GRanges}
+object). The plot also highlights another feature of the heatmap type:
+the y-axis now shows a mapping of the numeric values into the color
+range.
+
+<<sampNames, fig=TRUE, width=7.5, height=1.5>>=
+colnames(mcols(twoGroups))
+plotTracks(dTrack, type=c("heatmap"), showSampleNames=TRUE, cex.sampleNames=0.6)
 @ 
 
 \subsubsection*{Data Grouping}
@@ -856,8 +871,7 @@ processes during the plotting operation tend to be much more costly,
 anyways. It is woth mentioning however that each plotting operation
 will cause reading off the file, and there are currently no caching
 mechanisms in place to avoid that. Nevertheless, plotting a larger
-chunk of the \code{bam} file still finishes in a reasonable time
-interval.
+chunk of the \code{bam} file still finishes in a reasonable time.
 
 <<filedt4, fig=TRUE, width=7.5, height=1>>=
 plotTracks(dTrack4, chromosome="chr1", from=189891483, to=190087517)
@@ -1461,6 +1475,18 @@ using similarly colored bars to connect the grouped elements.
 
 <<BiomartGeneRegionTrackCol, width=7.5, height=1.25, fig=TRUE>>=
 plotTracks(biomTrack, col.line=NULL)
+@ 
+
+For dense stacked plots like this it can sometimes be helpful to
+control the vertical spacing between the stacking rows. A simple way
+to do this is available for each object inheriting form the
+\Rclass{StackedTrack} class by means of the \Rfunarg{stackHeight}
+display parameter. It takes a value between 0 and 1 that controls
+which fraction of the available vertical space on a stacking line
+should be used to draw the feature glyphs.
+
+<<BiomartGeneRegionTrackHeight, width=7.5, height=1.25, fig=TRUE>>=
+plotTracks(biomTrack, col.line=NULL, stackHeight=0.3)
 @ 
 
 \subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
