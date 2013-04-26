@@ -180,8 +180,8 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     if(.hasSlot(GdObject, "bandTable") && chromosome %in% as.character(GdObject@bandTable$chrom))
     {
         ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
-        ranges <- GRanges(seqnames=ranges$name, ranges=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
-                          name=ranges$name, type=ranges$gieStain)
+        ranges <- GRanges(seqnames=as.vector(ranges$name), ranges=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
+                          name=as.vector(ranges$name), type=ranges$gieStain)
         GdObject@range <- ranges
         GdObject@chromosome <- chromosome
         return(GdObject)
@@ -3091,8 +3091,9 @@ setAs("AnnotationTrack", "UCSCData",
               new("UCSCData", GenomicData(ranges, chrom=chromosome(from),
                                           id=gsub(" ", "_", vals$id),
                                           name=gsub(" ", "_", as.character(vals$id)), itemRgb=color,
-                                          genome=genome(from), strand=strand,
-                                          asRangedData=TRUE),
+                                          strand=strand),
+                                          ##genome=genome(from), strand=strand,
+                                          ##asRangedData=TRUE),
                   trackLine = line)   
           })
 
@@ -3119,8 +3120,9 @@ setAs("GeneRegionTrack", "UCSCData",
               new("UCSCData", GenomicData(IRanges(start, end), chrom=chromosome(from),
                                           id=id, name=name, itemRgb=color, blockCount=blocks,
                                           blockSizes=bsizes, blockStarts=bstarts,
-                                          genome=genome(from), strand=strand,
-                                          asRangedData=TRUE),
+                                          strand=strand),
+                                          ##genome=genome(from), strand=strand,
+                                          ##asRangedData=TRUE),
                   trackLine = line)   
           })
           
