@@ -17,7 +17,9 @@ importClassesFrom(BSgenome, BSgenome)
 
 importClassesFrom(GenomicFeatures, "TranscriptDb")
 
-importClassesFrom(IRanges, IRanges, GroupedIRanges, NormalIRanges)
+importClassesFrom(IRanges, IRanges, NormalIRanges)
+
+importClassesFrom(XVector, GroupedIRanges)
 
 
 importClassesFrom(rtracklayer, UCSCData)
@@ -80,7 +82,9 @@ importFrom(grid, convertHeight, convertWidth, convertX, convertY,
            popViewport, pushViewport, stringHeight, stringWidth, unit,
            upViewport, viewport)
 
-importFrom(IRanges, IRanges, subseq, DataFrame)
+importFrom(IRanges, IRanges, DataFrame)
+
+importFrom(XVector, subseq)
 
 importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
