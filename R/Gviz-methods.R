@@ -3431,8 +3431,11 @@ setMethod(".buildRange", signature("TranscriptDb"),
               ## Finally we re-assign, subset if necessary, and sort
               range <- t2e
               values(range) <- vals
-              if(!noSubset && !is.null(chromosome))
-                  range <- subsetByOverlaps(range, sRange)
+              if(!noSubset && !is.null(chromosome)){
+	      	  ## We have to keep all exons for all the overlapping transcripts
+	          txSel <- unique(subsetByOverlaps(g2t, sRange)$tx_name)
+                  range <- range[range$transcript %in% txSel]
+ 	      }		  
               args <- list(genome=genome(range)[1])
               return(.buildRange(range=sort(range), chromosome=chromosome, args=args, ...))})
 
