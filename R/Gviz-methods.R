@@ -1673,7 +1673,8 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
         popViewport(1)
         return(invisible(GdObject))
     }
-    
+
+    GdObject <- GdObject[end(GdObject) > axRange[1] & start(GdObject) < axRange[2]]
     if(length(GdObject))
     {
         rfill <- .dpOrDefault(GdObject, "fill.range", "cornsilk3")
@@ -2838,7 +2839,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
         xx <- lcS[[j]][,1]
         yy <- lcS[[j]][,2]
         if(!first){
-            prev <- lcS[[as.numeric(j)-1]]
+            prev <- lcS[[as.character(as.numeric(j)-1)]]
             xx <- c(tail(prev[,1], 1), xx, tail(prev[,1], 1))
             yy <- c(1-tail(prev[,2], 1), yy, tail(prev[,2], 1))
         }
