@@ -1164,7 +1164,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         on.exit(popViewport(1))
     }
     ## if any of the types are gradient or heatmap we want the gradient scale
-    if(any(type %in% c("gradient", "heatmap"))){
+    if(any(type %in% c("gradient", "heatmap")) && .dpOrDefault(GdObject, "showColorBar", TRUE)){
         ## viewport to hold the color strip
         shift <- ifelse(all(type %in% c("gradient", "heatmap")), 1, 0)
         pcols <- .getPlottingFeatures(GdObject)
@@ -1173,7 +1173,10 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         pushViewport(vpAxisCont)
         for(i in seq_len(nlevs)){
             ## create color palette
-            palette <- colorRampPalette(c("white", pcols$col[i]))(ncolor+5)[-(1:5)]
+            cr <- c("white", pcols$col[i])
+	    if(nlevs<2)
+		cr <- .dpOrDefault(GdObject, "gradient", cr)
+            palette <- colorRampPalette(cr)(ncolor+5)[-(1:5)]
             pshift <- ifelse(i==nlevs, 1-shift, 0)
             vpTitleAxis <- viewport(x=unit(1, "npc")-unit(4*(i-1), "points"), width=unit(4+pshift, "points"),
                                     yscale=yscale, just=1)
@@ -1673,7 +1676,8 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
         popViewport(1)
         return(invisible(GdObject))
     }
-    
+
+    GdObject <- GdObject[end(GdObject) > axRange[1] & start(GdObject) < axRange[2]]
     if(length(GdObject))
     {
         rfill <- .dpOrDefault(GdObject, "fill.range", "cornsilk3")
@@ -2838,7 +2842,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
         xx <- lcS[[j]][,1]
         yy <- lcS[[j]][,2]
         if(!first){
-            prev <- lcS[[as.numeric(j)-1]]
+            prev <- lcS[[as.character(as.numeric(j)-1)]]
             xx <- c(tail(prev[,1], 1), xx, tail(prev[,1], 1))
             yy <- c(1-tail(prev[,2], 1), yy, tail(prev[,2], 1))
         }
