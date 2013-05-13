@@ -663,6 +663,12 @@ importFunction, stream=FALSE, ...)
      \item{}{\code{background.title="transparent"}: Character
        scalar. Make the title panel transparent by default.}
 
+     \item{}{\code{col.border.title="transparent"}: Integer or character
+      scalar. The border color for the title panels.}  
+
+    \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+      width for the title panels.}
+
      \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
        boxes (or a line) regardles of the available space.}
      

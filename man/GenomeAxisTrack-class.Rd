@@ -646,6 +646,12 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       The background color for the title panel. Defaults to omit the
       background.} 
 
+    \item{}{\code{col.border.title="transparent"}: Integer or character
+      scalar. The border color for the title panels.}  
+
+    \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+      width for the title panels.}
+
     \item{}{\code{cex=0.8}: Numeric scalar. The overall font expansion
       factor for the axis annotation text.} 
 

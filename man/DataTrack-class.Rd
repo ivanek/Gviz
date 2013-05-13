@@ -1194,9 +1194,18 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       vector of length 2. Fill color in mountain-type and polygon-type
       plots.}
 
-    \item{}{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
-      "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")}: Character
-      vector. The base colors for the 'gradient' plotting type.} 
+    \item{}{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF",
+      "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C",
+      "#08306B")}: Character vector. The base colors for the
+      'gradient' plotting type or the 'heatmap' type with a single
+      group. When plotting heatmaps with more than one group, the
+      'col' parameter can be used to control the group color scheme,
+      however the gradient will always be from white to 'col' and thus
+      does not offer as much flexibility as this 'gradient'
+      parameter.}
+
+    \item{}{\code{showColorBar=TRUE}: Boolean. Indicate the data range
+      color mapping in the axis for 'heatmap' or 'gradient' types.}
 
     \item{}{\code{groups=NULL}: Vector coercable to a factor. Optional
       sample grouping. See 'Details' section in \code{\linkS4class{DataTrack}}
@@ -1320,6 +1329,12 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panels.} 
+
+        \item{}{\code{col.border.title="transparent"}: Integer or character
+          scalar. The border color for the title panels.}  
+
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.}
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in

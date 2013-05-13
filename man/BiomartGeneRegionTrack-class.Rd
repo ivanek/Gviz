@@ -1435,6 +1435,14 @@ stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panels.} 
 
+
+        \item{}{\code{col.border.title="transparent"}: Integer or character
+          scalar. The border color for the title panels.}  
+
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.}
+
+
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
           which case it is computed based on the available space.} 

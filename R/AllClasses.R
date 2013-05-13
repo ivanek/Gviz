@@ -264,6 +264,8 @@ setClass("GdObject",
                                             lwd=1,
                                             lty="solid",
                                             background.title="lightgray",
+					    lwd.border.title=1,
+					    col.border.title="white",
                                             col.title="white",
                                             cex.title=NULL,
                                             fontfamily.title="sans",
@@ -1234,7 +1236,8 @@ setClass("DataTrack",
                                             na.rm=FALSE,
                                             showSampleNames=FALSE,
                                             cex.sampleNames=NULL,
-                                            col.sampleNames="white")))
+                                            col.sampleNames="white",
+					    showColorBar=TRUE)))
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ...){

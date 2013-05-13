@@ -887,6 +887,12 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
       The background color for the title panel. Defaults to omit the
       background.} 
 
+    \item{}{\code{col.border.title="transparent"}: Integer or character
+      scalar. The border color for the title panels.}  
+
+    \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+      width for the title panels.}
+
     \item{}{\code{bevel=0.45}: Numeric scalar, between 0 and 1. The
       level of smoothness for the two ends of the ideogram.} 
 

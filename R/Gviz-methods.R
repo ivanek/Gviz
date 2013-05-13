@@ -1145,8 +1145,9 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         vSpaceAvail <- abs(diff(range(at)))/abs(diff(yscale))*vpLocation()$isize["height"]
         acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
     }
-    nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))
+    nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))   
     if(type=="heatmap" && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+    
         groups <- .dpOrDefault(GdObject, "groups")
         sn <- if(is.null(groups)) rownames(values(GdObject)) else rev(unlist(split(rownames(values(GdObject)), factor(groups))))
         cex.sn <- .dpOrDefault(GdObject, "cex.sampleNames", acex)
@@ -1164,7 +1165,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         on.exit(popViewport(1))
     }
     ## if any of the types are gradient or heatmap we want the gradient scale
-    if(any(type %in% c("gradient", "heatmap"))){
+    if(any(type %in% c("gradient", "heatmap")) && .dpOrDefault(GdObject, "showColorBar", TRUE)){
         ## viewport to hold the color strip
         shift <- ifelse(all(type %in% c("gradient", "heatmap")), 1, 0)
         pcols <- .getPlottingFeatures(GdObject)
@@ -1173,7 +1174,10 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         pushViewport(vpAxisCont)
         for(i in seq_len(nlevs)){
             ## create color palette
-            palette <- colorRampPalette(c("white", pcols$col[i]))(ncolor+5)[-(1:5)]
+	    cr <- c("white", pcols$col[i])
+	    if(nlevs<2)
+		cr <- .dpOrDefault(GdObject, "gradient", cr)
+            palette <- colorRampPalette(cr)(ncolor+5)[-(1:5)]
             pshift <- ifelse(i==nlevs, 1-shift, 0)
             vpTitleAxis <- viewport(x=unit(1, "npc")-unit(4*(i-1), "points"), width=unit(4+pshift, "points"),
                                     yscale=yscale, just=1)

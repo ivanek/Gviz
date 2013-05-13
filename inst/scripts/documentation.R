@@ -317,7 +317,7 @@ details <- list(
                             type="Character vector. The plot type, one or several in \\code{c(\"p\",\"l\", \"b\", \"a\", \"s\", \"g\", \"r\", \"S\", \"smooth\", \"histogram\", \"mountain\", \"polygon\", \"h\", \"boxplot\", \"gradient\", \"heatmap\")}. See 'Details' section in \\code{\\linkS4class{DataTrack}} for more information on the individual plotting types.",
                             cex="Numeric scalar. The default pixel size for plotting symbols.",
                             ncolor="Integer scalar. The number of colors for the 'gradient' plotting type",
-                            gradient="Character vector. The base colors for the 'gradient' plotting type.",
+                            gradient="Character vector. The base colors for the 'gradient' plotting type or the 'heatmap' type with a single group. When plotting heatmaps with more than one group, the 'col' parameter can be used to control the group color scheme, however the gradient will always be from white to 'col' and thus does not offer as much flexibility as this 'gradient' parameter.",
                             collapse="Logical scalar. Collapse overlapping ranges and aggregate the underlying data.",
                             min.distance="Numeric scalar. The mimimum distance in pixel below which to collapse ranges.",
                             window="Numeric or character scalar. Aggregate the rows values of the data matrix to \\code{window} equally sized slices on the data range using the method defined in \\code{aggregation}. If negative, apply a running window of size \\code{windowSize} using the same aggregation method. Alternatively, the special value \\code{auto} causes the function to determine the optimal window size to avoid overplotting.",
@@ -350,7 +350,9 @@ details <- list(
                             fontcolor.legend="Integer or character scalar. The font color for the legend text.",
                             showSampleNames="Boolean. Display the names of the individual samples in a heatmap plot.",
                             cex.sampleNames="Numeric scalar. The size factor for the sample names text in heatmap plots. Defaults to an automatic setting.",
-                            col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots."),
+                            col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots.",
+			    showColorBar="Boolean. Indicate the data range color mapping in the axis for 'heatmap' or 'gradient' types."  
+			    ),
 
                 StackedTrack=c(reverseStacking="Logical flag. Reverse the y-ordering of stacked items. I.e., features that are plotted on the bottom-most stacks will be moved to the top-most stack and vice versa.",
                                stackHeight="Numeric between 0 and 1. Controls the vertical size and spacing between stacked elements. The number defines the proportion of the total available space for the stack that is used to draw the glyphs. E.g., a value of 0.5 means that half of the available vertical drawing space (for each stacking line) is used for the glyphs, and thus one quarter of the available space each is used for spacing above and below the glyph. Defaults to 0.75."),
@@ -375,6 +377,8 @@ details <- list(
                            alpha="Numeric scalar. The transparency for all track items.",
                            background.title="Integer or character scalar. The background color for the title panels.",
                            col.title="Integer or character scalar. The font color for the title panels.",
+			   col.title.border="Integer or character scalar. The border color for the title panels",
+ 			   lwd.title.border="Integer scalar. The border width for the title panels",
                            col.frame="Integer or character scalar. The line color used for the panel frame, if \\code{frame==TRUE}",
                            cex.title="Numeric scalar. The expansion factor for the title panel. This effects the fontsize of both the title and the axis, if any. Defaults to \\code{NULL}, which means that the text size is automatically adjusted to the available space.",
                            fontfamily.title="Integer or character scalar. The font family for the title panels.",

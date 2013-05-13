@@ -964,7 +964,9 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         if(!panel.only) {
             vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0)
             pushViewport(vpTitle)
-            grid.rect(gp=gpar(fill=fill, col="white"))
+	    lwd.border.title <- .dpOrDefault(trackList[[i]], "lwd.border.title", 1)
+            col.border.title <- .dpOrDefault(trackList[[i]], "col.border.title", "transparent")
+            grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
             needAxis <- .needsAxis(trackList[[i]])
             drawAxis(trackList[[i]], ranges["from"], ranges["to"], subset=FALSE)
             tit <- spaceSetup$nwrap[i]
@@ -1001,7 +1003,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             map[[(length(map)+1)-i]] <- tmp
         popViewport(1)
         if(.dpOrDefault(trackList[[i]], "frame", FALSE))
-            grid.rect(gp=gpar(col=.dpOrDefault(trackList[[i]], "col.frame", Gviz:::.DEFAULT_SHADED_COL)))
+            grid.rect(gp=gpar(col=.dpOrDefault(trackList[[i]], "col.frame", Gviz:::.DEFAULT_SHADED_COL), fill="transparent"))
         popViewport(1)
     }
 

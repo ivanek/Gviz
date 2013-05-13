@@ -858,7 +858,13 @@
           character scalar. The background color of the content panel.} 
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.} 
+          scalar. The background color for the title panels.}
+
+        \item{}{\code{col.border.title="transparent"}: Integer or character
+          scalar. The border color for the title panels.}  
+
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
 
         \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
           factor for all text.} 
