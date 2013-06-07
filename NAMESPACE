@@ -37,8 +37,8 @@ importMethodsFrom(BSgenome, providerVersion)
 importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transcriptsBy, transcripts)
 
 importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-", mcols, "mcols<-",
-                  seqlengths, seqnames, seqlevels, seqinfo, strand, "strand<-", seqnameStyle,
-                  renameSeqlevels)
+                  seqlengths, seqnames, seqlevels, seqinfo, strand, "strand<-",
+                  seqnameStyle)
 
 importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   "colnames<-", coverage, diff, disjointBins, end, "end<-", range,
@@ -66,7 +66,7 @@ importFrom(BiocGenerics, getObjectSlots)
 
 importFrom(biomaRt, getBM, useMart)
 
-importFrom(GenomicRanges, GRanges)
+importFrom(GenomicRanges, GRanges, renameSeqlevels)
 
 importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa)
 
