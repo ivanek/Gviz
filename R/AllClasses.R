@@ -966,7 +966,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
             filterValues <- c(filterValues, c(1, -1)[strand+1])
         }
         ens <- getBM(attributes, filters=filterNames,                           
-                     values=filterValues,
+                     values=filterValues, bmHeader=FALSE,
                      mart=.Object@biomart, uniqueRows=TRUE)
         colnames(ens) <- c("gene_id","transcript_id","exon_id","start",
                            "end", "rank", "strand", "symbol", "biotype",
