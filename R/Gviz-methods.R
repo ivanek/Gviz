@@ -703,7 +703,7 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
               r <- rNew
               ## Collapse all items within a group to a single meta-item if (if collapseTranscripts==TRUE)
               if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE)){
-                  newVals <- unlist(endoapply(split(values(r), gene(GdObject)), head, 1))
+                  newVals <- unlist(endoapply(split(values(r), paste(gene(GdObject), strand(GdObject))), head, 1))
                   newVals$exon <- NA
                   newVals$transcript <- newVals$gene
                   r <- unlist(range(split(r, gene(GdObject))))
