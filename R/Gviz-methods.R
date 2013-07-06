@@ -3469,7 +3469,7 @@ setMethod(".buildRange", signature("character"),
                       ## are available
                       cmap <- .resolveColMapping(data, args, defMap)
                       args <- cmap$args
-                      data <- cmpa$data
+                      data <- cmap$data
                   }
                   args[["chromosome"]] <- as.character(seqnames(data))
                   args[["strand"]] <- as.character(strand(data))
