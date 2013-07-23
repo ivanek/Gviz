@@ -12,6 +12,7 @@
 \alias{initialize,AlignedReadTrack-method}
 \alias{setCoverage,AlignedReadTrack-method}
 \alias{show,AlignedReadTrack-method}
+\alias{split,AlignedReadTrack,ANY-method}
 \alias{split,AlignedReadTrack-method}
 \alias{subset,AlignedReadTrack-method}
 
