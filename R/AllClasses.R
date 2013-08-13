@@ -1378,6 +1378,8 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
     ## the diplay parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "IdeogramTrack")
+    if(missing(bands))
+       bands <- NULL
     if(is.null(bands) && (missing(genome) || missing(chromosome)))
         return(callNextMethod(.Object=.Object, range=GRanges(), genome=NULL, chromosome=NULL, ...))
     if(is.null(bands)){
