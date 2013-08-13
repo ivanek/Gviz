@@ -1156,8 +1156,12 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         samNames <- viewport(x=1, width=wd, just=1, yscale=c(-0.05, 1.05))
         pushViewport(samNames)
         nr <- nrow(values(GdObject))
-        yy <- head(seq(0.05, 0.95, len=nr+1), -1)
-        yy <- yy + diff(yy)[[1]]/2
+        if(nr > 1){
+            yy <- head(seq(0.05, 0.95, len=nr+1), -1)
+            yy <- yy + diff(yy)[[1]]/2
+        }else{
+            yy <- 0.5
+        }
         grid.text(x=rep(0.5, nr), y=yy, label=rev(sn), just=0.5, gp=gpar(cex=cex.sn, col=col.cn))
         popViewport(1)
         samAxis <- viewport(x=1-wd, width=1-wd, just=1)

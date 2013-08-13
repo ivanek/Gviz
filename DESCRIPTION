@@ -1,5 +1,5 @@
 Package: Gviz
-Version: 1.5.8
+Version: 1.5.9
 Title: Plotting data and annotation information along genomic coordinates
 Author: Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou
 Maintainer: Florian Hahne <florian.hahne@novartis.com>
