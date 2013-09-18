@@ -107,9 +107,7 @@
         return(size)
     }
     if(is(x, "DataTrack") && is.null(displayPars(x, "size"))){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                                                          "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
-                          several.ok=TRUE)
+        type <- match.arg(.dpOrDefault(x, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
         size <- if(length(type)==1L){ if(type=="gradient") 1 else if(type=="heatmap") nrow(values(x)) else 5} else 5
         return(size)
     }
@@ -162,11 +160,13 @@
     if(!is.list(objects))
         objects <- list(objects)
     atrack <- sapply(objects, function(x){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                                                         "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
-                          several.ok=TRUE)
+        type <- match.arg(.dpOrDefault(x, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
         is(x, "NumericTrack") || (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
-    return(atrack & sapply(objects, .dpOrDefault, "showAxis", TRUE))
+    isOnlyHoriz <- sapply(objects, function(x){
+        type <- match.arg(.dpOrDefault(x, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
+        length(setdiff(type, "horizon")) == 0
+    })
+    return(atrack & sapply(objects, .dpOrDefault, "showAxis", TRUE) & !isOnlyHoriz)
 }
 
 
@@ -240,9 +240,7 @@
                 at <- pretty(yscale)
                 at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
                 atSpace <- max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
-                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth", "polygon",
-                                                                         "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
-                                  several.ok=TRUE)
+                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
                 if(any(c("heatmap", "gradient") %in% type)){
                     nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))-1
                     atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches"))*nlevs
@@ -857,8 +855,8 @@
 
 .legendInfo <- function()
 {
-    legInfo <- matrix(FALSE, ncol=7, nrow=15, dimnames=list(c("p", "b", "l", "a", "s", "S", "r", "h", "smooth",
-                                                              "histogram", "boxplot", "heatmap", "gradient", "mountain", "g"),
+    legInfo <- matrix(FALSE, ncol=7, nrow=16, dimnames=list(c("p", "b", "l", "a", "s", "S", "r", "h", "smooth",
+                                                              "histogram", "boxplot", "heatmap", "gradient", "mountain", "g", "horizon"),
                                                             c("lty", "lwd", "pch", "col", "cex", "col.lines", "col.symbol")))
     legInfo[2:9, c("lty", "lwd", "col.lines")] <- TRUE
     legInfo[1:2, c("pch", "cex", "col.symbol")] <- TRUE
@@ -1317,6 +1315,9 @@ availableDisplayPars <- function(class)
 .DEFAULT_LINE_COL <- "black"
 .DEFAULT_SHADED_COL <- "#808080"
 .DEFAULT_SYMBOL_COL <- "#0080FF"
+.PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
+                  "smooth", "polygon", "horizon", "histogram",
+                  "mountain", "h", "boxplot", "gradient", "heatmap")
 
 
 ## We store some preset in the options on package load
@@ -1624,3 +1625,4 @@ availableDefaultMapping <- function(file, trackType){
     mcols(data) <- mcols(data)[, !grepl("__.__", colnames(mcols(data))), drop=FALSE]
     return(list(data=data, args=args, defMap=defMap))
 }
+

@@ -21,6 +21,7 @@
 \alias{to}
 \alias{ctrack}
 \alias{geneDetails}
+\alias{dtHoriz}
 \docType{data}
 \title{
 Data sets

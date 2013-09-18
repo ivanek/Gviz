@@ -73,8 +73,8 @@ setMethod("length", "SequenceTrack", function(x)
 
 ## Extract the elementMetadata slot from the GRanges object of an object inheriting from RangeTrack as a data.frame.
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
-setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x)), stringsAsFactors=FALSE))
-setMethod("values", "GenomeAxisTrack", function(x) as.data.frame(values(ranges(x)), stringsAsFactors=FALSE))
+setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x))))
+setMethod("values", "GenomeAxisTrack", function(x) as.data.frame(values(ranges(x))))
 setMethod("values", "DataTrack", function(x, all=FALSE){
     if(sum(dim(x@data))==0) x@data else{
         sel <- if(all) rep(TRUE, ncol(x@data)) else seqnames(x) == chromosome(x)
@@ -190,11 +190,6 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     tmp <- IdeogramTrack(genome=genome(GdObject), chromosome=.chrName(value[1]), name=names(GdObject))
     displayPars(tmp) <- displayPars(GdObject)
     return(tmp)
-})
-setMethod("isActiveSeq", "RangeTrack", function(x) chromosome(x))
-setReplaceMethod("isActiveSeq", "GdObject", function(x, value){
-    chromosome(x) <- value
-    return(x)
 })
 
 ## Set or extract the genome from a RangeTrack object
@@ -1115,7 +1110,9 @@ setMethod("drawAxis", signature(GdObject="DataTrack"), function(GdObject, ...) {
                               just=c(0.5, 1)))
         on.exit(popViewport(1))
     }
-    if(.dpOrDefault(GdObject, "showAxis", TRUE)) {
+    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
+    isOnlyHoriz <- length(setdiff(type, "horizon")) == 0
+    if(!isOnlyHoriz && .dpOrDefault(GdObject, "showAxis", TRUE)) {
 	callNextMethod()
     } else {
 	return(NULL)
@@ -1123,9 +1120,7 @@ setMethod("drawAxis", signature(GdObject="DataTrack"), function(GdObject, ...) {
 })
 
 setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, from, to, ...) {
-    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), c("p", "l", "b", "a", "s", "g", "r", "S", "smooth", "polygon",
-                                                             "histogram", "mountain", "h", "boxplot", "gradient", "heatmap"),
-                      several.ok=TRUE)
+    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
     yvals <- values(GdObject)
     ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals)) 
                          range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
@@ -1146,7 +1141,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
     }
     nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))   
-    if(type=="heatmap" && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+    if(type %in% c("heatmap", "horizon") && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
     
         groups <- .dpOrDefault(GdObject, "groups")
         sn <- if(is.null(groups)) rownames(values(GdObject)) else rev(unlist(split(rownames(values(GdObject)), factor(groups))))
@@ -1964,9 +1959,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         browser()
     imageMap(GdObject) <- NULL
     type <- .dpOrDefault(GdObject, "type", "p")
-    type <- match.arg(type, c("p", "l", "b", "a", "s", "g", "r", "S", "smooth",
-                              "histogram", "mountain", "h", "boxplot", "gradient", "heatmap", "polygon"),
-                      several.ok=TRUE)
+    type <- match.arg(type, Gviz:::.PLOT_TYPES, several.ok=TRUE)
     ## Grouping may be useful for some of the plot types, may be ignored for others
     vals <- values(GdObject)
     groups <- .dpOrDefault(GdObject, "groups")
@@ -2033,7 +2026,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         grps <- .dpOrDefault(GdObject, "groups")
         if(!is.factor(grps))
             grps <- factor(grps)
-        if(is.null(grps) || length(grps)==1 || length(setdiff(type, c("gradient", "mountain", "grid"))) == 0)
+        if(is.null(grps) || length(grps)==1 || length(setdiff(type, c("gradient", "mountain", "grid", "horizon"))) == 0)
             displayPars(GdObject) <- list(legend=FALSE)
         if(as.logical(as.logical(.dpOrDefault(GdObject, "legend", FALSE))) && nlevels(grps)>1){
             cex <- .dpOrDefault(GdObject, "cex.legend", 0.8)
@@ -2337,6 +2330,30 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                       gp=gpar(col=gradient[valsScaled], fill=gradient[valsScaled], alpha=alpha),
                       default.units="native", just=c("left", "top"))
         }
+    }
+    ## For the horizon plot we can use the latticeExtra panel function, but need to reset the y-range 
+    if("horizon" %in% type){
+        if(.dpOrDefault(GdObject, "hdebug", FALSE))
+            browser()
+        nband <- 3
+        origin <- .dpOrDefault(GdObject, "horizon.origin", 0)
+        gr <- if(is.null(groups)) rep(1, nrow(vals)) else factor(.dpOrDefault(GdObject, "groups"))
+        yy <- lapply(split(as.data.frame(vals), gr), colMeans, na.rm=TRUE)
+        hfill <- .dpOrDefault(GdObject, "fill.horizon", c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"))
+        hcol <- .dpOrDefault(GdObject, "col.horizon", NA)
+        separator <- ceiling(.dpOrDefault(GdObject, "separator", 0)/2)
+        pushViewport(viewport(height=0.95, clip=TRUE))
+        for(i in seq_along(yy)){
+            yi <- yy[[i]]
+            horizonscale <- .dpOrDefault(GdObject, "horizon.scale", max(abs(yi - origin))/nband)
+            yr <- origin + c(0, horizonscale)
+            pushViewport(viewport(y=(i-1)/length(yy), height=1/length(yy), just=c(0.5, 0), clip=TRUE))
+            pushViewport(viewport(height=unit(1, "npc") - unit(separator, "points"), clip=TRUE))
+            pushViewport(viewport(xscale=c(minBase, maxBase), yscale=yr, clip=TRUE))
+            panel.horizonplot(pos, yi, border=hcol, col.regions=hfill)
+            popViewport(3)
+        }
+        popViewport(1)
     }
     ## The rest uses the lattice panel function
     na.rm <- .dpOrDefault(GdObject, "na.rm", FALSE)
@@ -3353,11 +3370,11 @@ setMethod(".buildRange", signature("TranscriptDb"),
                   chromosome <- .chrName(chromosome)
                   ## Seems like TranscriptDb objects use pass by reference for the active chromosomes, so we have to
                   ## restore the old values after we are done
-                  oldAct <- isActiveSeq(range)
+                  oldAct <- seqlevels(range)
                   oldRange <- range
-                  on.exit(isActiveSeq(oldRange)[seqlevels(oldRange)] <- oldAct)
-                  isActiveSeq(range)[seqlevels(range)] <- FALSE
-                  isActiveSeq(range) <- structure(rep(TRUE, length(unique(chromosome))), names=unique(chromosome))
+                  on.exit({restoreSeqlevels(oldRange); seqlevels(oldRange, force=TRUE) <- oldAct})
+                  restoreSeqlevels(range)
+                  seqlevels(range, force=TRUE) <- chromosome
                   sl <- seqlengths(range)
                   if(is.null(tstart))
                       tstart <- rep(1, length(chromosome))

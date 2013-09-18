@@ -1237,7 +1237,11 @@ setClass("DataTrack",
                                             showSampleNames=FALSE,
                                             cex.sampleNames=NULL,
                                             col.sampleNames="white",
-					    showColorBar=TRUE)))
+					    showColorBar=TRUE,
+                                            horizon.origin=0,
+                                            horizon.scale=NULL,
+                                            fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
+                                            col.horizon=NA)))
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ...){

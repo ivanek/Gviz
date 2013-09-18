@@ -1156,7 +1156,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       optional baseline, defaults to the setting of \code{col}.} 
 
     \item{}{\code{col.histogram="#808080"}: Character scalar. Line
-      color in histogram-type plots.} 
+      color in histogram-type plots.}
+
+    \item{}{\code{col.horizon=NA}: The line color for the segments in
+      the \code{horizon}-type plot. See \code{\link{horizonplot}} for
+      details.}
 
     \item{}{\code{col.mountain=NULL}: Character scalar. Line color in
       mountain-type and polygon-type plots, defaults to the setting of
@@ -1189,12 +1193,20 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{}{\code{fill.histogram="lightgray"}: Character scalar. Fill
       color in histogram-type plots, defaults to the setting of
-      \code{fill}.} 
+      \code{fill}.}
 
+    \item{}{\code{fill.horizon=c("#B41414", "#E03231", "#F7A99C",
+	"#9FC8DC", "#468CC8", "#0165B3")}: The fill colors for the
+      segments in the \code{horizon}-type plot. this should be a
+      vector of length six, where the first three entries are the
+      colors for positive changes, and the latter three entries are
+      the colors for negative changes. Defaults to a red-blue color
+      scheme. See \code{\link{horizonplot}} for details.}
+    
     \item{}{\code{fill.mountain=c("#CCFFFF", "#FFCCFF")}: Character
       vector of length 2. Fill color in mountain-type and polygon-type
       plots.}
-
+    
     \item{}{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF",
       "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C",
       "#08306B")}: Character vector. The base colors for the
@@ -1210,8 +1222,16 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{}{\code{groups=NULL}: Vector coercable to a factor. Optional
       sample grouping. See 'Details' section in \code{\linkS4class{DataTrack}}
-      for further information.} 
+      for further information.}
 
+    \item{}{\code{horizon.origin=0}: The baseline relative to which
+      changes are indicated on the \code{horizon}-type plot. See
+      \code{\link{horizonplot}} for details.}
+ 
+    \item{}{\code{horizon.scale=NULL}:The scale for each of the segments
+      in the \code{horizon}-type plot. Defaults to 1/3 of the absolute
+      data range. See \code{\link{horizonplot}} for details.}
+  
     \item{}{\code{jitter.x=FALSE}: Logical scalar. Toggle on jittering
       on the x axis in xy-type plots. See \code{\link{panel.xyplot}}
       for details.} 
@@ -1288,7 +1308,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{type="p"}: Character vector. The plot type, one or
       several in \code{c("p","l", "b", "a", "s", "g", "r", "S", "smooth",
       "histogram", "mountain", "polygon", "h", "boxplot", "gradient",
-      "heatmap")}. See 'Details' section in
+      "heatmap", "horizon")}. See 'Details' section in
       \code{\linkS4class{DataTrack}} for more information on the
       individual plotting types.}
 
@@ -1542,6 +1562,15 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       customized via the display parameters \code{ncolor} and
       \code{gradient} which control the number of gradient colors as
       well as the gradient base colors, respectively.}
+
+    \item{}{\code{horizon}: plot continuous data by cutting the y range into
+      segments and overplotting them with color representing the
+      magnitude and direction of deviation. This is particularly useful
+      when comparing multiple samples, in which case the horizon strips
+      are stacked. See \code{\link{horizonplot}} for details. Please
+      note that the \code{origin} and \code{horizonscale} arguments of
+      the Lattice \code{horizonplot} function are available as display
+      parameters \code{horizon.origin} and \code{horizon.scale}.}
     
   }
 

@@ -90,6 +90,8 @@ importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
            trellis.par.get)
 
+importFrom(latticeExtra, panel.xyarea, panel.horizonplot)
+
 
 importFrom(RColorBrewer, brewer.pal)
 

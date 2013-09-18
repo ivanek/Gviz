@@ -351,8 +351,12 @@ details <- list(
                             showSampleNames="Boolean. Display the names of the individual samples in a heatmap plot.",
                             cex.sampleNames="Numeric scalar. The size factor for the sample names text in heatmap plots. Defaults to an automatic setting.",
                             col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots.",
-			    showColorBar="Boolean. Indicate the data range color mapping in the axis for 'heatmap' or 'gradient' types."  
-			    ),
+			    showColorBar="Boolean. Indicate the data range color mapping in the axis for 'heatmap' or 'gradient' types.",
+                            horizon.origin="The baseline relative to which changes are indicated on the \\code{horizon}-type plot. See \\code{\\link{horizonplot}} for details.",
+                            horizon.scale="The scale for each of the segments in the \\code{horizon}-type plot. Defaults to 1/3 of the absolute data range. See \\code{\\link{horizonplot}} for details.",
+                            fill.horizon="The fill colors for the segments in the \\code{horizon}-type plot. this should be a vector of length six, where the first three entries are the colors for positive changes, and the latter three entries are the colors for negative changes. Defaults to a red-blue color scheme. See \\code{\\link{horizonplot}} for details.",
+                            col.horizon="The line color for the segments in the \\code{horizon}-type plot. See \\code{\\link{horizonplot}} for details."
+                            ),
 
                 StackedTrack=c(reverseStacking="Logical flag. Reverse the y-ordering of stacked items. I.e., features that are plotted on the bottom-most stacks will be moved to the top-most stack and vice versa.",
                                stackHeight="Numeric between 0 and 1. Controls the vertical size and spacing between stacked elements. The number defines the proportion of the total available space for the stack that is used to draw the glyphs. E.g., a value of 0.5 means that half of the available vertical drawing space (for each stacking line) is used for the glyphs, and thus one quarter of the available space each is used for spacing above and below the glyph. Defaults to 0.75."),

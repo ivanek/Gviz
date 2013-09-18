@@ -3,6 +3,20 @@ CHANGES IN VERSION 1.4.0
 
 NEW FEATURES
 
+    o The DataTrack class now comes with a new horizon plot type
+      thanks to input from Ge Tan.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o isActiveSeq and isActiveSeq<- are deprecated in GenomicFeatures
+      and their methods have been removed from Gviz.
+
+
+CHANGES IN VERSION 1.4.0
+-------------------------
+
+NEW FEATURES
+
     o BiomartGeneRegionTracks will now make use of the available CDS
       information in Ensembl.
 
