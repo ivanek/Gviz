@@ -858,10 +858,10 @@ to provide all logic necessary to parse that file into a valid
 as if the \Rfunarg{range} argument had been this \Rclass{GRanges}
 object. In other words, numeric \code{elementMetadata} columns will be
 shown as individual samples and non-numeric columns will be silently
-ignored. We can examplify this in the next code chunk. Note that the
+ignored. We can exemplify this in the next code chunk. Note that the
 \mgg package is using functionality from the \Rpackage{rtracklayer}
 package for most of the file import operations, just as we do here in
-more manual way.
+a more explicit way.
 
 <<filedt2>>=
 library(rtracklayer)

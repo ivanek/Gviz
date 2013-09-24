@@ -397,6 +397,7 @@ details <- list(
                            min.width="Numeric scalar. The minimum range width in pixels to display. All ranges are expanded to this size in order to avoid rendering issues. See \\code{\\link{collapsing}} for details.",
                            min.height="Numeric scalar. The minimum range height in pixels to display. All ranges are expanded to this size in order to avoid rendering issues.  See \\code{\\link{collapsing}} for details.",
                            min.distance="Numeric scalar. The minimum pixel distance before collapsing range items, only if \\code{collapse==TRUE}. See \\code{\\link{collapsing}} for details.",
+                           rot.title="The rotation angle for the text in the title panel. Even though this can be adjusted, the automatic resizing of the title panel will currently not work, so use at own risk.",
                            frame="Boolean. Draw a frame around the track when plotting.",
                            size="Numeric scalar. The relative size of the track. Can be overridden in the \\code{\\link{plotTracks}} function.",
                            "..."="additional display parameters are allowed. Those typically take the value of a valid R color descriptors. The parameter names will later be matched to optional track item types as defined in the 'feature' range attribute, and all tracks of the matched types are colored accordingly. See the documentation of the \\code{\\link{GeneRegionTrack}} and \\code{\\link{AnnotationTrack}} classes as well as \\code{\\link{grouping}} for details."),

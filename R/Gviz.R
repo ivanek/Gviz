@@ -980,7 +980,9 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
                 lcex <- spaceSetup$cex[i]
                 x <- if(needAxis) 0.075 else 0.4
                 just <- if(needAxis) c("center", "top") else "center"
-                suppressWarnings(grid.text(tit, unit(x, "npc"), rot=90, gp=gpar(col=col, fontface=fontface, cex=lcex,
+                ## FIXME: We need to deal with this when calculating the space for the title bar
+                rot <- .dpOrDefault(trackList[[i]], "rot.title", 90)
+                suppressWarnings(grid.text(tit, unit(x, "npc"), rot=rot, gp=gpar(col=col, fontface=fontface, cex=lcex,
                                                                fontsize=fontsize, lineheight=lineheight,
                                                                fontfamily=fontfamily), just=just))
             }

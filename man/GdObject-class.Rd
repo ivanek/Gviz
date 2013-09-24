@@ -522,7 +522,12 @@
     \item{}{\code{min.width=1}: Numeric scalar. The minimum range width
       in pixels to display. All ranges are expanded to this size in
       order to avoid rendering issues. See \code{\link{collapsing}}
-      for details.} 
+      for details.}
+
+    \item{}{\code{rot.title=1}: Numeric scalar. The rotation angle for
+      the text in the title panel. Even though this can be adjusted, the
+      automatic resizing of the title panel will currently not work, so
+      use at own risk.}
 
     \item{}{\code{showAxis=TRUE}: Boolean controlling whether to plot
       a y axis (only applies to track types where axes are implemented).} 
