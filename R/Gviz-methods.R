@@ -180,8 +180,12 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     if(.hasSlot(GdObject, "bandTable") && chromosome %in% as.character(GdObject@bandTable$chrom))
     {
         ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
-        ranges <- GRanges(seqnames=as.vector(ranges$name), ranges=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
-                          name=as.vector(ranges$name), type=ranges$gieStain)
+        bnames <- as.character(ranges$name)
+        sel <- is.na(bnames)
+        if(any(sel))
+            bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
+        ranges <- GRanges(seqnames=bnames, ranges=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
+                          name=bnames, type=ranges$gieStain)
         GdObject@range <- ranges
         GdObject@chromosome <- chromosome
         return(GdObject)
@@ -2942,8 +2946,8 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     ol <- queryHits(findOverlaps(range(GdObject), IRanges(start=c(bevel, 1-bevel)*len, width=1)))
     st <- start(range(GdObject))/len
     ed <- end(range(GdObject))/len
-    stExt <- c(st[1:ol[1]], bevel, st[(ol[1]+1):ol[2]], 1-bevel)
-    valsExt <- rbind(vals[1:ol[1],], vals[ol[1],], vals[(ol[1]+1):ol[2],], vals[ol[2],])
+    stExt <- if(length(GdObject)==1) c(0, bevel, 1-bevel) else c(st[1:ol[1]], bevel, st[(ol[1]+1):ol[2]], 1-bevel)
+    valsExt <- if(length(GdObject)==1) vals[rep(1,3),] else rbind(vals[1:ol[1],], vals[ol[1],], vals[(ol[1]+1):ol[2],], vals[ol[2],])
     if(ol[2]<length(st)){
         stExt <- c(stExt, st[(ol[2]+1):length(st)])
         valsExt <- rbind(valsExt, vals[(ol[2]+1):length(st),])
@@ -2980,8 +2984,10 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
                      gp=gpar(col=cols["acen"], fill=cols["acen"]))
     }
     ## Now the caps
-    lc <- .roundedCap(c(stExt[1], margin), c(stExt[ls], 1-margin), st, vals, side="left", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
-    rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), ed, vals, side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
+    str <- if(length(st)==1) 0:1 else st
+    edr <- if(length(ed)==1) 1:2 else ed
+    lc <- .roundedCap(c(stExt[1], margin), c(stExt[ls], 1-margin), str, vals, side="left", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
+    rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), edr, vals, side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
     lcol <- "black"; lwd <- 1; lty <- 1
     ## Now some outlines
     grid.lines(lc[,1], lc[,2], gp=gpar(col=lcol, lwd=lwd, lty=lty))

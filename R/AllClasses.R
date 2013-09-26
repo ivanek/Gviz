@@ -1406,8 +1406,12 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
         stop("Chromosome '", chromosome, "' does not exist on UCSC genome '", genome, "'")
     if(is.null(name))
         name <- .chrName(chromosome)[1]
-    ranges <- GRanges(seqnames=as.character(bands$name), range=IRanges(start=bands$chromStart, end=bands$chromEnd),
-                      name=as.character(bands$name), type=as.character(bands$gieStain))
+    bnames <- as.character(bands$name)
+    sel <- is.na(bnames)
+    if(any(sel))
+        bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
+    ranges <- GRanges(seqnames=bnames, range=IRanges(start=bands$chromStart, end=bands$chromEnd),
+                      name=bnames, type=as.character(bands$gieStain))
     .Object <- callNextMethod(.Object=.Object, range=ranges, genome=genome, chromosome=chromosome, name=name, ...)
     return(.Object)
 })
