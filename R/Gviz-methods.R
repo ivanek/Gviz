@@ -3679,7 +3679,7 @@ setMethod("show",signature(object="SequenceBSgenomeTrack"),
                                   providerVersion(object@sequence),
                                   releaseDate(object@sequence),
                                   releaseName(object@sequence),
-                                  object@sequence@seqs_pkgname), sep="")
+                                  object@sequence@pkgname), sep="")
                   })
 
 ## Here we only need the name, genome and currently active chromosome information
