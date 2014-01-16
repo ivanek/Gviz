@@ -1,3 +1,22 @@
+##----------------------------------------------------------------------------------------------------------------------
+## A bunch of package constants
+##----------------------------------------------------------------------------------------------------------------------
+.DEFAULT_FILL_COL <- "lightgray"
+.DEFAULT_OVERPLOT_COL <- "red"
+.DEFAULT_LINE_COL <- "black"
+.DEFAULT_SHADED_COL <- "#808080"
+.DEFAULT_SYMBOL_COL <- "#0080FF"
+.DEFAULT_LINE_COL <- "darkgray"
+.PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
+                  "smooth", "polygon", "horizon", "histogram",
+                  "mountain", "h", "boxplot", "gradient", "heatmap")
+.THIN_BOX_FEATURES <- c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA",
+                        "three_prime_UTR", "five_prime_UTR")
+.DEFAULT_HORIZON_COL <- c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3")
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
 ## Check the class and structure of an object
 .checkClass <- function (x, class, length = NULL, verbose = FALSE, mandatory = TRUE){
     if (mandatory && missing(x))
@@ -54,7 +73,7 @@
 ## Make a deep copy of the display parameter environment
 .deepCopyPars <- function(GdObject)
 {
-    oldPars <- displayPars(GdObject)
+    oldPars <- displayPars(GdObject, hideInternal=FALSE)
     GdObject@dp <- DisplayPars()
     displayPars(GdObject) <- oldPars
     return(GdObject)
@@ -92,6 +111,16 @@
 }
 
 
+.whichStrand <- function(trackList){
+    if(!is.list(trackList))
+        trackList <- list(trackList)
+    str <- unlist(lapply(trackList, function(x)
+                         if(is(x, "HighlightTrack") || is(x, "OverlayTrack")) sapply(x@trackList, .dpOrDefault, "reverseStrand") else{
+                             .dpOrDefault(x, "reverseStrand")}))
+    return(ifelse(str, "reverse", "forward"))
+}
+    
+
 
 ## A function returning the amount of vertical space needed for a track
 ## Arguments:
@@ -107,7 +136,7 @@
         return(size)
     }
     if(is(x, "DataTrack") && is.null(displayPars(x, "size"))){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
+        type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
         size <- if(length(type)==1L){ if(type=="gradient") 1 else if(type=="heatmap") nrow(values(x)) else 5} else 5
         return(size)
     }
@@ -134,22 +163,69 @@
 ## Return a particular displayPars value or a default
 ## Arguments:
 ##    o GdObject: an object inheriting from class GdObject
-##    o par: the name of the displayPar
+##    o par: the name of the displayPar, or a list of alternatives to go though before finally taking
+##       the supplied default value
 ##    o default: a default value for the parameter if it can't be found in GdObject
 ## Value: the value of the displayPar
 .dpOrDefault <- function(GdObject, par, default=NULL, fromPrototype=FALSE)
 {
-    val <- getPar(GdObject, par)
-    if(is.null(val)) {
+    val <- getPar(x=GdObject, name=par, asIs=TRUE)
+    val <- val[!sapply(val, is.null)]
+    if(length(val)==0) {
        if (fromPrototype) {
-          val <- Gviz:::.parMappings[[GdObject@name]][[par]]
+          val <- .parMappings[[GdObject@name]][par]
+          val <- val[!sapply(val, is.null)]
+          if(length(val)==0)
+              val <- NULL
        } else {
           val <- default
        }
+    }else{
+        val <- val[[1]]
     }
     return(val)
 }
 
+
+
+## A special version of the above for font settings. This will try to extract the respective parent
+## defaults before finally taking the provided default value.
+## Arguments:
+##    o GdObject: an object inheriting from class GdObject
+##    o par: the name of the displayPar. Can also be a vector in which case a number of alternatives
+##       is tested, then the parent default for the first element until finally moving to the supplied default
+##    o type: the sub-type
+##    o default: a default value for the parameter if it can't be found in GdObject
+## Value: the value of the displayPar
+.dpOrDefaultFont <- function(GdObject, par, type=NULL, default){
+    name <- if(is.null(type)) par else sprintf("%s.%s", par, type)
+    val <- getPar(GdObject, name[1])
+    name <- name[-1]
+    while(is.null(val) && length(name)){
+        val <- getPar(GdObject, name[1])
+        name <- name[-1]
+    }
+    if(is.null(val))
+        val <- .dpOrDefault(GdObject, par[1], default)
+    return(val)
+}
+
+
+## Return the font settings for a GdObject
+.fontGp <- function(GdObject, subtype=NULL, ...){
+    if(is(GdObject, "OverlayTrack"))
+        GdObject <- GdObject@trackList[[1]]
+    gp <- list(fontsize=as.vector(.dpOrDefaultFont(GdObject, "fontsize", subtype, 12))[1],
+               fontface=as.vector(.dpOrDefaultFont(GdObject, "fontface", subtype, 1))[1],
+               fontfamily=as.character(as.vector(.dpOrDefaultFont(GdObject, "fontfamily", subtype, 1)))[1],
+               col=as.vector(.dpOrDefaultFont(GdObject, "fontcolor", subtype, "black"))[1],
+               lineheight=as.vector(.dpOrDefaultFont(GdObject, "lineheight", subtype, 1))[1],
+               alpha=as.vector(.dpOrDefaultFont(GdObject, "alpha", subtype, 1))[1],
+               cex=as.vector(.dpOrDefaultFont(GdObject, "cex", subtype, 1))[1])
+    gp[names(list(...))] <- list(...)
+    gp <- gp[!sapply(gp, is.null)]
+    return(do.call(gpar, gp))
+}
 
 
 ## Check a list of GdObjects whether an axis needs to be drawn for each of them.
@@ -160,13 +236,26 @@
     if(!is.list(objects))
         objects <- list(objects)
     atrack <- sapply(objects, function(x){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
+        type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
         is(x, "NumericTrack") || (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
     isOnlyHoriz <- sapply(objects, function(x){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
-        length(setdiff(type, "horizon")) == 0
+        type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
+        length(setdiff(type, "horizon")) == 0 && !.dpOrDefault(x, "showSampleNames", FALSE)
     })
     return(atrack & sapply(objects, .dpOrDefault, "showAxis", TRUE) & !isOnlyHoriz)
+}
+
+## Check a list of GdObjects whether a title needs to be drawn for each of them.
+## Arguments:
+##    o object: a list of GdObjects
+## Value: a logical vector of the same length as 'objects'
+.needsTitle <- function(objects) {
+    if(!is.list(objects))
+        objects <- list(objects)
+    sapply(objects, function(x){
+        if(is(x, "HighlightTrack") || is(x, "OverlayTrack"))
+            any(sapply(x@trackList, .dpOrDefault, "showTitle", TRUE)) else .dpOrDefault(x, "showTitle", TRUE)
+    })
 }
 
 
@@ -184,6 +273,7 @@
 .setupTextSize <- function(trackList, sizes, title.width, panelOnly=FALSE)
 {
     curVp <- vpLocation()
+    trackList <- lapply(trackList, function(x) if(is(x, "OverlayTrack")) x@trackList[[1]] else x)
     spaceNeeded <- if(is.null(sizes)) lapply(trackList, .verticalSpace, curVp$size["height"]) else {
         if(length(sizes) != length(trackList))
             stop("The 'sizes' vector has to match the size of the 'trackList'.")
@@ -202,6 +292,10 @@
         nn <- sapply(trackList, names)
         nwrap <- sapply(nn, function(x) paste(strwrap(x, 10), collapse="\n"))
         needAxis <- .needsAxis(trackList)
+        isOnlyHoriz <- sapply(trackList, function(x){
+            type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
+            length(setdiff(type, "horizon")) == 0
+        })
         nwrap[needAxis] <- nn[needAxis]
         lengths <- as.numeric(convertWidth(stringWidth(nwrap),"inches"))+0.2
         heights <- curVp$isize["height"]*spaceNeeded
@@ -220,7 +314,7 @@
         ## we add 1.5 time the width of a single line of text to accomodate for it.
         wfac <- curVp$isize["width"]
         leaveSpace <- ifelse(any(needAxis), 0.15, 0.2)
-        width <- (as.numeric(convertWidth(stringHeight(paste("g_T", nwrap, "g_T", sep="")), "inches"))*cex+leaveSpace)/wfac
+        width <- (as.numeric(convertHeight(stringHeight(paste("g_T", nwrap, "g_T", sep="")), "inches"))*cex+leaveSpace)/wfac
         showtitle <- sapply(trackList, .dpOrDefault, "showTitle", TRUE)
         width[!showtitle & !needAxis] <- 0
         width[!showtitle] <- 0
@@ -240,14 +334,15 @@
                 at <- pretty(yscale)
                 at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
                 atSpace <- max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
-                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), Gviz:::.PLOT_TYPES, several.ok=TRUE)
+                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
                 if(any(c("heatmap", "gradient") %in% type)){
                     nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))-1
                     atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches"))*nlevs
                 }
-                if(type=="heatmap" && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+                if(type %in% c("heatmap", "horizon") && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
                     sn <- rownames(values(GdObject))
-                    wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(10, "points"), "inches")))
+                    axSpace <- ifelse(isOnlyHoriz, 0, 10)
+                    wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(axSpace, "points"), "inches")))
                     atSpace <- atSpace + (wd * .dpOrDefault(GdObject, "cex.sampleNames", 0.5))
                 }
                 atSpace
@@ -314,50 +409,180 @@
 }
 
 
+## Deal with composite exons and provide polygon plotting coordinates for them. For all normal exons simply return
+## the original bounding box data
+## Arguments:
+##    o box: the data frame with the bounding box information
+##    o type: the type of coordinates for the composite exons, one in 'box', 'arrow' or 'fixedArrow'
+## Value: a list with three elements: box, the non-composite exons, pols, the plotting coordinates for the merged composite exons,
+##        and polpars, a data.frame of plotting parameters for the polygons
+.handleComposite <- function(box, type="box", W=1/4, H=1/3, min.width=10, max.width=Inf){
+    box <- box[order(box$start),]
+    boxFinal <- data.frame(stringsAsFactors=FALSE)
+    polFinal <- data.frame(stringsAsFactors=FALSE)
+    polPars <- data.frame(stringsAsFactors=FALSE)
+    bss <- split(box, box$transcript)
+    for(b in bss){
+        ol <- names(which(table(b$exon)>1))
+        boxFinal <- rbind(boxFinal, b[!b$exon %in% ol,])
+        if(length(ol)){
+            b <- b[b$exon %in% ol,]
+            r <- IRanges(start=b$cx1, end=b$cx2)
+            rr <- reduce(r)
+            brs <- split(b, subjectHits(findOverlaps(r, rr)))
+            for(j in seq_along(brs)){
+                if(nrow(brs[[j]]) == 1){
+                    boxFinal <- rbind(boxFinal, brs[[j]])
+                }else{
+                    xlocs <- as.vector(t(brs[[j]][, c("cx1", "cx2"), drop=FALSE]))
+                    ylocs <- unlist(brs[[j]][, c("cy1", "cy2"), drop=FALSE])
+                    fh <- 1:(length(ylocs)/2)
+                    sh <- (length(ylocs)/2+1):length(ylocs)
+                    ylocs[sh] <- rev(ylocs[sh])
+                    ylocs <- rep(ylocs, each=2)
+                    if(type == "box"){
+                        polFinal <- rbind(polFinal, data.frame(x=c(xlocs, rev(xlocs)), y=ylocs,
+                                                               id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
+                                                               stringsAsFactors=FALSE))
+                        polPars <- rbind(polPars, data.frame(fill=brs[[j]][1, "fill"], col=brs[[j]][1, "col"], stringsAsFactors=FALSE))
+                    }else{
+                        polPars <- rbind(polPars, data.frame(fill=brs[[j]][1, "fill"], col=brs[[j]][1, "col"], stringsAsFactors=FALSE))
+                        str <- brs[[j]]$strand[1]
+                        offset <- (abs(brs[[j]]$cy1 - brs[[j]]$cy2)) * H / 2
+                        if(str == "+" && abs(diff(xlocs[(length(xlocs)-1):length(xlocs)])) > min.width){
+                            offset <- rep(offset, each=2)
+                            asel <- (length(xlocs)-1):length(xlocs)
+                            bsel <- 1:(min(asel)-1)
+                            d <- abs(diff(xlocs[asel]))
+                            afp <- if(type == "arrow") rep(xlocs[asel][1] + max(d*W, d-max.width), 2) else {
+                                rep(max(xlocs[asel][1], xlocs[asel][2]-W), 2)}
+                            xlocs <- c(xlocs[bsel], xlocs[asel][1], afp, xlocs[asel][2], afp, xlocs[asel][1], rev(xlocs[bsel]))
+                            mid <- length(ylocs)/2
+                            asel <- (mid-1):(mid+2)
+                            bsel <- c(1:(mid-2), (mid+3):length(ylocs))
+                            fh <- 1:(length(bsel)/2)
+                            sh <- (length(bsel)/2+1):length(bsel)
+                            ylocs <- c(ylocs[bsel[fh]] + offset[fh], ylocs[asel][1:2] + tail(offset,1), ylocs[asel][1],
+                                       ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2, ylocs[asel][4],
+                                       ylocs[asel][3:4] - tail(offset,1), ylocs[bsel[sh]] - offset[fh])
+                            polFinal <- rbind(polFinal, data.frame(x=c(xlocs, rev(xlocs)), y=ylocs,
+                                                                   id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
+                                                                   stringsAsFactors=FALSE)) 
+                        }else if(str == "-" && abs(diff(xlocs[1:2])) > min.width){
+                            yoffset <- c(rep(offset[-1], each=2), -rev(rep(offset[-1], each=2)))
+                            asel <- 1:2
+                            bsel <-  3:length(xlocs)
+                            d <- abs(diff(xlocs[asel]))
+                            afp <- if(type == "arrow") rep(xlocs[asel][2] - max(d*W, d-max.width), 2) else{
+                                rep(min(xlocs[asel][2], xlocs[asel][1] + W), 2)}
+                            xlocs <- c(xlocs[asel][1], afp, xlocs[asel][2], xlocs[bsel], rev(xlocs[bsel]), xlocs[asel][2], afp, xlocs[asel][1])
+                            asel <- c(1:2, (length(ylocs)-1):length(ylocs))
+                            bsel <- 3:(length(ylocs)-2)
+                            ylocs <- c(ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2, ylocs[asel][1], rep(ylocs[asel][1]+offset[1], 2),
+                                       ylocs[bsel]+yoffset, rep(ylocs[asel][3]-offset[1], 2), ylocs[asel][3], ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2)
+                            polFinal <- rbind(polFinal, data.frame(x=xlocs, y=ylocs,
+                                                                   id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
+                                                                   stringsAsFactors=FALSE)) 
+                        }else{
+                            offset <- c(rep(offset, each=2), -rev(rep(offset, each=2)))
+                            polFinal <- rbind(polFinal, data.frame(x=c(xlocs, rev(xlocs)), y=ylocs+offset,
+                                                                   id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
+                                                                   stringsAsFactors=FALSE)) 
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return(list(box=boxFinal, pols=polFinal, polpars=polPars))
+}
+
 
 ## Take coordinates for the bounding boxes of annotation regions and plot filled arrows inside.
 ## Arguments:
-##    o coords as numeric matrix with 4 columns: x1, y1, x2, y2
+##    o the data frame with the bounding box information
 ##    o W: the proportion of the total box width used for the arrow head
 ##    o H: the proportion of the total box height used for the arrow head
-##    o col: the boundary color
-##    o fill: the fill color
 ##    o lwd: the boundary line width
 ##    o lty: the boundary line type
 ##    o alpha: the transparency
-##    o strand: the strand information, a character of either "+" or "-"
 ##    o min.width: the minumum width of the arrow head. Below this size a simple box is drawn
-## Note that the last arguments 4-9 all have to be of the same length as number of rows in coords.
+## Note that the last arguments 4-9 all have to be of the same length as number of rows in box.
 ## Value: the function is called for its side-effects of drawing on the graphics device
-.filledArrow <- function(coords, W=1/4, H=1/3, col, fill, lwd, lty, alpha, strand=0, min.width=10) {
-    A <- coords[,1:2,drop=FALSE]
-    B <- coords[,3:4,drop=FALSE]
-    ## First everything that is still a box
-    osel <- abs(B[,1]-A[,1]) < min.width | !strand %in% c("+", "-")
-    xx <-  c(A[osel,1], B[osel,1], B[osel,1], A[osel,1])
-    ##offset <-  ifelse(strand[osel] %in% c("+", "-"), (abs(B[osel,2]-A[osel,2])*H/2), 0)
-    offset <- (abs(B[osel,2]-A[osel,2])*H/2)
-    yy <- c(rep(A[osel,2]+offset, 2), rep(B[osel,2]-offset, 2))
-    id <- rep(seq_len(sum(osel)), 4)
-    pars <- data.frame(fill=fill, col=col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[osel,]
-    ## Now the arrows facing right
-    sel <- !osel & strand=="+"
-    id <- c(id, rep(seq(from=if(!length(id)) 1 else max(id)+1, by=1, len=sum(sel)), 7))
-    xx <- c(xx, A[sel,1], rep(A[sel,1]+(abs(B[sel,1]-A[sel,1])*W),2), B[sel,1], rep(A[sel,1]+(abs(B[sel,1]-A[sel,1])*W),2), A[sel,1])
-    yy <- c(yy, rep(A[sel,2]+(abs(B[sel,2]-A[sel,2])*H/2),2), A[sel,2], A[sel,2]+(abs(B[sel,2]-A[sel,2])/2), B[sel,2],
-            rep(B[sel,2]-(abs(B[sel,2]-A[sel,2])*H/2),2))
-    pars <- rbind(pars, data.frame(fill=fill, col=col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[sel,])
-    ## And finally those facing left
-    sel <- !osel & strand=="-"
-    id <- c(id, rep(seq(from=if(!length(id)) 1 else max(id)+1, by=1, len=sum(sel)), 7))
-    xx <- c(xx, B[sel,1], rep(B[sel,1]-((B[sel,1]-A[sel,1])*W),2), A[sel,1], rep(B[sel,1]-((B[sel,1]-A[sel,1])*W),2), B[sel,1])
-    yy <- c(yy, rep(A[sel,2]+(abs(B[sel,2]-A[sel,2])*H/2),2), A[sel,2], A[sel,2]+(abs(B[sel,2]-A[sel,2])/2), B[sel,2],
-            rep(B[sel,2]-(abs(B[sel,2]-A[sel,2])*H/2),2))
-    pars <- rbind(pars, data.frame(fill=fill, col=col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[sel,])
-    grid.polygon(x=xx, y=yy, gp=gpar(fill=pars$fill, col=pars$col, alpha=pars$alpha, lwd=pars$lwd, lty=pars$lty),
-                 default.units="native", id=id)
+.filledArrow <- function(box, W=1/4, H=1/3, lwd, lty, alpha, min.width=10, max.width=Inf, absoluteWidth=FALSE) {
+    boxC <-  if("transcript" %in% colnames(box)){
+        .handleComposite(box, ifelse(absoluteWidth, "fixedArrow", "arrow"), min.width=min.width, max.width=max.width, W=W, H=H) }else {
+        list(box=box, pols=data.frame())}
+    xx <- yy <- numeric()
+    id <- character()
+    pars <- data.frame() 
+    if(nrow(boxC$box)){
+        box <- boxC$box
+        A <- box[,1:2,drop=FALSE]
+        B <- box[,3:4,drop=FALSE]
+        ## First everything that is still a box
+        osel <- abs(B[,1]-A[,1]) < min.width | !box$strand %in% c("+", "-")
+        xx <-  c(A[osel,1], B[osel,1], B[osel,1], A[osel,1])
+        offset <- (abs(B[osel,2]-A[osel,2])*H/2)
+        yy <- c(rep(A[osel,2]+offset, 2), rep(B[osel,2]-offset, 2))
+        id <- rep(seq_len(sum(osel)), 4)
+        pars <- data.frame(fill=box$fill, col=box$col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[osel,]
+        ## Now the arrows facing right
+        sel <- !osel & box$strand=="+"
+        id <- c(id, rep(seq(from=if(!length(id)) 1 else max(id)+1, by=1, len=sum(sel)), 7))
+        d <- abs(B[sel,1]-A[sel,1])
+        alp <- if(!absoluteWidth) rep(A[sel,1]+pmax(d*W, d-rep(max.width, sum(sel))),2) else rep(pmax(B[sel,1]-W, pmin(B[sel,1], A[sel,1])),2)
+        xx <- c(xx, A[sel,1], alp, B[sel,1], alp, A[sel,1])
+        yy <- c(yy, rep(A[sel,2]+(abs(B[sel,2]-A[sel,2])*H/2),2), A[sel,2], A[sel,2]+(abs(B[sel,2]-A[sel,2])/2), B[sel,2],
+                rep(B[sel,2]-(abs(B[sel,2]-A[sel,2])*H/2),2))
+        pars <- rbind(pars, data.frame(fill=box$fill, col=box$col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[sel,])
+        ## And finally those facing left
+        sel <- !osel & box$strand=="-"
+        id <- c(id, rep(seq(from=if(!length(id)) 1 else max(id)+1, by=1, len=sum(sel)), 7))
+        d <- abs(B[sel,1]-A[sel,1])
+        alp <- if(!absoluteWidth) rep(B[sel,1]-pmax(d*W, d-rep(max.width, sum(sel))), 2) else rep(pmin(A[sel,1]+W, pmax(B[sel,1], A[sel,1])),2)
+        xx <- c(xx, B[sel,1], alp, A[sel,1], alp, B[sel,1])
+        yy <- c(yy, rep(A[sel,2]+(abs(B[sel,2]-A[sel,2])*H/2),2), A[sel,2], A[sel,2]+(abs(B[sel,2]-A[sel,2])/2), B[sel,2],
+                rep(B[sel,2]-(abs(B[sel,2]-A[sel,2])*H/2),2))
+        pars <- rbind(pars, data.frame(fill=box$fill, col=box$col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE)[sel,])
+    }
+    if(nrow(boxC$pols)){
+        xx <- c(xx, boxC$pols$x)
+        yy <- c(yy, boxC$pols$y)
+        id <- c(id, paste("pols", boxC$pols$id))
+        pars <- rbind(pars, data.frame(fill=boxC$polpars$fill, col=boxC$polpars$col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE))
+    }
+    grid.polygon(x=xx, y=yy, gp=gpar(fill=pars$fill, col=pars$col, alpha=pars$alpha, lwd=pars$lwd, lty=pars$lty), default.units="native",
+                 id=factor(id))
 }
 
+
+## Take coordinates for the bounding boxes of annotation regions and plot boxes, also making sure that
+## composite exons in GeneRegionTracks (i.e., overlapping coordinates and same exon id) are merged
+## appropriately
+## Arguments:
+##    o box: the data frame with the bounding box information
+##    o lwd: the boundary line width
+##    o lty: the boundary line type
+##    o alpha: the transparency
+## Value: the function is called for its side-effects of drawing on the graphics device
+.filledBoxes <- function(box, lwd, lty, alpha){
+    if("transcript" %in% colnames(box)){
+        box <- .handleComposite(box, "box")
+        if(nrow(box$box))
+            grid.rect(box$box$cx2, box$box$cy1, width=box$box$cx2 - box$box$cx1, height=box$box$cy2 - box$box$cy1,
+                      gp=gpar(col=as.character(box$box$col), fill=as.character(box$box$fill), lwd=lwd, lty=lty, alpha=alpha),
+                      default.units="native", just=c("right", "bottom"))
+        if(nrow(box$pols))
+            grid.polygon(x=box$pols$x, y=box$pols$y, id=factor(box$pols$id),
+                         gp=gpar(col=as.character(box$polpars$col), fill=as.character(box$polpars$fill), lwd=lwd, lty=lty, alpha=alpha),
+                         default.units="native")
+    }else{
+        grid.rect(box$cx2, box$cy1, width=box$cx2 - box$cx1, height=box$cy2 - box$cy1,
+                  gp=gpar(col=as.character(box$col), fill=as.character(box$fill), lwd=lwd, lty=lty, alpha=alpha),
+                  default.units="native", just=c("right", "bottom"))
+    }
+}
 
 
 ## Take start and end coordinates for genemodel-type annotations and draw a featherd line indicating
@@ -379,48 +604,52 @@
 ##    o min.height: the minimum total height in pixels for the feathers (i.e., min.height/2 in each direction)
 ## Value: the function is called for its side-effects of drawing on the graphics device
 .arrowBar <- function(xx1, xx2, strand, coords, y=20, W=3, D=10, H, col, lwd, lty, alpha, barOnly=FALSE,
-                      diff=.pxResolution(coord="y"), min.height=3)
-  {
-      if(!barOnly)
-      {
-          onePx <- diff
-          if(missing(H))
-          {
-              onePy <- .pxResolution(coord="y")
-              H <- onePy*min.height/2
-          }
-          fx1 <- fx2 <- scol <- fy1 <- fy2 <- NULL
-          exons <- IRanges(start=coords[,1], end=coords[,3])
-          levels <- split(exons, coords[,2])
-          for(i in seq_along(xx1))
-          {
-              x1 <- xx1[i]
-              x2 <- xx2[i]
-              len <- diff(c(x1,x2))/onePx
-              if(len>D+W*2)
-              {
-                  ax1 <- seq(from=x1+(onePx*W), to=x1+(len*onePx)-(onePx*W), by=onePx*D)
-                  ax2 <- ax1+(onePx*W)
-                  feathers <- IRanges(start=ax1-onePx, end=ax2+onePx)
-                  cur.level <- which(y[i]==unique(y))
-                  sel <- queryHits(findOverlaps(feathers, levels[[cur.level]]))
-                  if(length(sel))
-                  {
-                      ax1 <- ax1[-sel]
-                      ax2 <- ax2[-sel]
-                  }
-                  fx1 <- c(fx1, rep(if(strand[i]=="-") ax1 else ax2, each=2))
-                  fx2 <- c(fx2, rep(if(strand[i]=="-") ax2 else ax1, each=2))
-                  scol <- c(scol, rep(col[i], length(ax1)*2))
-                  fy1 <- c(fy1, rep(rep(y[i], length(ax1)*2)))
-                  fy2 <- c(fy2, rep(c(y[i]-H, y[i]+H), length(ax1)))
-              }
-          }
-          if(!is.null(fx1) && length(fx1))
-              grid.segments(fx1, fy1, fx2, fy2, default.units="native", gp=gpar(col=scol, lwd=lwd, lty=lty, alpha=alpha))
-      }
-      grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
-  }
+                      diff=.pxResolution(coord="y"), min.height=3){
+    exons <- IRanges(start=coords[,1], end=coords[,3])
+    levels <- split(exons, coords[,2]%/%1)
+    if(!barOnly){
+        onePx <- diff
+        if(missing(H)){
+            onePy <- .pxResolution(coord="y")
+            H <- onePy*min.height/2
+        }
+        fx1 <- fx2 <- scol <- fy1 <- fy2 <- NULL
+        for(i in seq_along(xx1)){
+            x1 <- xx1[i]
+            x2 <- xx2[i]
+            len <- diff(c(x1,x2))/onePx
+            if(len>D+W*2){
+                ax1 <- seq(from=x1+(onePx*W), to=x1+(len*onePx)-(onePx*W), by=onePx*D)
+                ax2 <- ax1+(onePx*W)
+                feathers <- IRanges(start=ax1-onePx, end=ax2+onePx)
+                cur.level <- y[i]%/%1
+                sel <- queryHits(findOverlaps(feathers, resize(levels[[cur.level]], width=width(levels[[cur.level]])-1)))
+                if(length(sel)){
+                    ax1 <- ax1[-sel]
+                    ax2 <- ax2[-sel]
+                }
+                fx1 <- c(fx1, rep(if(strand[i]=="-") ax1 else ax2, each=2))
+                fx2 <- c(fx2, rep(if(strand[i]=="-") ax2 else ax1, each=2))
+                scol <- c(scol, rep(col[i], length(ax1)*2))
+                fy1 <- c(fy1, rep(rep(y[i], length(ax1)*2)))
+                fy2 <- c(fy2, rep(c(y[i]-H, y[i]+H), length(ax1)))
+            }
+        }
+        if(!is.null(fx1) && length(fx1))
+            grid.segments(fx1, fy1, fx2, fy2, default.units="native", gp=gpar(col=scol, lwd=lwd, lty=lty, alpha=alpha))
+    }
+    bars <- data.frame(x1=xx1, x2=xx2, y=y, col=col, stringsAsFactors=FALSE)
+    cutBars <- data.frame()
+    for(i in 1:nrow(bars)){
+        b <- bars[i,]
+        cur.level <- b$y%/%1
+        ct <- setdiff(IRanges(start=b$x1, end=b$x2), resize(levels[[cur.level]], width=width(levels[[cur.level]])-1))
+        if(length(ct))
+            cutBars <- rbind(cutBars, data.frame(x1=start(ct), x2=end(ct), y=b$y, col=b$col, stringsAsFactors=FALSE))
+    }
+    grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y, default.units="native", gp=gpar(col=cutBars$col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
+    ##grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
+}
 
 
 
@@ -430,7 +659,7 @@
 ##    o GdObject: object inheriting from class GdObject
 ## Value: a color character
 .getBiotypeColor <- function(GdObject) {
-    defCol <- .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL)
+    defCol <- .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)
     col <- sapply(as.character(values(GdObject)[, "feature"]),
                   function(x) .dpOrDefault(GdObject, x)[1], simplify=FALSE)
     needsDef <- sapply(col, is.null)
@@ -644,13 +873,13 @@
   else {
     panel.points(x = levels.fos, y = blist.stats[, 3],
                  pch = pch, col = col, alpha = alpha, cex = cex,
-                 fontfamily = fontfamily, fontface = lattice:::chooseFace(fontface,
+                 fontfamily = fontfamily, fontface = .chooseFace(fontface,
                                             font), fontsize = fontsize)
   }
   panel.points(x = rep(levels.fos, sapply(blist.out, length)),
                y = unlist(blist.out), pch=pch, col=col,
                alpha=alpha, cex=cex,
-               fontfamily=fontfamily, fontface = lattice:::chooseFace(fontface,
+               fontfamily=fontfamily, fontface = .chooseFace(fontface,
                                         font), fontsize = fontsize)
 }
 
@@ -663,14 +892,333 @@
 ##    o x: an object inheriting from class GdObject
 ##    o class: the parent class from which to draw the missing parameters
 ## Value: The updated GdObject
-.updatePars <- function(x, class)
-  {
-    current <- getPar(x)
-    defaults <- getPar(getClass(class)@prototype@dp)
+.updatePars <- function(x, class){
+    current <- getPar(x, hideInternal=FALSE)
+    defaults <- getPar(getClass(class)@prototype@dp, hideInternal=FALSE)
+    ## Check whether we need to adjust any of those defaults based on the selected scheme
+    sid <- getOption("Gviz.scheme")
+    scheme <- if(is.null(sid)) list() else .schemes[[sid]]
+    schemePars <- if(is.null(scheme) || is.null(scheme[[class]])) list() else scheme[[class]]
+    if(!is.list(schemePars))
+        stop(sprintf("Corrupted parameter definition for class '%s' in scheme '%s'", class, sid))
+    defaults[names(schemePars)] <- schemePars
     missing <- setdiff(names(defaults), names(current))
+    if(is.null(getPar(x, ".__appliedScheme")) && length(schemePars)){
+        defaults[[".__appliedScheme"]] <- if(is.null(sid)) NA else sid
+        defaults[names(schemePars)] <- schemePars
+        missing <- c(union(missing, names(schemePars)), ".__appliedScheme")
+    }
     displayPars(x) <- defaults[missing]
     return(x)
-  }
+}
+
+
+
+## The scheme settings registry. This is essentially just a nested list of display parameters, and the values in this list
+## will be used to initialize the objects. Please note that a display parameter still needs to be defined in the class
+## definition for this to work, and that all parameters that are not set explicitely in the scheme will be taken from
+## the defaults in that class definition. Scheme parameters still override everything else, and even parameters that are
+## not defined for the class will be added from the scheme settings.
+.schemes <- new.env()
+.schemes[["default"]] <- list(
+                              
+                              GdObject=list(
+                                            alpha=1,                          
+                                            background.panel="transparent",
+                                            background.title="lightgray",
+                                            cex.axis=NULL,
+                                            cex.title=NULL,
+                                            cex=1,
+                                            col.axis="white",
+                                            col.frame="lightgray",
+                                            col.grid=.DEFAULT_SHADED_COL,
+                                            col.line=NULL,
+                                            col.symbol=NULL,
+                                            col.title="white",
+                                            col=.DEFAULT_SYMBOL_COL,
+                                            collapse=TRUE,
+                                            fill=.DEFAULT_FILL_COL,
+                                            fontcolor.title="white",
+                                            fontcolor="black",
+                                            fontface.title=2,
+                                            fontface=1,
+                                            fontfamily.title="sans",
+                                            fontfamily="sans",
+                                            fontsize=12,
+                                            frame=FALSE,
+                                            grid=FALSE,
+                                            h=-1,
+                                            lineheight=1,
+                                            lty.grid="solid",
+                                            lty="solid",
+                                            lwd.border=1,
+                                            lwd.grid=1,
+                                            lwd=1,
+                                            min.distance=1,
+                                            min.height=3,
+                                            min.width=1,
+                                            rot.title=90,
+                                            rotation=0,
+                                            showAxis=TRUE,
+                                            showTitle=TRUE,
+                                            size=1,
+                                            v=-1
+                                            ),
+                              
+                              StackedTrack=list(
+                                                stackHeight=0.75,
+                                                reverseStacking=FALSE
+                                                ),
+                              
+                              
+                              AnnotationTrack=list(
+                                                   arrowHeadWidth=30,
+                                                   arrowHeadMaxWidth=40,
+                                                   cex.group=0.6,
+                                                   cex=1,
+                                                   col.line="darkgray",
+                                                   col=.DEFAULT_LINE_COL,
+                                                   featureAnnotation=NULL,
+                                                   fill="lightblue",
+                                                   fontcolor.group=.DEFAULT_SHADED_COL,
+                                                   fontcolor.item="white",
+                                                   fontface.group=2,
+                                                   groupAnnotation=NULL,
+                                                   lex=1,
+                                                   lineheight=1,
+                                                   lty="solid",
+                                                   lwd=1,
+                                                   mergeGroups=FALSE,
+                                                   rotation=0,
+                                                   shape="arrow",
+                                                   showFeatureId=NULL,
+                                                   showId=NULL,
+                                                   showOverplotting=FALSE,
+                                                   size=1
+                                                ),
+
+                              DetailsAnnotationTrack=list(
+                                                          details.minWidth=100,
+                                                          details.ratio=Inf,
+                                                          details.size=0.5,
+                                                          detailsBorder.col="darkgray",
+                                                          detailsBorder.fill="transparent",
+                                                          detailsBorder.lty="solid",
+                                                          detailsBorder.lwd=1,
+                                                          detailsConnector.cex=1,
+                                                          detailsConnector.col="darkgray",
+                                                          detailsConnector.lty="dashed",         
+                                                          detailsConnector.lwd=1,
+                                                          detailsConnector.pch=20,          
+                                                          detailsFunArgs=list(),
+                                                          groupDetails=FALSE),
+
+                              GeneRegionTrack=list(
+                                                   arrowHeadWidth=10,
+                                                   arrowHeadMaxWidth=20,
+                                                   col=.DEFAULT_LINE_COL,
+                                                   collapseTranscripts=FALSE,
+                                                   exonAnnotation=NULL,
+                                                   fill="#FFD58A",
+                                                   min.distance=0,
+                                                   shape=c("smallArrow", "box"),
+                                                   showExonId=NULL,
+                                                   thinBoxFeature=.THIN_BOX_FEATURES,
+                                                   transcriptAnnotation=NULL
+                                                   ),
+
+                              BiomartGeneRegionTrack=list(
+                                                          C_segment="burlywood4",
+                                                          D_segment="lightblue",
+                                                          J_segment="dodgerblue2",
+                                                          Mt_rRNA="yellow",
+                                                          Mt_tRNA="darkgoldenrod",
+                                                          Mt_tRNA_pseudogene="darkgoldenrod1",
+                                                          V_segment="aquamarine",
+                                                          miRNA="cornflowerblue",
+                                                          miRNA_pseudogene="cornsilk",
+                                                          misc_RNA="cornsilk3",
+                                                          misc_RNA_pseudogene="cornsilk4",
+                                                          protein_coding="orange",
+                                                          pseudogene="brown1",         
+                                                          rRNA="darkolivegreen1",
+                                                          rRNA_pseudogene="darkolivegreen" ,   
+                                                          retrotransposed="blueviolet",
+                                                          scRNA="gold4",
+                                                          scRNA_pseudogene="darkorange2",
+                                                          snRNA="coral",
+                                                          snRNA_pseudogene="coral3",   
+                                                          snoRNA="cyan",           
+                                                          snoRNA_pseudogene="cyan2",
+                                                          tRNA_pseudogene="antiquewhite3",
+                                                          utr3="orange",
+                                                          utr5="orange"
+                                                          ),
+
+                              GenomeAxisTrack=list(
+                                                   add35=FALSE,
+                                                   add53=FALSE,
+                                                   background.title="transparent",
+                                                   cex.id=0.7,
+                                                   cex=0.8,
+                                                   col.id="white",
+                                                   col.range="cornsilk4",
+                                                   distFromAxis=1,
+                                                   exponent=NULL,
+                                                   fill.range="cornsilk3",
+                                                   fontcolor="#808080",
+                                                   fontsize=10,
+                                                   labelPos="alternating",
+                                                   littleTicks=FALSE,
+                                                   lwd=2,
+                                                   scale=NULL,
+                                                   showId=FALSE,
+                                                   showTitle=FALSE,
+                                                   size=NULL,
+                                                   col="darkgray"
+                                                   ),
+
+                              DataTrack=list(
+                                             aggregateGroups=FALSE,
+                                             aggregation="mean",
+                                             amount=NULL,
+                                             baseline=NULL,
+                                             box.ratio=1,
+                                             box.width=NULL,
+                                             cex.legend=0.8,
+                                             cex.sampleNames=NULL,
+                                             cex=0.7,
+                                             coef=1.5,
+                                             col.baseline=NULL,
+                                             col.histogram=.DEFAULT_SHADED_COL,
+                                             col.horizon=NA,
+                                             col.mountain=NULL,
+                                             col.sampleNames="white",
+                                             col=trellis.par.get("superpose.line")[["col"]],
+                                             collapse=FALSE,
+                                             degree=1,
+                                             do.out=TRUE,
+                                             evaluation=50,
+                                             factor=0.5,
+                                             family="symmetric",
+                                             fill.histogram=NULL,
+                                             fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
+                                             fill.mountain=c("#CCFFFF", "#FFCCFF"),
+                                             fontcolor.legend=.DEFAULT_SHADED_COL,
+                                             gradient=brewer.pal(9, "Blues"),
+                                             groups=NULL,
+                                             horizon.origin=0,
+                                             horizon.scale=NULL,
+                                             jitter.x=FALSE,
+                                             jitter.y=FALSE,
+                                             levels.fos=NULL,
+                                             lty.baseline=NULL,
+                                             lty.mountain=NULL,
+                                             lwd.baseline=NULL,
+                                             lwd.mountain=NULL,
+                                             min.distance=0,
+                                             na.rm=FALSE,
+                                             ncolor=100,
+                                             notch.frac=0.5,
+                                             notch=FALSE,
+                                             pch=20,
+                                             separator=0,
+                                             showColorBar=TRUE,
+                                             showSampleNames=FALSE,
+                                             size=NULL,
+                                             span=1/5, 
+                                             stackedBars=TRUE,
+                                             stats=boxplot.stats,
+                                             transformation=NULL,
+                                             type="p",
+                                             varwidth=FALSE,
+                                             window=NULL,
+                                             windowSize=NULL,
+                                             ylim=NULL
+                                             ),
+
+                              IdeogramTrack=list(
+                                                 background.title="transparent",
+                                                 bevel=0.45,
+                                                 cex.bands=0.7,
+                                                 cex=0.8,
+                                                 col="red",
+                                                 fill="#FFE3E6",
+                                                 fontcolor=.DEFAULT_SHADED_COL,
+                                                 fontsize=10,
+                                                 showBandId=FALSE,
+                                                 showId=TRUE,
+                                                 showTitle=FALSE,
+                                                 size=NULL
+                                                 ),
+
+                              SequenceTrack=list(
+                                                 add53=FALSE,
+                                                 background.title="transparent",
+                                                 cex=1,
+                                                 col="darkgray",
+                                                 complement=FALSE,
+                                                 fontcolor=getBioColor("DNA_BASES_N"),
+                                                 fontface=2,
+                                                 fontsize=10,
+                                                 lwd=2,
+                                                 min.width=2,
+                                                 noLetters=FALSE,
+                                                 rotation=0,
+                                                 showTitle=FALSE,
+                                                 size=NULL
+                                                 ),
+
+                              HighlightTrack=list(
+                                                  col="red",
+                                                  fill="#FFE3E6"
+                                                  )
+
+                              )
+
+.schemes[["default.old"]] <- list(
+                                  AnnotationTrack=list(col="transparent"))
+
+## A helper function to be called upon package load that tries to find a stored Gviz scheme in the working directory
+.collectSchemes <- function(){
+    if(".GvizSchemes" %in% ls(globalenv(), all.names=TRUE)){
+        schemes <- get(".GvizSchemes", globalenv())
+        if(is.list(schemes) && !is.null(names(schemes)))
+            lapply(names(schemes), function(x) addScheme(schemes[[x]], x))
+    }
+}
+
+
+## Helper function to select fontfaces
+.chooseFace <- function (fontface = NULL, font = 1) 
+{
+    if (is.null(fontface)) 
+        font
+    else fontface
+}
+
+           
+## Get a scheme
+## Arguments:
+##    o name: the name of the scheme to get. Defaults to the current one.
+## Value: A list containing the scheme
+getScheme <- function(name=getOption("Gviz.scheme")){
+    s <- NULL
+    if(!is.null(name))
+        s <- .schemes[[name]]
+    if(is.null(s))
+        s <- list()
+    return(s)
+}
+
+## Add a new scheme
+## Arguments:
+##    o scheme: the scheme to add
+##    o name: the name of the scheme to add
+addScheme <- function(scheme, name){
+    .schemes[[name]] <- scheme
+}
+
 
 
 
@@ -743,35 +1291,6 @@
 }
 
 
-.annotationSpace <- function(GdObject, from, to)
-{
-    if(!length(GdObject))
-        return(NULL)
-    sel <- chromosome(GdObject) == seqnames(GdObject) & start(GdObject)>=from & start(GdObject)<=to
-    if (sum(sel) > 0) {
-      ids <- identifier(GdObject, FALSE)[sel]
-      hasAnno <- .dpOrDefault(GdObject, "showId", FALSE) & ids!=""
-      txt <- paste(ids, " ")
-      txt[!hasAnno] <- ""
-      space <- (as.numeric(convertWidth(stringWidth(txt),"native"))*1.3)
-      newFrom <- min(start(GdObject)[sel]-space*1.6)
-    } else {
-      txt <- ""
-      space <- (as.numeric(convertWidth(stringWidth(txt),"native"))*1.3)
-      newFrom <- from
-    }
-    cex <- .dpOrDefault(GdObject, "cex", 1) * .dpOrDefault(GdObject, "cex.symbol", 0.7)
-    fontfamily <- .dpOrDefault(GdObject, "fontfamily", 1)
-    fontsize <- .dpOrDefault(GdObject, "fontsize", 12)
-    fontface <- .dpOrDefault(GdObject, "fontface.symbol", 2)
-    pushViewport(dataViewport(xData=c(from, to), extension=0, yscale=c(0, 1), clip=TRUE,
-                              gp=gpar(cex=cex, fontfamily=fontfamily, fonface=fontface, fontsize=fontsize)))
-    space <- (as.numeric(convertWidth(stringWidth(txt),"native"))*1.3)
-    popViewport(1)
-    ## newFrom <- min(start(GdObject)[sel]-space*1.6)
-    return(newFrom)
-}
-
 
 ## Return the plotting range for a GdObject, either from the contained ranges or from overrides.
 ## This function is vectorized and should also work for lists of GdObjects.
@@ -779,37 +1298,60 @@
 {
     if(!is.list(GdObject))
         GdObject <- list(GdObject)
+    GdObject <- c(GdObject, unlist(lapply(GdObject, function(x) if(is(x, "HighlightTrack") || is(x, "OverlayTrack")) x@trackList else NULL)))
     if(!length(GdObject) || !all(sapply(GdObject, is, "GdObject")))
         stop("All items in the list must inherit from class 'GdObject'")
+    GdObject <- GdObject[!sapply(GdObject, is, "OverlayTrack")]
     tfrom <- lapply(GdObject, function(x){tmp <- start(x); if(is(x, "RangeTrack")) tmp <- tmp[seqnames(x)==chromosome(x)]; tmp})
     tfrom <- if(is.null(unlist(tfrom))) Inf else min(sapply(tfrom[listLen(tfrom)>0], min))
     tto <- lapply(GdObject, function(x){tmp <- end(x); if(is(x, "RangeTrack")) tmp <- tmp[seqnames(x)==chromosome(x)]; tmp})
     tto <- if(is.null(unlist(tto))) Inf else max(sapply(tto[listLen(tto)>0], max))
     if((is.null(from) || is.null(to)) && ((is.infinite(tfrom) || is.infinite(tto)) || is(GdObject, "GenomeAxisTrack")))
-        stop("Unable to determine plotting ranges from the supplied track(s)")
+        stop("Unable to automatically determine plotting ranges from the supplied track(s).\nPlease provide ",
+             "range coordinates through the 'from' and 'to' arguments of the plotTracks function.")
     range <- extendrange(r=c(tfrom, tto), f=factor)
     range[1] <- max(1, range[1])
-    wasNull <- FALSE
-    if(is.null(from))
-    {
-        wasNull <- TRUE
+    wasNull <- rep(FALSE, 2)
+    if(is.null(from)){
+        wasNull[1] <- TRUE
         from <- range[1]
     }
-    if(is.null(to))
+    if(is.null(to)){
         to <- range[2]
-    from <- from-extend.left
-    to <- to+extend.right
-    if(from>to)
-        stop("'from' range can not be larger than 'to'")
-    ## We may need some extra space for annotations
-    if(annotation)
-    {
-        annStarts <- unlist(lapply(GdObject[sapply(GdObject, is, "AnnotationTrack")], .annotationSpace, from, to))
-        ## FIXME: Do we want to add annotation space if from was defined by the user?
-        if(!is.null(annStarts) && wasNull)
-            from <- min(c(from, annStarts))
+        wasNull[2] <- TRUE
     }
-    return(c(from=as.vector(from), to=as.vector(to)))
+    ## We may need some extra space for annotations
+    if(annotation){
+        rr <- unlist(lapply(GdObject, function(x){
+            gr <- .dpOrDefault(x, ".__groupRanges")
+            gw <- .dpOrDefault(x, ".__groupLabelWidths", data.frame(before=0, after=0))
+            if(is.null(gr)) NULL else c(min(start(gr) + gw$before), max(end(gr) - gw$after))
+        }))
+        if(!is.null(rr)){
+            rr <- matrix(rr, ncol=2, byrow=TRUE)
+            if(wasNull[1])
+               from <- min(from, rr[,1])
+            if(wasNull[2])
+                to <- max(to, rr[,2])
+        }
+    }
+    from <- if(extend.left != 0 && extend.left > -1 && extend.left < 1){
+        from - (abs(diff(c(from, to))) * extend.left)
+    }else{
+        from - extend.left
+    }
+    to <- if(extend.right != 0 && extend.right > -1 && extend.right < 1){
+        to + (abs(diff(c(from, to))) * extend.right)
+    }else{
+        to + extend.right
+    }
+    if(from > to){
+        warning("'from' range can not be larger than 'to', reversing range coordinates")
+        tto <- from
+        from <- to
+        to <- tto
+    }
+    return(c(from=as.integer(from), to=as.integer(to)))
 }
 
 
@@ -831,20 +1373,22 @@
         lty <- lty[1]
         cex <- cex[1]
     } else { ## Otherwise colors are being mapped to group factors
+        if(!is.factor(groups))
+            groups <- factor(groups)
         col <- .dpOrDefault(GdObject, "col", trellis.par.get("superpose.line")$col)
-        col <- rep(col, length(groups))
-        col.line <- rep(.dpOrDefault(GdObject, "col.line", col), length(groups))
-        col.symbol <- rep(.dpOrDefault(GdObject, "col.symbol", col), length(groups))
-        lwd <- rep(lwd, length(groups))
-        lty <- rep(lty, length(groups))
-        pch <- rep(pch, length(groups))
-        cex <- rep(cex, length(groups))
+        col <- rep(col, nlevels(groups))
+        col.line <- rep(.dpOrDefault(GdObject, "col.line", col), nlevels(groups))
+        col.symbol <- rep(.dpOrDefault(GdObject, "col.symbol", col), nlevels(groups))
+        lwd <- rep(lwd, nlevels(groups))
+        lty <- rep(lty, nlevels(groups))
+        pch <- rep(pch, nlevels(groups))
+        cex <- rep(cex, nlevels(groups))
     }
     col.baseline <- .dpOrDefault(GdObject, "col.baseline", col)
     col.grid <- .dpOrDefault(GdObject, "col.grid", "#e6e6e6")[1]
-    fill <- .dpOrDefault(GdObject, "fill", Gviz:::.DEFAULT_FILL_COL)[1]
+    fill <- .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)[1]
     fill.histogram <- .dpOrDefault(GdObject, "fill.histogram", fill)[1]
-    col.histogram  <- .dpOrDefault(GdObject, "col.histogram", .dpOrDefault(GdObject, "col", Gviz:::.DEFAULT_SHADED_COL))[1]
+    col.histogram  <- .dpOrDefault(GdObject, "col.histogram", .dpOrDefault(GdObject, "col", .DEFAULT_SHADED_COL))[1]
     lty.grid <- .dpOrDefault(GdObject, "lty.grid", 1)
     lwd.grid <- .dpOrDefault(GdObject, "lwd.grid", 1)
     return(list(col=col, col.line=col.line, col.symbol=col.symbol, col.baseline=col.baseline,
@@ -864,26 +1408,45 @@
     return(legInfo)
 }
 
+## A helper function to get the currently active chromosomes, also if the track is one of the collection
+## track classes
+.recChromosome <- function(GdObject){
+    chroms <- if(is(GdObject, "HighlightTrack") || is(GdObject, "OverlayTrack"))
+        unlist(lapply(GdObject@trackList, .recChromosome)) else chromosome(GdObject)
+    return(unique(chroms))
+}
+
 
 ## Plot a list of GdObjects as individual tracks similar to the display on the UCSC genome browser
 ## Arguments:
 ##    o trackList: a list of GdObjects
 ##    o from, to: the plotting range, will be figured out automatically from the tracks if missing
 ##    o sized: a vector of relative vertical sizes, or NULL to auto-detect
-##    o panel.only: don't draw track titles, useful to embed in a lattice-like function
+##    o panel.only: don't draw track titles, useful to embed in a lattice-like function, this also implies add=TRUE
 ##    o extend.right, extend.left: extend the coordinates in 'from' and 'too'
 ##    o title.width: the expansion factor for the width of the title track
 ## Value: the function is called for its side-effect of drawing on the graphics device
 plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.only=FALSE, extend.right=0,
                        extend.left=0, title.width=NULL, add=FALSE, main, cex.main=2, fontface.main=2,
-                       col.main="black", margin=6, chromosome=NULL)
-{
+                       col.main="black", margin=6, chromosome=NULL){
+    ## We only need a new plot for regular calls to the function. Both add==TRUE and panel.only=TRUE will add to an existing grid plot
+    if(!panel.only && !add)
+        grid.newpage()
     if(!is.list(trackList))
         trackList <- list(trackList)
+    ## OverlayTracks and HighlightTracks can be discarded if they are empty
+    trackList <- trackList[!sapply(trackList, function(x) (is(x, "HighlightTrack") || is(x, "OverlayTrack")) && length(x) < 1)]
+    isHt <- which(sapply(trackList, is, "HighlightTrack"))
+    isOt <- which(sapply(trackList, is, "OverlayTrack"))
+    ## A mix between forward and reverse strand tracks should trigger an alarm
+    strds <- unique(.whichStrand(trackList))
+    if(!is.null(strds) && length(strds) > 1)
+        warning("Plotting a mixture of forward strand and reverse strand tracks.\n Are you sure this is correct?")
     ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
-    ## size, resolution or plotting ranges. Chromosomes should all be the same for all tracks, if not we will force them to
-    ## be set to the first one that can be detected
-    chrms <- unlist(lapply(trackList, Gviz::chromosome))
+    ## size, resolution or plotting ranges.
+    ## Chromosomes should all be the same for all tracks, if not we will force them to be set to the first one that can be detected.
+    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first
+    chrms <- unique(unlist(lapply(trackList, .recChromosome)))
     if(is.null(chromosome)){
         chrms <- if(!is.null(chrms)) chrms[gsub("^chr", "", chrms)!="NA"] else chrms
         chromosome <- head(chrms, 1)
@@ -892,23 +1455,40 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         if(!is.null(chrms) && length(unique(chrms))!=1)
             warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '", chromosome, "'", sep="")
     }
-    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first
     if(!is.null(from) || !(is.null(to))){
         trackList <- lapply(trackList, subset, from=from, to=to, chromosome=chromosome, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
     }
-    trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, ...)
+    trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, any(.needsAxis(trackList)), any(.needsTitle(trackList)),
+                                title.width, ...)
     ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
-    if(!panel.only && !add)
-        grid.newpage()
     ranges <- .defaultRange(trackList, from=from, to=to, extend.left=extend.left, extend.right=extend.right, annotation=TRUE)
-    ## We need to reverse the list to get a top to bottom plotting order
-    trackList <- rev(trackList)
-    map <- vector(mode="list", length=length(trackList))
-    titleCoords <- NULL
-    names(map) <- rev(sapply(trackList, names))
     ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
     trackList <- lapply(trackList, subset, from=ranges["from"], to=ranges["to"], chromosome=chromosome)
-    trackList <- lapply(trackList, setStacks, from=ranges["from"], to=ranges["to"])
+    trackList <- lapply(trackList, setStacks, recomputeRanges=FALSE)
+    ## Highlight tracks are just a way to add a common highlighting region to several tracks, but other than that we can treat the containing
+    ## tracks a normal track objects, and thus unlist them. We only want to record their indexes in the expanded list for later.
+    htList <- list() 
+    expandedTrackList <- if(length(isHt)){
+        j <- 1
+        tlTemp <- list()
+        for(i in seq_along(trackList)){
+            if(! i %in% isHt){
+                tlTemp <- c(tlTemp, trackList[[i]])
+                j <- j+1
+            }else{
+                tlTemp <- c(tlTemp, trackList[[i]]@trackList)
+                htList[[as.character(i)]] <- list(indexes=j:(j+length(trackList[[i]]@trackList)-1),
+                                                  track=trackList[[i]])
+                j <- j+length(trackList[[i]]@trackList)
+            }
+        }
+        tlTemp  
+    }else trackList
+    ## We need to reverse the list to get a top to bottom plotting order
+    expandedTrackList <- rev(expandedTrackList)
+    map <- vector(mode="list", length=length(expandedTrackList))
+    titleCoords <- NULL
+    names(map) <- rev(sapply(expandedTrackList, names))
     ## Open a fresh page and set up the bounding box, unless add==TRUE
     if(!panel.only) {
         ## We want a margin pixel border
@@ -928,63 +1508,81 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         }
         pushViewport(vpMain)
         ## A first guestimate of the vertical space that's needed
-        spaceSetup <- .setupTextSize(trackList, sizes, title.width)
+        spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width)
     } else {
         vpBound <- viewport()
         pushViewport(vpBound)
-        spaceSetup <- .setupTextSize(trackList, sizes)
+        spaceSetup <- .setupTextSize(expandedTrackList, sizes)
     }
     ## First iteration to set up all the dimensions by calling the drawGD methods in prepare mode, i.e.,
     ## argument prepare=TRUE. Nothing is drawn at this point, and this only exists to circumvent the
     ## chicken and egg problem of not knowing how much space we need until we draw, but also not knowing
     ## where to draw until we know the space needed.
-    for(i in rev(seq_along(trackList)))
+    for(i in rev(seq_along(expandedTrackList)))
     {
-        fontSettings <- .fontGp(trackList[[i]], cex=NULL)
+        fontSettings <- .fontGp(expandedTrackList[[i]], cex=NULL)
         vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i],
                              gp=fontSettings)
         pushViewport(vpTrack)
         vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width+spaceSetup$spacing,
                                               width=1-spaceSetup$title.width-spaceSetup$spacing, just=0) else viewport(width=1)
         pushViewport(vpContent)
-        trackList[[i]] <- drawGD(trackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], prepare=TRUE, subset=FALSE)
+        expandedTrackList[[i]] <- drawGD(expandedTrackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], prepare=TRUE, subset=FALSE)
         popViewport(2)
     }
     ## Now lets recalculate the space and draw for real
-    spaceSetup <- .setupTextSize(trackList, sizes, title.width)
-    for(i in rev(seq_along(trackList)))
+    spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width)
+    ## First the highlight box backgrounds
+    htBoxes <- data.frame(stringsAsFactors=FALSE)
+    for(hlite in htList){
+        inds <- setdiff(sort(length(expandedTrackList)-hlite$index+1), which(sapply(expandedTrackList, is, "IdeogramTrack")))
+        y <- reduce(IRanges(start=inds, width=1))
+        yy <- ifelse(start(y)==1, 0, sum(spaceSetup$spaceNeeded[1:start(y)-1]))
+        ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
+        htBoxes <- rbind(htBoxes, data.frame(y=yy, height=ht, x=start(hlite$track), width=width(hlite$track),
+                                             col=.dpOrDefault(hlite$track, "col", "orange"),
+                                             fill=.dpOrDefault(hlite$track, "fill", "red"),
+                                             lwd=.dpOrDefault(hlite$track, "lwd", 1),
+                                             lty=.dpOrDefault(hlite$track, "lty", 1),
+                                             alpha=.dpOrDefault(hlite$track, "alpha", 1),
+                                             stringsAsFactors=FALSE))
+    }
+    if(nrow(htBoxes)){
+        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width+spaceSetup$spacing, xscale=ranges,
+                                              width=1-spaceSetup$title.width-spaceSetup$spacing, just=0) else viewport(width=1, xscale=ranges)
+        pushViewport(vpContent)
+        grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
+                  gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
+        popViewport(1)
+    }
+    ## Now the track content
+    for(i in rev(seq_along(expandedTrackList)))
     {
-        fontSettings <- .fontGp(trackList[[i]], cex=NULL)
-        vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i],
-                             gp=fontSettings)
+        vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i])
         pushViewport(vpTrack)
-		fill <- .dpOrDefault(trackList[[i]], "background.title", Gviz:::.DEFAULT_SHADED_COL)
+		fill <- .dpOrDefault(expandedTrackList[[i]], "background.title", .DEFAULT_SHADED_COL)
         if(!panel.only) {
-            vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0)
+            fontSettings <- .fontGp(expandedTrackList[[i]], subtype="title", cex=NULL)
+            vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0, gp=fontSettings)
             pushViewport(vpTitle)
-	    lwd.border.title <- .dpOrDefault(trackList[[i]], "lwd.border.title", 1)
-            col.border.title <- .dpOrDefault(trackList[[i]], "col.border.title", "transparent")
+            thisTrack <- if(is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
+	    lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
+            col.border.title <- .dpOrDefault(thisTrack, "col.title", "transparent")
             grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
-            needAxis <- .needsAxis(trackList[[i]])
-            drawAxis(trackList[[i]], ranges["from"], ranges["to"], subset=FALSE)
+            needAxis <- .needsAxis(thisTrack)
+            drawAxis(thisTrack, ranges["from"], ranges["to"], subset=FALSE)
             tit <- spaceSetup$nwrap[i]
+            ## FIXME: Do we want something smarted for the image map coordinates?
             titleCoords <- rbind(titleCoords, cbind(.getImageMap(cbind(0,0,1,1)),
-                                                    title=names(trackList[[i]])))
-            if(.dpOrDefault(trackList[[i]], "showTitle", TRUE) && !is.null(tit) && tit!="")
+                                                    title=names(expandedTrackList[[i]])))
+            if(.dpOrDefault(thisTrack, "showTitle", TRUE) && !is.null(tit) && tit!="")
             {
-                col <- .dpOrDefault(trackList[[i]], "col.title", "white")
-                fontface <- .dpOrDefault(trackList[[i]], "fontface.title", 2)
-                fontsize <- .dpOrDefault(trackList[[i]], "fontsize.title", 12)
-                lineheight <- .dpOrDefault(trackList[[i]], "lineheight.title", 1)
-                fontfamily <- .dpOrDefault(trackList[[i]], "fontfamily.title", "sans")
-                lcex <- spaceSetup$cex[i]
                 x <- if(needAxis) 0.075 else 0.4
                 just <- if(needAxis) c("center", "top") else "center"
                 ## FIXME: We need to deal with this when calculating the space for the title bar
-                rot <- .dpOrDefault(trackList[[i]], "rot.title", 90)
-                suppressWarnings(grid.text(tit, unit(x, "npc"), rot=rot, gp=gpar(col=col, fontface=fontface, cex=lcex,
-                                                               fontsize=fontsize, lineheight=lineheight,
-                                                               fontfamily=fontfamily), just=just))
+                rot <- .dpOrDefault(thisTrack, "rotation.title", 90)
+                gp <- .fontGp(thisTrack, "title", cex=spaceSetup$cex[i])
+                suppressWarnings(grid.text(tit, unit(x, "npc"), rot=rot, gp=gp, just=just))
             }
             popViewport(1)
         }
@@ -992,18 +1590,19 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         vpBackground <- if(!panel.only) viewport(x=spaceSetup$title.width,
                                                  width=1-spaceSetup$title.width, just=0) else viewport(width=1)
         pushViewport(vpBackground)
-        grid.rect(gp=gpar(col="transparent", fill=.dpOrDefault(trackList[[i]], "background.panel", "transparent")))
-        drawGrid(trackList[[i]], ranges["from"], ranges["to"])
+        grid.rect(gp=gpar(col="transparent", fill=.dpOrDefault(thisTrack, "background.panel", "transparent")))
+        drawGrid(thisTrack, ranges["from"], ranges["to"])
         popViewport(1)
+        fontSettings <- .fontGp(expandedTrackList[[i]], cex=NULL)
         vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width+spaceSetup$spacing,
-                                              width=1-spaceSetup$title.width-spaceSetup$spacing, just=0) else viewport(width=1)
+                                              width=1-spaceSetup$title.width-spaceSetup$spacing, just=0, gp=fontSettings) else viewport(width=1, gp=fontSettings)
         pushViewport(vpContent)
-        tmp <- drawGD(trackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], subset=FALSE)
+        tmp <- drawGD(expandedTrackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], subset=FALSE)
         if(!is.null(tmp))
             map[[(length(map)+1)-i]] <- tmp
         popViewport(1)
-        if(.dpOrDefault(trackList[[i]], "frame", FALSE))
-            grid.rect(gp=gpar(col=.dpOrDefault(trackList[[i]], "col.frame", Gviz:::.DEFAULT_SHADED_COL), fill="transparent"))
+        if(.dpOrDefault(thisTrack, "frame", FALSE))
+            grid.rect(gp=gpar(col=.dpOrDefault(thisTrack, "col.frame", .DEFAULT_SHADED_COL), fill="transparent"))
         popViewport(1)
     }
 
@@ -1279,23 +1878,6 @@ availableDisplayPars <- function(class)
     return(new("InferredDisplayPars", name=class, inheritance=unlist(inherited), finalPars))
 }
 
-
-## Return the font settings for a GdObject
-.fontGp <- function(GdObject, ...)
-{
-    gp <- list(fontsize=as.vector(.dpOrDefault(GdObject, "fontsize", 12))[1],
-               fontface=as.vector(.dpOrDefault(GdObject, "fontface", 1))[1],
-               lineheight=as.vector(.dpOrDefault(GdObject, "lineheight", 1))[1],
-               fontfamily=as.character(as.vector(.dpOrDefault(GdObject, "fontfamily", 1)))[1],
-               col=as.vector(.dpOrDefault(GdObject, "fontcolor", "white"))[1],
-               alpha=as.vector(.dpOrDefault(GdObject, "alpha", 1))[1],
-               cex=as.vector(.dpOrDefault(GdObject, "cex", 1))[1])
-    gp[names(list(...))] <- list(...)
-    gp <- gp[!sapply(gp, is.null)]
-    class(gp) <- "gpar"
-    return(gp)
-}
-
 ## Compute ellipse outline coordinates for bounding boxes
 .box2Ellipse <- function(box, np=50)
 {
@@ -1312,18 +1894,11 @@ availableDisplayPars <- function(class)
     return(data.frame(x1=xt, y1=yt, id=rep(seq_len(nrow(box)), each=np)))
 }
 
-.DEFAULT_FILL_COL <- "lightgray"
-.DEFAULT_OVERPLOT_COL <- "red"
-.DEFAULT_LINE_COL <- "black"
-.DEFAULT_SHADED_COL <- "#808080"
-.DEFAULT_SYMBOL_COL <- "#0080FF"
-.PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
-                  "smooth", "polygon", "horizon", "histogram",
-                  "mountain", "h", "boxplot", "gradient", "heatmap")
-
-
 ## We store some preset in the options on package load
-.onLoad = function(...){options("ucscChromosomeNames"=TRUE)}
+.onLoad = function(...){
+    .collectSchemes()
+    options("ucscChromosomeNames"=TRUE, "Gviz.scheme"="default")
+}
 
 
 ## A helper function to replace missing function arguments in a list with NULL values. The function environment needs
@@ -1626,5 +2201,98 @@ availableDefaultMapping <- function(file, trackType){
     }
     mcols(data) <- mcols(data)[, !grepl("__.__", colnames(mcols(data))), drop=FALSE]
     return(list(data=data, args=args, defMap=defMap))
+}
+
+
+## For an AnnotationTrack or a GeneRegionTrack, compute the actual ranges for a complete range element group
+## (i.e., a whole transcript or track group) and also add the necessary space for the text label if needed.
+## We add this information to the internal display parameters '.__groupRanges', '.__groupLabels' and
+## '.__groupLabelWidths'. This function has to be called before stacks are being computed because 'setStacks'
+## will use the values in '.__groupRanges'.
+## Note that the computed ranges are not quite right because we are only crudely guessing the size of the
+## title panels at this stage.
+.computeGroupRange <- function(GdObject, hasAxis=FALSE, hasTitle=.dpOrDefault(GdObject, "showTitle", TRUE), title.width=1){
+    if(is(GdObject, "AnnotationTrack")){
+        finalRanges <- IRanges()
+        GdObjectOrig <- GdObject
+        GdObject <- GdObject[seqnames(GdObject) == chromosome(GdObject)]
+        pr <- .dpOrDefault(GdObject, ".__plottingRange", data.frame(from=min(start(GdObject)), to=max(end(GdObject))))
+        if(is.null(title.width))
+            title.width <- 1
+        if(length(GdObject) > 0){
+            gp <- group(GdObject)
+            needsGrp <- any(duplicated(gp))
+            finalRanges <- if(needsGrp){
+                groups <- split(range(GdObject), gp)
+                unlist(range(groups))
+            }else{
+                range(GdObject)
+            }
+            if(.dpOrDefault(GdObject, ".__hasAnno", FALSE)){
+                ## The label justification
+                just <- .dpOrDefault(GdObject, "just.group", "left")
+                rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
+                ## A crude guestimate of the space needed for a title
+                twidth <- if(hasTitle){
+                    fact <- title.width + (hasAxis * 2)
+                    .getStringDims(GdObject, "g_T", unit="npc", subtype="title")$height * fact
+                }else 0
+                tfact <- 1 / (1 - twidth)
+                ## The labels and spacers are plotted in a temporary viewport to figure out their size
+                labels <- if(needsGrp)
+                    sapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/")) else identifier(GdObject)
+                pushViewport(dataViewport(xscale=c(max(pr["from"], min(start(finalRanges))),
+                                                   min(pr["to"], max(end(finalRanges)))), extension=0, yscale=c(0,1),
+                                          gp=.fontGp(GdObject, "group")))
+                labelWidths <- as.numeric(convertWidth(stringWidth(labels),"native")) * tfact * 1.3
+                spaceBefore <- as.numeric(convertWidth(unit(3, "points"),"native")) * tfact
+                spaceAfter <- as.numeric(convertWidth(unit(7, "points"),"native")) * tfact
+                popViewport(1)
+                switch(just,
+                       "left"={
+                           if(!rev){
+                               start(finalRanges) <- start(finalRanges) - (spaceBefore + labelWidths + spaceAfter)
+                           }else{
+                               end(finalRanges) <- end(finalRanges) + spaceAfter + labelWidths + spaceBefore
+                           }
+                           sb <- spaceBefore
+                           sa <- spaceAfter
+                       },
+                       "right"={
+                           if(!rev){
+                               end(finalRanges) <-  end(finalRanges) + spaceAfter + labelWidths + spaceBefore
+                           }else{
+                               start(finalRanges) <- start(finalRanges) - (spaceBefore + labelWidths + spaceAfter)
+                           }
+                           sb <- spaceBefore
+                           sa <- spaceAfter
+                       },
+                       "above"={
+                           sa <- sb <- 0
+                       },
+                       "below"={
+                           sa <- sb <- 0
+                       },
+                       stop(sprintf("Unknown label justification '%s'", just)))
+                displayPars(GdObjectOrig) <- list(".__groupLabelWidths"=data.frame(before=sb, label=labelWidths, after=sa),
+                                                  ".__groupLabels"=labels)
+            }
+        }
+        displayPars(GdObjectOrig) <- list(".__groupRanges"=finalRanges)
+    }
+    return(GdObjectOrig)
+}
+
+## Calculate the vectorized string dimensions and return the results in a data.frame with columns 'width' and 'height'
+## The unit of the return value can be controlled, and additional parameters like font size and expansion factors can
+## be passed in as additional arguments (all in ... is passed on to 'gpar'). If needed, the font defaults for a
+## subtype can be extracted by providing the subtype argument.
+.getStringDims <- function(GdObject, string, unit="native", subtype=NULL, ...){
+    gp <- .fontGp(GdObject, subtype, ...)
+    pushViewport(viewport(gp=gp, xscale=current.viewport()$xscale, yscale=current.viewport()$yscale))
+    res <- data.frame(width=as.numeric(convertWidth(stringWidth(string), unit)),
+               height=as.numeric(convertHeight(stringHeight(string), unit)))
+    popViewport(1)
+    return(res)
 }
 

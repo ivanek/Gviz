@@ -1,6 +1,8 @@
 \name{settings}
 \Rdversion{1.1}
 \alias{settings}
+\alias{addScheme}
+\alias{getScheme}
 
 \title{Setting display parameters to control the look and feel of the plots}
 
@@ -10,6 +12,24 @@
   means of so called 'display parameters'. This page highlights the use
   of these parameters and list all available settings for the different
   track classes.
+  
+}
+
+\usage{
+
+addScheme(scheme, name)
+
+getScheme(name=getOption("Gviz.scheme"))
+
+}
+
+\arguments{
+
+  \item{scheme}{A named nested list of display parameters, where the
+    first level of nesting represents Gviz track object classes, and the
+    second level of nesting represents parameters.}
+  
+  \item{name}{A character scalar with the scheme name.}
   
 }
 
@@ -66,6 +86,33 @@
   argument. For most of the tracks that have been inferred from one of
   the online repositories, this classification will usually be
   downloaded along with the actual annotation data.
+
+  Users might find themselves changing the same parameters over and over
+  again, and it would make sense to register these modifications in a
+  central location once and for all. To this end the Gviz package
+  supports display parameter schemes. A scheme is essentially just a
+  bunch of nested named lists, where the names on the first level of
+  nesting should correspond to track class names, and the names on the
+  second level to the display parameters to set. The currently active
+  schmeme can be changed by setting the global option
+  \code{Gviz.scheme}, and a new scheme can be registered by using the
+  \code{addScheme} function, providing both the list and the name for
+  the new scheme. The \code{getScheme} function is useful to get the
+  current scheme as a list structure, for instance to use as a skeleton
+  for your own custom scheme.
+
+  In order to make these settings persitant across R sessions one can
+  create one or several schemes in the global environment in the special
+  object \code{.GvizSchemes}, for instance by putting the necessary code
+  in the \code{.Rprofile} file. This object needs to be a named list of
+  schemes, and it will be collected when the Givz package loads. Its
+  content is then automatically added to the collection of available
+  schemes.
+  
+  Please note that because display parameters are stored with the track
+  objects, a scheme change only has an effect on those objects that are
+  created after the change has taken place.
+
   
 }
 

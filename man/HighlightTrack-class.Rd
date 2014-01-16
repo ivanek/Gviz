@@ -1,52 +1,130 @@
-\name{StackedTrack-class}
+\name{HighlightTrack-class}
 \Rdversion{1.1}
 \docType{class}
-\alias{StackedTrack-class}
-\alias{StackedTrack}
-\alias{drawGD,StackedTrack-method}
-\alias{initialize,StackedTrack-method}
-\alias{setStacks,StackedTrack-method}
-\alias{stacking,StackedTrack-method}
-\alias{stacking<-,StackedTrack,character-method}
-\alias{stacks,StackedTrack-method}
-\alias{stacking}
-\alias{stacking<-}
-\alias{stacks}
-\alias{subset,StackedTrack-method}
-\alias{[,StackedTrack,ANY,ANY-method}
-\alias{consolidateTrack,StackedTrack-method}
+\alias{HighlightTrack-class}
+\alias{HighlightTrack}
+\alias{initialize,HighlightTrack-method}
+\alias{setStacks,HighlightTrack-method}
+\alias{subset,HighlightTrack-method}
+\alias{consolidateTrack,HighlightTrack-method}
+\alias{show,HighlightTrack-method}
+\alias{length,HighlightTrack-method}
 
-\title{StackedTrack class and methods}
+\title{HighlightTrack class and methods}
 
 \description{
-  
-  The virtual parent class for all track types in the Gviz
-  package which contain potentially overlapping annotation items that
-  have to be stacked when plotted.
+
+  A container for other track objects from the Gviz package that allows
+  for the addition of a common highlighting area across tracks.
 
 }
 
 \section{Objects from the Class}{
-
-  A virtual Class: No objects may be created from it.
   
+ Objects can be created using the constructor function
+  \code{HighlightTrack}.
+
 }
 
+\usage{
+
+HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, chromosome, genome,
+                           name="HighlightTrack",  ...)
+
+
+}
+
+\arguments{
+
+  \item{trackList}{A list of Gviz track objects that all have to inherit
+    from class \code{GdObject}.}
+
+  \item{range}{
+    
+    An optional meta argument to handle the different input types. If
+    the \code{range} argument is missing, all the relevant information
+    to create the object has to be provided as individual function
+    arguments (see below).
+
+    The different input options for \code{range} are:
+    
+    \describe{
+      
+      \item{}{A \code{GRanges} object: the genomic ranges for the
+	highlighting regions.}
+
+      \item{}{An \code{\linkS4class{IRanges}} object: almost identical
+	to the \code{GRanges} case, except that the chromosome
+	information has to be provided in the separate \code{chromosome}
+	argument, because it can not be directly encoded in an
+	\code{IRanges} object.}
+      
+      \item{}{A \code{data.frame} object: the \code{data.frame} needs to
+	contain at least the two mandatory columns \code{start} and
+	\code{end} with the range coordinates. It may also contain a
+	\code{chromosome} column with the chromosome information for
+	each range. If missing, this information will be drawn from the
+	constructor's \code{chromosome} argument.}
+      
+    }
+  }	
+  
+  \item{start, end}{An integer scalar with the genomic start or end
+    coordinates for the highlighting range. Can also be supplied as
+    part of the \code{range} argument.}
+
+  \item{width}{An integer vector of widths for highlighting
+    ranges. This can be used instead of either \code{start} or
+    \code{end} to specify the range coordinates.}
+
+   \item{chromosome}{The chromosome on which the track's genomic ranges
+    are defined. A valid UCSC chromosome identifier if
+    \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
+    case only syntactic checking takes place, i.e., the argument value
+    needs to be an integer, numeric character or a character of the form
+    \code{chrx}, where \code{x} may be any possible string. The user has
+    to make sure that the respective chromosome is indeed defined for
+    the the track's genome. If not provided here, the constructor will
+    try to build the chromosome information based on the available
+    inputs, and as a last resort will fall back to the value
+    \code{chrNA}. Please note that by definition all objects in the
+    \code{Gviz} package can only have a single active chromosome at a
+    time (although internally the information for more than one
+    chromosome may be present), and the user has to call the
+    \code{chromosome<-} replacement method in order to change to a
+    different active chromosome.}
+
+  \item{genome}{The genome on which the track's ranges are
+    defined. Usually this is a valid UCSC genome identifier, however
+    this is not being formally checked at this point. If not provided
+    here the constructor will try to extract this information from the
+    provided inputs, and eventually will fall back to the default value
+    of \code{NA}.}
+  
+  \item{name}{Character scalar of the track's name. This is not really
+    used and only exists fro completeness.}
+
+   \item{\dots}{All additional parameters are ignored.}
+}
+
+\details{
+
+  A track to conceptionally group other Gviz track objects into a meta
+  track for the sole purpose of overlaying all the contained tracks with
+  the same highlighting region as defined by the objects genomic
+  ranges. During rendering the contained tracks will be treated as if
+  they had been provided to the \code{plotTracks} function as individual
+  objects. 
+  
+}
+  
+ 
 \section{Slots}{
   
   \describe{
   
-    \item{\code{stacking}:}{Object of class \code{"character"}, the
-      stacking type of overlapping items on the final plot.  One in
-      \code{c(hide, dense, squish, pack,full)}. Currently, only
-      \code{hide} (do not show the track items at all), \code{squish}
-      (make best use of the available space) and \code{dense} (no
-      stacking at all) are implemented. }
-  
-    \item{\code{stacks}:}{Object of class \code{"numeric"}, holding the
-      stack indices for each track item. This slot is usually populated
-      by calling the \code{setStacks} method upon plotting, since the
-      correct stacking is a function of the available plotting space.}
+    \item{\code{trackList}:}{Object of class \code{"list"}, holding the
+      subtrack objects.}
 
     \item{\code{range}:}{Object of class
       \code{\linkS4class{GRanges}}, inherited from class
@@ -82,117 +160,22 @@
 \section{Methods}{
 
   In the following code chunks, \code{obj} is considered to be an object
-  of class \code{StackedTrack}.
+  of class \code{HighlightTrack}.
   
-  \bold{\emph{Exported in the name space:}}
-
-  \describe{
-	  
-    \item{stacking}{\code{signature(GdObject="StackedTrack")}: return
-      the current stacking type.
-    	
-      \emph{Usage:}
-      
-      \code{stacking(GdObject)}
-      
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{stacking(obj)}}
-
-      }
-    }
-    	
-    \item{stacking<-}{\code{signature(GdObject="StackedTrack",
-      value="character")}: set the object's stacking type to one in
-      \code{c(hide, dense, squish, pack,full)}.
-    	
-      \emph{Usage:}
-      
-      \code{stacking<-(GdObject, value)}
-
-      \emph{Additional Arguments:}
-      
-	\describe{
-	
-	  \item{}{\code{value}: replacement value.}
-	  
-	}
-
-      \emph{Examples:}
-      
-      \describe{
-
-	\item{}{\code{stacking(obj) <- "squish" }}
-
-      }
-    }
-  }
-    
+  
   \bold{\emph{Internal methods:}}
 
   \describe{
 
-    \item{drawGD}{\code{signature(GdObject="StackedTrack")}: plot the
-      object to a graphics device. The return value of this method is
-      the input object, potentially updated during the plotting
-      operation. Internally, there are two modes in which the method can
-      be called. Either in 'prepare' mode, in which case no plotting is
-      done but the stacking information is updated based on the
-      available space, or in 'plotting' mode, in which case the actual
-      graphical output is created. Note that the method for this
-      particular subclass is usually called through inheritance and not
-      particularly useful on its own.
-  
-      \emph{Usage:}
-
-      \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
-      
-      \emph{Additional Arguments:}
-      
-      \describe{
-	
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
-	
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
-	
-	\item{}{\code{subset}: subset the object to the visible region
-	  or skip the potentially expensive subsetting operation.}
-	
-	\item{}{\code{\dots}: all further arguments are ignored.}
-	
-      }
-      
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{Gviz:::drawGD(obj, prepare=FALSE)}}
-	  
-      }
-    }
-
-    \item{setStacks}{\code{signature(GdObject="StackedTrack")}:
+    \item{setStacks}{\code{signature(GdObject="HighlightTrack")}:
       recompute the stacks based on the available space and on the
-      object's track items and stacking settings.
-      
+      object's track items and stacking settings. This really just calls
+      the \code{setStacks} methods for the contained tracks and only
+      exists for dispatching reasons.
+       
       \emph{Usage:}
       
-      \code{setStacks(GdObject, from, to)}
-
-      \emph{Additional Arguments:}
-      
-      \describe{
-	
-	\item{}{\code{from}, \code{to}: compute stacking within a
-	  certain coordinates range. This needs to be supplied for the
-	  plotting function to know the current genomic coordinates.}
-	
-      }
+      \code{setStacks(GdObject, ...)}
 
       \emph{Examples:}
       
@@ -203,24 +186,51 @@
       }
     }
     
-    \item{stacks}{\code{signature(GdObject="StackedTrack")}: return
-      the stack indices for each track item.
+    
+    \item{initialize}{\code{signature(.Object="HighlightTrack")}:
+      initialize the object. }
 
+     \item{subset}{\code{signature(x="HighlightTrack")}: subset all the
+      contained tracks in an \code{HighlightTrack} by coordinates and sort
+      if necessary.
+      
+      \emph{Usage:}
+        
+      \code{subset(x, ...)}
+
+      \emph{Additional Arguments:}
+      
+      \describe{
+	
+	\item{}{\code{\dots}: additional arguments are passed on to the
+	  next methods.}
+	
+      }
+      
+      \emph{Examples:}
+      
+      \describe{
+
+	\item{}{\code{subset(obj)}}
+
+      }
+    }
+
+    \item{length}{\code{signature(x="HighlightTrack")}: return the number
+      of items in the track.
+      
       \emph{Usage:}
       
-      \code{stacks(GdObject)}
+      \code{length(x)}
       
       \emph{Examples:}
       
       \describe{
 	
-      	\item{}{\code{Gviz:::stacks(obj)}}
+	\item{}{\code{length(obj)}}
 
       }
     }
-    
-    \item{initialize}{\code{signature(.Object="StackedTrack")}:
-      initialize the object. }
   
   }
 
@@ -228,8 +238,8 @@
   
   \describe{
     
-    \item{[}{\code{signature(x="StackedTrack", i="ANY", j="ANY",
-	drop="ANY")}: subset the items in the \code{StackedTrack}
+    \item{[}{\code{signature(x="HighlightTrack", i="ANY", j="ANY",
+	drop="ANY")}: subset the items in the \code{HighlightTrack}
       object. This is essentially similar to subsetting of the
       \code{\linkS4class{GRanges}} object in the \code{range}
       slot. For most applications, the \code{subset} method may be
@@ -256,7 +266,7 @@
     }
       
       
-    \item{chromosome}{\code{signature(GdObject="StackedTrack")}:
+    \item{chromosome}{\code{signature(GdObject="HighlightTrack")}:
       return the chromosome for which the track is defined.
       
       \emph{Usage:}
@@ -272,7 +282,7 @@
       }
     }
     
-    \item{chromosome<-}{\code{signature(GdObject="StackedTrack")}:
+    \item{chromosome<-}{\code{signature(GdObject="HighlightTrack")}:
       replace the value of the track's chromosome. This has to be a
       valid UCSC chromosome identifier or an integer or character
       scalar that can be reasonably coerced into one.
@@ -298,7 +308,7 @@
       }
     }
     
-    \item{start, end, width}{\code{signature(x="StackedTrack")}: the
+    \item{start, end, width}{\code{signature(x="HighlightTrack")}: the
       start or end coordinates of the track items, or their width in
       genomic coordinates.
       
@@ -323,7 +333,7 @@
       }
     }
 
-    \item{start<-, end<-, width<-}{\code{signature(x="StackedTrack")}:
+    \item{start<-, end<-, width<-}{\code{signature(x="HighlightTrack")}:
       replace the start or end coordinates of the track items, or their
       width.
       
@@ -356,7 +366,7 @@
       }
     }
     
-    \item{position}{\code{signature(GdObject="StackedTrack")}: the
+    \item{position}{\code{signature(GdObject="HighlightTrack")}: the
       arithmetic mean of the track item's coordionates, i.e.,
       \code{(end(obj)-start(obj))/2}.
 
@@ -373,56 +383,7 @@
       }
     }
     
-    \item{feature}{\code{signature(GdObject="StackedTrack")}: return the
-      grouping information for track items. For certain sub-classes,
-      groups may be indicated by different color schemes when
-      plotting. See \code{\link{grouping}} or
-      \code{\linkS4class{AnnotationTrack}} and
-      \code{\linkS4class{GeneRegionTrack}} for details.
-      
-      \emph{Usage:}
-      
-      \code{feature(GdObject)}
-      
-      \emph{Examples:}
-      
-      \describe{
-
-	\item{}{\code{feature(obj)}}
-
-      }
-    }
-    
-    \item{feature<-}{\code{signature(gdObject="StackedTrack",
-      value="character")}: set the grouping information for track
-      items. This has to be a factor vector (or another type of vector
-      that can be coerced into one) of the same length as the number of
-      items in the \code{StackedTrack}. See \code{\link{grouping}} or
-      \code{\linkS4class{AnnotationTrack}} and
-      \code{\linkS4class{GeneRegionTrack}} for details.
-      
-      \emph{Usage:}
-      
-      \code{feature<-(GdObject, value)}
-
-      \emph{Additional Arguments:}
-      
-      \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
-      }
-      
-      \emph{Examples:}
-      
-      \describe{
-
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
-
-      }
-    }
-    
-    \item{genome}{\code{signature(x="StackedTrack")}: return the track's genome. 
+    \item{genome}{\code{signature(x="HighlightTrack")}: return the track's genome. 
       
       \emph{Usage:}
       
@@ -437,7 +398,7 @@
       }
     }
 
-    \item{genome<-}{\code{signature(x="StackedTrack")}: set the track's
+    \item{genome<-}{\code{signature(x="HighlightTrack")}: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
       this is not formally enforced here.
 	    
@@ -462,23 +423,8 @@
       }
     }
 
-    \item{length}{\code{signature(x="StackedTrack")}: return the number
-      of items in the track.
-      
-      \emph{Usage:}
-      
-      \code{length(x)}
-      
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{length(obj)}}
-
-      }
-    }
     
-    \item{range}{\code{signature(x="StackedTrack")}: return the genomic
+    \item{range}{\code{signature(x="HighlightTrack")}: return the genomic
       coordinates for the track as an object of class
       \code{\linkS4class{IRanges}}.
       
@@ -495,7 +441,7 @@
       }
     }
     
-    \item{ranges}{\code{signature(x="StackedTrack")}: return the genomic
+    \item{ranges}{\code{signature(x="HighlightTrack")}: return the genomic
       coordinates for the track along with all additional annotation
       information as an object of class \code{\linkS4class{GRanges}}.
       
@@ -512,11 +458,11 @@
       }
     }
     
-    \item{split}{\code{signature(x="StackedTrack")}: split a
-      \code{StackedTrack} object by an appropriate factor vector (or
+    \item{split}{\code{signature(x="HighlightTrack")}: split a
+      \code{HighlightTrack} object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
       operation is a list of objects of the same class as the input
-      object, all inheriting from class \code{StackedTrack}.
+      object, all inheriting from class \code{HighlightTrack}.
       
       \emph{Usage:}
       
@@ -541,110 +487,8 @@
       }
     }
     
-    \item{strand}{\code{signature(x="StackedTrack")}: return a vector of
-      strand specifiers for all track items, in the form '+' for the
-      Watson strand, '-' for the Crick strand or '*' for either of the
-      two.
-      
-      \emph{Usage:}
-      
-      \code{strand(x)}
-
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{strand(obj)}}
-
-      }
-    }
     
-    \item{strand<-}{\code{signature(x="StackedTrack")}: replace the
-      strand information for the track items. The replacement value
-      needs to be an appropriate scalar or vector of strand values.
-      
-      \emph{Usage:}
-      
-      \code{strand<-(x, value)}
-      
-      \emph{Additional Arguments:}
-      
-      \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
-      }
-      
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{strand(obj) <- "+"}}
-
-      }
-    }
-    
-    \item{values}{\code{signature(x="StackedTrack")}: return all
-      additional annotation information except for the genomic coordinates
-      for the track items as a data.frame.
-      
-      \emph{Usage:}
-      
-      \code{values(x)}
-
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{values(obj)}}
-
-      }
-    }
-    
-    \item{coerce}{\code{signature(from="StackedTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
-      
-       \emph{Examples:}
-      
-      \describe{
-  
-	\item{}{\code{as(obj, "data.frame")}}
-
-      }
-    }
-
-    \item{subset}{\code{signature(x="StackedTrack")}: subset a
-      \code{StackedTrack} by coordinates and sort if necessary.
-      
-      \emph{Usage:}
-        
-      \code{subset(x, from, to, sort=FALSE, ...)}
-
-      \emph{Additional Arguments:}
-      
-      \describe{
-	
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
-	
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
-	
-	\item{}{\code{\dots}: additional arguments are ignored.}
-	
-      }
-      
-      \emph{Examples:}
-      
-      \describe{
-
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
-
-      }
-    }
-    
-    \item{displayPars}{\code{signature(x="StackedTrack",
+    \item{displayPars}{\code{signature(x="HighlightTrack",
       name="character")}: list the value of the display parameter
       \code{name}. See \code{\link{settings}} for details on display
       parameters and customization.
@@ -663,7 +507,7 @@
     }
       
     
-    \item{displayPars}{\code{signature(x="StackedTrack",
+    \item{displayPars}{\code{signature(x="HighlightTrack",
       name="missing")}: list the value of all available display
       parameters. See \code{\link{settings}} for details on display
       parameters and customization.
@@ -677,7 +521,7 @@
       }
     }
     
-    \item{getPar}{\code{signature(x="StackedTrack", name="character")}:
+    \item{getPar}{\code{signature(x="HighlightTrack", name="character")}:
       alias for the \code{displayPars} method. See
       \code{\link{settings}} for details on display parameters and
       customization.
@@ -695,7 +539,7 @@
       }
     }
     
-    \item{getPar}{\code{signature(x="StackedTrack", name="missing")}:
+    \item{getPar}{\code{signature(x="HighlightTrack", name="missing")}:
       alias for the \code{displayPars} method. See
       \code{\link{settings}} for details on display parameters and
       customization.
@@ -709,7 +553,7 @@
       }
     }
     
-    \item{displayPars<-}{\code{signature(x="StackedTrack",
+    \item{displayPars<-}{\code{signature(x="HighlightTrack",
       value="list")}: set display parameters using the values of the
       named list in \code{value}. See \code{\link{settings}} for details
       on display parameters and customization.
@@ -727,9 +571,9 @@
       }
     }
     
-    \item{setPar}{\code{signature(x="StackedTrack", value="character")}:
+    \item{setPar}{\code{signature(x="HighlightTrack", value="character")}:
       set the single display parameter \code{name} to \code{value}. Note
-      that display parameters in the \code{StackedTrack} class are
+      that display parameters in the \code{HighlightTrack} class are
       pass-by-reference, so no re-assignmnet to the symbol \code{obj} is
       necessary. See \code{\link{settings}} for details on display
       parameters and customization.
@@ -755,10 +599,10 @@
       }
     }
     
-    \item{setPar}{\code{signature(x="StackedTrack", value="list")}: set
+    \item{setPar}{\code{signature(x="HighlightTrack", value="list")}: set
       display parameters by the values of the named list in
       \code{value}.  Note that display parameters in the
-      \code{StackedTrack} class are pass-by-reference, so no
+      \code{HighlightTrack} class are pass-by-reference, so no
       re-assignmnet to the symbol \code{obj} is necessary. See
       \code{\link{settings}} for details on display parameters and
       customization.
@@ -773,25 +617,8 @@
       }
     }
     
-    \item{group}{\code{signature(GdObject="StackedTrack")}: return
-      grouping information for the individual items in the track. Unless
-      overwritten in one of the sub-classes, this usualy returns
-      \code{NULL}.
-      
-      \emph{Usage:}
-      
-      \code{group(GdObject)}
-      
-      \emph{Examples:}
-      
-      \describe{
-	
-	\item{}{\code{group(obj)}}
-
-      }
-    }
     
-    \item{names}{\code{signature(x="StackedTrack")}: return the value of
+    \item{names}{\code{signature(x="HighlightTrack")}: return the value of
       the \code{name} slot.
       
       \emph{Usage:}
@@ -807,7 +634,7 @@
       }
     }
     
-    \item{names<-}{\code{signature(x="StackedTrack", value="character")}:
+    \item{names<-}{\code{signature(x="HighlightTrack", value="character")}:
       set the value of the \code{name} slot.
       
       \emph{Usage:}
@@ -823,7 +650,7 @@
       }
     }
 
-    \item{coords}{\code{signature(ImageMap="StackedTrack")}: return the
+    \item{coords}{\code{signature(ImageMap="HighlightTrack")}: return the
       coordinates from the internal image map.
       
       \emph{Usage:}
@@ -839,7 +666,7 @@
       }
     }
 
-    \item{tags}{\code{signature(x="StackedTrack")}: return the tags from the
+    \item{tags}{\code{signature(x="HighlightTrack")}: return the tags from the
       internal image map.
       
       \emph{Usage:}
@@ -861,33 +688,23 @@
 \section{Display Parameters}{
 
   The following display parameters are set for objects of class
-  \code{StackedTrack} upon instantiation, unless one or more of them
+  \code{HighlightTrack} upon instantiation, unless one or more of them
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
-  \code{\link{settings}} for details on setting graphical parameters
-  for tracks.
+  \code{\link{settings}} for details on setting graphical parameters for
+  tracks.
 
   \describe{ 
 
-    \item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
-      y-ordering of stacked items. I.e., features that are plotted on
-      the bottom-most stacks will be moved to the top-most stack and
-      vice versa.}
+    \item{}{\code{col="red"}: Integer or character scalar. The boder color for the highlighting regions.}
 
-    \item{}{\code{stackHeight=0.75}: Numeric between 0 and 1. Controls
-      the vertical size and spacing between stacked elements. The number
-      defines the proportion of the total available space for the stack
-      that is used to draw the glyphs. E.g., a value of 0.5 means that
-      half of the available vertical drawing space (for each stacking
-      line) is used for the glyphs, and thus one quarter of the available
-      space each is used for spacing above and below the glyph. Defaults
-      to 0.75.}
+    \item{}{\code{fill="#FFE3E6"}: Integer or character scalar. The fill color for the highlighting regions.}
 
   }
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{StackedTrack} objects. 
+  plotting of \code{HighlightTrack} objects. 
 
     \describe{ 
 
@@ -1055,14 +872,12 @@
 
 
 \seealso{
-
-  \code{\linkS4class{AnnotationTrack}}
-
+  
+  \code{\linkS4class{OverlayTrack}}
+  
   \code{\linkS4class{DisplayPars}}
 
   \code{\linkS4class{GdObject}}
-
-  \code{\linkS4class{GeneRegionTrack}}
 
   \code{\linkS4class{GRanges}}
 

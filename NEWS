@@ -1,4 +1,59 @@
-CHANGES IN VERSION 1.4.0
+CHANGES IN VERSION 1.8.0
+-------------------------
+
+NEW FEATURES
+
+    o The new HighlightTrack class to add a comon highlighting region
+      for multiple tracks.
+
+    o The new OverlayTrack class to merge the panels of multiple
+      tracks into a single panel.
+
+    o The reverseStrand display parameter lets you plot the data
+      relative to the negative strand.
+
+    o The just.label display parameter adds control to the placement
+      of group labls in AnnotationTrack and GeneRegionTrack objects.
+
+    o The box.legend display parameter to add a box around the legend
+      in a DataTrack object.
+
+    o extend.right and extend.left now also take relative expansion
+      factors (as values between -1 and 1).
+
+    o A new shape type fixedArrow for AnnotationTrack and
+      GeneRegionTrack objects, and the arrowHeadWidth and
+      arrowHeadMaxWidth parameters to better control the arrow shapes.
+
+    o Display parameter schemes to persistently modify parameter
+      settings.
+
+    o The new featureAnnotation and groupAnnotation parameters to
+      better control the feature and group labels in AnnotationTracks.
+
+    o The new exonAnnotation and transcriptAnnotation parameters to
+      better control the exon and transcript labels in
+      GeneRegionTracks.
+
+BUG FIXES
+
+    o A number of significant fixes.
+
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Some display parameter names have been reworked, but the old
+      ones should still work as aliases.
+
+    o Overplotting in AnnotationTrack and GeneRegionTrack objects has
+      been minimized to be able to make better use of alpha
+      blending. Also the way composite exons (e.g. part UTR, part CDS)
+      are plotted has been changed. Those will now be merged into one
+      feature as long as the exon identifier is identical and if they
+      can be reduced into a single range wit min.gapwidth=1.
+
+
+CHANGES IN VERSION 1.6.0
 -------------------------
 
 NEW FEATURES

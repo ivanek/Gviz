@@ -6,6 +6,8 @@
 
 
 
+
+
 ##----------------------------------------------------------------------------------------------------------------------
 ## Some usefull class unions to allow for NULL values in certain slots
 ##----------------------------------------------------------------------------------------------------------------------
@@ -122,17 +124,30 @@ DisplayPars <- function(...)
 ## of all parameters, or a subset of parameters if their names are
 ## provided as a character vector.  Please note that for convenience
 ## the result is unlisted if only a single parameter is queried.
+## Since version 1.7.3 we have introduced an alias table for display
+## parameters in order to harmomize parameter names without loosing
+## backwards compatability.
 setMethod("setPar", signature("DisplayPars", "list"), 
           function(x, value, interactive=TRUE) {
               x <- .updateDp(x, interactive)
-              x@pars[names(value)] <- value
+              aliasRes <- .dpAliasReverseTable[names(value)]
+              new <- is.na(aliasRes)
+              aliasRes[new] <- names(value)[new]
+              x@pars[aliasRes] <- value
               return(x)
           })
 
 setMethod("setPar", signature("DisplayPars", "character"), 
           function(x, name, value, interactive=TRUE) {
+              if(!(length(name) == 1 && is.null(value)) && length(name) != length(value))
+                  stop("'name' and 'value' must be of equal length") 
               x <- .updateDp(x, interactive)
-              x@pars[[name]] <- value
+              for(i in seq_along(name)){
+                  aliasRes <- .dpAliasReverseTable[name[i]]
+                  if(is.na(aliasRes))
+                      aliasRes <- name[i]
+                  x@pars[[aliasRes]] <- value[[i]]
+              }
               return(x)
           })
 
@@ -142,22 +157,31 @@ setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, va
 })
 
 setMethod("getPar", c("DisplayPars", "character"),
-          function(x, name){
+          function(x, name, asIs=FALSE){
+              aliasRes <- .dpAliasReverseTable[name]
+              new <- is.na(aliasRes)
+              aliasRes[new] <- name[new]
               if(class(x@pars)=="environment")
               {
-                  name <- intersect(name, ls(x@pars, all.names=TRUE))
+                  name <- intersect(aliasRes, ls(x@pars, all.names=TRUE))
                   tmp <- mget(name, x@pars)
               }else{
-                  name <- intersect(name, names(x@pars))
+                  name <- intersect(aliasRes, names(x@pars))
                   tmp <- x@pars[name]
               }
-            tmp <- if(is.list(tmp) && length(tmp)==1) tmp[[1]] else tmp
-            return(if(length(tmp)) tmp else NULL)
+              if(!asIs)
+                  tmp <- if(is.list(tmp) && length(tmp)==1) tmp[[1]] else tmp
+              return(if(length(tmp)) tmp else NULL)
           })
 
-setMethod("getPar", c("DisplayPars", "missing"), function(x) as.list(x@pars))
+setMethod("getPar", c("DisplayPars", "missing"), function(x, hideInternal=TRUE){
+    pars <- as.list(x@pars)
+    if(hideInternal)
+        pars <- pars[!grepl("^\\.__", names(pars))]
+    return(pars)
+})
 
-setMethod("displayPars", c("DisplayPars", "missing"), function(x) getPar(x))
+setMethod("displayPars", c("DisplayPars", "missing"), function(x, hideInternal=TRUE) getPar(x, hideInternal=hideInternal))
 
 setMethod("displayPars", c("DisplayPars", "character"), function(x, name) getPar(x, name))
 
@@ -165,6 +189,29 @@ setMethod("as.list", "DisplayPars", function(x) as(x, "list"))
 
 setAs("DisplayPars", "list", function(from, to) if(!is.null(from)) as.list(from@pars) else list())
 
+## An alias table to define display parameter synonyms. Essentially this is a simple named list,
+## where the element names represent the preferred parameter name under which the actual value is
+## stored, and the element content is a character vector of synonyms. Please note that this structure
+## is also turned into a reverse lookup table for fast access. 
+.dpAliasTable <- list(
+                      "fontcolor.title"="col.title",
+                      "rotation.title"=c("rot.title", "rotate.title"),
+                      "fontcolor.group"="col.group",
+                      "fontcolor.item"="col.item",
+                      "just.group"=c("labelJust", "labelJustification"),
+                      "transcriptAnnotation"="geneSymbols",
+                      "fontcolor.item"=c("fontcolor.exon", "fontcolor.feature"),
+                      "fontsize.item"=c("fontsize.exon", "fontsize.feature"),
+                      "fontfamily.item"=c("fontfamily.exon", "fontfamily.feature"),
+                      "fontface.item"=c("fontface.exon", "fontface.feature"),
+                      "lineheight.item"=c("lineheight.exon", "lineheight.feature"),
+                      "alpha.item"=c("alpha.exon", "alpha.feature"),
+                      "cex.item"=c("cex.exon", "cex.feature")
+                      )
+.dpAliasReverseTable <- character()
+.dpAliasReverseTable[names(.dpAliasTable)] <- names(.dpAliasTable)
+.dpAliasReverseTable[unlist(.dpAliasTable, use.names=FALSE)] <- rep(names(.dpAliasTable), listLen(.dpAliasTable))
+.dpAliasReverseTable <- .dpAliasReverseTable[order(names(.dpAliasReverseTable))]
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -244,45 +291,48 @@ setClass("GdObject",
                                        dp="DisplayPars",
                                        name="character",
                                        imageMap="ImageMapOrNULL"), 
-         prototype=prototype(dp=DisplayPars(fontsize=12,
-                                            fontcolor="black",
+         prototype=prototype(dp=DisplayPars(alpha=1,
+                                            alpha.title=NULL, 
+                                            background.panel="transparent",
+                                            background.title="lightgray",
+                                            cex.axis=NULL,
+                                            cex.title=NULL,
                                             cex=1,
-                                            fontfamily="sans",
-                                            fontface=1,
-                                            lineheight=1,
-                                            col=Gviz:::.DEFAULT_SYMBOL_COL,
+                                            col.axis="white",
+                                            col.border.title="white",
+                                            col.frame="lightgray",
+                                            col.grid=.DEFAULT_SHADED_COL,
                                             col.line=NULL,
                                             col.symbol=NULL,
-                                            col.grid=Gviz:::.DEFAULT_SHADED_COL,
-                                            col.frame="lightgray",
-                                            lwd.grid=1,
-                                            lty.grid="solid",
-                                            v=-1,
-                                            h=-1,
-                                            alpha=1,                          
-                                            fill=Gviz:::.DEFAULT_FILL_COL,
-                                            lwd=1,
-                                            lty="solid",
-                                            background.title="lightgray",
-					    lwd.border.title=1,
-					    col.border.title="white",
                                             col.title="white",
-                                            cex.title=NULL,
-                                            rot.title=90,
-                                            fontfamily.title="sans",
-                                            fontface.title=2,
-                                            col.axis="white",
-                                            cex.axis=NULL,
-                                            background.panel="transparent",
-                                            showTitle=TRUE,
-                                            showAxis=TRUE,
-                                            grid=FALSE,
+                                            col=.DEFAULT_SYMBOL_COL,
                                             collapse=TRUE,
-                                            min.width=1,
-                                            min.height=3,
-                                            min.distance=1,
+                                            fill=.DEFAULT_FILL_COL,
+                                            fontcolor="black",
+                                            fontface.title=2,
+                                            fontface=1,
+                                            fontfamily.title="sans",
+                                            fontfamily="sans",
+                                            fontsize=12,
                                             frame=FALSE,
-                                            size=1),
+                                            grid=FALSE,
+                                            h=-1,
+                                            lineheight=1,
+                                            lty.grid="solid",
+                                            lty="solid",
+                                            lwd.title=1,
+                                            lwd.grid=1,
+                                            lwd=1,
+                                            min.distance=1,
+                                            min.height=3,
+                                            min.width=1,
+                                            reverseStrand=FALSE,
+                                            rotation.title=90,
+                                            rotation=0,
+                                            showAxis=TRUE,
+                                            showTitle=TRUE,
+                                            size=1,
+                                            v=-1),
                              name="GdObject",
                              imageMap=NULL))
 
@@ -305,13 +355,13 @@ setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, value
     return(x)
 })
 
-setMethod("getPar", c("GdObject", "character"), function(x, name) getPar(x@dp, name))		 
+setMethod("getPar", c("GdObject", "character"), function(x, name, asIs=FALSE) getPar(x@dp, name, asIs=asIs))		 
 
-setMethod("getPar", c("GdObject", "missing"), function(x) getPar(x@dp))
+setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal=TRUE) getPar(x@dp, hideInternal=hideInternal))
 
 setMethod("displayPars", c("GdObject", "character"), function(x, name) getPar(x, name))		 
 
-setMethod("displayPars", c("GdObject", "missing"), function(x) getPar(x))	
+setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal=TRUE) getPar(x, hideInternal=hideInternal))	
 
 ## We add everything that hasn't been clobbered up so far as
 ## additional DisplayParameters.  Also, the dp slot must be
@@ -322,7 +372,7 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
     .makeParMapping()
     .Object <- .updatePars(.Object, "GdObject")
     ## now rebuild the slot to get a new environment
-    pars <- getPar(.Object)
+    pars <- getPar(.Object, hideInternal=FALSE)
     .Object@dp <- DisplayPars()
     .Object <- setPar(.Object, pars, interactive=FALSE)
     if(!missing(name))
@@ -358,11 +408,11 @@ setClass("RangeTrack",
                                        chromosome="character",
                                        genome="character"),
          contains="GdObject",
-         prototype=prototype(range=GRanges(),
+         prototype=prototype(chromosome="chr1",
                              dp=DisplayPars(),
                              genome="ANY",
-                             chromosome="chr1",
-                             name="RangeTrack"))
+                             name="RangeTrack",
+                             range=GRanges()))
 
 ## Coercing all input to the appropriate form			 
 setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genome, ...) {
@@ -464,8 +514,8 @@ setClass("StackedTrack",
          prototype=prototype(name="StackedTrack",
                              stacking="squish",
                              stackingValues=c("hide", "dense", "squish", "pack", "full"),
-                             dp=DisplayPars(reverseStacking=FALSE,
-                                            stackHeight=0.75)),					  
+                             dp=DisplayPars(stackHeight=0.75,
+                                            reverseStacking=FALSE)),					  
          contains="RangeTrack")
 
 ## Need to fill the stacks slot here, don't want to recompute all the time
@@ -527,28 +577,31 @@ setClass("AnnotationTrack",
          prototype=prototype(columns=c("feature", "group", "id"), 
                              stacking="squish",
                              name="AnnotationTrack",
-                             dp=DisplayPars(fill="lightblue",
-                                            col="transparent",
+                             dp=DisplayPars(arrowHeadWidth=30,
+                                            arrowHeadMaxWidth=40,
+                                            cex.group=0.6,
+                                            cex=1,
                                             col.line="darkgray",
+                                            col="transparent",
+                                            featureAnnotation=NULL,
+                                            fill="lightblue",
+                                            fontcolor.group=.DEFAULT_SHADED_COL,
+                                            fontcolor.item="white",
+                                            fontface.group=2,
+                                            groupAnnotation=NULL,
+                                            just.group="left",
+                                            lex=1,
+                                            lineheight=1,
                                             lty="solid",
                                             lwd=1,
-                                            lex=1,
-                                            fontsize=12,
-                                            fontcolor="white",
-                                            fontfamily="sans",
-                                            fontface=1,
-                                            cex.group=0.6,
-                                            fontface.group=2,
-                                            fontcolor.group=Gviz:::.DEFAULT_SHADED_COL,
-                                            cex=1,
-                                            size=1,
-                                            lineheight=1,
-                                            showId=FALSE,
-                                            showFeatureId=FALSE,
+                                            mergeGroups=FALSE,
+                                            rotation.group=0,
+                                            rotation.item=0,
                                             shape="arrow",
-                                            rotation=0,
+                                            showFeatureId=NULL,
+                                            showId=NULL,
                                             showOverplotting=FALSE,
-                                            mergeGroups=FALSE)))
+                                            size=1)))
                                            
 ## Essentially we just check for the correct GRanges columns here
 setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
@@ -701,22 +754,20 @@ setClass("DetailsAnnotationTrack",
          representation=representation(fun="function", selectFun="function"),
          prototype=prototype(fun=function(...){},
                              selectFun=function(...){return(TRUE)},
-                             dp=DisplayPars(
+                             dp=DisplayPars(details.minWidth=100,
+                                            details.ratio=Inf,
                                             details.size=0.5,
-                                            details.minWidth=100,
+                                            detailsBorder.col="darkgray",
+                                            detailsBorder.fill="transparent",
+                                            detailsBorder.lty="solid",
+                                            detailsBorder.lwd=1,
+                                            detailsConnector.cex=1,
                                             detailsConnector.col="darkgray",
                                             detailsConnector.lty="dashed",         
                                             detailsConnector.lwd=1,
                                             detailsConnector.pch=20,          
-                                            detailsConnector.cex=1,
-                                            detailsBorder.lty="solid",
-                                            detailsBorder.lwd=1,
-                                            detailsBorder.col="darkgray",
-                                            detailsBorder.fill="transparent",
-                                            details.ratio=Inf,
                                             detailsFunArgs=list(),
-                                            groupDetails=FALSE)
-                             ))
+                                            groupDetails=FALSE)))
 
 DetailsAnnotationTrack <- function(...) AnnotationTrack(...)
 
@@ -763,7 +814,6 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ##    o cex: the font expansion factor.
 ##    o lineheight: the text lineheight
 ##    o showId: boolean controlling whether to plot group identifiers, e.g, gene symbols or transcript IDs.
-##    o geneSymbols: boolean controlling whether to use gene symbols or gene ids as gene annotations
 ##    o shape: the shape used for the annotation items. Currently only 'box' and 'arrow' are implemented.
 ##    o rotation: the rotation of the exon annotation in degrees.
 ##----------------------------------------------------------------------------------------------------------------------
@@ -777,15 +827,17 @@ setClass("GeneRegionTrack",
                              start=0,
                              end=0,
                              name="GeneRegionTrack",
-                             dp=DisplayPars(fill="orange",
-                                            min.distance=0,
+                             dp=DisplayPars(arrowHeadWidth=10,
+                                            arrowHeadMaxWidth=20,
                                             col=NULL,
-                                            geneSymbols=TRUE,
-                                            showExonId=FALSE,
                                             collapseTranscripts=FALSE,
+                                            exonAnnotation=NULL,
+                                            fill="orange",
+                                            min.distance=0,
                                             shape=c("smallArrow", "box"),
-                                            thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA",
-                                                             "three_prime_UTR", "five_prime_UTR"))))
+                                            showExonId=NULL,
+                                            thinBoxFeature=.THIN_BOX_FEATURES,
+                                            transcriptAnnotation=NULL)))
                                            
 
 ## Making sure all the display parameter defaults are being set
@@ -841,7 +893,7 @@ GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, 
     if(!is.character(range)){
         n <- if(is.null(range)) max(c(length(start), length(end), length(width))) else if(is(range, "data.frame")) nrow(range) else length(range)
         if(is.null(covars[["feature"]]) && missing(feature))
-            feature <- rep("unknown", n)
+            feature <- paste("exon", 1:n, sep="_")
         if(is.null(covars[["exon"]]) && missing(exon))
             exon <- make.unique(rep(if(!missing(feature) && !is.null(feature)) as.character(feature) else covars[["feature"]], n)[1:n])
         if(is.null(covars[["transcript"]]) && missing(transcript))
@@ -913,28 +965,28 @@ setClass("BiomartGeneRegionTrack",
                              dp=DisplayPars(C_segment="burlywood4",
                                             D_segment="lightblue",
                                             J_segment="dodgerblue2",
+                                            Mt_rRNA="yellow",
+                                            Mt_tRNA="darkgoldenrod",
+                                            Mt_tRNA_pseudogene="darkgoldenrod1",
+                                            V_segment="aquamarine",
                                             miRNA="cornflowerblue",
                                             miRNA_pseudogene="cornsilk",
                                             misc_RNA="cornsilk3",
                                             misc_RNA_pseudogene="cornsilk4",
-                                            Mt_rRNA="yellow",
-                                            Mt_tRNA="darkgoldenrod",
-                                            Mt_tRNA_pseudogene="darkgoldenrod1",
                                             protein_coding="orange",
-                                            utr5="orange",
-                                            utr3="orange",
                                             pseudogene="brown1",         
-                                            retrotransposed="blueviolet",
                                             rRNA="darkolivegreen1",
                                             rRNA_pseudogene="darkolivegreen" ,   
+                                            retrotransposed="blueviolet",
                                             scRNA="gold4",
                                             scRNA_pseudogene="darkorange2",
-                                            snoRNA="cyan",           
-                                            snoRNA_pseudogene="cyan2",
                                             snRNA="coral",
                                             snRNA_pseudogene="coral3",   
+                                            snoRNA="cyan",           
+                                            snoRNA_pseudogene="cyan2",
                                             tRNA_pseudogene="antiquewhite3",
-                                            V_segment="aquamarine")))
+                                            utr3="orange",
+                                            utr5="orange")))
 
 ## Retrieving information from Biomart.
 setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome, strand, ...){
@@ -1098,26 +1150,26 @@ setClass("GenomeAxisTrack",
          representation=representation(range="GRanges"),
          prototype(range=GRanges(),
                    name="GenomeAxisTrack",
-                   dp=DisplayPars(col="darkgray",
-                                  fontcolor="#808080",
-                                  fill.range="cornsilk3",
-                                  col.range="cornsilk4",
-                                  fontsize=10,
-                                  showTitle=FALSE,
-                                  background.title="transparent",
-                                  cex=0.8,
-                                  exponent=NULL,
-                                  distFromAxis=1,
-                                  labelPos="alternating",
+                   dp=DisplayPars(add35=FALSE,
                                   add53=FALSE,
-                                  add35=FALSE,
-                                  col.id="white",
+                                  background.title="transparent",
                                   cex.id=0.7,
-                                  showId=FALSE,
+                                  cex=0.8,
+                                  col.id="white",
+                                  col.range="cornsilk4",
+                                  distFromAxis=1,
+                                  exponent=NULL,
+                                  fill.range="cornsilk3",
+                                  fontcolor="#808080",
+                                  fontsize=10,
+                                  labelPos="alternating",
                                   littleTicks=FALSE,
-                                  size=NULL,
+                                  lwd=2,
                                   scale=NULL,
-                                  lwd=2)))
+                                  showId=FALSE,
+                                  showTitle=FALSE,
+                                  size=NULL,
+                                  col="darkgray")))
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...){
@@ -1189,60 +1241,64 @@ setClass("DataTrack",
          representation=representation(data="matrix", strand="character"),
          prototype=prototype(columns=c("score"),
                              name="DataTrack",
-                             dp=DisplayPars(size=NULL,
-                                            type="p",
-                                            cex=0.7,
-                                            jitter.x=FALSE,
-                                            jitter.y=FALSE,
-                                            factor=0.5,
+                             dp=DisplayPars(aggregateGroups=FALSE,
+                                            aggregation="mean",
                                             amount=NULL,
-                                            span=1/5, 
-                                            degree=1,
-                                            pch=20,
-                                            family="symmetric",
-                                            evaluation=50,
-                                            col=trellis.par.get("superpose.line")[["col"]],
-                                            col.mountain=NULL,
-                                            lwd.mountain=NULL,
-                                            lty.mountain=NULL,
-                                            fill.mountain=c("#CCFFFF", "#FFCCFF"),
                                             baseline=NULL,
-                                            col.baseline=NULL,
-                                            lwd.baseline=NULL,
-                                            lty.baseline=NULL,
+                                            box.legend=FALSE,
                                             box.ratio=1,
                                             box.width=NULL,
-                                            varwidth=FALSE,
-                                            notch=FALSE,
-                                            notch.frac=0.5,
-                                            levels.fos=NULL,
-                                            stats=boxplot.stats,
-                                            coef=1.5,
-                                            do.out=TRUE,
-                                            transformation=NULL,
-                                            ncolor=100,
-                                            gradient=brewer.pal(9, "Blues"),
-                                            min.distance=0,
-                                            collapse=FALSE,
-                                            window=NULL,
-                                            windowSize=NULL,
-                                            fill.histogram=NULL,
-                                            col.histogram=Gviz:::.DEFAULT_SHADED_COL,
-                                            stackedBars=TRUE,
-                                            groups=NULL,
-                                            separator=0,
-                                            aggregation="mean",
-                                            aggregateGroups=FALSE,
-                                            ylim=NULL,
-                                            na.rm=FALSE,
-                                            showSampleNames=FALSE,
+                                            grid=FALSE,
+                                            cex.legend=0.8,
                                             cex.sampleNames=NULL,
+                                            cex=0.7,
+                                            coef=1.5,
+                                            col.baseline=NULL,
+                                            col.histogram=.DEFAULT_SHADED_COL,
+                                            col.horizon=NA,
+                                            col.mountain=NULL,
                                             col.sampleNames="white",
-					    showColorBar=TRUE,
+                                            col=trellis.par.get("superpose.line")[["col"]],
+                                            collapse=FALSE,
+                                            degree=1,
+                                            do.out=TRUE,
+                                            evaluation=50,
+                                            factor=0.5,
+                                            family="symmetric",
+                                            fill.histogram=NULL,
+                                            fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
+                                            fill.mountain=c("#CCFFFF", "#FFCCFF"),
+                                            fontcolor.legend=.DEFAULT_SHADED_COL,
+                                            gradient=brewer.pal(9, "Blues"),
+                                            groups=NULL,
                                             horizon.origin=0,
                                             horizon.scale=NULL,
-                                            fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
-                                            col.horizon=NA)))
+                                            jitter.x=FALSE,
+                                            jitter.y=FALSE,
+                                            levels.fos=NULL,
+                                            lty.baseline=NULL,
+                                            lty.mountain=NULL,
+                                            lwd.baseline=NULL,
+                                            lwd.mountain=NULL,
+                                            min.distance=0,
+                                            na.rm=FALSE,
+                                            ncolor=100,
+                                            notch.frac=0.5,
+                                            notch=FALSE,
+                                            pch=20,
+                                            separator=0,
+                                            showColorBar=TRUE,
+                                            showSampleNames=FALSE,
+                                            size=NULL,
+                                            span=1/5, 
+                                            stackedBars=TRUE,
+                                            stats=boxplot.stats,
+                                            transformation=NULL,
+                                            type="p",
+                                            varwidth=FALSE,
+                                            window=NULL,
+                                            windowSize=NULL,
+                                            ylim=NULL)))
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ...){
@@ -1365,18 +1421,18 @@ setClass("IdeogramTrack", contains = "RangeTrack",
          representation=representation(bandTable="data.frame"),
          prototype=prototype(name="IdeogramTrack",
                              bandTable=data.frame(),
-                             dp=DisplayPars(size=NULL,
+                             dp=DisplayPars(background.title="transparent",
+                                            bevel=0.45,
+                                            cex.bands=0.7,
+                                            cex=0.8,
                                             col="red",
                                             fill="#FFE3E6",
-                                            fontcolor="#808080",
-                                            cex=0.8,
+                                            fontcolor=.DEFAULT_SHADED_COL,
                                             fontsize=10,
-                                            showTitle=FALSE,
-                                            background.title="transparent",
-                                            showId=TRUE,
                                             showBandId=FALSE,
-                                            cex.bands=0.7,
-                                            bevel=0.45)))
+                                            showId=TRUE,
+                                            showTitle=FALSE,
+                                            size=NULL)))
 
 ## Grab the chromosome band and length information from UCSC and fill the ranges slot.
 setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, bands, name, ...){
@@ -1502,7 +1558,8 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
                                             genome(tmp) <- genome
                                             tmp}), env, cenv)
             query <-  tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error=function(e)
-                               stop("There doesn't seem to be any cytoband data available for genome '", genome, "' at UCSC."))
+                               stop("There doesn't seem to be any cytoband data available for genome '", genome,
+                                    "' at UCSC or the service is temporarily down."))
             getTable(query)}), env, cenv)
     }
     return(list(availableGenomes=genomes, bands=bands))
@@ -1522,7 +1579,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
                       genome, chromosome, name=NULL, from, to, ...)
 {
     trackType <- match.arg(trackType)
-    if(missing(genome) || !IRanges:::isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
+    if(missing(genome) || !IRanges::isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
     if(missing(chromosome)) stop("Need to specify chromosome for creating a UcscTrack")
     chromosome <- .chrName(chromosome)[1]
     sessionInfo <- .cacheTracks(genome=genome, chromosome=chromosome, track=track, env=.ucscCache)
@@ -1683,18 +1740,18 @@ setClass("SequenceTrack",
                                        genome="character"),
          contains="GdObject",
          prototype=prototype(name="Sequence",
-                             dp=DisplayPars(size=NULL,
-                                            fontcolor=getBioColor("DNA_BASES_N"),
-                                            fontsize=10,
-                                            fontface=2,
-                                            lwd=2,
-                                            col="darkgray",
-                                            min.width=2,
-                                            showTitle=FALSE,
+                             dp=DisplayPars(add53=FALSE,
                                             background.title="transparent",
-                                            noLetters=FALSE,
+                                            col="darkgray",
                                             complement=FALSE,
-                                            add53=FALSE),
+                                            fontcolor=getBioColor("DNA_BASES_N"),
+                                            fontface=2,
+                                            fontsize=10,
+                                            lwd=2,
+                                            min.width=2,
+                                            noLetters=FALSE,
+                                            showTitle=FALSE,
+                                            size=NULL),
                              genome=as.character(NA),
                              chromosome="chrNA"))
 
@@ -1824,7 +1881,6 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL
     .Object <- callNextMethod(.Object, ...)
      return(.Object)
 })
-
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -1833,7 +1889,8 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL
 ## ReferenceSequenceTrack:
 ## 
 ## The file-based version of the ReferenceTrack class. This will mainly provide a means to dispatch to
-## a special 'subseq' method which should stream the necessary data from disk. 
+## a special 'subseq' method which should stream the necessary data from disk.
+##----------------------------------------------------------------------------------------------------------------------
 setClass("ReferenceSequenceTrack", contains=c("SequenceDNAStringSetTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
@@ -1843,3 +1900,79 @@ setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, refe
     .Object <- callNextMethod()
     return(.Object)
 })
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## HighlightTrack:
+## 
+## A collection container for several track objects for which a particular area needs to be highlighted.
+##----------------------------------------------------------------------------------------------------------------------
+setClass("HighlightTrack",
+         representation=representation(trackList="list"),
+         contains=c("RangeTrack"),
+         prototype=prototype(dp=DisplayPars(col="red",
+                                            fill="#FFE3E6")))
+
+setMethod("initialize", "HighlightTrack", function(.Object, trackList, ...) {
+    .Object <- .updatePars(.Object, "HighlightTrack")
+    .Object@trackList <- trackList
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
+})
+
+HighlightTrack <- function(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, chromosome, genome,
+                           name="HighlightTrack",  ...){
+    ## Some defaults
+    covars <- .getCovars(range)
+    n <- max(c(length(start), length(end), length(width)), nrow(covars))
+    ## Build a GRanges object from the inputs
+    .missingToNull(c("strand", "chromosome", "genome"))
+    args <- list(chromosome=chromosome, genome=genome)
+    defs <- list(strand="*", density=1, chromosome="chrNA", genome=NA)
+    range <- .buildRange(range=range, start=start, end=end, width=width,
+                         args=args, defaults=defs, chromosome=chromosome, trackType="HighlightTrack")
+    if(is.list(range)){
+        range <- GRanges()
+    }
+    if(!is.list(trackList))
+        trackList <- list(trackList)
+    if(!all(sapply(trackList, is, "GdObject")))
+        stop("All elements in 'trackList' must inherit from 'GdObject'")
+    ## If no chromosome was explicitely asked for we just take the first one in the GRanges object
+    if(missing(chromosome) || is.null(chromosome))
+        chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    ## And finally the object instantiation
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    return(new("HighlightTrack", trackList=trackList, chromosome=chromosome[1], range=range, name=name, genome=genome, ...))
+}
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## OverlayTrack:
+## 
+## A collection container for several track objects which will all be plotted on top of each other
+##----------------------------------------------------------------------------------------------------------------------
+setClass("OverlayTrack",
+         representation=representation(trackList="list"),
+         contains=c("GdObject"),
+         prototype=prototype(dp=DisplayPars()))
+
+setMethod("initialize", "OverlayTrack", function(.Object, trackList, ...) {
+    .Object <- .updatePars(.Object, "HighlightTrack")
+    .Object@trackList <- trackList
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
+})
+
+OverlayTrack <- function(trackList=list(), name="OverlayTrack",  ...){
+    if(!is.list(trackList))
+        trackList <- list(trackList)
+    if(!all(sapply(trackList, is, "GdObject")))
+        stop("All elements in 'trackList' must inherit from 'GdObject'")
+    return(new("OverlayTrack", trackList=trackList, name=name, ...))
+}
+##----------------------------------------------------------------------------------------------------------------------

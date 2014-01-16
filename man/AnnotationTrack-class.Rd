@@ -1722,7 +1722,7 @@ ranges(annTrack)
 
 ## Annotation
 identifier(annTrack)
-identifier(annTrack, lowest=TRUE)
+identifier(annTrack, "lowest")
 identifier(subTrack) <- "bar"
 
 feature(annTrack)
@@ -1760,7 +1760,7 @@ library(lattice) # need to use grid grapics
 m <- matrix(c(rgamma(400, 1)), ncol=100)
 m[,51:100] <- m[,51:100] + 0:3
 ## rownames must be accessible by AnnotationTrack element identifier
-rownames(m) <- identifier(annTrack, lowest=TRUE)
+rownames(m) <- identifier(annTrack, "lowest")
 
 ## create a lattice density plot for the values (signals) of the two groups
 ## as the chart must be placed into a pre-set grid view port we have to use

@@ -1652,7 +1652,7 @@ ranges(bmTrack)
 
 ## Annotation
 identifier(bmTrack)
-identifier(bmTrack, lowest=TRUE)
+identifier(bmTrack, "lowest")
 identifier(subTrack) <- "bar"
 
 feature(bmTrack)

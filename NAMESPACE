@@ -13,7 +13,7 @@ importClassesFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString)
 
 importClassesFrom(GenomicRanges, GRanges)
 
-importClassesFrom(BSgenome, BSgenome)
+importClassesFrom(BSgenome, BSgenome, MaskedBSgenome)
 
 importClassesFrom(GenomicFeatures, "TranscriptDb")
 
@@ -113,18 +113,22 @@ export(".chrName",
        "BiomartGeneRegionTrack",
        "DataTrack",
        "DisplayPars",
+       "SequenceTrack",
+       "OverlayTrack",
        "drawGD",
        "GeneRegionTrack",
        "GenomeAxisTrack",
+       "HighlightTrack",
        "IdeogramTrack",
        "UcscTrack",
+       "addScheme",
        "as.list",
        "availableDefaultMapping",
        "availableDisplayPars",
        "clearSessionCache",
        "exportTracks",
-       "plotTracks",
-       "SequenceTrack")
+       "getScheme",
+       "plotTracks")
 
 exportClasses("AlignedReadTrack",
               "AnnotationTrack",
@@ -136,7 +140,9 @@ exportClasses("AlignedReadTrack",
               "GenomeAxisTrack",
               "IdeogramTrack",
               "ImageMap",
-              "SequenceTrack")
+              "SequenceTrack",
+              "HighlightTrack",
+              "OverlayTrack")
 
 exportMethods("[",
               "as.list",
