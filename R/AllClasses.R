@@ -438,11 +438,11 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
 ## Parent class for all tracks that provide a reference to data somewhere on the file system. This class is virtual
 ## and only exists for the purpose of dispatching
 ## Slots:
-##   o stream: the import function to stream data of the disk. Needs to be able to handle the two mandatory arguments
+##   o stream: the import function to stream data off the disk. Needs to be able to handle the two mandatory arguments
 ##      'file' (a character containing a valid file path) and 'selection' (a GRanges object with the genomic region to plot)
 ##   o reference: the path to the file containing the data
 ##   o mapping: a default mapping between elementMetadata columns of the returned GRanges object from the import function
-##      and the elemenMetadata columns that make up the final track object
+##      and the elementMetadata columns that make up the final track object
 ##   o args: a list with the passed in constructor arguments during object instantiation. Those will be needed when
 ##     fetching the data in order to fill all necessary slots
 ##   o defaults: a list with the relevant default values to be used when neither 'mapping' nor 'args' provides the
@@ -1717,7 +1717,13 @@ AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chrom
     return(new("AlignedReadTrack", chromosome=chromosome, range=range, name=name, genome=genome(range)[1],
                stacking=stacking, coverageOnly=coverageOnly, ...))
 }
+
+
+
+
+
 ##----------------------------------------------------------------------------------------------------------------------
+
 
 
 
@@ -1900,6 +1906,157 @@ setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, refe
     .Object <- callNextMethod()
     return(.Object)
 })
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## AlignmentsTrack
+##
+## A track that represents aligned NGS reads on a genome. This supports gapped an paired alignments.
+##----------------------------------------------------------------------------------------------------------------------
+setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
+setClass("AlignmentsTrack",
+         representation=representation(stackRanges="GRanges",
+                                       sequences="DNAStringSet",
+                                       referenceSequence="SequenceTrackOrNULL"),
+         contains="StackedTrack",
+         prototype=prototype(stacking="squish",
+                             name="AlignmentsTrack",
+                             coverageOnly=FALSE,
+                             stackRanges=GRanges(),
+                             sequences=DNAStringSet(),
+                             referenceSequence=NULL,
+                             dp=DisplayPars(alpha.reads=0.5,
+                                            alpha.mismatch=1,
+                                            cex.mismatch=0.7,
+                                            col.coverage=NULL,
+                                            col.gap=.DEFAULT_SHADED_COL,
+                                            col.mates=.DEFAULT_BRIGHT_SHADED_COL,
+                                            col.mismatch=.DEFAULT_SHADED_COL,
+                                            col=.DEFAULT_SHADED_COL,
+                                            collapse=FALSE,
+                                            coverageHeight=0.1,
+                                            fill.coverage=NULL,
+                                            fill="#BABABA",
+                                            fontface.mismatch=2,
+                                            lty.coverage=NULL,
+                                            lty.gap=NULL,
+                                            lty.mates=NULL,
+                                            lty.mismatch=NULL,
+                                            lty=1,
+                                            lwd.coverage=NULL,
+                                            lwd.gap=NULL,
+                                            lwd.mates=NULL,
+                                            lwd.mismatch=NULL,
+                                            lwd=1,
+                                            max.height=10,
+                                            min.height=5,
+                                            minCoverageHeight=50,
+                                            showMismatches=TRUE,
+                                            size=NULL,
+                                            type=.ALIGNMENT_TYPES)))
+
+
+setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges=GRanges(), stacks=numeric(), sequences=DNAStringSet(),
+                                                    referenceSequence=NULL, ...) {
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "AlignedReadTrack")
+    .Object@stackRanges <- stackRanges
+    .Object <- callNextMethod()
+    .Object@stacks <- stacks
+    .Object@sequences <- sequences
+    .Object@referenceSequence <- referenceSequence
+    return(.Object)
+})
+
+
+
+setClass("ReferenceAlignmentsTrack", contains=c("AlignmentsTrack", "ReferenceTrack"))
+
+## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
+## multiple inheritence has some strange features with regards to method selection
+setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, reference, mapping=list(),
+                                                             args=list(), defaults=list(), stacks=numeric(),
+                                                             stackRanges=GRanges(), sequences=DNAStringSet(),
+                                                             referenceSequence=NULL, ...) {
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
+                                                            mapping=mapping, args=args, defaults=defaults)
+    .Object <- callNextMethod()
+    .Object@referenceSequence <- referenceSequence
+    return(.Object)
+})
+
+
+## Constructor
+AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome, genome,
+                            stacking="squish", id, cigar, mapq, flag, isize, groupid, status, md, seqs,
+                            name="AlignmentsTrack", isPaired=TRUE, importFunction, referenceSequence, ...){
+    ## Some defaults
+    if(missing(importFunction))
+        importFunction <- .import.bam.alignments
+    covars <- .getCovars(range)
+    isStream <- FALSE
+    if(!is.character(range)){
+        n <- max(c(length(start), length(end), length(width)), nrow(covars))
+        id <- .covDefault(id, covars[["id"]], paste("read", seq_len(n), sep="_"))
+        cigar <- .covDefault(cigar, covars[["cigar"]], paste(if(is(range, "GRangesOrIRanges")) width(range) else width, "M", sep=""))
+        mapq <- .covDefault(mapq, covars[["mapq"]], rep(as.integer(NA), n))
+        flag <- .covDefault(flag, covars[["flag"]], rep(as.integer(NA), n))
+        isize <- .covDefault(isize, covars[["isize"]], rep(as.integer(NA), n))
+        groupid <- .covDefault(groupid, covars[["groupid"]], seq_len(n))
+        md <- .covDefault(md, covars[["md"]], rep(as.character(NA), n))
+        status <- .covDefault(status, covars[["status"]], ifelse(groupid %in% groupid[duplicated(groupid)], "mated", "unmated"))
+    }
+    ## Build a GRanges object from the inputs
+    .missingToNull(c("strand", "chromosome", "importFunction", "genome", "id", "cigar", "mapq", "flag", "isize", "groupid", "status",
+                     "md", "seqs", "referenceSequence"))
+    args <- list(id=id, cigar=cigar, mapq=mapq, flag=flag, isize=isize, groupid=groupid, status=status, strand=strand, md=md,
+                 chromosome=chromosome, genome=genome)
+    defs <- list(strand="*", chromosome="chrNA", genome=NA, id=as.character(NA), cigar=as.character(NA), mapq=as.integer(NA),
+                 flag=as.integer(NA), isize=as.integer(NA), groupid=as.character(NA), status=as.character(NA), md=as.character(NA))
+    range <- .buildRange(range=range, start=start, end=end, width=width,
+                         args=args, defaults=defs, chromosome=chromosome, trackType="AlignmentsTrack",
+                         importFun=importFunction, stream=TRUE, autodetect=TRUE)
+    ## This is going to be a list if we have to stream data from a file, otherwise we can compute some additional values
+    if(is.list(range)){
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
+        stackRanges <- GRanges()
+        stacks <- NULL
+        seqs <- DNAStringSet()
+    }else{
+        if(is.null(seqs)){
+            seqs <- DNAStringSet(sapply(width(range), function(x) paste(rep("N", x), collapse="")))
+        }
+        tmp <- .computeAlignments(range)
+        range <- tmp$range
+        stackRanges <- tmp$stackRange
+        stacks <- tmp$stacks
+    }
+    ## If no chromosome was explicitely asked for we just take the first one in the GRanges object
+    if(missing(chromosome) || is.null(chromosome))
+        chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    ## And finally the object instantiation
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    if(!isStream){
+        return(new("AlignmentsTrack", chromosome=chromosome[1], range=range, stacks=stacks,
+                   name=name, genome=genome, stacking=stacking, stackRanges=stackRanges, sequences=seqs,
+                   referenceSequence=referenceSequence, ...))
+        }else{
+            ## A bit hackish but for some functions we may want to know which track type we need but at the
+            ## same time we do not want to enforce this as an additional argument
+            e <- new.env()
+            e[["._trackType"]] <- "AlignmentsTrack"
+            e[["._isPaired"]] <- isPaired
+            environment(slist[["stream"]]) <- e
+            return(new("ReferenceAlignmentsTrack", chromosome=chromosome[1], range=range, stackRanges=stackRanges,
+                       name=name, genome=genome, stacking=stacking, stream=slist[["stream"]], reference=slist[["reference"]],
+                       mapping=slist[["mapping"]], args=args, defaults=defs, stacks=stacks, referenceSequence=referenceSequence, ...))
+        }
+}
 ##----------------------------------------------------------------------------------------------------------------------
 
 

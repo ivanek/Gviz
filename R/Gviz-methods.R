@@ -83,6 +83,7 @@ setMethod("values", "DataTrack", function(x, all=FALSE){
         x@data[,sel, drop=FALSE]
     }
 })
+setMethod("values", "AlignmentsTrack", function(x) .dpOrDefault(x, ".__coverage"))
 setReplaceMethod("values", "DataTrack", function(x, value){
     if(!is.matrix(value))
     {
@@ -197,6 +198,14 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     displayPars(tmp) <- displayPars(GdObject, hideInternal=FALSE)
     return(tmp)
 })
+
+setReplaceMethod("chromosome", "AlignmentsTrack", function(GdObject, value){
+    GdObject <- callNextMethod()
+    if(!is.null(GdObject@referenceSequence))
+        chromosome(GdObject@referenceSequence) <- value[1]
+    return(GdObject)
+})
+
 
 ## Set or extract the genome from a RangeTrack object
 setMethod("genome", "RangeTrack", function(x) x@genome)
@@ -464,6 +473,9 @@ setReplaceMethod("stacking", c("StackedTrack", "character"),
 setMethod("stacks", "StackedTrack", 
           function(GdObject) if(length(GdObject@stacks)) GdObject@stacks else NULL)
 
+setMethod("stacks", "AlignmentsTrack", 
+          function(GdObject) if(length(GdObject)) ranges(GdObject)$stack else 0)
+
 setMethod("setStacks", "GdObject", function(GdObject, ...) GdObject)
 setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
     bins <- if(!.needsStacking(GdObject)) rep(1, length(GdObject)) else disjointBins(range(GdObject))
@@ -498,6 +510,15 @@ setMethod("setStacks", "OverlayTrack", function(GdObject, ...) {
      GdObject@trackList <- lapply(GdObject@trackList, setStacks, ...)
      return(GdObject)
  })
+
+setMethod("setStacks", "AlignmentsTrack", function(GdObject, ...) {
+    if(length(GdObject)){
+        bins <- if(!.needsStacking(GdObject)) rep(1, length(GdObject)) else disjointBins(GdObject@stackRanges)
+        GdObject@stacks <- bins
+        ranges(GdObject)$stack <- bins[match(ranges(GdObject)$groupid, names(GdObject@stackRanges))]
+    }
+    return(GdObject)
+})
 ##----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -550,9 +571,10 @@ setMethod("score", signature("DataTrack"), function(x, from=NULL, to=NULL, sort=
 ##    o ...: additional arguments that are considered to be display parameters
 ##----------------------------------------------------------------------------------------------------------------------------
 ## For all track types we want to update the display parameters
-setMethod("consolidateTrack", signature(GdObject="GdObject"), function(GdObject, ...) {
+setMethod("consolidateTrack", signature(GdObject="GdObject"), function(GdObject, alpha, ...) {
     pars <- list(...)
     pars <- pars[names(pars)!=""]
+    pars[[".__hasAlphaSupport"]] <- alpha
     displayPars(GdObject) <- pars
     return(GdObject)
 })
@@ -584,20 +606,24 @@ setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"), function(Gd
                                                                               hasTitle=.dpOrDefault(GdObject, "showTitle", TRUE),
                                                                               title.width=NULL, ...) {
     GdObject <- callNextMethod()
-    ## ids are shown if either set by the showId parameter, or through the use of the transcriptAnnotation or
-    ## groupAnnotation parameters
-    ids <- identifier(GdObject)
-    sid <- .dpOrDefault(GdObject, "showId")
-    ta <- if(is(GdObject, "GeneRegionTrack")) .dpOrDefault(GdObject, "transcriptAnnotation") else .dpOrDefault(GdObject, "groupAnnotation")
-    sid <- if(is.null(sid)) !is.null(ta) && ta != "none" else sid
-    hasAnno <- sid && !all(ids=="") 
-    ## element ids are shown if either the showFeatureId or showExonId parameters are TRUE, or if featureAnnotation
-    ## or exonAnnotation is set
-    sfid <- if(is(GdObject, "GeneRegionTrack")) .dpOrDefault(GdObject, "showExonId") else .dpOrDefault(GdObject, "showFeatureId")
-    fa <- if(is(GdObject, "GeneRegionTrack")) .dpOrDefault(GdObject, "exonAnnotation") else .dpOrDefault(GdObject, "featureAnnotation")
-    sfid <- if(is.null(sfid)) !is.null(fa) && fa != "none" else sfid
-    displayPars(GdObject) <- list(".__hasAnno"=hasAnno, showId=sid, showFeatureId=sfid, showExonId=sfid)
-    GdObject <- .computeGroupRange(GdObject, hasAxis=hasAxis, hasTitle=hasTitle, title.width=title.width)
+    if(length(GdObject)){
+        ## ids are shown if either set by the showId parameter, or through the use of the transcriptAnnotation or
+        ## groupAnnotation parameters
+        ids <- identifier(GdObject)
+        sid <- .dpOrDefault(GdObject, "showId")
+        ta <- if(is(GdObject, "GeneRegionTrack")) .dpOrDefault(GdObject, "transcriptAnnotation") else .dpOrDefault(GdObject, "groupAnnotation")
+        sid <- if(is.null(sid)) !is.null(ta) && ta != "none" else sid
+        hasAnno <- sid && !all(ids=="") 
+        ## element ids are shown if either the showFeatureId or showExonId parameters are TRUE, or if featureAnnotation
+        ## or exonAnnotation is set
+        sfid <- if(is(GdObject, "GeneRegionTrack")) .dpOrDefault(GdObject, "showExonId") else .dpOrDefault(GdObject, "showFeatureId")
+        fa <- if(is(GdObject, "GeneRegionTrack")) .dpOrDefault(GdObject, "exonAnnotation") else .dpOrDefault(GdObject, "featureAnnotation")
+        sfid <- if(is.null(sfid)) !is.null(fa) && fa != "none" else sfid
+        displayPars(GdObject) <- list(".__hasAnno"=hasAnno, showId=sid, showFeatureId=sfid, showExonId=sfid)
+        GdObject <- .computeGroupRange(GdObject, hasAxis=hasAxis, hasTitle=hasTitle, title.width=title.width)
+    }else{
+        displayPars(GdObject) <- list(".__hasAnno"=FALSE, showId=FALSE, showFeatureId=FALSE, showExonId=FALSE)
+    }
     return(GdObject)
 })
 ## For a HighlightTrack we apply the method on each of the subtracks in the trackList slot
@@ -1084,8 +1110,7 @@ setMethod("subset", signature(x="AnnotationTrack"), function(x, from=NULL, to=NU
                 x <- setStacks(x)
             return(x)
         }
-        ## Now remove everything except for the overlapping groups by first subselecting all groups in the range...
-       
+        ## Now remove everything except for the overlapping groups by first subselecting all groups in the range...  
         gsel <- names(granges)[subjectHits(findOverlaps(GRanges(seqnames=chromosome(x), ranges=IRanges(min(ranges), max(ranges))), granges))]
         x <- x[group(x) %in% gsel]
         if(sort)
@@ -1156,6 +1181,60 @@ setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=N
         x <- callNextMethod(x=x, from=from, to=to, sort=sort, stacks=stacks)
     }
     return(x)
+})
+
+## AlignmentTracks can be subset by using the information in the stackRanges slot, but for the actual reads we need to make sure that
+## we keep all the bits that belong to a given group. We still want to record the requested ranges in the internal '.__plottingRange'
+## display parameter.
+setMethod("subset", signature(x="AlignmentsTrack"), function(x, from=NULL, to=NULL, stacks=FALSE, use.defaults=TRUE, ...){
+    ## Subset to a single chromosome first
+    lx <- length(x)
+    csel <- seqnames(x) != chromosome(x)
+    if(any(csel))
+        x <- x[!csel]
+    if(length(x)){
+        ## Nothing to do if everything is within the range, otherwise we subset the stackRanges and keep all group items
+        ranges <- if(use.defaults) .defaultRange(x, from=from, to=to) else c(from=ifelse(is.null(from), min(start(x@stackRanges))-1, from),
+                                                                             to=ifelse(is.null(to), max(end(x@stackRanges))+1, to))
+        displayPars(x) <- list(".__plottingRange"=ranges)
+        sr <- subsetByOverlaps(x@stackRanges, GRanges(seqnames=chromosome(x)[1], ranges=IRanges(start=ranges["from"], end=ranges["to"])))
+        if(length(sr) < length(x@stackRanges)){
+            x@stackRanges <- sr
+            x@range <- x@range[x@range$groupid %in% names(sr)]
+            if(stacks)
+                x <- setStacks(x)
+        }
+    }
+    return(x)
+})
+
+## ReferenceAlignmentsTracks need to stream the data from file and then pass the results on to the next method
+setMethod("subset", signature(x="ReferenceAlignmentsTrack"), function(x, from, to, chromosome, ...){
+    ## We only need to reach out into the referenced file once if the range is already contained in the object
+    if(missing(from) || is.null(from) || missing(to) || is.null(to))
+        stop("Need both start and end location to subset a ReferenceAnnotationTrack")
+    if(missing(chromosome) || is.null(chromosome)){
+        chromosome <- Gviz::chromosome(x)
+    }else{
+        chromosome <- .chrName(chromosome)
+    }
+    subRegion <- GRanges(seqnames=chromosome[1], ranges=IRanges(start=from, end=to))
+    oldRange <- .dpOrDefault(x, ".__plottingRange")
+    isIn <- length(ranges(x)) != 0 && !is.null(oldRange) && ranges(subRegion) %within% IRanges(oldRange["from"], oldRange["to"])
+    if(!isIn){
+        cMap <- .resolveColMapping(x@stream(x@reference, subRegion), x@args, x@mapping)
+        seqs <- cMap$data$seq
+        cMap$data$seq <- NULL
+        range <- .computeAlignments(.buildRange(cMap$data, args=cMap$args, defaults=x@defaults, trackType="AnnotationTrack"))
+        ranges(x) <- range$range
+        x@stackRanges <- range$stackRanges
+        x@stacks <- range$stacks
+        x@sequences <- seqs
+    }else{
+       x@sequences <- subseq(x@sequences, start=from-(oldRange["from"]-1), width=to-from+1)
+    }
+    chromosome(x) <- chromosome[1]
+    return(callNextMethod(x=x, from=from, to=to, drop=FALSE, ...))
 })
 ##----------------------------------------------------------------------------------------------------------------------------
 
@@ -1289,6 +1368,49 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
     }
 })
 
+
+
+setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, ...) {
+    type <- match.arg(.dpOrDefault(GdObject, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok=TRUE)
+    if("coverage" %in% type){
+        yvals <- values(GdObject)
+        ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals)) 
+                             range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
+        if(diff(ylim)==0)
+            ylim <- ylim+c(-1,1) 
+        hSpaceAvail <- vpLocation()$isize["width"]/6
+        yscale <-c(0, max(ylim) + diff(range(ylim)) * 0.05)
+        col <- .dpOrDefault(GdObject, "col.axis", "white")
+        acex <- .dpOrDefault(GdObject, "cex.axis")
+        acol <- .dpOrDefault(GdObject, "col.axis", "white")
+        at <- pretty(yscale)
+        at <- at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
+        covHeight <- .dpOrDefault(GdObject, ".__coverageHeight", c(npc=0, points=0))
+        covSpace <- .dpOrDefault(GdObject, ".__coverageSpace", 0)
+        pushViewport(viewport(y=1-(covHeight["npc"] + covSpace), height=covHeight["npc"], just=c(0.5, 0)))
+        if(is.null(acex))
+        {
+            vSpaceNeeded <- max(as.numeric(convertWidth(stringHeight(at), "inches")))*length(at)*1.5
+            hSpaceNeeded <- max(as.numeric(convertWidth(stringWidth(at), "inches")))
+            vSpaceAvail <- abs(diff(range(at)))/abs(diff(yscale))*vpLocation()$isize["height"]
+            acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
+        }
+        vpTitleAxis <- viewport(x=0.95, width=0.2, yscale=yscale, just=0)
+        pushViewport(vpTitleAxis)
+        suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
+        grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
+        popViewport(2)
+    }
+    if(.dpOrDefault(GdObject, ".__isCropped", FALSE)){
+        vspacing <- as.numeric(convertHeight(unit(2, "points"), "npc"))
+        vsize <- as.numeric(convertHeight(unit(4, "points"), "npc"))
+        pushViewport(viewport(height=vsize, y=vspacing, just=c(0.5, 0)))
+        .moreInd(direction="down", lwd=2)
+        popViewport(1)
+    }
+})
+
+
 setMethod("drawAxis", signature(GdObject="AlignedReadTrack"), function(GdObject, from, to, subset=TRUE) {
     detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("coverage", "reads"))
     if(detail!="coverage") return(NULL) else {
@@ -1347,35 +1469,52 @@ setMethod("drawGrid", signature(GdObject="AnnotationTrack"), function(GdObject, 
         popViewport(1)
     }})
 setMethod("drawGrid", signature(GdObject="AlignedReadTrack"), function(GdObject, from, to) {
-			detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("coverage", "reads"))
-			if(detail=="coverage"){
-                            GdObject <- subset(GdObject, from=from, to=to)
-                            ## We have to figure out the data range, taking transformation into account
-                            ylim <- .dpOrDefault(GdObject, "ylim")
-                            if (is.null(ylim)) {
-                                maxs <- sapply(c("+", "-"), function(s) {
-                                    cvr <- coverage(GdObject, strand=s)
+    detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("coverage", "reads"))
+    if(detail=="coverage"){
+        GdObject <- subset(GdObject, from=from, to=to)
+        ## We have to figure out the data range, taking transformation into account
+        ylim <- .dpOrDefault(GdObject, "ylim")
+        if (is.null(ylim)) {
+            maxs <- sapply(c("+", "-"), function(s) {
+                cvr <- coverage(GdObject, strand=s)
                                     if (length(cvr)) max(cvr, na.rm=TRUE, finite=TRUE) else 0L
-                                })
-                                y.max <- max(maxs, na.rm=TRUE, finite=TRUE)
-                                ylim <- c(0, if (y.max == 0) 1 else y.max)
-                                trans <- .dpOrDefault(GdObject, "transformation")[[1]]
-                                if (!is.null(trans))
-                                    ylim <- c(0, trans(ylim[2]))
-                            }
-                            for(s in c("+", "-")) {
-                                pushViewport(viewport(height=0.5, y=ifelse(s=="-", 0, 0.5), just=c("center", "bottom")))
-                                dummy <- DataTrack(start=rep(mean(c(from, to)),2), end=rep(mean(c(from, to)),2), data=ylim,
+            })
+            y.max <- max(maxs, na.rm=TRUE, finite=TRUE)
+            ylim <- c(0, if (y.max == 0) 1 else y.max)
+            trans <- .dpOrDefault(GdObject, "transformation")[[1]]
+            if (!is.null(trans))
+                ylim <- c(0, trans(ylim[2]))
+        }
+        for(s in c("+", "-")) {
+            pushViewport(viewport(height=0.5, y=ifelse(s=="-", 0, 0.5), just=c("center", "bottom")))
+            dummy <- DataTrack(start=rep(mean(c(from, to)),2), end=rep(mean(c(from, to)),2), data=ylim,
                                                    genome=genome(GdObject), chromosome=chromosome(GdObject))
-                                oldDp <- displayPars(GdObject, hideInternal=FALSE)
+            oldDp <- displayPars(GdObject, hideInternal=FALSE)
                                 oldDp[["ylim"]] <- if(s=="+") ylim else rev(ylim)
-                                displayPars(dummy) <- oldDp
-                                drawGrid(dummy, from=from, to=to)
-                                popViewport(1)
-                            }
-                        }
-                        return(NULL)
-                    })
+            displayPars(dummy) <- oldDp
+            drawGrid(dummy, from=from, to=to)
+            popViewport(1)
+        }
+    }
+    return(NULL)
+})
+
+setMethod("drawGrid", signature(GdObject="AlignmentsTrack"), function(GdObject, from, to){
+    if(.dpOrDefault(GdObject, "grid", FALSE)) {
+        yvals <- values(GdObject)
+        ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals)) 
+                             range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
+        if(diff(ylim)==0)
+            ylim <- ylim+c(-1,1)
+        yscale <-c(0, max(ylim) + diff(range(ylim)) * 0.05)
+        covHeight <- .dpOrDefault(GdObject, ".__coverageHeight", 0)
+        pushViewport(viewport(y=1-covHeight["npc"], height=covHeight["npc"], just=c(0.5, 0), yscale=yscale, clip=TRUE))
+        panel.grid(v=0, h=.dpOrDefault(GdObject, "h", -1),
+                   col=.dpOrDefault(GdObject, "col.grid", "#e6e6e6"), lty=.dpOrDefault(GdObject, "lty.grid", 1),
+                   lwd=.dpOrDefault(GdObject, "lwd.grid", 1))
+        popViewport(1)
+    }
+})
 ##----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1683,6 +1822,247 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
 setMethod("drawGD", signature("GeneRegionTrack"), function(GdObject,  ...){
     displayPars(GdObject) <- list(showFeatureId=as.vector(.dpOrDefault(GdObject, "showExonId")))
     GdObject <- callNextMethod(GdObject, ...)
+    return(invisible(GdObject))
+})
+
+## The actual drawing method
+setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...){
+    debug <- .dpOrDefault(GdObject, "debug", FALSE)
+    imageMap(GdObject) <- NULL
+    if(!length(GdObject))
+        return(invisible(GdObject))
+    rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
+    revs <- !.dpOrDefault(GdObject, "reverseStacking", FALSE)
+    vSpacing <- as.numeric(convertHeight(unit(3, "points"), "npc"))
+    type <- match.arg(.dpOrDefault(GdObject, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok=TRUE)
+    ## In prepare mode we need to make sure that the stacking information is updated from the optional display parameter (by calling
+    ## the StackedTrack drawGD method), and compute the coverage vector which will be needed for the axis
+    if(prepare){
+        if((is.logical(debug) && debug) || "prepare" %in% debug)
+            browser()
+        GdObject <- callNextMethod()
+        ## The mismatched bases need to be extracted from the read sequences and the reference sequence
+        if(.dpOrDefault(GdObject, "showMismatches", TRUE) && !is.null(GdObject@referenceSequence)){
+            mm <- .findMismatches(GdObject)
+            if(nrow(mm))
+                displayPars(GdObject) <- list(".__mismatches"=mm)
+        }
+        ## The coverage calculation and the height of the coverage section
+        if("coverage" %in% type){
+            covSpace <- as.numeric(convertHeight(unit(5, "points"), "npc"))
+            if("pileup" %in% type){
+                covHeight <- .dpOrDefault(GdObject, "coverageHeight", 0.1)
+                if(covHeight > 0 && covHeight < 1)
+                    covHeight <- as.numeric(convertHeight(unit(covHeight, "npc"), "points"))
+                covHeight <- max(.dpOrDefault(GdObject, "minCoverageHeight", 50), covHeight)
+                covHeight <- c(points=covHeight, npc=as.numeric(convertHeight(unit(covHeight, "points"), "npc")))
+            }else{
+                covHeight <- c(npc=1-(covSpace*2), points=1)
+            }
+            displayPars(GdObject) <- list(".__coverage"=coverage(range(GdObject), width=maxBase),
+                                          ".__coverageHeight"=covHeight,
+                                          ".__coverageSpace"=covSpace)
+        } else {
+            covHeight <- c(npc=0, points=0)
+            covSpace <- 0
+        }
+        if("pileup" %in% type){
+            ## If there are more bins than we can plot we reduce the number until they fit 
+            pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0)))
+            bins <- ranges(GdObject)$stack
+            curVp <- vpLocation()
+            mih <- min(curVp$size["height"], .dpOrDefault(GdObject, c("min.height", "max.height"), 3))
+            mah <- min(curVp$size["height"], max(mih, .dpOrDefault(GdObject, c("max.height", "min.height"), 8)))
+            bins <- stacks(GdObject)
+            if(curVp$size["height"]/max(bins) < mih){
+                maxStack <- curVp$size["height"] %/% mih
+                sel <- if(revs) bins <= maxStack else bins > max(bins) - maxStack
+                ranges(GdObject) <- ranges(GdObject)[sel]
+                displayPars(GdObject) <- list(".__isCropped"=TRUE)
+                bins <- stacks(GdObject)
+            }
+            yrange <- range(bins) + c(-0.5, 0.5)
+            add <- max(0, (curVp$size["height"] %/% mah) - max(bins))
+            yrange <- if(revs) c(yrange[1], yrange[2] + add) else c( yrange[1] - add, yrange[2])
+            displayPars(GdObject) <- list(".__yrange"=yrange)
+            popViewport(1)
+        }
+        return(invisible(GdObject))
+    }
+    if((is.logical(debug) && debug) || "draw" %in% debug)
+        browser()
+    mm <- .dpOrDefault(GdObject, ".__mismatches")
+    ## The coverage plot first
+    xscale <- if(!rev) c(minBase, maxBase) else c(maxBase, minBase)
+    readInfo <- ranges(GdObject)
+    covHeight <- .dpOrDefault(GdObject, ".__coverageHeight", c(npc=0, points=0))
+    covSpace <- .dpOrDefault(GdObject, ".__coverageSpace", 0)
+    if("coverage" %in% type){
+        cov <- .dpOrDefault(GdObject, ".__coverage", Rle(lengths=maxBase, values=as.integer(0)))
+        vp <- viewport(height=covHeight["npc"], y=1-(covHeight["npc"] + covSpace), just=c(0.5, 0), xscale=xscale,
+                       yscale=c(0, max(cov) + diff(range(cov)) * 0.05), clip=TRUE)
+        pushViewport(vp)
+        res <- .pxResolution(coord="x")
+        gp <- gpar(col=.dpOrDefault(GdObject, c("col.coverage", "col"), .DEFAULT_SHADED_COL),
+                   fill=.dpOrDefault(GdObject, c("fill.coverage", "fill"), "#BABABA"),
+                   lwd=.dpOrDefault(GdObject, c("lwd.coverage", "lwd"), 1),
+                   lty=.dpOrDefault(GdObject, c("lty.coverage", "lty"), 1),
+                   alpha=.alpha(GdObject))
+        ## We can compact this if the resolution is not sufficient to speed up the drawing.
+        mminBase <- max(1, minBase)
+        if(res>2){
+            brks <- ceiling((maxBase - mminBase) / res)
+            x <- seq(mminBase, maxBase, len=brks)
+            y <- tapply(as.integer(cov[mminBase:maxBase]), cut(mminBase:maxBase, breaks=brks), mean)
+        }else{
+            x <- mminBase:maxBase
+            y <- as.integer(cov[x])
+        }
+        grid.polygon(c(minBase - max(1, res), 0, x, maxBase + max(1, res)), c(0, 0, y, 0), default.units="native", gp=gp)
+        grid.lines(y=c(0, 0), gp=gpar(col=gp$col, alpha=gp$alpha))
+        if(!is.null(mm)){
+            fcol <- .dpOrDefault(GdObject@referenceSequence, "fontcolor", getBioColor("DNA_BASES_N"))
+            vpos <- tapply(as.character(mm$base), mm$position, table, simplify=FALSE)
+            x <- rep(as.integer(names(vpos)), listLen(vpos))
+            y <- unlist(lapply(vpos, cumsum), use.names=FALSE)
+            col <- fcol[unlist(lapply(vpos, names), use.names=FALSE)]
+            grid.rect(x=x, y=y, height=unlist(vpos, use.names=FALSE), width=1, default.units="native", just=c(0, 1),
+                          gp=gpar(col="transparent", fill=col))
+        }
+        popViewport(1)
+        twoPx <- 2 * as.numeric(convertHeight(unit(1, "points"), "npc"))
+        vp <- viewport(height=twoPx, y=1-(covHeight["npc"] + covSpace + twoPx), just=c(0.5, 0))
+        pushViewport(vp)
+        grid.rect(gp=gpar(fill=.dpOrDefault(GdObject, "background.title"), col="transparent",
+                          alpha=.dpOrDefault(GdObject, "alpha.title")), width=2)
+        popViewport(1)
+    }
+    ## Now the pileups
+    if("pileup" %in% type){
+        cex <- max(0.3, .dpOrDefault(GdObject, c("cex.mismatch", "cex"), 0.7))
+        pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0),
+                              gp=.fontGp(GdObject, "mismatch", cex=cex)))
+        bins <- stacks(GdObject)
+        stacks <- max(bins)
+        yscale <- .dpOrDefault(GdObject, ".__yrange")
+        if(revs)
+            yscale <- rev(yscale)
+        pushViewport(dataViewport(xscale=xscale, extension=0, yscale=yscale, clip=TRUE))
+        ## Figuring out resolution and the necessary plotting details
+        res <- .pxResolution(coord="x")
+        ylim <- c(0, 1)
+        h <- diff(ylim)
+        middle <- mean(ylim)
+        sh <- max(0, min(h, .dpOrDefault(GdObject, "stackHeight", 0.75)))/2
+        boxOnly <- res > 10
+        if(boxOnly){
+            x <- c(start(readInfo), rep(end(readInfo), 2), start(readInfo))
+            y <- c(rep(readInfo$stack + sh, 2), rep(readInfo$stack - sh, 2))
+            id <- rep(readInfo$uid, 4)
+        }else{
+             ## We first precompute the coordinates for all the arrow polygons
+            uid2strand <- setNames(as.character(readInfo$readStrand), as.character(readInfo$uid))
+            arrowMap <- unlist(setNames(lapply(split(as.character(readInfo$uid), readInfo$entityId), function(x){
+                str <- uid2strand[x][1]
+                setNames(str, if(str == "+") tail(x, 1) else head(x,1))
+            }), NULL))
+            readInfo$arrow <- as.character(NA)
+            readInfo$arrow[match(names(arrowMap), readInfo$uid)] <- arrowMap
+            ## The parts that don't need arrow heads
+            sel <- is.na(readInfo$arrow) | readInfo$arrow == "*"
+            x <- c(start(readInfo)[sel], rep(end(readInfo)[sel], 2), start(readInfo)[sel])
+            y <- c(rep(readInfo$stack[sel] + sh, 2), rep(readInfo$stack[sel] - sh, 2))
+            id <- rep(readInfo$uid[sel], 4)
+            ## The arrow heads facing right
+            w <- Gviz:::.pxResolution(coord="x", 5)
+            sel <- readInfo$arrow == "+"
+            ah <- pmax(start(readInfo)[sel], end(readInfo)[sel]-w)
+            x <- c(x, start(readInfo)[sel], ah, end(readInfo)[sel], ah, start(readInfo)[sel])
+            y <- c(y, rep(readInfo$stack[sel] + sh, 2), readInfo$stack[sel], rep(readInfo$stack[sel] - sh, 2))
+            id <- c(id, rep(readInfo$uid[sel], 5))
+            ## The arrow heads facing left
+            sel <- readInfo$arrow == "-"
+            ah <- pmin(end(readInfo)[sel], start(readInfo)[sel]+w)
+            x <- c(x, start(readInfo)[sel], ah, rep(end(readInfo)[sel], 2), ah)
+            y <- c(y, readInfo$stack[sel], rep(readInfo$stack[sel] + sh, 2), rep(readInfo$stack[sel] - sh, 2))
+            id <- c(id, rep(readInfo$uid[sel], 5))
+        }
+        nn <- length(unique(readInfo$uid))
+        gps <- data.frame(col=rep(.dpOrDefault(GdObject, c("col.reads", "col"), .DEFAULT_SHADED_COL), nn),
+                          fill=rep(.dpOrDefault(GdObject, c("fill.reads", "fill"), .DEFAULT_BRIGHT_SHADED_COL), nn),
+                          lwd=rep(.dpOrDefault(GdObject, c("lwd.reads", "lwd"), 1), nn),
+                          lty=rep(.dpOrDefault(GdObject, c("lty.reads", "lty"), 1), nn),
+                          alpha=rep(.alpha(GdObject, "reads"), nn), stringsAsFactors=FALSE)
+        ## Now the coordinates for the connecting lines
+        lineCoords <- NULL
+        if(anyDuplicated(readInfo$entityId) != 0){
+            stTmp <- split(readInfo, readInfo$entityId)
+            mateRanges <- unlist(range(stTmp))
+            mateGaps <- gaps(GRanges(ranges=ranges(readInfo), seqnames=readInfo$entityId))
+            rmap <- mateRanges[as.character(seqnames(mateGaps))]
+            mateGaps <- mateGaps[start(rmap) <= start(mateGaps) & end(rmap) >= end(mateGaps)]
+            gy <- readInfo$stack[match(as.character(seqnames(mateGaps)), readInfo$entityId)]
+            lineCoords <- data.frame(x1=start(mateGaps)-1, y1=gy, x2=end(mateGaps)+1, y2=gy,
+                                     col=.dpOrDefault(GdObject, c("col.mates", "col"), .DEFAULT_BRIGHT_SHADED_COL),
+                                     lwd=.dpOrDefault(GdObject, c("lwd.mates", "lwd"), 1),
+                                     lty=.dpOrDefault(GdObject, c("lty.mates", "lty"), 1),
+                                     alpha=.alpha(GdObject), stringsAsFactors=FALSE)
+            lineCoords <- lineCoords[!duplicated(lineCoords), ]
+        }else{
+            mateRanges <- setNames(readInfo, readInfo$entityId)
+        }
+        if(any(readInfo$status != "unmated") && anyDuplicated(readInfo$groupid) != 0){
+            pairGaps <- gaps(GRanges(ranges=ranges(mateRanges), seqnames=readInfo$groupid[match(names(mateRanges), readInfo$entityId)]))
+            rmap <- GdObject@stackRanges[as.character(seqnames(pairGaps))]
+            pairGaps <- pairGaps[start(rmap) <= start(pairGaps) & end(rmap) >= end(pairGaps)]
+            gy <- readInfo$stack[match(as.character(seqnames(pairGaps)), readInfo$groupid)]
+            pairsCoords <- data.frame(x1=start(pairGaps)-1, y1=gy, x2=end(pairGaps)+1, y2=gy,
+                                      col=.dpOrDefault(GdObject, c("col.gap", "col"), .DEFAULT_SHADED_COL),
+                                      lwd=.dpOrDefault(GdObject, c("lwd.gap", "lwd"), 1),
+                                      lty=.dpOrDefault(GdObject, c("lty.gap", "lty"), 1),
+                                      alpha=.alpha(GdObject), stringsAsFactors=FALSE)
+            lineCoords <- rbind(lineCoords, pairsCoords[!duplicated(pairsCoords), ])
+        }
+        ## The mismatch information on the reads if needed
+        mmLetters <- NULL
+        if(!is.null(mm)){
+            fcol <- .dpOrDefault(GdObject@referenceSequence, "fontcolor", getBioColor("DNA_BASES_N"))
+            ccol <- ifelse(rgb2hsv(col2rgb(fcol))["s",]<0.5, "black", "white")
+            vpl <- vpLocation()
+            lwidth <- max(as.numeric(convertUnit(stringWidth(DNA_ALPHABET),"inches")))*0.9337632
+            lheight <- max(as.numeric(convertUnit(stringHeight(DNA_ALPHABET),"inches")))
+            perLetterW <- vpl$isize["width"]/(maxBase-minBase+1)
+            perLetterH <- vpl$isize["height"]/abs(diff(current.viewport()$yscale))
+            res <- .pxResolution(coord="x")
+            mw <- res * .dpOrDefault(GdObject, "min.width", 1)
+            mwy <- max(1, mw)
+            if(nrow(mm)){
+                x <- c(x, mm$position + rep(c(0, mwy, mwy, 0), each=nrow(mm)))
+                y <- c(y, rep(mm$stack - sh, 2), rep(mm$stack + sh, 2))
+                id <- c(id, rep(seq(max(id, na.rm=TRUE)+1, len=nrow(mm)), 4))
+                gps <- rbind(gps, data.frame(col=rep(if(!(lwidth < perLetterW && lheight < perLetterH)) "transparent" else
+                                                     .dpOrDefault(GdObject, "col.mismatch", .DEFAULT_SHADED_COL), nrow(mm)),
+                                             fill=rep(fcol[as.character(mm$base)]),
+                                             lwd=rep(.dpOrDefault(GdObject, "lwd.mismatch", 1), nrow(mm)),
+                                             lty=rep(.dpOrDefault(GdObject, "lty.mismatch", 1), nrow(mm)),
+                                             alpha=rep(.dpOrDefault(GdObject, "alpha.mismatch", 1), nrow(mm)),
+                                             stringsAsFactors=FALSE))
+                if(!.dpOrDefault(GdObject, "noLetters", FALSE) && lwidth < perLetterW && lheight < perLetterH)
+                    mmLetters <- data.frame(x=mm$position+0.5, y=mm$stack, label=mm$base, col=ccol[mm$base], stringsAsFactors=FALSE)
+            }
+        }
+        ## Finally we draw everything
+        grid.polygon(x=x, y=y, id=id, default.units="native", gp=gpar(col=gps$col, fill=gps$fill, lwd=gps$lwd, lty=gps$lty, alpha=gps$alpha))
+        if(!is.null(lineCoords))
+            grid.segments(lineCoords$x1, lineCoords$y1, lineCoords$x2, lineCoords$y2, gp=gpar(col=lineCoords$col, alpha=lineCoords$alpha,
+                                                                                              lwd=lineCoords$lwd, lty=lineCoords$lty),
+                          default.units="native")
+        if(!is.null(mmLetters))
+            grid.text(x=mmLetters$x, y=mmLetters$y, label=mmLetters$label, gp=gpar(col=mmLetters$col), default.units="native")
+        popViewport(2)
+    }
+    ## Eventually we set up the image map
+    ##imageMap(GdObject) <- im
     return(invisible(GdObject))
 })
 ##----------------------------------------------------------------------------------------------------------------------------
@@ -3208,7 +3588,6 @@ setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxB
                    gp=gpar(col=.dpOrDefault(GdObject, "col", "darkgray"),
                                lwd=.dpOrDefault(GdObject, "lwd", 2)))
     }else{
-       
         sequence <- as.character(as(subseq(GdObject, start=minBase, end=maxBase-1), "Rle"))
         at <- seq((minBase+0.5), maxBase - 1 + 0.5, by=1)
         sequence[sequence=="-"] <- ""
@@ -3606,12 +3985,12 @@ setMethod(".buildRange", signature("TranscriptDb"),
 ## For character scalars the data need to be extracted from a file and we have to deal with parser functions
 ## and column assignments here. 
 setMethod(".buildRange", signature("character"),
-          function(range, importFun=NULL, trackType, stream=FALSE, args, defaults, ...){
+          function(range, importFun=NULL, trackType, stream=FALSE, args, defaults, autodetect=is.null(importFun), ...){
               .checkClass(range, "character", 1)
               .checkClass(importFun, c("NULL", "function"), mandatory=FALSE)
               .checkClass(stream, "logical", 1)
               ## We first check for the default column mapping and whether this is a streaming file
-              defMap <- .defaultVarMap(.fileExtension(range), trackType, stream, !is.null(importFun))
+              defMap <- .defaultVarMap(tolower(.fileExtension(range)), trackType, stream, !autodetect)
               isStream <- !is.null(defMap[[".stream"]]) && defMap[[".stream"]]
               defMap[[".stream"]] <- NULL
               if(!isStream){
@@ -3628,8 +4007,7 @@ setMethod(".buildRange", signature("character"),
                       mc <- .prepareDtData(as.data.frame(mcols(data)), length(data))
                       mcols(data) <- t(mc)
                   } else {
-                      ## For the rest we use the mapping as provided by the constructor
-                      ## are available
+                      ## For the rest we use the mapping as provided by the constructor if available
                       cmap <- .resolveColMapping(data, args, defMap)
                       args <- cmap$args
                       data <- cmap$data
@@ -3764,6 +4142,9 @@ setMethod("show",  signature(object="ReferenceGeneRegionTrack"), function(object
 
 setMethod("show",  signature(object="ReferenceSequenceTrack"), function(object)
     .referenceTrackInfo(object, "ReferenceSequenceTrack"))
+
+setMethod("show",  signature(object="ReferenceAlignmentsTrack"), function(object)
+    .referenceTrackInfo(object, "ReferenceAlignmentsTrack"))
   
 setMethod("show", signature(object="GenomeAxisTrack"),
           function(object) {

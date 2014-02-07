@@ -38,7 +38,7 @@ importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transc
 
 importMethodsFrom(GenomicRanges, "elementMetadata<-", genome, "genome<-", mcols, "mcols<-",
                   seqlengths, seqnames, seqlevels, seqinfo, strand, "strand<-",
-                  seqnameStyle)
+                  seqnameStyle, shift)
 
 importMethodsFrom(IRanges, as.data.frame, as.list, as.matrix, as.vector,
                   "colnames<-", coverage, diff, disjointBins, end, "end<-", range,
@@ -57,10 +57,12 @@ importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
                   import.bw, import.ucsc, import.bed, import.bedGraph, import.chain,
                   import.wig, seqinfo)
 
+importMethodsFrom(Biostrings, consensusMatrix)
+
 
 importFrom(Biobase, listLen, rowMax, rowMin)
 
-importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET)
+importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
 
 importFrom(BiocGenerics, getObjectSlots)
 
@@ -68,7 +70,7 @@ importFrom(biomaRt, getBM, useMart)
 
 importFrom(GenomicRanges, GRanges, renameSeqlevels)
 
-importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa)
+importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa, BamFile, scanBamWhat, bamWhich)
 
 importFrom(graphics, par)
 
@@ -90,6 +92,8 @@ importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
            trellis.par.get)
 
+importFrom(matrixStats, colMaxs)
+
 importFrom(latticeExtra, panel.xyarea, panel.horizonplot)
 
 
@@ -103,11 +107,14 @@ importFrom(biovizBase, getBioColor)
 
 importFrom(utils, assignInNamespace, browseURL, head, write.table)
 
+importFrom(GenomicAlignments, extractAlignmentRangesOnReference, sequenceLayer)
+
 ###
 
 export(".chrName",
        ".doCache",
        "AlignedReadTrack",
+       "AlignmentsTrack",
        "AnnotationTrack",
        "DetailsAnnotationTrack",
        "BiomartGeneRegionTrack",
@@ -131,6 +138,7 @@ export(".chrName",
        "plotTracks")
 
 exportClasses("AlignedReadTrack",
+              "AlignmentsTrack",
               "AnnotationTrack",
               "DetailsAnnotationTrack",
               "BiomartGeneRegionTrack",

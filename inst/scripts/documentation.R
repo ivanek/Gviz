@@ -420,8 +420,6 @@ details <- list(
                            "..."="additional display parameters are allowed. Those typically take the value of a valid R color descriptors. The parameter names will later be matched to optional track item types as defined in the 'feature' range attribute, and all tracks of the matched types are colored accordingly. See the documentation of the \\code{\\link{GeneRegionTrack}} and \\code{\\link{AnnotationTrack}} classes as well as \\code{\\link{grouping}} for details."
 
                            ),
- 
-
                 
                 GenomeAxisTrack=c(
 
@@ -607,9 +605,42 @@ details <- list(
                                  col="Integer or character scalar. The boder color for the highlighting regions.",
                                  fill="Integer or character scalar. The fill color for the highlighting regions."
 
-                                 )
+                                 ),
 
-                
+                AlignmentsTrack=c(
+
+                                  alpha.mismatch="Numeric scalar between 0 and 1. The transparency of the mismatch base information.",
+                                  alpha.reads="Numeric scalar between 0 and 1. The transparency of the individual read icons. Can be used to indicate overlapping regions in read pairs. Only on supported devices.",
+                                  cex.mismatch="Numeric Scalar. The character expansion factor for the mismatch base letters.",
+                                  col.coverage="Integer or character scalar. The line color for the coverage profile.",
+                                  col.gap="Integer or character scalar. The color of the line that is bridging the gap regions in gapped alignments.",
+                                  col.mates="Integer or character scalar. The color of the line that is connecting two paired reads.",
+                                  col.mismatch="Integer or character scalar. The box color around mismatch bases.",
+                                  col="Integer or character scalar. The default color of all line elements.",
+                                  collapse="Logical scalar. Do not perform any collapsing of overlapping elements. Currently not supported.",
+                                  coverageHeight="Numeric scalar. The height of the coverage region of the track. Can either be a value between 0 and 1 in which case it is taken as a relative height, or a positive value greater 1 in which case it is interpreted as pixels.",
+                                  fill.coverage="Integer or character scalar. The fill color for the coverage profile.",
+                                  fill.reads="Integer or character scalar. The fill color for the read icons.",
+                                  fill="Integer or character scalar. The default fill color of all plot elements.",
+                                  fontface.mismatch="Integer scalar. The font face for mismatch bases.",
+                                  lty.coverage="Integer or character scalar. The line type of the coverage profile.",
+                                  lty.gap="Integer or character scalar. The type of the line that is bridging the gap regions in gapped alignments.",
+                                  lty.mates="Integer or character scalar. The type of the line that is connecting two paired reads.",
+                                  lty.mismatch="Integer or character scalar. The box line type around mismatch bases.",
+                                  lty="Integer or character scalar. The default type of all line elements.",
+                                  lwd.coverage="Integer or character scalar. The line width of the coverage profile.",
+                                  lwd.gap="Integer scalar. The width of the line that is bridging the gap regions in gapped alignments.",
+                                  lwd.mates="Integer scalar. The width of the line that is connecting two paired reads.",
+                                  lwd.mismatch="Integer scalar.The box line width around mismatch bases.",
+                                  lwd="Integer scalar. The default width of all line elements.",
+                                  max.height="Integer scalar. The maximum height of an individual read in pixels. Can be used in combination with \\code{min.height} to control the read and stacking appearance. ",
+                                  min.height="Integer scalar. The minimum height of an individual read in pixels. Can be used in combination with \\code{max.height} to control the read and stacking appearance.",
+                                  minCoverageHeight="Integer scalar. The minimum height of the coverage section. Uselful in combination with a relative setting of \\code{coverageHeight}.",
+                                  showMismatches="Logical scalar. Add mismatch information, either as individual base letters or using color coded bars. This implies that the reference sequence has been provided, either to the class constructor or as part of the track list.",
+                                  size="Numeric scalar. The size of the track. Defaults to automatic sizing.",
+                                  type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, and for \\code{pileup} the pileups of the individual reads. The two can be combined."
+                                  
+                                  )
                 )
 
 

@@ -2,6 +2,9 @@
 ;; If you want to create a file, visit that file with C-x C-f,
 ;; then enter the text in that file's own buffer.
 
+
+.gassign <- function(what) assignInNamespace(ns="Gviz", x=what, value=get(what, envir=globalenv()))
+
 assignInNamespace(ns="Gviz", x=".computeGroupRange", value=.computeGroupRange)
 .dpOrDefault <- Gviz:::.dpOrDefault
 .getStringDims <- Gviz:::.getStringDims
@@ -43,6 +46,17 @@ assignInNamespace(ns="Gviz", x=".setupTextSize", value=.setupTextSize)
 vpLocation <- Gviz:::vpLocation
 .verticalSpace <- Gviz:::.verticalSpace
 .needsAxis <- Gviz:::.needsAxis
+.PLOT_TYPES <- Gviz:::.PLOT_TYPES
+
+assignInNamespace(ns="Gviz", x="plotTracks", value=plotTracks)
+.whichStrand <- Gviz:::.whichStrand
+.recChromosome <- Gviz:::.recChromosome
+.needsTitle <- Gviz:::.needsTitle
+.fontGp <- Gviz:::.fontGp
+drawAxis <- Gviz:::drawAxis
+.getImageMap <- Gviz:::.getImageMap
+drawGrid <- Gviz:::drawGrid
+ImageMap <- Gviz:::ImageMap
 
 ## This is all needed for sourcing plotTracks
 .defaultRange <- Gviz:::.defaultRange
@@ -55,6 +69,12 @@ drawAxis <- Gviz:::drawAxis
 drawGrid <- Gviz:::drawGrid
 ImageMap <- Gviz:::ImageMap
 .needsTitle <- Gviz:::.needsTitle
+.whichStrand <- Gviz:::.whichStrand
+.recChromosome <- Gviz:::.recChromosome
+
+
+assignInNamespace(ns="Gviz", x=".needsTitle", value=.needsTitle)
+assignInNamespace(ns="Gviz", x=".needsAxis", value=.needsAxis)
 
 library(Gviz)
 data(cyp2b10)

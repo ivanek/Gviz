@@ -20,7 +20,7 @@ The main plotting function for one or several GenomeGraph tracks.
 plotTracks(trackList, from=NULL, to=NULL, ..., sizes=NULL,
 panel.only=FALSE, extend.right=0, extend.left=0, title.width=NULL,
 add=FALSE, main, cex.main=2, fontface.main=2, col.main="black",
-margin=6, chromosome=NULL)
+margin=6, chromosome=NULL, innerMargin=3)
 
 }
 
@@ -76,6 +76,8 @@ margin=6, chromosome=NULL)
     expansion factor settings for the main header.}
   
   \item{margin}{The margin width to add to the plot in pixels.}
+
+  \item{innerMargin}{The inner margin width to add to the plot in pixels.}
   
   \item{chromosome}{Set the chromosome for all the tracks in the track list.}
   

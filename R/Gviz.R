@@ -5,11 +5,13 @@
 .DEFAULT_OVERPLOT_COL <- "red"
 .DEFAULT_LINE_COL <- "black"
 .DEFAULT_SHADED_COL <- "#808080"
+.DEFAULT_BRIGHT_SHADED_COL <- "#E0E0E0"
 .DEFAULT_SYMBOL_COL <- "#0080FF"
 .DEFAULT_LINE_COL <- "darkgray"
 .PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
                   "smooth", "polygon", "horizon", "histogram",
                   "mountain", "h", "boxplot", "gradient", "heatmap")
+.ALIGNMENT_TYPES <- c("coverage", "pileup")
 .THIN_BOX_FEATURES <- c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA",
                         "three_prime_UTR", "five_prime_UTR")
 .DEFAULT_HORIZON_COL <- c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3")
@@ -236,11 +238,17 @@
     if(!is.list(objects))
         objects <- list(objects)
     atrack <- sapply(objects, function(x){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
-        is(x, "NumericTrack") || (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")})
+        is(x, "NumericTrack") ||
+        (is(x, "AlignmentsTrack") && "coverage" %in% match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok=TRUE)) ||
+        (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage")=="coverage")
+    })
     isOnlyHoriz <- sapply(objects, function(x){
-        type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
-        length(setdiff(type, "horizon")) == 0 && !.dpOrDefault(x, "showSampleNames", FALSE)
+        res <- FALSE
+        if(is(x, "DataTrack")){
+            type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
+            res <- length(setdiff(type, "horizon")) == 0 && !.dpOrDefault(x, "showSampleNames", FALSE)
+        }
+        res
     })
     return(atrack & sapply(objects, .dpOrDefault, "showAxis", TRUE) & !isOnlyHoriz)
 }
@@ -270,7 +278,7 @@
 ##    o title.width: the updated available title width
 ##    o spacing: the amount of spacing between tracks
 ##    o nwrap: the final (wrapped) title text
-.setupTextSize <- function(trackList, sizes, title.width, panelOnly=FALSE)
+.setupTextSize <- function(trackList, sizes, title.width, panelOnly=FALSE, spacing=5)
 {
     curVp <- vpLocation()
     trackList <- lapply(trackList, function(x) if(is(x, "OverlayTrack")) x@trackList[[1]] else x)
@@ -293,8 +301,12 @@
         nwrap <- sapply(nn, function(x) paste(strwrap(x, 10), collapse="\n"))
         needAxis <- .needsAxis(trackList)
         isOnlyHoriz <- sapply(trackList, function(x){
-            type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
-            length(setdiff(type, "horizon")) == 0
+            res <- FALSE
+            if(is(x, "DataTrack")){
+                type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
+                res <- length(setdiff(type, "horizon")) == 0
+            }
+            res
         })
         nwrap[needAxis] <- nn[needAxis]
         lengths <- as.numeric(convertWidth(stringWidth(nwrap),"inches"))+0.2
@@ -323,7 +335,7 @@
         if(any(needAxis)){
             cex.axis <- structure(sapply(trackList, .dpOrDefault, "cex.axis", 0.6), names=nn)
             axTicks <- unlist(lapply(trackList, function(GdObject){
-                if(!is(GdObject, "NumericTrack") && !is(GdObject, "AlignedReadTrack"))
+                if(!is(GdObject, "NumericTrack") && !is(GdObject, "AlignedReadTrack") && !is(GdObject, "AlignmentsTrack"))
                     return(NULL)
                 yvals <- if(is(GdObject, "AlignedReadTrack")) runValue(coverage(GdObject, strand="*")) else values(GdObject)
                 ylim <- .dpOrDefault(GdObject, "ylim", if(!is.null(yvals) && length(yvals))
@@ -334,16 +346,18 @@
                 at <- pretty(yscale)
                 at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
                 atSpace <- max(as.numeric(convertWidth(stringWidth(at), "inches"))+0.18)*cex.axis[names(GdObject)]
-                type <- match.arg(.dpOrDefault(GdObject, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
-                if(any(c("heatmap", "gradient") %in% type)){
-                    nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))-1
-                    atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches"))*nlevs
-                }
-                if(type %in% c("heatmap", "horizon") && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
-                    sn <- rownames(values(GdObject))
-                    axSpace <- ifelse(isOnlyHoriz, 0, 10)
-                    wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(axSpace, "points"), "inches")))
-                    atSpace <- atSpace + (wd * .dpOrDefault(GdObject, "cex.sampleNames", 0.5))
+                if(is(GdObject, "DataTrack")){
+                    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
+                    if(any(c("heatmap", "gradient") %in% type)){
+                        nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))-1
+                        atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches"))*nlevs
+                    }
+                    if(type %in% c("heatmap", "horizon") && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+                        sn <- rownames(values(GdObject))
+                        axSpace <- ifelse(isOnlyHoriz, 0, 10)
+                        wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(axSpace, "points"), "inches")))
+                        atSpace <- atSpace + (wd * .dpOrDefault(GdObject, "cex.sampleNames", 0.5))
+                    }
                 }
                 atSpace
             }))
@@ -353,7 +367,7 @@
     } else {
         title.width <- nwrap <- cex <- NA
     }
-    spacing <- 0.02
+    spacing <- as.numeric(convertWidth(unit(spacing, "points"), "npc"))
     title.width <- title.width * twfac
     return(list(spaceNeeded=spaceNeeded, cex=cex, title.width=title.width, spacing=spacing, nwrap=nwrap))
 }
@@ -1428,7 +1442,12 @@ addScheme <- function(scheme, name){
 ## Value: the function is called for its side-effect of drawing on the graphics device
 plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.only=FALSE, extend.right=0,
                        extend.left=0, title.width=NULL, add=FALSE, main, cex.main=2, fontface.main=2,
-                       col.main="black", margin=6, chromosome=NULL){
+                       col.main="black", margin=6, chromosome=NULL, innerMargin=3){
+    ## If we have to open a new device for this but do not run through the whole function because of errors we want to
+    ## clean up in the end
+    done <- FALSE
+    cdev <- dev.cur()
+    on.exit(if(cdev==1 && !done) dev.off())  
     ## We only need a new plot for regular calls to the function. Both add==TRUE and panel.only=TRUE will add to an existing grid plot
     if(!panel.only && !add)
         grid.newpage()
@@ -1445,7 +1464,10 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
     ## size, resolution or plotting ranges.
     ## Chromosomes should all be the same for all tracks, if not we will force them to be set to the first one that can be detected.
-    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first
+    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first.
+    ## We may want to use alpha blending on those devices that support it, but also fall back to non-transparent colors without causing
+    ## warnings.
+    hasAlpha <- .supportsAlpha()
     chrms <- unique(unlist(lapply(trackList, .recChromosome)))
     if(is.null(chromosome)){
         chrms <- if(!is.null(chrms)) chrms[gsub("^chr", "", chrms)!="NA"] else chrms
@@ -1459,7 +1481,8 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         trackList <- lapply(trackList, subset, from=from, to=to, chromosome=chromosome, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
     }
     trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, any(.needsAxis(trackList)), any(.needsTitle(trackList)),
-                                title.width, ...)
+                                title.width, alpha=hasAlpha, ...)
+   
     ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
     ranges <- .defaultRange(trackList, from=from, to=to, extend.left=extend.left, extend.right=extend.right, annotation=TRUE)
     ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
@@ -1484,6 +1507,13 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         }
         tlTemp  
     }else trackList
+    ## If there is a AlignmentsTrack and also a SequenceTrack we can tell the former to use the latter, unless already provided
+    isAt <- sapply(expandedTrackList, is, "AlignmentsTrack")
+    isSt <- sapply(expandedTrackList, is, "SequenceTrack")
+    for(ai in which(isAt)){
+        if(is.null(expandedTrackList[[ai]]@referenceSequence) && any(isSt))
+            expandedTrackList[[ai]]@referenceSequence <- expandedTrackList[[min(which(isSt))]]
+    }
     ## We need to reverse the list to get a top to bottom plotting order
     expandedTrackList <- rev(expandedTrackList)
     map <- vector(mode="list", length=length(expandedTrackList))
@@ -1508,11 +1538,11 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         }
         pushViewport(vpMain)
         ## A first guestimate of the vertical space that's needed
-        spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width)
+        spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width, spacing=innerMargin)
     } else {
         vpBound <- viewport()
         pushViewport(vpBound)
-        spaceSetup <- .setupTextSize(expandedTrackList, sizes)
+        spaceSetup <- .setupTextSize(expandedTrackList, sizes, spacing=innerMargin)
     }
     ## First iteration to set up all the dimensions by calling the drawGD methods in prepare mode, i.e.,
     ## argument prepare=TRUE. Nothing is drawn at this point, and this only exists to circumvent the
@@ -1524,14 +1554,14 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i],
                              gp=fontSettings)
         pushViewport(vpTrack)
-        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width+spaceSetup$spacing,
-                                              width=1-spaceSetup$title.width-spaceSetup$spacing, just=0) else viewport(width=1)
+        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing,
+                                              width=1 - spaceSetup$title.width - spaceSetup$spacing * 2, just=0) else viewport(width=1)
         pushViewport(vpContent)
         expandedTrackList[[i]] <- drawGD(expandedTrackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], prepare=TRUE, subset=FALSE)
         popViewport(2)
     }
     ## Now lets recalculate the space and draw for real
-    spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width)
+    spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width, spacing=innerMargin)
     ## First the highlight box backgrounds
     htBoxes <- data.frame(stringsAsFactors=FALSE)
     for(hlite in htList){
@@ -1548,8 +1578,8 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
                                              stringsAsFactors=FALSE))
     }
     if(nrow(htBoxes)){
-        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width+spaceSetup$spacing, xscale=ranges,
-                                              width=1-spaceSetup$title.width-spaceSetup$spacing, just=0) else viewport(width=1, xscale=ranges)
+        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing, xscale=ranges,
+                                              width=1 - spaceSetup$title.width - spaceSetup$spacing*2, just=0) else viewport(width=1, xscale=ranges)
         pushViewport(vpContent)
         grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
                   gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
@@ -1594,13 +1624,17 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         drawGrid(thisTrack, ranges["from"], ranges["to"])
         popViewport(1)
         fontSettings <- .fontGp(expandedTrackList[[i]], cex=NULL)
-        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width+spaceSetup$spacing,
-                                              width=1-spaceSetup$title.width-spaceSetup$spacing, just=0, gp=fontSettings) else viewport(width=1, gp=fontSettings)
+        vpContentOuter <- if(!panel.only)
+            viewport(x=spaceSetup$title.width, width=1-spaceSetup$title.width,
+                     just=0, gp=fontSettings, clip=TRUE) else viewport(width=1, gp=fontSettings, clip=TRUE)
+        pushViewport(vpContentOuter)
+        vpContent <- if(!panel.only)
+            viewport(x=spaceSetup$spacing, width=1-(spaceSetup$spacing*2), just=0, gp=fontSettings) else viewport(width=1, gp=fontSettings)
         pushViewport(vpContent)
         tmp <- drawGD(expandedTrackList[[i]], minBase=ranges["from"], maxBase=ranges["to"], subset=FALSE)
         if(!is.null(tmp))
             map[[(length(map)+1)-i]] <- tmp
-        popViewport(1)
+        popViewport(2)
         if(.dpOrDefault(thisTrack, "frame", FALSE))
             grid.rect(gp=gpar(col=.dpOrDefault(thisTrack, "col.frame", .DEFAULT_SHADED_COL), fill="transparent"))
         popViewport(1)
@@ -1616,6 +1650,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         rownames(tcoord) <- names(tc)
         map$titles <- ImageMap(coords=tcoord, tags=list(title=tc))
     }
+    done <- TRUE
     return(invisible(map))
 }
 
@@ -2016,8 +2051,10 @@ availableDisplayPars <- function(class)
 }
 
 ## An import function for bam files that distinguishes between DataTracks and AnnotationTracks
+## FIXME: We probably want this to be able to deal with Gapped Alignments...
 .import.bam <- function(file, selection){
-    if(!file.exists(paste(file, "bai", sep=".")))
+    if(!file.exists(paste(file, "bai", sep=".")) &&
+       !file.exists(paste(paste(head(strsplit("xxx.bam", ".", fixed=TRUE)[[1]], -1), collapse="."), "bai", sep=".")))
         stop("Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
              "library(Rsamtools)\n\tindexBam(\"", file, "\")")
     sinfo <- scanBamHeader(file)[[1]]
@@ -2048,6 +2085,36 @@ availableDisplayPars <- function(class)
         }
     }
     return(res)
+}
+
+.import.bam.alignments <- function(file, selection){
+    indNames <- c(sub("\\.bam$", ".bai", file), paste(file, "bai", sep="."))
+    index <- NULL
+    for(i in indNames){
+        if(file.exists(i)){
+            index <- i
+            break
+        }
+    }
+    if(is.null(index))
+        stop("Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
+             "library(Rsamtools)\n\tindexBam(\"", file, "\")")
+    pairedEnd <- parent.env(environment())[["._isPaired"]]
+    if(is.null(pairedEnd))
+        pairedEnd <- TRUE
+    bf <- BamFile(file, index=index, asMates=pairedEnd)
+    param <- ScanBamParam(which=selection, what=scanBamWhat(), tag="MD", flag=scanBamFlag(isUnmappedQuery=FALSE))
+    reads <- scanBam(bf, param=param)[[1]]
+    md <- if(is.null(reads$tag$MD)) rep(NA, length(reads$pos)) else reads$tag$MD
+    layed_seq <- sequenceLayer(reads$seq, reads$cigar)
+    region <- unlist(bamWhich(param), use.names=FALSE)
+    ans <- stackStrings(layed_seq, start(region), end(region), shift=reads$pos-1L, Lpadding.letter="+", Rpadding.letter="+")
+    names(ans) <- seq_along(reads$qname)
+    return(GRanges(seqnames=reads$rname, strand=reads$strand, ranges=IRanges(start=reads$pos, width=reads$qwidth),
+                   id=reads$qname, cigar=reads$cigar, mapq=reads$mapq, flag=reads$flag, md=md, seq=ans,
+                   isize=reads$isize, groupid=if(pairedEnd) reads$groupid else seq_along(reads$pos),
+                   status=if(pairedEnd) reads$mate_status else rep(factor("unmated", levels=c("mated", "ambiguous", "unmated")),
+                                                                   length(reads$pos))))
 }
 
 
@@ -2117,6 +2184,7 @@ availableDisplayPars <- function(class)
     return(tolower(ext))
 }
 
+
 availableDefaultMapping <- function(file, trackType){
     .checkClass(file, "character", 1)
     .checkClass(trackType, "character", 1)
@@ -2125,6 +2193,116 @@ availableDefaultMapping <- function(file, trackType){
     vm[[".stream"]] <- NULL
     return(vm)
 }
+
+
+## Helper function to handle defaults function arguments
+.covDefault <- function(x, cov, def){
+    res <- if(missing(x)){
+        if(is.null(cov)){
+            def
+        }else{
+            cov
+        }
+    }else{x}
+    return(res)
+}
+
+
+## A helper function to process alignment information from a GRanges object
+.computeAlignments <- function(range){
+    alg <- extractAlignmentRangesOnReference(range$cigar)
+    rp <- elementLengths(alg)
+    range <- sort(GRanges(seqnames=rep(seqnames(range), rp), strand=rep("*", sum(rp)), ranges=shift(unlist(alg), rep(start(range), rp)-1),
+                          id=rep(range$id, rp), entityId=rep(seq_along(rp), rp), cigar=rep(range$cigar, rp), md=rep(range$md, rp),
+                          readStrand=rep(strand(range), rp), mapq=rep(range$mapq, rp), flag=rep(range$flag, rp), isize=rep(range$isize, rp),
+                          groupid=rep(range$groupid, rp), status=factor(rep(range$status, rp), levels=c("mated", "ambiguous", "unmated")),
+                          uid=seq_len(sum(rp))))
+    if(length(range)){
+        stTmp <- split(range, range$groupid)
+        stackRanges <- unlist(range(stTmp))
+        ss <- disjointBins(stackRanges)
+        range$stack <- ss[match(range$groupid, names(stackRanges))]
+        res <- list(range=range, stackRanges=stackRanges, stacks=range$stack)
+    }else{
+        res <- list(range=range, stackRanges=GRanges(), stacks=numeric())
+    }
+    return(res)
+}
+
+## Check whether the current device supports alpha channel transparency
+.supportsAlpha <- function(){
+    d <- dev.cur()
+    on.exit({options(warn=getOption("warn"))
+             if(d==1)
+                 dev.off()
+         })
+    options(warn=2)
+    ok <- !is(try({grob <- grid.rect(width=0, height=0, gp=gpar(alpha=0.5))
+                   grid.remove(grob$name)
+               }, silent=TRUE), "try-error")
+    return(ok)
+}
+
+## Return the alpha display parameter from a GdObject, respecting whether transparency is supported on the device
+## or not. This is either drawn from the internal '.__hasAlphaSupport' display parameter, or, if not set, is
+## determined dynamically.
+.alpha <- function(GdObject, postfix=NULL){
+    support <- .dpOrDefault(GdObject, ".__hasAlphaSupport", .supportsAlpha())
+    alpha <- .dpOrDefault(GdObject, paste(c("alpha", postfix), collapse="."), 1)
+    if(alpha != 1 && !support)
+        alpha <- 1
+    return(alpha)     
+}
+
+## Draw horizontal arrows into a viewport indicating cropped read alignments
+.moreInd <- function(n=3, direction="up", ...){
+    nn <- n * 2 + 1
+    x <- rep(seq(1/nn, 1 - (1/nn), len=nn-2)[seq(1, nn-2, by=2)], each=n) + c(-1/nn/2, 0, 1/nn/2)
+    y <- rep(if(direction == "up") c(0, 1, 0) else c(1, 0, 1), n) 
+    grid.polyline(x, y, id=rep(1:n, each=3), gp=gpar(...))
+}
+
+
+
+## Compute mismatches for AlignmentsTracks based on the read sequences and a reference sequence
+.findMismatches <- function(GdObject){
+    rgo <- .dpOrDefault(GdObject, ".__plottingRange")
+    mmPos <- mmSamp <- mmSeq <- mmStack <- NULL
+    if(!is.null(rgo)){
+        ref <- as.character(as(subseq(GdObject@referenceSequence, start=rgo["from"], end=rgo["to"]), "Rle"))
+        cm <- consensusMatrix(GdObject@sequences, as.prob=FALSE, baseOnly=TRUE)[-5,]
+        cmm <- colMaxs(cm)
+        css <- colSums(cm)
+        cmp <- rbind(t(t(cm)/css), 0)
+        rownames(cmp)[5] <- "N"
+        sel <- is.na(cmp["A",])
+        cmp[,sel] <- 0
+        cmp["N", sel] <- 1
+        consStr <- strsplit(consensusString(cmp), "")[[1]]
+        varRegs <- which(cmm != css | (consStr != "N" & consStr != ref))
+        if(length(varRegs)){
+            rvg <- ref[varRegs]
+            sel <- rvg != "-" & rvg != "N"
+            if(any(sel)){
+                varRegs <- varRegs[sel]
+                rvg <- rvg[sel]
+                mmTab <- t(sapply(varRegs, function(x) as.character(subseq(GdObject@sequences, x, width=1))))
+                isMm <- t(rvg != "-" & mmTab != "+" & mmTab != "-" & mmTab != rvg)
+                mmRelPos <- col(isMm)[which(isMm)]
+                mmPos <- varRegs[mmRelPos] + rgo["from"] - 1
+                mmSampInd <- row(isMm)[which(isMm)]
+                mmSamp <- rownames(isMm)[mmSampInd]
+                mmSeq <- mmTab[ncol(isMm) * (mmSampInd - 1) + mmRelPos] 
+                mmStack <- stacks(GdObject)[match(mmSamp, ranges(GdObject)$entityId)]
+            }
+        }
+    }
+    return(data.frame(position=mmPos, stack=mmStack, read=mmSamp, base=as.character(mmSeq), stringsAsFactors=TRUE))
+}
+
+
+
+
 
 ## Return the default mappings between elementMetadata slots of an imported GRanges object and the elementMetadata
 ## slots of the track's GRanges object.
@@ -2168,6 +2346,16 @@ availableDefaultMapping <- function(file, trackType){
                                       .stream=TRUE),
                         AnnotationTrack=list(id="id",
                                              group="group",
+                                             .stream=TRUE),
+                        AlignmentsTrack=list(id="id",
+                                             cigar="cigar",
+                                             mapq="mapq",
+                                             flag="flag",
+                                             isize="isize",
+                                             groupid="groupid",
+                                             status="status",
+                                             md="md",
+                                             seq="seq",
                                              .stream=TRUE)))
     if(justMap)
         return(vm[[inputType]][[trackType]])
