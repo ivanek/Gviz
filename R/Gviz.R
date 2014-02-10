@@ -2232,7 +2232,8 @@ availableDefaultMapping <- function(file, trackType){
 ## Check whether the current device supports alpha channel transparency
 .supportsAlpha <- function(){
     d <- dev.cur()
-    on.exit({options(warn=getOption("warn"))
+    oldwarn <- getOption("warn")
+    on.exit({options(warn=oldwarn)
              if(d==1)
                  dev.off()
          })
