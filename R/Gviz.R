@@ -156,7 +156,7 @@
     }
     size <- .dpOrDefault(x, "size", 1)
     if(is(x, "StackedTrack"))
-      size <- max(size, size*max(stacks(x)))
+      size <- max(size, min(floor(vpLocation()$size["height"]/10), size*max(stacks(x))))
     return(size)
 }
 
@@ -2104,13 +2104,19 @@ availableDisplayPars <- function(class)
         pairedEnd <- TRUE
     bf <- BamFile(file, index=index, asMates=pairedEnd)
     param <- ScanBamParam(which=selection, what=scanBamWhat(), tag="MD", flag=scanBamFlag(isUnmappedQuery=FALSE))
-    reads <- scanBam(bf, param=param)[[1]]
-    md <- if(is.null(reads$tag$MD)) rep(NA, length(reads$pos)) else reads$tag$MD
-    layed_seq <- sequenceLayer(reads$seq, reads$cigar)
-    region <- unlist(bamWhich(param), use.names=FALSE)
-    ans <- stackStrings(layed_seq, start(region), end(region), shift=reads$pos-1L, Lpadding.letter="+", Rpadding.letter="+")
-    names(ans) <- seq_along(reads$qname)
-    return(GRanges(seqnames=reads$rname, strand=reads$strand, ranges=IRanges(start=reads$pos, width=reads$qwidth),
+    reads <- if(as.character(seqnames(selection)[1]) %in% names(scanBamHeader(bf)$targets)) scanBam(bf, param=param)[[1]] else list()
+    md <- if(is.null(reads$tag$MD)) rep(as.character(NA), length(reads$pos)) else reads$tag$MD
+    if(length(reads$pos)){
+        layed_seq <- sequenceLayer(reads$seq, reads$cigar)
+        region <- unlist(bamWhich(param), use.names=FALSE)
+        ans <- stackStrings(layed_seq, start(region), end(region), shift=reads$pos-1L, Lpadding.letter="+", Rpadding.letter="+")
+        names(ans) <- seq_along(reads$qname)
+    }else{
+        ans <- DNAStringSet()
+    }
+    return(GRanges(seqnames=if(is.null(reads$rname)) character() else reads$rname,
+                   strand=if(is.null(reads$strand)) character() else reads$strand,
+                   ranges=IRanges(start=reads$pos, width=reads$qwidth),
                    id=reads$qname, cigar=reads$cigar, mapq=reads$mapq, flag=reads$flag, md=md, seq=ans,
                    isize=reads$isize, groupid=if(pairedEnd) reads$groupid else seq_along(reads$pos),
                    status=if(pairedEnd) reads$mate_status else rep(factor("unmated", levels=c("mated", "ambiguous", "unmated")),
@@ -2210,21 +2216,22 @@ availableDefaultMapping <- function(file, trackType){
 
 ## A helper function to process alignment information from a GRanges object
 .computeAlignments <- function(range){
-    alg <- extractAlignmentRangesOnReference(range$cigar)
-    rp <- elementLengths(alg)
-    range <- sort(GRanges(seqnames=rep(seqnames(range), rp), strand=rep("*", sum(rp)), ranges=shift(unlist(alg), rep(start(range), rp)-1),
-                          id=rep(range$id, rp), entityId=rep(seq_along(rp), rp), cigar=rep(range$cigar, rp), md=rep(range$md, rp),
-                          readStrand=rep(strand(range), rp), mapq=rep(range$mapq, rp), flag=rep(range$flag, rp), isize=rep(range$isize, rp),
-                          groupid=rep(range$groupid, rp), status=factor(rep(range$status, rp), levels=c("mated", "ambiguous", "unmated")),
-                          uid=seq_len(sum(rp))))
+    res <- list(range=range, stackRanges=GRanges(), stacks=numeric())
     if(length(range)){
-        stTmp <- split(range, range$groupid)
-        stackRanges <- unlist(range(stTmp))
-        ss <- disjointBins(stackRanges)
-        range$stack <- ss[match(range$groupid, names(stackRanges))]
-        res <- list(range=range, stackRanges=stackRanges, stacks=range$stack)
-    }else{
-        res <- list(range=range, stackRanges=GRanges(), stacks=numeric())
+        alg <- extractAlignmentRangesOnReference(range$cigar)
+        rp <- elementLengths(alg)
+        range <- sort(GRanges(seqnames=rep(seqnames(range), rp), strand=rep("*", sum(rp)), ranges=shift(unlist(alg), rep(start(range), rp)-1),
+                              id=rep(range$id, rp), entityId=rep(seq_along(rp), rp), cigar=rep(range$cigar, rp), md=rep(range$md, rp),
+                              readStrand=rep(strand(range), rp), mapq=rep(range$mapq, rp), flag=rep(range$flag, rp), isize=rep(range$isize, rp),
+                              groupid=rep(range$groupid, rp), status=factor(rep(range$status, rp), levels=c("mated", "ambiguous", "unmated")),
+                              uid=seq_len(sum(rp))))
+        if(length(range)){
+            stTmp <- split(range, range$groupid)
+            stackRanges <- unlist(range(stTmp))
+            ss <- disjointBins(stackRanges)
+            range$stack <- ss[match(range$groupid, names(stackRanges))]
+            res <- list(range=range, stackRanges=stackRanges, stacks=range$stack)
+        }
     }
     return(res)
 }
@@ -2239,7 +2246,7 @@ availableDefaultMapping <- function(file, trackType){
          })
     options(warn=2)
     ok <- !is(try({grob <- grid.rect(width=0, height=0, gp=gpar(alpha=0.5))
-                   grid.remove(grob$name)
+                   ##grid.remove(grob$name)
                }, silent=TRUE), "try-error")
     return(ok)
 }
@@ -2249,7 +2256,8 @@ availableDefaultMapping <- function(file, trackType){
 ## determined dynamically.
 .alpha <- function(GdObject, postfix=NULL){
     support <- .dpOrDefault(GdObject, ".__hasAlphaSupport", .supportsAlpha())
-    alpha <- .dpOrDefault(GdObject, paste(c("alpha", postfix), collapse="."), 1)
+    wh <- if(is.null(postfix)) "alpha" else c(paste("alpha", postfix, sep="."), "alpha")
+    alpha <- .dpOrDefault(GdObject, wh, 1)
     if(alpha != 1 && !support)
         alpha <- 1
     return(alpha)     

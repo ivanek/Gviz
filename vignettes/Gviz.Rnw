@@ -29,6 +29,7 @@ BiocStyle::latex()
 \newcommand{\mgg}[0]{\Rpackage{Gviz} }
 \newcommand{\Reference}[1]{{\texttt{#1}}}
 \newcommand{\link}[1]{{#1}}
+\newcommand{\RR}[0]{{\texttt{R}}}
 
 \title{The Givz User Guide}
 \author{Florian Hahne\footnote{florian.hahne@novartis.com}}
@@ -61,7 +62,10 @@ addParTable <- function(class, skip=c("showTitle", "size", "background.title"), 
 }
 
 hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
-hasBiomartConnection <- !is(try(biomaRt::listMarts(), silent=TRUE), "try-error")
+oto <- options(timeout=5)
+hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
+                         !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
+options(timeout=oto)
 ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ##hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 
@@ -82,7 +86,7 @@ in-house. Many of the currently available genome browsers do a
 reasonable job in displaying genome annotation data, and there are
 options to connect to some of them from within \R (e.g., using the
 \Rpackage{rtracklayer} package). However, none of these solutions
-offer the flexibility of the full \R graphics system to display large
+offer the flexibility of the full \RR graphics system to display large
 numeric data in a multitude of different ways. The \mgg package aims
 to close this gap by providing a structured visualization framework to
 plot any type of data along genomic coordinates. It is loosely based
@@ -653,7 +657,7 @@ plotTracks(axisTrack, from=1e6, to=9e6, scale=0.5, labelPos="below")
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the \Rclass{GenomeAxisTrack}
-class by typing in \code{?GenomeAxisTrack} on the \R command line.
+class by typing in \code{?GenomeAxisTrack} on the \RR command line.
 
 <<GenomeAxisTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("GenomeAxisTrack")
@@ -724,7 +728,7 @@ plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE, showBandId=TRUE, cex.ba
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the \Rclass{IdeogramTrack}
-class by typing in \code{?IdeogramTrack} on the \R command line.
+class by typing in \code{?IdeogramTrack} on the \RR command line.
 
 <<IdeogramTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("IdeogramTrack")
@@ -1120,7 +1124,7 @@ plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("b"), agg
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the \Rclass{DataTrack}
-class by typing in \code{?DataTrack} on the \R command line.
+class by typing in \code{?DataTrack} on the \RR command line.
 
 <<DataTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("DataTrack")
@@ -1331,7 +1335,7 @@ that by doing this the \code{showOverplotting} parameter will also
 stop working. If you opt in, there is some considerable amount of
 detailed control to fine tune the collapsing to your needs.
 
-Lets start with a small example track for which element collapsing has
+Let's start with a small example track for which element collapsing has
 been turned off and no adjustments to the ranges have been made. We
 plot both the item identifiers and the group identifiers to exemplify
 what is going on.
@@ -1460,7 +1464,7 @@ plotTracks(list(dTrack4, aTrack2), from=189990000, to=190000000)
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the \Rclass{AnnotationTrack}
-class by typing in \code{?AnnotationTrack} on the \R command line.
+class by typing in \code{?AnnotationTrack} on the \RR command line.
 
 <<AnnotationTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("AnnotationTrack")
@@ -1586,7 +1590,7 @@ plotTracks(txTr)
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the \Rclass{GeneRegionTrack}
-class by typing in \code{?GeneRegionTrack} on the \R command line.
+class by typing in \code{?GeneRegionTrack} on the \RR command line.
 
 <<GeneRegionTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("GeneRegionTrack")
@@ -1655,7 +1659,7 @@ plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 For a complete listing of all the available display parameters please
 see the table above in the previous \Rclass{GeneRegionTrack} section
 or the man page of the \Rclass{BiomartGeneRegionTrack} class by typing
-in \code{?BiomartGeneRegionTrack} on the \R command line.
+in \code{?BiomartGeneRegionTrack} on the \RR command line.
 
 As mentioned above, one additional benefit when fetching the data
 through Biomart is that we also receive some information about the
@@ -1818,7 +1822,7 @@ class, some additional parameters can be used to control the look and
 feel of the details sections. For a complete listing of all the available display parameters please
 see the tables below and the one above in the \Rclass{AnnotationTrack} section
 or the man page of the \Rclass{DetailsAnnotationTrack} class by typing
-in \code{?DetailsAnnotationTrack} on the \R command line.
+in \code{?DetailsAnnotationTrack} on the \RR command line.
 
 <<DetailsAnnotationTrack5, results=hide, width=7.5, height=3, fig=TRUE>>=
 plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector.col="darkred", 
@@ -1919,6 +1923,197 @@ decreasing it.
 
 <<SequenceTrack8, results=hide, width=7.5, height=0.3, fig=TRUE>>=
 plotTracks(sTrack, chromosome=1, from=20000, to=20100, cex=0.5)
+@ 
+
+\subsubsection*{Display parameters for SequenceTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{SequenceTrack}
+class by typing in \code{?SequenceTrack} on the \RR command line.
+
+<<SequenceTrackClassTableSec, echo=FALSE, results=tex>>=
+addParTable("SequenceTrack")
+@ 
+
+\subsection{AlignmentsTrack}
+Plots of aligned sequences, typically from next generation sequencing
+experiments can be quite helpful, for instance when visually
+inspecting the validity of a called SNP. Those alignments are usually
+stored in \code{BAM} files.  As shown in some of the previous section
+we can deal with these files in a fairly crude way by coupling them to
+either an \Rclass{AnnotationTrack} or a \Rclass{DataTrack}. The utility
+of the generated plots however is fairly limited, and we want in
+particular support for gapped and paired aligments, and show
+differences of the individual read sequences to a reference.
+
+The \Rclass{AlignmentsTrack} class is designed to help in exactly
+these tasks. In its typical manifestation it is also a member of the
+\Rclass{ReferenceTrack} class, enabling memory efficient streaming
+directly off a file. Even though this file does not necessarily have
+to be a \code{BAM} file, the automatic import will only work for
+those. For all other file representations of alignments a user will
+have to provide their own import function, and this topic is further
+discussed in the class' documentation. For this demonstation let's use
+a small \code{BAM} file for which paired NGS reads have been mapped to
+an extract of the human hg19 genome. The data originate from an RNASeq
+experiment, and the alignements have been performed using the
+\code{STAR} aligner allowing for gaps. We also download some gene
+annotation data for that region from Biomart.
+
+Again, creating the \Rclass{AlignmentsTrack} object is as simple as
+calling the constructor function of the same name. We set the
+\Rfunarg{isPaired} argument to \code{TRUE} in order to tell the
+constructor that it should expect paired reads. Please note that
+\code{TRUE} is the default value for this parameter and usually things
+will still work even if the reads do not originate from a paired end
+library. In other words, the default setting could be used as a
+poor-man's autodetection, however it make more sense to supply the
+argument explicitely if you know what type of data to expect.
+
+<<alignmentstrack_1_do, echo=FALSE, results=hide>>=
+afrom <- 2960000
+ato <- 3160000
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "gapped.bam"), isPaired=TRUE)
+data(alTrackGenes)
+@
+
+<<alignmentstrack_1_show, eval=FALSE>>=
+afrom <- 2960000
+ato <- 3160000
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "gapped.bam"), isPaired=TRUE)
+bmt <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr12", start=afrom, end=ato, 
+                              filter=list(with_ox_refseq_mrna=TRUE), stacking="dense")
+@
+
+We can create a first plot of our read alignments data from a birds
+eye perspecive, say a range of 20,000 nucleotides.
+
+<<alignmentstrack_2, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(bmt, alTrack), from=afrom, to=ato, chromosome="chr12")
+@
+
+Now this already shows us the general layout of the track: on top we
+have a panel with the read coverage information in the form of a
+histogram, and below that a pile-up view of the individual
+reads. There is only a certain amount of vertical space available for
+the plotting, and not the whole depth of the pile-up can be displayed
+here. This fact is indicated by the white downward-pointing arrows in
+the title panel. We could address this issue by playing around with
+the \Rfunarg{max.height}, \Rfunarg{min.height} or
+\Rfunarg{stackHeight} display parameters which all control the height
+or the vertical spacing of the stacked reads. Or we could reduce the
+size of the coverage section by setting the \Rfunarg{coverageHeight}
+or the \Rfunarg{minCoverageHeight} parameters. Please see the class
+documentation for more details.
+
+<<alignmentstrack_3, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(bmt, alTrack), from=afrom, to=ato, chromosome="chr12", min.height=0, coverageHeight=0.08, 
+           minCoverageHeight=0)
+@
+
+From that far out the pile-ups are not particlularly useful, and we
+can turn those off by setting the \Rfunarg{type} display parameter
+accordingly.
+
+<<alignmentstrack_4, results=hide, width=7.5, height=2, fig=TRUE>>=
+plotTracks(c(alTrack, bmt), from=afrom, to=ato, chromosome="chr12", type="coverage")
+@
+
+Let's zoom in a bit further to check out the details of the pile-ups
+section.
+
+<<alignmentstrack_5, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12")
+@
+
+The direction of the individual  reads is indicated by the arrow head,
+and  read  pairs are  connect  by  a bright  gray  line.  Gaps in  the
+alignments are show by the connecting dark gray lines. On devices that
+support transparancy we  can also see that some of  the read pairs are
+actually overlapping. Like  before, we can not display  the full depth
+of the pile-up,  and the clipping that takes place hides  a lot of the
+reads from  the view. Another way of  getting to see at  least some of
+them is by reversing the stacking  order. We can also play around with
+some of the other display parameters that control the look and feel of
+the reads.
+
+<<alignmentstrack_6, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12", reverseStacking=TRUE, 
+           col.mates="purple", col.gap="orange", type="pileup")
+@
+
+As mentioned before we can control whether the data should be treated
+as paired end or single end data by setting the \Rfunarg{isPaired}
+argument in the constructor. Here is how we could take a look at the
+data in the same file, but in single end mode.
+
+<<alignmentstrack_6_1, results=hide, width=7.5, height=5, fig=TRUE>>=
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "gapped.bam"), isPaired=FALSE)
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12")
+@ 
+
+So far we did not look at the individual read sequences at all. Even
+though they are contained in the \code{BAM} file, their value is
+fairly limited without the reference sequence against which the reads
+have initially been aligned. Typically the mismatch positions and the
+variant bases are not included. (Please note that this is not entirely
+true for all \code{BAM} files. One can store base mismatch positions
+in the CIGAR string, or even the full variant description in the
+non-standard \code{MD} field. However very few aligners currently make
+use of these features. We may implement support for those later if
+found necessary.)
+
+To better show the features of the \Rclass{AlignmentsTrack} for
+sequence variants we will load a different data set, this time from a
+whole genome DNASeq SNP calling experiment. Again the reference genome
+is hg19 and the alignments have been performed using \code{Bowtie2}.
+
+<<alignmentstrack_7, results=hide, width=7.5, height=5, fig=TRUE>>=
+afrom <- 44945200
+ato <- 44947200
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "snps.bam"), isPaired=TRUE)
+plotTracks(alTrack, chromosome="chr21", from=afrom, to=ato)
+@
+
+Somehow we need to tell the \Rclass{AlignmentsTrack} about the
+reference genome, and there are two ways to archive this. Either we
+provide a \Rclass{SequenceTrack} object with the reference to the
+constructor function via the \Rfunarg{referenceSequence} argument, or
+we stick it into the track list that is provided to the
+\Rfunction{plotTrack} which is smart enough to detect it there. For
+this example we chose the second option and re-use the
+\Rclass{SequenceTrack} object from the previous section.
+
+<<alignmentstrack_8, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(alTrack, sTrack), chromosome="chr21", from=afrom, to=ato)
+@
+
+The mismatched bases are now indicated on both the individual reads in
+the pileup section and also in the coverage plot in the form of a
+stacked histogram. When zooming in to one of the obvious heterozygous
+SNP positions we can reveal even more details.
+
+<<alignmentstrack_9, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(alTrack, sTrack), chromosome="chr21", from=44946590, to=44946660)
+@
+
+Just like shown before in the \Rclass{SequenceTrack} we can even
+show individual letters here as long as there is enough space to fit
+them. This can be controlled using the display parameters
+\code{min.height}, \code{max.height} and \code{cex}.
+
+<<alignmentstrack_10, results=hide, width=7.5, height=5, fig=TRUE>>=
+plotTracks(c(alTrack, sTrack), chromosome="chr21", from=44946590, to=44946660, cex=0.5, min.height=8)
+@ 
+
+\subsubsection*{Display parameters for AlignmentsTrack objects}
+
+For a complete listing of all the available display parameters please
+see the table below or the man page of the \Rclass{AlignmentsTrack}
+class by typing in \code{?AlignmentsTrack} on the \RR command line.
+
+<<AlignmentsTrackClassTable, echo=FALSE, results=tex>>=
+addParTable("AlignmentsTrack")
 @ 
 
 
@@ -2107,7 +2302,7 @@ plotTracks(list(ht1, grtrack, ht2), from=lim[1], to=lim[2])
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the \Rclass{HighlightTrack}
-class by typing in \code{?HighlightTrack} on the \R command line.
+class by typing in \code{?HighlightTrack} on the \RR command line.
 
 <<HighlightTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("HighlightTrack")
@@ -2297,6 +2492,8 @@ for the different track classes in one place.
   \hline
   SequenceTrack & FASTA & \code{.fa}, \code{fasta} & $(\surd)$ & Streaming only possible if an index file is found in the same directory as the original fasta file.\\
   & 2Bit & \code{.2bit} & $\surd$ & \\
+  \hline
+  AlignmentsTrack & BAM & \code{.bam} & $\surd$ & ALways needs an index file is found in the same directory as the original BAM file.\\
   \hline
 \end{longtable}
 

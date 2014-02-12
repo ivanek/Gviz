@@ -35,6 +35,9 @@ NEW FEATURES
       better control the exon and transcript labels in
       GeneRegionTracks.
 
+    o The new AlignmentsTrack class to visualized aligned NGS reads in
+      a BAM file.
+
 BUG FIXES
 
     o A number of significant fixes.

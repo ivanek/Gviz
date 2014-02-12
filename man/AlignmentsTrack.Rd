@@ -236,6 +236,19 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
   
 }
 
+\section{details}{
+  \code{AlignmentTracks} usually have two section: the coverage section
+  on top showing a histogram of the read coverage, and the pile-up
+  section below with the individual reads. Both can be toggled on or off
+  using the \code{type} display parameter. If reference sequence has
+  been provided either during object instantiation or with the track
+  list to the call to \code{plotTracks}, sequence mismatch information
+  will be shown in both sections: as a stacked histogram in the coverage
+  plot and as colored boxes or characters (depending on available space)
+  in for the pile-ups.
+
+}
+
 
 \section{Slots}{
   
@@ -1143,6 +1156,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{col.mismatch=.DEFAULT_SHADED_COL}: Integer or
       character scalar. The box color around mismatch bases.}
+
+    \item{}{\code{col.reads=NULL}: Integer or
+      character scalar. The box color around reads.}
     
     \item{}{\code{col=.DEFAULT_SHADED_COL}: Integer or character
       scalar. The default color of all line elements.}
@@ -1179,6 +1195,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{lty.mismatch=NULL}: Integer or character scalar. The box
       line type around mismatch bases.}
+
+    \item{}{\code{lty.reads=NULL}: Integer or character scalar. The box
+      line type around reads.}
     
     \item{}{\code{lty=1}: Integer or character scalar. The default type
       of all line elements.}
@@ -1194,9 +1213,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{lwd.mismatch=NULL}: Integer scalar.The box
       line width around mismatch bases.}
+
+    \item{}{\code{lwd.reads=NULL}: Integer scalar.The box
+      line width around reads.}
     
     \item{}{\code{lwd=1}: Integer scalar. The default width of all line
       elements.}
+
+    \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
+      boxes for mismatch bases regardles of the available space.}
     
     \item{}{\code{max.height=10}: Integer scalar. The maximum height
       of an individual read in pixels. Can be used in combination with
@@ -1438,6 +1463,34 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 }
 
 \examples{
+## Creating objects
+afrom <- 2960000
+ato <- 3160000
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+"gapped.bam"), isPaired=TRUE)
+plotTracks(alTrack, from=afrom, to=ato, chromosome="chr12")
+
+## Omit the coverage or the pile-ups part
+plotTracks(alTrack, from=afrom, to=ato, chromosome="chr12",
+type="coverage")
+plotTracks(alTrack, from=afrom, to=ato, chromosome="chr12",
+type="pileup")
+
+## Including sequence information with the constructor
+if(require(BSgenome.Hsapiens.UCSC.hg19)){
+strack <- SequenceTrack(Hsapiens, chromosome="chr21")
+afrom <- 44945200
+ato <- 44947200
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+"snps.bam"), isPaired=TRUE, referenceSequence=strack)
+plotTracks(alTrack, chromosome="chr21", from=afrom, to=ato)
+
+## Including sequence information in the track list
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+"snps.bam"), isPaired=TRUE)
+plotTracks(c(alTrack, strack), chromosome="chr21", from=44946590,
+to=44946660)
+}
 
 }
 \keyword{classes}

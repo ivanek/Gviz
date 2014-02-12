@@ -687,17 +687,16 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
     missing <- which(!cols %in% colnames(anno))
     for(i in missing)
         anno[,cols[missing]] <- if(cols[i]=="density") 1 else NA
-    rRed <- if(length(grange)>1) reduce(grange, min.gapwidth=minXDist) else grange
+    rRed <- if(length(grange)>1) reduce(grange, min.gapwidth=minXDist, with.mapping=TRUE) else grange
     if(length(rRed) < length(grange))
     {
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
         ## is processed in a sane way.
         needsRestacking <- TRUE
-        ##mapping <- .myFindOverlaps(rRed, grange)
-        mapping <- queryHits(findOverlaps(rRed, grange))
+        mapping <- rep(seq_along(rRed$mapping), elementLengths(rRed$mapping))
         ## We start by finding the items that have not been reduced
         identical <- mapping %in% which(table(mapping)==1)
-        newVals <- anno[identical,cols]
+        newVals <- anno[identical, cols]
         ## Here we hijack the seqnames column to indicate whether the whole group has been merged
         if(nrow(newVals)){
             newVals$seqnames <- elements[as.character(anno[identical,"seqnames"])]==1
@@ -2003,10 +2002,10 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             mateGaps <- mateGaps[start(rmap) <= start(mateGaps) & end(rmap) >= end(mateGaps)]
             gy <- readInfo$stack[match(as.character(seqnames(mateGaps)), readInfo$entityId)]
             lineCoords <- data.frame(x1=start(mateGaps)-1, y1=gy, x2=end(mateGaps)+1, y2=gy,
-                                     col=.dpOrDefault(GdObject, c("col.mates", "col"), .DEFAULT_BRIGHT_SHADED_COL),
-                                     lwd=.dpOrDefault(GdObject, c("lwd.mates", "lwd"), 1),
-                                     lty=.dpOrDefault(GdObject, c("lty.mates", "lty"), 1),
-                                     alpha=.alpha(GdObject), stringsAsFactors=FALSE)
+                                     col=.dpOrDefault(GdObject, c("col.gap", "col"), .DEFAULT_SHADED_COL),
+                                     lwd=.dpOrDefault(GdObject, c("lwd.gap", "lwd"), 1),
+                                     lty=.dpOrDefault(GdObject, c("lty.gap", "lty"), 1),
+                                     alpha=.alpha(GdObject, "gap"), stringsAsFactors=FALSE)
             lineCoords <- lineCoords[!duplicated(lineCoords), ]
         }else{
             mateRanges <- setNames(readInfo, readInfo$entityId)
@@ -2017,10 +2016,10 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             pairGaps <- pairGaps[start(rmap) <= start(pairGaps) & end(rmap) >= end(pairGaps)]
             gy <- readInfo$stack[match(as.character(seqnames(pairGaps)), readInfo$groupid)]
             pairsCoords <- data.frame(x1=start(pairGaps)-1, y1=gy, x2=end(pairGaps)+1, y2=gy,
-                                      col=.dpOrDefault(GdObject, c("col.gap", "col"), .DEFAULT_SHADED_COL),
-                                      lwd=.dpOrDefault(GdObject, c("lwd.gap", "lwd"), 1),
-                                      lty=.dpOrDefault(GdObject, c("lty.gap", "lty"), 1),
-                                      alpha=.alpha(GdObject), stringsAsFactors=FALSE)
+                                      col=.dpOrDefault(GdObject, c("col.mates", "col"), .DEFAULT_BRIGHT_SHADED_COL),
+                                      lwd=.dpOrDefault(GdObject, c("lwd.mates", "lwd"), 1),
+                                      lty=.dpOrDefault(GdObject, c("lty.mates", "lty"), 1),
+                                      alpha=.alpha(GdObject, "mates"), stringsAsFactors=FALSE)
             lineCoords <- rbind(lineCoords, pairsCoords[!duplicated(pairsCoords), ])
         }
         ## The mismatch information on the reads if needed

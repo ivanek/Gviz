@@ -22,6 +22,7 @@
 \alias{ctrack}
 \alias{geneDetails}
 \alias{dtHoriz}
+\alias{bmt}
 \docType{data}
 \title{
 Data sets
