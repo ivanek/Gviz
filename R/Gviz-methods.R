@@ -687,7 +687,7 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
     missing <- which(!cols %in% colnames(anno))
     for(i in missing)
         anno[,cols[missing]] <- if(cols[i]=="density") 1 else NA
-    rRed <- if(length(grange)>1) reduce(grange, min.gapwidth=minXDist, with.mapping=TRUE) else grange
+    rRed <- if(length(grange)>1) reduce(grange, min.gapwidth=minXDist, with.revmap=TRUE) else grange
     if(length(rRed) < length(grange))
     {
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
