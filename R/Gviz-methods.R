@@ -693,7 +693,7 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
         ## is processed in a sane way.
         needsRestacking <- TRUE
-        mapping <- rep(seq_along(rRed$mapping), elementLengths(rRed$mapping))
+        mapping <- rep(seq_along(rRed$revmap), elementLengths(rRed$revmap))
         ## We start by finding the items that have not been reduced
         identical <- mapping %in% which(table(mapping)==1)
         newVals <- anno[identical, cols]
