@@ -1538,7 +1538,7 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
                         expression({tmp <- browserSession()
                                     genome(tmp) <- genome
                                     tmp}), env, cenv)
-    availTracks <- .doCache(tracksToken, expression(trackNames(session)), env, cenv)
+    availTracks <- .doCache(tracksToken, expression(trackNames(ucscTableQuery(session))), env, cenv)
     track <- match.arg(track, sort(c(availTracks, names(availTracks))))
     if(!is.na(availTracks[track]))
         track <- availTracks[track]
