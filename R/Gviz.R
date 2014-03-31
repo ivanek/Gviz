@@ -661,7 +661,9 @@
         if(length(ct))
             cutBars <- rbind(cutBars, data.frame(x1=start(ct), x2=end(ct), y=b$y, col=b$col, stringsAsFactors=FALSE))
     }
-    grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y, default.units="native", gp=gpar(col=cutBars$col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
+    ## fix bug when no introns are present
+    if (nrow(cutBars))
+        grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y, default.units="native", gp=gpar(col=cutBars$col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
     ##grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
 }
 
