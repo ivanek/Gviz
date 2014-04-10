@@ -1341,7 +1341,7 @@ addScheme <- function(scheme, name){
         rr <- unlist(lapply(GdObject, function(x){
             gr <- .dpOrDefault(x, ".__groupRanges")
             gw <- .dpOrDefault(x, ".__groupLabelWidths", data.frame(before=0, after=0))
-            if(is.null(gr)) NULL else c(min(start(gr) + gw$before), max(end(gr) - gw$after))
+            if(is.null(gr) || length(gr) == 0) NULL else c(min(start(gr) + gw$before), max(end(gr) - gw$after))
         }))
         if(!is.null(rr)){
             rr <- matrix(rr, ncol=2, byrow=TRUE)
