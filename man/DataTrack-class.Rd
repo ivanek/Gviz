@@ -76,7 +76,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 	single \code{GRanges} object. The track's coordinates are taken
 	from the \code{start}, \code{end} and \code{seqnames} slots, the
 	genome information from the genome slot, and the numeric data
-	values can be extracted from additional \code{elementMetadata}
+	values can be extracted from additional metadata columns
 	columns (please note that non-numeric columns are being ignored
 	with a warning). As a matter of fact, calling the constructor on
 	a \code{GRanges} object without further arguments, e.g.
@@ -174,7 +174,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     is a character string with the path to the input data file. The
     function needs to accept an argument \code{file} containing the file
     path and has to return a proper \code{GRanges} object with the data
-    part attached as numeric \code{elementMetadata} columns. Essentially
+    part attached as numeric metadata columns. Essentially
     the process is equivalent to constructing a \code{DataTrack}
     directly from a \code{GRanges} object in that non-numeric columns
     will be dropped, and further subsetting can be archived by means of

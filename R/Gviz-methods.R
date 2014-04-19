@@ -73,7 +73,7 @@ setMethod("length", "SequenceTrack", function(x)
 setMethod("length", "HighlightTrack", function(x) length(x@trackList))
 setMethod("length", "OverlayTrack", function(x) length(x@trackList))
 
-## Extract the elementMetadata slot from the GRanges object of an object inheriting from RangeTrack as a data.frame.
+## Extract the metadata columns from the GRanges object of an object inheriting from RangeTrack as a data.frame.
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.
 setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x))))
 setMethod("values", "GenomeAxisTrack", function(x) as.data.frame(values(ranges(x))))
@@ -323,7 +323,7 @@ setMethod("coverage", signature("AlignedReadTrack"),
 ##----------------------------------------------------------------------------------------------------------------------------
 ## Helper functions to extract or replace the various annotation data of a track.
 ##   o GdObject: the input GeneRegionTrack track object
-##   o type: the annotation type, i.e., a column in the elementMetadata slot of the GRanges object
+##   o type: the annotation type, i.e., a metadata column in the GRanges object
 ##   o value: the replacement value, has to be of the same length as length(GdObject)
 .getAnn <- function(GdObject, type) return(as.character(values(GdObject)[[type]]))
 .setAnn <-  function(GdObject, value, type)
@@ -333,7 +333,7 @@ setMethod("coverage", signature("AlignedReadTrack"),
         stop("The length of the replacement value for the '", type, "' annotation does not match the number ",
              "of features in the track.")
     v[[type]] <- value
-    elementMetadata(GdObject@range) <- v
+    mcols(GdObject@range) <- v
     return(GdObject)
 }
 
@@ -375,7 +375,7 @@ setReplaceMethod("imageMap", signature("GdObject", "ImageMapOrNULL"), function(G
     return(GdObject)})
 
 ## Context-dependent meta-accessors to the identifier data of an AnnotationTrack and a GeneRegionTrack. For the former, those will
-## be the content of the 'id', the 'group' or the 'feature' columns in the elementMetadata slot of the GRanges object, for the latter, one in
+## be the content of the 'id', the 'group' or the 'feature' metadata column, for the latter, one in
 ## the selection of 'symbol', 'gene', 'transcript', 'feature' or 'exon'. For historical reasons, logical values are also allowed, where TRUE
 ## is equivalent to 'symbol' and FALSE is equivalent to 'gene'. If not provided explicitely in the 'type' argument, the identifier
 ## type is inferred from the 'transcriptAnnotation' display parameter (a.k.a. 'geneSymbols') for a GeneRegionTrack, and from the
@@ -667,7 +667,7 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
     queryHits(findOverlaps(ranges(gr1), ranges(gr2)))
 }
 ## Find all elements in a GRanges object 'grange' with distance smaller than 'minXDist' and merge them along with their additional
-## elementMetadata. 'elements' is a frequency table of items per group, and it is needed to figure out whether all items of a given
+## metadata columns. 'elements' is a frequency table of items per group, and it is needed to figure out whether all items of a given
 ## group have been merged. 'GdObject' is the input track object from which certain information has to be extracted. The output of this
 ## function is a list with elements
 ##   o range: the updated GRanges object
@@ -740,11 +740,11 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
         grange <- GRanges(seqnames=chromosome(GdObject), strand=newVals[, "strand"],
                           ranges=IRanges(start=as.integer(newVals[, "start"]), end=as.integer(newVals[, "end"])))
         cnMatch <- match(c(colnames(values(GdObject)), "gdensity"), colnames(newVals))
-        elementMetadata(grange) <-
+        mcols(grange) <-
             if(any(is.na(cnMatch))) newVals[, setdiff(colnames(newVals), c("strand", "start", "end", "seqnames"))] else newVals[, cnMatch]
     }else{
         grange2 <-  GRanges(seqnames=chromosome(GdObject), strand=strand(grange), ranges=ranges(grange))
-        elementMetadata(grange2) <- elementMetadata(grange)
+        mcols(grange2) <- mcols(grange)
         grange <- grange2
     }
     return(list(range=grange, needsRestacking=needsRestacking, split=annoSplit, merged=merged, offset=length(annoSplit)))
@@ -774,7 +774,7 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
                   newVals$exon <- NA
                   newVals$transcript <- newVals$gene
                   r <- unlist(range(split(r, gene(GdObject))))
-                  elementMetadata(r) <- newVals
+                  mcols(r) <- newVals
                   GdObject@range <- r
               }
               ## Collapse overlapping ranges (less than minXDist space between them) and process the annotation data
@@ -783,7 +783,7 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
                   ## Merge all items in those groups for which no individual items can be separated
                   elements <- table(group(GdObject))
                   rr <- GRanges(seqnames=as.character(group(GdObject)), ranges=IRanges(start=start(r), end=end(r)), strand=strand(r))
-                  elementMetadata(rr) <- elementMetadata(r)
+                  mcols(rr) <- mcols(r)
                   rr <- sort(unique(rr))
                   mergedAnn <- .collapseAnnotation(rr, minXDist, elements, GdObject)
                   needsRestacking <- needsRestacking || mergedAnn$needsRestacking
@@ -3866,7 +3866,7 @@ setMethod(".buildRange", signature("IRanges"),
               if(length(range))
               {
                   vals <- .fillWithDefaults(defaults=defaults, args=args, len=(length(range)), by=NULL, ignore="strand")
-                  elementMetadata(range) <- vals
+                  mcols(range) <- vals
               }
               return(range)})
 

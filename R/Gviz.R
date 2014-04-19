@@ -2315,8 +2315,8 @@ availableDefaultMapping <- function(file, trackType){
 
 
 
-## Return the default mappings between elementMetadata slots of an imported GRanges object and the elementMetadata
-## slots of the track's GRanges object.
+## Return the default mappings between the metadata columns of an imported GRanges object and those
+## of the track's GRanges object.
 .defaultVarMap <- function(inputType, trackType, stream, fromUser=FALSE, justMap=FALSE){
     vm <- list(gtf=list(GeneRegionTrack=list(feature="type",
                                              gene=c("gene_id", "gene_name"),
@@ -2384,7 +2384,7 @@ availableDefaultMapping <- function(file, trackType){
 }
 
 
-## Helper function to go through the elementMetadata columns of a DataFrame and match their colnames to a mapping if they
+## Helper function to go through the metadata columns of a DataFrame and match their colnames to a mapping if they
 ## are available
 .resolveColMapping <- function(data, args, defMap){
     colnames(mcols(data)) <- paste(colnames(mcols(data)), "orig", sep="__.__")

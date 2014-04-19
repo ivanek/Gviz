@@ -930,7 +930,7 @@ plotting.
 However let's first start with the simple example of a \code{bedGraph}
 file. These files support a single data sample, and thus are
 equivalent to a \code{GRanges} object with a single numeric
-\code{elementMetadata} column. \code{bedGraph} files are not indexed,
+metadata column. \code{bedGraph} files are not indexed,
 so we have to load the whole file content when instantiating the
 object.
 
@@ -955,7 +955,7 @@ in with the path to the data file, and the user-defined function needs
 to provide all logic necessary to parse that file into a valid
 \Rclass{GRanges} object. From this point on everything will happen just
 as if the \Rfunarg{range} argument had been this \Rclass{GRanges}
-object. In other words, numeric \code{elementMetadata} columns will be
+object. In other words, numeric metadata columns will be
 shown as individual samples and non-numeric columns will be silently
 ignored. We can exemplify this in the next code chunk. Note that the
 \mgg package is using functionality from the \Rpackage{rtracklayer}
@@ -982,8 +982,7 @@ package. \code{bam} files contain alignments of sequences (typically
 from a next generation sequencing experiment) to a common
 reference. The most natural representation of such data in a
 \Rclass{DataTrack} is to look at the alignment coverage at a given
-position only and to encode this in a single \code{elementMetadata}
-column.
+position only and to encode this in a single metadata column.
 
 <<filedt3, fig=TRUE, width=7.5, height=1>>=
 bamFile <- system.file("extdata/test.bam", package="Gviz")
@@ -1420,7 +1419,7 @@ Since \Rclass{AnnotationTrack} objects are somewhat more complicated
 than \Rclass{DataTrack} objects, the constructor provides another
 level of flexibility when reading the data from a file. More
 specifically, the user has the ability to map the provided
-\Rclass{elementMetadata} columns of the \Rclass{GRanges} object that is
+metadata columns of the \Rclass{GRanges} object that is
 returned by the import function to the respective columns in the final
 \Rclass{AnnotationTrack} object. If no explicit mapping is provided, 
 the package will try to find a default mapping based on the input file
@@ -1429,7 +1428,7 @@ displayed by its \Rfunction{show} method as can be seen above. The
 mechanism for changing this default mapping is quite straight forward:
 if the values in the relevant constructor arguments (in this case
 \Rfunarg{group}, \Rfunarg{id} and \Rfunarg{feature}) are character
-scalars, the \Rclass{elementMetadata} columns of the \Rclass{GRanges}
+scalars, the metadata columns of the \Rclass{GRanges}
 object that is returned by the import function are mapped against
 their values. For instance we can map the \code{id} column to the
 \code{group} attribute and thus suppress the grouping of sequence
@@ -1441,7 +1440,7 @@ aTrack3
 plotTracks(aTrack3, from=189995000, to=190000000)
 @
 
-Please note that if no \Rclass{elementMetadata} can be mapped to the
+Please note that if no metadata column can be mapped to the
 constructor arguments their values are assumed to be normal character
 scalars and they will be recycled accordingly to fill the track's
 slots. One can ask for the package's default mappings by using the
@@ -2447,18 +2446,18 @@ a track class' documentation should provide all the possible options.
   \hline                        
   AnnotationTrack & data.frame & Constructor \\
    & IRanges & Constructor + additional arguments \\
-   & GRanges & Constructor or setAs method, additional data in elementMetadata \\
+   & GRanges & Constructor or setAs method, additional data in metadata columns \\
    & GRangesList & Constructor or setAs method \\
   \hline
   GeneRegionTrack & data.frame & Constructor \\
    & IRanges & Constructor + additonal arguments \\
-   & GRanges & Constructor or setAs method, additional data in elementMetadata \\
-   & GRangesList & Constructor or setAs method, additional data in elementMetadata \\
+   & GRanges & Constructor or setAs method, additional data in metadata columns \\
+   & GRangesList & Constructor or setAs method, additional data in metadata columns \\
    & TranscriptDb & Constructor or setAs method \\
   \hline
   DataTrack & data.frame & Constructor \\
    & IRanges & Constructor + additional data matrix \\
-   & GRanges & Constructor or setAs method, numeric data in elementMetadata \\
+   & GRanges & Constructor or setAs method, numeric data in metadata columns \\
   \hline
   SequenceTrack & DNAStringSet & Constructor \\
    & BSgenome & Constructor \\

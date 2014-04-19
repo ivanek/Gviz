@@ -145,7 +145,7 @@ plotTracks(list(gt1, gt2, gt3), extend.left=10000)
 
 
 ga <- GenomeAxisTrack()
-ga <- GenomeAxisTrack(range=GenomicRanges::GRanges(seqnames=letters[1:3], range=IRanges::IRanges(start=c(2045000, 2061000, 2151000), end=c(2050000, 2066000, 2221000))),
+ga <- GenomeAxisTrack(range=GenomicRanges::GRanges(seqnames=letters[1:3], range=IRanges(start=c(2045000, 2061000, 2151000), end=c(2050000, 2066000, 2221000))),
                       add53=TRUE, add35=TRUE)
 plotTracks(list(gt1, ga, gt2, gt3), extend.left=10000)
 displayPars(ga) <- list(littleTicks=TRUE)
@@ -153,7 +153,7 @@ plotTracks(list(annTrack2, gt1, ga, gt2, gt3), extend.left=10000)
 
 
 
-bases <- seq(min(IRanges::start(range(gt2))), max(IRanges::end(range(gt2))), len=50)
+bases <- seq(min(start(range(gt2))), max(end(range(gt2))), len=50)
 start <- bases-(min(diff(bases))/5)*runif(50,1,3)
 end <- bases+(min(diff(bases))/5)*runif(50,1,3)
 data <- matrix(rnorm(length(bases)*6)+rep(runif(length(bases), -4,4), each=6), nrow=6)

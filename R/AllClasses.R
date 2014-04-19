@@ -401,7 +401,7 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
 ## about start, end, strand, chromosome and the associated genome. 
 ## Slots:
 ##    o range: object of class GRangesOrIRanges containing all the necessary information
-##       for plotting. The content of the elementMetadata may vary between 
+##       for plotting. The content of the metadata columns may vary between 
 ##	 subclasses. The strand information may be provided in the form '+' for
 ##	 the Watson strand, '-' for the Crick strand or '*' for any of the two.
 ##    o chromosome: a character vector giving the active chromosome for which the 
@@ -449,8 +449,8 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
 ##   o stream: the import function to stream data off the disk. Needs to be able to handle the two mandatory arguments
 ##      'file' (a character containing a valid file path) and 'selection' (a GRanges object with the genomic region to plot)
 ##   o reference: the path to the file containing the data
-##   o mapping: a default mapping between elementMetadata columns of the returned GRanges object from the import function
-##      and the elementMetadata columns that make up the final track object
+##   o mapping: a default mapping between the metadata columns of the returned GRanges object from the import function
+##      and the metadata columns that make up the final track object
 ##   o args: a list with the passed in constructor arguments during object instantiation. Those will be needed when
 ##     fetching the data in order to fill all necessary slots
 ##   o defaults: a list with the relevant default values to be used when neither 'mapping' nor 'args' provides the
@@ -924,9 +924,9 @@ GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, 
         range <- GRanges()
     }
     if(is.null(start))
-        start <- if(!length(range)) NULL else min(IRanges::start(range))
+        start <- if(!length(range)) NULL else min(start(range))
     if(is.null(end))
-        end <- if(!length(range)) NULL else max(IRanges::end(range))
+        end <- if(!length(range)) NULL else max(end(range))
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
@@ -1587,7 +1587,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
                       genome, chromosome, name=NULL, from, to, ...)
 {
     trackType <- match.arg(trackType)
-    if(missing(genome) || !IRanges::isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
+    if(missing(genome) || !isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
     if(missing(chromosome)) stop("Need to specify chromosome for creating a UcscTrack")
     chromosome <- .chrName(chromosome)[1]
     sessionInfo <- .cacheTracks(genome=genome, chromosome=chromosome, track=track, env=.ucscCache)

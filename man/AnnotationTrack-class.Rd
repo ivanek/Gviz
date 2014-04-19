@@ -80,7 +80,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 
       \item{}{A \code{GRanges} object: the genomic ranges for the
 	\code{Annotation} track as well as the optional additional
-	\code{elementMetadata} columns \code{feature}, \code{group} and
+	metadata columns \code{feature}, \code{group} and
 	\code{id} (see description of the individual function parameters
 	below for details). Calling the constructor on a \code{GRanges}
 	object without further arguments, e.g.
@@ -267,7 +267,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
     is a character string with the path to the input data file. The
     function needs to accept an argument \code{x} containing the file
     path and has to return a proper \code{GRanges} object with all the
-    necessary \code{elementMetadata} columns set. A set of default
+    necessary metadata columns set. A set of default
     import functions is already implemented in the package for a number
     of different file types, and one of these defaults will be picked
     automatically based on the extension of the input file name. If the
@@ -1668,9 +1668,9 @@ annTrack <- AnnotationTrack(range=df, genome="hg19", chromosome=7, name="generic
                              stacking="squish")
 
 ## Or from a GRanges object
-gr <- GenomicRanges::GRanges(seqnames="chr7", range=IRanges::IRanges(start=df$start, end=df$end), strand=str)
+gr <- GRanges(seqnames="chr7", range=IRanges(start=df$start, end=df$end), strand=str)
 genome(gr) <- "hg19"
-IRanges::elementMetadata(gr) <- df[,-(1:3)]
+mcols(gr) <- df[,-(1:3)]
 annTrack <- AnnotationTrack(range=gr, name="generic annotation", stacking="squish")
 
 ## Finally from a GRangesList

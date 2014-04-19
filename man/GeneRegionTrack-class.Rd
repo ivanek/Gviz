@@ -100,7 +100,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
       
       \item{}{A \code{GRanges} object: the genomic ranges for the
 	\code{GeneRegion} track as well as the optional additional
-	\code{elementMetadata} columns \code{feature},
+	metadata columns \code{feature},
 	\code{transcript}, \code{gene}, \code{exon} and \code{symbol}
 	(see description of the individual function parameters below for
 	details). Calling the constructor on a \code{GRanges} object
@@ -261,7 +261,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
     is a character string with the path to the input data file. The
     function needs to accept an argument \code{x} containing the file
     path and has to return a proper \code{GRanges} object with all the
-    necessary \code{elementMetadata} columns set. A set of default
+    necessary metadata columns set. A set of default
     import functions is already implemented in the package for a number
     of different file types, and one of these defaults will be picked
     automatically based on the extension of the input file name. If the

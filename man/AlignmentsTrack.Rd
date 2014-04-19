@@ -72,7 +72,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
       \item{}{A \code{GRanges} object: the genomic ranges of the
 	individual reads as well as the optional additional
-	\code{elementMetadata} columns \code{id}, \code{cigar},
+	metadata columns \code{id}, \code{cigar},
 	\code{mapq}, \code{flag}, \code{isize}, \code{groupid},
 	\code{status}, \code{md} and \code{seqs} (see description of the
 	individual function parameters below for details). Calling the
@@ -208,7 +208,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     function needs to accept an argument \code{x} containing the file
     path and a second argument \code{selection} with the desired
     plotting ranges. It has to return a proper \code{GRanges} object
-    with all the necessary \code{elementMetadata} columns set. A single
+    with all the necessary metadata columns set. A single
     default import function is already implemented in the package for
     \code{BAM} files.}
 

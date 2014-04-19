@@ -51,7 +51,7 @@ availableDefaultMapping(file, trackType)
       path to the file containing the data.}
     
     \item{\code{mapping}:}{Object of class \code{"list"}, a default
-      mapping between \code{elementMetadata} columns of the returned
+      mapping between the metadata columns of the returned
       \code{GRanges} object from the import function and the
       \code{elemenMetadata} columns that make up the final track object.}
     
@@ -85,7 +85,7 @@ availableDefaultMapping(file, trackType)
 
   The \code{availableDefaultMappings} function can be used to find out
   whether the package defines a mapping scheme between one of the many
-  supported input file types and the \code{elementMetadata} columns of
+  supported input file types and the metadata columns of
   the tracks's \code{GRanges} objects.
   
 }

@@ -876,7 +876,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
 ## Construct object
 axTrack <- GenomeAxisTrack(name="Axis",
-range=IRanges::IRanges(start=c(100, 300, 800), end=c(150, 400, 1000)))
+range <- IRanges(start=c(100, 300, 800), end=c(150, 400, 1000)))
 
 \dontshow{
 ## For some annoying reason the postscript device does not know about
