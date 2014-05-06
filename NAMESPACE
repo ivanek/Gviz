@@ -3,6 +3,7 @@ import(methods)
 import(S4Vectors)
 import(IRanges)
 import(XVector)
+import(GenomeInfoDb)
 import(GenomicRanges)
 
 importClassesFrom(biomaRt, Mart)

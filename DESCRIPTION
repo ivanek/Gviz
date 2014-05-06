@@ -1,10 +1,10 @@
 Package: Gviz
-Version: 1.9.1
+Version: 1.9.2
 Title: Plotting data and annotation information along genomic coordinates
 Author: Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou, Ge Tan <ge.tan09@imperial.ac.uk>
 Maintainer: Florian Hahne <florian.hahne@novartis.com>
-Depends:  R (>= 2.10.0), methods, grid, BiocGenerics (>= 0.1.4), S4Vectors (>= 0.0.1), IRanges (>= 1.99.1), GenomicRanges (>= 1.17.7)
-Imports: XVector (>= 0.5.3), rtracklayer (>= 1.25.2), lattice, RColorBrewer, biomaRt (>= 2.11.0), AnnotationDbi (>= 1.27.2), Biobase (>= 2.15.3), GenomicFeatures (>= 1.17.3), BSgenome (>= 1.33.1), Biostrings (>= 2.33.3), biovizBase (>= 1.13.3), Rsamtools (>= 1.17.5), latticeExtra (>= 0.6-26), matrixStats (>= 0.8.14), GenomicAlignments (>= 1.1.4)
+Depends:  R (>= 2.10.0), methods, grid, BiocGenerics (>= 0.11.2), S4Vectors (>= 0.0.1), IRanges (>= 1.99.1), GenomeInfoDb (>= 1.1.3), GenomicRanges (>= 1.17.11)
+Imports: XVector (>= 0.5.3), rtracklayer (>= 1.25.5), lattice, RColorBrewer, biomaRt (>= 2.11.0), AnnotationDbi (>= 1.27.5), Biobase (>= 2.15.3), GenomicFeatures (>= 1.17.5), BSgenome (>= 1.33.1), Biostrings (>= 2.33.3), biovizBase (>= 1.13.7), Rsamtools (>= 1.17.8), latticeExtra (>= 0.6-26), matrixStats (>= 0.8.14), GenomicAlignments (>= 1.1.9)
 Suggests: xtable, BSgenome.Hsapiens.UCSC.hg19, BiocStyle
 biocViews: Visualization, Microarray
 Description: Genomic data analyses requires integrated visualization of known genomic information and new experimental data.  Gviz uses the biomaRt and the rtracklayer packages to perform live annotation queries to Ensembl and UCSC and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.
