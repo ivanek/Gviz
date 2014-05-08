@@ -121,7 +121,7 @@
                              .dpOrDefault(x, "reverseStrand")}))
     return(ifelse(str, "reverse", "forward"))
 }
-    
+
 
 
 ## A function returning the amount of vertical space needed for a track
@@ -481,7 +481,7 @@
                                        ylocs[asel][3:4] - tail(offset,1), ylocs[bsel[sh]] - offset[fh])
                             polFinal <- rbind(polFinal, data.frame(x=c(xlocs, rev(xlocs)), y=ylocs,
                                                                    id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                                                                   stringsAsFactors=FALSE)) 
+                                                                   stringsAsFactors=FALSE))
                         }else if(str == "-" && abs(diff(xlocs[1:2])) > min.width){
                             yoffset <- c(rep(offset[-1], each=2), -rev(rep(offset[-1], each=2)))
                             asel <- 1:2
@@ -496,12 +496,12 @@
                                        ylocs[bsel]+yoffset, rep(ylocs[asel][3]-offset[1], 2), ylocs[asel][3], ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2)
                             polFinal <- rbind(polFinal, data.frame(x=xlocs, y=ylocs,
                                                                    id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                                                                   stringsAsFactors=FALSE)) 
+                                                                   stringsAsFactors=FALSE))
                         }else{
                             offset <- c(rep(offset, each=2), -rev(rep(offset, each=2)))
                             polFinal <- rbind(polFinal, data.frame(x=c(xlocs, rev(xlocs)), y=ylocs+offset,
                                                                    id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                                                                   stringsAsFactors=FALSE)) 
+                                                                   stringsAsFactors=FALSE))
                         }
                     }
                 }
@@ -529,7 +529,7 @@
         list(box=box, pols=data.frame())}
     xx <- yy <- numeric()
     id <- character()
-    pars <- data.frame() 
+    pars <- data.frame()
     if(nrow(boxC$box)){
         box <- boxC$box
         A <- box[,1:2,drop=FALSE]
@@ -937,9 +937,9 @@
 ## not defined for the class will be added from the scheme settings.
 .schemes <- new.env()
 .schemes[["default"]] <- list(
-                              
+
                               GdObject=list(
-                                            alpha=1,                          
+                                            alpha=1,
                                             background.panel="transparent",
                                             background.title="lightgray",
                                             cex.axis=NULL,
@@ -980,13 +980,13 @@
                                             size=1,
                                             v=-1
                                             ),
-                              
+
                               StackedTrack=list(
                                                 stackHeight=0.75,
                                                 reverseStacking=FALSE
                                                 ),
-                              
-                              
+
+
                               AnnotationTrack=list(
                                                    arrowHeadWidth=30,
                                                    arrowHeadMaxWidth=40,
@@ -1023,9 +1023,9 @@
                                                           detailsBorder.lwd=1,
                                                           detailsConnector.cex=1,
                                                           detailsConnector.col="darkgray",
-                                                          detailsConnector.lty="dashed",         
+                                                          detailsConnector.lty="dashed",
                                                           detailsConnector.lwd=1,
-                                                          detailsConnector.pch=20,          
+                                                          detailsConnector.pch=20,
                                                           detailsFunArgs=list(),
                                                           groupDetails=FALSE),
 
@@ -1056,15 +1056,15 @@
                                                           misc_RNA="cornsilk3",
                                                           misc_RNA_pseudogene="cornsilk4",
                                                           protein_coding="orange",
-                                                          pseudogene="brown1",         
+                                                          pseudogene="brown1",
                                                           rRNA="darkolivegreen1",
-                                                          rRNA_pseudogene="darkolivegreen" ,   
+                                                          rRNA_pseudogene="darkolivegreen" ,
                                                           retrotransposed="blueviolet",
                                                           scRNA="gold4",
                                                           scRNA_pseudogene="darkorange2",
                                                           snRNA="coral",
-                                                          snRNA_pseudogene="coral3",   
-                                                          snoRNA="cyan",           
+                                                          snRNA_pseudogene="coral3",
+                                                          snoRNA="cyan",
                                                           snoRNA_pseudogene="cyan2",
                                                           tRNA_pseudogene="antiquewhite3",
                                                           utr3="orange",
@@ -1142,7 +1142,7 @@
                                              showColorBar=TRUE,
                                              showSampleNames=FALSE,
                                              size=NULL,
-                                             span=1/5, 
+                                             span=1/5,
                                              stackedBars=TRUE,
                                              stats=boxplot.stats,
                                              transformation=NULL,
@@ -1206,14 +1206,14 @@
 
 
 ## Helper function to select fontfaces
-.chooseFace <- function (fontface = NULL, font = 1) 
+.chooseFace <- function (fontface = NULL, font = 1)
 {
-    if (is.null(fontface)) 
+    if (is.null(fontface))
         font
     else fontface
 }
 
-           
+
 ## Get a scheme
 ## Arguments:
 ##    o name: the name of the scheme to get. Defaults to the current one.
@@ -1449,7 +1449,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     ## clean up in the end
     done <- FALSE
     cdev <- dev.cur()
-    on.exit(if(cdev==1 && !done) dev.off())  
+    on.exit(if(cdev==1 && !done) dev.off())
     ## We only need a new plot for regular calls to the function. Both add==TRUE and panel.only=TRUE will add to an existing grid plot
     if(!panel.only && !add)
         grid.newpage()
@@ -1484,7 +1484,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     }
     trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, any(.needsAxis(trackList)), any(.needsTitle(trackList)),
                                 title.width, alpha=hasAlpha, ...)
-   
+
     ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
     ranges <- .defaultRange(trackList, from=from, to=to, extend.left=extend.left, extend.right=extend.right, annotation=TRUE)
     ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
@@ -1492,7 +1492,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     trackList <- lapply(trackList, setStacks, recomputeRanges=FALSE)
     ## Highlight tracks are just a way to add a common highlighting region to several tracks, but other than that we can treat the containing
     ## tracks a normal track objects, and thus unlist them. We only want to record their indexes in the expanded list for later.
-    htList <- list() 
+    htList <- list()
     expandedTrackList <- if(length(isHt)){
         j <- 1
         tlTemp <- list()
@@ -1507,7 +1507,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
                 j <- j+length(trackList[[i]]@trackList)
             }
         }
-        tlTemp  
+        tlTemp
     }else trackList
     ## If there is a AlignmentsTrack and also a SequenceTrack we can tell the former to use the latter, unless already provided
     isAt <- sapply(expandedTrackList, is, "AlignmentsTrack")
@@ -1593,12 +1593,12 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i])
         pushViewport(vpTrack)
 		fill <- .dpOrDefault(expandedTrackList[[i]], "background.title", .DEFAULT_SHADED_COL)
+        thisTrack <- if(is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
         if(!panel.only) {
             fontSettings <- .fontGp(expandedTrackList[[i]], subtype="title", cex=NULL)
             vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0, gp=fontSettings)
             pushViewport(vpTitle)
-            thisTrack <- if(is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
-	    lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
+            lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
             col.border.title <- .dpOrDefault(thisTrack, "col.title", "transparent")
             grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
             needAxis <- .needsAxis(thisTrack)
@@ -2262,14 +2262,14 @@ availableDefaultMapping <- function(file, trackType){
     alpha <- .dpOrDefault(GdObject, wh, 1)
     if(alpha != 1 && !support)
         alpha <- 1
-    return(alpha)     
+    return(alpha)
 }
 
 ## Draw horizontal arrows into a viewport indicating cropped read alignments
 .moreInd <- function(n=3, direction="up", ...){
     nn <- n * 2 + 1
     x <- rep(seq(1/nn, 1 - (1/nn), len=nn-2)[seq(1, nn-2, by=2)], each=n) + c(-1/nn/2, 0, 1/nn/2)
-    y <- rep(if(direction == "up") c(0, 1, 0) else c(1, 0, 1), n) 
+    y <- rep(if(direction == "up") c(0, 1, 0) else c(1, 0, 1), n)
     grid.polyline(x, y, id=rep(1:n, each=3), gp=gpar(...))
 }
 
@@ -2303,7 +2303,7 @@ availableDefaultMapping <- function(file, trackType){
                 mmPos <- varRegs[mmRelPos] + rgo["from"] - 1
                 mmSampInd <- row(isMm)[which(isMm)]
                 mmSamp <- rownames(isMm)[mmSampInd]
-                mmSeq <- mmTab[ncol(isMm) * (mmSampInd - 1) + mmRelPos] 
+                mmSeq <- mmTab[ncol(isMm) * (mmSampInd - 1) + mmRelPos]
                 mmStack <- stacks(GdObject)[match(mmSamp, ranges(GdObject)$entityId)]
             }
         }

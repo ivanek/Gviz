@@ -1834,6 +1834,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     revs <- !.dpOrDefault(GdObject, "reverseStacking", FALSE)
     vSpacing <- as.numeric(convertHeight(unit(3, "points"), "npc"))
     type <- match.arg(.dpOrDefault(GdObject, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok=TRUE)
+    ylim <- .dpOrDefault(GdObject, "ylim")
     ## In prepare mode we need to make sure that the stacking information is updated from the optional display parameter (by calling
     ## the StackedTrack drawGD method), and compute the coverage vector which will be needed for the axis
     if(prepare){
@@ -1898,8 +1899,12 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     covSpace <- .dpOrDefault(GdObject, ".__coverageSpace", 0)
     if("coverage" %in% type){
         cov <- .dpOrDefault(GdObject, ".__coverage", Rle(lengths=maxBase, values=as.integer(0)))
+        yscale <- c(0, max(cov) + diff(range(cov)) * 0.05)
+        if(!is.null(ylim)){
+            yscale <- ylim
+        }
         vp <- viewport(height=covHeight["npc"], y=1-(covHeight["npc"] + covSpace), just=c(0.5, 0), xscale=xscale,
-                       yscale=c(0, max(cov) + diff(range(cov)) * 0.05), clip=TRUE)
+                       yscale=yscale, clip=TRUE)
         pushViewport(vp)
         res <- .pxResolution(coord="x")
         gp <- gpar(col=.dpOrDefault(GdObject, c("col.coverage", "col"), .DEFAULT_SHADED_COL),
