@@ -1593,11 +1593,11 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         vpTrack <-  viewport(x=0, y=sum(spaceSetup$spaceNeeded[1:i]), just=c(0,1), width=1, height=spaceSetup$spaceNeeded[i])
         pushViewport(vpTrack)
 		fill <- .dpOrDefault(expandedTrackList[[i]], "background.title", .DEFAULT_SHADED_COL)
-        if(!panel.only) {
+        thisTrack <- if(is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
+	if(!panel.only) {
             fontSettings <- .fontGp(expandedTrackList[[i]], subtype="title", cex=NULL)
             vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0, gp=fontSettings)
             pushViewport(vpTitle)
-            thisTrack <- if(is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
 	    lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
             col.border.title <- .dpOrDefault(thisTrack, "col.title", "transparent")
             grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
