@@ -1599,7 +1599,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0, gp=fontSettings)
             pushViewport(vpTitle)
 	    lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
-            col.border.title <- .dpOrDefault(thisTrack, "col.title", "transparent")
+            col.border.title <- .dpOrDefault(thisTrack, "col.border.title", "transparent")
             grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
             needAxis <- .needsAxis(thisTrack)
             drawAxis(thisTrack, ranges["from"], ranges["to"], subset=FALSE)
