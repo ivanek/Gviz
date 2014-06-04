@@ -189,7 +189,7 @@ injectContent <- function(file, content, section)
 allDisplayParsDoc <- function(details)
 {
     text <- indent(c("\\section{Display Parameters}{", "\\describe{"), level=0:1)
-    for(cl in c("GenomeAxisTrack", "DataTrack", "IdeogramTrack", 
+    for(cl in c("GenomeAxisTrack", "DataTrack", "IdeogramTrack",
          "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"))
     {
         parents <- names(getClassDef(cl)@contains)
@@ -216,7 +216,7 @@ allDisplayParsDoc <- function(details)
                 }
                 text <- c(text, indent(sprintf("\\item{}{\\code{%s=%s}: %s}", todo, sapply(pars[[p]][todo], toChar), det), level=4, block=FALSE))
             }
-                
+
         }
         text <- c(text, indent(rep("}", 2), level=3:2))
     }
@@ -266,7 +266,7 @@ updateLinks <- function(outdir, toUpdate)
 details <- list(
 
                 IdeogramTrack=c(
-                                
+
                                 background.title="Character scalar. The background color for the title panel. Defaults to omit the background.",
                                 bevel="Numeric scalar, between 0 and 1. The level of smoothness for the two ends of the ideogram.",
                                 cex.bands="Numeric scalar. The  font expansion factor for the chromosome band identifier text.",
@@ -282,11 +282,11 @@ details <- list(
                                 showBandId="Logical scalar. Show the identifier for the chromosome bands if there is space for it.",
                                 showId="Logical scalar. Indicate the chromosome name next to the ideogram.",
                                 showTitle="Logical scalar. Plot a title panel. Defaults to omit the title panel.",
-                                size="Numeric scalar. The relative size of the track. Defaults to automatic size setting. Can also be overridden in the \\code{\\link{plotTracks}} function."           
+                                size="Numeric scalar. The relative size of the track. Defaults to automatic size setting. Can also be overridden in the \\code{\\link{plotTracks}} function."
 
                                 ),
-                
-                
+
+
                 DataTrack=c(
 
                             aggregateGroups="Logical scalar. Aggregate the values within a sample group using the aggregation funnction specified in the \\code{aggregation} parameter.",
@@ -309,7 +309,7 @@ details <- list(
                             col.mountain="Character scalar. Line color in mountain-type and polygon-type plots, defaults to the setting of \\code{col}.",
                             col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots.",
                             col.symbol="Character or integer scalar. The color used for symbol elements. Defaults to the setting of \\code{col}.",
-                            col="Character or integer vector. The color used for all line and symbol elements, unless there is a more specific control defined elsewhere. Unless \\code{groups} are specified, only the first color in the vector is usually regarded.", 
+                            col="Character or integer vector. The color used for all line and symbol elements, unless there is a more specific control defined elsewhere. Unless \\code{groups} are specified, only the first color in the vector is usually regarded.",
                             collapse="Logical scalar. Collapse overlapping ranges and aggregate the underlying data.",
                             degree="Numeric scalar. Parameter controlling the loess calculation for smooth and mountain-type plots. See \\code{\\link{panel.loess}} for details.",
                             do.out="Logical scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
@@ -325,7 +325,7 @@ details <- list(
                             fontfamily.legend="Integer or character scalar. The font family for the legend text.",
                             fontsize.legend="Numeric scalar. The pixel size for the legend text.",
                             gradient="Character vector. The base colors for the 'gradient' plotting type or the 'heatmap' type with a single group. When plotting heatmaps with more than one group, the 'col' parameter can be used to control the group color scheme, however the gradient will always be from white to 'col' and thus does not offer as much flexibility as this 'gradient' parameter.",
-                            grid="Logical vector. Draw a line grid under the track content.", 
+                            grid="Logical vector. Draw a line grid under the track content.",
                             groups="Vector coercable to a factor. Optional sample grouping. See 'Details' section in \\code{\\linkS4class{DataTrack}} for further information.",
                             h="Integer scalar. Parameter controlling the number of vertical grid lines, see \\code{\\link{panel.grid}} for details.",
                             horizon.origin="The baseline relative to which changes are indicated on the \\code{horizon}-type plot. See \\code{\\link{horizonplot}} for details.",
@@ -364,16 +364,16 @@ details <- list(
                             window="Numeric or character scalar. Aggregate the rows values of the data matrix to \\code{window} equally sized slices on the data range using the method defined in \\code{aggregation}. If negative, apply a running window of size \\code{windowSize} using the same aggregation method. Alternatively, the special value \\code{auto} causes the function to determine the optimal window size to avoid overplotting.",
                             windowSize="Numeric scalar. The size of the running window when the value of \\code{window} is negative.",
                             ylim="Numeric vector of length 2. The range of the y-axis scale."
-                            
+
                             ),
 
                 StackedTrack=c(
-                               
+
                                stackHeight="Numeric between 0 and 1. Controls the vertical size and spacing between stacked elements. The number defines the proportion of the total available space for the stack that is used to draw the glyphs. E.g., a value of 0.5 means that half of the available vertical drawing space (for each stacking line) is used for the glyphs, and thus one quarter of the available space each is used for spacing above and below the glyph. Defaults to 0.75.",
                                reverseStacking="Logical flag. Reverse the y-ordering of stacked items. I.e., features that are plotted on the bottom-most stacks will be moved to the top-most stack and vice versa."
-                               
+
                                ),
-                
+
                 GdObject=c(
 
                            alpha="Numeric scalar. The transparency for all track items.",
@@ -420,7 +420,7 @@ details <- list(
                            "..."="additional display parameters are allowed. Those typically take the value of a valid R color descriptors. The parameter names will later be matched to optional track item types as defined in the 'feature' range attribute, and all tracks of the matched types are colored accordingly. See the documentation of the \\code{\\link{GeneRegionTrack}} and \\code{\\link{AnnotationTrack}} classes as well as \\code{\\link{grouping}} for details."
 
                            ),
-                
+
                 GenomeAxisTrack=c(
 
                                   add35="Logical scalar. Add 3' to 5' direction indicators.",
@@ -445,9 +445,9 @@ details <- list(
                                   showId="Logical scalar. Show the optional range highlighting annotation.",
                                   showTitle="Logical scalar. Plot a title panel. Defaults to omit the title panel.",
                                   size="Numeric scalar. The relative size of the track. Can be overridden in the \\code{\\link{plotTracks}} function. Defaults to the ideal size based on the other track settings."
-                                 
+
                                   ),
-                                    
+
                 AnnotationTrack=c(
 
                                   alpha="Numeric scalar between 0 and 1. The opacity of the plotting elements, if supported by the device.",
@@ -485,7 +485,7 @@ details <- list(
                                   fill="Character or integer scalar. The fill color for untyped items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details."
 
                                   ),
-                
+
                 DetailsAnnotationTrack=c(
 
                                          details.minWidth="Numeric scalar. The minium width in pixels for a details panel, if less space is available no details are plotted.",
@@ -496,15 +496,15 @@ details <- list(
                                          detailsBorder.lwd="Integer scalar. Line width of the border.",
                                          detailsConnector.cex="Numeric scalar. Relative size of the connector's end points.",
                                          detailsConnector.col="Character or integer scalar. Color of the line connecting the \\code{AnnotstionTrack} item with its details panel.",
-                                         detailsConnector.lty="Character or integer scalar. Type of connecting line.", 
+                                         detailsConnector.lty="Character or integer scalar. Type of connecting line.",
                                          detailsConnector.lwd="Integer scalar. Line width of the connector.",
-                                         detailsConnector.pch="Integer scalar. Type of the connector's ends.",        
+                                         detailsConnector.pch="Integer scalar. Type of the connector's ends.",
                                          detailsFunArgs="List.Additional arguments that get passed on the the details plotting function.",
                                          details.size="Numeric scalar. The fraction of vertical space of the track used for the details section.",
                                          groupDetails="Logial scalar. Plot details for feature groups rather than for individual features."
-                                         
+
                                          ),
-                
+
                 GeneRegionTrack=c(
 
                                   alpha="Numeric scalar between 0 and 1. The opacity of the plotting elements, if supported by the device.",
@@ -513,7 +513,7 @@ details <- list(
                                   cex.group="Numeric scalar. The font expansion factor for the group-level annotation.",
                                   cex="Numeric scalar. The font expansion factor for item identifiers.",
                                   col="Character or integer scalar. The border color for all track items. Defaults to using the same color as in \\code{fill}, also taking into account different track \\code{features}.",
-                                  collapseTranscripts="Logical scalar. Merge all transcripts of the same gene into one single gene model. Essentially, this will only keep the start location of the first exon and the end location of the last exon from all transcripts of a gene.",
+                                  collapseTranscripts="Logical or character scalar. Can be one in \\code{gene}, \\code{longest}, \\code{shortest} or \\code{meta}. Merge all transcripts of the same gene into one single gene model. In the case of \\code{gene} (or \\code{TRUE}), this will only keep the start location of the first exon and the end location of the last exon from all transcripts of the gene. For \\code{shortest} and \\code{longest}, only the longest or shortest transcript model is retained. For \\code{meta}, a meta-transcript containing the union of all exons is formed (essentially identical to the operation \\code{reduce(geneModel)}).",
                                   exonAnnotation="Character scalar. Add annotation information to the individual exon models. This can be a value in \\code{symbol}, \\code{gene}, \\code{transcript}, \\code{exon} or \\code{feature}. Defaults to \\code{exon}. Only works if \\code{showExonId} is not \\code{FALSE}.",
                                   fill="Character or integer scalar. The fill color for untyped items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",
                                   fontcolor.group="Character or integer scalar. The font color for the group-level annotation.",
@@ -539,12 +539,12 @@ details <- list(
                                   size="Numeric scalar. The relative size of the track. Can be overridden in the \\code{\\link{plotTracks}} function.",
                                   thinBoxFeature="Character vector. A listing of feature types that should be drawn with thin boxes. Typically those are non-coding elements.",
                                   transcriptAnnotation="Character scalar. Add annotation information as transcript labels. This can be a value in \\code{symbol}, \\code{gene}, \\code{transcript}, \\code{exon} or \\code{feature}. Defaults to \\code{symbol}. Only works if \\code{showId} is not \\code{FALSE}."
-                                  
+
                                   ),
 
-                
+
                 BiomartGeneRegionTrack=c(
-                                         
+
                                          "C_segment"="Character or integer scalar. Fill color for annotation objects of type 'C_segment'.",
                                          "D_segment"="Character or integer scalar. Fill color for annotation objects of type 'C_segment'.",
                                          "J_segment"="Character or integer scalar. Fill color for annotation objects of type 'C_segment'.",
@@ -568,9 +568,9 @@ details <- list(
                                          "snRNA_pseudogene"="Character or integer scalar. Fill color for annotation objects of type 'snRNA_pseudogene'.",
                                          "tRNA_pseudogene"="Character or integer scalar. Fill color for annotation objects of type 'tRNA_pseudogene'.",
                                          "V_segment"="Character or integer scalar. Fill color for annotation objects of type 'V_segment'."
-                                         
+
                                          ),
-                
+
                 AlignedReadTrack=c(
 
                                    collapse="collapse overlapping ranges and aggregate the underlying data.",
@@ -578,11 +578,11 @@ details <- list(
                                    fill="the fill color for the coverage indicator.",
                                    size="the relative size of the track. Defaults to size selection based on the underlying data. Can be overridden in the \\code{\\link{plotTracks}} function.",
                                    type="the plot type, one or several in \\code{c(\"p\",\"l\", \"b\", \"a\", \"s\", \"g\", \"r\", \"S\", \"smooth\", \"histogram\", \"mountain\", \"polygon\", \"h\", \"boxplot\", \"gradient\", \"heatmap\", \"horizon\")}. See the 'Details' section in \\code{\\linkS4class{DataTrack}} for more information on the individual plotting types."
-                                   
+
                                    ),
 
                 SequenceTrack=c(
-                                
+
                                 add53="Logical scalar. Add a direction indicator",
                                 background.title="Character scalar. Make the title panel background transparent by default.",
                                 cex="The character expansion factor for the size of the sequence letters. Together with \\code{fontsize} this determines the final font size and thus the level of plotable details.",
@@ -643,7 +643,7 @@ details <- list(
                                   showMismatches="Logical scalar. Add mismatch information, either as individual base letters or using color coded bars. This implies that the reference sequence has been provided, either to the class constructor or as part of the track list.",
                                   size="Numeric scalar. The size of the track. Defaults to automatic sizing.",
                                   type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, and for \\code{pileup} the pileups of the individual reads. The two can be combined."
-                                  
+
                                   )
                 )
 
@@ -662,6 +662,6 @@ updateDocumentation <- function(outdir="~/Rpacks/Gviz/man")
     ##source(file.path(dirname(outdir), "inst/scripts/sourcePackage.R"))
     dps <- sapply(c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
                     "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"), updateRdFile, outdir)
-    settings <- updateSettingsFile(outdir)              
+    settings <- updateSettingsFile(outdir)
     links <- updateLinks(outdir)
 }

@@ -1599,7 +1599,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             vpTitle <- viewport(x=0, width=spaceSetup$title.width, just=0, gp=fontSettings)
             pushViewport(vpTitle)
             lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
-            col.border.title <- .dpOrDefault(thisTrack, "col.title", "transparent")
+            col.border.title <- .dpOrDefault(thisTrack, "col.border.title", "transparent")
             grid.rect(gp=gpar(fill=fill, col=col.border.title, lwd=lwd.border.title))
             needAxis <- .needsAxis(thisTrack)
             drawAxis(thisTrack, ranges["from"], ranges["to"], subset=FALSE)
@@ -2439,15 +2439,15 @@ availableDefaultMapping <- function(file, trackType){
                 tfact <- 1 / (1 - twidth)
                 ## The labels and spacers are plotted in a temporary viewport to figure out their size
                 labels <- if(needsGrp)
-                    sapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/")) else identifier(GdObject)
+                    sapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/")) else setNames(identifier(GdObject), gp)
                 pushViewport(dataViewport(xscale=c(max(pr["from"], min(start(finalRanges))),
                                                    min(pr["to"], max(end(finalRanges)))), extension=0, yscale=c(0,1),
                                           gp=.fontGp(GdObject, "group")))
-                labelWidths <- as.numeric(convertWidth(stringWidth(labels),"native")) * tfact * 1.3
+                labelWidths <- setNames(as.numeric(convertWidth(stringWidth(labels),"native")) * tfact * 1.3, names(labels))
                 spaceBefore <- as.numeric(convertWidth(unit(3, "points"),"native")) * tfact
                 spaceAfter <- as.numeric(convertWidth(unit(7, "points"),"native")) * tfact
                 popViewport(1)
-                switch(just,
+                switch(as.character(just),
                        "left"={
                            if(!rev){
                                start(finalRanges) <- start(finalRanges) - (spaceBefore + labelWidths + spaceAfter)
@@ -2495,3 +2495,13 @@ availableDefaultMapping <- function(file, trackType){
     return(res)
 }
 
+
+## Check whether transcripts are to be collapsed for a GeneRegionTrack
+.transcriptsAreCollapsed <- function(GdObject){
+    res <- FALSE
+    if(is(GdObject, "GeneRegionTrack")){
+       ctrans <- .dpOrDefault(GdObject, "collapseTranscripts", FALSE)
+       res <- (is.logical(ctrans) && ctrans == TRUE) || ctrans %in% c("gene", "shortest", "longest", "meta")
+   }
+    return(res)
+}

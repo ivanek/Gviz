@@ -1,3 +1,15 @@
+CHANGES IN VERSION 1.9.0
+-------------------------
+
+NEW FEATURES
+
+    o The new CustomTrack class to allow for user-defined plotting functions.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The collapseTranscripts parameter now offers more control over the type of collapsing.
+
+
 CHANGES IN VERSION 1.8.0
 -------------------------
 
@@ -161,7 +173,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o When building GeneRegionTracks from TranscriptDb objects the
       information about UTRs and coding regions is now retained.
 
-   
+
 BUG FIXES
 
     o When zooming into the emty space between two grouped features,
@@ -174,4 +186,4 @@ BUG FIXES
     o Numerous other little fixes that mainly aim at improving
       performance.
 
-  
+

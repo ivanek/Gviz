@@ -106,7 +106,7 @@ DisplayPars <- function(...)
                 "object for the side effects to happen. Pass-by-reference semantic is no longer supported.")
     if(class(x@pars)=="environment")
     {
-        x@pars <- as.list(x@pars) 
+        x@pars <- as.list(x@pars)
         message("The DisplayPars object has been updated to a list-based representation.")
     }
     return(x)
@@ -127,7 +127,7 @@ DisplayPars <- function(...)
 ## Since version 1.7.3 we have introduced an alias table for display
 ## parameters in order to harmomize parameter names without loosing
 ## backwards compatability.
-setMethod("setPar", signature("DisplayPars", "list"), 
+setMethod("setPar", signature("DisplayPars", "list"),
           function(x, value, interactive=TRUE) {
               x <- .updateDp(x, interactive)
               aliasRes <- .dpAliasReverseTable[names(value)]
@@ -137,10 +137,10 @@ setMethod("setPar", signature("DisplayPars", "list"),
               return(x)
           })
 
-setMethod("setPar", signature("DisplayPars", "character"), 
+setMethod("setPar", signature("DisplayPars", "character"),
           function(x, name, value, interactive=TRUE) {
               if(!(length(name) == 1 && is.null(value)) && length(name) != length(value))
-                  stop("'name' and 'value' must be of equal length") 
+                  stop("'name' and 'value' must be of equal length")
               x <- .updateDp(x, interactive)
               for(i in seq_along(name)){
                   aliasRes <- .dpAliasReverseTable[name[i]]
@@ -192,7 +192,7 @@ setAs("DisplayPars", "list", function(from, to) if(!is.null(from)) as.list(from@
 ## An alias table to define display parameter synonyms. Essentially this is a simple named list,
 ## where the element names represent the preferred parameter name under which the actual value is
 ## stored, and the element content is a character vector of synonyms. Please note that this structure
-## is also turned into a reverse lookup table for fast access. 
+## is also turned into a reverse lookup table for fast access.
 .dpAliasTable <- list(
                       "fontcolor.title"="col.title",
                       "rotation.title"=c("rot.title", "rotate.title"),
@@ -245,7 +245,7 @@ setAs("InferredDisplayPars", "list",
 ##----------------------------------------------------------------------------------------------------------------------
 ##  GdObject:
 ##
-## The GdObject is the parent of all Gviz objects in the system. 
+## The GdObject is the parent of all Gviz objects in the system.
 ## This class is virtual.
 ## Slots:
 ##    o dp: object of class DisplayPars to fine-tune the drawing.
@@ -273,15 +273,15 @@ setAs("InferredDisplayPars", "list",
 ##    o cex.axis: the expansion factor for the axis annotation. Defaults to NULL, in which case
 ##       it is computed based on the available space.
 ##    o background.panel: the background color of the content panel. Defaults to transparent.
-##    o showTitle: boolean, controlling whether to plot a title panel. Although this can be 
+##    o showTitle: boolean, controlling whether to plot a title panel. Although this can be
 ##       set individually for each track, in multi-track plots there will still
 ##       be an empty placeholder in case any of the other tracks include a title. The
-##       same holds true for axes. Note that the background color could be set to 
+##       same holds true for axes. Note that the background color could be set to
 ##       transparent in order to completely hide the title/axis panel.
-##    o showAxis: boolean, controlling whether to plot a y axis (only track types where axes 
-##	 are implemented). 
+##    o showAxis: boolean, controlling whether to plot a y axis (only track types where axes
+##	 are implemented).
 ##    o grid: boolean, switching on/off the plotting of a grid.
-##    o collapse: collapse the content of the track to accomodate the minimum current 
+##    o collapse: collapse the content of the track to accomodate the minimum current
 ##	 device resolution
 ##    o min.width, min.height: the minimum width and height in pixels to display. All ranges are expanded
 ##       to this size in order to avoid rendering issues.
@@ -289,7 +289,7 @@ setAs("InferredDisplayPars", "list",
 ##    o frame: draw a frame around the track
 ##    o size: the relative size of the track
 ##    o ...: additional DisplayPars are allowed. Unless specified in one of the subclasses,
-##       those should take the value of a valid R color descriptors. The parameter names will 
+##       those should take the value of a valid R color descriptors. The parameter names will
 ##	 later be matched to optional track item types as defined in the 'feature' range
 ##	 attribute, and all tracks of the matched types are colored accordingly. See the
 ##	 documentation of the 'GeneRegion' and 'AnnotationTrack' classes for details.
@@ -298,9 +298,9 @@ setClass("GdObject",
          representation=representation("VIRTUAL",
                                        dp="DisplayPars",
                                        name="character",
-                                       imageMap="ImageMapOrNULL"), 
+                                       imageMap="ImageMapOrNULL"),
          prototype=prototype(dp=DisplayPars(alpha=1,
-                                            alpha.title=NULL, 
+                                            alpha.title=NULL,
                                             background.panel="transparent",
                                             background.title="lightgray",
                                             cex.axis=NULL,
@@ -363,13 +363,13 @@ setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, value
     return(x)
 })
 
-setMethod("getPar", c("GdObject", "character"), function(x, name, asIs=FALSE) getPar(x@dp, name, asIs=asIs))		 
+setMethod("getPar", c("GdObject", "character"), function(x, name, asIs=FALSE) getPar(x@dp, name, asIs=asIs))
 
 setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal=TRUE) getPar(x@dp, hideInternal=hideInternal))
 
-setMethod("displayPars", c("GdObject", "character"), function(x, name) getPar(x, name))		 
+setMethod("displayPars", c("GdObject", "character"), function(x, name) getPar(x, name))
 
-setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal=TRUE) getPar(x, hideInternal=hideInternal))	
+setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal=TRUE) getPar(x, hideInternal=hideInternal))
 
 ## We add everything that hasn't been clobbered up so far as
 ## additional DisplayParameters.  Also, the dp slot must be
@@ -398,14 +398,14 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
 ## RangeTrack:
 ##
 ## Parent class for all region-like annotation tracks, storing information
-## about start, end, strand, chromosome and the associated genome. 
+## about start, end, strand, chromosome and the associated genome.
 ## Slots:
 ##    o range: object of class GRangesOrIRanges containing all the necessary information
-##       for plotting. The content of the metadata columns may vary between 
+##       for plotting. The content of the metadata columns may vary between
 ##	 subclasses. The strand information may be provided in the form '+' for
 ##	 the Watson strand, '-' for the Crick strand or '*' for any of the two.
-##    o chromosome: a character vector giving the active chromosome for which the 
-##	 track is defined. Valid chromosome names are: 
+##    o chromosome: a character vector giving the active chromosome for which the
+##	 track is defined. Valid chromosome names are:
 ##          - a single numeric character
 ##	    - a string, starting with 'chr', followed by any additional characters
 ##    o genome: character giving the reference genome for which the track is defined.
@@ -422,7 +422,7 @@ setClass("RangeTrack",
                              name="RangeTrack",
                              range=GRanges()))
 
-## Coercing all input to the appropriate form			 
+## Coercing all input to the appropriate form
 setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genome, ...) {
     ## the diplay parameter defaults
     .makeParMapping()
@@ -495,7 +495,7 @@ setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, m
 setClass("NumericTrack",
          representation=representation("VIRTUAL"),
          prototype=prototype(name="NumericTrack",
-                             dp=DisplayPars()),					  
+                             dp=DisplayPars()),
          contains="RangeTrack")
 ##----------------------------------------------------------------------------------------------------------------------
 
@@ -508,11 +508,11 @@ setClass("NumericTrack",
 ## Parent class for all tracks that involve stacking. This is for
 ## dispatching purpose only.
 ## Slots:
-##    o stacking: character controlling the stacking of overlapping items on the final plot. 
-##       One in 'hide', 'dense', 'squish', 'pack' or 'full'. 
-##    o stacks: a numeric vector holding the current stacking information. Not usually set by the user. 
+##    o stacking: character controlling the stacking of overlapping items on the final plot.
+##       One in 'hide', 'dense', 'squish', 'pack' or 'full'.
+##    o stacks: a numeric vector holding the current stacking information. Not usually set by the user.
 ## This is part of the prototype only
-##    o stackingValues: possible values of the stacking slot 
+##    o stackingValues: possible values of the stacking slot
 ##	 [c("hide", "dense", "squish", "pack", "full")]
 ##----------------------------------------------------------------------------------------------------------------------
 setClass("StackedTrack",
@@ -523,7 +523,7 @@ setClass("StackedTrack",
                              stacking="squish",
                              stackingValues=c("hide", "dense", "squish", "pack", "full"),
                              dp=DisplayPars(stackHeight=0.75,
-                                            reverseStacking=FALSE)),					  
+                                            reverseStacking=FALSE)),
          contains="RangeTrack")
 
 ## Need to fill the stacks slot here, don't want to recompute all the time
@@ -553,13 +553,13 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## AnnotationTrack:
-## 
-## A generic Annotation track, storing information about start, end, chromosome, 
-## strand and the associated genome. 
+##
+## A generic Annotation track, storing information about start, end, chromosome,
+## strand and the associated genome.
 ## Slots: no additional formal slots are defined, but the following are part of the prototype
 ##    o columns: column names that are allowed as part of the internal GRanges object in
 ##       the ranges slot [c("feature", "group")]
-##    o featureColumnName: the column in the internal RangedData object identifying the 
+##    o featureColumnName: the column in the internal RangedData object identifying the
 ##       feature type ["feature"]. If a display parameter of the same name is specified
 ##	 the software will use its value for the coloring.
 ## A bunch of DisplayPars are set during object instantiation:
@@ -567,7 +567,7 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
 ##    o col: the border color for all track items. This is also used to connect grouped items.
 ##    o lty, lwd: the line type and width for all track items. This is also used to connect grouped items.
 ##    o lex: the line expansion factor
-##    o fontsize, fontfamily, fontface, fontcolor: the face, size, family and color for the 
+##    o fontsize, fontfamily, fontface, fontcolor: the face, size, family and color for the
 ##       annotation text (i.e., the track item IDs)
 ##    o cex: the font expansion factor.
 ##    o size: the relative size of the track, if not explicitely set in the plotTracks function.
@@ -582,7 +582,7 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
 ## (N)
 setClass("AnnotationTrack",
          contains="StackedTrack",
-         prototype=prototype(columns=c("feature", "group", "id"), 
+         prototype=prototype(columns=c("feature", "group", "id"),
                              stacking="squish",
                              name="AnnotationTrack",
                              dp=DisplayPars(arrowHeadWidth=30,
@@ -610,7 +610,7 @@ setClass("AnnotationTrack",
                                             showId=NULL,
                                             showOverplotting=FALSE,
                                             size=1)))
-                                           
+
 ## Essentially we just check for the correct GRanges columns here
 setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
     if(is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome))
@@ -633,7 +633,7 @@ setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
 })
 
 ## The file-based version of the AnnotationTrack class. This will mainly provide a means to dispatch to
-## a special 'subset' method which should stream the necessary data from disk. 
+## a special 'subset' method which should stream the necessary data from disk.
 setClass("ReferenceAnnotationTrack", contains=c("AnnotationTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
@@ -649,7 +649,7 @@ setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, re
 ## Constructor. The following arguments are supported:
 ##    o range: a data.frame or a GRanges object containing the information
 ##       about the track items. If a data.frame, it needs to be coerceable
-##	 to a GRanges object, i.e., it needs at least the mandatory 'start', 'stop' and 
+##	 to a GRanges object, i.e., it needs at least the mandatory 'start', 'stop' and
 ##	 'strand' columns. Additional optional columns are:
 ##	    - feature: the type of the item. Can be mapped to colors via the DisplayPars.
 ##	    - group: a grouping factor to connect track items.
@@ -663,7 +663,7 @@ setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, re
 ##       the Watson strand, '-' for the Crick strand or '*' for any of the two.
 ##    o feature, group, id: individual vectors of equal length as described above.
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
-##    o stacking: character controlling the stacking of overlapping items. One in 'hide', 
+##    o stacking: character controlling the stacking of overlapping items. One in 'hide',
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as further DisplayParameters
@@ -771,9 +771,9 @@ setClass("DetailsAnnotationTrack",
                                             detailsBorder.lwd=1,
                                             detailsConnector.cex=1,
                                             detailsConnector.col="darkgray",
-                                            detailsConnector.lty="dashed",         
+                                            detailsConnector.lty="dashed",
                                             detailsConnector.lwd=1,
-                                            detailsConnector.pch=20,          
+                                            detailsConnector.pch=20,
                                             detailsFunArgs=list(),
                                             groupDetails=FALSE)))
 
@@ -803,7 +803,7 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ##   - exon level: identifiers are stored in the exon column of the GRanges object. Data may be extracted
 ##          using the 'exons' method.
 ##   - transcript level: identifiers are stored in the transcript column of the GRanges object.
-##          Data may be extracted using the 'transcripts' method. 
+##          Data may be extracted using the 'transcripts' method.
 ##   - gene level: identifiers are stored in the gene column of the GRanges object, more human-readable
 ##          versions in the symbol column. Data may be extracted using the 'genes' or the 'symbols' methods.
 ##   - transcript-type level: information is stored in the feature column of the GRanges object.
@@ -817,7 +817,7 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ##    o alpha: the transparancy for all track items.
 ##    o lty, lwd: the line type and width for all track items. This is also used to connect grouped items.
 ##    o lex: the line expansion factor
-##    o fontsize, fontfamily, fontface, fontcolor: the face, size, family and color for the 
+##    o fontsize, fontfamily, fontface, fontcolor: the face, size, family and color for the
 ##       annotation text (i.e., the track item IDs)
 ##    o cex: the font expansion factor.
 ##    o lineheight: the text lineheight
@@ -846,7 +846,7 @@ setClass("GeneRegionTrack",
                                             showExonId=NULL,
                                             thinBoxFeature=.THIN_BOX_FEATURES,
                                             transcriptAnnotation=NULL)))
-                                           
+
 
 ## Making sure all the display parameter defaults are being set
 setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...){
@@ -862,7 +862,7 @@ setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...){
 })
 
 ## The file-based version of the GeneRegionTrack class. This will mainly provide a means to dispatch to
-## a special 'subset' method which should stream the necessary data from disk. 
+## a special 'subset' method which should stream the necessary data from disk.
 setClass("ReferenceGeneRegionTrack", contains=c("GeneRegionTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
@@ -877,13 +877,13 @@ setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, re
 
 ## Constructor. The following arguments are supported:
 ##    o range: one in a whole number of differerent potential inputs upon which the .buildRanges method will dispatch
-##    o start, end: numeric vectors of the track start and end coordinates. 
+##    o start, end: numeric vectors of the track start and end coordinates.
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
 ##    o rstarts, rends, rwidths: integer vectors of exon start and end locations or widths, or a character vector of
 ##      comma-delimited exon locations, one vector element for each transcript
 ##    o strand, feature, exon, transcript, gene, symbol, chromosome: vectors of equal length containing
 ##       the exon strand, biotype, exon id, transcript id, gene id, human-readable gene symboland chromosome information
-##    o stacking: character controlling the stacking of overlapping items. One in 'hide', 
+##    o stacking: character controlling the stacking of overlapping items. One in 'hide',
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o name: the name of the track. This will be used for the title panel.
 ##    o exonList: boolean, causing the values in starts, rends or rwidths to be interpreted as delim-deparated
@@ -981,20 +981,20 @@ setClass("BiomartGeneRegionTrack",
                                             miRNA_pseudogene="cornsilk",
                                             misc_RNA="cornsilk3",
                                             misc_RNA_pseudogene="cornsilk4",
-                                            protein_coding="orange",
-                                            pseudogene="brown1",         
+                                            protein_coding="#FFD58A",
+                                            pseudogene="brown1",
                                             rRNA="darkolivegreen1",
-                                            rRNA_pseudogene="darkolivegreen" ,   
+                                            rRNA_pseudogene="darkolivegreen" ,
                                             retrotransposed="blueviolet",
                                             scRNA="gold4",
                                             scRNA_pseudogene="darkorange2",
                                             snRNA="coral",
-                                            snRNA_pseudogene="coral3",   
-                                            snoRNA="cyan",           
+                                            snRNA_pseudogene="coral3",
+                                            snoRNA="cyan",
                                             snoRNA_pseudogene="cyan2",
                                             tRNA_pseudogene="antiquewhite3",
-                                            utr3="orange",
-                                            utr5="orange")))
+                                            utr3="#FFD58A",
+                                            utr5="#FFD58A")))
 
 ## Retrieving information from Biomart.
 setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome, strand, ...){
@@ -1026,7 +1026,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
             filterNames <- c(filterNames, "strand")
             filterValues <- c(filterValues, c(1, -1)[strand+1])
         }
-        ens <- getBM(attributes, filters=filterNames,                           
+        ens <- getBM(attributes, filters=filterNames,
                      values=filterValues, bmHeader=FALSE,
                      mart=.Object@biomart, uniqueRows=TRUE)
         colnames(ens) <- c("gene_id","transcript_id","exon_id","start",
@@ -1086,7 +1086,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
 ##    o strand: character, search for gene models on the plus strand ("+" or 0), the
 ##       minus strand ("-" or 1) or both strands ("+-" or "-+" or 2)
-##    o stacking: character controlling the stacking of overlapping items. One in 'hide', 
+##    o stacking: character controlling the stacking of overlapping items. One in 'hide',
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o filters: list of additional filters for the biomaRt query, where the item names
 ##     	 are the filter identifiers and the item values are the filter values.
@@ -1154,7 +1154,7 @@ BiomartGeneRegionTrack <- function(start, end, biomart, chromosome, strand, geno
 ##----------------------------------------------------------------------------------------------------------------------
 ## (N)
 setClass("GenomeAxisTrack",
-         contains="GdObject", 
+         contains="GdObject",
          representation=representation(range="GRanges"),
          prototype(range=GRanges(),
                    name="GenomeAxisTrack",
@@ -1298,7 +1298,7 @@ setClass("DataTrack",
                                             showColorBar=TRUE,
                                             showSampleNames=FALSE,
                                             size=NULL,
-                                            span=1/5, 
+                                            span=1/5,
                                             stackedBars=TRUE,
                                             stats=boxplot.stats,
                                             transformation=NULL,
@@ -1321,7 +1321,7 @@ setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ..
 })
 
 ## The file-based version of the DataTrack class. This will mainly provide a means to dispatch to
-## a special 'subset' method which should stream the necessary data from disk. 
+## a special 'subset' method which should stream the necessary data from disk.
 setClass("ReferenceDataTrack", contains=c("DataTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
@@ -1457,7 +1457,7 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
         bands <- sessionInfo$bands
     }else{
         .checkClass(bands, "data.frame")
-        cols <- c("chrom", "chromStart", "chromEnd", "name", "gieStain") 
+        cols <- c("chrom", "chromStart", "chromEnd", "name", "gieStain")
         miss <- ! cols %in% colnames(bands)
         if(any(miss))
             stop(sprintf("The following column%s missing from the bands table: %s",
@@ -1579,7 +1579,7 @@ clearSessionCache <- function(){
     assignInNamespace(".ensemblCache", new.env(), ns="Gviz")
 }
 
-    
+
 
 ## (N)
 UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneRegionTrack",
@@ -1636,7 +1636,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## AlignedReadTrack:
-## 
+##
 ## A track to visualize sequence reads, as typically produced by NGS experiments
 ## Slots: no additional formal slots are defined
 ## A bunch of DisplayPars are set during object instantiation:
@@ -1694,7 +1694,7 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
 ## Constructor. The following arguments are supported:
 ##    o range: a data.frame or a GRanges object containing the information
 ##       about the track items. If a data.frame, it needs to be coerceable
-##	 to a GRanges object, i.e., it needs at least the mandatory 'start', 'stop' and 
+##	 to a GRanges object, i.e., it needs at least the mandatory 'start', 'stop' and
 ##	 'strand' columns.
 ##	Instead of using the 'range' parameter, all these values can also be passed as
 ##	individual vectors, in which case they need to be of similar length.
@@ -1702,12 +1702,12 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
 ##    o strand: the strand information needs to be provided in the form '+' for
 ##       the Watson strand, '-' for the Crick strand.
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
-##    o stacking: character controlling the stacking of overlapping items. One in 'hide', 
+##    o stacking: character controlling the stacking of overlapping items. One in 'hide',
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as further DisplayParameters
 ## (N)
-AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand, genome, stacking="squish", 
+AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand, genome, stacking="squish",
                              name="AlignedReadTrack", coverageOnly=FALSE, ...)
 {
     .missingToNull(c("strand", "chromosome", "genome"))
@@ -1738,11 +1738,11 @@ AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chrom
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## SequenceTrack:
-## 
+##
 ## A generic track to visualize nucleotide sequences. This class is virtual.
 ## Slots:
-##    o chromosome: a character vector giving the active chromosome for which the 
-##	 track is defined. Valid chromosome names are: 
+##    o chromosome: a character vector giving the active chromosome for which the
+##	 track is defined. Valid chromosome names are:
 ##          - a single numeric character
 ##	    - a string, starting with 'chr', followed by any additional characters
 ##    o genome: character giving the reference genome for which the track is defined.
@@ -1846,7 +1846,7 @@ SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", im
     }else{
         stop("Argument sequence must be of class 'BSgenome', 'DNAStringSet' or 'character'")
     }
-    return(obj)  
+    return(obj)
 }
 ##----------------------------------------------------------------------------------------------------------------------
 
@@ -1854,7 +1854,7 @@ SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", im
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## SequenceDNAStringSetTrack:
-## 
+##
 ## A track to visualize nucleotide sequences that are stored in a DNSStringSet
 ## Slots:
 ##    o sequence: a DNAStringSet object that contains all the sequence data
@@ -1877,7 +1877,7 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## SequenceBSgenomeTrack:
-## 
+##
 ## A track to visualize nucleotide sequences that are stored in a BSgenome package
 ## Slots:
 ##    o sequence: a DNAStringSet object that contains all the sequence data
@@ -1901,7 +1901,7 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## ReferenceSequenceTrack:
-## 
+##
 ## The file-based version of the ReferenceTrack class. This will mainly provide a means to dispatch to
 ## a special 'subseq' method which should stream the necessary data from disk.
 ##----------------------------------------------------------------------------------------------------------------------
@@ -2077,7 +2077,7 @@ AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## HighlightTrack:
-## 
+##
 ## A collection container for several track objects for which a particular area needs to be highlighted.
 ##----------------------------------------------------------------------------------------------------------------------
 setClass("HighlightTrack",
@@ -2124,7 +2124,7 @@ HighlightTrack <- function(trackList=list(), range=NULL, start=NULL, end=NULL, w
 
 ##----------------------------------------------------------------------------------------------------------------------
 ## OverlayTrack:
-## 
+##
 ## A collection container for several track objects which will all be plotted on top of each other
 ##----------------------------------------------------------------------------------------------------------------------
 setClass("OverlayTrack",
@@ -2133,7 +2133,7 @@ setClass("OverlayTrack",
          prototype=prototype(dp=DisplayPars()))
 
 setMethod("initialize", "OverlayTrack", function(.Object, trackList, ...) {
-    .Object <- .updatePars(.Object, "HighlightTrack")
+    .Object <- .updatePars(.Object, "OverlayTrack")
     .Object@trackList <- trackList
     .Object <- callNextMethod(.Object, ...)
     return(.Object)
@@ -2147,3 +2147,34 @@ OverlayTrack <- function(trackList=list(), name="OverlayTrack",  ...){
     return(new("OverlayTrack", trackList=trackList, name=name, ...))
 }
 ##----------------------------------------------------------------------------------------------------------------------
+
+
+
+##----------------------------------------------------------------------------------------------------------------------
+## CustomTrack:
+##
+## A track class to allow for user-defined plotting functions
+##----------------------------------------------------------------------------------------------------------------------
+setClass("CustomTrack",
+         contains=c("GdObject"),
+         representation=representation(plottingFunction="function",
+                                       variables="list"),
+         prototype=prototype(dp=DisplayPars()))
+
+setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, variables, ...) {
+    .Object <- .updatePars(.Object, "CustomTrack")
+    .Object@plottingFunction <- plottingFunction
+    .Object@variables <- variables
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
+})
+
+
+CustomTrack <- function(plottingFunction=function(GdObject, prepare=FALSE, ...){}, variables=list(), name="CustomTrack",  ...){
+    return(new("CustomTrack", plottingFunction=plottingFunction, variables=variables, name=name, ...))
+}
+##----------------------------------------------------------------------------------------------------------------------
+
+
+
+

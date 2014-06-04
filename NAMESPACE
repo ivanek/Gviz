@@ -125,7 +125,8 @@ exportClasses("AlignedReadTrack",
               "SequenceTrack",
 	      "StackedTrack",
               "HighlightTrack",
-              "OverlayTrack")
+              "OverlayTrack",
+              "CustomTrack")
 
 exportMethods("[",
               "as.list",

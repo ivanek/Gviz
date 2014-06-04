@@ -490,7 +490,7 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, recomputeRanges=TRU
         if(recomputeRanges || is.null(.dpOrDefault(GdObject, ".__groupRanges")))
             GdObject <- .computeGroupRange(GdObject)
         lranges <- .dpOrDefault(GdObject, ".__groupRanges")
-        uid <- if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE))
+        uid <- if(.transcriptsAreCollapsed(GdObject))
             sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, type="lowest"))
         gp <- group(GdObject)
         needsGrp <- any(duplicated(gp))
@@ -768,14 +768,46 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
               rNew <- .resize(r, min.width, diff)
               needsRestacking <- any(r!=rNew)
               r <- rNew
-              ## Collapse all items within a group to a single meta-item (if collapseTranscripts==TRUE)
-              if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE)){
-                  newVals <- unlist(endoapply(split(values(r), paste(gene(GdObject), strand(GdObject))), head, 1))
-                  newVals$exon <- NA
-                  newVals$transcript <- newVals$gene
-                  r <- unlist(range(split(r, gene(GdObject))))
-                  mcols(r) <- newVals
-                  GdObject@range <- r
+              ## Collapse all items within a group to a single meta-item (if collapseTranscripts is set)
+              if(is(GdObject, "GeneRegionTrack")){
+                  ctrans <- .dpOrDefault(GdObject, "collapseTranscripts", FALSE)
+                  if(is.logical(ctrans) && ctrans)
+                      ctrans <- "gene"
+                  switch(ctrans,
+                         "gene"={
+                             newVals <- unlist(endoapply(split(values(r), paste(gene(GdObject), strand(GdObject))), head, 1))
+                             newVals$exon <- NA
+                             newVals$feature <- "merged"
+                             newVals$transcript <- newVals$gene
+                             r <- unlist(range(split(r, gene(GdObject))))
+                             mcols(r) <- newVals
+                             GdObject@range <- r
+                         },
+                         "longest"={
+                             r <- unlist(endoapply(split(r, gene(GdObject)), function(x){
+                                 xs <- split(x, x$transcript)
+                                 xs[[which.max(sapply(xs, function(y) abs(diff(as.numeric(as.data.frame(ranges(range(y)))[,c("start", "end")])))))]]
+                             }))
+                             GdObject@range <- r
+                         },
+                         "shortest"={
+                             r <- unlist(endoapply(split(r, gene(GdObject)), function(x){
+                                 xs <- split(x, x$transcript)
+                                 xs[[which.min(sapply(xs, function(y) abs(diff(as.numeric(as.data.frame(ranges(range(y)))[,c("start", "end")])))))]]
+                             }))
+                             GdObject@range <- r
+                         },
+                         "meta"={
+                             newVals <- unlist(endoapply(split(values(r), paste(gene(GdObject), strand(GdObject))), head, 1))
+                             newVals$feature <- "merged"
+                             newVals$transcript <- newVals$gene
+                             rtmp <- reduce(split(r,  paste(gene(GdObject), strand(GdObject))))
+                             newVals <- newVals[rep(seq_along(rtmp), elementLengths(rtmp)),]
+                             newVals$exon <- paste("merged_exon_", unlist(lapply(elementLengths(rtmp), function(x) seq(1, x)), use.names=FALSE), sep="")
+                             r <- unlist(rtmp)
+                             mcols(r) <- newVals
+                             GdObject@range <- r
+                         })
               }
               ## Collapse overlapping ranges (less than minXDist space between them) and process the annotation data
               if(collapse)
@@ -1549,6 +1581,27 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
 
 
 ##----------------------------------------------------------------------------------------------------------------------------
+## The plotting method for a CustomTrack actually just calls the user-defined plotting function
+##----------------------------------------------------------------------------------------------------------------------------
+## Although the stacking type is not stored as a displayParameter we still want to check whether it is
+## included there and set the actual stacking of the object accordingly
+setMethod("drawGD", signature("CustomTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...){
+    rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
+    xscale <- if(!rev) c(minBase, maxBase) else c(maxBase, minBase)
+    pushViewport(viewport(xscale=xscale, clip=TRUE))
+    tmp <- GdObject@plottingFunction(GdObject, prepare=prepare)
+    if(!is(tmp, "CustomTrack")){
+        warning("The plotting function of a CustomTrack has to return the input object. Using the original CustomTrack object now.")
+    }else{
+        GdObject <- tmp
+    }
+    popViewport(1)
+    return(invisible(GdObject))
+})
+##----------------------------------------------------------------------------------------------------------------------------
+
+
+##----------------------------------------------------------------------------------------------------------------------------
 ## The method for OverlayTracks simply delegates to the methods for each of the elements in trackList
 ##----------------------------------------------------------------------------------------------------------------------------
 setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
@@ -1592,8 +1645,8 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
                         .getImageMap(cbind(start(GdObject), ylim[1]+space+offsets, end(GdObject), ylim[2]-space+offsets)),
                         start=start(GdObject), end=end(GdObject), values(GdObject), exonId=id, origExonId=identifier(GdObject, type="lowest"),
                         stringsAsFactors=FALSE)
-    rownames(boxes) <- if(is(GdObject, "GeneRegionTrack") && .dpOrDefault(GdObject, "collapseTranscripts", FALSE))
-            sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, type="lowest"))
+    rownames(boxes) <- if(.transcriptsAreCollapsed(GdObject))
+        sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, type="lowest"))
     return(boxes)
 }
 
@@ -1623,7 +1676,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
         .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL) else sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
     bars <- data.frame(sx1=start(grpRanges)[needBar], sx2=end(grpRanges)[needBar], y=yloc[needBar], strand=strand[needBar],
                       col=color[needBar], stringsAsFactors=FALSE)
-    labs <- .dpOrDefault(GdObject, ".__groupLabels")
+    labs <- .dpOrDefault(GdObject, ".__groupLabels")[names(grpRanges)]
     if(!is.null(labs)){
         lsel <- grepl("\\[Cluster_[0-9]*\\]", labs)
         if(any(lsel)){
@@ -1633,7 +1686,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
         }
         just <- .dpOrDefault(GdObject, "just.group", "left")
         rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
-        sizes <- .dpOrDefault(GdObject, ".__groupLabelWidths")
+        sizes <- .dpOrDefault(GdObject, ".__groupLabelWidths")[names(grpRanges), , drop=FALSE]
         pr <- .dpOrDefault(GdObject, ".__plottingRange", data.frame(from=min(start(GdObject)), to=max(end(GdObject))))
         grpRangesCut <- restrict(grpRanges, start=as.integer(pr["from"]), end=as.integer(pr["to"]))
         switch(just,
@@ -1689,7 +1742,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     }
     if((is.logical(debug) && debug) || debug=="draw")
         browser()
-    ## If there are too many stacks for the available device resolution we cast an error, otherwise we set u the viewport
+    ## If there are too many stacks for the available device resolution we cast an error, otherwise we set the viewport
     bins <- stacks(GdObject)
     stacks <- max(bins)
     rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
@@ -4118,6 +4171,9 @@ setMethod("show", signature(object="GeneRegionTrack"), function(object)
 setMethod("show", signature(object="HighlightTrack"), function(object)
           cat(sprintf("HighlightTrack '%s' containing %i subtrack%s\n%s\n", names(object), length(object),
                       ifelse(length(object)==1, "", "s"), .annotationTrackInfo(object))))
+
+setMethod("show", signature(object="CustomTrack"), function(object)
+          cat(sprintf("CustomTrack '%s'\n", names(object))))
 
 setMethod("show", signature(object="OverlayTrack"), function(object)
           cat(sprintf("OverlayTrack '%s' containing %i subtrack%s\n", names(object), length(object),

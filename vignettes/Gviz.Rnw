@@ -9,7 +9,7 @@
 BiocStyle::latex()
 @
 
-\RequirePackage[utf8]{inputenc} 
+\RequirePackage[utf8]{inputenc}
 \SweaveOpts{keep.source=FALSE,pdf=TRUE,eps=FALSE}
 % \RequirePackage{hyperref}
 \RequirePackage{url}
@@ -69,7 +69,7 @@ options(timeout=oto)
 ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ##hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 
-@ 
+@
 
 \maketitle
 
@@ -194,7 +194,7 @@ spectacular. There is a title region showing the track's name on a
 gray background on the left side of the plot and a data region showing
 the seven individual CpG islands on the right. This structure is
 similar for all the available track objects classes and it somewhat
-mimicks the layout of the popular UCSC Genome Browser. If you are not 
+mimicks the layout of the popular UCSC Genome Browser. If you are not
 happy with the default settings, the \mgg
 package offers a multitude of options to fine-tune the track
 appearance, which will be shown in the \Reference{Plotting Parameters}
@@ -274,7 +274,7 @@ Ideogram tracks are the one exception in all of \mgg's track objects
 in the sense that they are not really displayed on the same coordinate
 system like all the other tracks. Instead, the current genomic
 location is indicated on the chromosome by a red box (or, as in this
-case, a red line if the width is too small to fit a box). 
+case, a red line if the width is too small to fit a box).
 
 So far we have only looked at very basic annotation features and how
 to give a point of reference to our plots. Naturally, we also want to
@@ -294,7 +294,7 @@ to pass in the data.
 data(geneModels)
 grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model")
 plotTracks(list(itrack, gtrack, atrack, grtrack))
-@ 
+@
 
 In all those previous examples the plotted genomic range has been
 determined automatically from the input tracks. Unless told otherwise,
@@ -308,7 +308,7 @@ choose an arbitrary genomic range to plot.
 
 <<zooming, fig=TRUE, width=7.5, height=2.2>>=
 plotTracks(list(itrack, gtrack, atrack, grtrack), from=26700000, to=26750000)
-@ 
+@
 
 Another pair of arguments that controls the zoom state are
 \Robject{extend.left} and \Robject{extend.right}. Rather than
@@ -321,7 +321,7 @@ will cause zooming in to half the currently displayed range.
 
 <<zooming2, fig=TRUE, width=7.5, height=3>>=
 plotTracks(list(itrack, gtrack, atrack, grtrack), extend.left=0.5, extend.right=1000000)
-@ 
+@
 
 You may have noticed that the layout of the gene model track has
 changed depending on the zoom level. This is a feature of the \mgg
@@ -338,7 +338,7 @@ of the exons.
 
 <<zooming3, fig=TRUE, width=7.5, height=3>>=
 plotTracks(list(itrack, gtrack, atrack, grtrack), extend.left=0.5, extend.right=1000000, col=NULL)
-@ 
+@
 
 When zooming further in it may become interesting to take a look at
 the actual genomic sequence at a given position, and the \mgg package
@@ -350,7 +350,7 @@ information from one of the \Rclass{BSgenome} packages.
 library(BSgenome.Hsapiens.UCSC.hg19)
 strack <- SequenceTrack(Hsapiens, chromosome=chr)
 plotTracks(list(itrack, gtrack, atrack, grtrack, strack), from=26591822, to=26591852, cex=0.8)
-@ 
+@
 
 So far we have replicated the features of a whole bunch of other
 genome browser tools out there. The real power of the package comes
@@ -372,10 +372,10 @@ set.seed(255)
 lim <- c(26700000, 26750000)
 coords <- sort(c(lim[1], sample(seq(from=lim[1], to=lim[2]), 99), lim[2]))
 dat <- runif(100, min=-10, max=10)
-dtrack <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr, 
+dtrack <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr,
                     genome=gen, name="Uniform")
 plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2])
-@ 
+@
 
 The first thing to notice is that the title panel to the right of the
 plot now contains a y-axis indicating the range of the displayed
@@ -392,14 +392,14 @@ control the look and feel of a track is given in the
 
 <<DataTrackHist, fig=TRUE, width=7.5, height=4>>=
 plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2], type="histogram")
-@ 
+@
 
 As we can see, the data values in the numeric vector are indeed
 matched to the genomic coordinates of the \Rclass{DataTrack}
 object. Such a visualization can be particularly helpful when
 displaying for instance the coverage of NGS reads along a chromosome,
 or to show the measurement values of mapped probes from a micro array
-experiment. 
+experiment.
 
 This concludes our first introduction into the \mgg
 package. The remainder of this vignette will deal in much more depth
@@ -426,14 +426,14 @@ object with a bunch of display parameters and demonstrates the use of
 the \Rfunction{displayPars} accessor and replacement methods.
 
 <<displayPars1f, fig=TRUE, width=7.5, height=3>>=
-grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model", 
+grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model",
                            transcriptAnnotation="symbol", background.title="brown")
 head(displayPars(grtrack))
 displayPars(grtrack) <- list(background.panel="#FFFEDB", col=NULL)
 head(displayPars(grtrack))
 
 plotTracks(list(itrack, gtrack, atrack, grtrack))
-@ 
+@
 
 For our gene model track we have now added the gene symbols of the
 different transcripts to the plot, removed the gray border around the
@@ -453,7 +453,7 @@ objects. They do however get precedence over the object-internal
 parameters. The following line of code exemplifies this behaviour.
 
 <<displayPars2f, fig=TRUE, width=7.5, height=3>>=
-plotTracks(list(itrack, gtrack, atrack, grtrack), 
+plotTracks(list(itrack, gtrack, atrack, grtrack),
            background.panel="#FFFEDB", background.title="darkblue")
 @
 
@@ -472,7 +472,7 @@ case its class is automatically detected.
 <<displayPars3>>=
 dp <- availableDisplayPars(grtrack)
 tail(dp)
-@ 
+@
 
 As we can see, display parameters can be inherited from parent
 classes. For the regular user this is not important at all, however it
@@ -508,7 +508,7 @@ plotTracks(grtrack)
 options(Gviz.scheme="default")
 grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Model",
                            transcriptAnnotation="symbol")
-@ 
+@
 
 In order to make these settings persitant across R sessions one can
 create one or several schemes in the global environment in the special
@@ -521,7 +521,7 @@ could go into an \Robject{.Rprofile} file.
 
 <<schemes, eval=FALSE>>=
 .GvizSchemes <- list(myScheme=list(GeneRegionTrack=list(fill="salmon", col=NULL, transcriptAnnotation="transcript")))
-@ 
+@
 
 Please note that because display parameters are stored
 with the track objects, a scheme change only has an effect on those
@@ -581,7 +581,7 @@ optional \Rfunarg{range} argument of the constructor function as
 either an \Rclass{GRanges} or an \Rclass{IRanges} object.
 
 <<GenomeAxisTrackClass2, fig=TRUE, width=7.5, height=0.5>>=
-axisTrack <- GenomeAxisTrack(range=IRanges(start=c(2e6, 4e6), end=c(3e6, 7e6), 
+axisTrack <- GenomeAxisTrack(range=IRanges(start=c(2e6, 4e6), end=c(3e6, 7e6),
                                            names=rep("N-stretch", 2)))
 plotTracks(axisTrack, from=1e6, to=9e6)
 @
@@ -661,7 +661,7 @@ class by typing in \code{?GenomeAxisTrack} on the \RR command line.
 
 <<GenomeAxisTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("GenomeAxisTrack")
-@ 
+@
 
 \subsection{IdeogramTrack}
 While a genomic axis provides helpful points of reference to a plot,
@@ -732,7 +732,7 @@ class by typing in \code{?IdeogramTrack} on the \RR command line.
 
 <<IdeogramTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("IdeogramTrack")
-@ 
+@
 
 \subsection{DataTrack}
 Probably the most powerfull of all the track classes in the \mgg
@@ -775,14 +775,14 @@ takes one or several of the following values:
 <<<types, echo=FALSE, results=tex>>=
 types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "smooth", "histogram", "mountain", "polygon", "boxplot", "gradient", "heatmap", "horizon"),
                     Type=c("dot plot", "lines plot", "dot and lines plot", "lines plot of average (i.e., mean) values", "stair steps (horizontal first)",
-                           "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "add loess curve", 
-                           "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline", 
+                           "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "add loess curve",
+                           "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline",
                            "'polygon-type' plot relative to a baseline", "box and whisker plot",
-                           "false color image of the summarized values", "false color image of the individual values", 
+                           "false color image of the summarized values", "false color image of the individual values",
                            "Horizon plot indicating magnitude and direction of a change relative to a baseline"))
 print(xtable(types, align="lrp{5in}"), sanitize.text.function=function(x) x, include.rownames=FALSE,
           floating=FALSE, tabular.environment="longtable")
-@ 
+@
 
 Displayed below are the same sample data as before but plotted with the different type settings:
 
@@ -805,7 +805,7 @@ for(t in types$Value)
 }
 popViewport(1)
 names(dTrack) <- "uniform"
-@ 
+@
 
 \renewcommand*{\thefootnote}{\fnsymbol{footnote}}
 \footnotetext[1]{A different data set is plotted for the horizon type for the sake of clarity.}
@@ -823,7 +823,7 @@ this will combine a boxplot with an average line and a data grid.
 
 <<mutitype, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 plotTracks(dTrack, type=c("boxplot", "a", "g"))
-@ 
+@
 
 For the heatmap plotting type we arrange all the data in a
 well-structured two-dimensional matrix which gives us the oportunity
@@ -838,7 +838,7 @@ range.
 <<sampNames, fig=TRUE, width=7.5, height=1.5>>=
 colnames(mcols(twoGroups))
 plotTracks(dTrack, type=c("heatmap"), showSampleNames=TRUE, cex.sampleNames=0.6)
-@ 
+@
 
 \subsubsection*{Data Grouping}
 
@@ -852,7 +852,7 @@ integrate this information into our plot.
 
 <<grouping, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("a", "p"))
-@ 
+@
 
 For the dot plot representation the individual group levels are
 indicated by color coding. For the \Rfunarg{a} type, the averages are
@@ -877,7 +877,7 @@ for(t in c("a", "s", "smooth", "histogram", "boxplot", "heatmap", "horizon"))
         names(dTrack) <- t
         plotTracks(dTrack, type=t, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
     }else{
-        plotTracks(dtHoriz[c(1,8),], type="horizon", add=TRUE, cex.title=0.8, margin=0.5, showAxis=FALSE, horizon.origin=0.3, 
+        plotTracks(dtHoriz[c(1,8),], type="horizon", add=TRUE, cex.title=0.8, margin=0.5, showAxis=FALSE, horizon.origin=0.3,
                    groups=1:2)
     }
     i <- i+1
@@ -888,7 +888,7 @@ names(dTrack) <- "hor. hist."
 plotTracks(dTrack, type="histogram", stackedBars=FALSE, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
 popViewport(2)
 names(dTrack) <- "uniform"
-@ 
+@
 
 \footnotetext[1]{A different data set is plotted for the horizon type for the sake of clarity.}
 
@@ -909,9 +909,9 @@ similar fashion as for heatmaps, i.e., by setting the
 <<horizLegend, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 data(dtHoriz)
 dtHoriz <- dtHoriz[1:6,]
-plotTracks(dtHoriz, type="horiz", groups=rownames(values(dtHoriz)), 
+plotTracks(dtHoriz, type="horiz", groups=rownames(values(dtHoriz)),
            showSampleNames=TRUE, cex.sampleNames = 0.6, separator=1)
-@ 
+@
 
 \subsubsection*{Building DataTrack objects from files}
 A number of standard file types exist that all store numeric data
@@ -939,7 +939,7 @@ bgFile <- system.file("extdata/test.bedGraph", package="Gviz")
 dTrack2 <- DataTrack(range=bgFile, genome="hg19", type="l", chromosome="chr19", name="bedGraph")
 class(dTrack2)
 plotTracks(dTrack2)
-@ 
+@
 
 As we can see the constructor has returned a regular
 \Rclass{DataTrack} object. The function to be used in order to read
@@ -1008,7 +1008,7 @@ chunk of the \code{bam} file still finishes in a reasonable time.
 
 <<filedt4, fig=TRUE, width=7.5, height=1>>=
 plotTracks(dTrack4, chromosome="chr1", from=189891483, to=190087517)
-@ 
+@
 
 Of course users can provided their own file parsing function just like
 we showed in the previous example. The import function now needs to be
@@ -1024,7 +1024,7 @@ myImportFun <- function(file, selection){
 }
 DataTrack(range=bamFile, genome="hg19", type="l", name="Coverage", window=-1, chromosome="chr1",
           importFunction=myImportFun, stream=TRUE)
-@ 
+@
 
 
 
@@ -1042,10 +1042,10 @@ syntetic data for only a single sample.
 <<biggerdata, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 dat <- sin(seq(pi, 10*pi, len=500))
 dTrack.big <- DataTrack(start=seq(1,100000, len=500), width=15, chromosome="chrX",
-                        genome="hg19", name="sinus", 
+                        genome="hg19", name="sinus",
                         data=sin(seq(pi, 5*pi, len=500))*runif(500, 0.5, 1.5))
 plotTracks(dTrack.big, type="hist")
-@ 
+@
 
 Since the available resolution on our screen is limited we can no
 longer distinguish between individual coordinate ranges. The \mgg
@@ -1098,7 +1098,7 @@ values greater than zero.
 
 <<transformation, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 plotTracks(dTrack.big, type="l", transformation=function(x){x[x<0] <- 0; x})
-@ 
+@
 
 As seen before, the \Rfunarg{a} type allows to plot average values for
 each of the separate groups. There is however an additional parameter
@@ -1109,7 +1109,7 @@ plot.
 
 <<groupingAv1, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("b"), aggregateGroups=TRUE)
-@ 
+@
 
 This functionality again also relies on the setting of the
 \Rfunarg{aggregation} parameter, and we can easily change it to
@@ -1117,7 +1117,7 @@ display the maximum group values instead.
 
 <<groupingAv2, fig=TRUE, results=hide, width=7.5, height=1.5>>=
 plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("b"), aggregateGroups=TRUE, aggregation="max")
-@ 
+@
 
 \subsubsection*{Display parameters for DataTrack objects}
 
@@ -1127,7 +1127,7 @@ class by typing in \code{?DataTrack} on the \RR command line.
 
 <<DataTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("DataTrack")
-@ 
+@
 
 \subsection{AnnotationTrack}
 
@@ -1158,10 +1158,10 @@ take a look at a very simple track:
 
 <<anntrack1, fig=TRUE, results=hide, width=7.5, height=0.5>>=
 aTrack <- AnnotationTrack(start=c(10, 40, 120), width=15, chromosome="chrX",
-                          strand=c("+", "*", "-"), 
+                          strand=c("+", "*", "-"),
                           id=c("Huey", "Dewey", "Louie"), genome="hg19", name="foo")
 plotTracks(aTrack)
-@ 
+@
 
 The ranges are plotted as simple boxes if no strand information is
 available, or as arrows to indicate their direction. We can change the
@@ -1172,11 +1172,11 @@ parameter to \code{'id'}.
 
 <<anntrack2, fig=TRUE, results=hide, width=7.5, height=0.5>>=
 plotTracks(aTrack, shape="box", featureAnnotation="id")
-@ 
+@
 
 <<anntrack3, fig=TRUE, results=hide, width=7.5, height=0.5>>=
 plotTracks(aTrack, shape="ellipse", featureAnnotation="id", fontcolor.feature="darkblue")
-@ 
+@
 
 In this very simplistic example each annotation feature consisted of a
 single range. In real life the genomic annotation features that we
@@ -1190,10 +1190,10 @@ composite feature groups, and we can toggle on their printing by
 setting \Rfunarg{groupAnnotation} to \code{'group'}.
 
 <<anntrack4f, fig=TRUE, results=hide, width=7.5, height=0.5>>=
-aTrack.groups <- AnnotationTrack(start=c(50, 180, 260, 460, 860, 1240), width=c(15,20,40,100,200, 20), 
+aTrack.groups <- AnnotationTrack(start=c(50, 180, 260, 460, 860, 1240), width=c(15,20,40,100,200, 20),
                                  chromosome="chrX",
-                                 strand=rep(c("+", "*", "-"), c(1,3,2)), 
-                                 group=rep(c("Huey", "Dewey", "Louie"), c(1,3,2)), 
+                                 strand=rep(c("+", "*", "-"), c(1,3,2)),
+                                 group=rep(c("Huey", "Dewey", "Louie"), c(1,3,2)),
                                  genome="hg19", name="foo")
 plotTracks(aTrack.groups, groupAnnotation="group")
 @
@@ -1203,11 +1203,11 @@ We can control the placement of the group labels through the
 
 <<anntrack4af, fig=TRUE, results=hide, width=7.5, height=0.5>>=
 plotTracks(aTrack.groups, groupAnnotation="group", just.group="right")
-@ 
+@
 
 <<anntrack4bf, fig=TRUE, results=hide, width=7.5, height=0.5>>=
 plotTracks(aTrack.groups, groupAnnotation="group", just.group="above")
-@ 
+@
 
 Arranging items on the plotting canvas is relatively straight forward
 as long as there are no overlaps between invidiual regions or groups
@@ -1220,13 +1220,13 @@ arrangement. Let's exemplify this feature with a slightly modified
 \Rclass{AnnotationTrack} object.
 
 <<stacking1,  fig=TRUE, results=hide, width=7.5, height=0.5>>=
-aTrack.stacked <- AnnotationTrack(start=c(50, 180, 260, 800, 600, 1240), width=c(15,20,40,100,500, 20), 
+aTrack.stacked <- AnnotationTrack(start=c(50, 180, 260, 800, 600, 1240), width=c(15,20,40,100,500, 20),
                                  chromosome="chrX",
                                  strand="*",
-                                 group=rep(c("Huey", "Dewey", "Louie"), c(1,3,2)), 
+                                 group=rep(c("Huey", "Dewey", "Louie"), c(1,3,2)),
                                  genome="hg19", name="foo")
 plotTracks(aTrack.stacked, groupAnnotation="group")
-@ 
+@
 
 We now have our three annotation feature groups distributed over two
 horizontal lines. One can control the stacking of overlapping items
@@ -1276,7 +1276,7 @@ occupied by other display parameters defined in the package.
 
 <<featuresPlotf, fig=TRUE, results=hide, width=7.5, height=0.5>>=
 plotTracks(aTrack.stacked, groupAnnotation="group", foo="darkred", bar="darkgreen")
-@ 
+@
 
 Stacking of annotation items to avoid overplotting only works as long
 as there is enough real estate on the plotting canvas to separate all
@@ -1303,7 +1303,7 @@ good portion of a real human chromosome.
 <<overplotting,  fig=TRUE, results=hide, width=7.5, height=0.75>>=
 data("denseAnnTrack")
 plotTracks(denseAnnTrack, showOverplotting=TRUE)
-@ 
+@
 
 
 
@@ -1342,7 +1342,7 @@ what is going on.
 <<collapse1f, fig=TRUE, results=hide, width=7.5, height=0.85>>=
 data(collapseTrack)
 plotTracks(ctrack)
-@ 
+@
 
 The first thing to notice is that the for item \code{d} we do see the
 item identifier but not the range itself. This is due to the fact that
@@ -1360,12 +1360,12 @@ pixel using the \code{min.width} display parameter.
 
 <<collapse2f, fig=TRUE, results=hide, width=7.5, height=0.85>>=
 plotTracks(ctrack, min.width=1)
-@ 
+@
 
 Now the item \code{d} has a plotable size and can be drawn to the
 device. The overplotted items are still rather anoying, but the only way to
 get rid of those is to turn item collapsing back on.
- 
+
 <<collapse3f, fig=TRUE, results=hide, width=7.5, height=0.85>>=
 plotTracks(ctrack, min.width=1, collapse=TRUE)
 @
@@ -1421,7 +1421,7 @@ level of flexibility when reading the data from a file. More
 specifically, the user has the ability to map the provided
 metadata columns of the \Rclass{GRanges} object that is
 returned by the import function to the respective columns in the final
-\Rclass{AnnotationTrack} object. If no explicit mapping is provided, 
+\Rclass{AnnotationTrack} object. If no explicit mapping is provided,
 the package will try to find a default mapping based on the input file
 type and the desired track type. The current mapping of a track is
 displayed by its \Rfunction{show} method as can be seen above. The
@@ -1467,7 +1467,7 @@ class by typing in \code{?AnnotationTrack} on the \RR command line.
 
 <<AnnotationTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("AnnotationTrack")
-@ 
+@
 
 \subsection{GeneRegionTrack}
 
@@ -1528,7 +1528,22 @@ display parameter to \code{TRUE}.
 
 <<generegtrack3f, fig=TRUE, results=hide, width=7.5, height=1>>=
 plotTracks(grtrack, collapseTranscripts=TRUE, shape="arrow", transcriptAnnotation="symbol")
-@ 
+@
+
+Collapsing down all the way to a gene is not always the desired
+oparation, and the parameters offers a bit more control. For instance
+we could decide to plot just the longest transcript by setting it to
+\code{longest}.
+
+<<generegtrack3g, fig=TRUE, results=hide, width=7.5, height=1>>=
+plotTracks(grtrack, collapseTranscripts="longest", shape="arrow", transcriptAnnotation="symbol")
+@
+
+Or we can plot the union of all the exons in some sort of meta-transcript.
+
+<<generegtrack3h, fig=TRUE, results=hide, width=7.5, height=1>>=
+plotTracks(grtrack, collapseTranscripts="meta", shape="arrow", transcriptAnnotation="symbol")
+@
 
 \subsubsection*{Building GeneRegionTrack objects from TranscriptDbs}
 
@@ -1593,7 +1608,7 @@ class by typing in \code{?GeneRegionTrack} on the \RR command line.
 
 <<GeneRegionTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("GeneRegionTrack")
-@ 
+@
 
 \subsection{BiomartGeneRegionTrack}
 
@@ -1618,7 +1633,7 @@ almost never going to be returned instantaniously.
 biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
                                   name="ENSEMBL")
 plotTracks(biomTrack)
-@ 
+@
 <<BiomartGeneRegionTrackDo, echo=FALSE, results=hide, width=7.5, height=1.25, fig=TRUE>>=
 if(hasBiomartConnection){
     biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
@@ -1639,7 +1654,7 @@ dropping the bounding boxes around the individual exon models.
 
 <<BiomartGeneRegionTrackCol, width=7.5, height=1.25, fig=TRUE>>=
 plotTracks(biomTrack, col.line=NULL, col=NULL)
-@ 
+@
 
 For dense stacked plots like this it can sometimes be helpful to
 control the vertical spacing between the stacking rows. A simple way
@@ -1651,7 +1666,7 @@ should be used to draw the feature glyphs.
 
 <<BiomartGeneRegionTrackHeight, width=7.5, height=1.25, fig=TRUE>>=
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
-@ 
+@
 
 \subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
 
@@ -1670,7 +1685,7 @@ types.
 addInfo <- t(data.frame(displayPars(biomTrack, names(details[["BiomartGeneRegionTrack"]]))))
 colnames(addInfo) <- "Color"
 addParTable("BiomartGeneRegionTrack", add=addInfo)
-@ 
+@
 
 \subsection{DetailsAnnotationTrack}
 It is sometimes desirable to add more detailed information to
@@ -1687,7 +1702,7 @@ the lower section containing the range data in genomic coordinates, and
 the upper one containing the additional data for each of the displayed
 ranges in verticaly tiled panels of equal size. The connection between
 a range item and its details panel is indicated by connecting
-lines. 
+lines.
 
 The content of the individual details panels has to be filled in by a
 user-defined plotting function that uses grid (or lattice) plotting
@@ -1735,7 +1750,7 @@ archieved by using the range identifiers, which conveniently map to
 the row names of the data matrix.
 
 <<DetailsAnnotationTrack3>>=
-library(lattice) 
+library(lattice)
 details <- function(identifier, ...) {
     d <- data.frame(signal=methylation[identifier,], group=sgroups)
     print(densityplot(~signal, group=group, data=d, main=list(label=identifier, cex=0.7),
@@ -1798,10 +1813,10 @@ the collapsed ranges.
 
 <<DetailsAnnotationTrack6>>=
 detFun <- function(identifier, GdObject.original, ...){
-    plotTracks(list(GenomeAxisTrack(scale=0.3, size=0.2, cex=0.7), GdObject.original[group(GdObject.original)==identifier]), 
+    plotTracks(list(GenomeAxisTrack(scale=0.3, size=0.2, cex=0.7), GdObject.original[group(GdObject.original)==identifier]),
                add=TRUE, showTitle=FALSE)
 }
-@ 
+@
 
 Finally, we load some sample data, turn it into a \code{DetailsAnnotationTrack} object and plot it.
 
@@ -1811,7 +1826,7 @@ deTrack2 <- AnnotationTrack(geneDetails, fun=detFun, selectFun=selFun,
                             groupDetails=TRUE, details.size=0.5, detailsConnector.cex=0.5, detailsConnector.lty="dotted",
                             shape=c("smallArrow", "arrow"), groupAnnotation="group")
 plotTracks(deTrack2, extend.left=90000)
-@ 
+@
 
 
 \subsubsection*{Display parameters for DetailsAnnotationTrack objects}
@@ -1824,13 +1839,13 @@ or the man page of the \Rclass{DetailsAnnotationTrack} class by typing
 in \code{?DetailsAnnotationTrack} on the \RR command line.
 
 <<DetailsAnnotationTrack5, results=hide, width=7.5, height=3, fig=TRUE>>=
-plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector.col="darkred", 
+plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector.col="darkred",
            detailsBorder.fill="#FFE3BF", detailsBorder.col="darkred", shape="box", detailsConnector.lty="dotted")
-@ 
+@
 
 <<DetailsAnnotationTrackClassTableSec, echo=FALSE, results=tex>>=
 addParTable("DetailsAnnotationTrack")
-@ 
+@
 
 
 \subsection{SequenceTrack}
@@ -1849,7 +1864,7 @@ constructor has the same name as the class. In this example we build a
 library(BSgenome.Hsapiens.UCSC.hg19)
 sTrack <- SequenceTrack(Hsapiens)
 sTrack
-@ 
+@
 
 Here we retain the same benefits as for regular \Rclass{BSgenome}
 objects in that the actual sequence is only loaded into memory when a
@@ -1862,7 +1877,7 @@ documentation for more details.
 
 <<SequenceTrack2, results=hide, width=7.5, height=0.5, fig=TRUE>>=
 plotTracks(sTrack, chromosome=1, from=20000, to=20050)
-@ 
+@
 
 Sometimes it may be too busy to plot both the sequence letters and the
 color coding, and we can assign arbitrary colors by setting the
@@ -1874,21 +1889,21 @@ missing, the respective letter will not be drawn at all.
 <<SequenceTrack3, results=hide, width=7.5, height=0.5, fig=TRUE>>=
 fcol <- c(A="darkgray", C="darkgray", T="darkgray", G="darkgray")
 plotTracks(sTrack, chromosome=1, from=20000, to=20050, fontcolor=fcol)
-@ 
+@
 
 In this case we are plotting the sequence on the forward strand and we
 may want to make this clear by adding direction indicators.
 
 <<SequenceTrack4, results=hide, width=7.5, height=0.5, fig=TRUE>>=
 plotTracks(sTrack, chromosome=1, from=20000, to=20050, add53=TRUE)
-@ 
+@
 
 If instead we plot the complement sequence on the reverse strand, the
 indicators are automatically adjusted.
 
 <<SequenceTrack5, results=hide, width=7.5, height=0.3, fig=TRUE>>=
 plotTracks(sTrack, chromosome=1, from=20000, to=20050, add53=TRUE, complement=TRUE)
-@ 
+@
 
 So far we have been able to fit the sequence onto our plotting device
 without overplotting. I.e., all the letters nicely fit in to their
@@ -1903,7 +1918,7 @@ available space.
 
 <<SequenceTrack6, results=hide, width=7.5, height=0.3, fig=TRUE>>=
 plotTracks(sTrack, chromosome=1, from=20000, to=20100)
-@ 
+@
 
 For added flexibility one can set the \code{noLetters} display
 paramter to \code{TRUE} to always force the drawing of boxes.  Of
@@ -1922,7 +1937,7 @@ decreasing it.
 
 <<SequenceTrack8, results=hide, width=7.5, height=0.3, fig=TRUE>>=
 plotTracks(sTrack, chromosome=1, from=20000, to=20100, cex=0.5)
-@ 
+@
 
 \subsubsection*{Display parameters for SequenceTrack objects}
 
@@ -1932,7 +1947,7 @@ class by typing in \code{?SequenceTrack} on the \RR command line.
 
 <<SequenceTrackClassTableSec, echo=FALSE, results=tex>>=
 addParTable("SequenceTrack")
-@ 
+@
 
 \subsection{AlignmentsTrack}
 Plots of aligned sequences, typically from next generation sequencing
@@ -1980,7 +1995,7 @@ data(alTrackGenes)
 afrom <- 2960000
 ato <- 3160000
 alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "gapped.bam"), isPaired=TRUE)
-bmt <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr12", start=afrom, end=ato, 
+bmt <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr12", start=afrom, end=ato,
                               filter=list(with_ox_refseq_mrna=TRUE), stacking="dense")
 @
 
@@ -2006,7 +2021,7 @@ or the \Rfunarg{minCoverageHeight} parameters. Please see the class
 documentation for more details.
 
 <<alignmentstrack_3, results=hide, width=7.5, height=5, fig=TRUE>>=
-plotTracks(c(bmt, alTrack), from=afrom, to=ato, chromosome="chr12", min.height=0, coverageHeight=0.08, 
+plotTracks(c(bmt, alTrack), from=afrom, to=ato, chromosome="chr12", min.height=0, coverageHeight=0.08,
            minCoverageHeight=0)
 @
 
@@ -2037,7 +2052,7 @@ some of the other display parameters that control the look and feel of
 the reads.
 
 <<alignmentstrack_6, results=hide, width=7.5, height=5, fig=TRUE>>=
-plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12", reverseStacking=TRUE, 
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12", reverseStacking=TRUE,
            col.mates="purple", col.gap="orange", type="pileup")
 @
 
@@ -2049,7 +2064,7 @@ data in the same file, but in single end mode.
 <<alignmentstrack_6_1, results=hide, width=7.5, height=5, fig=TRUE>>=
 alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "gapped.bam"), isPaired=FALSE)
 plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12")
-@ 
+@
 
 So far we did not look at the individual read sequences at all. Even
 though they are contained in the \code{BAM} file, their value is
@@ -2103,7 +2118,7 @@ them. This can be controlled using the display parameters
 
 <<alignmentstrack_10, results=hide, width=7.5, height=5, fig=TRUE>>=
 plotTracks(c(alTrack, sTrack), chromosome="chr21", from=44946590, to=44946660, cex=0.5, min.height=8)
-@ 
+@
 
 \subsubsection*{Display parameters for AlignmentsTrack objects}
 
@@ -2113,7 +2128,7 @@ class by typing in \code{?AlignmentsTrack} on the \RR command line.
 
 <<AlignmentsTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("AlignmentsTrack")
-@ 
+@
 
 
 \subsection{Creating tracks from UCSC data}
@@ -2188,7 +2203,7 @@ to <- 65980988
 knownGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="knownGene", from=from, to=to,
                         trackType="GeneRegionTrack", rstarts="exonStarts", rends="exonEnds", gene="name",
                         symbol="name", transcript="name", strand="strand", fill="#8282d2", name="UCSC Genes")
-@ 
+@
 
 With a similar approach we can construct the next two gene model
 tracks based on the \code{xenoRefGene} and \code{ensGene} data tables.
@@ -2203,7 +2218,7 @@ ensGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="ensGene", from=fro
                       trackType="GeneRegionTrack", rstarts="exonStarts", rends="exonEnds", gene="name",
                       symbol="name2", transcript="name", strand="strand", fill="#960000",
                       name="Ensembl Genes")
-@ 
+@
 
 The CpG and SNP tracks are slightly different since a
 \Rclass{GeneRegionTrack} representation would not be particularly
@@ -2220,7 +2235,7 @@ snpLocations <-  UcscTrack(genome="mm9", chromosome="chrX", track="snp128", from
                            trackType="AnnotationTrack", start="chromStart", end="chromEnd", id="name",
                            feature="func", strand="strand", shape="box", stacking="dense", fill="black",
                            name="SNPs")
-@ 
+@
 
 Most of UCSC's \Rclass{DataTrack}-like tracks are a little more
 complex and represent a collection of several sub-tracks, with data
@@ -2231,14 +2246,14 @@ define the particular table on the UCSC data base to use.
 <<ucscTrack4, eval=FALSE>>=
 conservation <- UcscTrack(genome="mm9", chromosome="chrX", track="Conservation", table="phyloP30wayPlacental",
                           from=from, to=to, trackType="DataTrack", start="start", end="end", data="score",
-                          type="hist", window="auto", col.histogram="darkblue", fill.histogram="darkblue", 
+                          type="hist", window="auto", col.histogram="darkblue", fill.histogram="darkblue",
                           ylim=c(-3.7, 4), name="Conservation")
 
 gcContent <- UcscTrack(genome="mm9", chromosome="chrX", track="GC Percent", table="gc5Base",
                        from=from, to=to, trackType="DataTrack", start="start", end="end", data="score",
                        type="hist", window=-1, windowSize=1500, fill.histogram="black", col.histogram="black",
                        ylim=c(30, 70), name="GC Percent")
-@ 
+@
 
 To add some reference points we also need a genome axis and an
 \Rclass{IdeogramTrack} of the x chromosome.
@@ -2246,13 +2261,13 @@ To add some reference points we also need a genome axis and an
 <<ucscTrack5, eval=FALSE>>=
 axTrack <- GenomeAxisTrack()
 idxTrack <- IdeogramTrack(genome="mm9", chromosome="chrX")
-@ 
+@
 
 And finally we can plot all of our tracks.
 
 <<ucscTrackLoad, echo=FALSE, results=hide>>=
 data(ucscItems)
-@ 
+@
 
 <<ucscTrack6, fig=TRUE, results=hide, width=7.5, height=5.5>>=
 plotTracks(list(idxTrack, axTrack, knownGenes, refGenes, ensGenes, cpgIslands,
@@ -2284,7 +2299,7 @@ the following call:
 <<HighlightTrack, fig=TRUE, width=7.5, height=4>>=
 ht <- HighlightTrack(trackList=list(atrack, grtrack, dtrack), start=c(26705000, 26720000), width=7000, chromosome=7)
 plotTracks(list(itrack, gtrack, ht), from = lim[1], to = lim[2])
-@ 
+@
 
 One can also build multiple \Rclass{HighlightTrack} collections to
 create gaps in the highlighting regions. For \Rclass{IdeogramTracks}
@@ -2295,7 +2310,7 @@ x-axis coordinate system like the other tracks.
 ht1 <- HighlightTrack(trackList=list(itrack, gtrack, atrack), start=c(26705000, 26720000), width=7000, chromosome=7)
 ht2 <- HighlightTrack(trackList=dtrack, start=c(26705000, 26720000), width=7000, chromosome=7)
 plotTracks(list(ht1, grtrack, ht2), from=lim[1], to=lim[2])
-@ 
+@
 
 \subsubsection*{Display parameters for HighlightTrack objects}
 
@@ -2305,7 +2320,7 @@ class by typing in \code{?HighlightTrack} on the \RR command line.
 
 <<HighlightTrackClassTable, echo=FALSE, results=tex>>=
 addParTable("HighlightTrack")
-@ 
+@
 
 \subsection{Overlays}
 
@@ -2324,14 +2339,14 @@ object and combine it with the existing one from the second chapter.
 
 <<OverlayTrack, fig=TRUE, width=7.5, height=3>>=
 dat <- runif(100, min=-2, max=22)
-dtrack2 <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr, 
+dtrack2 <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr,
                      genome=gen, name="Uniform2", groups=factor("sample 2", levels=c("sample 1", "sample 2")),
                      legend=TRUE)
 displayPars(dtrack) <- list(groups=factor("sample 1", levels=c("sample 1", "sample 2")), legend=TRUE)
 ot <- OverlayTrack(trackList=list(dtrack2, dtrack))
 ylims <- extendrange(range(c(values(dtrack), values(dtrack2))))
 plotTracks(list(itrack, gtrack, ot), from=lim[1], to=lim[2], ylim=ylims, type=c("smooth", "p"))
-@ 
+@
 
 It is important to know that \mgg is fully unaware of the intention
 and any specifics of the track merging operation. Any track type can
@@ -2362,7 +2377,7 @@ displayPars(dtrack) <- list(alpha.title=1, alpha=0.5)
 displayPars(dtrack2) <- list(alpha.title=1, alpha=0.5)
 ot <- OverlayTrack(trackList=list(dtrack, dtrack2))
 plotTracks(list(itrack, gtrack, ot), from=lim[1], to=lim[2], ylim=ylims, type=c("hist"), window=30)
-@ 
+@
 
 
 
@@ -2393,17 +2408,17 @@ maTrack <- AnnotationTrack(range=GRanges(seqnames=chroms, ranges=IRanges(start=1
                                          strand=c("+", "+", "-", "+")), genome="mm9", chromosome="chr1", name="foo")
 
 mdTrack <- DataTrack(range=GRanges(seqnames=rep(chroms, c(10, 40, 20, 100)),
-                                   ranges=IRanges(start=c(seq(1,100,len=10), seq(1,400,len=40), seq(1, 200, len=20), 
-                                                          seq(1,1000, len=100)), width=9), values=runif(170)), 
+                                   ranges=IRanges(start=c(seq(1,100,len=10), seq(1,400,len=40), seq(1, 200, len=20),
+                                                          seq(1,1000, len=100)), width=9), values=runif(170)),
                      data="values", chromosome="chr1", genome="mm9", name="bar")
-@ 
+@
 
 Now we also want a genome axis and an \Rclass{IdeogramTrack} object to indicate the genomic context.
 
 <<multPlot2>>=
 mgTrack <- GenomeAxisTrack(scale=50, labelPos="below", exponent=3)
 chromosome(itrack) <- "chr1"
-@ 
+@
 
 Finaly, we build a layout in which the plots for each chromosome are
 placed in a rectangular grid and repeatedly call
@@ -2419,7 +2434,7 @@ for(i in seq_along(chroms)){
     plotTracks(list(itrack, maTrack, mdTrack, mgTrack), chromosome=chroms[i], add=TRUE)
     popViewport(1)
 }
-@ 
+@
 
 Maybe an even more compact version of this would be to use the lattice
 package for building the actual trellis, with \Rfunction{plotTracks}
@@ -2428,9 +2443,9 @@ as the panel function.
 <<multPlot4, fig=TRUE, results=hide, width=7.5, height=4>>=
 library(lattice)
 chroms <- data.frame(chromosome=chroms)
-xyplot(1~chromosome|chromosome, data=chroms, panel=function(x){plotTracks(list(itrack , maTrack, mdTrack, mgTrack), chromosome=x, add=TRUE, showId=FALSE)}, 
+xyplot(1~chromosome|chromosome, data=chroms, panel=function(x){plotTracks(list(itrack , maTrack, mdTrack, mgTrack), chromosome=x, add=TRUE, showId=FALSE)},
        scales=list(draw=FALSE), xlab=NULL, ylab=NULL)
-@ 
+@
 
 
 \section{Bioconductor integration and file support}
@@ -2443,7 +2458,7 @@ a track class' documentation should provide all the possible options.
 \begin{longtable}{ l | l | p{9.5cm} }
   \hline
   Gviz class & Bioconductor class & Method\\
-  \hline                        
+  \hline
   AnnotationTrack & data.frame & Constructor \\
    & IRanges & Constructor + additional arguments \\
    & GRanges & Constructor or setAs method, additional data in metadata columns \\
@@ -2503,6 +2518,6 @@ for the different track classes in one place.
 The following is the session info that generated this vignette:
 <<session-info>>=
   sessionInfo()
-@ 
+@
 
 \end{document}
