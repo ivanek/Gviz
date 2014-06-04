@@ -1623,7 +1623,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
         .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL) else sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
     bars <- data.frame(sx1=start(grpRanges)[needBar], sx2=end(grpRanges)[needBar], y=yloc[needBar], strand=strand[needBar],
                       col=color[needBar], stringsAsFactors=FALSE)
-    labs <- .dpOrDefault(GdObject, ".__groupLabels")
+    labs <- .dpOrDefault(GdObject, ".__groupLabels")[names(grpRanges)]
     if(!is.null(labs)){
         lsel <- grepl("\\[Cluster_[0-9]*\\]", labs)
         if(any(lsel)){
@@ -1633,7 +1633,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
         }
         just <- .dpOrDefault(GdObject, "just.group", "left")
         rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
-        sizes <- .dpOrDefault(GdObject, ".__groupLabelWidths")
+        sizes <- .dpOrDefault(GdObject, ".__groupLabelWidths")[names(grpRanges), , drop=FALSE]
         pr <- .dpOrDefault(GdObject, ".__plottingRange", data.frame(from=min(start(GdObject)), to=max(end(GdObject))))
         grpRangesCut <- restrict(grpRanges, start=as.integer(pr["from"]), end=as.integer(pr["to"]))
         switch(just,
