@@ -2008,16 +2008,30 @@ availableDisplayPars <- function(class)
         dat <- dat[!transcripts]
         mt <- match(as.character(dat$Parent), as.character(tinfo$ID))
         if(!all(is.na(mt))){
-            if(!"transcript_id" %in% colnames(mcols(dat)))
-                mcols(dat)[["transcript_id"]] <- tinfo[mt, "ID"]
-            if(!"transcript_name" %in% colnames(mcols(dat)))
-                mcols(dat)[["transcript_name"]] <- tinfo[mt, "Name"]
-            mt2 <- match(as.character(tinfo[mt, "Parent"]), as.character(ginfo$ID))
+            if(!"transcript_id" %in% colnames(mcols(dat))) {
+                tid <- rep(NA, length(mt))
+                tid[!is.na(mt)] <- tinfo[mt[!is.na(mt)], "ID"]
+                mcols(dat)[["transcript_id"]] <- tid
+            }
+            if(!"transcript_name" %in% colnames(mcols(dat))) {
+                tn <- rep(NA, length(mt))
+                tn[!is.na(mt)] <- tinfo[mt[!is.na(mt)], "Name"]
+                mcols(dat)[["transcript_name"]] <- tn
+            }
+            mt2 <- rep(NA, dim(mcols(dat))[1])
+            mt2[!is.na(mt)] <- match(as.character(tinfo[mt[!is.na(mt)], "Parent"]), as.character(ginfo$ID))
+
             if(!all(is.na(mt2))){
-                if(!"gene_id" %in% colnames(mcols(dat)))
-                    mcols(dat)[["gene_id"]] <- ginfo[mt2, "ID"]
-                if(!"gene_name" %in% colnames(mcols(dat)))
-                    mcols(dat)[["gene_name"]] <- ginfo[mt2, "Name"]
+                if(!"gene_id" %in% colnames(mcols(dat))) {
+                    gid <- rep(NA, length(mt2))
+                    gid[!is.na(mt2)] <- ginfo[mt[!is.na(mt2)], "ID"]
+                    mcols(dat)[["gene_id"]] <- gid
+                }
+                if(!"gene_name" %in% colnames(mcols(dat))) {
+                    gn <- rep(NA, length(mt2))
+                    gn[!is.na(mt2)] <- ginfo[mt[!is.na(mt2)], "Name"]
+                    mcols(dat)[["gene_name"]] <- gn
+                }
             }
         }
         if(all(is.na(mcols(dat)[["ID"]])))
