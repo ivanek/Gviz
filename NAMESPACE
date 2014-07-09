@@ -1,5 +1,6 @@
 import(methods)
 
+import(BiocGenerics)
 import(S4Vectors)
 import(IRanges)
 import(XVector)
@@ -20,10 +21,6 @@ importMethodsFrom(AnnotationDbi, colnames, get, ls, mget, tail)
 
 importMethodsFrom(Biobase, rowMedians)
 
-importMethodsFrom(BiocGenerics, cbind, duplicated, eval, intersect, lapply,
-                  mapply, order, paste, pmax, pmin, rbind, sapply, setdiff,
-                  table, tapply, unique)
-
 importMethodsFrom(BSgenome, providerVersion)
 
 importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transcriptsBy, transcripts)
@@ -40,8 +37,6 @@ importMethodsFrom(Biostrings, consensusMatrix)
 importFrom(Biobase, listLen, rowMax, rowMin)
 
 importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
-
-importFrom(BiocGenerics, getObjectSlots)
 
 importFrom(biomaRt, getBM, useMart)
 
