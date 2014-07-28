@@ -3745,7 +3745,7 @@ setAs("GRangesList", "AnnotationTrack", function(from, to) AnnotationTrack(range
 
 setAs("GRanges", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
 setAs("GRangesList", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
-setAs("TranscriptDb", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
+setAs("TxDb", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
 
 setAs("DNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
 
@@ -3937,14 +3937,14 @@ setMethod(".buildRange", signature("GRangesList"),
               mcols(range)[[groupId]] <- grps
               return(.buildRange(range=range, ...))})
 
-## For TranscriptDb objects we extract the grouping information and use the GRanges method
-setMethod(".buildRange", signature("TranscriptDb"),
+## For TxDb objects we extract the grouping information and use the GRanges method
+setMethod(".buildRange", signature("TxDb"),
           function(range, groupId="transcript", tstart, tend, chromosome, args, ...){
               ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
               noSubset <- is.null(tstart) && is.null(tend)
               if(!is.null(chromosome)){
                   chromosome <- .chrName(chromosome)
-                  ## Seems like TranscriptDb objects use pass by reference for the active chromosomes, so we have to
+                  ## Seems like TxDb objects use pass by reference for the active chromosomes, so we have to
                   ## restore the old values after we are done
                   oldAct <- seqlevels(range)
                   oldRange <- range

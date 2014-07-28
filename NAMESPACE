@@ -13,7 +13,7 @@ importClassesFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString)
 
 importClassesFrom(BSgenome, BSgenome, MaskedBSgenome)
 
-importClassesFrom(GenomicFeatures, "TranscriptDb")
+importClassesFrom(GenomicFeatures, "TxDb")
 
 importClassesFrom(rtracklayer, UCSCData)
 

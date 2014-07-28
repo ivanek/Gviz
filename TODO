@@ -4,6 +4,6 @@ General structure:
    o introduce file-reference classes that draw genomic coordinates and associated data from bigBed, bigWig, BAM or tabix files
 
 AnnotationTrack/GeneRegionTrack
-   o get the data from TranscriptDb objects
+   o get the data from TxDb objects
    o speed up .prepareGene (may need a C code module)
    o deal with additional annotation features (UTRs, etc.)

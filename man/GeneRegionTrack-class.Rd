@@ -31,7 +31,7 @@
 \alias{transcript<-}
 \alias{coerce,GRanges,GeneRegionTrack-method}
 \alias{coerce,GRangesList,GeneRegionTrack-method}
-\alias{coerce,TranscriptDb,GeneRegionTrack-method}
+\alias{coerce,TxDb,GeneRegionTrack-method}
 \alias{subset,ReferenceGeneRegionTrack-method}
 
 \title{GeneRegionTrack class and methods}
@@ -68,7 +68,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
   \code{GeneRegionTrack} certain assumptions are made about the type of
   grouping on different levels (see the \code{Details} section for more
   information). The natural representation for gene models in the
-  Bioconductor world are \code{\linkS4class{TranscriptDb}} objects, and
+  Bioconductor world are \code{\linkS4class{TxDb}} objects, and
   we tried to make it as straight forward as possible to create
   \code{GeneRegionTracks} starting from those. Building the object from
   individual function arguments is of course still possible.
@@ -84,18 +84,18 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
     \describe{
 
-      \item{}{A \code{TranscriptDb} object: all the necessary gene model
+      \item{}{A \code{TxDb} object: all the necessary gene model
 	information including exon locations, transcript groupings and
-	associated gene ids are contained in \code{TranscriptDb}
+	associated gene ids are contained in \code{TxDb}
 	objects, and the coercion between the two is almost completely
 	automated. If desired, the data to be fetched from the
-	\code{TranscriptDb} object can be restricted using the
+	\code{TxDb} object can be restricted using the
 	constructor's \code{chromosome}, \code{start} and \code{end}
 	arguments. See below for details. A direct coercion method
 	\code{as(obj, "GeneRegionTrack")} is also available. A nice
 	added benefit of this input option is that the UTR and coding
 	region information that is part of the original
-	\code{TranscriptDb} object is retained in the
+	\code{TxDb} object is retained in the
 	\code{GeneRegionTrack}.}
 
       \item{}{A \code{GRanges} object: the genomic ranges for the
@@ -160,7 +160,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
     default value will automatically be the smallest (or largest) value,
     respectively in \code{rstarts} and \code{rends} for the currently
     active chromosome. When building a \code{GeneRegionTrack} from a
-    \code{TranscriptDb} object, these arguments can be used to subset
+    \code{TxDb} object, these arguments can be used to subset
     the desired annotation data by genomic coordinates. Please note this
     in that case the \code{chromosome} parameter must also be set.}
 
@@ -237,7 +237,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
     chromosome may be present), and the user has to call the
     \code{chromosome<-} replacement method in order to change to a
     different active chromosome. When creating a \code{GeneRegionTrack}
-    from a \code{TranscriptDb} object, the value of this parameter can
+    from a \code{TxDb} object, the value of this parameter can
     be used to subset the data to fetch only transcripts from a single
     chromosome.}
 
@@ -1780,7 +1780,7 @@ name="Cyp2b10", strand=cyp2b10$strand)
 ## Directly from the data.frame
 grTrack <- GeneRegionTrack(cyp2b10)
 
-## From a TranscriptDb object
+## From a TxDb object
 if(require(GenomicFeatures)){
 samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
 txdb <- loadDb(samplefile)

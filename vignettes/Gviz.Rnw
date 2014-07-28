@@ -1483,7 +1483,7 @@ the width) of each annotation feature in the track and also supply the
 exon, transcript and gene identifiers for each item which will be used
 to create the transcript groupings. A somewhat special case is to
 build a \Rclass{GeneRegionTrack} object directly from one of the
-popular \Rclass{TranscriptDb} objects, an option that is treated in
+popular \Rclass{TxDb} objects, an option that is treated in
 more detail below. For more information about all the available
 options see the class's manual page (\code{?GeneRegionTrack}).
 
@@ -1545,16 +1545,16 @@ Or we can plot the union of all the exons in some sort of meta-transcript.
 plotTracks(grtrack, collapseTranscripts="meta", shape="arrow", transcriptAnnotation="symbol")
 @
 
-\subsubsection*{Building GeneRegionTrack objects from TranscriptDbs}
+\subsubsection*{Building GeneRegionTrack objects from TxDbs}
 
 The \Rpackage{GenomicFeatures} packages provides an elegant framework
 to download gene model information from online sources and to store it
 locally in a SQLite data base. Because these so called
-\Rclass{TranscriptDb} objects have become the de-facto standard for
+\Rclass{TxDb} objects have become the de-facto standard for
 genome annotation information in Bioconductor we tried to make it as
 simple as possible to convert them into
 \Rclass{GeneRegionTracks}. Essentially one only has to call the
-constructor function with the \Rclass{TranscriptDb} object as a single
+constructor function with the \Rclass{TxDb} object as a single
 argument. We exemplify this on a small sample data set that comes with
 the \Rpackage{GenomicFeatures} package.
 
@@ -1568,7 +1568,7 @@ GeneRegionTrack(txdb)
 In this context, the constructor's \Rfunarg{chromosome},
 \Rfunarg{start} and \Rfunarg{end} argument take on a slightly differnt
 meaning in that they can be used to subset the data that is fetched
-from the \Rclass{TranscriptDb} object. Please note that while the
+from the \Rclass{TxDb} object. Please note that while the
 \Rfunarg{chromosome} alone can be supplied, providing \Rfunarg{start}
 or \Rfunarg{end} without the chromosome information will not work.
 
@@ -1577,7 +1577,7 @@ txTr <- GeneRegionTrack(txdb, chromosome="chr6", start=300000, end=350000)
 @
 
 A nice bonus when building \Rclass{GeneRegionTracks} from
-\Rclass{TranscriptDb} objects is that we get additional information
+\Rclass{TxDb} objects is that we get additional information
 about coding and non-coding regions of the transcripts, i.e.,
 coordinates of the 5' and 3' UTRs and of the CDS regions. The class'
 plotting method can use this inforamtion to distinguish between coding
@@ -1589,7 +1589,7 @@ object's \code{feature} values in combination with a special display
 parameter \code{thinBoxFeature} that enumerates all feature types that
 are to be treated as non-coding. Obviously this feature is available
 to all \Rclass{GeneRegionTracks}, not only the ones that were build
-from \Rclass{TranscriptDb} objects. However, the coding information
+from \Rclass{TxDb} objects. However, the coding information
 has to be added manually and the default value of the
 \code{thinBoxFeature} parameter may not be sufficient to cover all
 possible cases. It is up to the user to come up with a complete
@@ -2468,7 +2468,7 @@ a track class' documentation should provide all the possible options.
    & IRanges & Constructor + additonal arguments \\
    & GRanges & Constructor or setAs method, additional data in metadata columns \\
    & GRangesList & Constructor or setAs method, additional data in metadata columns \\
-   & TranscriptDb & Constructor or setAs method \\
+   & TxDb & Constructor or setAs method \\
   \hline
   DataTrack & data.frame & Constructor \\
    & IRanges & Constructor + additional data matrix \\
