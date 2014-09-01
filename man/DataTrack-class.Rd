@@ -35,11 +35,11 @@
   coordinates. Multiple samples as well as sample groupings are
   supported, with the restriction of equal genomic coordinates for a
   single observation across samples.
-  
+
 }
 
 \section{Objects from the class}{
-  
+
   Objects can be created using the constructor function
   \code{DataTrack}.
 
@@ -59,9 +59,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
   natural way to create a \code{DataTrack} is from an existing
   \code{\linkS4class{GRanges}} object. In other cases it might be more
   appropriate to build the object using individual function arguments.
-  
+
   \item{range}{
-    
+
     An optional meta argument to handle the different input types. If
     the \code{range} argument is missing, all the relevant information
     to create the object has to be provided as individual function
@@ -69,7 +69,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     The different input options for \code{range} are:
 
-    \describe{ 
+    \describe{
 
       \item{}{A \code{GRanges} object: essentially all the necessary
 	information to create a \code{DataTrack} can be contained in a
@@ -112,7 +112,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 	the \code{Gviz} package as identified by the file extension. See
 	the \code{importFunction} documentation below for further
 	details.}
-	
+
     }
   }
 
@@ -122,7 +122,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     of length one, in which case the single value will be recycled
     accordingly. Otherwise, the usual R recycling rules for vectors do
     not apply and the function will cast an error.}
-  
+
   \item{data}{A numeric matrix of data points with the number of columns
     equal to the number of coordinates in \code{range}, or a numeric
     vector of appropriate length that will be coerced into such a
@@ -135,13 +135,13 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     element metadata of the \code{range} object for
     subsetting. Naturally, this is only supported when the \code{range}
     argument is of class \code{GRanges}.}
-  
+
   \item{strand}{Character vector, the strand information for the
     individual track items. Currently this has to be unique for the
     whole track and doesn't really have any visible consequences, but we
     might decide to make \code{DataTracks} strand-specific at a later
     stage.}
-  
+
   \item{chromosome}{The chromosome on which the track's genomic ranges
     are defined. A valid UCSC chromosome identifier if
     \code{options(ucscChromosomeNames=TRUE)}. Please note that in this
@@ -212,20 +212,20 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters.}
-  
+
 }
 
 \value{
 
   The return value of the constructor function is a new object of class
   \code{DataTrack} or \code{ReferenceDataTrack}.
-  
+
 }
-   
+
 \section{Slots}{
-  
+
   \describe{
-  
+
     \item{\code{data}:}{Object of class \code{"matrix"}, containing the
       data values to be plotted. Individual rows of the matrix
       correspond to individual samples, and the number of columns has to
@@ -241,7 +241,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       coordinates for the data values. The length of the object needs to
       be identical to the number of columns of the data matrix in the
       \code{data} slot.}
-    
+
     \item{\code{chromosome}:}{Object of class \code{"character"},
       inherited from class \code{\linkS4class{RangeTrack}} }
 
@@ -258,177 +258,177 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{\code{imageMap}:}{Object of class
       \code{\linkS4class{ImageMap}}, inherited from class
       \code{\linkS4class{GdObject}}}
-  
+
   }
 }
 
 \section{Extends}{
-  
+
   Class \code{"\linkS4class{NumericTrack}"}, directly.
-  
+
   Class \code{"\linkS4class{RangeTrack}"}, by class "NumericTrack", distance 2.
-  
+
   Class \code{"\linkS4class{GdObject}"}, by class "NumericTrack", distance 3.
-  
+
 }
 
 \section{Methods}{
-  
+
   In the following code chunks, \code{obj} is considered to be an
   object of class \code{DataTrack}.
-  
+
   \bold{\emph{Exported in the name space:}}
-  
+
   \describe{
-    
+
     \item{[}{\code{signature(x="DataTrack")}: subsetting of the
       object, either to a subet of coordinates, or to a subset of
       samples.
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{i}, \code{j}: subsetting indices for coordinates
 	  (\code{i}) or samples (\code{j}).}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{obj[1:3,]}}
-	
+
 	\item{}{\code{obj[,2:4]}}
-	
+
       }
     }
-    
+
     \item{values}{\code{signature(x="DataTrack")}: return the raw data
       values of the object, i.e., the data matrix in the \code{data}
       slot.
-      
+
       \emph{Usage:}
-      
+
       \code{values(x)}
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{values(obj)}}
-	
+
       }
     }
 
      \item{values<-}{\code{signature(x="DataTrack")}: replace the data
       matrix in the \code{data} slot.
-      
+
       \emph{Usage:}
-      
+
       \code{values<-(x, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{values(obj) <- matrix(1:10, ncol=2)}}
-	
+
       }
     }
-    
+
     \item{score}{\code{signature(x="DataTrack")}: return processed data
       values of the object exactly like they would be plotted to the
       device (modulo any potential aggregration or collapsing), i.e.,
       the raw data with optional transformations applied.
-      
+
       \emph{Usage:}
-      
+
       \code{score(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{from}, \code{to}: restrict to data
 	  within a certain coordinates range.}
-	
+
 	\item{}{\code{sort}: sort the return values by
 	  coordinates. This is usually not necessary since the data
 	  should already be ordererd, however this is not formaly
 	  checked anywhere and some operations strictly depend on
 	  ordered data.}
-	
+
 	\item{}{\code{transformation}: apply a data transformation
 	  in case one is defined as the \code{transformation} display
 	  parameter.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{score(obj)}}
-	
+
 	\item{}{\code{score(obj, from=100, to=10000)}}
-	
+
 	\item{}{\code{score(obj, sort=TRUE, transformation=FALSE)}}
-	
+
       }
     }
-      
+
     \item{split}{\code{signature(x="DataTrack")}: split a
       \code{DataTrack} object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
       operation is a list of \code{DataTrack} objects.
 
       \emph{Usage:}
-      
+
       \code{split(x, f, ...)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{f}: the splitting factor.}
-	
+
 	\item{}{\code{\dots}: all further arguments are ignored.}
-	
+
       }
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
-	
+
       }
     }
-    
+
     \item{range, ranges}{\code{signature(x="DataTrack")}: return the genomic
       coordinates for the track as an object of class
       \code{\linkS4class{IRanges}}.
-      
+
       \emph{Usage:}
-      
+
       \code{range(x)}
-      
+
        \code{ranges(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{range(obj)}}
 
 	\item{}{\code{ranges(obj)}}
@@ -440,81 +440,81 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
       two.
-      
+
       \emph{Usage:}
-      
+
       \code{strand(x)}
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{strand(obj)}}
 
       }
     }
-    
+
     \item{strand<-}{\code{signature(x="DataTrack")}: replace the
       strand information for the track items. The replacement value
       needs to be an appropriate scalar or vector of strand values.
-      
+
       \emph{Usage:}
-      
+
       \code{strand<-(x, value)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{strand(obj) <- "+"}}
 
       }
     }
-    
+
     \item{feature}{\code{signature(GdObject="DataTrack")}: returns NULL
       since there is no grouping information for the ranges in a
       \code{DataTrack}.
-      
+
       \emph{Usage:}
-      
+
       \code{feature(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{feature(obj)}}
 
       }
     }
-    
+
     \item{feature<-}{\code{signature(gdObject="DataTrack",
       value="character")}: this return the unaltered input object since
       there  is no grouping information for the ranges in a
       \code{DataTrack}.
-      
+
       \emph{Usage:}
-      
+
       \code{feature<-(GdObject, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
@@ -522,11 +522,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       }
     }
   }
-	
+
   \bold{\emph{Internal methods:}}
 
   \describe{
-  
+
     \item{collapseTrack}{\code{signature(gdObject="DataTrack")}:
       preprocess the track before plotting. This will collapse
       overlapping track items based on the available resolution and
@@ -537,26 +537,26 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \emph{Usage:}
 
       \code{collapseTrack(GdObject, diff=.pxResolution(coord="x"))}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{diff}: the minimum pixel width to display,
 	  everything below that will be inflated to a width of
 	  \code{diff}.}
-	
+
       }
 
       \emph{Examples:}
-      
+
       \describe{
-  
+
 	\item{}{\code{Gviz:::collapseTrack(obj)}}
-  
+
       }
     }
-    
+
     \item{drawGD}{\code{signature(GdObject="DataTrack")}: plot the
       object to a graphics device. The return value of this method is
       the input object, potentially updated during the plotting
@@ -567,16 +567,16 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.
-      
+
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
 	subset=TRUE, ...)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
 	  plot.}
 
@@ -589,70 +589,70 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 	\item{}{\code{\dots}: all further arguments are ignored.}
 
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{Gviz:::drawGD(obj)}}
-	
+
 	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
-	
+
 	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
-	
+
       }
     }
-    
+
     \item{drawAxis}{\code{signature(GdObject="DataTrack")}: add a y-axis
       to the title panel of a track.
 
       \emph{Usage:}
-      
+
       \code{drawAxis(GdObject, from, to, ...)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{from}, \code{to}: compute axis range from the data
 	  within a certain coordinates range only.}
-	
+
 	\item{}{\code{\dots}: all further arguments are ignored.}
-	
+
       }
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
       	\item{}{\code{Gviz:::drawAxis(obj)}}
-	
+
       }
     }
-    
+
     \item{initialize}{\code{signature(.Object="DataTrack")}:
       initialize the object }
-    
+
     \item{show}{\code{signature(object="DataTrack")}: show a
       human-readable summary of the object }
-    
+
   }
-  
+
   \bold{\emph{Inherited methods:}}
-  
+
   \describe{
-    
+
     \item{drawGrid}{\code{signature(GdObject="DataTrack")}:
       superpose a grid on top of a track.
-    
+
       \emph{Usage:}
-      
+
       \code{drawGrid(GdObject, from, to, ...)}
 
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
 
 	\item{}{\code{from}, \code{to}: integer scalars, restrict to
@@ -661,7 +661,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       }
 
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{Gviz:::drawGrid(obj)}}
@@ -673,20 +673,20 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       currently active chromosome for which the track is defined. For
       consistancy with other Bioconductor packages, the
       \code{isActiveSeq} alias is also provided.
-      
+
       \emph{Usage:}
-      
+
       \code{chromosome(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{chromosome(obj)}}
-	
+
       }
     }
-    
+
     \item{chromosome<-}{\code{signature(GdObject="DataTrack")}: replace
       the value of the track's active chromosome. This has to be a valid
       UCSC chromosome identifier or an integer or character scalar that
@@ -694,34 +694,34 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{options(ucscChromosomeNames=FALSE)}. For consistancy with
       other Bioconductor packages, the \code{isActiveSeq<-} alias is
       also provided.
-      
+
       \emph{Usage:}
-      
+
       \code{chromosome<-(GdObject, value)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{chromosome(obj) <- "chr12"}}
-	
+
       }
     }
-    
+
     \item{start, end, width}{\code{signature(x="DataTrack")}: the
       start or end coordinates of the track items, or their width in
       genomic coordinates.
-      
+
       \emph{Usage:}
-      
+
       \code{start(x)}
 
       \code{end(x)}
@@ -729,13 +729,13 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{width(x)}
 
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{start(obj)}}
-	
+
 	\item{}{\code{end(obj)}}
-      
+
 	\item{}{\code{width(obj)}}
 
       }
@@ -744,9 +744,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{start<-, end<-, width<-}{\code{signature(x="DataTrack")}:
       replace the start or end coordinates of the track items, or their
       width.
-      
+
       \emph{Usage:}
-      
+
       \code{start<-(x, value)}
 
       \code{end<-(x, value)}
@@ -754,51 +754,51 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{width<-(x, value)}
 
       \emph{Additional Arguments:}
-      
+
 	\describe{
-	
+
 	  \item{}{\code{value}: replacement value.}
-	  
+
 	}
 
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{start(obj) <- 1:10}}
-      
+
 	\item{}{\code{end(obj) <- 20:30}}
-      
+
 	\item{}{\code{width(obj) <- 1}}
 
       }
     }
-    
+
     \item{position}{\code{signature(GdObject="DataTrack")}: the
       arithmetic mean of the track item's coordionates, i.e.,
       \code{(end(obj)-start(obj))/2}.
 
       \emph{Usage:}
-      
+
       \code{position(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{position(obj)}}
 
       }
     }
-    
-    \item{genome}{\code{signature(x="DataTrack")}: return the track's genome. 
-      
+
+    \item{genome}{\code{signature(x="DataTrack")}: return the track's genome.
+
       \emph{Usage:}
-      
+
       \code{genome(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{genome(obj)}}
@@ -809,23 +809,23 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{genome<-}{\code{signature(x="DataTrack")}: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
       this is not formally enforced here.
-	    
+
       \emph{Usage:}
-      
+
       \code{genome<-(x, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{genome(obj) <- "mm9"}}
 
       }
@@ -833,28 +833,28 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{length}{\code{signature(x="DataTrack")}: return the number
       of items in the track.
-      
+
       \emph{Usage:}
-      
+
       \code{length(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{length(obj)}}
 
       }
     }
-    
+
     \item{coerce}{\code{signature(from="DataTrack",
 	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
 	object in the \code{range} slot into a regular data.frame.
-      
+
        \emph{Examples:}
-      
+
       \describe{
-  
+
 	\item{}{\code{as(obj, "data.frame")}}
 
       }
@@ -862,148 +862,148 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{subset}{\code{signature(x="DataTrack")}: subset a
       \code{NumericTrack} by coordinates and sort if necessary.
-      
+
       \emph{Usage:}
-        
+
       \code{subset(x, from, to, sort=FALSE, drop=TRUE, ...)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{from}, \code{to}: the coordinates range to subset
 	  to.}
-	
+
 	\item{}{\code{sort}: sort the object after subsetting. Usually
 	  not necessary.}
 
 	\item{}{\code{drop}: drop unused regions on the other,
 	  non-active chromosomes.w}
-	
+
 	\item{}{\code{\dots}: additional arguments are ignored.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
-    
+
     \item{displayPars}{\code{signature(x="DataTrack",
       name="character")}: list the value of the display parameter
       \code{name}. See \code{\link{settings}} for details on display
       parameters and customization.
-      
+
       \emph{Usage:}
-      
+
       \code{displayPars(x, name)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{displayPars(obj, "col")}}
-	
+
       }
     }
-      
-    
+
+
     \item{displayPars}{\code{signature(x="DataTrack",
       name="missing")}: list the value of all available display
       parameters. See \code{\link{settings}} for details on display
       parameters and customization.
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{displayPars(obj)}}
 
       }
     }
-    
+
     \item{getPar}{\code{signature(x="DataTrack", name="character")}:
       alias for the \code{displayPars} method. See
       \code{\link{settings}} for details on display parameters and
       customization.
 
       \emph{Usage:}
-      
+
       \code{getPar(x, name)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{getPar(obj, "col")}}
 
       }
     }
-    
+
     \item{getPar}{\code{signature(x="DataTrack", name="missing")}:
       alias for the \code{displayPars} method. See
       \code{\link{settings}} for details on display parameters and
       customization.
-  
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{getPar(obj)}}
 
       }
     }
-    
+
     \item{displayPars<-}{\code{signature(x="DataTrack",
       value="list")}: set display parameters using the values of the
       named list in \code{value}. See \code{\link{settings}} for details
       on display parameters and customization.
-      
+
       \emph{Usage:}
-      
+
       \code{displayPars<-(x, value)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
-    
+
     \item{setPar}{\code{signature(x="DataTrack", value="character")}:
       set the single display parameter \code{name} to \code{value}. Note
       that display parameters in the \code{DataTrack} class are
       pass-by-reference, so no re-assignmnet to the symbol \code{obj} is
       necessary. See \code{\link{settings}} for details on display
       parameters and customization.
-      
+
       \emph{Usage:}
-      
+
       \code{setPar(x, name, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{name}: the name of the display parameter to set.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
-    
+
     \item{setPar}{\code{signature(x="DataTrack", value="list")}: set
       display parameters by the values of the named list in
       \code{value}.  Note that display parameters in the
@@ -1011,62 +1011,62 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       re-assignmnet to the symbol \code{obj} is necessary. See
       \code{\link{settings}} for details on display parameters and
       customization.
-      
-       
+
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
-    
+
     \item{group}{\code{signature(GdObject="DataTrack")}: return
       grouping information for the individual items in the track. Unless
       overwritten in one of the sub-classes, this usualy returns
       \code{NULL}.
-      
+
       \emph{Usage:}
-      
+
       \code{group(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{group(obj)}}
 
       }
     }
-    
+
     \item{names}{\code{signature(x="DataTrack")}: return the value of
       the \code{name} slot.
-      
+
       \emph{Usage:}
-      
+
       \code{names(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{names(obj)}}
 
       }
     }
-    
+
     \item{names<-}{\code{signature(x="DataTrack", value="character")}:
       set the value of the \code{name} slot.
-      
+
       \emph{Usage:}
-      
+
       \code{names<-(x, value)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{names(obj) <- "foo"}}
 
       }
@@ -1074,15 +1074,15 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{coords}{\code{signature(ImageMap="DataTrack")}: return the
       coordinates from the internal image map.
-      
+
       \emph{Usage:}
-      
+
       \code{coords(ImageMap)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{coords(obj)}}
 
       }
@@ -1090,30 +1090,30 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{tags}{\code{signature(x="DataTrack")}: return the tags from the
       internal image map.
-      
+
       \emph{Usage:}
-      
+
       \code{tags(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{tags(obj)}}
 
       }
     }
-  } 
+  }
 }
 
 
-\section{Display Parameters}{ 
+\section{Display Parameters}{
 
   The following display parameters are set for objects of class
   \code{DataTrack} upon instantiation, unless one or more of them have
   already been set by one of the optional sub-class initializers, which
   always get precedence over these global defaults. See \code{\link{settings}}
-  for details on setting graphical parameters for tracks. \describe{ 
+  for details on setting graphical parameters for tracks. \describe{
 
     \item{}{\code{aggregation="mean"}: Function or character scalar.
       Used to aggregate values in windows or for collapsing overlapping
@@ -1123,37 +1123,50 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{mean}, \code{median} \code{sum}, \code{min}, \code{max} or
       \code{extreme} can be supplied as a character scalar. Defaults
       to \code{mean}.}
-    
+
      \item{}{\code{aggregateGroups=FALSE}:Logical scalar. Aggregate the
        values within a sample group using the aggregation function
        specified in the \code{aggregate} parameter.}
 
     \item{}{\code{amount=NULL}: Numeric scalar. Amount of jittering in
-      xy-type plots. See \code{\link{panel.xyplot}} for details.} 
+      xy-type plots. See \code{\link{panel.xyplot}} for details.}
 
     \item{}{\code{baseline=NULL}: Numeric scalar. Y-axis position of
       an optional baseline. This parameter has a special meaning for
       mountain-type and polygon-type plots, see the 'Details' section in
-      \code{\linkS4class{DataTrack}} for more information.} 
+      \code{\linkS4class{DataTrack}} for more information.}
+
+    \item{}{\code{box.legend=FALSE}: Logical scalar. Draw a box around a
+      legend.}
 
     \item{}{\code{box.ratio=1}: Numeric scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{box.width=NULL}: Numeric scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{cex=0.7}: Numeric scalar. The default pixel size for
       plotting symbols.}
+
+     \item{}{\code{cex.legend=1}: Numeric scalar. The size factor for
+       the legend text.}
 
     \item{}{\code{cex.sampleNames=NULL}:Numeric scalar. The size factor
       for the sample names text in heatmap plots. Defaults to an automatic
       setting.}
 
     \item{}{\code{coef=1.5}: Numeric scalar. Parameter controlling the
-      boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+
+     \item{}{\code{col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000",
+	 "orange", "#00ff00", "brown")}: Character or integer
+       vector. The color used for all line and symbol elements, unless
+       there is a more specific control defined elsewhere. Unless
+       \code{groups} are specified, only the first color in the vector
+       is usually regarded.}
 
     \item{}{\code{col.baseline=NULL}: Character scalar. Color for the
-      optional baseline, defaults to the setting of \code{col}.} 
+      optional baseline, defaults to the setting of \code{col}.}
 
     \item{}{\code{col.histogram="#808080"}: Character scalar. Line
       color in histogram-type plots.}
@@ -1162,6 +1175,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       the \code{horizon}-type plot. See \code{\link{horizonplot}} for
       details.}
 
+    \item{}{\code{col.line=NULL}: Character or integer scalar. The
+      color used for line elements. Defaults to the setting of
+      \code{col}.}
+
     \item{}{\code{col.mountain=NULL}: Character scalar. Line color in
       mountain-type and polygon-type plots, defaults to the setting of
       \code{col}.}
@@ -1169,27 +1186,31 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{col.sampleNames="white"}:Character or integer
       scalar. The color used for the sample names in heatmap plots.}
 
+    \item{}{\code{col.symbol=NULL}: Character or integer scalar. The
+      color used for symbol elements. Defaults to the setting of
+      \code{col}.}
+
     \item{}{\code{collapse=FALSE}: Logical scalar. Collapse overlapping
-      ranges and aggregate the underlying data.} 
+      ranges and aggregate the underlying data.}
 
     \item{}{\code{degree=1}: Numeric scalar. Parameter controlling the
       loess calculation for smooth and mountain-type plots. See
-      \code{\link{panel.loess}} for details.} 
+      \code{\link{panel.loess}} for details.}
 
     \item{}{\code{do.out=TRUE}: Logical scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{evaluation=50}: Numeric scalar. Parameter controlling
       the loess calculation for smooth and mountain-type plots. See
-      \code{\link{panel.loess}} for details.} 
+      \code{\link{panel.loess}} for details.}
 
     \item{}{\code{factor=0.5}: Numeric scalar. Factor to control amount
       of jittering in xy-type plots. See \code{\link{panel.xyplot}}
-      for details.} 
+      for details.}
 
     \item{}{\code{family="symmetric"}: Character scalar. Parameter
       controlling the loess calculation for smooth and mountain-type
-      plots. See \code{\link{panel.loess}} for details.} 
+      plots. See \code{\link{panel.loess}} for details.}
 
     \item{}{\code{fill.histogram="lightgray"}: Character scalar. Fill
       color in histogram-type plots, defaults to the setting of
@@ -1202,11 +1223,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       colors for positive changes, and the latter three entries are
       the colors for negative changes. Defaults to a red-blue color
       scheme. See \code{\link{horizonplot}} for details.}
-    
+
     \item{}{\code{fill.mountain=c("#CCFFFF", "#FFCCFF")}: Character
       vector of length 2. Fill color in mountain-type and polygon-type
       plots.}
-    
+
     \item{}{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF",
       "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C",
       "#08306B")}: Character vector. The base colors for the
@@ -1227,54 +1248,54 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{horizon.origin=0}: The baseline relative to which
       changes are indicated on the \code{horizon}-type plot. See
       \code{\link{horizonplot}} for details.}
- 
+
     \item{}{\code{horizon.scale=NULL}:The scale for each of the segments
       in the \code{horizon}-type plot. Defaults to 1/3 of the absolute
       data range. See \code{\link{horizonplot}} for details.}
-  
+
     \item{}{\code{jitter.x=FALSE}: Logical scalar. Toggle on jittering
       on the x axis in xy-type plots. See \code{\link{panel.xyplot}}
-      for details.} 
+      for details.}
 
     \item{}{\code{jitter.y=FALSE}: Logical scalar. Toggle off jittering
       on the y axis in xy-type plots. See \code{\link{panel.xyplot}}
-      for details.} 
+      for details.}
 
     \item{}{\code{levels.fos=NULL}: Numeric scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{lty.baseline=NULL}: Character or numeric scalar. Line
       type of the optional baseline, defaults to the setting of
-      \code{lty}.} 
+      \code{lty}.}
 
     \item{}{\code{lty.mountain=NULL}: Character or numeric scalar. Line
       type in mountain-type and polygon-type plots, defaults to the
-      setting of \code{lty}.} 
+      setting of \code{lty}.}
 
     \item{}{\code{lwd.baseline=NULL}: Numeric scalar. Line width of
-      the optional baseline, defaults to the setting of \code{lwd}.} 
+      the optional baseline, defaults to the setting of \code{lwd}.}
 
     \item{}{\code{lwd.mountain=NULL}: Numeric scalar. Line width in
       mountain-type and polygon-type plots, defaults to the setting of
-      \code{lwd}.} 
+      \code{lwd}.}
 
     \item{}{\code{min.distance=0}: Numeric scalar. The mimimum distance
-      in pixel below which to collapse ranges.} 
+      in pixel below which to collapse ranges.}
 
     \item{}{\code{na.rm=FALSE}: Boolean controlling whether to discard
-      all NA values when plotting or to keep empty spaces for NAs} 
+      all NA values when plotting or to keep empty spaces for NAs}
 
     \item{}{\code{ncolor=100}: Integer scalar. The number of colors
-      for the 'gradient' plotting type} 
+      for the 'gradient' plotting type}
 
     \item{}{\code{notch=FALSE}: Logical scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{notch.frac=0.5}: Numeric scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{pch=20}: Integer scalar. The type of glyph used for
-      plotting symbols.} 
+      plotting symbols.}
 
     \item{}{\code{separator=0}: Numeric scalar. Number of pixels used
       to separate individual samples in heatmap-type plots.}
@@ -1282,28 +1303,32 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{showSampleNames=FALSE}:Boolean. Display the names of
       the individual samples in a heatmap plot.}
 
+    \item{}{\code{showColorBar=TRUE}: Boolean. Indicate the data range
+      color mapping in the axis for '
+      \code{heatmap} or \code{gradient} types.}
+
     \item{}{\code{size=NULL}: Numeric scalar. The relative size of the
       track. Can be overridden in the \code{\link{plotTracks}} function.
       By default the size will be set automatically based on the selected
-      plotting type.} 
+      plotting type.}
 
     \item{}{\code{span=0.2}: Numeric scalar. Parameter controlling the
       loess calculation for smooth and mountain-type plots. See
-      \code{\link{panel.loess}} for details.} 
+      \code{\link{panel.loess}} for details.}
 
     \item{}{\code{stackedBars=TRUE}: Logical scalar. When there are
       several data groups, draw the histogram-type plots as stacked
-      barplots or grouped side by side.} 
+      barplots or grouped side by side.}
 
     \item{}{\code{stats=X[[44]]}: Function. Parameter controlling the
-      boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{transformation=NULL}: Function. Applied to the data
       matrix prior to plotting or when calling the \code{score} method.
       The function should accept exactly one input argument and its
       return value needs to be a numeric vector which can be coerced
       back into a data matrix of identical dimensionality as the input
-      data.} 
+      data.}
 
     \item{}{\code{type="p"}: Character vector. The plot type, one or
       several in \code{c("p","l", "b", "a", "s", "g", "r", "S", "smooth",
@@ -1313,7 +1338,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       individual plotting types.}
 
     \item{}{\code{varwidth=FALSE}: Logical scalar. Parameter controlling
-      the boxplot appearance. See \code{\link{panel.bwplot}} for details.} 
+      the boxplot appearance. See \code{\link{panel.bwplot}} for details.}
 
     \item{}{\code{window=NULL}: Numeric or character scalar. Aggregate
       the rows values of the data matrix to \code{window} equally sized
@@ -1322,143 +1347,143 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       using the mean aggregation method. Alternatively, the special
       value \code{auto} causes the function to determine the optimal
       window size to avoid overplotting, and \code{fixed} uses
-      fixed-size windows of size \code{windowSize}.} 
+      fixed-size windows of size \code{windowSize}.}
 
     \item{}{\code{windowSize=NULL}: Numeric scalar. The size of the
-      running window when the value of \code{window} is negative.} 
+      running window when the value of \code{window} is negative.}
 
     \item{}{\code{ylim=NULL}: Numeric vector of length 2. The range of
-      the y-axis scale.} 
+      the y-axis scale.}
 
-  } 
+  }
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{DataTrack} objects. 
+  plotting of \code{DataTrack} objects.
 
-    \describe{ 
+    \describe{
 
-    \item{}{\code{\linkS4class{GdObject}}: 
+    \item{}{\code{\linkS4class{GdObject}}:
 
-      \describe{ 
+      \describe{
 
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
-          all track items.} 
+          all track items.}
 
         \item{}{\code{background.panel="transparent"}: Integer or
-          character scalar. The background color of the content panel.} 
+          character scalar. The background color of the content panel.}
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.} 
+          scalar. The background color for the title panels.}
 
         \item{}{\code{col.border.title="transparent"}: Integer or character
-          scalar. The border color for the title panels.}  
+          scalar. The border color for the title panels.}
 
         \item{}{\code{lwd.border.title=1}: Integer scalar. The border
           width for the title panels.}
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.} 
+          which case it is computed based on the available space.}
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
           the title and the axis, if any. Defaults to \code{NULL},
           which means that the text size is automatically adjusted to
-          the available space.} 
+          the available space.}
 
         \item{}{\code{col="#0080FF"}: Integer or character scalar.
           Default line color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.} 
+          there is a more specific control defined elsewhere.}
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
-          The font and line color for the y axis, if any.} 
+          The font and line color for the y axis, if any.}
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
-          \code{frame==TRUE}} 
+          \code{frame==TRUE}}
 
         \item{}{\code{col.grid="#808080"}: Integer or character scalar.
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.} 
+          \code{grid==TRUE}.}
 
         \item{}{\code{col.line=NULL}: Integer or character scalar.
           Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.} 
+          \code{col} parameter.}
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the
-          global \code{col} parameter.} 
+          global \code{col} parameter.}
 
         \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.} 
+          The font color for the title panels.}
 
         \item{}{\code{fill="lightgray"}: Integer or character scalar.
           Default fill color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.} 
+          there is a more specific control defined elsewhere.}
 
         \item{}{\code{fontcolor="black"}: Integer or character scalar.
-          The font color for all text.} 
+          The font color for all text.}
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text.} 
+          font face for all text.}
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
-          The font face for the title panels.} 
+          The font face for the title panels.}
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.} 
+          The font family for all text.}
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
-          scalar. The font family for the title panels.} 
+          scalar. The font family for the title panels.}
 
         \item{}{\code{fontsize=12}: Numeric scalar. The font size for
-          all text.} 
+          all text.}
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
-          track when plotting.} 
+          track when plotting.}
 
         \item{}{\code{grid=FALSE}: Boolean, switching on/off the plotting
-          of a grid.} 
+          of a grid.}
 
         \item{}{\code{h=-1}: Integer scalar. Parameter controlling the
           number of horizontal grid lines, see \code{\link{panel.grid}}
-          for details.} 
+          for details.}
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.} 
+          height for all text.}
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
-          specific control defined elsewhere.} 
+          specific control defined elsewhere.}
 
         \item{}{\code{lty.grid="solid"}: Integer or character scalar.
           Default line type for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.} 
+          \code{grid==TRUE}.}
 
         \item{}{\code{lwd=1}: Numeric scalar. Default line width setting
           for all plotting elements, unless there is a more specific
-          control defined elsewhere.} 
+          control defined elsewhere.}
 
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
-          and when display parameter \code{grid==TRUE}.} 
+          and when display parameter \code{grid==TRUE}.}
 
         \item{}{\code{min.height=3}: Numeric scalar. The minimum range
           height in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.} 
+          for details.}
 
         \item{}{\code{min.width=1}: Numeric scalar. The minimum range
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.} 
+          for details.}
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
-          implemented).} 
+          implemented).}
 
         \item{}{\code{showTitle=TRUE}: Boolean controlling whether to
           plot a title panel. Although this can be set individually
@@ -1467,17 +1492,17 @@ name="DataTrack", importFunction, stream=FALSE, ...)
           placeholder in case any of the other tracks include a title.
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
-          completely hide it.} 
+          completely hide it.}
 
         \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
           number of vertical grid lines, see \code{\link{panel.grid}}
-          for details.} 
+          for details.}
 
-      } 
+      }
 
-    } 
+    }
 
-  } 
+  }
 
 }
 
@@ -1489,9 +1514,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
   thereof. Supported plotting types are:
 
   \describe{
-    
+
     \item{}{\code{p}: simple xy-plot.}
-    
+
     \item{}{\code{l}: lines plot. In the case of multiple samples this
       plotting type is not overly usefull since the points in the data
       matrix are connected in column-wise order. Type \code{a} might be
@@ -1510,10 +1535,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       added by using the \code{grid} display parameter.}
 
     \item{}{\code{r}: add a regression line to the plot.}
-    
+
     \item{}{\code{h}: histogram-like vertical lines centered in the
       middle of the coordinate ranges.}
-        
+
     \item{}{\code{smooth}: add a loess fit to the plot. The following
       display parameters can be used to control the loess calculation:
       \code{span, degree, family, evaluation}. See
@@ -1544,8 +1569,8 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       following display parameters: \code{box.ratio, box.width, varwidt,
       notch, notch.frac, levels.fos, stats, coef, do.out}. See
       \code{\link{panel.bwplot}} for details.}
-    
-    
+
+
     \item{}{\code{gradient}: collapse the data across samples and plot this
       average value as a color-coded gradient. Essenitally this is
       similar to the heatmap-type plot of a single sample. The layout of
@@ -1553,7 +1578,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \code{ncolor} and \code{gradient} which control the number of
       gradient colors as well as the gradient base colors,
       respectively.}
-    
+
     \item{}{\code{heatmap}: plot the color-coded values for all samples
       in the form of a heatmap. The data for individual samples can be
       visually separated by setting the \code{separator} display
@@ -1571,7 +1596,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       note that the \code{origin} and \code{horizonscale} arguments of
       the Lattice \code{horizonplot} function are available as display
       parameters \code{horizon.origin} and \code{horizon.scale}.}
-    
+
   }
 
   For some of the above plotting-types the \code{groups} display
@@ -1598,7 +1623,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
   mean values for each sample. Note that the predefined options can be
   much faster because they are optimized to work on large numeric
   tables.
-  
+
 }
 
 \author{Florian Hahne}
