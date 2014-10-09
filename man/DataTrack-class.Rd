@@ -23,7 +23,7 @@
 \alias{strand,DataTrack-method}
 \alias{subset,DataTrack-method}
 \alias{subset,ReferenceDataTrack-method}
-\alias{strand<-,DataTrack-method}
+\alias{strand<-,DataTrack,ANY-method}
 \alias{coerce,DataTrack,data.frame-method}
 \alias{coerce,GRanges,DataTrack-method}
 

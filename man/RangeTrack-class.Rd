@@ -37,7 +37,7 @@
 \alias{start,RangeTrack-method}
 \alias{start<-,RangeTrack-method}
 \alias{strand,RangeTrack-method}
-\alias{strand<-,RangeTrack-method}
+\alias{strand<-,RangeTrack,ANY-method}
 \alias{values,RangeTrack-method}
 \alias{width,RangeTrack-method}
 \alias{width<-,RangeTrack-method}
