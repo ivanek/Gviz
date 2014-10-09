@@ -1560,7 +1560,7 @@ the \Rpackage{GenomicFeatures} package.
 
 <<tdb2grt1>>=
 library(GenomicFeatures)
-samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
+samplefile <- system.file("extdata", "hg19_knownGene_sample.sqlite", package="GenomicFeatures")
 txdb <- loadDb(samplefile)
 GeneRegionTrack(txdb)
 @
@@ -1573,7 +1573,7 @@ from the \Rclass{TxDb} object. Please note that while the
 or \Rfunarg{end} without the chromosome information will not work.
 
 <<tdb2grt2>>=
-txTr <- GeneRegionTrack(txdb, chromosome="chr6", start=300000, end=350000)
+txTr <- GeneRegionTrack(txdb, chromosome="chr6", start=35000000, end=40000000)
 @
 
 A nice bonus when building \Rclass{GeneRegionTracks} from

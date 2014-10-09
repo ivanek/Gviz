@@ -1782,11 +1782,10 @@ grTrack <- GeneRegionTrack(cyp2b10)
 
 ## From a TxDb object
 if(require(GenomicFeatures)){
-samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
+samplefile <- system.file("extdata", "hg19_knownGene_sample.sqlite", package="GenomicFeatures")
 txdb <- loadDb(samplefile)
 GeneRegionTrack(txdb)
-GeneRegionTrack(txdb, chromosome="chr6", start=300000,
-end=350000)
+GeneRegionTrack(txdb, chromosome="chr6", start=35000000, end=40000000)
 }
 
 
