@@ -23,7 +23,7 @@
 \alias{strand,DataTrack-method}
 \alias{subset,DataTrack-method}
 \alias{subset,ReferenceDataTrack-method}
-\alias{strand<-,DataTrack,ANY-method}
+\alias{strand<-,DataTrack-method}
 \alias{coerce,DataTrack,data.frame-method}
 \alias{coerce,GRanges,DataTrack-method}
 
@@ -1128,6 +1128,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
        values within a sample group using the aggregation function
        specified in the \code{aggregate} parameter.}
 
+     \item{}{\code{alpha.confint=0.3}: Numeric scalar. The tranasparency
+       for the confidence intervalls in confint-type plots.}
+
     \item{}{\code{amount=NULL}: Numeric scalar. Amount of jittering in
       xy-type plots. See \code{\link{panel.xyplot}} for details.}
 
@@ -1167,6 +1170,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
     \item{}{\code{col.baseline=NULL}: Character scalar. Color for the
       optional baseline, defaults to the setting of \code{col}.}
+
+    \item{}{\code{col.confint=NA}: Character vector. Border colors for
+      the confidence intervals for confint-type plots.
+    }
 
     \item{}{\code{col.histogram="#808080"}: Character scalar. Line
       color in histogram-type plots.}
@@ -1211,6 +1218,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{family="symmetric"}: Character scalar. Parameter
       controlling the loess calculation for smooth and mountain-type
       plots. See \code{\link{panel.loess}} for details.}
+
+    \item{}{\code{fill.confint=NA}: Character vector. Fill colors for
+      the confidence intervals for confint-type plots.
+    }
 
     \item{}{\code{fill.histogram="lightgray"}: Character scalar. Fill
       color in histogram-type plots, defaults to the setting of
@@ -1331,11 +1342,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       data.}
 
     \item{}{\code{type="p"}: Character vector. The plot type, one or
-      several in \code{c("p","l", "b", "a", "s", "g", "r", "S", "smooth",
-      "histogram", "mountain", "polygon", "h", "boxplot", "gradient",
-      "heatmap", "horizon")}. See 'Details' section in
-      \code{\linkS4class{DataTrack}} for more information on the
-      individual plotting types.}
+      several in \code{c("p","l", "b", "a", "s", "g", "r", "S",
+      "confint", "smooth", "histogram", "mountain", "polygon", "h",
+      "boxplot", "gradient", "heatmap", "horizon")}. See 'Details'
+      section in \code{\linkS4class{DataTrack}} for more information on
+      the individual plotting types.}
 
     \item{}{\code{varwidth=FALSE}: Logical scalar. Parameter controlling
       the boxplot appearance. See \code{\link{panel.bwplot}} for details.}

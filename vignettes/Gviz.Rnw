@@ -773,9 +773,9 @@ control the track's look and feel. The most important one is the
 takes one or several of the following values:
 
 <<<types, echo=FALSE, results=tex>>=
-types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "smooth", "histogram", "mountain", "polygon", "boxplot", "gradient", "heatmap", "horizon"),
+types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "confint", "smooth", "histogram", "mountain", "polygon", "boxplot", "gradient", "heatmap", "horizon"),
                     Type=c("dot plot", "lines plot", "dot and lines plot", "lines plot of average (i.e., mean) values", "stair steps (horizontal first)",
-                           "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "add loess curve",
+                           "stair steps (vertical first)", "add grid lines", "add linear regression line", "histogram lines", "confidence intervals for average values", "add loess curve",
                            "histogram (bar width equal to range with)", "'mountain-type' plot relative to a baseline",
                            "'polygon-type' plot relative to a baseline", "box and whisker plot",
                            "false color image of the summarized values", "false color image of the individual values",
@@ -851,7 +851,7 @@ different sample groups with three replicates each, and we could easily
 integrate this information into our plot.
 
 <<grouping, fig=TRUE, results=hide, width=7.5, height=1.5>>=
-plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("a", "p"))
+plotTracks(dTrack, groups=rep(c("control", "treated"), each=3), type=c("a", "p", "confint"))
 @
 
 For the dot plot representation the individual group levels are
@@ -867,10 +867,10 @@ more display parameters that control the layout of both grouped and of
 ungrouped \Rclass{DataTracks}. You may want to check the class' help
 page for details.
 
-<<typeGroupedPlots, fig=TRUE, width=7.5, height=5.6, echo=FALSE, results=hide>>=
-pushViewport(viewport(layout=grid.layout(nrow=8, ncol=1)))
+<<typeGroupedPlots, fig=TRUE, width=7.5, height=6, echo=FALSE, results=hide>>=
+pushViewport(viewport(layout=grid.layout(nrow=9, ncol=1)))
 i <- 1
-for(t in c("a", "s", "smooth", "histogram", "boxplot", "heatmap", "horizon"))
+for(t in c("a", "s", "confint", "smooth", "histogram", "boxplot", "heatmap", "horizon"))
 {
     pushViewport(viewport(layout.pos.col=((i-1)%%1)+1, layout.pos.row=((i-1)%/%1)+1))
     if(t != "horizon"){

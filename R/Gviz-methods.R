@@ -2939,6 +2939,16 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         }
         popViewport(1)
     }
+
+    ## plot key-value pairs defined here.
+    plot_args <- list(type=type, groups=groups, pch=pcols$pch,
+                      col=pcols$col, col.line=pcols$col.line, col.symbol=pcols$col.symbol, fill=pcols$fill,
+                      font=font, fontfamily=font, fontface=fontface, lty=pcols$lty, cex=pcols$cex, lwd=pcols$lwd, horizontal=FALSE,
+                      span=span, degree=degree, family=family, evaluation=evaluation,
+                      jitter.x=.dpOrDefault(GdObject, "jitter.x", FALSE), jitter.y=.dpOrDefault(GdObject, "jitter.y", FALSE),
+                      factor=.dpOrDefault(GdObject, "factor", 0.5), amount=.dpOrDefault(GdObject, "amount"),
+                      alpha=alpha)
+
     ## The rest uses the lattice panel function
     na.rm <- .dpOrDefault(GdObject, "na.rm", FALSE)
     sel <- is.na(y)
@@ -2948,15 +2958,121 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         y <- y[!sel]
         groups <- groups[!sel]
     }
-    panel.xyplot(x, y, type=type, groups=groups, pch=pcols$pch, col=pcols$col, col.line=pcols$col.line, col.symbol=pcols$col.symbol,
-                 font=font, fontfamily=font, fontface=fontface, lty=pcols$lty, cex=pcols$cex, fill=pcols$fill, lwd=pcols$lwd, horizontal=FALSE,
-                 span=span, degree=degree, family=family, evaluation=evaluation,
-                 jitter.x=.dpOrDefault(GdObject, "jitter.x", FALSE), jitter.y=.dpOrDefault(GdObject, "jitter.y", FALSE),
-                 factor=.dpOrDefault(GdObject, "factor", 0.5), amount=.dpOrDefault(GdObject, "amount"),
-                 subscripts=seq_along(x), alpha=alpha)
+    plot_args[["x"]] <- x;
+    plot_args[["y"]] <- y;
+    plot_args[["subscripts"]]   <- seq_along(x);
+
+    ## confidence interval bands
+    if ("confint" %in% type) {
+        ## column-wise SD calculation
+        vectorizedSD <- function(mat) {
+            ssq <- colSums(mat^2)
+            sumel <- colSums(mat)
+            N <- nrow(mat)
+            var <- (1/(N-1))*(ssq - (sumel^2)/N)
+            return(sqrt(var))
+        }
+        debugMode <- FALSE
+
+    	my.panel.bands <- function(df, col, fill, font, fontface,...){
+            upper   <- df$high;
+            lower   <- df$low;
+            x       <- df$x; y  <- df$y;
+            na_idx <- which(is.na(upper))
+            ## case 1. there are no error bars to plot at all
+            if (length(na_idx) == length(upper)) {
+                if (debugMode) cat("\t Case 1: all empty. returning\n")
+                return(TRUE)
+                ## case 2. no missing points
+            } else if (length(na_idx)<1) {
+                if (debugMode) cat("\t Case 2: one continuous polygon\n")
+                panel.polygon(c(x, rev(x)), c(upper,rev(lower)),
+                                border=col, col=fill, alpha=alpha, ...)
+                ## case 3. have complete data with some or no missing points
+            } else {
+                curr_start <-min(which(!is.na(upper)))
+                if (debugMode) cat(sprintf("\t Case 3: %i of %i NA\n", length(na_idx), length(upper)))
+                curr_na_pos <- 1
+                while(curr_na_pos <= length(na_idx)) {
+                    if (debugMode) cat(sprintf("\t\tcurr_na_pos = %i, na_idx length= %i\n", curr_na_pos, length(na_idx)))
+                    ## complete the current poly
+                    idx <- curr_start:(na_idx[curr_na_pos]-1)
+                    panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx],rev(lower[idx])),
+                                  col=fill, border=col, alpha=alpha, ...)
+                    ## contiguous empty spots - skip
+                    while ((na_idx[curr_na_pos + 1] == na_idx[curr_na_pos]+1) && (curr_na_pos < length(na_idx))) {
+                        if (debugMode) cat(sprintf("\t\ttight-loop:curr_na_pos = %i\n", curr_na_pos))
+                        curr_na_pos <- curr_na_pos + 1
+                    }
+                    ## at this point, either we've finished NA spots or the next one is far away.
+                    ## In any case start a poly and move to the next NA spot
+                    curr_start <- na_idx[curr_na_pos] + 1;
+                    curr_na_pos <- curr_na_pos + 1
+                }
+                ## there is one last polygon at the end of the view range
+                if (na_idx[length(na_idx)] < length(upper)) {
+                    if (debugMode) cat("\tWrapping last polygon\n")
+                    idx <- curr_start:length(upper)
+                    panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx],rev(lower[idx])),
+                                  col=fill, border=col, alpha=alpha, ...)
+                }
+            }
+        }
+
+        fill <- .dpOrDefault(GdObject, "fill.confint", pcols$col)
+        col <- .dpOrDefault(GdObject, "col.confint", pcols$col)
+        alpha <- .dpOrDefault(GdObject, "alpha.confint")
+        outg <- NULL
+
+        if (!is.null(groups)){
+            groups <- .dpOrDefault(GdObject,"groups")
+            by <- lapply(split(vals, groups), matrix, ncol=ncol(vals))
+            mu <- list(); confint <- list()
+            minnie <- Inf; maxie <- -Inf;
+
+            df <- NULL
+            outPlot <- NULL
+            mu <- list(); confint <- list()
+            xvals <- position(GdObject)
+
+            ## buffer variation to set final limits
+            for (j in seq_along(by)) {
+                mu[[j]] <- colMeans(by[[j]],na.rm=TRUE)
+                locusSD <- vectorizedSD(by[[j]])
+                confint[[j]] <- 1.96*(locusSD/sqrt(nrow(by[[j]])))
+
+                curr_low <- mu[[j]]-confint[[j]]
+                curr_high <- mu[[j]]+confint[[j]]
+                minnie <- min(c(minnie, curr_low))
+                maxie <- max(c(maxie, curr_high))
+            }
+
+            names(fill) <- NULL
+            for (j in seq_along(by)) {
+                g <- names(by)[j]
+                if (debugMode) print(g)
+                df <- data.frame(x=position(GdObject), y=mu[[j]],
+                                 low=mu[[j]]-confint[[j]], high=mu[[j]]+confint[[j]],
+                                 groups=factor(g))
+                my.panel.bands(df, col[j], fill[j], alpha, ...)
+            }
+        } else {
+            mu <- colMeans(vals,na.rm=TRUE)
+            locusSD <- vectorizedSD(vals)
+            confint <- 1.96*(locusSD/sqrt(nrow(vals)))
+
+            df <- data.frame(x=position(GdObject), y=mu,
+                             low=mu-confint, high=mu+confint,
+                             groups=factor(1));
+
+            my.panel.bands(df, col[1], fill[1], alpha, ...)
+        }
+    }
+    do.call("panel.xyplot", plot_args)
     if(!any(c("mountain","polygon") %in% type) && !is.null(baseline) && !is.na(baseline))
         panel.abline(h=baseline, col=pcols$col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
     popViewport(1)
+
     return(invisible(GdObject))
 })
 ##----------------------------------------------------------------------------------------------------------------------------

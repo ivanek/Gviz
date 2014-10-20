@@ -10,7 +10,7 @@
 .DEFAULT_LINE_COL <- "darkgray"
 .PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
                   "smooth", "polygon", "horizon", "histogram",
-                  "mountain", "h", "boxplot", "gradient", "heatmap")
+                  "mountain", "h", "boxplot", "gradient", "heatmap", "confint")
 .ALIGNMENT_TYPES <- c("coverage", "pileup")
 .THIN_BOX_FEATURES <- c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA",
                         "three_prime_UTR", "five_prime_UTR")
@@ -1415,8 +1415,8 @@ addScheme <- function(scheme, name){
 
 .legendInfo <- function()
 {
-    legInfo <- matrix(FALSE, ncol=7, nrow=16, dimnames=list(c("p", "b", "l", "a", "s", "S", "r", "h", "smooth",
-                                                              "histogram", "boxplot", "heatmap", "gradient", "mountain", "g", "horizon"),
+    legInfo <- matrix(FALSE, ncol=7, nrow=17, dimnames=list(c("p", "b", "l", "a", "s", "S", "r", "h", "smooth",
+                                                              "histogram", "boxplot", "heatmap", "gradient", "mountain", "g", "horizon","confint"),
                                                             c("lty", "lwd", "pch", "col", "cex", "col.lines", "col.symbol")))
     legInfo[2:9, c("lty", "lwd", "col.lines")] <- TRUE
     legInfo[1:2, c("pch", "cex", "col.symbol")] <- TRUE
