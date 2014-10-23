@@ -1016,7 +1016,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
     if (!is.null(.Object@biomart))
     {
         attributes <- c("ensembl_gene_id","ensembl_transcript_id","ensembl_exon_id","exon_chrom_start",
-                        "exon_chrom_end", "rank", "strand", "external_gene_id", "gene_biotype", "chromosome_name",
+                        "exon_chrom_end", "rank", "strand", "external_gene_name", "gene_biotype", "chromosome_name",
                         "5_utr_start", "5_utr_end", "3_utr_start", "3_utr_end", "phase")
         filterNames <- c("chromosome_name", "start", "end", names(filters))
         filterValues <- c(list(gsub("^chr", "", chromosome), sstart, send), as.list(filters))
