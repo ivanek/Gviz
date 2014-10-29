@@ -24,7 +24,8 @@
 \usage{
 
 BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
-stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
+stacking="squish", filters=list(), name="BiomartGeneRegionTrack",
+featureMap, ...)
 
 }
 
@@ -68,6 +69,10 @@ stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
+
+  \item{featureMap}{Named character vector to map between the fields in
+    the Biomart data base and the features as they are used to construct
+    the track.}
 
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
