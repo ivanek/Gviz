@@ -1668,6 +1668,36 @@ should be used to draw the feature glyphs.
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 @
 
+\subsubsection*{Using custom biomaRt objects for BiomartGeneRegionTracks}
+\mgg tries hard to automatically set up the necessary connection to
+the Biomart service to retrieve the relevant data. Sometimes however
+it can be advantagous to fully control the Biomart connector, for
+instance when trying to retrieve data from an archived Ensembl version
+(by default, \Rpackage{biomaRt} will always link to the most recent
+version). To that end, the \Rfunarg{biomart} parameter can be used to
+supply a \Robject{biomaRt} object. Please note that a data set has to
+be selected in that object. A second prerequesite for this to work is
+that \mgg is able to guess which of the values that are queried
+from the Ensembl data base represent which track feature. If there
+were no changes in the schema of Ensembl, or if the schema for all
+marts was similar this would not be an issue, but that is not the
+case. In the following example we show how to fetch data for the same
+region from the older version Ensembl version 47. The internal
+\Rfunction{.getBMFeatureMap} is helpful to set up the feature mapping
+which is necessary because Esembl used to call the gene symbol field
+\code{external\_gene\_id} in that release.
+
+<<BiomartGeneRegionTrackCustom, width=7.5, height=1.25, fig=TRUE>>=
+library(biomaRt)
+bm <- useMart(host="oct2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
+              dataset="hsapiens_gene_ensembl")
+fm <- Gviz:::.getBMFeatureMap()
+fm["symbol"] <- "external_gene_id"
+biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr7", start=20e6, end=21e6,name="ENSEMBL",
+                                    featureMap=fm, biomart=bm)
+plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
+@
+
 \subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
 
 For a complete listing of all the available display parameters please
