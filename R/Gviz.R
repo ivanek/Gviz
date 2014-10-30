@@ -1480,7 +1480,10 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '", chromosome, "'", sep="")
     }
     if(!is.null(from) || !(is.null(to))){
-        trackList <- lapply(trackList, subset, from=from, to=to, chromosome=chromosome, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
+        trackList <- lapply(trackList, function(x){
+            chromosome(x) <- chromosome
+            subset(x, from=from, to=to, chromosome=chromosome, sort=FALSE, stacks=FALSE, use.defaults=FALSE)
+        })
     }
     trackList <- lapply(trackList, consolidateTrack, chromosome=chromosome, any(.needsAxis(trackList)), any(.needsTitle(trackList)),
                                 title.width, alpha=hasAlpha, ...)
