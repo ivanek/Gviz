@@ -6,6 +6,7 @@ import(IRanges)
 import(XVector)
 import(GenomeInfoDb)
 import(GenomicRanges)
+import(grid)
 
 importClassesFrom(biomaRt, Mart)
 
@@ -46,13 +47,6 @@ importFrom(graphics, par)
 
 importFrom(grDevices, boxplot.stats, col2rgb, colorRampPalette, extendrange,
            hsv, rgb2hsv)
-
-importFrom(grid, convertHeight, convertWidth, convertX, convertY,
-           current.transform, current.viewport, current.vpTree, dataViewport,
-           downViewport, gpar, grid.circle, grid.lines, grid.newpage,
-           grid.polygon, grid.rect, grid.segments, grid.text, grid.yaxis,
-           popViewport, pushViewport, stringHeight, stringWidth, unit,
-           upViewport, viewport)
 
 importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,

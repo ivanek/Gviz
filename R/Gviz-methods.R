@@ -4399,7 +4399,7 @@ setMethod("show",signature(object="AlignedReadTrack"),
 
 setMethod("show", "DisplayPars", function(object) {
     cat("Display parameters:\n")
-    for(i in ls(object@pars))
+    for(i in base::ls(object@pars))
     {
         cat(i, " = ", sep="")
         o <- try(as.character(object@pars[[i]]), silent=TRUE)

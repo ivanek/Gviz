@@ -1198,7 +1198,7 @@
 ## A helper function to be called upon package load that tries to find a stored Gviz scheme in the working directory
 .collectSchemes <- function(){
     try({
-    	if(".GvizSchemes" %in% ls(globalenv(), all.names=TRUE)){
+    	if(".GvizSchemes" %in% base::ls(globalenv(), all.names=TRUE)){
             schemes <- get(".GvizSchemes", globalenv())
             if(is.list(schemes) && !is.null(names(schemes)))
                 lapply(names(schemes), function(x) addScheme(schemes[[x]], x))

@@ -163,7 +163,7 @@ setMethod("getPar", c("DisplayPars", "character"),
               aliasRes[new] <- name[new]
               if(class(x@pars)=="environment")
               {
-                  name <- intersect(aliasRes, ls(x@pars, all.names=TRUE))
+                  name <- intersect(aliasRes, base::ls(x@pars, all.names=TRUE))
                   tmp <- mget(name, x@pars)
               }else{
                   name <- intersect(aliasRes, names(x@pars))
@@ -1005,7 +1005,8 @@ setClass("BiomartGeneRegionTrack",
 }
 
 ## Retrieving information from Biomart.
-setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome, strand, featureMap, ...){
+setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome, strand,
+                                                           featureMap, ...){
     if((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome))
         return(.Object)
     ## the diplay parameter defaults
@@ -1017,7 +1018,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
         return(.Object)
     }
     ## The map between Biomart DB fields and annotation features
-    if(missing(featureMap))
+    if(missing(featureMap) || is.null(featureMap))
         featureMap <- c(gene_id="ensembl_gene_id",transcript_id="ensembl_transcript_id", exon_id="ensembl_exon_id",
                         start="exon_chrom_start", end="exon_chrom_end", rank="rank", strand="strand",
                         symbol="external_gene_name", feature="gene_biotype", chromosome="chromosome_name",
@@ -1107,7 +1108,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
 BiomartGeneRegionTrack <- function(start, end, biomart, chromosome, strand, genome,
-                                   stacking="squish", filters=list(), name="BiomartGeneRegionTrack", ...)
+                                   stacking="squish", filters=list(), featureMap=NULL, name="BiomartGeneRegionTrack", ...)
 {
     ## Some default checking
     .missingToNull(c("genome"))
@@ -1127,7 +1128,7 @@ BiomartGeneRegionTrack <- function(start, end, biomart, chromosome, strand, geno
         biomart <- .genome2Dataset(genome)
     }
     new("BiomartGeneRegionTrack", start=start, end=end, chromosome=chromosome, strand=strand,
-        biomart=biomart, name=name, genome=genome, stacking=stacking, filters=filters, ...)
+        biomart=biomart, name=name, genome=genome, stacking=stacking, filters=filters, featureMap=featureMap, ...)
 }
 
 
@@ -1534,7 +1535,7 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
 .ensemblCache <- new.env()
 .doCache <- function(token, expression, env, callEnv=environment())
 {
-     if(!token %in% ls(env))
+     if(!token %in% base::ls(env))
      {
          res <- eval(expression, envir=callEnv)
          assign(x=token, value=res, envir=env)
