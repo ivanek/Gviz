@@ -1582,16 +1582,22 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
                                              lwd=.dpOrDefault(hlite$track, "lwd", 1),
                                              lty=.dpOrDefault(hlite$track, "lty", 1),
                                              alpha=.dpOrDefault(hlite$track, "alpha", 1),
+                                             inBackground=.dpOrDefault(hlite$track, "inBackground", TRUE),
                                              stringsAsFactors=FALSE))
     }
-    if(nrow(htBoxes)){
-        vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing, xscale=ranges,
-                                              width=1 - spaceSetup$title.width - spaceSetup$spacing*2, just=0) else viewport(width=1, xscale=ranges)
-        pushViewport(vpContent)
-        grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
-                  gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
-        popViewport(1)
+    .drawHtBoxes <- function(htBoxes, background=TRUE){
+        htBoxes <- htBoxes[htBoxes$inBackground == background, , drop=FALSE]
+        if(nrow(htBoxes)){
+            vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing, xscale=ranges,
+                                                  width=1 - spaceSetup$title.width - spaceSetup$spacing*2, just=0) else viewport(width=1, xscale=ranges)
+            pushViewport(vpContent)
+            grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
+                      gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
+            popViewport(1)
+        }
     }
+    if(nrow(htBoxes))
+        .drawHtBoxes(htBoxes)
     ## Now the track content
     for(i in rev(seq_along(expandedTrackList)))
     {
@@ -1646,7 +1652,8 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
             grid.rect(gp=gpar(col=.dpOrDefault(thisTrack, "col.frame", .DEFAULT_SHADED_COL), fill="transparent"))
         popViewport(1)
     }
-
+    if(nrow(htBoxes))
+        .drawHtBoxes(htBoxes, FALSE)
     popViewport(if(panel.only) 1 else 2)
     tc <- as.character(titleCoords[,5])
     tc[which(tc == "" | is.na(tc) | is.null(tc))] = "NA"

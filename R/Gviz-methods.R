@@ -3607,6 +3607,14 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         } else as.numeric(convertHeight(unit(25, "points"), "native"))
         nsp <- nsp/pres["y"]
         displayPars(GdObject) <- list("neededVerticalSpace"=nsp)
+        ## Augment the ranges to fill gaps if there are any
+        gaps <- setdiff(IRanges(0, max(end(range(GdObject)))), range(GdObject))
+        if(length(gaps)){
+            gaps <-  GRanges(seqnames(GdObject)[1], gaps, name=rep(as.character(NA), length(gaps)), type=rep("gneg", length(gaps)))
+            rr <- c(ranges(GdObject), gaps)
+            ranges(GdObject) <- sort(rr)
+
+        }
         return(invisible(GdObject))
     }
     if((is.logical(debug) && debug) || debug=="draw")
