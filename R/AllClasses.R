@@ -2099,7 +2099,8 @@ setClass("HighlightTrack",
          representation=representation(trackList="list"),
          contains=c("RangeTrack"),
          prototype=prototype(dp=DisplayPars(col="red",
-                                            fill="#FFE3E6")))
+                                            fill="#FFE3E6",
+                                            inBackground=TRUE)))
 
 setMethod("initialize", "HighlightTrack", function(.Object, trackList, ...) {
     .Object <- .updatePars(.Object, "HighlightTrack")

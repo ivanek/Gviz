@@ -603,7 +603,8 @@ details <- list(
                 HighlightTrack=c(
 
                                  col="Integer or character scalar. The boder color for the highlighting regions.",
-                                 fill="Integer or character scalar. The fill color for the highlighting regions."
+                                 fill="Integer or character scalar. The fill color for the highlighting regions.",
+                                 inBackground="Logical scalar. Place the box in the background or in the foreground."
 
                                  ),
 
