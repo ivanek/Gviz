@@ -47,7 +47,7 @@ importFrom(graphics, par)
 importFrom(grDevices, boxplot.stats, col2rgb, colorRampPalette, extendrange,
            hsv, rgb2hsv)
 
-importFrom(grid, convertHeight, convertWidth, convertX, convertY,
+importFrom(grid, convertUnit, convertHeight, convertWidth, convertX, convertY,
            current.transform, current.viewport, current.vpTree, dataViewport,
            downViewport, gpar, grid.circle, grid.lines, grid.newpage,
            grid.polygon, grid.rect, grid.segments, grid.text, grid.yaxis,
