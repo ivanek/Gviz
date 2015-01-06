@@ -69,6 +69,7 @@ importFrom(utils, assignInNamespace, browseURL, write.table)
 
 importFrom(GenomicAlignments, extractAlignmentRangesOnReference, sequenceLayer)
 
+importFrom(grid)
 ###
 
 export(".chrName",
