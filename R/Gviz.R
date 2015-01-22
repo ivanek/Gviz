@@ -43,29 +43,33 @@
 
 ## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified
 ## chromosome name as understood by UCSC. Accepted inputs are:
-##    - a single integer or a character coercable to one
+##    - a single integer or a character coercable to one or integer-character combinations
 ##    - a character, starting with 'chr' (case insensitive)
 ## Arguments:
 ##    o x: a character string to be converted to a valid UCSC chromosome name
+##    o force: a logical flag, force prepending of 'chr' if missing
 ## Value: the UCSC character name
-.chrName <- function(x)
+.chrName <- function(x, force=FALSE)
 {
     if(!getOption("ucscChromosomeNames"))
         return(as.character(x))
     xu <- unique(x)
     xum <- sapply(xu, function(y){
         xx <- suppressWarnings(as.integer(y))
-        if(!is.na(xx))
+        if (!is.na(xx))
             y <- xx
         if(is.numeric(y))
-            y <- paste("chr", y, sep="")
-        substring(y, 1,3) <- tolower(substring(y, 1,3))
-        head <- sapply(y, substring, 1,3) == "chr"
-        if(!all(head))
-            stop(sprintf(paste("Invalid chromosome identifier%s '%s'\nPlease consider setting options(ucscChromosomeNames=FALSE)",
-                               "to allow for arbitrary chromosome identifiers."),
-                         ifelse(sum(!head)>1, "s", ""),
-                         paste(y[!head], collapse=", ")))
+            y <- paste("chr", y, sep = "")
+        head <- tolower(substring(y, 1, 3)) == "chr"
+        if(!head && force){
+            y <-  paste("chr", y, sep = "")
+            head <- TRUE
+        }
+        if(!head){
+            stop(sprintf(paste("Invalid chromosome identifier '%s'\nPlease consider setting options(ucscChromosomeNames=FALSE)",
+                "to allow for arbitrary chromosome identifiers."), y))
+        }
+        substring(y, 1, 3) <- tolower(substring(y, 1, 3))
         y})
     names(xum) <- xu
     return(as.vector(xum[as.character(x)]))
@@ -1264,6 +1268,61 @@ addScheme <- function(scheme, name){
 
 
 
+## Tables containing the UCSC to ENSEMBL genome mapping
+.biomartCurrentVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsNow.txt"), package="Gviz"), as.is=TRUE)
+.biomartVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsLatest.txt"), package="Gviz"), as.is=TRUE)
+
+## Helper function to map between UCSC and ENSEMBl genome information
+## Arguments:
+##    o id: character scalar, a UCSC genome identifier
+## Value: a list with ENSEMBL the genome information
+.ucsc2Ensembl <- function(id){
+   mt <- match(tolower(id), tolower(.biomartCurrentVersionTable$ucscId))
+   val <- .biomartCurrentVersionTable[mt, ]
+   if(is.na(mt)){
+       mt <- match(tolower(id), tolower(.biomartVersionTable$ucscId))
+       val <- .biomartVersionTable[mt, c("species", "value", "dataset", "ucscId", "speciesShort", "speciesLong", "date", "version")]
+   }
+   return(as.list(val))
+}
+
+## Helper function to get the ENSEMBL biomart given a UCSC identifier
+## Arguments:
+##    o genome: character scalar, a UCSC genome identifier
+## Value: a biomaRt object
+.getBiomart <- function(genome){
+    map <- .ucsc2Ensembl(genome)
+    if(map$date == "head"){
+        bm <- useMart("ensembl", dataset=map$dataset)
+        ds <- listDatasets(bm)
+        mt <- ds[match(map$dataset, ds$dataset), "version"]
+        if(is.na(mt)){
+            stop(sprintf(paste("Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+                               "\nPlease manually provide biomaRt object"), genome, map$dataset))
+        }
+        if(mt != map$value){
+            stop(sprintf(paste("Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s',",
+                               "but its current version is '%s'.\nPlease manually provide biomaRt object"),
+                         genome, map$value, mt))
+        }
+    }else{
+        bm <- useMart(host=sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed=TRUE))), biomart="ENSEMBL_MART_ENSEMBL", dataset=map$dataset)
+        ds <- listDatasets(bm)
+        mt <- ds[match(map$dataset, ds$dataset), "version"]
+        if(is.na(mt)){
+            stop(sprintf(paste("Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+                               "\nPlease manually provide biomaRt object"), genome, map$dataset))
+        }
+        if(mt != map$value){
+            stop(sprintf(paste("Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
+                               "but its version is '%s'.\nPlease manually provide biomaRt object"),
+                         genome, sub(".", " ", map$date, fixed=TRUE), map$version, map$value, mt))
+        }
+    }
+    return(bm)
+}
+
+
 ## Helper function to translate from a UCSC genome name to a Biomart data set. This also caches the mart
 ## object in order to speed up subsequent calls
 ## Arguments:
@@ -1271,38 +1330,12 @@ addScheme <- function(scheme, name){
 ## Value: A BiomaRt connection object
 .genome2Dataset <- function(genome)
 {
-    ds <- c("mm9"="mmusculus_gene_ensembl",
-            "hg19"="hsapiens_gene_ensembl",
-            "felCat4"="fcatus_gene_ensembl",
-            "galGal3"="ggallus_gene_ensembl",
-            "panTro2"="ptroglodytes_gene_ensembl",
-            "bosTau4"="btaurus_gene_ensembl",
-            "canFam3"="cfamiliaris_gene_ensembl",
-            "loxAfr3"="lafricana_gene_ensembl",
-            "fr2"="trubripes_gene_ensembl",
-            "cavPor3"="cporcellus_gene_ensembl",
-            "equCab2"="ecaballus_gene_ensembl",
-            "anoCar1"="acarolinensis_gene_ensembl",
-            "calJac3"="cjacchus_gene_ensembl",
-            "oryLat2"="olatipes_gene_ensembl",
-            "monDom5"="mdomestica_gene_ensembl",
-            "susScr2"="sscrofa_gene_ensembl",
-            "ornAna1"="oanatinus_gene_ensembl",
-            "oryCun2"="ocuniculus_gene_ensembl",
-            "rn4"="rnorvegicus_gene_ensembl",
-            "gasAcu1"="gaculeatus_gene_ensembl",
-            "tetNig2"="tnigroviridis_gene_ensembl",
-            "xenTro2"="xtropicalis_gene_ensembl",
-            "danRer7"="drerio_gene_ensembl",
-            "ci2"="cintestinalis_gene_ensembl",
-            "dm3"="dmelanogaster_gene_ensembl",
-            "ce6"="celegans_gene_ensembl",
-            "sacCer2"="scerevisiae_gene_ensembl")
-    if(!tolower(genome) %in% tolower(names(ds)))
-        stop("Unable to automatically determine Biomart data set for UCSC genome '", genome, "'")
-    thisDs <- ds[match(tolower(genome), tolower(names(ds)))]
+    map <- .ucsc2Ensembl(genome)
+    if(is.na(map$date)){
+        stop(sprintf("Unable to automatically determine Biomart data set for UCSC genome identifier '%s'.\nPlease manually provide biomaRt object", genome))
+    }
     cenv <- environment()
-    bm <- .doCache(thisDs, expression(useMart("ensembl", dataset=thisDs)), .ensemblCache, cenv)
+    bm <- .doCache(paste(map$dataset, genome, sep="_"), expression(.getBiomart(genome)), .ensemblCache, cenv)
     return(bm)
 }
 

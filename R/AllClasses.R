@@ -706,7 +706,7 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
     if(missing(fun))
     {
         if(!isStream){
-            return(new("AnnotationTrack", chromosome=chromosome[1], range=range,
+            return(new("AnnotationTrack", chromosome=as.character(chromosome[1]), range=range,
                        name=name, genome=genome, stacking=stacking, ...))
         }else{
             ## A bit hackish but for some functions we may want to know which track type we need but at the
@@ -714,7 +714,7 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
             e <- new.env()
             e[["._trackType"]] <- "AnnotationTrack"
             environment(slist[["stream"]]) <- e
-            return(new("ReferenceAnnotationTrack", chromosome=chromosome[1], range=range,
+            return(new("ReferenceAnnotationTrack", chromosome=as.character(chromosome[1]), range=range,
                        name=name, genome=genome, stacking=stacking, stream=slist[["stream"]], reference=slist[["reference"]],
                        mapping=slist[["mapping"]], args=args, defaults=defs, ...))
         }
@@ -725,7 +725,7 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
             selectFun <- function(...) return(TRUE)
         if(!is.function(selectFun))
             stop("'selectFun' must be a function")
-        return(new("DetailsAnnotationTrack", chromosome=chromosome[1], range=range,
+        return(new("DetailsAnnotationTrack", chromosome=as.character(chromosome[1]), range=range,
                    name=name, genome=genome, stacking=stacking, fun=fun, selectFun=selectFun, ...))
     }
 }
@@ -1006,8 +1006,8 @@ setClass("BiomartGeneRegionTrack",
 
 
 ## Retrieving information from Biomart.
-setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome,
-                                                           strand, featureMap, ...){
+setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, biomart, filters=list(), range, genome, chromosome, strand,
+                                                           featureMap, ...){
     if((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome))
         return(.Object)
     ## the diplay parameter defaults
@@ -1018,23 +1018,48 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
         return(.Object)
     }
-    ## The map between Biomart DB fields and annotation features
-    if(missing(featureMap) || is.null(featureMap))
-        featureMap <- c(gene_id="ensembl_gene_id",transcript_id="ensembl_transcript_id", exon_id="ensembl_exon_id",
-                        start="exon_chrom_start", end="exon_chrom_end", rank="rank", strand="strand",
-                        symbol="external_gene_name", feature="gene_biotype", chromosome="chromosome_name",
-                        u5s="5_utr_start", u5e="5_utr_end", u3s="3_utr_start", u3e="3_utr_end", phase="phase")
-    needed <- c("gene_id","transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
-                "chromosome", "u5s", "u5e", "u3s", "u3e", "phase")
-    if(!all(needed %in% names(featureMap)))
-        stop("'featureMap' needs to include items '", paste(setdiff(needed, names(featureMap)), collapse=", "), "'")
-    ## changing start and end positions to capture genes on the edges.
-    sstart <- start - 2000
-    send <- end + 2000
     ## fetching data from Biomart
     .Object@biomart <- biomart
-    if (!is.null(.Object@biomart))
-    {
+    if (!is.null(.Object@biomart)){
+        ## changing start and end positions to capture genes on the edges.
+        sstart <- start - 2000
+        send <- end + 2000
+        ## The map between Biomart DB fields and annotation features. The individual values can be vectors for cases where there is
+        ## ambiguity between different marts. Thos will be dynamically evaluated against available filters.
+        if(missing(featureMap) || is.null(featureMap)){
+            featureMap <- list(gene_id="ensembl_gene_id",
+                               transcript_id="ensembl_transcript_id",
+                               exon_id="ensembl_exon_id",
+                               start="exon_chrom_start",
+                               end="exon_chrom_end",
+                               rank="rank",
+                               strand="strand",
+                               symbol=c("external_gene_name", "external_gene_id"),
+                               feature="gene_biotype",
+                               chromosome="chromosome_name",
+                               u5s="5_utr_start",
+                               u5e="5_utr_end",
+                               u3s="3_utr_start",
+                               u3e="3_utr_end",
+                               phase="phase")
+        }else{
+            featureMap <- as.list(featureMap)
+        }
+        needed <- c("gene_id","transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
+                    "chromosome", "u5s", "u5e", "u3s", "u3e", "phase")
+        if(!all(needed %in% names(featureMap)))
+            stop("'featureMap' needs to include items '", paste(setdiff(needed, names(featureMap)), collapse=", "), "'")
+        avail <- listAttributes(biomart)[,1]
+        ambig <- names(featureMap)[listLen(featureMap) > 1]
+        for(i in ambig){
+            mt <- match(featureMap[[i]], avail)
+            if(!all(is.na(mt))){
+                featureMap[[i]] <- featureMap[[i]][min(which(!is.na(mt)))]
+            } else {
+                featureMap[[i]] <- NA
+            }
+        }
+        featureMap <- unlist(featureMap)
         filterNames <- c("chromosome_name", "start", "end", names(filters))
         filterValues <- c(list(gsub("^chr", "", chromosome), sstart, send), as.list(filters))
         strand <- .strandName(strand, extended=TRUE)
@@ -1079,7 +1104,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start, end, 
                    "chromosome", "phase")
         ens <- rbind(ens[!hasUtr,keep, drop=FALSE], utrFinal[,keep])
         prefix <- ifelse(!grepl("^chr", chromosome) && getOption("ucscChromosomeNames"), "chr", "")
-        range <- GRanges(seqnames=paste(prefix, .chrName(ens$chromosome), sep="")[seq_len(nrow(ens))],
+        range <- GRanges(seqnames=paste(prefix, .chrName(ens$chromosome, force=TRUE), sep="")[seq_len(nrow(ens))],
                          ranges=IRanges(start=ens$start, end=ens$end),
                          strand=ens$strand, feature=as.character(ens$feature),
                          gene=as.character(ens$gene_id), exon=as.character(ens$exon_id),
