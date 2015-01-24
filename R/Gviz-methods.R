@@ -157,7 +157,7 @@ setMethod("subseq", "ReferenceSequenceTrack", function(x, start=NA, end=NA, widt
             end <- start+width[1]-1
     }
     x@sequence <- x@stream(file=x@reference, selection=GRanges(chromosome(x), ranges=IRanges(start, end)))
-    return(callNextMethod(x=x, start=start, end=end, width=width))
+    return(callNextMethod())
 })
 
 
@@ -582,13 +582,13 @@ setMethod("consolidateTrack", signature(GdObject="GdObject"), function(GdObject,
 setMethod("consolidateTrack", signature(GdObject="RangeTrack"), function(GdObject, chromosome, ...) {
     if(!is.null(chromosome))
         chromosome(GdObject) <- chromosome
-    GdObject <- callNextMethod()
+    GdObject <- callNextMethod(GdObject, ...)
     return(GdObject)
 })
 setMethod("consolidateTrack", signature(GdObject="SequenceTrack"), function(GdObject, chromosome, ...) {
     if(!is.null(chromosome))
         chromosome(GdObject) <- chromosome
-    GdObject <- callNextMethod()
+    GdObject <- callNextMethod(GdObject, ...)
     return(GdObject)
 })
 ## For StackedTracks we want to set the stacking (which could have been passed in as a display parameter)
@@ -605,7 +605,7 @@ setMethod("consolidateTrack", signature(GdObject="StackedTrack"), function(GdObj
 setMethod("consolidateTrack", signature(GdObject="AnnotationTrack"), function(GdObject, hasAxis=FALSE,
                                                                               hasTitle=.dpOrDefault(GdObject, "showTitle", TRUE),
                                                                               title.width=NULL, ...) {
-    GdObject <- callNextMethod()
+    GdObject <- callNextMethod(GdObject, ...)
     if(length(GdObject)){
         ## ids are shown if either set by the showId parameter, or through the use of the transcriptAnnotation or
         ## groupAnnotation parameters
@@ -1070,7 +1070,7 @@ setMethod("subset", signature(x="RangeTrack"), function(x, from=NULL, to=NULL, s
 ## For highlight track we just apply the method for all the subtracks in the tracklList and finally the RangeTrack method
 setMethod("subset", signature(x="HighlightTrack"), function(x, ...){
     x@trackList <- lapply(x@trackList, subset, ...)
-    x <- callNextMethod(x=x, ...)
+    x <- callNextMethod()
     return(x)
 })
 setMethod("subset", signature(x="OverlayTrack"), function(x, ...){
@@ -1731,7 +1731,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     ## In prepare mode we need to make sure that the stacking information is updated from the optional display parameter (by calling
     ## the StackedTrack drawGD method) and also perform the collapsing of track items which could potentially lead to re-stacking.
     if(prepare){
-        GdObject <- callNextMethod()
+        GdObject <- callNextMethod(GdObject, ...)
         bins <- stacks(GdObject)
         stacks <- max(bins)
         ## We need to collapse the track object based on the current screen resolution (note that this may trigger re-stacking)
@@ -1873,7 +1873,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
 ## For a GeneRegionTrack we just set the showExonId alias and then call the AnnotationTrack method
 setMethod("drawGD", signature("GeneRegionTrack"), function(GdObject,  ...){
     displayPars(GdObject) <- list(showFeatureId=as.vector(.dpOrDefault(GdObject, "showExonId")))
-    GdObject <- callNextMethod(GdObject, ...)
+    GdObject <- callNextMethod()
     return(invisible(GdObject))
 })
 
@@ -1893,7 +1893,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     if(prepare){
         if((is.logical(debug) && debug) || "prepare" %in% debug)
             browser()
-        GdObject <- callNextMethod()
+        GdObject <- callNextMethod(GdObject, ...)
         ## The mismatched bases need to be extracted from the read sequences and the reference sequence
         if(.dpOrDefault(GdObject, "showMismatches", TRUE) && !is.null(GdObject@referenceSequence)){
             mm <- .findMismatches(GdObject)
@@ -2421,7 +2421,7 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
               args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype=TRUE)
               groupDetails <- .dpOrDefault(GdObject, "groupDetails", FALSE)
               if(prepare){
-                  GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                  GdObject <- callNextMethod()
                   GdObject <- GdObject[order(start(GdObject))]
                   indices <- if(groupDetails) seq_len(length(unique(group(GdObject)))) else seq_len(length(GdObject))
                   xscale <- if(!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
@@ -2473,7 +2473,7 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                   if( ((maxBase-minBase)/len)/.pxResolution(coord="x") < minwidth ) {
                       warning("too much detail for available space (plot fewer annotation or increase details.minWidth)!")
                       popViewport(1)
-                      GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                      GdObject <- callNextMethod()
                       return(GdObject)
                   }
                   rr <- if(groupDetails) unlist(range(split(ranges(GdObject), group(GdObject)))) else ranges(GdObject)
@@ -2519,14 +2519,14 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                   pushViewport(viewport(xscale=xscale,
                                         yscale=c(1, stacks+1), clip=FALSE,
                                         height=1-size, y=0, just=c(.5, 0)))
-                  GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                  GdObject <- callNextMethod()
                   grid.segments(x0=unit(xloc1[selection], "native"), x1=xloc2, y0=unit(yloc1[selection], "native"),
                                 y1=yloc2, gp=gpar(col=col, lwd=lwd, lty=lty, cex=cex))
                   grid.points(x=unit(xloc2, "npc"), y=unit(yloc2, "npc"), gp=gpar(col=col, cex=cex), pch=pch)
                   grid.points(x=unit(xloc1[selection], "native"), y=unit(yloc1[selection], "native"), gp=gpar(col=col, cex=cex), pch=pch)
                   popViewport(1)
               }else{
-                  GdObject <- callNextMethod(GdObject,  minBase, maxBase, prepare=prepare, ...)
+                  GdObject <- callNextMethod()
               }
               return(invisible(GdObject))
           })

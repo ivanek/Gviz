@@ -642,7 +642,7 @@ setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, re
                                                              args=list(), defaults=list(), ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
                                                             mapping=mapping, args=args, defaults=defaults)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
 
@@ -785,7 +785,7 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 			.makeParMapping()
 			.Object@fun <- fun
                         .Object@selectFun <- selectFun
-			.Object <- callNextMethod()
+			.Object <- callNextMethod(.Object, ...)
 			return(.Object)
 		})
 ##----------------------------------------------------------------------------------------------------------------------
@@ -857,7 +857,7 @@ setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...){
     .Object <- .updatePars(.Object, "GeneRegionTrack")
     .Object@start <- ifelse(is.null(start), 0 , start)
     .Object@end <- ifelse(is.null(end), 0 , end)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
 
@@ -871,7 +871,7 @@ setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, re
                                                              args=list(), defaults=list(), ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
                                                             mapping=mapping, args=args, defaults=defaults)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
 
@@ -1203,7 +1203,7 @@ setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...){
     if(is(range, "IRanges"))
         range <- GRanges(range=range, seqnames="dummy", id=ids)
     .Object@range <- range
-    .Object<- callNextMethod()
+    .Object<- callNextMethod(.Object, ...)
     return(.Object)
 })
 
@@ -1333,7 +1333,7 @@ setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ..
     .Object@data <- data
     if(!missing(strand))
         .Object@strand <- unique(strand)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
 
@@ -1347,7 +1347,7 @@ setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, referenc
                                                        args=list(), defaults=list(), ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
                                                             mapping=mapping, args=args, defaults=defaults)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
 
@@ -1693,7 +1693,7 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
     ## the diplay parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "AlignedReadTrack")
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     .Object <- setCoverage(.Object)
     if(coverageOnly)
     {
@@ -1928,7 +1928,7 @@ setClass("ReferenceSequenceTrack", contains=c("SequenceDNAStringSetTrack", "Refe
 ## multiple inheritence has some strange features with regards to method selection
 setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
 ##----------------------------------------------------------------------------------------------------------------------
@@ -1995,7 +1995,7 @@ setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges=GRanges
     .makeParMapping()
     .Object <- .updatePars(.Object, "AlignedReadTrack")
     .Object@stackRanges <- stackRanges
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     .Object@stacks <- stacks
     .Object@sequences <- sequences
     .Object@referenceSequence <- referenceSequence
@@ -2014,7 +2014,7 @@ setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, re
                                                              referenceSequence=NULL, ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
                                                             mapping=mapping, args=args, defaults=defaults)
-    .Object <- callNextMethod()
+    .Object <- callNextMethod(.Object, ...)
     .Object@referenceSequence <- referenceSequence
     return(.Object)
 })
