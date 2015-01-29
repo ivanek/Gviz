@@ -206,6 +206,24 @@ setReplaceMethod("chromosome", "AlignmentsTrack", function(GdObject, value){
     return(GdObject)
 })
 
+setReplaceMethod("chromosome", "HighlightTrack", function(GdObject, value){
+    GdObject@trackList <- lapply(GdObject@trackList, function(x){
+        chromosome(x) <- value[1]
+        x
+    })
+    GdObject@chromosome <- .chrName(value[1])
+    return(GdObject)
+})
+
+setReplaceMethod("chromosome", "OverlayTrack", function(GdObject, value){
+    GdObject@trackList <- lapply(GdObject@trackList, function(x){
+        chromosome(x) <- value
+        x
+    })
+    return(GdObject)
+})
+
+
 
 ## Set or extract the genome from a RangeTrack object
 setMethod("genome", "RangeTrack", function(x) x@genome)
