@@ -31,7 +31,7 @@ BiocStyle::latex()
 \newcommand{\link}[1]{{#1}}
 \newcommand{\RR}[0]{{\texttt{R}}}
 
-\title{The Givz User Guide}
+\title{The Gviz User Guide}
 \author{Florian Hahne\footnote{florian.hahne@novartis.com}}
 \date{Edited: January 2014; Compiled: \today}
 

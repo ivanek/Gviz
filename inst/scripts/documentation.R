@@ -279,6 +279,7 @@ details <- list(
                                 fontsize="Numeric scalar. The font size for the chromosome name text.",
                                 lty="Character or integer scalar. The line type used for the highlighting of the currently displayed genomic region.",
                                 lwd="Numeric scalar. The line width used for the highlighting of the currently displayed genomic region.",
+                                outline="Logical scalar. Add borders to the individual chromosome staining bands.",
                                 showBandId="Logical scalar. Show the identifier for the chromosome bands if there is space for it.",
                                 showId="Logical scalar. Indicate the chromosome name next to the ideogram.",
                                 showTitle="Logical scalar. Plot a title panel. Defaults to omit the title panel.",

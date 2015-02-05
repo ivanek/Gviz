@@ -206,6 +206,23 @@ setReplaceMethod("chromosome", "AlignmentsTrack", function(GdObject, value){
     return(GdObject)
 })
 
+setReplaceMethod("chromosome", "HighlightTrack", function(GdObject, value){
+    GdObject@trackList <- lapply(GdObject@trackList, function(x){
+        chromosome(x) <- value[1]
+        x
+    })
+    GdObject@chromosome <- .chrName(value[1])
+    return(GdObject)
+})
+
+setReplaceMethod("chromosome", "OverlayTrack", function(GdObject, value){
+    GdObject@trackList <- lapply(GdObject@trackList, function(x){
+        chromosome(x) <- value
+        x
+    })
+    return(GdObject)
+})
+
 
 ## Set or extract the genome from a RangeTrack object
 setMethod("genome", "RangeTrack", function(x) x@genome)
@@ -1073,6 +1090,7 @@ setMethod("subset", signature(x="HighlightTrack"), function(x, ...){
     x <- callNextMethod()
     return(x)
 })
+
 setMethod("subset", signature(x="OverlayTrack"), function(x, ...){
     x@trackList <- lapply(x@trackList, subset, ...)
     return(x)
@@ -1176,6 +1194,19 @@ setMethod("subset", signature(x="ReferenceGeneRegionTrack"), function(x, ...){
     warning("ReferenceGeneRegionTrack objects are not supported yet.")
     return(callNextMethod())
 })
+
+setMethod("subset", signature(x="BiomartGeneRegionTrack"), function(x, from, to, chromosome, use.defaults=TRUE, ...){
+   granges <- unlist(range(split(ranges(x), group(x))))
+   ranges <- if(use.defaults) .defaultRange(x, from=from, to=to) else c(from=ifelse(is.null(from), min(start(granges))-1, from),
+                                                                        to=ifelse(is.null(to), max(end(granges))+1, to))
+   if(ranges["from"] < x@start || ranges["to"] > x@end){
+       x@start <- ranges["from"]-5000
+       x@end <- ranges["to"]+5000
+       ranges(x) <- .cacheMartData(x, .chrName(chromosome))
+   }
+   return(callNextMethod(x=x, from=ranges["from"], to=ranges["to"], use.defaults=FALSE, ...))
+})
+
 
 ## For the axis track we may have to clip the highlight ranges on the axis.
 setMethod("subset", signature(x="GenomeAxisTrack"), function(x, from=NULL, to=NULL, sort=FALSE, ...){
@@ -2689,7 +2720,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                      popViewport(1)
                  }
                  if(.dpOrDefault(GdObject, "box.legend", FALSE))
-                     grid.rect(width=(1/dims[2])*length(grpLevels), x=0, just="left")
+                     grid.rect(width=(1/dims[2])*length(grpLevels), x=0, just="left", gp=gpar(fill=NA))
                  popViewport(2)
              })
     }
@@ -2769,20 +2800,22 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     ## Also the type 'boxplot' is handled up front
     if("boxplot" %in% type)
     {
-        box.ratio <- .dpOrDefault(GdObject, "box.ratio", 1)
-        box.width <- .dpOrDefault(GdObject, "box.width", (min(diff(unique(sort(x))))*0.5)/box.ratio)
         diff <- .pxResolution(coord="x")
+        box.ratio <- .dpOrDefault(GdObject, "box.ratio", 1)
+        box.width <- .dpOrDefault(GdObject, "box.width", (((min(diff(unique(sort(x))))*0.5)/box.ratio)/diff))*diff
         if(!is.null(groups))
         {
             tw <- min(width(GdObject))
             spacer <- diff
             nb <- nlevels(groups)
-            bw <- .dpOrDefault(GdObject, "box.width", (tw-(nb+2)*spacer)/nb)
+            bw <- .dpOrDefault(GdObject, "box.width", ((tw-(nb+2)*spacer)/nb)/diff)*diff
             bcex <- min(pcols$cex[1], (bw/diff)/20)
             by <- lapply(split(vals, groups), matrix, ncol=ncol(vals))
             for(j in seq_along(by))
             {
-                xx <- rep(start(GdObject)+(j*spacer)+(j*bw), each=nrow(by[[j]]))-(bw/2)
+                nn <- nrow(by[[j]])
+                off <- (width(GdObject) - bw - ((nb + 2) * spacer))/2
+                xx <- rep(start(GdObject)+(j*spacer)+(j*bw)+off, each=nn) - (bw/2)
                 .panel.bwplot(xx, as.numeric(by[[j]]), box.ratio=box.ratio, box.width=(bw/2)/box.ratio, pch=pcols$pch[1],
                               lwd=pcols$lwd[1], lty=pcols$lty[1], fontsize=fontsize,
                               col=pcols$col.histogram, cex=bcex, font=font, fontfamily=font, fontface=fontface,
@@ -3669,11 +3702,14 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     }
     margin <- 0.3
     ## First the normal bands
-    grid.rect(stExt[bef], margin, width=wd[bef], height=1-margin*2, gp=gpar(col=valsExt[bef,"col"], fill=valsExt[bef,"col"]),
+    lcol <- "black"
+    lwd <- 1
+    lty <- 1
+    lcolBands <- if(.dpOrDefault(GdObject, "outline", FALSE)[1] == TRUE) rep(lcol, nrow(valsExt)) else valsExt[,"col"]
+    grid.rect(stExt[bef], margin, width=wd[bef], height=1-margin*2, gp=gpar(col=lcolBands[bef], fill=valsExt[bef,"col"]),
               just=c("left","bottom"))
     if(!is.null(aft))
-        grid.rect(stExt[aft], margin, width=wd[aft], height=1-margin*2, gp=gpar(col=valsExt[aft,"col"],
-                                                                                fill=valsExt[aft,"col"]),
+        grid.rect(stExt[aft], margin, width=wd[aft], height=1-margin*2, gp=gpar(col=lcolBands[aft], fill=valsExt[aft,"col"]),
                   just=c("left","bottom"))
     ## Now the centrosome, if there is any
     if(length(cent))
@@ -3690,7 +3726,6 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     edr <- if(length(ed)==1) 1:2 else ed
     lc <- .roundedCap(c(stExt[1], margin), c(stExt[ls], 1-margin), str, vals, side="left", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
     rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), edr, vals, side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
-    lcol <- "black"; lwd <- 1; lty <- 1
     ## Now some outlines
     grid.lines(lc[,1], lc[,2], gp=gpar(col=lcol, lwd=lwd, lty=lty))
     grid.lines(rc[,1], rc[,2],gp= gpar(col=lcol, lwd=lwd, lty=lty))

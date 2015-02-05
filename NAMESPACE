@@ -20,7 +20,6 @@ importClassesFrom(rtracklayer, UCSCData)
 
 importMethodsFrom(AnnotationDbi, colnames, get, ls, mget, tail)
 
-importMethodsFrom(Biobase, rowMedians)
 
 importMethodsFrom(BSgenome, providerVersion)
 
@@ -39,11 +38,13 @@ importFrom(Biobase, listLen, rowMax, rowMin)
 
 importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
 
-importFrom(biomaRt, getBM, useMart)
+importFrom(biomaRt, getBM, useMart, listDatasets, listAttributes, listFilters)
 
 importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa, BamFile, scanBamWhat, bamWhich)
 
 importFrom(graphics, par)
+
+importFrom(digest, digest)
 
 importFrom(grDevices, boxplot.stats, col2rgb, colorRampPalette, extendrange,
            hsv, rgb2hsv)
@@ -52,7 +53,7 @@ importFrom(lattice, current.panel.limits, panel.abline, panel.grid, panel.lines,
            panel.points, panel.polygon, panel.segments, panel.xyplot, panel.text,
            trellis.par.get)
 
-importFrom(matrixStats, colMaxs)
+importFrom(matrixStats, colMaxs, rowMedians, rowMins)
 
 importFrom(latticeExtra, panel.xyarea, panel.horizonplot)
 
@@ -69,7 +70,6 @@ importFrom(utils, assignInNamespace, browseURL, write.table)
 
 importFrom(GenomicAlignments, extractAlignmentRangesOnReference, sequenceLayer)
 
-importFrom(grid)
 ###
 
 export(".chrName",
