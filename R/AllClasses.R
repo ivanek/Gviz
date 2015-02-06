@@ -151,7 +151,7 @@ setMethod("setPar", signature("DisplayPars", "character"),
               return(x)
           })
 
-setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, value) {
+setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, recursive=FALSE, value) {
   x <- setPar(x, value, interactive=FALSE)
   return(x)
 })
@@ -358,7 +358,7 @@ setMethod("setPar", signature("GdObject", "list"), function(x, value, interactiv
     return(x)
 })
 
-setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, value) {
+setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recursive=FALSE, value) {
     x <- setPar(x, value, interactive=FALSE)
     return(x)
 })
@@ -1009,10 +1009,7 @@ setClass("BiomartGeneRegionTrack",
 }
 
 ## Helper to do the actual fetching of data from Biomart
-.fetchBMData <- function(object, chromosome_name=NULL){
-    ## Extending start and end positions to capture genes on the edges. We also need both coordinates set, or none.
-    start <-  if(!is.null(object@start)) max(1, object@start - 2000) else NULL
-    end <- if(!is.null(object@end)) object@end + 2000 else NULL
+.fetchBMData <- function(object, chromosome_name=NULL, staged=FALSE){
     if(!is.null(chromosome_name)){
         chromosome_name <- gsub("^chr", "", chromosome_name)
     }
@@ -1049,20 +1046,25 @@ setClass("BiomartGeneRegionTrack",
     }
     featureMap <- unlist(featureMap)
     ## Deal with the filters
-    filterNames <- c(vector(mode="character"), setNames(names(object@filter), names(object@filter)))
     filterValues <- as.list(object@filter)
     start <- object@start
     end <- object@end
     for(i in c("start", "end", "chromosome_name")){
         if(!is.null(get(i)) && length(get(i)) > 0){
-            filterNames[i] <- i
             filterValues[[i]] <- get(i)
         }
     }
-    ens <- getBM(as.vector(featureMap), filters=unname(filterNames),
+    ens <- getBM(as.vector(featureMap), filters=names(filterValues),
                  values=filterValues, bmHeader=FALSE,
                  mart=object@biomart, uniqueRows=TRUE)
     colnames(ens) <- names(featureMap)
+    if(staged && nrow(ens)>0){
+        filterValues <- list(start=min(ens$start), end=max(ens$end), chromosome_name=ens[1, "chromosome"])
+        ens <- getBM(as.vector(featureMap), filters=names(filterValues),
+                     values=filterValues, bmHeader=FALSE,
+                     mart=object@biomart, uniqueRows=TRUE)
+        colnames(ens) <- names(featureMap)
+    }
     ## We may have to split exons if they contain UTRs
     hasUtr <- !is.na(ens$u5s) | !is.na(ens$u3s)
     ensUtr <- ens[hasUtr,, drop=FALSE]
@@ -1119,45 +1121,60 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start=NULL, 
                                                            featureMap=NULL, symbol=NULL, gene=NULL, transcript=NULL, entrez=NULL, ...){
     if((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome))
         return(.Object)
-    if(!is.null(end) && is.null(start)){
-        start <- 1
-    }else if(!is.null(start) && is.null(end)){
-        end <- 10e8
-    }
     ## the diplay parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "BiomartGeneRegionTrack")
-    displayPars(.Object) <- list(verbose=list(...)$verbose == TRUE)
+    verb <- list(...)$verbose
+    displayPars(.Object) <- list(!is.null(verb) && verb == TRUE)
     ## preparing filters
     strand <- .strandName(strand, extended=TRUE)
     if(strand %in% 0:1){
         filter$strand <- c(1, -1)[strand+1]
     }
+    filterOrig <- filter
     idFilters <- list(symbol=c("external_gene_name", "external_gene_id", "hgnc_symbol", "wikigene_name", "dbass3_name"),
                       gene="ensembl_gene_id",
                       transcript="ensembl_transcript_id",
                       entrez="entrezgene")
+    staged <- FALSE
     for(i in names(idFilters)){
         if(!is.null(get(i))){
             mt <- match(idFilters[[i]], listFilters(biomart)[,1])
             sfilt <- listFilters(biomart)[mt[!is.na(mt)],1]
             if(length(sfilt) > 0){
+                staged <- TRUE
                 filter[[sfilt[1]]] <- get(i)
+                if(!is.null(filter$strand)){
+                    warning(sprintf("Cannot combine %s filter with a strand filter. Strand filtering is ignored.", i))
+                    filter$strand <- NULL
+                }
+                if(!is.null(start) || !is.null(end) || !is.null(chromosome)){
+                    warning(sprintf("Cannot combine %s filter with a range restriction. Ignoring start and end coordinates.", i))
+                    start <- end <- chromosome <- NULL
+                }
             }else{
                 stop(sprintf("Unable to automatically map the %s filter. Manually provide adequate filter list.", i))
             }
         }
     }
+    ## We can't have only one in start or end
+     if(!is.null(end) && is.null(start)){
+        start <- 1
+    }else if(!is.null(start) && is.null(end)){
+        end <- 10e8
+    }
     ## filling slots
     .Object@filter <- filter
     .Object@biomart <- biomart
-    .Object@start <- start
-    .Object@end <- end
+    ## Extending start and end positions to capture genes on the edges. We also need both coordinates set, or none.
+    extend <- if(is.null(start) || is.null(end)) 10000 else max(10000, abs(diff(c(end, start))))
+    .Object@start <-  if(!is.null(start)) max(1, start - extend) else NULL
+    .Object@end <- if(!is.null(end)) end + extend else NULL
     displayPars(.Object) <- list(".__featureMap"=featureMap)
     genome(.Object) <- ifelse(is.null(genome), "ANY", genome)
     ## fetching data from Biomart
-    range <- if(!is.null(.Object@biomart) && (!is.null(start) || !is.null(end) || length(filter) != 0)){
-        .cacheMartData(.Object, chromosome)
+    range <- if(!is.null(.Object@biomart) && (!is.null(.Object@start) || !is.null(.Object@end) || length(.Object@filter) != 0)){
+        .cacheMartData(.Object, chromosome, staged)
     }else{
         tmp <- GRanges()
         values(tmp) <- DataFrame(feature="a", gene="a", exon="a", transcript="a", symbol="a", rank=0, phase=as.integer(1))[0,]
@@ -1165,6 +1182,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start=NULL, 
         displayPars(.Object) <- list(".__streamOnly"=TRUE)
         tmp
     }
+    .Object@filter <- filterOrig
     if(length(range)==0){
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
     }else{
@@ -1178,8 +1196,6 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start=NULL, 
     }
     .Object <- callNextMethod(.Object=.Object, range=range, start=start, end=end,
                               genome=genome, chromosome=chromosome, strand=strand, ...)
-    .Object@start <- start
-    .Object@end <- end
     ## We want to warn if searching was performed based on an identifier and now values have been returned
     if((!is.null(symbol) || !is.null(gene) || !is.null(transcript) || !is.null(entrez)) && length(range)==0){
         warning("Search by identifier did not yield any values", call.=FALSE)
@@ -1220,7 +1236,7 @@ BiomartGeneRegionTrack <- function(start=NULL, end=NULL, biomart, chromosome=NUL
             stop("Need either a valid Mart connection object as 'biomart' argument or a UCSC genome identifier as the 'genome' argument.")
         biomart <- .genome2Dataset(genome)
     }else if(is.null(genome)){
-        genome <- bt@biomart@dataset
+        genome <- biomart@dataset
     }
     new("BiomartGeneRegionTrack", start=start, end=end, chromosome=chromosome, strand=strand,
         biomart=biomart, name=name, genome=genome, stacking=stacking, filter=filters, featureMap=featureMap,
@@ -1687,35 +1703,35 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
     }
     return(list(availableGenomes=genomes, bands=bands))
 }
-.cacheMartData <- function(bmtrack, chromosome=NULL){
+.cacheMartData <- function(bmtrack, chromosome=NULL, staged=FALSE){
     uid <- .bmGuid(bmtrack)
     req <- if(!is.null(bmtrack@start) && !is.null(bmtrack@end)) GRanges(seqnames=chromosome[1], IRanges(start=bmtrack@start, bmtrack@end)) else NULL
     if(is.null(chromosome) || is.null(.martCache[[uid]])){
-        data <- .fetchBMData(bmtrack, chromosome)
-        if(is.null(req)){
+        data <- .fetchBMData(bmtrack, chromosome, staged)
+        if(!is.null(req)){
+            .martCache[[uid]] <- list(data=data, ranges=req)
+        }else{
             req <- range(data)
         }
-        .martCache[[uid]] <- list(data=data, ranges=req)
-        if(length(req) && .dpOrDefault(bmtrack, "verbose", FALSE))
-            message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i", seqnames(req), start(req), end(req)), collapse=" and "))
+        if(length(data) && .dpOrDefault(bmtrack, "verbose", FALSE))
+            message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse=" and "))
     }else{
         rr <- .martCache[[uid]][["ranges"]]
         dd <- .martCache[[uid]][["data"]]
-
-        if(!is.null(req) && req %within% rr){
+        if(!is.null(req) && suppressWarnings(req %within% rr)){
             genes <- unique(subsetByOverlaps(dd, req)$gene)
             data <- dd[seqnames(dd) == chromosome[1] & dd$gene %in% genes]
             if(.dpOrDefault(bmtrack, "verbose", FALSE))
-                message(sprintf("Retrieved data from cache for region %s:%i-%i", chromosome, start(req), end(req)))
+                message(sprintf("Retrieved data from cache for region %s:%i-%i(%s)", chromosome, start(req), end(req), strand(req)))
         }else{
-            data <- .fetchBMData(bmtrack, chromosome)
+            data <- .fetchBMData(bmtrack, chromosome, staged)
             if(is.null(req)){
                 req <- range(data)
             }
-            .martCache[[uid]][["data"]] <- c(.martCache[[uid]][["data"]], data[!(seqnames(data) == chromosome[1] & data$gene %in% dd$gene)])
-            .martCache[[uid]][["ranges"]] <- union(rr, req)
+            .martCache[[uid]][["data"]] <- suppressWarnings(c(.martCache[[uid]][["data"]], data[!(seqnames(data) == chromosome[1] & data$gene %in% dd$gene)]))
+            .martCache[[uid]][["ranges"]] <- suppressWarnings(union(rr, req))
             if(length(req) && .dpOrDefault(bmtrack, "verbose", FALSE))
-                message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i", seqnames(req), start(req), end(req)), collapse=" and "))
+                message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse=" and "))
         }
     }
     return(data)
@@ -2268,6 +2284,16 @@ HighlightTrack <- function(trackList=list(), range=NULL, start=NULL, end=NULL, w
     genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
     return(new("HighlightTrack", trackList=trackList, chromosome=chromosome[1], range=range, name=name, genome=genome, ...))
 }
+setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x, recursive=FALSE, value) {
+    x <- setPar(x, value, interactive=FALSE)
+    if(recursive){
+        x@trackList <- lapply(x@trackList, function(y){
+            displayPars(y) <- value
+            return(y)
+        })
+    }
+    return(x)
+})
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -2296,6 +2322,16 @@ OverlayTrack <- function(trackList=list(), name="OverlayTrack",  ...){
         stop("All elements in 'trackList' must inherit from 'GdObject'")
     return(new("OverlayTrack", trackList=trackList, name=name, ...))
 }
+setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, recursive=FALSE, value) {
+    x <- setPar(x, value, interactive=FALSE)
+    if(recursive){
+        x@trackList <- lapply(x@trackList, function(y){
+            displayPars(y) <- value
+            return(y)
+        })
+    }
+    return(x)
+})
 ##----------------------------------------------------------------------------------------------------------------------
 
 

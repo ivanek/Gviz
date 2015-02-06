@@ -928,7 +928,7 @@
         defaults[names(schemePars)] <- schemePars
         missing <- c(union(missing, names(schemePars)), ".__appliedScheme")
     }
-    displayPars(x) <- defaults[missing]
+    x <- setPar(x, defaults[missing], interactive=FALSE)
     return(x)
 }
 
@@ -1488,6 +1488,13 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
         grid.newpage()
     if(!is.list(trackList))
         trackList <- list(trackList)
+    ## All arguments in ... are considered to be additional display parameters and need to be attached to each item in the track list
+    dps <- list(...)
+    trackList <- lapply(trackList, function(x) {
+        displayPars(x, recursive=TRUE) <- dps
+        return(x)
+    })
+
     ## OverlayTracks and HighlightTracks can be discarded if they are empty
     trackList <- trackList[!sapply(trackList, function(x) (is(x, "HighlightTrack") || is(x, "OverlayTrack")) && length(x) < 1)]
     isHt <- which(sapply(trackList, is, "HighlightTrack"))

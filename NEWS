@@ -1,3 +1,33 @@
+CHANGES IN VERSION 1.11.0
+-------------------------
+
+NEW FEATURES
+
+    o BiomartGeneRegionTracks can now be created based on a gene
+      symbol, Ensembl trancript id, Ensebml gene id or ENTREZ gene id.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Streaming behaviour for BiomartGeneRegionTracks. Already queried
+      regions are cached, and new data is fetched from Biomart on
+      demand.
+
+    o Proper handling of UCSC genome identifiers in
+      BiomartGeneRegionTracks. Automated mapping to Ensembl genome
+      versions and Biomart archives.
+
+BUG FIXES
+
+    o A number of significant fixes.
+
+
+CHANGES IN VERSION 1.10.0
+-------------------------
+
+BUG FIXES
+
+    o Various bug fixes.
+
 CHANGES IN VERSION 1.9.0
 -------------------------
 

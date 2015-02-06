@@ -31,7 +31,7 @@ importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
                   import.bw, import.ucsc, import.bed, import.bedGraph, import.chain,
                   import.wig, seqinfo)
 
-importMethodsFrom(Biostrings, consensusMatrix)
+importMethodsFrom(Biostrings, consensusMatrix, consensusString, unmasked, complement)
 
 
 importFrom(Biobase, listLen, rowMax, rowMin)

@@ -504,14 +504,18 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, recomputeRanges=TRU
         ## No stacks needed, so there is just a single bin
         bins <- rep(1, length(GdObject))
     }else{
-        if(recomputeRanges || is.null(.dpOrDefault(GdObject, ".__groupRanges")))
-            GdObject <- .computeGroupRange(GdObject)
-        lranges <- .dpOrDefault(GdObject, ".__groupRanges")
-        uid <- if(.transcriptsAreCollapsed(GdObject))
-            sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, type="lowest"))
         gp <- group(GdObject)
         needsGrp <- any(duplicated(gp))
-        bins <- if(needsGrp) rep(disjointBins(lranges), table(gp)) else disjointBins(lranges)
+        lranges <- .dpOrDefault(GdObject, ".__groupRanges")
+        gpt <- if(needsGrp) table(gp) else rep(1, length(GdObject))
+        if(recomputeRanges || is.null(lranges) || length(lranges) != length(gpt)){
+            GdObject <- .computeGroupRange(GdObject)
+            lranges <- .dpOrDefault(GdObject, ".__groupRanges")
+        }
+        uid <- if(.transcriptsAreCollapsed(GdObject))
+            sprintf("uid%i", seq_along(identifier(GdObject))) else make.unique(identifier(GdObject, type="lowest"))
+
+        bins <- rep(disjointBins(lranges), gpt)
         names(bins) <- if(needsGrp) unlist(split(uid, gp)) else uid
         bins <- bins[uid]
     }
@@ -1200,8 +1204,8 @@ setMethod("subset", signature(x="BiomartGeneRegionTrack"), function(x, from, to,
    ranges <- if(use.defaults) .defaultRange(x, from=from, to=to) else c(from=ifelse(is.null(from), min(start(granges))-1, from),
                                                                         to=ifelse(is.null(to), max(end(granges))+1, to))
    if(ranges["from"] < x@start || ranges["to"] > x@end){
-       x@start <- ranges["from"]-5000
-       x@end <- ranges["to"]+5000
+       x@start <- ranges["from"] - 10000
+       x@end <- ranges["to"] + 10000
        ranges(x) <- .cacheMartData(x, .chrName(chromosome))
    }
    return(callNextMethod(x=x, from=ranges["from"], to=ranges["to"], use.defaults=FALSE, ...))

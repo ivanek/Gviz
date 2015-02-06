@@ -4,6 +4,7 @@
 \alias{BiomartGeneRegionTrack-class}
 \alias{BiomartGeneRegionTrack}
 \alias{initialize,BiomartGeneRegionTrack-method}
+\alias{subset,BiomartGeneRegionTrack-method}
 
 \title{BiomartGeneRegionTrack class and methods}
 
@@ -24,7 +25,9 @@
 \usage{
 
 BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
-stacking="squish", filters=list(), featureMap, name="BiomartGeneRegionTrack", ...)
+  stacking="squish", filters=list(), featureMap=NULL,
+  name="BiomartGeneRegionTrack", symbol=NULL, gene=NULL, entrez=NULL,
+  transcript=NULL, ...)
 
 }
 
@@ -72,6 +75,12 @@ stacking="squish", filters=list(), featureMap, name="BiomartGeneRegionTrack", ..
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
+
+  \item{symbol,transcript,gene,entrez}{Character vector giving one or
+    several gene symbols, Ensembl transcript identifiers, Ensembl gene
+    identifiers, or ENTREZ gene identifiers, respectively. The genomic
+    locus of their gene model will be fetch from Biomart instead of
+    providing explicit start and end coordinates.}
 
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display

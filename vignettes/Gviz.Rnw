@@ -1668,6 +1668,57 @@ should be used to draw the feature glyphs.
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 @
 
+The \Rfunarg{filter} argument to the
+\Rfunction{BiomartGeneRegionTrack} constructor can be used to pass on
+arbitratry additional filters to the Biomart query. We could for
+instance limit the returned gene models to RefSeq models only. Please
+see the documentation in the \Rpackage{biomaRt} package for details.
+
+
+<<BiomartGeneRegionTrackFilterShow, eval=FALSE>>=
+biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
+                                  name="ENSEMBL", filter=list(with_ox_refseq_mrna=TRUE))
+plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
+@
+<<BiomartGeneRegionTrackFilterDo, width=7.5, height=1.25, fig=TRUE, echo=FALSE, results=hide>>=
+if(hasBiomartConnection){
+    biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
+                                  name="ENSEMBL", filter=list(with_ox_refseq_mrna=TRUE))
+    plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
+}else{
+    biomTrack@filter <- list(with_ox_refseq_mrna=TRUE)
+    plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
+    biomTrack@filter <- list()
+}
+@
+
+Sometimes it can be more convenient to get a model for a particular
+gene rather than defining a genomic range. One could use the filter
+mechanisms as described before for this purpose, however the
+\Rclass{BiomartGeneRegionTrack} implements a more generic way. By
+providing the gene symbol as the \Rfunarg{symbol} argument, the track
+will be initialized around the locus for this gene, if it can be
+found. Alternatively, one can provide the Ensembl trancript or gene id
+via the  \Rfunarg{transcript} or \Rfunarg{gene} arguments, or an Entrez id via
+the \Rfunarg{entrez} argument. In all of these cases the constructor
+will also fetch models for other genes that overlap the same
+region. If that is not desired one needs to provide an explicit
+Biomart filter.
+
+<<BiomartGeneRegionTrackSymbolShow, eval=FALSE>>=
+biomTrack <- BiomartGeneRegionTrack(genome="hg19", name="ENSEMBL", symbol="ABCB5")
+plotTracks(biomTrack)
+@
+<<BiomartGeneRegionTrackSymbolDo, width=7.5, height=1.25, fig=TRUE, echo=FALSE, results=hide>>=
+if(hasBiomartConnection){
+    biomTrack <- BiomartGeneRegionTrack(genome="hg19", name="ENSEMBL", symbol="ABCB5")
+    plotTracks(biomTrack, transcriptAnnotation="symbol")
+}else{
+    ranges(biomTrack) <- ranges(biomTrack)[symbol(biomTrack) == "ABCB5"]
+    plotTracks(biomTrack, transcriptAnnotation="symbol")
+}
+@
+
 \subsubsection*{Using custom biomaRt objects for BiomartGeneRegionTracks}
 \mgg tries hard to automatically set up the necessary connection to
 the Biomart service to retrieve the relevant data. Sometimes however
@@ -1697,6 +1748,7 @@ biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr7", start=20e6
                                     featureMap=fm, biomart=bm)
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 @
+
 
 \subsubsection*{Display parameters for BiomartGeneRegionTrack objects}
 

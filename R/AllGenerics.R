@@ -4,7 +4,9 @@
 
 ## Display parameter accessors
 setGeneric("setPar", function(x, value, ...) standardGeneric("setPar"))
-setGeneric("displayPars<-", function(x, value) standardGeneric("displayPars<-"))
+setGeneric("displayPars<-", signature=c("x", "value"),
+    function(x, recursive=FALSE, value) standardGeneric("displayPars<-")
+)
 setGeneric("getPar", def = function(x, name, ...) standardGeneric("getPar"))
 setGeneric("displayPars", function(x, name, ...) standardGeneric("displayPars"))
 
@@ -60,5 +62,5 @@ setGeneric("drawGD", function(GdObject, ...) standardGeneric("drawGD"))
 ##if(!isGeneric("split"))
 ##    setGeneric("split")
 
-## Internal methods 
+## Internal methods
 setGeneric(".buildRange",  function(range, start, end, width, ...) standardGeneric(".buildRange"))

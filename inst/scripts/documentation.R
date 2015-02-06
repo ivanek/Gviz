@@ -571,8 +571,8 @@ details <- list(
                                          "snRNA"="Character or integer scalar. Fill color for annotation objects of type 'snRNA'.",
                                          "snRNA_pseudogene"="Character or integer scalar. Fill color for annotation objects of type 'snRNA_pseudogene'.",
                                          "tRNA_pseudogene"="Character or integer scalar. Fill color for annotation objects of type 'tRNA_pseudogene'.",
-                                         "V_segment"="Character or integer scalar. Fill color for annotation objects of type 'V_segment'."
-
+                                         "V_segment"="Character or integer scalar. Fill color for annotation objects of type 'V_segment'.",
+                                         "verbose"="Logical scalar. Report data loading events from Bioamart or retrieval from cache."
                                          ),
 
                 AlignedReadTrack=c(
