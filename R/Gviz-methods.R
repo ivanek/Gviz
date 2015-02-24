@@ -184,6 +184,8 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     {
         ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
         bnames <- as.character(ranges$name)
+        if(any(bnames == ""))
+            bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
         sel <- is.na(bnames)
         if(any(sel))
             bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
