@@ -1601,6 +1601,8 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
     if(is.null(name))
         name <- .chrName(chromosome)[1]
     bnames <- as.character(bands$name)
+    if(any(bnames == ""))
+        bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
     sel <- is.na(bnames)
     if(any(sel))
         bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
