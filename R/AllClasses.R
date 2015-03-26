@@ -1601,11 +1601,11 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
     if(is.null(name))
         name <- .chrName(chromosome)[1]
     bnames <- as.character(bands$name)
-    if(any(bnames == ""))
-        bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
     sel <- is.na(bnames)
     if(any(sel))
         bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
+    if(any(bnames == ""))
+        bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
     ranges <- GRanges(seqnames=bnames, range=IRanges(start=bands$chromStart, end=bands$chromEnd),
                       name=bnames, type=as.character(bands$gieStain))
     .Object <- callNextMethod(.Object=.Object, range=ranges, genome=genome, chromosome=chromosome, name=name, ...)

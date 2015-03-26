@@ -184,11 +184,11 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value){
     {
         ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
         bnames <- as.character(ranges$name)
-        if(any(bnames == ""))
-            bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
         sel <- is.na(bnames)
         if(any(sel))
             bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
+        if(any(bnames == ""))
+            bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
         ranges <- GRanges(seqnames=bnames, ranges=IRanges(start=ranges$chromStart, end=ranges$chromEnd),
                           name=bnames, type=ranges$gieStain)
         GdObject@range <- ranges
@@ -1666,6 +1666,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
     middle <- mean(ylim)
     sh <- max(0, min(h, .dpOrDefault(GdObject, "stackHeight", 0.75)))
     space <- (h-(h*sh))/2
+    shift <- switch(.dpOrDefault(GdObject, "stackJust", "middle"), "top"=space, "bottom"=-space, 0)
     if (inherits(GdObject, "GeneRegionTrack")) {
         thinBox <- .dpOrDefault(GdObject, "thinBoxFeature", .THIN_BOX_FEATURES)
         space <- ifelse(feature(GdObject) %in% thinBox, space + ((middle -
@@ -1673,13 +1674,16 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
     }
     shape <- .dpOrDefault(GdObject, "shape", "arrow")
     color <- .getBiotypeColor(GdObject)
-    id <- identifier(GdObject, type=.dpOrDefault(GdObject, ifelse(is(GdObject, "GeneRegionTrack"), "exonAnnotation", "featureAnnotation"), "lowest"))
+    id <- identifier(GdObject, type=.dpOrDefault(GdObject, ifelse(is(GdObject, "GeneRegionTrack"), "exonAnnotation", "featureAnnotation"),
+                                                 "lowest"))
     sel <- grepl("\\[Cluster_[0-9]*\\]", id)
     id[sel] <- sprintf("%i merged\n%s", as.integer(.getAnn(GdObject, "density")[sel]),
                        ifelse(class(GdObject) %in% c("AnnotationTrack", "DetailsAnnotationTrack"), "features", "exons"))
-    boxes <- data.frame(cx1=start(GdObject), cy1=ylim[1]+space+offsets, cx2=start(GdObject)+width(GdObject), cy2=ylim[2]-space+offsets,
+    yy1 <- ylim[1] + space + offsets + shift
+    yy2 <- ylim[2] - space + offsets + shift
+    boxes <- data.frame(cx1=start(GdObject), cy1=yy1, cx2=start(GdObject)+width(GdObject), cy2=yy2,
                         fill=color, strand=strand(GdObject), text=id, textX=start(GdObject)+(width(GdObject)/2), textY=middle+offsets,
-                        .getImageMap(cbind(start(GdObject), ylim[1]+space+offsets, end(GdObject), ylim[2]-space+offsets)),
+                        .getImageMap(cbind(start(GdObject), yy1, end(GdObject), yy2)),
                         start=start(GdObject), end=end(GdObject), values(GdObject), exonId=id, origExonId=identifier(GdObject, type="lowest"),
                         stringsAsFactors=FALSE)
     rownames(boxes) <- if(.transcriptsAreCollapsed(GdObject))
@@ -1830,7 +1834,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     if(nrow(box)>0){
         ## If we want to place a label on top or below the ranges we need to know how much size that will take up
         ## and adjust the plotting shapes accordingly
-        drawLabel <- .dpOrDefault(GdObject, ".__hasAnno", FALSE) && !is.null(bartext) && !is.na(bartext) && nrow(bartext)>0 && stacking(GdObject) != "dense"
+        drawLabel <- .dpOrDefault(GdObject, ".__hasAnno", FALSE) && !is.null(bartext) && !is.na(bartext) &&
+            nrow(bartext)>0 && stacking(GdObject) != "dense"
         bs <- as.vector((stacks-bins)+1)
         if(drawLabel && just %in% c("above", "below")){
             labelHeights <- max(.getStringDims(GdObject, bartext$txt, subtype="group")$height)
@@ -1878,7 +1883,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
         ## Plotting of the filled arrows with fixed head size
         if("fixedArrow" %in% shape && !"box" %in% shape){
-            .filledArrow(box, lwd=lwd, lty=lty, alpha=alpha, min.width=4*res, absoluteWidth=TRUE, W=.dpOrDefault(GdObject, "arrowHeadWidth", 30)*res)
+            .filledArrow(box, lwd=lwd, lty=lty, alpha=alpha, min.width=4*res, absoluteWidth=TRUE,
+                         W=.dpOrDefault(GdObject, "arrowHeadWidth", 30)*res)
         }
         ## Plotting of the item labels
         if(.dpOrDefault(GdObject, "showFeatureId", FALSE))
