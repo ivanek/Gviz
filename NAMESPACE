@@ -68,7 +68,7 @@ importFrom(biovizBase, getBioColor)
 
 importFrom(utils, assignInNamespace, browseURL, write.table)
 
-importFrom(GenomicAlignments, extractAlignmentRangesOnReference, sequenceLayer)
+importFrom(GenomicAlignments, extractAlignmentRangesOnReference, sequenceLayer, GAlignments, summarizeJunctions)
 
 ###
 

@@ -1469,6 +1469,33 @@ setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, 
         grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
         popViewport(2)
     }
+    if("sashimi" %in% type){
+        sash <- .dpOrDefault(GdObject, ".__sashimi", list(x = numeric(), y = numeric(), id = integer(), score = numeric()))
+        yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.05), 0) else c(-1, 0)
+        ylim <- if (length(sash$y)) c(-max(sash$y), yscale[1]+max(sash$y)) else c(-1,0)
+        hSpaceAvail <- vpLocation()$isize["width"]/6
+        col <- .dpOrDefault(GdObject, "col.axis", "white")
+        acex <- .dpOrDefault(GdObject, "cex.axis")
+        acol <- .dpOrDefault(GdObject, "col.axis", "white")
+        labs <- pretty(sash$score)
+        at <- seq(ylim[1], ylim[2], length.out=length(labs))
+        sashHeight <- .dpOrDefault(GdObject, ".__sashimiHeight", c(npc=0, points=0))
+        sashSpace <- .dpOrDefault(GdObject, ".__sashimiSpace", 0)
+        pushViewport(viewport(y=1-(sashHeight["npc"] + sashSpace + covHeight["npc"] + covSpace),
+                              height=sashHeight["npc"], just=c(0.5, 0)))
+        if(is.null(acex))
+        {
+            vSpaceNeeded <- max(as.numeric(convertWidth(stringHeight(labs), "inches")))*length(at)*1.5
+            hSpaceNeeded <- max(as.numeric(convertWidth(stringWidth(labs), "inches")))
+            vSpaceAvail <- abs(diff(range(at)))/abs(diff(yscale))*vpLocation()$isize["height"]
+            acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
+        }
+        vpTitleAxis <- viewport(x=0.75, width=0.2, yscale=yscale, just=0)
+        pushViewport(vpTitleAxis)
+        suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at, label=labs))
+        grid.polygon(x=c(0,0,1), y=c(ylim[1],ylim[2],ylim[2]), default.units="native", gp=gpar(col=acol, fill=acol))
+        popViewport(2)
+    }
     if(.dpOrDefault(GdObject, ".__isCropped", FALSE)){
         vspacing <- as.numeric(convertHeight(unit(2, "points"), "npc"))
         vsize <- as.numeric(convertHeight(unit(4, "points"), "npc"))
@@ -1952,6 +1979,8 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
                     covHeight <- as.numeric(convertHeight(unit(covHeight, "npc"), "points"))
                 covHeight <- max(.dpOrDefault(GdObject, "minCoverageHeight", 50), covHeight)
                 covHeight <- c(points=covHeight, npc=as.numeric(convertHeight(unit(covHeight, "points"), "npc")))
+            }else if ("sashimi" %in% type){
+                covHeight <- c(npc=0.5-(covSpace*2), points=1)
             }else{
                 covHeight <- c(npc=1-(covSpace*2), points=1)
             }
@@ -1962,9 +1991,35 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             covHeight <- c(npc=0, points=0)
             covSpace <- 0
         }
+        ## The sashimi calculation and the height of the sashimi section
+        if("sashimi" %in% type){
+            pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0)))
+            sashSpace <- as.numeric(convertHeight(unit(5, "points"), "npc"))
+            if("pileup" %in% type) {
+                sashHeight <- .dpOrDefault(GdObject, "sashimiHeight", 0.1)
+                if(sashHeight > 0 && sashHeight < 1)
+                    sashHeight <- as.numeric(convertHeight(unit(sashHeight, "npc"), "points"))
+                sashHeight <- max(.dpOrDefault(GdObject, "minSashimiHeight", 50), sashHeight)
+                sashHeight <- c(points=sashHeight, npc=as.numeric(convertHeight(unit(sashHeight, "points"), "npc")))
+            }else if ("coverage" %in% type){
+                sashHeight <- c(npc=0.5-(sashSpace*2), points=1)
+            }else{
+                sashHeight <- c(npc=1-(sashSpace*2), points=1)
+            }
+            sashScore <- .dpOrDefault(GdObject, "sashimiScore", 1L)
+            sashLwdMax <- .dpOrDefault(GdObject, "lwd.sashimiMax", 10)
+            sashStrand <- .dpOrDefault(GdObject, "sashimiStrand", "*")
+            displayPars(GdObject) <- list(".__sashimi"=.sashimi.junctions(ranges(GdObject), score=sashScore,
+                                              lwd.max=sashLwdMax, strand=sashStrand),
+                                          ".__sashimiHeight"=sashHeight,
+                                          ".__sashimiSpace"=sashSpace)
+        } else {
+            sashHeight <- c(npc=0, points=0)
+            sashSpace <- 0
+        }
         if("pileup" %in% type){
             ## If there are more bins than we can plot we reduce the number until they fit
-            pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0)))
+            pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace + sashHeight["npc"] + sashSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0)))
             bins <- ranges(GdObject)$stack
             curVp <- vpLocation()
             mih <- min(curVp$size["height"], .dpOrDefault(GdObject, c("min.height", "max.height"), 3))
@@ -2037,10 +2092,31 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
                           alpha=.dpOrDefault(GdObject, "alpha.title")), width=2)
         popViewport(1)
     }
+    ## The sashimi plot as second
+    xscale <- if(!rev) c(minBase, maxBase) else c(maxBase, minBase)
+    sashHeight <- .dpOrDefault(GdObject, ".__sashimiHeight", c(npc=0, points=0))
+    sashSpace <- .dpOrDefault(GdObject, ".__sashimiSpace", 0)
+    if("sashimi" %in% type){
+        sash <- .dpOrDefault(GdObject, ".__sashimi", list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
+        yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.05), 0) else c(-1,0)
+        vp <- viewport(height=sashHeight["npc"], y=1-(covHeight["npc"] + covSpace + sashHeight["npc"] + sashSpace), just=c(0.5, 0),
+                       xscale=xscale, yscale=yscale, clip=TRUE)
+        pushViewport(vp)
+        gp <- gpar(col=.dpOrDefault(GdObject, c("col.coverage", "col"), .DEFAULT_SHADED_COL),
+                   fill=.dpOrDefault(GdObject, c("fill.coverage", "fill"), "#BABABA"),
+                   lwd=.dpOrDefault(GdObject, c("lwd.coverage", "lwd"), 1),
+                   lty=.dpOrDefault(GdObject, c("lty.coverage", "lty"), 1),
+                   alpha=.alpha(GdObject))
+        if (length(sash$x)) {
+            grid.xspline(sash$x, -sash$y, id=sash$id, shape=-1, open=TRUE,
+                         default.units="native", gp=gpar(col=gp$col, lwd=sash$scaled))
+        }
+        popViewport(1)
+    }
     ## Now the pileups
     if("pileup" %in% type){
         cex <- max(0.3, .dpOrDefault(GdObject, c("cex.mismatch", "cex"), 0.7))
-        pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0),
+        pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace + sashHeight["npc"] + sashSpace) - vSpacing * 4, y=vSpacing, just=c(0.5, 0),
                               gp=.fontGp(GdObject, "mismatch", cex=cex)))
         bins <- stacks(GdObject)
         stacks <- max(bins)

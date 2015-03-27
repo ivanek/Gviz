@@ -11,7 +11,7 @@
 .PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
                   "smooth", "polygon", "horizon", "histogram",
                   "mountain", "h", "boxplot", "gradient", "heatmap", "confint")
-.ALIGNMENT_TYPES <- c("coverage", "pileup")
+.ALIGNMENT_TYPES <- c("coverage", "sashimi", "pileup")
 .THIN_BOX_FEATURES <- c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA",
                         "three_prime_UTR", "five_prime_UTR")
 .DEFAULT_HORIZON_COL <- c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3")
@@ -2595,3 +2595,41 @@ availableDefaultMapping <- function(file, trackType){
    }
     return(res)
 }
+
+## Create list for drawing sashimi-like plots
+## using summarizeJunctions on GAlignments
+## plotting is done via grid.xspline (requires x, y, id, score)
+.sashimi.junctions <- function(range, score=1L, lwd.max=10, strand="*") {
+    ## summarizeJunctions
+    range <- sort(range)
+    range <- range[!duplicated(range$id)]
+    ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar, strand=strand(range), seqlengths=seqlengths(range))
+    juns <- summarizeJunctions(ga)
+    ## count how many overlaps to determine the y 
+    ov <- findOverlaps(juns, reduce(juns, min.gapwidth=0L))
+    ov <- split(queryHits(ov), subjectHits(ov))
+    juns$y <- unlist(sapply(ov, order))
+    ## select strand (default both)
+    juns$score <- if (strand=="+") juns$plus_score else if (strand=="-") juns$minus_score else juns$score
+    ## filter based on evidence (default no filtering, 1 read)
+    juns <- juns[juns$score >= score]
+    if (length(juns)) {
+        ## scale the score to lwd.max
+        juns$scaled <- (lwd.max-1)/(max(juns$score)-min(juns$score))*(juns$score-max(juns$score))+lwd.max
+        ## create list
+        juns <- list(x=as.numeric(rbind(start(juns),
+                         mid(ranges(juns)), end(juns))),
+                     y=as.numeric(rbind(0, juns$y, 0)),
+                     id=rep(seq_len(length(juns)), each=3),
+                     score=juns$score,
+                     scaled=juns$scaled)
+    } else {
+        juns <- list(x=numeric(),
+                     y=numeric(),
+                     id=integer(),
+                     score=numeric(),
+                     scaled=numeric())
+    }
+    return(juns)
+}
+

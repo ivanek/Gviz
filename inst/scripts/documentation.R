@@ -622,6 +622,7 @@ details <- list(
                                   col.mates="Integer or character scalar. The color of the line that is connecting two paired reads.",
                                   col.mismatch="Integer or character scalar. The box color around mismatch bases.",
                                   col.reads="Integer or character scalar. The box color around reads.",
+                                  col.sashimi="Integer or character scalar. The line color for sashimi plots.",
                                   col="Integer or character scalar. The default color of all line elements.",
                                   collapse="Logical scalar. Do not perform any collapsing of overlapping elements. Currently not supported.",
                                   coverageHeight="Numeric scalar. The height of the coverage region of the track. Can either be a value between 0 and 1 in which case it is taken as a relative height, or a positive value greater 1 in which case it is interpreted as pixels.",
@@ -638,16 +639,21 @@ details <- list(
                                   lwd.coverage="Integer or character scalar. The line width of the coverage profile.",
                                   lwd.gap="Integer scalar. The width of the line that is bridging the gap regions in gapped alignments.",
                                   lwd.mates="Integer scalar. The width of the line that is connecting two paired reads.",
-                                  lwd.mismatch="Integer scalar.The box line width around mismatch bases.",
-                                  lwd.reads="Integer scalar.The box line width around reads.",
+                                  lwd.mismatch="Integer scalar. The box line width around mismatch bases.",
+                                  lwd.reads="Integer scalar. The box line width around reads.",
+                                  lwd.sashimiMax="Integer scalar. The maximal width of the line in sashimi plots.",
                                   lwd="Integer scalar. The default width of all line elements.",
                                   noLetters="Logical scalar. Always plot colored boxes for mismatch bases regardles of the available space.",
                                   max.height="Integer scalar. The maximum height of an individual read in pixels. Can be used in combination with \\code{min.height} to control the read and stacking appearance. ",
                                   min.height="Integer scalar. The minimum height of an individual read in pixels. Can be used in combination with \\code{max.height} to control the read and stacking appearance.",
                                   minCoverageHeight="Integer scalar. The minimum height of the coverage section. Uselful in combination with a relative setting of \\code{coverageHeight}.",
+                                  minSashimi="Integer scalar. The minimum height of the sashimi section. Uselful in combination with a relative setting of \\code{sashimiHeight}.",
                                   showMismatches="Logical scalar. Add mismatch information, either as individual base letters or using color coded bars. This implies that the reference sequence has been provided, either to the class constructor or as part of the track list.",
+                                  sashimiHeight="Integer scalar. The height of the sashimi part of the track. Can either be a value between 0 and 1 in which case it is taken as a relative height, or a positive value greater 1 in which case it is interpreted as pixels.",
+                                  sashimiScore="Integer scalar. The minimum number of reads supporting the junction.",
+                                  sashimiStrand="Integer scalar. Only reads which have the specified strand are considered to count the junctions.",
                                   size="Numeric scalar. The size of the track. Defaults to automatic sizing.",
-                                  type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, and for \\code{pileup} the pileups of the individual reads. The two can be combined."
+                                  type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, for \\code{sashimi} a sashimi plot, showing the juctions, and for \\code{pileup} the pileups of the individual reads. Theese three can be combined."
 
                                   )
                 )

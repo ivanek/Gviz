@@ -2123,15 +2123,24 @@ plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12"
 @
 
 The direction of the individual  reads is indicated by the arrow head,
-and  read  pairs are  connect  by  a bright  gray  line.  Gaps in  the
-alignments are show by the connecting dark gray lines. On devices that
-support transparancy we  can also see that some of  the read pairs are
-actually overlapping. Like  before, we can not display  the full depth
-of the pile-up,  and the clipping that takes place hides  a lot of the
-reads from  the view. Another way of  getting to see at  least some of
-them is by reversing the stacking  order. We can also play around with
-some of the other display parameters that control the look and feel of
-the reads.
+and  read  pairs are  connected by  a bright  gray  line.  Gaps in
+the alignments are show by the connecting dark gray lines. Numbers of
+reads supporting each gap can be visualized as ``sashimi plot'' by
+adding \Rfunarg{``sashimi''} as an additional agument to the
+\Rfunarg{type} display parameter.
+
+<<alignmentstrack_5_1, results=hide, width=7.5, height=2, fig=TRUE>>=
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12",
+           type=c("coverage", "sashimi"))
+@ 
+
+On devices that support transparancy we  can also see that some of
+the read pairs are actually overlapping. Like  before, we can not
+display  the full depth of the pile-up,  and the clipping that takes
+place hides  a lot of the reads from  the view. Another way of
+getting to see at  least some of them is by reversing the stacking
+order. We can also play around with some of the other display
+parameters that control the look and feel of the reads. 
 
 <<alignmentstrack_6, results=hide, width=7.5, height=5, fig=TRUE>>=
 plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12", reverseStacking=TRUE,
