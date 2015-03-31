@@ -13,8 +13,8 @@ BiocStyle::latex()
 \SweaveOpts{keep.source=FALSE,pdf=TRUE,eps=FALSE}
 % \RequirePackage{hyperref}
 \RequirePackage{url}
-\RequirePackage[authoryear,round]{natbib}
-\bibliographystyle{plainnat}
+%\RequirePackage[authoryear,round]{natbib}
+%\bibliographystyle{plainnat}
 % \RequirePackage[text={7.2in,9in},centering]{geometry}
 \RequirePackage{Sweave}
 \setkeys{Gin}{width=0.95\textwidth}
@@ -2125,9 +2125,9 @@ plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12"
 The direction of the individual  reads is indicated by the arrow head,
 and  read  pairs are  connected by  a bright  gray  line.  Gaps in
 the alignments are show by the connecting dark gray lines. Numbers of
-reads supporting each gap can be visualized as ``sashimi plot'' by
-adding \Rfunarg{``sashimi''} as an additional agument to the
-\Rfunarg{type} display parameter.
+reads supporting each gap can be visualized as ``sashimi plot''
+\cite{Katz22012015} by adding \Rfunarg{``sashimi''} as an additional
+agument to the \Rfunarg{type} display parameter.
 
 <<alignmentstrack_5_1, results=hide, width=7.5, height=2, fig=TRUE>>=
 plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12",
@@ -2610,5 +2610,8 @@ The following is the session info that generated this vignette:
 <<session-info>>=
   sessionInfo()
 @
+
+\clearpage
+\bibliography{Gviz-refs}
 
 \end{document}
