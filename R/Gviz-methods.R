@@ -1771,12 +1771,16 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
                },
                "above"={
                    cx <- start(grpRangesCut) + width(grpRangesCut)/2
-                   cy <- yloc + 0.5
+                   indx <- which(seq_len(length(grpRanges)) %in% queryHits(findOverlaps(grpRanges, grpRangesCut)))
+                   cy <- yloc[indx] + 0.5
+                   labs <- labs[indx]
                    algn <- c("center", "top")
                },
                "below"={
                    cx <- start(grpRangesCut) + width(grpRangesCut)/2
-                   cy <- yloc - 0.5
+                   indx <- which(seq_len(length(grpRanges)) %in% queryHits(findOverlaps(grpRanges, grpRangesCut)))
+                   cy <- yloc[indx] - 0.5
+                   labs <- labs[indx]
                    algn <- c("center", "bottom")
                },
                stop(sprintf("Unknown label justification '%s'", just)))

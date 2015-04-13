@@ -1358,6 +1358,10 @@ addScheme <- function(scheme, name){
     if((is.null(from) || is.null(to)) && ((is.infinite(tfrom) || is.infinite(tto)) || is(GdObject, "GenomeAxisTrack")))
         stop("Unable to automatically determine plotting ranges from the supplied track(s).\nPlease provide ",
              "range coordinates through the 'from' and 'to' arguments of the plotTracks function.")
+    ## FIX the cases with identical "tfrom" and "tto" (one base-pair plotting) by adding +1 to "tto"
+    if (tto == tfrom) {
+        tto <- tto + 1
+    }
     range <- extendrange(r=c(tfrom, tto), f=factor)
     range[1] <- max(1, range[1])
     wasNull <- rep(FALSE, 2)
