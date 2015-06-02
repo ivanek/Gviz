@@ -8,7 +8,7 @@ various UCSC data sources.
 }
 
 \description{
-  
+
 The UCSC data base provides a wealth of annotation information. This
 function can be used to access UCSC, to retrieve the data available
 there and to return it as an annotation track object ameanable to
@@ -31,29 +31,29 @@ clearSessionCache()
 }
 
 \arguments{
-  
+
   \item{track}{Character, the name of the track to fetch from UCSC. To
     find out about available tracks please consult the online table
     browser at
     \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.}
-  
+
   \item{table}{Character, the name of the table to fetch from UCSC, or
     \code{NULL}, in which case the default selection of tables is
     used. To find out about available tables for a given track please
     consult the online table browser at
     \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.}
-  
+
   \item{trackType}{Character, one in \code{c("AnnotationTrack",
       "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")}. The function
     will try to coerce the downloaded data in an object of this
     class. See below for details.}
-  
+
   \item{genome}{Character, a valid USCS genome identifier for which to
     fetch the data.}
-  
+
   \item{chromosome}{Character, a valid USCS character identifier for which to
     fetch the data.}
-  
+
   \item{name}{Character, the name to use for the resulting track
     object.}
 
@@ -68,7 +68,7 @@ clearSessionCache()
 }
 
 \details{
-  
+
   The data stored at the UCSC data bases can be of different formats:
   gene or transcript model data, simple annotation features like CpG
   Island locations or SNPs, or numeric data like conservation or
@@ -96,14 +96,19 @@ clearSessionCache()
   To reduce the bandwidth, some caching of the UCSC connection takes
   place. In order to remove these cached session items, call
   \code{clearSessionCache}.
-  
+
+  The \code{Gviz.ucscUrl} option controls which URL is being used to
+  connect to UCSC. For instance, one could switch to the European UCSC
+  mirror by calling
+  \code{options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"}.
+
 }
 
 
 \value{
-  
+
   An annotation track object as determined by \code{trackType}.
-  
+
 }
 
 \author{

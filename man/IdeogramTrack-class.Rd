@@ -871,6 +871,11 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
   slots. When plotting \code{IdeogramTracks}, the current genomic
   location is indicated on the chromosome by a colored box.
 
+  The \code{Gviz.ucscUrl} option controls which URL is being used to
+  connect to UCSC. For instance, one could switch to the European UCSC
+  mirror by calling
+  \code{options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"}.
+
 }
 
 

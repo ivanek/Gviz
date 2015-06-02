@@ -1668,7 +1668,8 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
     tablesToken <- paste("tables", track, genome, sep="_")
     cenv <- environment()
     session <- .doCache(sessionToken,
-                        expression({tmp <- browserSession()
+                        expression({ucscUrl <- getOption("Gviz.ucscUrl")
+                                    tmp <- ifelse(is.null(ucscUrl), browserSession(), browserSession(url=ucscUrl))
                                     genome(tmp) <- genome
                                     tmp}), env, cenv)
     availTracks <- .doCache(tracksToken, expression(trackNames(ucscTableQuery(session))), env, cenv)
@@ -1695,7 +1696,8 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
                 stop("'", genome, "' is not a valid UCSC genome.")
             sessionToken <- paste("session", genome, sep="_")
             session <- .doCache(sessionToken,
-                                expression({tmp <- browserSession()
+                                expression({ucscUrl <- getOption("Gviz.ucscUrl")
+                                            tmp <- ifelse(is.null(ucscUrl), browserSession(), browserSession(url=ucscUrl))
                                             genome(tmp) <- genome
                                             tmp}), env, cenv)
             query <-  tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error=function(e)

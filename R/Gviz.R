@@ -1988,7 +1988,7 @@ availableDisplayPars <- function(class)
 ## We store some preset in the options on package load
 .onLoad = function(...){
     .collectSchemes()
-    options("ucscChromosomeNames"=TRUE, "Gviz.scheme"="default")
+    options("ucscChromosomeNames"=TRUE, "Gviz.scheme"="default", "Gviz.ucscUrl"=NULL)
 }
 
 
@@ -2504,10 +2504,11 @@ availableDefaultMapping <- function(file, trackType){
                     fact <- title.width + (hasAxis * 2)
                     .getStringDims(GdObject, "g_T", unit="npc", subtype="title")$height * fact
                 }else 0
-                tfact <- 1 / (1 - twidth)
+                tfact <- ifelse(twidth > 1, 1, 1 / (1 - twidth))
                 ## The labels and spacers are plotted in a temporary viewport to figure out their size
                 labels <- if(needsGrp)
-                    sapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/")) else setNames(identifier(GdObject), gp)
+                    sapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/")) else setNames(identifier(GdObject),
+                                                                                                                            gp)
                 pushViewport(dataViewport(xscale=c(max(pr["from"], min(start(finalRanges))),
                                                    min(pr["to"], max(end(finalRanges)))), extension=0, yscale=c(0,1),
                                           gp=.fontGp(GdObject, "group")))
@@ -2609,7 +2610,7 @@ availableDefaultMapping <- function(file, trackType){
     range <- range[!duplicated(range$id)]
     ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar, strand=strand(range), seqlengths=seqlengths(range))
     juns <- summarizeJunctions(ga)
-    ## count how many overlaps to determine the y 
+    ## count how many overlaps to determine the y
     ov <- findOverlaps(juns, reduce(juns, min.gapwidth=0L))
     ov <- split(queryHits(ov), subjectHits(ov))
     juns$y <- unlist(sapply(ov, order))
