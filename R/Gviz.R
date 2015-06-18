@@ -2507,11 +2507,12 @@ availableDefaultMapping <- function(file, trackType){
                 tfact <- ifelse(twidth > 1, 1, 1 / (1 - twidth))
                 ## The labels and spacers are plotted in a temporary viewport to figure out their size
                 labels <- if(needsGrp)
-                    sapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/")) else setNames(identifier(GdObject),
-                                                                                                                            gp)
-                pushViewport(dataViewport(xscale=c(max(pr["from"], min(start(finalRanges))),
-                                                   min(pr["to"], max(end(finalRanges)))), extension=0, yscale=c(0,1),
-                                          gp=.fontGp(GdObject, "group")))
+                    sapply(split(identifier(GdObject), gp), function(x)
+                           paste(sort(unique(x)), collapse="/")) else setNames(identifier(GdObject), gp)
+                xscale <- c(max(pr["from"], min(start(finalRanges))), min(pr["to"], max(end(finalRanges))))
+                if(diff(xscale) == 0)
+                    xscale[2] <- xscale[2] + 1
+                pushViewport(dataViewport(xscale=xscale, extension=0, yscale=c(0,1), gp=.fontGp(GdObject, "group")))
                 labelWidths <- setNames(as.numeric(convertWidth(stringWidth(labels),"native")) * tfact * 1.3, names(labels))
                 spaceBefore <- as.numeric(convertWidth(unit(3, "points"),"native")) * tfact
                 spaceAfter <- as.numeric(convertWidth(unit(7, "points"),"native")) * tfact
