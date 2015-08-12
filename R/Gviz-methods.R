@@ -3090,9 +3090,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     ## confidence interval bands
     if ("confint" %in% type) {
         ## column-wise SD calculation
-        vectorizedSD <- function(mat) {
-            ssq <- colSums(mat^2)
-            sumel <- colSums(mat)
+        vectorizedSD <- function(mat, na.rm) {
+            ssq <- colSums(mat^2,na.rm=na.rm)
+            sumel <- colSums(mat,na.rm=na.rm)
             N <- nrow(mat)
             var <- (1/(N-1))*(ssq - (sumel^2)/N)
             return(sqrt(var))
@@ -3163,7 +3163,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             ## buffer variation to set final limits
             for (j in seq_along(by)) {
                 mu[[j]] <- colMeans(by[[j]],na.rm=TRUE)
-                locusSD <- vectorizedSD(by[[j]])
+                locusSD <- vectorizedSD(by[[j]], na.rm)
                 confint[[j]] <- 1.96*(locusSD/sqrt(nrow(by[[j]])))
 
                 curr_low <- mu[[j]]-confint[[j]]
@@ -3183,7 +3183,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             }
         } else {
             mu <- colMeans(vals,na.rm=TRUE)
-            locusSD <- vectorizedSD(vals)
+            locusSD <- vectorizedSD(vals, na.rm)
             confint <- 1.96*(locusSD/sqrt(nrow(vals)))
 
             df <- data.frame(x=position(GdObject), y=mu,
