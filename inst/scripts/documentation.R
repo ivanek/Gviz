@@ -649,6 +649,8 @@ details <- list(
                                   minCoverageHeight="Integer scalar. The minimum height of the coverage section. Uselful in combination with a relative setting of \\code{coverageHeight}.",
                                   minSashimi="Integer scalar. The minimum height of the sashimi section. Uselful in combination with a relative setting of \\code{sashimiHeight}.",
                                   showMismatches="Logical scalar. Add mismatch information, either as individual base letters or using color coded bars. This implies that the reference sequence has been provided, either to the class constructor or as part of the track list.",
+                                  sashimiFilter="GRanges object. Only junctions which overlap equally with \\code{sashimiFilter} GRanges are shown. Default \\code{NULL}, no filtering.",
+                                  sashimiFilterTolerance="Integer scalar. Only used in combination with \\code{sashimiFilter}. It allows to include junctions whose starts/ends are within specified distance from \\code{sashimiFilter} GRanges. This is useful for cases where the aligner did not place the junction reads precisely. Default \\code{0L} , no tolerance.",
                                   sashimiHeight="Integer scalar. The height of the sashimi part of the track. Can either be a value between 0 and 1 in which case it is taken as a relative height, or a positive value greater 1 in which case it is interpreted as pixels.",
                                   sashimiScore="Integer scalar. The minimum number of reads supporting the junction.",
                                   sashimiStrand="Integer scalar. Only reads which have the specified strand are considered to count the junctions.",

@@ -2605,23 +2605,53 @@ availableDefaultMapping <- function(file, trackType){
 ## Create list for drawing sashimi-like plots
 ## using summarizeJunctions on GAlignments
 ## plotting is done via grid.xspline (requires x, y, id, score)
-.sashimi.junctions <- function(range, score=1L, lwd.max=10, strand="*") {
+.sashimi.junctions <- function(range, score=1L, lwd.max=10, strand="*", filter=NULL, filterTolerance=0L) {
     ## summarizeJunctions
     range <- sort(range)
     range <- range[!duplicated(range$id)]
-    ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar, strand=strand(range), seqlengths=seqlengths(range))
+    ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar,
+                      strand=if(is.null(range$readStrand)) strand(range) else range$readStrand,
+                      seqlengths=seqlengths(range))
     juns <- summarizeJunctions(ga)
-    ## count how many overlaps to determine the y
-    ov <- findOverlaps(juns, reduce(juns, min.gapwidth=0L))
-    ov <- split(queryHits(ov), subjectHits(ov))
-    juns$y <- unlist(sapply(ov, order))
-    ## select strand (default both)
-    juns$score <- if (strand=="+") juns$plus_score else if (strand=="-") juns$minus_score else juns$score
+    ## filter junctions
+    if (!is.null(filter)) {
+        ## if filterTolerance is > 0 than pass it as maxgap parameter in findOverlaps
+        ## make sure it is positive value
+        if (filterTolerance < 0) {
+            filterTolerance <- abs(filterTolerance)
+            warning(sprintf("\"sashimiFilterTolerance\" can't be negative, taking absolute value of it: %d",
+                    filterTolerance))
+        }
+        ovs <- findOverlaps(juns, filter, type="start", maxgap=filterTolerance)
+        ove <- findOverlaps(juns, filter, type="end", maxgap=filterTolerance)
+        ## combine both Hits objects, select junctions present in both
+        ovv <- rbind(as.matrix(ovs), as.matrix(ove))
+        ovv <- ovv[duplicated(ovv),,drop=FALSE]
+        ## create row/col index for selecting the correct strand
+        ws <- strand(filter[ovv[,"subjectHits"]])
+        levels(ws) <- c("plus_score", "minus_score", "score")
+        ws <- cbind(row=ovv[,"queryHits"], col=as.character(ws))
+        ## rol/col subseting will only works on matrix
+        M <- as.matrix(values(juns))
+        rownames(M) <- 1:nrow(M)
+        ##
+        filter$score <- 0L
+        filter$score[sort(unique(ovv[,"subjectHits"]))] <- tapply(M[ws], ovv[,"subjectHits"], sum)
+        juns <- filter
+    } else {
+        ## if no filter ranges were defined
+        ## select strand (default both)
+        juns$score <- if (strand=="+") juns$plus_score else if (strand=="-") juns$minus_score else juns$score
+    }
     ## filter based on evidence (default no filtering, 1 read)
     juns <- juns[juns$score >= score]
     if (length(juns)) {
+        ## count how many overlaps to determine the y
+        ov <- findOverlaps(juns, reduce(juns, min.gapwidth=0L))
+        ov <- split(queryHits(ov), subjectHits(ov))
+        juns$y <- unlist(sapply(ov, order))
         ## scale the score to lwd.max
-        juns$scaled <- (lwd.max-1)/(max(juns$score)-min(juns$score))*(juns$score-max(juns$score))+lwd.max
+        juns$scaled <- (lwd.max-1)/pmax((max(juns$score)-min(c(1, juns$score))), 1)*(juns$score-max(juns$score))+lwd.max
         ## create list
         juns <- list(x=as.numeric(rbind(start(juns),
                          mid(ranges(juns)), end(juns))),

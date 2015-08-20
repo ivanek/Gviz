@@ -1477,7 +1477,7 @@ setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, 
         col <- .dpOrDefault(GdObject, "col.axis", "white")
         acex <- .dpOrDefault(GdObject, "cex.axis")
         acol <- .dpOrDefault(GdObject, "col.axis", "white")
-        labs <- pretty(sash$score)
+        labs <- if (length(sash$score)) pretty(c(1, sash$score)) else pretty(c(1, .dpOrDefault(GdObject, ".__sashimiScore", 10)))
         at <- seq(ylim[1], ylim[2], length.out=length(labs))
         sashHeight <- .dpOrDefault(GdObject, ".__sashimiHeight", c(npc=0, points=0))
         sashSpace <- .dpOrDefault(GdObject, ".__sashimiSpace", 0)
@@ -2013,8 +2013,11 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             sashScore <- .dpOrDefault(GdObject, "sashimiScore", 1L)
             sashLwdMax <- .dpOrDefault(GdObject, "lwd.sashimiMax", 10)
             sashStrand <- .dpOrDefault(GdObject, "sashimiStrand", "*")
+            sashFilter <- .dpOrDefault(GdObject, "sashimiFilter", NULL)
+            sashFilterTolerance <- .dpOrDefault(GdObject, "sashimiFilterTolerance", 0L)
             displayPars(GdObject) <- list(".__sashimi"=.sashimi.junctions(ranges(GdObject), score=sashScore,
-                                              lwd.max=sashLwdMax, strand=sashStrand),
+                                              lwd.max=sashLwdMax, strand=sashStrand, filter=sashFilter,
+                                              filterTolerance=sashFilterTolerance),
                                           ".__sashimiHeight"=sashHeight,
                                           ".__sashimiSpace"=sashSpace)
         } else {

@@ -2132,7 +2132,29 @@ agument to the \Rfunarg{type} display parameter.
 <<alignmentstrack_5_1, results=hide, width=7.5, height=2, fig=TRUE>>=
 plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12",
            type=c("coverage", "sashimi"))
-@ 
+@
+
+It is also possible to filter the junctions by including the
+coordinates as an additional argument \Rfunarg{``sashimiFilter''}. In
+this case only junction which equally overlaps with specified
+\Rclass{GRanges} object are shown.
+
+<<alignmentstrack_5_2, results=hide, width=7.5, height=2, fig=TRUE>>=
+introns <- GRanges("chr12", IRanges(start=c(2973662, 2973919), end=c(2973848, 2974520)))
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12",
+           type=c("coverage", "sashimi"), sashimiFilter=introns)
+@
+
+However sometimes the aligners do not place the junction reads
+precisely on the exon-intron boundaries and it is therefore useful to
+include also junctions which are shifted by few bases. This can be done
+by setting the additional argument
+\Rfunarg{``sashimiFilterTolerance''} to small positive integer value.
+
+<<alignmentstrack_5_3, results=hide, width=7.5, height=2, fig=TRUE>>=
+plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12",
+           type=c("coverage", "sashimi"), sashimiFilter=introns, sashimiFilterTolerance=5L)
+@
 
 On devices that support transparancy we  can also see that some of
 the read pairs are actually overlapping. Like  before, we can not
@@ -2140,7 +2162,7 @@ display  the full depth of the pile-up,  and the clipping that takes
 place hides  a lot of the reads from  the view. Another way of
 getting to see at  least some of them is by reversing the stacking
 order. We can also play around with some of the other display
-parameters that control the look and feel of the reads. 
+parameters that control the look and feel of the reads.
 
 <<alignmentstrack_6, results=hide, width=7.5, height=5, fig=TRUE>>=
 plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12", reverseStacking=TRUE,
