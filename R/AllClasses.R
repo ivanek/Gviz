@@ -1700,11 +1700,21 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
                                             tmp <- if(is.null(myUcscUrl)) browserSession() else browserSession(url=myUcscUrl)
                                             genome(tmp) <- genome
                                             tmp}), env, cenv)
-            query <-  tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error=function(e)
-                               stop("There doesn't seem to be any cytoband data available for genome '", genome,
-                                    "' at UCSC or the service is temporarily down."))
-            getTable(query)}), env, cenv)
+            query <-  tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error=function(e) {
+                               warning("There doesn't seem to be any cytoband data available for genome '", genome,
+                                       "' at UCSC or the service is temporarily down. Trying to fetch the chromosome length data.")
+                               tryCatch(ucscTableQuery(session, table="chromInfo"), error=function(e)
+                                            stop("There doesn't seem to be any chromosome length data available for genome '", genome,
+                                                 "' at UCSC or the service is temporarily down."))
+                           })
+            out <- getTable(query)
+            if (all(c("chrom","size") %in% colnames(out))) {
+                out <- data.frame(chrom=out$chrom, chromStart=0, chromEnd=out$size, name="",  gieStain="gneg", stringsAsFactors=F)
+            }
+            out
+        }), env, cenv)
     }
+    
     return(list(availableGenomes=genomes, bands=bands))
 }
 .cacheMartData <- function(bmtrack, chromosome=NULL, staged=FALSE){
