@@ -965,7 +965,7 @@ a more explicit way.
 <<filedt2>>=
 library(rtracklayer)
 dTrack3 <-  DataTrack(range=bgFile, genome="hg19", type="l", chromosome="chr19", name="bedGraph",
-                      importFunction=function(file) import(con=file, asRangedData=FALSE))
+                      importFunction=function(file) import(con=file))
 identical(dTrack2, dTrack3)
 @
 

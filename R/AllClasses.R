@@ -1785,7 +1785,7 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
     if(is.null(name))
       name <- if(is.null(table)) track else paste(sessionInfo$track, table)
     tableDat <- if(trackType=="DataTrack"){
-        tmp <- try(track(query, asRangedData=FALSE), silent=TRUE)
+        tmp <- try(track(query), silent=TRUE)
         if(is(tmp, "try-error")){
             warning(tmp)
             data.frame()

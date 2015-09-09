@@ -3977,8 +3977,7 @@ setAs("GeneRegionTrack", "UCSCData",
                                           id=id, name=name, itemRgb=color, blockCount=blocks,
                                           blockSizes=bsizes, blockStarts=bstarts,
                                           strand=strand),
-                                          ##genome=genome(from), strand=strand,
-                                          ##asRangedData=TRUE),
+                                          ##genome=genome(from), strand=strand)
                   trackLine = line)
           })
 

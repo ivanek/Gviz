@@ -2052,7 +2052,7 @@ availableDisplayPars <- function(class)
 ## An import function for gff3 files that tries to resolve the parent-child relationship
 ## between genes, transcripts and exons
 .import.gff3 <- function(file){
-    dat <- import.gff3(file, asRangedData=FALSE)
+    dat <- import.gff3(file)
     res <- try({
         genes <- tolower(dat$type) == "gene"
         ginfo <- mcols(dat[genes, ])
@@ -2110,12 +2110,12 @@ availableDisplayPars <- function(class)
 .import.bw <- function(file, selection){
     bwf <- BigWigFile(path.expand(file))
     if(missing(selection)){
-        rr <- import.bw(con=bwf, asRangedData=FALSE)
+        rr <- import.bw(con=bwf)
     }else{
         si <- seqinfo(bwf)
         rr <- if(!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(bwf))){
             GRanges(seqnames(selection)[1], ranges=IRanges(1,2), score=1)[0] }else{
-                import.bw(con=bwf, selection=selection, asRangedData=FALSE)}
+                import.bw(con=bwf, selection=selection)}
     }
     return(rr)
 }
@@ -2234,14 +2234,14 @@ availableDisplayPars <- function(class)
     fileExt <- .fileExtension(file)
     file <- path.expand(file)
     return(switch(fileExt,
-                  "gff"=import.gff(file, asRangedData=FALSE),
-                  "gff1"=import.gff1(file, asRangedData=FALSE),
-                  "gff2"=import.gff2(file, asRangedData=FALSE),
+                  "gff"=import.gff(file),
+                  "gff1"=import.gff1(file),
+                  "gff2"=import.gff2(file),
                   "gff3"=.import.gff3(file),
-                  "gtf"=import.gff2(file, asRangedData=FALSE),
-                  "bed"=import.bed(file, asRangedData=FALSE),
-                  "bedgraph"=import.bedGraph(file, asRangedData=FALSE),
-                  "wig"=import.wig(file, asRangedData=FALSE),
+                  "gtf"=import.gff2(file),
+                  "bed"=import.bed(file),
+                  "bedgraph"=import.bedGraph(file),
+                  "wig"=import.wig(file),
                   "bw"=.import.bw,
                   "bigwig"=.import.bw,
                   "bam"=.import.bam,
