@@ -1740,7 +1740,7 @@ which is necessary because Esembl used to call the gene symbol field
 
 <<BiomartGeneRegionTrackCustom, width=7.5, height=1.25, fig=TRUE>>=
 library(biomaRt)
-bm <- useMart(host="oct2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
+bm <- useMart(host="sep2013.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
               dataset="hsapiens_gene_ensembl")
 fm <- Gviz:::.getBMFeatureMap()
 fm["symbol"] <- "external_gene_id"

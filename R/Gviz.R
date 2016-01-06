@@ -2608,7 +2608,7 @@ availableDefaultMapping <- function(file, trackType){
 .sashimi.junctions <- function(range, score=1L, lwd.max=10, strand="*", filter=NULL, filterTolerance=0L) {
     ## summarizeJunctions
     range <- sort(range)
-    range <- range[!duplicated(range$id)]
+    range <- range[!duplicated(range$entityId)]
     ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar,
                       strand=if(is.null(range$readStrand)) strand(range) else range$readStrand,
                       seqlengths=seqlengths(range))
