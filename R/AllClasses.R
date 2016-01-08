@@ -1497,7 +1497,7 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
     ## Some default checking
     if(length(unique(strand(range)))>1)
         stop("The strand has to be unique for all ranges in a DataTrack object.")
-    if(!missing(data))
+    if(!missing(data) && length(range) > 0)
     {
         if(is.character(data))
         {
@@ -1714,7 +1714,7 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
             out
         }), env, cenv)
     }
-    
+
     return(list(availableGenomes=genomes, bands=bands))
 }
 .cacheMartData <- function(bmtrack, chromosome=NULL, staged=FALSE){
