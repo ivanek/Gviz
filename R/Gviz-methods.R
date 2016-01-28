@@ -716,7 +716,7 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
         ## Some of the items have to be merged and we need to make sure that the additional annotation data that comes with it
         ## is processed in a sane way.
         needsRestacking <- TRUE
-        mapping <- rep(seq_along(rRed$revmap), elementLengths(rRed$revmap))
+        mapping <- rep(seq_along(rRed$revmap), elementNROWS(rRed$revmap))
         ## We start by finding the items that have not been reduced
         identical <- mapping %in% which(table(mapping)==1)
         newVals <- anno[identical, cols]
@@ -825,8 +825,8 @@ setMethod("collapseTrack", signature(GdObject="AnnotationTrack"),
                              newVals$feature <- "merged"
                              newVals$transcript <- newVals$gene
                              rtmp <- reduce(split(r,  paste(gene(GdObject), strand(GdObject))))
-                             newVals <- newVals[rep(seq_along(rtmp), elementLengths(rtmp)),]
-                             newVals$exon <- paste("merged_exon_", unlist(lapply(elementLengths(rtmp), function(x) seq(1, x)), use.names=FALSE), sep="")
+                             newVals <- newVals[rep(seq_along(rtmp), elementNROWS(rtmp)),]
+                             newVals$exon <- paste("merged_exon_", unlist(lapply(elementNROWS(rtmp), function(x) seq(1, x)), use.names=FALSE), sep="")
                              r <- unlist(rtmp)
                              mcols(r) <- newVals
                              GdObject@range <- r
@@ -4184,7 +4184,7 @@ setMethod(".buildRange", signature("IRanges"),
 ## For GRangesLists we capture the grouping information from the list structure, unlist and use the GRanges method
 setMethod(".buildRange", signature("GRangesList"),
           function(range, groupId="group", ...){
-              grps <- rep(names(range), elementLengths(range))
+              grps <- rep(names(range), elementNROWS(range))
               range <- unlist(range)
               names(range) <- NULL
               mcols(range)[[groupId]] <- grps
@@ -4219,7 +4219,7 @@ setMethod(".buildRange", signature("TxDb"),
               ## Now the CDS ranges
               t2c <- cdsBy(range, "tx")
               names(t2c) <- txs[names(t2c), 2]
-              tids <- rep(names(t2c), elementLengths(t2c))
+              tids <- rep(names(t2c), elementNROWS(t2c))
               t2c <- unlist(t2c)
               if(length(t2c)){
                   t2c$tx_id <- tids
@@ -4228,7 +4228,7 @@ setMethod(".buildRange", signature("TxDb"),
               ## And the 5'UTRS
               t2f <- fiveUTRsByTranscript(range)
               names(t2f) <- txs[names(t2f), 2]
-              tids <- rep(names(t2f), elementLengths(t2f))
+              tids <- rep(names(t2f), elementNROWS(t2f))
               t2f <- unlist(t2f)
               if(length(t2f)){
                   t2f$tx_id <- tids
@@ -4237,7 +4237,7 @@ setMethod(".buildRange", signature("TxDb"),
               ## And the 3'UTRS
               t2t <- threeUTRsByTranscript(range)
               names(t2t) <- txs[names(t2t), 2]
-              tids <- rep(names(t2t), elementLengths(t2t))
+              tids <- rep(names(t2t), elementNROWS(t2t))
               t2t <- unlist(t2t)
               if(length(t2t)){
                   t2t$tx_id <- tids
@@ -4247,7 +4247,7 @@ setMethod(".buildRange", signature("TxDb"),
               nt2e <- exonsBy(range, "tx")
               names(nt2e) <- txs[names(nt2e), 2]
               nt2e <- nt2e[!names(nt2e) %in% c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)]
-              tids <- rep(names(nt2e), elementLengths(nt2e))
+              tids <- rep(names(nt2e), elementNROWS(nt2e))
               nt2e <- unlist(nt2e)
               if(length(nt2e)){
                   nt2e$tx_id <- tids
@@ -4272,7 +4272,7 @@ setMethod(".buildRange", signature("TxDb"),
                   return(GRanges())
               ## Add the gene level annotation
               g2t <- transcriptsBy(range, "gene")
-              gids <- rep(names(g2t), elementLengths(g2t))
+              gids <- rep(names(g2t), elementNROWS(g2t))
               g2t <- unlist(g2t)
               values(g2t)[["gene_id"]] <- gids
               values(t2e)$gene_id <- gids[match(values(t2e)$tx_id, as.character(txs[as.character(values(g2t)$tx_id),2]))]

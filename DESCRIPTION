@@ -1,9 +1,9 @@
 Package: Gviz
-Version: 1.15.1
+Version: 1.15.2
 Title: Plotting data and annotation information along genomic coordinates
 Author: Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou, Ge Tan <ge.tan09@imperial.ac.uk>, Lance Parsons <lparsons@princeton.edu>, Shraddha Pai <shraddha.pai@utoronto.ca>
 Maintainer: Florian Hahne <florian.hahne@novartis.com>
-Depends:  R (>= 2.10.0), methods, S4Vectors (>= 0.1.0), IRanges (>= 1.99.18), GenomicRanges (>= 1.17.20), grid
+Depends:  R (>= 2.10.0), methods, S4Vectors (>= 0.9.25), IRanges (>= 1.99.18), GenomicRanges (>= 1.17.20), grid
 Imports: XVector (>= 0.5.7), rtracklayer (>= 1.25.13), lattice, RColorBrewer, biomaRt (>= 2.11.0), AnnotationDbi (>= 1.27.5), Biobase (>= 2.15.3), GenomicFeatures (>= 1.17.22), BSgenome (>= 1.33.1), Biostrings (>= 2.33.11), biovizBase (>= 1.13.8), Rsamtools (>= 1.17.28), latticeExtra (>= 0.6-26), matrixStats (>= 0.8.14), GenomicAlignments (>= 1.1.16), GenomeInfoDb (>= 1.1.3), BiocGenerics (>= 0.11.3), digest(>= 0.6.8)
 Suggests: xtable, BSgenome.Hsapiens.UCSC.hg19, BiocStyle
 biocViews: Visualization, Microarray

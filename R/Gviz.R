@@ -2289,7 +2289,7 @@ availableDefaultMapping <- function(file, trackType){
     res <- list(range=range, stackRanges=GRanges(), stacks=numeric())
     if(length(range)){
         alg <- extractAlignmentRangesOnReference(range$cigar)
-        rp <- elementLengths(alg)
+        rp <- elementNROWS(alg)
         range <- sort(GRanges(seqnames=rep(seqnames(range), rp), strand=rep("*", sum(rp)), ranges=shift(unlist(alg), rep(start(range), rp)-1),
                               id=rep(range$id, rp), entityId=rep(seq_along(rp), rp), cigar=rep(range$cigar, rp), md=rep(range$md, rp),
                               readStrand=rep(strand(range), rp), mapq=rep(range$mapq, rp), flag=rep(range$flag, rp), isize=rep(range$isize, rp),
