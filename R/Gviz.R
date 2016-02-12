@@ -2547,8 +2547,8 @@ availableDefaultMapping <- function(file, trackType){
                                featureWidths <- start(finalRanges) - end(finalRanges)
                                additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
                                additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                               end(finalRanges) <- end(finalRanges) - additionalLabelSpace
-                               start(finalRanges) <- start(finalRanges) + additionalLabelSpace
+                               end(finalRanges) <- end(finalRanges) + additionalLabelSpace
+                               start(finalRanges) <- start(finalRanges) - additionalLabelSpace
                            }
                            sa <- sb <- 0
                        },
@@ -2563,8 +2563,8 @@ availableDefaultMapping <- function(file, trackType){
                                featureWidths <- start(finalRanges) - end(finalRanges)
                                additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
                                additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                               end(finalRanges) <- end(finalRanges) - additionalLabelSpace
-                               start(finalRanges) <- start(finalRanges) + additionalLabelSpace
+                               end(finalRanges) <- end(finalRanges) + additionalLabelSpace
+                               start(finalRanges) <- start(finalRanges) - additionalLabelSpace
                            }
                            sa <- sb <- 0
                        },
