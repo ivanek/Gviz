@@ -1614,24 +1614,28 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     ## First the highlight box backgrounds
     htBoxes <- data.frame(stringsAsFactors=FALSE)
     for(hlite in htList){
-        inds <- setdiff(sort(length(expandedTrackList)-hlite$index+1), which(sapply(expandedTrackList, is, "IdeogramTrack")))
-        y <- reduce(IRanges(start=inds, width=1))
-        yy <- ifelse(start(y)==1, 0, sum(spaceSetup$spaceNeeded[1:start(y)-1]))
-        ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
-        htBoxes <- rbind(htBoxes, data.frame(y=yy, height=ht, x=start(hlite$track), width=width(hlite$track),
-                                             col=.dpOrDefault(hlite$track, "col", "orange"),
-                                             fill=.dpOrDefault(hlite$track, "fill", "red"),
-                                             lwd=.dpOrDefault(hlite$track, "lwd", 1),
-                                             lty=.dpOrDefault(hlite$track, "lty", 1),
-                                             alpha=.dpOrDefault(hlite$track, "alpha", 1),
-                                             inBackground=.dpOrDefault(hlite$track, "inBackground", TRUE),
-                                             stringsAsFactors=FALSE))
+        if(length(ranges(hlite$track))){
+            inds <- setdiff(sort(length(expandedTrackList)-hlite$index+1), which(sapply(expandedTrackList, is, "IdeogramTrack")))
+            y <- reduce(IRanges(start=inds, width=1))
+            yy <- ifelse(start(y)==1, 0, sum(spaceSetup$spaceNeeded[1:start(y)-1]))
+            ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
+            htBoxes <- rbind(htBoxes, data.frame(y=yy, height=ht, x=start(hlite$track), width=width(hlite$track),
+                                                 col=.dpOrDefault(hlite$track, "col", "orange"),
+                                                 fill=.dpOrDefault(hlite$track, "fill", "red"),
+                                                 lwd=.dpOrDefault(hlite$track, "lwd", 1),
+                                                 lty=.dpOrDefault(hlite$track, "lty", 1),
+                                                 alpha=.dpOrDefault(hlite$track, "alpha", 1),
+                                                 inBackground=.dpOrDefault(hlite$track, "inBackground", TRUE),
+                                                 stringsAsFactors=FALSE))
+        }
     }
     .drawHtBoxes <- function(htBoxes, background=TRUE){
         htBoxes <- htBoxes[htBoxes$inBackground == background, , drop=FALSE]
+        rscales = if(strds[1] == "reverse") c(from=ranges["to"], to=ranges["from"]) else ranges
         if(nrow(htBoxes)){
-            vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing, xscale=ranges,
-                                                  width=1 - spaceSetup$title.width - spaceSetup$spacing*2, just=0) else viewport(width=1, xscale=ranges)
+            vpContent <- if(!panel.only) viewport(x=spaceSetup$title.width + spaceSetup$spacing, xscale=rscales,
+                                                  width=1 - spaceSetup$title.width - spaceSetup$spacing*2, just=0) else {
+                                                      viewport(width=1, xscale=rscales)}
             pushViewport(vpContent)
             grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
                       gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
@@ -2537,35 +2541,19 @@ availableDefaultMapping <- function(file, trackType){
                            sa <- spaceAfter
                        },
                        "above"={
-                           if(!rev){
-                               featureWidths <- end(finalRanges) - start(finalRanges)
-                               additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
-                               additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                               end(finalRanges) <- end(finalRanges) + additionalLabelSpace
-                               start(finalRanges) <- start(finalRanges) - additionalLabelSpace
-                           }else{
-                               featureWidths <- start(finalRanges) - end(finalRanges)
-                               additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
-                               additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                               end(finalRanges) <- end(finalRanges) + additionalLabelSpace
-                               start(finalRanges) <- start(finalRanges) - additionalLabelSpace
-                           }
+                           featureWidths <- end(finalRanges) - start(finalRanges)
+                           additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
+                           additionalLabelSpace[additionalLabelSpace < 0] <- 0
+                           end(finalRanges) <- end(finalRanges) + additionalLabelSpace
+                           start(finalRanges) <- start(finalRanges) - additionalLabelSpace
                            sa <- sb <- 0
                        },
                        "below"={
-                           if(!rev){
-                               featureWidths <- end(finalRanges) - start(finalRanges)
-                               additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
-                               additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                               end(finalRanges) <- end(finalRanges) + additionalLabelSpace
-                               start(finalRanges) <- start(finalRanges) - additionalLabelSpace
-                           }else{
-                               featureWidths <- start(finalRanges) - end(finalRanges)
-                               additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
-                               additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                               end(finalRanges) <- end(finalRanges) + additionalLabelSpace
-                               start(finalRanges) <- start(finalRanges) - additionalLabelSpace
-                           }
+                           featureWidths <- end(finalRanges) - start(finalRanges)
+                           additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
+                           additionalLabelSpace[additionalLabelSpace < 0] <- 0
+                           end(finalRanges) <- end(finalRanges) + additionalLabelSpace
+                           start(finalRanges) <- start(finalRanges) - additionalLabelSpace
                            sa <- sb <- 0
                        },
                        stop(sprintf("Unknown label justification '%s'", just)))
