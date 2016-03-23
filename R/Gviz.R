@@ -2637,7 +2637,7 @@ availableDefaultMapping <- function(file, trackType){
         ## count how many overlaps to determine the y
         ov <- findOverlaps(juns, reduce(juns, min.gapwidth=0L))
         ov <- split(queryHits(ov), subjectHits(ov))
-        juns$y <- unlist(sapply(ov, order))
+        juns$y <- as.integer(unlist(sapply(ov, order)))
         ## scale the score to lwd.max
         juns$scaled <- (lwd.max-1)/pmax((max(juns$score)-min(c(1, juns$score))), 1)*(juns$score-max(juns$score))+lwd.max
         ## create list
