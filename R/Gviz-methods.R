@@ -1468,6 +1468,9 @@ setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, 
         suppressWarnings(grid.yaxis(gp=gpar(col=acol, cex=acex), at=at))
         grid.lines(x=c(0,0), y=ylim, gp=gpar(col=acol), default.units="native")
         popViewport(2)
+    } else {
+        covHeight <- c(npc=0, points=0)
+        covSpace <- 0
     }
     if("sashimi" %in% type){
         sash <- .dpOrDefault(GdObject, ".__sashimi", list(x = numeric(), y = numeric(), id = integer(), score = numeric()))
@@ -1997,7 +2000,6 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
         }
         ## The sashimi calculation and the height of the sashimi section
         if("sashimi" %in% type){
-            pushViewport(viewport(height=1 - (covHeight["npc"] + covSpace) - vSpacing * 2, y=vSpacing, just=c(0.5, 0)))
             sashSpace <- as.numeric(convertHeight(unit(5, "points"), "npc"))
             if("pileup" %in% type) {
                 sashHeight <- .dpOrDefault(GdObject, "sashimiHeight", 0.1)
