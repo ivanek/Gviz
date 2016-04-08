@@ -1,0 +1,20 @@
+﻿citHeader("To cite Gviz in publications, please use:")
+
+citEntry(entry="Inbook",
+         author=personList(as.person("Florian Hahne"),
+                           as.person("Robert Ivanek")),
+         editor=personList(as.person("Ewy Math{\\'e}"),
+                           as.person("Sean Davis")),
+         chapter="Visualizing Genomic Data Using Gviz and Bioconductor",
+         title="Statistical Genomics: Methods and Protocols",
+         year=2016,
+         publisher="Springer New York",
+         address="New York, NY",
+         pages="335--351",
+         isbn="978-1-4939-3578-9",
+         doi="10.1007/978-1-4939-3578-9_16",
+         url="http://dx.doi.org/10.1007/978-1-4939-3578-9_16",
+         textVersion="Hahne F, Ivanek R. Visualizing Genomic Data Using Gviz and Bioconductor. Methods Mol Biol. 1418:335-51 (2016)."
+)
+
+citFooter("This free open-source software implements academic research by the authors and co-workers. If you use it, please support the project by citing the appropriate journal articles.")
