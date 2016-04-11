@@ -1,4 +1,4 @@
-﻿citHeader("To cite Gviz in publications, please use:")
+citHeader("To cite Gviz in publications, please use:")
 
 citEntry(entry="Inbook",
          author=personList(as.person("Florian Hahne"),
