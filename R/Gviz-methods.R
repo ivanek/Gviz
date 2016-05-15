@@ -2913,8 +2913,8 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             for(j in seq_along(by))
             {
                 nn <- nrow(by[[j]])
-                off <- (width(GdObject) - bw - ((nb + 2) * spacer))/2
-                xx <- rep(start(GdObject)+((j-1)*spacer)+((j-1)*bw)+off, each=nn) - (bw/2)
+                off <- (width(GdObject) - (bw*nb) - ((nb + 2) * spacer))/2
+                xx <- rep(start(GdObject)+(j*spacer)+(j*bw)+off, each=nn) - (bw/2)
                 .panel.bwplot(xx, as.numeric(by[[j]]), box.ratio=box.ratio, box.width=(bw/2)/box.ratio, pch=pcols$pch[1],
                               lwd=pcols$lwd[1], lty=pcols$lty[1], fontsize=fontsize,
                               col=pcols$col.histogram, cex=bcex, font=font, fontfamily=font, fontface=fontface,
