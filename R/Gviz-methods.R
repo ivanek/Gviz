@@ -2504,19 +2504,19 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     p5 <- expression("3'")
     if(add53)
     {
-        grid.text(label=ifelse(rev, p5, p3), x=min(axRange)-textXOff, y=pyOff,
+        grid.text(label=p3, x=min(axRange)-textXOff, y=pyOff,
                   just=c(ifelse(rev, "left", "right"), "bottom"), gp=gpar(cex=cex*.75, fontface=fontface),
                   default.units="native")
-        grid.text(label=ifelse(rev, p3, p5), x=max(axRange)+textXOff, y=pyOff,
+        grid.text(label=p5, x=max(axRange)+textXOff, y=pyOff,
                   just=c(ifelse(rev, "right", "left"), "bottom"), gp=gpar(cex=cex*.75, fontface=fontface),
                   default.units="native")
     }
     if(add35)
     {
-        grid.text(label=ifelse(rev, p3, p5), x=axRange[1]-textXOff, y=-pyOff,
+        grid.text(label=p5, x=axRange[1]-textXOff, y=-pyOff,
                   just=c(ifelse(rev, "left", "right"), "top"), gp=gpar(cex=cex*.75, fontface=fontface),
                   default.units="native")
-        grid.text(label=ifelse(rev, p5, p3), x=axRange[2]+textXOff, y=-pyOff,
+        grid.text(label=p3, x=axRange[2]+textXOff, y=-pyOff,
                   just=c(ifelse(rev, "right", "left"), "top"), gp=gpar(cex=cex*0.75, fontface=fontface),
                   default.units="native")
     }
@@ -2899,7 +2899,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     {
         diff <- .pxResolution(coord="x")
         box.ratio <- .dpOrDefault(GdObject, "box.ratio", 1)
-        box.width <- .dpOrDefault(GdObject, "box.width", (((min(diff(unique(sort(x))))*0.5)/box.ratio)/diff))*diff
+        sx <- sort(unique(x))
+        sxd <- if(length(sx) == 1) 1 else diff(sx)
+        box.width <- .dpOrDefault(GdObject, "box.width", (((min(sxd)*0.5)/box.ratio)/diff))*diff
         if(!is.null(groups))
         {
             tw <- min(width(GdObject))
@@ -2912,7 +2914,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             {
                 nn <- nrow(by[[j]])
                 off <- (width(GdObject) - bw - ((nb + 2) * spacer))/2
-                xx <- rep(start(GdObject)+(j*spacer)+(j*bw)+off, each=nn) - (bw/2)
+                xx <- rep(start(GdObject)+((j-1)*spacer)+((j-1)*bw)+off, each=nn) - (bw/2)
                 .panel.bwplot(xx, as.numeric(by[[j]]), box.ratio=box.ratio, box.width=(bw/2)/box.ratio, pch=pcols$pch[1],
                               lwd=pcols$lwd[1], lty=pcols$lty[1], fontsize=fontsize,
                               col=pcols$col.histogram, cex=bcex, font=font, fontfamily=font, fontface=fontface,
