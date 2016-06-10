@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.16.0
+-------------------------
+
+NEW FEATURES
+
+    o AlignmentsTracks will nor use the transformation display
+      parameter to adjust the plotting of the coverage.
+
+
 CHANGES IN VERSION 1.11.0
 -------------------------
 
