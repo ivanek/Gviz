@@ -20,11 +20,11 @@
 \title{AlignmentsTrack class and methods}
 
 \description{
-  
+
   A class to represent short sequences that have been aligned to a
   reference genome as they are typically generated in next generation
   sequencing experiments.
-  
+
 }
 
 \section{Objects from the Class}{
@@ -54,7 +54,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
   other starting points to build \code{AlignmentsTracks}.
 
    \item{range}{
-    
+
     An optional meta argument to handle the different input types. If
     the \code{range} argument is missing, all the relevant information
     to create the object has to be provided as individual function
@@ -133,7 +133,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
   \item{isize}{A numeric vector of empirical insert sizes. This only
     applies if the reads are paired. Needs to be of equal length as the
     provided genomic coordinates, or of length 1. Currently not used.}
-  
+
   \item{groupid}{A factor (or vector than can be coerced into one)
     defining the read pairs. Reads with the same \code{groupid} are
     considered to be mates. Please note that each read group may only
@@ -144,13 +144,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     be one in \code{mated}, \code{unmated} or \code{ambiguous}. Needs to
     be of equal length as the provided genomic coordinates, or of length
     1.}
-  
+
   \item{md}{A character vector describing the mapping details. This is
     effectively and alternative to the CIGAR encoding and it removes the
     dependency on a reference sequence to figure out read
     mismatches. Needs to be of equal length as the provided genomic
     coordinates, or of length 1. Currently not used.}
-  
+
   \item{seqs}{\code{DNAStringSet} of read sequences.}
 
 
@@ -222,7 +222,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     smart enough to detect the presence of a
     \code{\linkS4class{SequenceTrack}} object in the track list and will
     use that as a reference sequence.}
-  
+
   \item{\dots}{Additional items which will all be interpreted as further
     display parameters. See \code{\link{settings}} and the "Display
     Parameters" section below for details.}
@@ -233,7 +233,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
   The return value of the constructor function is a new object of class
   \code{AlignmentsTrack} or \code{ReferenceAlignmentsTrack}.
-  
+
 }
 
 \section{details}{
@@ -251,9 +251,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
 
 \section{Slots}{
-  
+
   \describe{
-    
+
     \item{\code{stackRanges}:}{Object of class \code{"GRanges"}, the
       ranges of the precomputed mate or gaps stacks that should remain
       conmnected.}
@@ -263,7 +263,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{\code{referenceSequence}:}{Object of class \code{"SequenceTrack"}, the
       reference sequence to which the reads have been aligned to.}
-    
+
     \item{\code{stacking}:}{Object of class \code{"character"},
       inherited from class \code{\linkS4class{StackedTrack}}}
 
@@ -289,31 +289,31 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     \item{\code{imageMap}:}{Object of class
       \code{\linkS4class{ImageMap}}, inherited from class
       \code{\linkS4class{GdObject}}}
-    
-  }  
+
+  }
 }
 
 \section{Extends}{
-  
+
   Class \code{"\linkS4class{StackedTrack}"}, directly.
-  
+
   Class \code{"\linkS4class{RangeTrack}"}, by class "StackedTrack",
   distance2.
-  
+
   Class \code{"\linkS4class{GdObject}"}, by class "StackedTrack",
   distance3.
-  
+
 }
 
 \section{Methods}{
-  
+
   In the following code chunks, \code{obj} is considered to be an object
   of class \code{AlignmentsTrack}.
-  
+
   \bold{\emph{Exported in the name space:}}
-  
+
   \describe{
-    
+
     \item{[}{\code{signature(x="AlignmentsTrack")}: subset the items in
       the \code{AlignmentsTrack}. This is essentially similar to
       subsetting of the \code{\linkS4class{GRanges}} object in the
@@ -321,120 +321,120 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       may be more appropriate.
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{i}: subsetting indices}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{obj[1:5]}}
-	
+
       }
     }
 
     \item{subset}{\code{signature(x="AlignmentsTrack")}: subset a
       \code{AlignmentsTrack} by coordinates and sort if necessary.
-      
+
       \emph{Usage:}
-        
+
       \code{subset(x, from, to, sort=FALSE, stacks=FALSE)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{from}, \code{to}: the coordinates range to subset
 	  to.}
-	
+
 	\item{}{\code{sort}: sort the object after subsetting. Usually
 	  not necessary.}
-	
+
 	\item{}{\code{stacks}: recompute the stacking after subsetting
 	  which can be expensive and is not always necessary.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{subset(obj, from=10, to=20)}}
-	
+
 	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)}}
 
       }
     }
-      
+
     \item{split}{\code{signature(x="AlignmentsTrack")}: split an
       \code{AlignmentsTrack} object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
       operation is a list of \code{AlignmentsTrack} objects.
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{f}: the splitting factor.}
-	
+
 	\item{}{\code{\dots}: all further arguments are ignored.}
-	
+
       }
-      
+
       \emph{Usage:}
-      
+
       \code{split(x, f, ...)}
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
-	
+
       }
     }
-      
+
   }
 
   \bold{\emph{Internal methods:}}
-  
+
   \describe{
-    
-    
+
+
     \item{drawAxis}{\code{signature(GdObject="AlignmentsTrack")}: add a y-axis
       to the title panel of a track.
 
       \emph{Usage:}
-      
+
       \code{drawAxis(GdObject, from, to, subset=FALSE, ...)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{from}, \code{to}: compute axis range from the data
 	  within a certain coordinates range only.}
 
 	\item{}{\code{subset}: subset the object prior to calculating
 	  the axis ranges. Can be expensive and is not always needed.}
-	
+
 	\item{}{\code{\dots}: all further arguments are ignored.}
-	
+
       }
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
       	\item{}{\code{Gviz:::drawAxis(obj)}}
-	
+
       }
     }
-   
+
     \item{drawGD}{\code{signature(gdObject="AlignmentsTrack")}: plot the
       object to a graphics device. The return value of this method is
       the input object, potentially updated during the plotting
@@ -445,16 +445,16 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.
-      
+
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
 	subset=TRUE, ...)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
 	  plot.}
 
@@ -467,166 +467,166 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 	\item{}{\code{\dots}: all further arguments are ignored.}
 
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{Gviz:::drawGD(obj)}}
-	
+
 	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
-	
+
 	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
 	    subset=FALSE)}}
-	
+
       }
     }
 
-     
+
     \item{initialize}{\code{signature(.Object="AligendReadTrack")}:
       initialize the object.}
 
     \item{show}{\code{signature(object="AlignmentsTrack")}: show a
       human-readable summary of the object.}
-        
+
   }
 
   \bold{\emph{Inherited methods:}}
 
   \describe{
-	  
+
     \item{stacking}{\code{signature(GdObject="AlignmentsTrack")}: return
       the current stacking type.
-    	
+
       \emph{Usage:}
-      
+
       \code{stacking(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{stacking(obj)}}
 
       }
     }
-    	
+
     \item{stacking<-}{\code{signature(GdObject="AlignmentsTrack",
       value="character")}: set the object's stacking type to one in
       \code{c(hide, dense, squish, pack,full)}.
-    	
+
       \emph{Usage:}
-      
+
       \code{stacking<-(GdObject, value)}
 
       \emph{Additional Arguments:}
-      
+
 	\describe{
-	
+
 	  \item{}{\code{value}: replacement value.}
-	  
+
 	}
 
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{stacking(obj) <- "squish" }}
 
       }
     }
-    
+
     \item{setStacks}{\code{signature(GdObject="AlignmentsTrack")}:
       recompute the stacks based on the available space and on the
       object's track items and stacking settings.
-      
+
       \emph{Usage:}
-      
+
       \code{setStacks(GdObject, from, to)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{from}, \code{to}: compute stacking within a
 	  certain coordinates range. This needs to be supplied for the
 	  plotting function to know the current genomic coordinates.}
-	
+
       }
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
       	\item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
-    
+
     \item{stacks}{\code{signature(GdObject="AlignmentsTrack")}: return
       the stack indices for each track item.
 
       \emph{Usage:}
-      
+
       \code{stacks(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
       	\item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }
-    
+
     \item{chromosome}{\code{signature(GdObject="AlignmentsTrack")}:
       return the chromosome for which the track is defined.
-      
+
       \emph{Usage:}
-      
+
       \code{chromosome(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{chromosome(obj)}}
-	
+
       }
     }
-    
+
     \item{chromosome<-}{\code{signature(GdObject="AlignmentsTrack")}:
       replace the value of the track's chromosome. This has to be a
       valid UCSC chromosome identifier or an integer or character
       scalar that can be reasonably coerced into one.
-      
+
       \emph{Usage:}
-      
+
       \code{chromosome<-(GdObject, value)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{chromosome(obj) <- "chr12"}}
-	
+
       }
     }
-    
+
     \item{start, end, width}{\code{signature(x="AlignmentsTrack")}: the
       start or end coordinates of the track items, or their width in
       genomic coordinates.
-      
+
       \emph{Usage:}
-      
+
       \code{start(x)}
 
       \code{end(x)}
@@ -634,13 +634,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       \code{width(x)}
 
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{start(obj)}}
-	
+
 	\item{}{\code{end(obj)}}
-      
+
 	\item{}{\code{width(obj)}}
 
       }
@@ -649,9 +649,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     \item{start<-, end<-, width<-}{\code{signature(x="AlignmentsTrack")}:
       replace the start or end coordinates of the track items, or their
       width.
-      
+
       \emph{Usage:}
-      
+
       \code{start<-(x, value)}
 
       \code{end<-(x, value)}
@@ -659,63 +659,63 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       \code{width<-(x, value)}
 
       \emph{Additional Arguments:}
-      
+
 	\describe{
-	
+
 	  \item{}{\code{value}: replacement value.}
-	  
+
 	}
 
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{start(obj) <- 1:10}}
-      
+
 	\item{}{\code{end(obj) <- 20:30}}
-      
+
 	\item{}{\code{width(obj) <- 1}}
 
       }
     }
-    
+
     \item{position}{\code{signature(GdObject="AlignmentsTrack")}: the
       arithmetic mean of the track item's coordionates, i.e.,
       \code{(end(obj)-start(obj))/2}.
 
       \emph{Usage:}
-      
+
       \code{position(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{position(obj)}}
 
       }
     }
-    
+
     \item{feature}{\code{signature(GdObject="AlignmentsTrack")}: return the
       grouping information for track items. For certain sub-classes,
       groups may be indicated by different color schemes when
       plotting. See \code{\link{grouping}} or
       \code{\linkS4class{AnnotationTrack}} and
       \code{\linkS4class{GeneRegionTrack}} for details.
-      
+
       \emph{Usage:}
-      
+
       \code{feature(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{feature(obj)}}
 
       }
     }
-    
+
     \item{feature<-}{\code{signature(gdObject="AlignmentsTrack",
       value="character")}: set the grouping information for track
       items. This has to be a factor vector (or another type of vector
@@ -723,36 +723,36 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       items in the \code{AlignmentsTrack}. See \code{\link{grouping}} or
       \code{\linkS4class{AnnotationTrack}} and
       \code{\linkS4class{GeneRegionTrack}} for details.
-      
+
       \emph{Usage:}
-      
+
       \code{feature<-(GdObject, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
-    
-    \item{genome}{\code{signature(x="AlignmentsTrack")}: return the track's genome. 
-      
+
+    \item{genome}{\code{signature(x="AlignmentsTrack")}: return the track's genome.
+
       \emph{Usage:}
-      
+
       \code{genome(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
 
 	\item{}{\code{genome(obj)}}
@@ -763,23 +763,23 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     \item{genome<-}{\code{signature(x="AlignmentsTrack")}: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
       this is not formally enforced here.
-	    
+
       \emph{Usage:}
-      
+
       \code{genome<-(x, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{genome(obj) <- "mm9"}}
 
       }
@@ -787,122 +787,122 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{length}{\code{signature(x="AlignmentsTrack")}: return the number
       of items in the track.
-      
+
       \emph{Usage:}
-      
+
       \code{length(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{length(obj)}}
 
       }
     }
-    
+
     \item{range}{\code{signature(x="AlignmentsTrack")}: return the genomic
       coordinates for the track as an object of class
       \code{\linkS4class{IRanges}}.
-      
+
       \emph{Usage:}
-      
+
       \code{range(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{range(obj)}}
 
       }
     }
-    
+
     \item{ranges}{\code{signature(x="AlignmentsTrack")}: return the genomic
       coordinates for the track along with all additional annotation
       information as an object of class \code{\linkS4class{GRanges}}.
-      
+
       \emph{Usage:}
-      
+
       \code{ranges(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{ranges(obj)}}
 
       }
     }
-    
+
     \item{strand}{\code{signature(x="AlignmentsTrack")}: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
       two.
-      
+
       \emph{Usage:}
-      
+
       \code{strand(x)}
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{strand(obj)}}
 
       }
     }
-    
+
     \item{strand<-}{\code{signature(x="AlignmentsTrack")}: replace the
       strand information for the track items. The replacement value
       needs to be an appropriate scalar or vector of strand values.
-      
+
       \emph{Usage:}
-      
+
       \code{strand<-(x, value)}
-      
+
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{value}: replacement value.}
-	  
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{strand(obj) <- "+"}}
 
       }
     }
-    
+
     \item{values}{\code{signature(x="AlignmentsTrack")}: return all
       additional annotation information except for the genomic coordinates
       for the track items as a data.frame.
-      
+
       \emph{Usage:}
-      
+
       \code{values(x)}
 
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{values(obj)}}
 
       }
     }
-    
+
     \item{coerce}{\code{signature(from="AlignmentsTrack",
 	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
 	object in the \code{range} slot into a regular data.frame.
-      
+
        \emph{Examples:}
-      
+
       \describe{
-  
+
 	\item{}{\code{as(obj, "data.frame")}}
 
       }
@@ -912,113 +912,113 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       name="character")}: list the value of the display parameter
       \code{name}. See \code{\link{settings}} for details on display
       parameters and customization.
-      
+
       \emph{Usage:}
-      
+
       \code{displayPars(x, name)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{displayPars(obj, "col")}}
-	
+
       }
     }
-      
-    
+
+
     \item{displayPars}{\code{signature(x="AlignmentsTrack",
       name="missing")}: list the value of all available display
       parameters. See \code{\link{settings}} for details on display
       parameters and customization.
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{displayPars(obj)}}
 
       }
     }
-    
+
     \item{getPar}{\code{signature(x="AlignmentsTrack", name="character")}:
       alias for the \code{displayPars} method. See
       \code{\link{settings}} for details on display parameters and
       customization.
 
       \emph{Usage:}
-      
+
       \code{getPar(x, name)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{getPar(obj, "col")}}
 
       }
     }
-    
+
     \item{getPar}{\code{signature(x="AlignmentsTrack", name="missing")}:
       alias for the \code{displayPars} method. See
       \code{\link{settings}} for details on display parameters and
       customization.
-  
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{getPar(obj)}}
 
       }
     }
-    
+
     \item{displayPars<-}{\code{signature(x="AlignmentsTrack",
       value="list")}: set display parameters using the values of the
       named list in \code{value}. See \code{\link{settings}} for details
       on display parameters and customization.
-      
+
       \emph{Usage:}
-      
+
       \code{displayPars<-(x, value)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
-    
+
     \item{setPar}{\code{signature(x="AlignmentsTrack", value="character")}:
       set the single display parameter \code{name} to \code{value}. Note
       that display parameters in the \code{AlignmentsTrack} class are
       pass-by-reference, so no re-assignmnet to the symbol \code{obj} is
       necessary. See \code{\link{settings}} for details on display
       parameters and customization.
-      
+
       \emph{Usage:}
-      
+
       \code{setPar(x, name, value)}
 
       \emph{Additional Arguments:}
-      
+
       \describe{
-	
+
 	\item{}{\code{name}: the name of the display parameter to set.}
-	
+
       }
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
-    
+
     \item{setPar}{\code{signature(x="AlignmentsTrack", value="list")}: set
       display parameters by the values of the named list in
       \code{value}.  Note that display parameters in the
@@ -1026,62 +1026,62 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
       re-assignmnet to the symbol \code{obj} is necessary. See
       \code{\link{settings}} for details on display parameters and
       customization.
-      
-       
+
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
-    
+
     \item{group}{\code{signature(GdObject="AlignmentsTrack")}: return
       grouping information for the individual items in the track. Unless
       overwritten in one of the sub-classes, this usualy returns
       \code{NULL}.
-      
+
       \emph{Usage:}
-      
+
       \code{group(GdObject)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{group(obj)}}
 
       }
     }
-    
+
     \item{names}{\code{signature(x="AlignmentsTrack")}: return the value of
       the \code{name} slot.
-      
+
       \emph{Usage:}
-      
+
       \code{names(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{names(obj)}}
 
       }
     }
-    
+
     \item{names<-}{\code{signature(x="AlignmentsTrack", value="character")}:
       set the value of the \code{name} slot.
-      
+
       \emph{Usage:}
-      
+
       \code{names<-(x, value)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{names(obj) <- "foo"}}
 
       }
@@ -1089,15 +1089,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{coords}{\code{signature(ImageMap="AlignmentsTrack")}: return the
       coordinates from the internal image map.
-      
+
       \emph{Usage:}
-      
+
       \code{coords(ImageMap)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{coords(obj)}}
 
       }
@@ -1105,15 +1105,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{tags}{\code{signature(x="AlignmentsTrack")}: return the tags from the
       internal image map.
-      
+
       \emph{Usage:}
-      
+
       \code{tags(x)}
-      
+
       \emph{Examples:}
-      
+
       \describe{
-	
+
 	\item{}{\code{tags(obj)}}
 
       }
@@ -1122,7 +1122,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 }
 
 
-\section{Display Parameters}{ 
+\section{Display Parameters}{
 
   The following display parameters are set for objects of class
   \code{AlignmentsTrack} upon instantiation, unless one or more of
@@ -1145,11 +1145,11 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{col.coverage=NULL}: Integer or character
       scalar. The line color for the coverage profile.}
-    
+
     \item{}{\code{col.gap=.DEFAULT_SHADED_COL}: Integer or character
       scalar. The color of the line that is bridging the gap regions in
       gapped alignments.}
-    
+
     \item{}{\code{col.mates=.DEFAULT_BRIGHT_SHADED_COL}: Integer or
       character scalar. The color of the line that is connecting two
       paired reads.}
@@ -1159,13 +1159,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{col.reads=NULL}: Integer or
       character scalar. The box color around reads.}
-    
+
     \item{}{\code{col=.DEFAULT_SHADED_COL}: Integer or character
       scalar. The default color of all line elements.}
-    
+
     \item{}{\code{collapse=FALSE}: Logical scalar. Do not perform any
       collapsing of overlapping elements. Currently not supported.}
-    
+
     \item{}{\code{coverageHeight=0.1}: Numeric scalar. The height of the
       coverage region of the track. Can either be a value between 0 and
       1 in which case it is taken as a relative height, or a positive
@@ -1176,20 +1176,20 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{fill.reads=NULL}: Integer or character
       scalar. The fill color for the read icons.}
-      
+
     \item{}{\code{fill="#BABABA"}: Integer or character
       scalar. The default fill color of all plot elements.}
-    
+
     \item{}{\code{fontface.mismatch=2}: Integer scalar. The font face
       for mismatch bases.}
 
     \item{}{\code{lty.coverage=NULL}: Integer or character scalar. The line
       type of the coverage profile.}
-    
+
     \item{}{\code{lty.gap=NULL}: Integer or character scalar. The type
       of the line that is bridging the gap regions in gapped
       alignments.}
-    
+
     \item{}{\code{lty.mates=NULL}: Integer or character scalar. The
       type of the line that is connecting two paired reads.}
 
@@ -1198,16 +1198,16 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{lty.reads=NULL}: Integer or character scalar. The box
       line type around reads.}
-    
+
     \item{}{\code{lty=1}: Integer or character scalar. The default type
       of all line elements.}
-    
+
     \item{}{\code{lwd.coverage=NULL}: Integer or character scalar. The line
       width of the coverage profile.}
-    
+
     \item{}{\code{lwd.gap=NULL}: Integer scalar. The width of the line
       that is bridging the gap regions in gapped alignments.}
-    
+
     \item{}{\code{lwd.mates=NULL}: Integer scalar. The width of the
       line that is connecting two paired reads.}
 
@@ -1216,51 +1216,56 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
     \item{}{\code{lwd.reads=NULL}: Integer scalar.The box
       line width around reads.}
-    
+
     \item{}{\code{lwd=1}: Integer scalar. The default width of all line
       elements.}
 
     \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
       boxes for mismatch bases regardles of the available space.}
-    
+
     \item{}{\code{max.height=10}: Integer scalar. The maximum height
       of an individual read in pixels. Can be used in combination with
       \code{min.height} to control the read and stacking appearance. }
-    
+
     \item{}{\code{min.height=5}: Integer scalar. The minimum height of
       an individual read in pixels. Can be used in combination with
       \code{max.height} to control the read and stacking appearance.}
-    
+
     \item{}{\code{minCoverageHeight=50}: Integer scalar. The minimum
       height of the coverage section. Uselful in combination with a
       relative setting of \code{coverageHeight}.}
-    
+
     \item{}{\code{showMismatches=TRUE}: Logical scalar. Add mismatch
       information, either as individual base letters or using color
       coded bars. This implies that the reference sequence has been
       provided, either to the class constructor or as part of the
       track list.}
-    
+
     \item{}{\code{size=NULL}: Numeric scalar. The size of the
       track. Defaults to automatic sizing.}
-    
+
+    \item{}{\code{transformation=NULL}:Function. Applied to the coverage
+      vector prior to plotting. The function should accept exactly
+      one input argument and its return value needs to be a numeric
+      Rle of identical length as the input data.}
+
     \item{}{\code{type=c("coverage", "pileup")}: Character vactor. The
       type of information to plot. For \code{coverage} a coverage plot,
       potentially augmented by base mismatch information, and for
       \code{"pileup"} the pileups of the individual reads. The two can
       be combined.}
-    
-  } 
+
+  }
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{AlignmentsTrack} objects. 
+  plotting of \code{AlignmentsTrack} objects.
 
   \describe{
 
     \item{}{\code{\linkS4class{StackedTrack}}:
-      
-      \describe{ 
+
+      \describe{
 
 	\item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
 	  y-ordering of stacked items. I.e., features that are plotted on
@@ -1277,133 +1282,133 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 	  to 0.75.}
 
       }
-      
+
     }
 
-    \item{}{\code{\linkS4class{GdObject}}: 
+    \item{}{\code{\linkS4class{GdObject}}:
 
-      \describe{ 
+      \describe{
 
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
-          all track items.} 
+          all track items.}
 
         \item{}{\code{background.panel="transparent"}: Integer or
-          character scalar. The background color of the content panel.} 
+          character scalar. The background color of the content panel.}
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.} 
+          scalar. The background color for the title panels.}
 
         \item{}{\code{col.border.title="transparent"}: Integer or character
-          scalar. The border color for the title panels.}  
+          scalar. The border color for the title panels.}
 
         \item{}{\code{lwd.border.title=1}: Integer scalar. The border
           width for the title panels.}
 
         \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
-          factor for all text.} 
+          factor for all text.}
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.} 
+          which case it is computed based on the available space.}
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
           the title and the axis, if any. Defaults to \code{NULL},
           which means that the text size is automatically adjusted to
-          the available space.} 
+          the available space.}
 
         \item{}{\code{col="#0080FF"}: Integer or character scalar.
           Default line color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.} 
+          there is a more specific control defined elsewhere.}
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
-          The font and line color for the y axis, if any.} 
+          The font and line color for the y axis, if any.}
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
-          \code{frame==TRUE}} 
+          \code{frame==TRUE}}
 
         \item{}{\code{col.grid="#808080"}: Integer or character scalar.
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.} 
+          \code{grid==TRUE}.}
 
         \item{}{\code{col.line=NULL}: Integer or character scalar.
           Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.} 
+          \code{col} parameter.}
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the
-          global \code{col} parameter.} 
+          global \code{col} parameter.}
 
         \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.} 
+          The font color for the title panels.}
 
         \item{}{\code{fontcolor="black"}: Integer or character scalar.
-          The font color for all text.} 
+          The font color for all text.}
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text.} 
+          font face for all text.}
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
-          The font face for the title panels.} 
+          The font face for the title panels.}
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.} 
+          The font family for all text.}
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
-          scalar. The font family for the title panels.} 
+          scalar. The font family for the title panels.}
 
         \item{}{\code{fontsize=12}: Numeric scalar. The font size for
-          all text.} 
+          all text.}
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
-          track when plotting.} 
+          track when plotting.}
 
         \item{}{\code{grid=FALSE}: Boolean, switching on/off the plotting
-          of a grid.} 
+          of a grid.}
 
         \item{}{\code{h=-1}: Integer scalar. Parameter controlling the
           number of horizontal grid lines, see \code{\link{panel.grid}}
-          for details.} 
+          for details.}
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.} 
+          height for all text.}
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
-          specific control defined elsewhere.} 
+          specific control defined elsewhere.}
 
         \item{}{\code{lty.grid="solid"}: Integer or character scalar.
           Default line type for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.} 
+          \code{grid==TRUE}.}
 
         \item{}{\code{lwd=1}: Numeric scalar. Default line width setting
           for all plotting elements, unless there is a more specific
-          control defined elsewhere.} 
+          control defined elsewhere.}
 
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
-          and when display parameter \code{grid==TRUE}.} 
+          and when display parameter \code{grid==TRUE}.}
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
-          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.} 
+          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.}
 
         \item{}{\code{min.height=3}: Numeric scalar. The minimum range
           height in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.} 
+          for details.}
 
         \item{}{\code{min.width=1}: Numeric scalar. The minimum range
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.} 
+          for details.}
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
-          implemented).} 
+          implemented).}
 
         \item{}{\code{showTitle=TRUE}: Boolean controlling whether to
           plot a title panel. Although this can be set individually
@@ -1412,17 +1417,17 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
           placeholder in case any of the other tracks include a title.
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
-          completely hide it.} 
+          completely hide it.}
 
         \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
           number of vertical grid lines, see \code{\link{panel.grid}}
-          for details.} 
+          for details.}
 
-      } 
+      }
 
-    } 
+    }
 
-  } 
+  }
 
 }
 

@@ -1187,7 +1187,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start=NULL, 
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
     }else{
         chromosome <- if(is.null(chromosome)) seqlevels(range)[1] else chromosome
-        rr <- range(range, ignore.strand=TRUE, na.rm=TRUE)
+        rr <- range(range, ignore.strand=TRUE)
         s <- start(rr[seqnames(rr) == chromosome])
         e <- end(rr[seqnames(rr) == chromosome])
         start <- min(s, start)
@@ -1714,7 +1714,7 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
             out
         }), env, cenv)
     }
-    
+
     return(list(availableGenomes=genomes, bands=bands))
 }
 .cacheMartData <- function(bmtrack, chromosome=NULL, staged=FALSE){

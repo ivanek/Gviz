@@ -655,6 +655,7 @@ details <- list(
                                   sashimiScore="Integer scalar. The minimum number of reads supporting the junction.",
                                   sashimiStrand="Integer scalar. Only reads which have the specified strand are considered to count the junctions.",
                                   size="Numeric scalar. The size of the track. Defaults to automatic sizing.",
+                                  transformation: "Function. Applied to the coverage vector prior to plotting. The function should accept exactly one input argument and its return value needs to be a numeric Rle of identical length as the input data."
                                   type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, for \\code{sashimi} a sashimi plot, showing the juctions, and for \\code{pileup} the pileups of the individual reads. Theese three can be combined."
 
                                   )

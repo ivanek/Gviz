@@ -1447,7 +1447,7 @@ setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, 
         if(diff(ylim)==0)
             ylim <- ylim+c(-1,1)
         hSpaceAvail <- vpLocation()$isize["width"]/6
-        yscale <-c(0, max(ylim) + diff(range(ylim)) * 0.05)
+        yscale <-c(if(is.null(.dpOrDefault(GdObject, "transformation"))) 0 else min(ylim), max(ylim) + diff(range(ylim)) * 0.05)
         col <- .dpOrDefault(GdObject, "col.axis", "white")
         acex <- .dpOrDefault(GdObject, "cex.axis")
         acol <- .dpOrDefault(GdObject, "col.axis", "white")
@@ -1604,7 +1604,7 @@ setMethod("drawGrid", signature(GdObject="AlignmentsTrack"), function(GdObject, 
                              range(yvals, na.rm=TRUE, finite=TRUE) else c(-1,1))
         if(diff(ylim)==0)
             ylim <- ylim+c(-1,1)
-        yscale <-c(0, max(ylim) + diff(range(ylim)) * 0.05)
+        yscale <-c(if(is.null(.dpOrDefault(GdObject, "transformation"))) 0 else min(ylim), max(ylim) + diff(range(ylim)) * 0.05)
         covHeight <- .dpOrDefault(GdObject, ".__coverageHeight", 0)
         pushViewport(viewport(y=1-covHeight["npc"], height=covHeight["npc"], just=c(0.5, 0), yscale=yscale, clip=TRUE))
         panel.grid(v=0, h=.dpOrDefault(GdObject, "h", -1),
@@ -1991,7 +1991,21 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             }else{
                 covHeight <- c(npc=1-(covSpace*2), points=1)
             }
-            displayPars(GdObject) <- list(".__coverage"=coverage(range(GdObject), width=maxBase),
+            coverage <- coverage(range(GdObject), width=maxBase)
+            ## apply data transformation if one is set up
+            trans <- .dpOrDefault(GdObject, "transformation")
+            if(is.list(trans))
+                trans <- trans[[1]]
+            if(!is.null(trans)){
+                if(!is.function(trans) || length(formals(trans))!=1L)
+                    stop("Display parameter 'transformation' must be a function with a single argument")
+                test <- trans(coverage)
+                if(!is(test, "Rle") || length(test) != length(coverage))
+                    stop("The function in display parameter 'transformation' results in invalid output.\n",
+                         "It has to return a numeric matrix with the same dimensions as the input data.")
+                coverage <- test
+            }
+            displayPars(GdObject) <- list(".__coverage"=coverage,
                                           ".__coverageHeight"=covHeight,
                                           ".__coverageSpace"=covSpace)
         } else {
@@ -2059,7 +2073,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     covSpace <- .dpOrDefault(GdObject, ".__coverageSpace", 0)
     if("coverage" %in% type){
         cov <- .dpOrDefault(GdObject, ".__coverage", Rle(lengths=maxBase, values=as.integer(0)))
-        yscale <- c(0, max(cov) + diff(range(cov)) * 0.05)
+        yscale <- c(if(is.null(.dpOrDefault(GdObject, "transformation"))) 0 else min(cov), max(cov) + diff(range(cov)) * 0.05)
         if(!is.null(ylim)){
             yscale <- ylim
         }
