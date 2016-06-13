@@ -406,24 +406,22 @@
     \item{}{\code{alpha=1}: Numeric scalar. The transparency for all
       track items.} 
 
+    \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+      for the title panel.} 
+
     \item{}{\code{background.panel="transparent"}: Integer or character
       scalar. The background color of the content panel.} 
 
     \item{}{\code{background.title="lightgray"}: Integer or character
-      scalar. The background color for the title panels.}
-
-    \item{}{\code{col.border.title="transparent"}: Integer or character
-      scalar. The border color for the title panels.}  
-
-    \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-      width for the title panels.}
+      scalar. The background color for the title panel.} 
 
     \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
-      factor for all text.} 
+      factor for all text and glyphs, unless a more specific definition
+      exists.} 
 
     \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion factor
       for the axis annotation. Defaults to \code{NULL}, in which case
-      it is computed based on the available space.} 
+      it is automatically determined based on the available space.} 
 
     \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion factor
       for the title panel. This effects the fontsize of both the title
@@ -436,6 +434,9 @@
 
     \item{}{\code{col.axis="white"}: Integer or character scalar. The
       font and line color for the y axis, if any.} 
+
+    \item{}{\code{col.border.title="white"}: Integer or character
+      scalar. The border color for the title panels.} 
 
     \item{}{\code{col.frame="lightgray"}: Integer or character scalar.
       The line color used for the panel frame, if \code{frame==TRUE}} 
@@ -452,10 +453,10 @@
       colors for plot symbols. Usually the same as the global \code{col}
       parameter.} 
 
-    \item{}{\code{col.title="white"}: Integer or character scalar. The
-      font color for the title panels.} 
+    \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+      Integer or character scalar. The border color for the title panels} 
 
-    \item{}{\code{collapse=TRUE}: Boolean controlling wether to collapse
+    \item{}{\code{collapse=TRUE}: Boolean controlling whether to collapse
       the content of the track to accomodate the minimum current device
       resolution. See \code{\link{collapsing}} for details.} 
 
@@ -464,22 +465,22 @@
       there is a more specific control defined elsewhere.} 
 
     \item{}{\code{fontcolor="black"}: Integer or character scalar. The
-      font color for all text.} 
+      font color for all text, unless a more specific definition exists.} 
 
     \item{}{\code{fontface=1}: Integer or character scalar. The font
-      face for all text.} 
+      face for all text, unless a more specific definition exists.} 
 
     \item{}{\code{fontface.title=2}: Integer or character scalar. The
       font face for the title panels.} 
 
     \item{}{\code{fontfamily="sans"}: Integer or character scalar. The
-      font family for all text.} 
+      font family for all text, unless a more specific definition exists.} 
 
     \item{}{\code{fontfamily.title="sans"}: Integer or character scalar.
       The font family for the title panels.} 
 
     \item{}{\code{fontsize=12}: Numeric scalar. The font size for all
-      text.} 
+      text, unless a more specific definition exists.} 
 
     \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the track
       when plotting.} 
@@ -492,7 +493,7 @@
       for details.} 
 
     \item{}{\code{lineheight=1}: Numeric scalar. The font line height
-      for all text.} 
+      for all text, unless a more specific definition exists.} 
 
     \item{}{\code{lty="solid"}: Numeric scalar. Default line type
       setting for all plotting elements, unless there is a more specific
@@ -506,9 +507,15 @@
       for all plotting elements, unless there is a more specific control
       defined elsewhere.} 
 
+    \item{}{\code{lwd.border.title=1}: Integer scalar. The border width
+      for the title panels.} 
+
     \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width for
       grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
       and when display parameter \code{grid==TRUE}.} 
+
+    \item{}{\code{lwd.title=1}: Integer scalar. The border width for
+      the title panels} 
 
     \item{}{\code{min.distance=1}: Numeric scalar. The minimum pixel
       distance before collapsing range items, only if \code{collapse==TRUE}.
@@ -522,12 +529,19 @@
     \item{}{\code{min.width=1}: Numeric scalar. The minimum range width
       in pixels to display. All ranges are expanded to this size in
       order to avoid rendering issues. See \code{\link{collapsing}}
-      for details.}
+      for details.} 
 
-    \item{}{\code{rot.title=1}: Numeric scalar. The rotation angle for
-      the text in the title panel. Even though this can be adjusted, the
-      automatic resizing of the title panel will currently not work, so
-      use at own risk.}
+    \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+      plotting coordinates in 3' -> 5' direction if \code{TRUE}. This
+      will effectively mirror the plot on the vertical axis.} 
+
+    \item{}{\code{rotation=0}: The rotation angle for all text unless
+      a more specific definiton exists.} 
+
+    \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+      The rotation angle for the text in the title panel. Even though
+      this can be adjusted, the automatic resizing of the title panel
+      will currently not work, so use at own risk.} 
 
     \item{}{\code{showAxis=TRUE}: Boolean controlling whether to plot
       a y axis (only applies to track types where axes are implemented).} 
@@ -546,6 +560,14 @@
     \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
       number of vertical grid lines, see \code{\link{panel.grid}} for
       details.} 
+
+    \item{}{\code{...}: additional display parameters are allowed.
+      Those typically take the value of a valid R color descriptors.
+      The parameter names will later be matched to optional track item
+      types as defined in the 'feature' range attribute, and all tracks
+      of the matched types are colored accordingly. See the documentation
+      of the \code{\link{GeneRegionTrack}} and \code{\link{AnnotationTrack}}
+      classes as well as \code{\link{grouping}} for details.} 
 
   } 
 
@@ -578,6 +600,11 @@
 }
 
 \keyword{classes}
+
+
+
+
+
 
 
 

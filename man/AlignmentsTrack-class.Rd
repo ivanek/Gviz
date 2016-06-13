@@ -1122,293 +1122,323 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 }
 
 
-\section{Display Parameters}{
+\section{Display Parameters}{ 
 
   The following display parameters are set for objects of class
-  \code{AlignmentsTrack} upon instantiation, unless one or more of
-  them have already been set by one of the optional sub-class initializers,
+  \code{AlignmentsTrack} upon instantiation, unless one or more of them
+  have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   \code{\link{settings}} for details on setting graphical parameters
-  for tracks.
+  for tracks. \describe{ 
 
-  \describe{
+    \item{}{\code{alpha.mismatch=1}: Numeric scalar between 0 and 1.
+      The transparency of the mismatch base information.} 
 
-    \item{}{\code{alpha.mismatch=NULL}: Numeric scalar between 0 and 1. The
-      transparency of the mismatch base information.}
+    \item{}{\code{alpha.reads=0.5}: Numeric scalar between 0 and 1.
+      The transparency of the individual read icons. Can be used to
+      indicate overlapping regions in read pairs. Only on supported
+      devices.} 
 
-    \item{}{\code{alpha.reads=0.5}: Numeric scalar between 0 and 1. The
-      transparency of the individual read icons. Can be used to indicate
-      overlapping regions in read pairs. Only on supported devices.}
+    \item{}{\code{cex=0.7}: Numeric Scalar. The global character
+      expansion factor.} 
 
-    \item{}{\code{cex.mismatch=0.7}: Numeric Scalar. The character
-      expansion factor for the mismatch base letters.}
+    \item{}{\code{cex.mismatch=NULL}: Numeric Scalar. The character
+      expansion factor for the mismatch base letters.} 
 
-    \item{}{\code{col.coverage=NULL}: Integer or character
-      scalar. The line color for the coverage profile.}
+    \item{}{\code{col="#808080"}: Integer or character scalar. The
+      default color of all line elements.} 
 
-    \item{}{\code{col.gap=.DEFAULT_SHADED_COL}: Integer or character
-      scalar. The color of the line that is bridging the gap regions in
-      gapped alignments.}
+    \item{}{\code{col.coverage=NULL}: Integer or character scalar. The
+      line color for the coverage profile.} 
 
-    \item{}{\code{col.mates=.DEFAULT_BRIGHT_SHADED_COL}: Integer or
-      character scalar. The color of the line that is connecting two
-      paired reads.}
+    \item{}{\code{col.gap="#808080"}: Integer or character scalar. The
+      color of the line that is bridging the gap regions in gapped
+      alignments.} 
 
-    \item{}{\code{col.mismatch=.DEFAULT_SHADED_COL}: Integer or
-      character scalar. The box color around mismatch bases.}
+    \item{}{\code{col.mates="#E0E0E0"}: Integer or character scalar.
+      The color of the line that is connecting two paired reads.} 
 
-    \item{}{\code{col.reads=NULL}: Integer or
-      character scalar. The box color around reads.}
+    \item{}{\code{col.mismatch="#808080"}: Integer or character scalar.
+      The box color around mismatch bases.} 
 
-    \item{}{\code{col=.DEFAULT_SHADED_COL}: Integer or character
-      scalar. The default color of all line elements.}
+    \item{}{\code{col.reads=NULL}: Integer or character scalar. The
+      box color around reads.} 
+
+    \item{}{\code{col.sashimi=NULL}: Integer or character scalar. The
+      line color for sashimi plots.} 
 
     \item{}{\code{collapse=FALSE}: Logical scalar. Do not perform any
-      collapsing of overlapping elements. Currently not supported.}
+      collapsing of overlapping elements. Currently not supported.} 
 
-    \item{}{\code{coverageHeight=0.1}: Numeric scalar. The height of the
-      coverage region of the track. Can either be a value between 0 and
-      1 in which case it is taken as a relative height, or a positive
-      value greater 1 in which case it is interpreted as pixels.}
+    \item{}{\code{coverageHeight=0.1}: Numeric scalar. The height of
+      the coverage region of the track. Can either be a value between
+      0 and 1 in which case it is taken as a relative height, or a
+      positive value greater 1 in which case it is interpreted as pixels.} 
 
-    \item{}{\code{fill.coverage=NULL}: Integer or character
-      scalar. The fill color for the coverage profile.}
+    \item{}{\code{fill="#BABABA"}: Integer or character scalar. The
+      default fill color of all plot elements.} 
 
-    \item{}{\code{fill.reads=NULL}: Integer or character
-      scalar. The fill color for the read icons.}
+    \item{}{\code{fill.coverage=NULL}: Integer or character scalar.
+      The fill color for the coverage profile.} 
 
-    \item{}{\code{fill="#BABABA"}: Integer or character
-      scalar. The default fill color of all plot elements.}
+    \item{}{\code{fill.reads=NULL}: Integer or character scalar. The
+      fill color for the read icons.} 
 
     \item{}{\code{fontface.mismatch=2}: Integer scalar. The font face
-      for mismatch bases.}
-
-    \item{}{\code{lty.coverage=NULL}: Integer or character scalar. The line
-      type of the coverage profile.}
-
-    \item{}{\code{lty.gap=NULL}: Integer or character scalar. The type
-      of the line that is bridging the gap regions in gapped
-      alignments.}
-
-    \item{}{\code{lty.mates=NULL}: Integer or character scalar. The
-      type of the line that is connecting two paired reads.}
-
-    \item{}{\code{lty.mismatch=NULL}: Integer or character scalar. The box
-      line type around mismatch bases.}
-
-    \item{}{\code{lty.reads=NULL}: Integer or character scalar. The box
-      line type around reads.}
+      for mismatch bases.} 
 
     \item{}{\code{lty=1}: Integer or character scalar. The default type
-      of all line elements.}
+      of all line elements.} 
 
-    \item{}{\code{lwd.coverage=NULL}: Integer or character scalar. The line
-      width of the coverage profile.}
+    \item{}{\code{lty.coverage=NULL}: Integer or character scalar. The
+      line type of the coverage profile.} 
 
-    \item{}{\code{lwd.gap=NULL}: Integer scalar. The width of the line
-      that is bridging the gap regions in gapped alignments.}
+    \item{}{\code{lty.gap=NULL}: Integer or character scalar. The type
+      of the line that is bridging the gap regions in gapped alignments.} 
 
-    \item{}{\code{lwd.mates=NULL}: Integer scalar. The width of the
-      line that is connecting two paired reads.}
+    \item{}{\code{lty.mates=NULL}: Integer or character scalar. The
+      type of the line that is connecting two paired reads.} 
 
-    \item{}{\code{lwd.mismatch=NULL}: Integer scalar.The box
-      line width around mismatch bases.}
+    \item{}{\code{lty.mismatch=NULL}: Integer or character scalar. The
+      box line type around mismatch bases.} 
 
-    \item{}{\code{lwd.reads=NULL}: Integer scalar.The box
-      line width around reads.}
+    \item{}{\code{lty.reads=NULL}: Integer or character scalar. The
+      box line type around mismatch reads.} 
 
     \item{}{\code{lwd=1}: Integer scalar. The default width of all line
-      elements.}
+      elements.} 
 
-    \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
-      boxes for mismatch bases regardles of the available space.}
+    \item{}{\code{lwd.coverage=NULL}: Integer or character scalar. The
+      line width of the coverage profile.} 
+
+    \item{}{\code{lwd.gap=NULL}: Integer scalar. The width of the line
+      that is bridging the gap regions in gapped alignments.} 
+
+    \item{}{\code{lwd.mates=NULL}: Integer scalar. The width of the
+      line that is connecting two paired reads.} 
+
+    \item{}{\code{lwd.mismatch=NULL}: Integer scalar. The box line
+      width around mismatch bases.} 
+
+    \item{}{\code{lwd.reads=NULL}: Integer scalar. The box line width
+      around reads.} 
+
+    \item{}{\code{lwd.sashimiMax=10}: Integer scalar. The maximal width
+      of the line in sashimi plots.} 
 
     \item{}{\code{max.height=10}: Integer scalar. The maximum height
       of an individual read in pixels. Can be used in combination with
-      \code{min.height} to control the read and stacking appearance. }
+      \code{min.height} to control the read and stacking appearance.} 
 
     \item{}{\code{min.height=5}: Integer scalar. The minimum height of
       an individual read in pixels. Can be used in combination with
-      \code{max.height} to control the read and stacking appearance.}
+      \code{max.height} to control the read and stacking appearance.} 
 
     \item{}{\code{minCoverageHeight=50}: Integer scalar. The minimum
       height of the coverage section. Uselful in combination with a
-      relative setting of \code{coverageHeight}.}
+      relative setting of \code{coverageHeight}.} 
+
+    \item{}{\code{minSashimiHeight=50}: Integer scalar. The minimum
+      height of the sashimi section. Uselful in combination with a
+      relative setting of \code{sashimiHeight}.} 
+
+    \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
+      boxes for mismatch bases regardles of the available space.} 
+
+    \item{}{\code{sashimiFilter=NULL}: GRanges object. Only junctions
+      which overlap equally with \code{sashimiFilter} GRanges are shown.
+      Default \code{NULL}, no filtering.} 
+
+    \item{}{\code{sashimiFilterTolerance=0}: Integer scalar. Only used
+      in combination with \code{sashimiFilter}. It allows to include
+      junctions whose starts/ends are within specified distance from
+      \code{sashimiFilter} GRanges. This is useful for cases where the
+      aligner did not place the junction reads precisely. Default
+      \code{0L} , no tolerance.} 
+
+    \item{}{\code{sashimiHeight=0.1}: Integer scalar. The height of
+      the sashimi part of the track. Can either be a value between 0
+      and 1 in which case it is taken as a relative height, or a positive
+      value greater 1 in which case it is interpreted as pixels.} 
+
+    \item{}{\code{sashimiScore=1}: Integer scalar. The minimum number
+      of reads supporting the junction.} 
+
+    \item{}{\code{sashimiStrand="*"}: Integer scalar. Only reads which
+      have the specified strand are considered to count the junctions.} 
 
     \item{}{\code{showMismatches=TRUE}: Logical scalar. Add mismatch
       information, either as individual base letters or using color
       coded bars. This implies that the reference sequence has been
-      provided, either to the class constructor or as part of the
-      track list.}
+      provided, either to the class constructor or as part of the track
+      list.} 
 
-    \item{}{\code{size=NULL}: Numeric scalar. The size of the
-      track. Defaults to automatic sizing.}
+    \item{}{\code{size=NULL}: Numeric scalar. The size of the track.
+      Defaults to automatic sizing.} 
 
-    \item{}{\code{transformation=NULL}:Function. Applied to the coverage
-      vector prior to plotting. The function should accept exactly
-      one input argument and its return value needs to be a numeric
-      Rle of identical length as the input data.}
+    \item{}{\code{transformation=NULL}: Function. Applied to the coverage
+      vector prior to plotting. The function should accept exactly one
+      input argument and its return value needs to be a numeric Rle of
+      identical length as the input data.} 
 
     \item{}{\code{type=c("coverage", "pileup")}: Character vactor. The
       type of information to plot. For \code{coverage} a coverage plot,
-      potentially augmented by base mismatch information, and for
-      \code{"pileup"} the pileups of the individual reads. The two can
-      be combined.}
+      potentially augmented by base mismatch information, for \code{sashimi}
+      a sashimi plot, showing the juctions, and for \code{pileup} the
+      pileups of the individual reads. These three can be combined.} 
 
-  }
+  } 
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{AlignmentsTrack} objects.
+  plotting of \code{AlignmentsTrack} objects. 
 
-  \describe{
+    \describe{ 
 
-    \item{}{\code{\linkS4class{StackedTrack}}:
+    \item{}{\code{\linkS4class{StackedTrack}}: 
 
-      \describe{
+      \describe{ 
 
-	\item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
-	  y-ordering of stacked items. I.e., features that are plotted on
-	  the bottom-most stacks will be moved to the top-most stack and
-	  vice versa.}
+        \item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse
+          the y-ordering of stacked items. I.e., features that are
+          plotted on the bottom-most stacks will be moved to the top-most
+          stack and vice versa.} 
 
-	\item{}{\code{stackHeight=0.75}: Numeric between 0 and 1. Controls
-	  the vertical size and spacing between stacked elements. The number
-	  defines the proportion of the total available space for the stack
-	  that is used to draw the glyphs. E.g., a value of 0.5 means that
-	  half of the available vertical drawing space (for each stacking
-	  line) is used for the glyphs, and thus one quarter of the available
-	  space each is used for spacing above and below the glyph. Defaults
-	  to 0.75.}
+        \item{}{\code{stackHeight=0.75}: Numeric between 0 and 1.
+          Controls the vertical size and spacing between stacked
+          elements. The number defines the proportion of the total
+          available space for the stack that is used to draw the glyphs.
+          E.g., a value of 0.5 means that half of the available vertical
+          drawing space (for each stacking line) is used for the glyphs,
+          and thus one quarter of the available space each is used for
+          spacing above and below the glyph. Defaults to 0.75.} 
 
-      }
+      } 
 
-    }
+    } 
 
-    \item{}{\code{\linkS4class{GdObject}}:
+    \item{}{\code{\linkS4class{GdObject}}: 
 
-      \describe{
+      \describe{ 
 
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
-          all track items.}
+          all track items.} 
+
+        \item{}{\code{alpha.title=NULL}: FIXME: PLEASE ADD PARAMETER
+          DESCRIPTION.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
-          character scalar. The background color of the content panel.}
+          character scalar. The background color of the content panel.} 
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.}
-
-        \item{}{\code{col.border.title="transparent"}: Integer or character
-          scalar. The border color for the title panels.}
-
-        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-          width for the title panels.}
-
-        \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
-          factor for all text.}
+          scalar. The background color for the title panel.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.}
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
           the title and the axis, if any. Defaults to \code{NULL},
           which means that the text size is automatically adjusted to
-          the available space.}
-
-        \item{}{\code{col="#0080FF"}: Integer or character scalar.
-          Default line color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.}
+          the available space.} 
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
-          The font and line color for the y axis, if any.}
+          The font and line color for the y axis, if any.} 
+
+        \item{}{\code{col.border.title="white"}: FIXME: PLEASE ADD
+          PARAMETER DESCRIPTION.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
-          \code{frame==TRUE}}
+          \code{frame==TRUE}} 
 
         \item{}{\code{col.grid="#808080"}: Integer or character scalar.
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{col.line=NULL}: Integer or character scalar.
           Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.}
+          \code{col} parameter.} 
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the
-          global \code{col} parameter.}
+          global \code{col} parameter.} 
 
         \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.}
+          The border color for the title panels} 
 
         \item{}{\code{fontcolor="black"}: Integer or character scalar.
-          The font color for all text.}
+          The font color for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text.}
+          font face for all text, unless a more specific definition exists.} 
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
-          The font face for the title panels.}
+          The font face for the title panels.} 
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.}
+          The font family for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
-          scalar. The font family for the title panels.}
+          scalar. The font family for the title panels.} 
 
         \item{}{\code{fontsize=12}: Numeric scalar. The font size for
-          all text.}
+          all text, unless a more specific definition exists.} 
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
-          track when plotting.}
+          track when plotting.} 
 
         \item{}{\code{grid=FALSE}: Boolean, switching on/off the plotting
-          of a grid.}
+          of a grid.} 
 
         \item{}{\code{h=-1}: Integer scalar. Parameter controlling the
           number of horizontal grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.}
-
-        \item{}{\code{lty="solid"}: Numeric scalar. Default line type
-          setting for all plotting elements, unless there is a more
-          specific control defined elsewhere.}
+          height for all text, unless a more specific definition exists.} 
 
         \item{}{\code{lty.grid="solid"}: Integer or character scalar.
           Default line type for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
-
-        \item{}{\code{lwd=1}: Numeric scalar. Default line width setting
-          for all plotting elements, unless there is a more specific
-          control defined elsewhere.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
-          and when display parameter \code{grid==TRUE}.}
+          and when display parameter \code{grid==TRUE}.} 
+
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
-          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.}
-
-        \item{}{\code{min.height=3}: Numeric scalar. The minimum range
-          height in pixels to display. All ranges are expanded to this
-          size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.} 
 
         \item{}{\code{min.width=1}: Numeric scalar. The minimum range
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+          for details.} 
+
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
+
+        \item{}{\code{rotation=0}: The rotation angle for all text
+          unless a more specific definiton exists} 
+
+        \item{}{\code{rotation.title=90}: The rotation angle for the
+          text in the title panel. Even though this can be adjusted,
+          the automatic resizing of the title panel will currently not
+          work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
-          implemented).}
+          implemented).} 
 
         \item{}{\code{showTitle=TRUE}: Boolean controlling whether to
           plot a title panel. Although this can be set individually
@@ -1417,17 +1447,17 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
           placeholder in case any of the other tracks include a title.
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
-          completely hide it.}
+          completely hide it.} 
 
         \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
           number of vertical grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
-      }
+      } 
 
-    }
+    } 
 
-  }
+  } 
 
 }
 
@@ -1499,6 +1529,10 @@ to=44946660)
 
 }
 \keyword{classes}
+
+
+
+
 
 
 

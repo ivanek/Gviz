@@ -687,162 +687,179 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 }
 
 
-\section{Display Parameters}{
+\section{Display Parameters}{ 
 
   The following display parameters are set for objects of class
   \code{HighlightTrack} upon instantiation, unless one or more of them
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
-  \code{\link{settings}} for details on setting graphical parameters for
-  tracks.
+  \code{\link{settings}} for details on setting graphical parameters
+  for tracks. \describe{ 
 
-  \describe{
+    \item{}{\code{col="red"}: Integer or character scalar. The boder
+      color for the highlighting regions.} 
 
-    \item{}{\code{col="red"}: Integer or character scalar. The boder color for the highlighting regions.}
+    \item{}{\code{fill="#FFE3E6"}: Integer or character scalar. The
+      fill color for the highlighting regions.} 
 
-    \item{}{\code{fill="#FFE3E6"}: Integer or character scalar. The fill color for the highlighting regions.}
+    \item{}{\code{inBackground=TRUE}: Logical scalar. Place the box in
+      the background or in the foreground.} 
 
-  }
+  } 
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{HighlightTrack} objects.
+  plotting of \code{HighlightTrack} objects. 
 
-    \describe{
+    \describe{ 
 
-    \item{}{\code{\linkS4class{GdObject}}:
+    \item{}{\code{\linkS4class{GdObject}}: 
 
-      \describe{
+      \describe{ 
 
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
-          all track items.}
+          all track items.} 
+
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
-          character scalar. The background color of the content panel.}
+          character scalar. The background color of the content panel.} 
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.}
-
- 	\item{}{\code{col.border.title="transparent"}: Integer or character
-          scalar. The border color for the title panels.}
-
-        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-          width for the title panels.}
+          scalar. The background color for the title panel.} 
 
         \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
-          factor for all text.}
+          factor for all text and glyphs, unless a more specific
+          definition exists.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.}
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
           the title and the axis, if any. Defaults to \code{NULL},
           which means that the text size is automatically adjusted to
-          the available space.}
-
-        \item{}{\code{col="#0080FF"}: Integer or character scalar.
-          Default line color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.}
+          the available space.} 
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
-          The font and line color for the y axis, if any.}
+          The font and line color for the y axis, if any.} 
+
+        \item{}{\code{col.border.title="white"}: Integer or character
+          scalar. The border color for the title panels.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
-          \code{frame==TRUE}}
+          \code{frame==TRUE}} 
 
         \item{}{\code{col.grid="#808080"}: Integer or character scalar.
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{col.line=NULL}: Integer or character scalar.
           Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.}
+          \code{col} parameter.} 
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the
-          global \code{col} parameter.}
+          global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.}
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
-        \item{}{\code{collapse=TRUE}: Boolean controlling wether to
+        \item{}{\code{collapse=TRUE}: Boolean controlling whether to
           collapse the content of the track to accomodate the minimum
           current device resolution. See \code{\link{collapsing}} for
-          details.}
-
-        \item{}{\code{fill="lightgray"}: Integer or character scalar.
-          Default fill color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.}
+          details.} 
 
         \item{}{\code{fontcolor="black"}: Integer or character scalar.
-          The font color for all text.}
+          The font color for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text.}
+          font face for all text, unless a more specific definition exists.} 
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
-          The font face for the title panels.}
+          The font face for the title panels.} 
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.}
+          The font family for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
-          scalar. The font family for the title panels.}
+          scalar. The font family for the title panels.} 
 
         \item{}{\code{fontsize=12}: Numeric scalar. The font size for
-          all text.}
+          all text, unless a more specific definition exists.} 
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
-          track when plotting.}
+          track when plotting.} 
 
         \item{}{\code{grid=FALSE}: Boolean, switching on/off the plotting
-          of a grid.}
+          of a grid.} 
 
         \item{}{\code{h=-1}: Integer scalar. Parameter controlling the
           number of horizontal grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.}
+          height for all text, unless a more specific definition exists.} 
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
-          specific control defined elsewhere.}
+          specific control defined elsewhere.} 
 
         \item{}{\code{lty.grid="solid"}: Integer or character scalar.
           Default line type for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{lwd=1}: Numeric scalar. Default line width setting
           for all plotting elements, unless there is a more specific
-          control defined elsewhere.}
+          control defined elsewhere.} 
+
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
 
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
-          and when display parameter \code{grid==TRUE}.}
+          and when display parameter \code{grid==TRUE}.} 
+
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
-          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.}
+          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.} 
 
         \item{}{\code{min.height=3}: Numeric scalar. The minimum range
           height in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+          for details.} 
 
         \item{}{\code{min.width=1}: Numeric scalar. The minimum range
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+          for details.} 
+
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
+
+        \item{}{\code{rotation=0}: The rotation angle for all text
+          unless a more specific definiton exists.} 
+
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
-          implemented).}
+          implemented).} 
 
         \item{}{\code{showTitle=TRUE}: Boolean controlling whether to
           plot a title panel. Although this can be set individually
@@ -851,21 +868,21 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
           placeholder in case any of the other tracks include a title.
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
-          completely hide it.}
+          completely hide it.} 
 
         \item{}{\code{size=1}: Numeric scalar. The relative size of
           the track. Can be overridden in the \code{\link{plotTracks}}
-          function.}
+          function.} 
 
         \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
           number of vertical grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
-      }
+      } 
 
-    }
+    } 
 
-  }
+  } 
 
 }
 
@@ -905,6 +922,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 
 
 \keyword{classes}
+
 
 
 

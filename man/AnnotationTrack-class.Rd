@@ -300,7 +300,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 }
 
 
-\section{details}{
+\section{Details}{
 	
   The \code{DetailsAnnotationTrack} class directly extends
   \code{AnnotationTrack}. The purpose of this track type is to add an
@@ -1330,9 +1330,13 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   \code{\link{settings}} for details on setting graphical parameters
-  for tracks.
+  for tracks. \describe{ 
 
-  \describe{ 
+    \item{}{\code{arrowHeadMaxWidth=40}: Numeric scalar. The maximum
+      width of the arrow head in pixels if \code{shape} is \code{arrow}.} 
+
+    \item{}{\code{arrowHeadWidth=30}: Numeric scalar. The width of the
+      arrow head in pixels if \code{shape} is \code{fixedArrow}.} 
 
     \item{}{\code{cex=1}: Numeric scalar. The font expansion factor
       for item identifiers.} 
@@ -1341,34 +1345,47 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       factor for the group-level annotation.} 
 
     \item{}{\code{col="transparent"}: Character or integer scalar. The
-      border color for all track items.}
+      border color for all track items.} 
 
-    \item{}{\code{col.line="darkgray"}: Character scalar. The color used for
-      connecting lines between grouped items. Defaults to a dark gray,
-      but if set to \code{NULL} the same color as for the first item in
-      the group is used.}
+    \item{}{\code{col.line="darkgray"}: Character scalar. The color
+      used for connecting lines between grouped items. Defaults to a
+      light gray, but if set to \code{NULL} the same color as for the
+      first item in the group is used.} 
+
+    \item{}{\code{featureAnnotation=NULL}: Character scalar. Add
+      annotation information to the individual track elements. This
+      can be a value in \code{id}, \code{group} or \code{feature}.
+      Defaults to \code{id}. Only works if \code{showFeatureId} is not
+      \code{FALSE}.} 
 
     \item{}{\code{fill="lightblue"}: Character or integer scalar. The
       fill color for untyped items. This is also used to connect grouped
       items. See \code{\link{grouping}} for details.} 
 
-    \item{}{\code{fontcolor="white"}: Character or integer scalar. The
-      font color for item identifiers.} 
+    \item{}{\code{fontcolor.group="#808080"} \code{(Aliases:
+      fontcolor.group)}: Character or integer scalar. The font color
+      for the group-level annotation.} 
 
-    \item{}{\code{fontcolor.group="#808080"}: Character or integer
-      scalar. The font color for the group-level annotation.} 
-
-    \item{}{\code{fontface=1}: Integer scalar. The font face for item
-      identifiers.} 
+    \item{}{\code{fontcolor.item="white"} \code{(Aliases: fontcolor.item)}:
+      Character or integer scalar. The font color for item identifiers.} 
 
     \item{}{\code{fontface.group=2}: Numeric scalar. The font face for
       the group-level annotation.} 
 
-    \item{}{\code{fontfamily="sans"}: Character scalar. The font family
-      for item identifiers.} 
+    \item{}{\code{fontfamily.group="sans"}: Character scalar. The font
+      family for the group-level annotation.} 
 
-    \item{}{\code{fontsize=12}: Numeric scalar. The font size for item
-      identifiers.} 
+    \item{}{\code{fontsize.group=12}: Numeric scalar. The font size
+      for the group-level annotation.} 
+
+    \item{}{\code{groupAnnotation=NULL}: Character scalar. Add annotation
+      information as group labels. This can be a value in \code{id},
+      \code{group} or \code{feature}. Defaults to \code{group}. Only
+      works if \code{showId} is not \code{FALSE}.} 
+
+    \item{}{\code{just.group="left"} \code{(Aliases: just.group)}:
+      Character scalar. the justification of group labels. Either
+      \code{left}, \code{right}, \code{above} or \code{below}.} 
 
     \item{}{\code{lex=1}: Numeric scalar. The line expansion factor
       for all track items. This is also used to connect grouped items.
@@ -1385,12 +1402,33 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       items. This is also used to connect grouped items. See
       \code{\link{grouping}} for details.} 
 
+    \item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
+      overlapping groups if \code{collapse==TRUE}.} 
+
+    \item{}{\code{min.height=3}: Numeric scalar. The minimum range
+      height in pixels to display. All ranges are expanded to this size
+      in order to avoid rendering issues. See \code{\link{collapsing}}
+      for details. For feathered bars indicating the strandedness of
+      grouped items this also controls the height of the arrow feathers.} 
+
+    \item{}{\code{min.width=1}: Numeric scalar. The minimum range width
+      in pixels to display. All ranges are expanded to this size in
+      order to avoid rendering issues. See \code{\link{collapsing}}
+      for details.} 
+
     \item{}{\code{rotation=0}: Numeric scalar. The degree of text
+      rotation for item identifiers.} 
+
+    \item{}{\code{rotation.group=0}: Numeric scalar. The degree of text
+      rotation for group labels.} 
+
+    \item{}{\code{rotation.item=0}: Numeric scalar. The degree of text
       rotation for item identifiers.} 
 
     \item{}{\code{shape="arrow"}: Character scalar. The shape in which
       to display the track items. Currently only \code{box}, \code{arrow},
-      \code{ellipse}, and \code{smallArrow} are implemented.} 
+      \code{fixedArrow}, \code{ellipse}, and \code{smallArrow} are
+      implemented.} 
 
     \item{}{\code{showFeatureId=FALSE}: Logical scalar. Control whether
       to plot the individual track item identifiers.} 
@@ -1403,100 +1441,96 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       This implies that \code{collapse==TRUE}} 
 
     \item{}{\code{size=1}: Numeric scalar. The relative size of the
-      track. Can be overridden in the \code{\link{plotTracks}}
-      function.} 
-
-    \item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
-      overlapping groups if \code{collapse==TRUE}.}
+      track. Can be overridden in the \code{\link{plotTracks}} function.} 
 
   } 
 
-  \code{DetailsAnnotationTrack} adds the following additional display parameters:
+  \code{DetailsAnnotationTrack} adds the following additional display
+  parameters: \describe{ 
 
-  \describe{
-    \item{}{\code{details.size=0.5}: Numeric scalar. The fraction of
-      vertical space of the track used for the details section.}
-    
     \item{}{\code{details.minWidth=100}: Numeric scalar. The minium
-      width in pixels for a details panel, if less space is available no
-      details are plotted.}
-    
-    \item{}{\code{detailsConnector.col="darkgray"}: Character or integer
-      scalar. Color of the line connecting the \code{AnnotstionTrack}
-      item with its details panel.}
-  
-    \item{}{\code{detailsConnector.lty="dashed"}: Character or integer
-      scalar. Type of connecting line.}
-    
-    \item{}{\code{detailsConnector.lwd=1}: Integer scalar. Line width of
-      the connector.}
-    
-    \item{}{\code{detailsConnector.pch=20}: Integer scalar. Type of the
-      connector's ends.}
-    
-    \item{}{\code{detailsConnector.cex=1}: Numeric scalar. Relative size
-      of the connector's end points.}
-    
-    \item{}{\code{detailsBorder.lty="solid"}: Character or integer
-      scalar. Line type of the border around each details panel.}
-    
-    \item{}{\code{detailsBorder.lwd=1}: Integer scalar. Line width of
-      the border.}
-    
-    \item{}{\code{detailsBorder.col="darkgray"}: Character or integer
-      scalar. Line color of the border.}
-    
-    \item{}{\code{detailsBorder.fill="transparent"}: Character or
-      integer scalar. Background color of the border.}
-    
+      width in pixels for a details panel, if less space is available
+      no details are plotted.} 
+
     \item{}{\code{details.ratio=Inf}: Numeric scalar. By default, the
       plotting method tries to fill all available space of the details
       panel tiles. Depending on the dimensions of your plot and the
-      number of tiles this may lead to fairly stretched
-      plots. Restricting the ration of width over height can help to
-      fine tune for somewhat more sane graphics in these
-      cases. Essentially this adds some white space in between
-      individual tiles to force the desired ratio. Together with the
-      \code{size} and \code{details.size} arguments, which control the
-      vertical extension of the whole track and of the details section,
-      this allows for some fairly generic resizing of the tiles.}
-  
-    \item{}{\code{detailsFunArgs=list()}: List. Additional arguments that
-      get passed on the the details plotting function.}
+      number of tiles this may lead to fairly stretched plots. Restricting
+      the ration of width over height can help to fine tune for somewhat
+      more sane graphics in these cases. Essentially this adds some
+      white space in between individual tiles to force the desired
+      ratio. Together with the \code{size} and \code{details.size}
+      arguments, which control the vertical extension of the whole
+      track and of the details section, this allows for some fairly
+      generic resizing of the tiles.} 
+
+    \item{}{\code{details.size=0.5}: Numeric scalar. The fraction of
+      vertical space of the track used for the details section.} 
+
+    \item{}{\code{detailsBorder.col="darkgray"}: Character or integer
+      scalar. Line color of the border.} 
+
+    \item{}{\code{detailsBorder.fill="transparent"}: Character or
+      integer scalar. Background color of the border.} 
+
+    \item{}{\code{detailsBorder.lty="solid"}: Character or integer
+      scalar. Line type of the border around each details panel.} 
+
+    \item{}{\code{detailsBorder.lwd=1}: Integer scalar. Line width of
+      the border.} 
+
+    \item{}{\code{detailsConnector.cex=1}: Numeric scalar. Relative
+      size of the connector's end points.} 
+
+    \item{}{\code{detailsConnector.col="darkgray"}: Character or integer
+      scalar. Color of the line connecting the \code{AnnotstionTrack}
+      item with its details panel.} 
+
+    \item{}{\code{detailsConnector.lty="dashed"}: Character or integer
+      scalar. Type of connecting line.} 
+
+    \item{}{\code{detailsConnector.lwd=1}: Integer scalar. Line width
+      of the connector.} 
+
+    \item{}{\code{detailsConnector.pch=20}: Integer scalar. Type of
+      the connector's ends.} 
+
+    \item{}{\code{detailsFunArgs=character(0)}: List.Additional arguments
+      that get passed on the the details plotting function.} 
 
     \item{}{\code{groupDetails=FALSE}: Logial scalar. Plot details for
-      feature groups rather than for individual features.}
-    
-  }
-  
+      feature groups rather than for individual features.} 
+
+  } 
+
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{AnnotationTrack} \code{DetailsAnnotationTrack} objects. 
+  plotting of \code{AnnotationTrack} objects. 
 
-  \describe{
+    \describe{ 
 
-    \item{}{\code{\linkS4class{StackedTrack}}:
-      
+    \item{}{\code{\linkS4class{StackedTrack}}: 
+
       \describe{ 
 
-	\item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
-	  y-ordering of stacked items. I.e., features that are plotted on
-	  the bottom-most stacks will be moved to the top-most stack and
-	  vice versa.}
+        \item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse
+          the y-ordering of stacked items. I.e., features that are
+          plotted on the bottom-most stacks will be moved to the top-most
+          stack and vice versa.} 
 
-	\item{}{\code{stackHeight=0.75}: Numeric between 0 and 1. Controls
-	  the vertical size and spacing between stacked elements. The number
-	  defines the proportion of the total available space for the stack
-	  that is used to draw the glyphs. E.g., a value of 0.5 means that
-	  half of the available vertical drawing space (for each stacking
-	  line) is used for the glyphs, and thus one quarter of the available
-	  space each is used for spacing above and below the glyph. Defaults
-	  to 0.75.}
+        \item{}{\code{stackHeight=0.75}: Numeric between 0 and 1.
+          Controls the vertical size and spacing between stacked
+          elements. The number defines the proportion of the total
+          available space for the stack that is used to draw the glyphs.
+          E.g., a value of 0.5 means that half of the available vertical
+          drawing space (for each stacking line) is used for the glyphs,
+          and thus one quarter of the available space each is used for
+          spacing above and below the glyph. Defaults to 0.75.} 
 
-      }
-      
-    }
-    
+      } 
+
+    } 
+
     \item{}{\code{\linkS4class{GdObject}}: 
 
       \describe{ 
@@ -1504,21 +1538,19 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
           all track items.} 
 
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
+
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.} 
-
- 	\item{}{\code{col.border.title="transparent"}: Integer or character
-      	  scalar. The border color for the title panels.}  
-
-   	\item{}{\code{lwd.border.title=1}: Integer scalar. The border
-      	  width for the title panels.}
+          scalar. The background color for the title panel.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.} 
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
@@ -1528,6 +1560,9 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
           The font and line color for the y axis, if any.} 
+
+        \item{}{\code{col.border.title="white"}: Integer or character
+          scalar. The border color for the title panels.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
@@ -1542,19 +1577,33 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
           Default colors for plot symbols. Usually the same as the
           global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.} 
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
-        \item{}{\code{collapse=TRUE}: Boolean controlling wether to
+        \item{}{\code{collapse=TRUE}: Boolean controlling whether to
           collapse the content of the track to accomodate the minimum
           current device resolution. See \code{\link{collapsing}} for
           details.} 
 
+        \item{}{\code{fontcolor="black"}: Integer or character scalar.
+          The font color for all text, unless a more specific definition
+          exists.} 
+
+        \item{}{\code{fontface=1}: Integer or character scalar. The
+          font face for all text, unless a more specific definition exists.} 
+
         \item{}{\code{fontface.title=2}: Integer or character scalar.
           The font face for the title panels.} 
 
+        \item{}{\code{fontfamily="sans"}: Integer or character scalar.
+          The font family for all text, unless a more specific definition
+          exists.} 
+
         \item{}{\code{fontfamily.title="sans"}: Integer or character
           scalar. The font family for the title panels.} 
+
+        \item{}{\code{fontsize=12}: Numeric scalar. The font size for
+          all text, unless a more specific definition exists.} 
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
           track when plotting.} 
@@ -1571,25 +1620,28 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
           in \code{\link{DataTrack}}s and when display parameter
           \code{grid==TRUE}.} 
 
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
+
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
           and when display parameter \code{grid==TRUE}.} 
+
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
           \code{collapse==TRUE}. See \code{\link{collapsing}} for details.} 
 
-        \item{}{\code{min.height=3}: Numeric scalar. The minimum range
-          height in pixels to display. All ranges are expanded to this
-          size in order to avoid rendering issues. See
-          \code{\link{collapsing}} for details. For feathered bars
-          indicating the strandedness of grouped items this also
-          controls the height of the arrow feathers.}
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
 
-        \item{}{\code{min.width=1}: Numeric scalar. The minimum range
-          width in pixels to display. All ranges are expanded to this
-          size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.} 
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
@@ -1795,6 +1847,12 @@ plotTracks(deTrack)
 
 
 \keyword{classes}
+
+
+
+
+
+
 
 
 

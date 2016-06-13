@@ -60,7 +60,7 @@ GenomeAxisTrack(range=NULL, name="Axis", id, ...)
   
   A \code{GenomeAxisTrack} can be customized using the familiar display
   parameters. By providing a \code{GRanges} or \code{IRanges} object to
-  the constructor, ranges on the axis can be further highlighted.\\
+  the constructor, ranges on the axis can be further highlighted.\
   
   With the \code{scale} display parameter, a small scale indicator can
   be shown instead of the entire genomic axis. The scale can either be
@@ -646,12 +646,6 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       The background color for the title panel. Defaults to omit the
       background.} 
 
-    \item{}{\code{col.border.title="transparent"}: Integer or character
-      scalar. The border color for the title panels.}  
-
-    \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-      width for the title panels.}
-
     \item{}{\code{cex=0.8}: Numeric scalar. The overall font expansion
       factor for the axis annotation text.} 
 
@@ -660,6 +654,9 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
     \item{}{\code{col="darkgray"}: Character scalar. The color for the
       axis lines and tickmarks.} 
+
+    \item{}{\code{col.border.title="transparent"}: Integer or character
+      scalar. The border color for the title panels.} 
 
     \item{}{\code{col.id="white"}: Character scalar. The text color
       for the optional range annotation.} 
@@ -686,13 +683,22 @@ Class \code{"\linkS4class{GdObject}"}, directly.
     \item{}{\code{labelPos="alternating"}: Character vector, one in
       "alternating", "revAlternating", "above" or "below". The vertical
       positioning of the axis labels. If \code{scale} is not \code{NULL},
-      the possible values are "above", "below" and "beside". } 
+      the possible values are "above", "below" and "beside".} 
 
     \item{}{\code{littleTicks=FALSE}: Logical scalar. Add more fine-grained
       tick marks.} 
 
     \item{}{\code{lwd=2}: Numeric scalar. The line width for the axis
       elementes.} 
+
+    \item{}{\code{lwd.border.title=1}: Integer scalar. The border width
+      for the title panels.} 
+
+    \item{}{\code{scale=NULL}: Numeric scalar. If not \code{NULL} a
+      small scale is drawn instead of the full axis, if the value is
+      between 0 and 1 it is interpreted as a fraction of the current
+      plotting region, otherwise as an absolute length value in genomic
+      coordinates.} 
 
     \item{}{\code{showId=FALSE}: Logical scalar. Show the optional
       range highlighting annotation.} 
@@ -703,12 +709,6 @@ Class \code{"\linkS4class{GdObject}"}, directly.
     \item{}{\code{size=NULL}: Numeric scalar. The relative size of the
       track. Can be overridden in the \code{\link{plotTracks}} function.
       Defaults to the ideal size based on the other track settings.} 
-
-    \item{}{\code{scale=NULL}: Numeric scalar. If not \code{NULL} a
-     small scale is drawn instead of the full axis, if the value is
-     between 0 and 1 it is interpreted as a fraction of the current
-     plotting region, otherwise as an absolute length value in genomic
-     coordinates.}
 
   } 
 
@@ -725,12 +725,16 @@ Class \code{"\linkS4class{GdObject}"}, directly.
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
           all track items.} 
 
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
+
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.} 
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
@@ -758,10 +762,10 @@ Class \code{"\linkS4class{GdObject}"}, directly.
           Default colors for plot symbols. Usually the same as the
           global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.} 
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
-        \item{}{\code{collapse=TRUE}: Boolean controlling wether to
+        \item{}{\code{collapse=TRUE}: Boolean controlling whether to
           collapse the content of the track to accomodate the minimum
           current device resolution. See \code{\link{collapsing}} for
           details.} 
@@ -771,13 +775,14 @@ Class \code{"\linkS4class{GdObject}"}, directly.
           there is a more specific control defined elsewhere.} 
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text.} 
+          font face for all text, unless a more specific definition exists.} 
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
           The font face for the title panels.} 
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.} 
+          The font family for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
           scalar. The font family for the title panels.} 
@@ -793,7 +798,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
           for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.} 
+          height for all text, unless a more specific definition exists.} 
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
@@ -808,6 +813,9 @@ Class \code{"\linkS4class{GdObject}"}, directly.
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
           and when display parameter \code{grid==TRUE}.} 
 
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
+
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
           \code{collapse==TRUE}. See \code{\link{collapsing}} for details.} 
@@ -821,6 +829,18 @@ Class \code{"\linkS4class{GdObject}"}, directly.
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
           for details.} 
+
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
+
+        \item{}{\code{rotation=0}: The rotation angle for all text
+          unless a more specific definiton exists.} 
+
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
@@ -940,6 +960,9 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale=0.5, labelPos="below")))
 }
 
 \keyword{classes}
+
+
+
 
 
 

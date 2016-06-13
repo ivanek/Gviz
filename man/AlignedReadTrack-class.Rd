@@ -1081,9 +1081,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
     \item{}{\code{type="histogram"}: the plot type, one or several in
       \code{c("p","l", "b", "a", "s", "g", "r", "S", "smooth", "histogram",
-      "mountain", "h", "boxplot", "gradient", "heatmap")}. See	the
-      'Details' section in \code{\linkS4class{DataTrack}} for more
-      information on the individual plotting types.} 
+      "mountain", "polygon", "h", "boxplot", "gradient", "heatmap",
+      "horizon")}. See the 'Details' section in \code{\linkS4class{DataTrack}}
+      for more information on the individual plotting types.} 
 
   } 
 
@@ -1091,29 +1091,29 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
   parent classes. Note that not all of them may have an effect on the
   plotting of \code{AlignedReadTrack} objects. 
 
-  \describe{
+    \describe{ 
 
-    \item{}{\code{\linkS4class{StackedTrack}}:
-      
+    \item{}{\code{\linkS4class{StackedTrack}}: 
+
       \describe{ 
 
-	\item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
-	  y-ordering of stacked items. I.e., features that are plotted on
-	  the bottom-most stacks will be moved to the top-most stack and
-	  vice versa.}
+        \item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse
+          the y-ordering of stacked items. I.e., features that are
+          plotted on the bottom-most stacks will be moved to the top-most
+          stack and vice versa.} 
 
-	\item{}{\code{stackHeight=0.75}: Numeric between 0 and 1. Controls
-	  the vertical size and spacing between stacked elements. The number
-	  defines the proportion of the total available space for the stack
-	  that is used to draw the glyphs. E.g., a value of 0.5 means that
-	  half of the available vertical drawing space (for each stacking
-	  line) is used for the glyphs, and thus one quarter of the available
-	  space each is used for spacing above and below the glyph. Defaults
-	  to 0.75.}
+        \item{}{\code{stackHeight=0.75}: Numeric between 0 and 1.
+          Controls the vertical size and spacing between stacked
+          elements. The number defines the proportion of the total
+          available space for the stack that is used to draw the glyphs.
+          E.g., a value of 0.5 means that half of the available vertical
+          drawing space (for each stacking line) is used for the glyphs,
+          and thus one quarter of the available space each is used for
+          spacing above and below the glyph. Defaults to 0.75.} 
 
-      }
-      
-    }
+      } 
+
+    } 
 
     \item{}{\code{\linkS4class{GdObject}}: 
 
@@ -1122,24 +1122,23 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
           all track items.} 
 
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
+
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.} 
-
-        \item{}{\code{col.border.title="transparent"}: Integer or character
-          scalar. The border color for the title panels.}  
-
-        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-          width for the title panels.}
+          scalar. The background color for the title panel.} 
 
         \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
-          factor for all text.} 
+          factor for all text and glyphs, unless a more specific
+          definition exists.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.} 
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
@@ -1153,6 +1152,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
           The font and line color for the y axis, if any.} 
+
+        \item{}{\code{col.border.title="white"}: Integer or character
+          scalar. The border color for the title panels.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
@@ -1171,26 +1173,28 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
           Default colors for plot symbols. Usually the same as the
           global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.} 
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
         \item{}{\code{fontcolor="black"}: Integer or character scalar.
-          The font color for all text.} 
+          The font color for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text.} 
+          font face for all text, unless a more specific definition exists.} 
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
           The font face for the title panels.} 
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.} 
+          The font family for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
           scalar. The font family for the title panels.} 
 
         \item{}{\code{fontsize=12}: Numeric scalar. The font size for
-          all text.} 
+          all text, unless a more specific definition exists.} 
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
           track when plotting.} 
@@ -1203,7 +1207,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
           for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.} 
+          height for all text, unless a more specific definition exists.} 
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
@@ -1218,9 +1222,15 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
           for all plotting elements, unless there is a more specific
           control defined elsewhere.} 
 
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
+
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
           and when display parameter \code{grid==TRUE}.} 
+
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
@@ -1235,6 +1245,18 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
           for details.} 
+
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
+
+        \item{}{\code{rotation=0}: The rotation angle for all text
+          unless a more specific definiton exists.} 
+
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
@@ -1360,6 +1382,7 @@ as(arTrack, "data.frame")
 
 }
 \keyword{classes}
+
 
 
 

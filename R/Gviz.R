@@ -977,7 +977,7 @@
                                             min.distance=1,
                                             min.height=3,
                                             min.width=1,
-                                            rot.title=90,
+                                            rotation.title=90,
                                             rotation=0,
                                             showAxis=TRUE,
                                             showTitle=TRUE,

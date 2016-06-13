@@ -96,14 +96,40 @@ indent <- function(x, level=0, block=TRUE, chars=70)
 }
 
 
+renderParsEntry <- function(class, pars, level=2){
+    det <- details[[class]][names(pars)]
+    if(is.null(det)){
+        warning("No details available for class '", class, "'")
+        det <- "FIXME: PLEASE ADD PARAMETER DESCRIPTION." } else {
+            det[is.na(det)] <- "FIXME: PLEASE ADD PARAMETER DESCRIPTION."}
+    if(any(is.na(det)))
+        warning("There are details missing for class '", class, "'. Please update the documentation")
+    pval <- sapply(pars, toChar)
+    pvalClean <- pval
+    pvalClean[is.na(pval)] <- ""
+    pvalClean[sapply(pars, is.function)] <- "function"
+    aliases <- sapply(names(pars), function(x) paste(Gviz:::.dpAliasReverseTable[x], collapse=", "))
+    alText <- rep("", length(aliases))
+    sel <- aliases != "NA"
+    alText[sel] <- sprintf(" \\code{(Aliases: %s)}", aliases[sel])
+    return(indent(sprintf("\\item{}{\\code{%s%s%s}%s: %s}\n\n", names(pars),
+                               ifelse(is.na(pval), "", "="), pvalClean, alText, det),
+                       level=level, block=FALSE))
+}
+
+
 ## create a documentation skeleton for the display parameters
 displayParsDoc <- function(class, details)
 {
+    combinations <- list("AnnotationTrack"=c("DetailsAnnotationTrack"))
     parents <- names(getClassDef(class)@contains)
-    pars <- sapply(c(class, parents), function(x) as.list(getClassDef(x)@prototype@dp), simplify=FALSE)
+    pars <- sapply(c(class, parents), function(x) try(as.list(getClassDef(x)@prototype@dp), silent=TRUE), simplify=FALSE)
+    pars <- pars[!sapply(pars, is, "try-error")]
     text <- c("\\section{Display Parameters}{", if(length(pars[[1]]))
           {
               pars[[1]] <- pars[[1]][order(names(pars[[1]]))]
+              if("..." %in% names(details[[class]]))
+                  pars[[1]][["..."]] <- NA
               det <- details[[class]][names(pars[[1]])]
               if(is.null(det))
               {
@@ -112,15 +138,29 @@ displayParsDoc <- function(class, details)
                       det[is.na(det)] <- "FIXME: PLEASE ADD PARAMETER DESCRIPTION."}
               if(any(is.na(det)))
                   warning("There are details missing for class '", class, "'. Please update the documentation")
+              pval <- sapply(pars[[1]], toChar)
+              pvalClean <- pval
+              pvalClean[is.na(pval)] <- ""
+              pvalClean[sapply(pars[[1]], is.function)] <- "function"
+              aliases <- sapply(names(pars[[1]]), function(x) paste(Gviz:::.dpAliasReverseTable[x], collapse=", "))
+              alText <- rep("", length(aliases))
+              sel <- aliases != "NA"
+              alText[sel] <- sprintf(" \\code{(Aliases: %s)}", aliases[sel])
               c(indent(paste("The following display parameters are set for objects of class \\code{",
                              class, "} upon instantiation, unless one or more of them have already been set ",
                              "by one of the optional sub-class initializers, which always get precedence over ",
                              "these global defaults. See \\code{\\link{settings}} for details on ",
                              "setting graphical parameters for tracks.\n\n  \\describe{\n", sep=""), level=1),
-                indent(sprintf("\\item{}{\\code{%s=%s}: %s}\n\n", names(pars[[1]]), sapply(pars[[1]], toChar), det),
-                       level=2, block=FALSE), indent("}", level=1))
+                renderParsEntry(class, pars[[1]]), indent("}", level=1))
           } else indent(paste("No formal display parameters are defined for objects of class \\code{",
-                              class, "}.\n", sep=""), level=1))
+                              class, "}.\n", sep=""), level=1:2))
+    if(!is.null(combinations[[class]])){
+        for(sc in combinations[[class]])
+            text <- c(text,
+                      indent(sprintf("\\code{%s} adds the following additional display parameters:\n\n  \\describe{\n",
+                                     sc), level=1),
+                      renderParsEntry(sc, as.list(getClassDef(sc)@prototype@dp)), indent("}", level=1))
+    }
     pp <- pars[-1]
     pp <- pp[sapply(pp, length)>0]
     done <- names(pars[[1]])
@@ -136,32 +176,121 @@ displayParsDoc <- function(class, details)
             if(length(leftovers))
             {
                 pp[[i]] <- pp[[i]][leftovers][order(names(pp[[i]][leftovers]))]
-                det <- details[[i]][names(pp[[i]])]
-                if(is.null(det))
-                {
-                    warning("No details available for class '", i, "'")
-                    det <- "FIXME: PLEASE ADD PARAMETER DESCRIPTION." } else {
-                        det[is.na(det)] <- "FIXME: PLEASE ADD PARAMETER DESCRIPTION."}
-                if(any(is.na(det)))
-                    warning("There are details missing for class '", i, "'. Please update the documentation")
                 text <- c(text, indent(c(sprintf("\\item{}{\\code{\\linkS4class{%s}}:", i), "\\describe{"),
                                        level=2:3),
-                          indent(sprintf("\\item{}{\\code{%s=%s}: %s}\n", names(pp[[i]]), sapply(pp[[i]], toChar), det),
-                                 level=4, block=FALSE),
+                          renderParsEntry(i, pp[[i]], level=4),
                           indent(rep("}", 2), level=3:2))
             }
         }
         text <- c(text, indent("}", 1))
     }
     text <- c(text, indent("}", 0))
-    return(paste(text, collapse=" \n\n"))
+    text <- paste(text, collapse=" \n\n")
+    parsDets <- sapply(union(names(pars[[1]]), names(details[[class]])), function(x){
+        txt <- if(x %in% names(details[[class]])) details[[class]][[x]] else NA
+        if(!is.na(txt))
+            txt <- trimws(gsub("\\s+", " ", gsub("\n", "",
+                                                 paste(suppressWarnings(unlist(parse_Rd(textConnection(txt)))), collapse=""))))
+        list(id=x,
+             default=pars[[1]][[x]],
+             text=txt)
+    }, simplify=FALSE)
+    attr(text, "parameters") <- parsDets
+    return(text)
 }
+
+extractDpContent <- function(file){
+    require(Gviz)
+    section <- "Display Parameters"
+    require(tools)
+    tmp <- tryCatch(parse_Rd(file), warning=function(x) stop("Error parsing rd file:\n", x))
+    tags <- sapply(tmp, attr, "Rd_tag")
+    ind1 <- grep(section, tags, ignore.case=TRUE)
+    ind <- if(!length(ind1))
+    {
+        sind <- grep("\\\\section", tags, ignore.case=TRUE)
+        sind[grep(section, sapply(tmp[sind], function(x) as.character(x[[1]])), ignore.case=TRUE)]
+    }else ind1
+    if(length(ind)>1)
+        stop("Section '", section, "'is not unique in file '", file, "'")
+    dind <- grep("\\\\describe", sapply(tmp[[ind]][[2]], attr, "Rd_tag"))
+    if(!length(dind))
+        stop("Unable to find Display Parameters description section in file '", file, "'")
+    dind <- min(dind)
+    desc <- tmp[[ind]][[2]][[dind]]
+    itemInds <- grep("\\\\item",  sapply(desc, attr, "Rd_tag"))
+    items <- lapply(itemInds, function(i){
+        istruct <- unlist(unlist(desc[[i]], recursive=FALSE), recursive=FALSE)
+        sel <- sapply(sapply(istruct, function(x) attr(x, "Rd_tag")), function(x) !is.null(x) && x=="RCODE")
+        sel <- sort(reduce(IRanges(start=which(sel), width=1)))
+        sel <- seq(from=start(sel[1]), len=width(sel[1]))
+        def <-  gsub("\n", "", paste(as.character(unlist(istruct[sel])), collapse=""))
+        def2 <- gsub(".*=", "", def)
+        item <- unlist(desc[[i]])
+        item <- item[!grepl("^\\(Aliases:", item)]
+        def <- if(def2 != "function") try(if(grepl("=", def)) eval(parse(text=def2)) else NA, silent=TRUE) else def2
+        ##if(gsub("=.*", "", item[1])=="stats") browser()
+        if(is(def, "try-error"))
+            def <- gsub(".*=", "", gsub("\n", "", paste(as.character(unlist(istruct[sel])), collapse="")))
+        list(id=gsub("=.*", "", item[1]),
+          default=def,
+          text=trimws(gsub("\\s+", " ", gsub("\n", "", gsub("^: ?| :\\n *|.*): ", "", paste(item[-sel], collapse=""))))))
+    })
+    names(items) <- sapply(items, function(x) x[["id"]])
+    return(items)
+}
+
+
+compareDtContent <- function(class, outdir, details){
+    file <- file.path(outdir, paste(class, "class.Rd", sep="-"))
+    fromFile <- extractDpContent(file)
+    fromDef <- attr(displayParsDoc(class, details), "parameters")
+    allPars <- union(names(fromFile), names(fromDef))
+    res <- list()
+    tmp <- setdiff(allPars, names(fromFile))
+    alias <- Gviz:::.dpAliasReverseTable[tmp]
+    alias <- alias[!is.na(alias)]
+    tmp <- setdiff(tmp, alias)
+    res[["Parameter missing in file"]] <- tmp
+    tmp  <- setdiff(allPars, names(fromDef))
+    if(length(tmp))
+        tmp <- lapply(tmp, function(x) c(x, fromFile[[x]][["text"]]))
+    res[["Parameter missing in definitions"]] <- tmp
+    tmp <- setdiff(allPars, names(details[[class]]))
+    alias <- Gviz:::.dpAliasReverseTable[tmp]
+    alias <- alias[!is.na(alias)]
+    tmp <- setdiff(tmp, alias)
+    res[["No parameter entry in documentation.R"]] <- tmp
+    tmp <- setdiff(allPars, names(as.list(getClassDef(class)@prototype@dp)))
+    alias <- Gviz:::.dpAliasReverseTable[tmp]
+    alias <- alias[!is.na(alias)]
+    tmp <- setdiff(tmp, c(alias, "..."))
+    res[["Parameter not initialized in class"]] <- tmp
+    commonPars <- intersect(names(fromFile), names(fromDef))
+    tmp <- sapply(commonPars, function(x){
+        if(is.character(fromFile[[x]][["default"]]) && fromFile[[x]][["default"]][1] == "function" &&
+           is.function(fromDef[[x]][["default"]]))
+            return(NULL)
+        ae <- all.equal(fromFile[[x]][["default"]], fromDef[[x]][["default"]])
+        return(if(length(ae) == 1 && ae == TRUE) NULL else
+               c(as.list(ae), file=fromFile[[x]][["default"]], def=fromDef[[x]][["default"]]))
+    }, simplify=FALSE)
+    res[["Parameter default difference"]] <- tmp[!sapply(tmp, is.null)]
+    tmp <- sapply(commonPars, function(x){
+        ae <- all.equal(fromFile[[x]][["text"]], fromDef[[x]][["text"]])
+        return(if(length(ae) == 1 && ae == TRUE) NULL else c(ae, file=fromFile[[x]][["text"]], def=fromDef[[x]][["text"]]))
+    }, simplify=FALSE)
+    res[["Parameter text difference"]] <- tmp[!sapply(tmp, is.null)]
+    return(res)
+}
+
 
 ## Parse though an Rd file, find 'section' in there and replace its content by 'content'.
 ## If there are parse errors in the Rd file either before or after injection the file
 ## will not be altered.
 injectContent <- function(file, content, section)
 {
+    require(Gviz)
     require(tools)
     tmp <- tryCatch(parse_Rd(file), warning=function(x) stop("Error parsing rd file:\n", x))
     tags <- sapply(tmp, attr, "Rd_tag")
@@ -188,6 +317,7 @@ injectContent <- function(file, content, section)
 ## Create display parameters section for the settings man page that list all availabe parameters for all classes
 allDisplayParsDoc <- function(details)
 {
+    require(Gviz)
     text <- indent(c("\\section{Display Parameters}{", "\\describe{"), level=0:1)
     for(cl in c("GenomeAxisTrack", "DataTrack", "IdeogramTrack",
          "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"))
@@ -227,6 +357,8 @@ allDisplayParsDoc <- function(details)
 
 updateRdFile <- function(class, outdir)
 {
+    require(Gviz)
+    require(tools)
     file <- file.path(outdir, paste(class, "class.Rd", sep="-"))
     content <- displayParsDoc(class, details=details)
     injectContent(file, content, "Display Parameters")
@@ -272,6 +404,8 @@ details <- list(
                                 cex.bands="Numeric scalar. The  font expansion factor for the chromosome band identifier text.",
                                 cex="Numeric scalar. The overall font expansion factor for the chromosome name text.",
                                 col="Character scalar. The border color used for the highlighting of the currently displayed genomic region.",
+                    col.border.title="Integer or character scalar. The border color for the title panels.",
+                    lwd.border.title="Integer scalar. The border width for the title panels.",
                                 fill="Character scalar. The fill color used for the highlighting of the currently displayed genomic region.",
                                 fontcolor="Character scalar. The font color for the chromosome name text.",
                                 fontface="Character scalar. The font face for the chromosome name text.",
@@ -292,11 +426,10 @@ details <- list(
 
                             aggregateGroups="Logical scalar. Aggregate the values within a sample group using the aggregation funnction specified in the \\code{aggregation} parameter.",
                             aggregation="Function or character scalar. Used to aggregate values in windows or for collapsing overlapping items. The function has to accept a numeric vector as a single input parameter and has to return a numeric scalar with the aggregated value. Alternatively, one of the predefined options \\code{mean}, \\code{median} \\code{sum}, \\code{min}, \\code{max} or \\code{extreme} can be supplied as a character scalar. Defaults to \\code{mean}.",
-                            alpha="Numeric scalar between 0 and 1. The opacity of the plotting elements, if supported by the device.",
-                            alpha.confint="Numeric scalar. The tranasparency for the confidence intervalls in confint-type plots.",
+                            alpha.confint="Numeric scalar. The transparency for the confidence intervalls in confint-type plots.",
                             amount="Numeric scalar. Amount of jittering in xy-type plots. See \\code{\\link{panel.xyplot}} for details.",
                             baseline="Numeric scalar. Y-axis position of an optional baseline. This parameter has a special meaning for mountain-type and polygon-type plots, see the 'Details' section in \\code{\\linkS4class{DataTrack}} for more information.",
-                            box.legend="Logical scalar. Draw a box around a legend",
+                            box.legend="Logical scalar. Draw a box around a legend.",
                             box.ratio="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             box.width="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             cex.legend="Numeric scalar. The size factor for the legend text.",
@@ -305,13 +438,11 @@ details <- list(
                             coef="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             col.baseline="Character scalar. Color for the optional baseline, defaults to the setting of \\code{col}.",
                             col.confint="Character vector. Border colors for the confidence intervals for confint-type plots.",
-                            col.grid="Integer scalar. The line color for grid elements.",
                             col.histogram="Character scalar. Line color in histogram-type plots.",
                             col.horizon="The line color for the segments in the \\code{horizon}-type plot. See \\code{\\link{horizonplot}} for details.",
-                            col.line="Character or integer scalar. The color used for line elements. Defaults to the setting of \\code{col}.",
+
                             col.mountain="Character scalar. Line color in mountain-type and polygon-type plots, defaults to the setting of \\code{col}.",
                             col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots.",
-                            col.symbol="Character or integer scalar. The color used for symbol elements. Defaults to the setting of \\code{col}.",
                             col="Character or integer vector. The color used for all line and symbol elements, unless there is a more specific control defined elsewhere. Unless \\code{groups} are specified, only the first color in the vector is usually regarded.",
                             collapse="Logical scalar. Collapse overlapping ranges and aggregate the underlying data.",
                             degree="Numeric scalar. Parameter controlling the loess calculation for smooth and mountain-type plots. See \\code{\\link{panel.loess}} for details.",
@@ -320,35 +451,33 @@ details <- list(
                             factor="Numeric scalar. Factor to control amount of jittering in xy-type plots. See \\code{\\link{panel.xyplot}} for details.",
                             family="Character scalar. Parameter controlling the loess calculation for smooth and mountain-type plots. See \\code{\\link{panel.loess}} for details.",
                             col.confint="Character vector. Fill colors for the confidence intervals for confint-type plots.",
+                            fill.confint="Character vector. Fill colors for the confidence intervals for confint-type plots.",
                             fill.histogram="Character scalar. Fill color in histogram-type plots, defaults to the setting of \\code{fill}.",
                             fill.horizon="The fill colors for the segments in the \\code{horizon}-type plot. This should be a vector of length six, where the first three entries are the colors for positive changes, and the latter three entries are the colors for negative changes. Defaults to a red-blue color scheme. See \\code{\\link{horizonplot}} for details.",
                             fill.mountain="Character vector of length 2. Fill color in mountain-type and polygon-type plots.",
-                            fill="Character scalar. The fill color for area elements, unless there is a more specific control defined elsewhere.",
                             fontcolor.legend="Integer or character scalar. The font color for the legend text.",
                             fontface.legend="Integer or character scalar. The font face for the legend text.",
                             fontfamily.legend="Integer or character scalar. The font family for the legend text.",
                             fontsize.legend="Numeric scalar. The pixel size for the legend text.",
-                            gradient="Character vector. The base colors for the 'gradient' plotting type or the 'heatmap' type with a single group. When plotting heatmaps with more than one group, the 'col' parameter can be used to control the group color scheme, however the gradient will always be from white to 'col' and thus does not offer as much flexibility as this 'gradient' parameter.",
+                            gradient="Character vector. The base colors for the \\code{gradient} plotting type or the \\code{heatmap} type with a single group. When plotting heatmaps with more than one group, the \\code{col} parameter can be used to control the group color scheme, however the gradient will always be from white to 'col' and thus does not offer as much flexibility as this \\code{gradient} parameter.",
                             grid="Logical vector. Draw a line grid under the track content.",
                             groups="Vector coercable to a factor. Optional sample grouping. See 'Details' section in \\code{\\linkS4class{DataTrack}} for further information.",
-                            h="Integer scalar. Parameter controlling the number of vertical grid lines, see \\code{\\link{panel.grid}} for details.",
                             horizon.origin="The baseline relative to which changes are indicated on the \\code{horizon}-type plot. See \\code{\\link{horizonplot}} for details.",
                             horizon.scale="The scale for each of the segments in the \\code{horizon}-type plot. Defaults to 1/3 of the absolute data range. See \\code{\\link{horizonplot}} for details.",
                             jitter.x="Logical scalar. Toggle on jittering on the x axis in xy-type plots. See \\code{\\link{panel.xyplot}} for details.",
                             jitter.y="Logical scalar. Toggle off jittering on the y axis in xy-type plots. See \\code{\\link{panel.xyplot}} for details.",
-                            legend="Boolean triggering the addition of a legend to the track to indicate groups. This only has an effect if at least two groups are presen.",
+                            legend="Boolean triggering the addition of a legend to the track to indicate groups. This only has an effect if at least two groups are present.",
                             levels.fos="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             lineheight.legend="Numeric scalar. The line height for the legend text.",
                             lty.baseline="Character or numeric scalar. Line type of the optional baseline, defaults to the setting of \\code{lty}.",
-                            lty.grid="Integer scalar. The line type for grid elements. Defaults to the setting of \\code{lty}.",
+
                             lty.mountain="Character or numeric scalar. Line type in mountain-type and polygon-type plots, defaults to the setting of \\code{lty}.",
-                            lty="Character or integer scalar. The type for all line elements, unless there is a more specific control defined elsewhere.",
+
                             lwd.baseline="Numeric scalar. Line width of the optional baseline, defaults to the setting of \\code{lwd}.",
-                            lwd.grid="Integer scalar. The line width for grid elements. Defaults to the setting of \\code{lwd}.",
+
                             lwd.mountain="Numeric scalar. Line width in mountain-type and polygon-type plots, defaults to the setting of \\code{lwd}.",
-                            lwd="Integer scalar. The line width for all line elements, unless there is a more specific control defined elsewhere.",
+
                             min.distance="Numeric scalar. The mimimum distance in pixel below which to collapse ranges.",
-                            min.width="Numeric scalar. The mimimum horizontal size of a plotted object in pixels.",
                             na.rm="Boolean controlling whether to discard all NA values when plotting or to keep empty spaces for NAs",
                             ncolor="Integer scalar. The number of colors for the 'gradient' plotting type",
                             notch.frac="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
@@ -362,10 +491,10 @@ details <- list(
                             stackedBars="Logical scalar. When there are several data groups, draw the histogram-type plots as stacked barplots or grouped side by side.",
                             stats="Function. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             transformation="Function. Applied to the data  matrix prior to plotting or when calling the \\code{score} method. The function should accept exactly one input argument and its return value needs to be a numeric vector which can be coerced back into a data matrix of identical dimensionality as the input data.",
-                            type="Character vector. The plot type, one or several in \\code{c(\"p\",\"l\", \"b\", \"a\", \"a_confint\", \"s\", \"g\", \"r\", \"S\", \"smooth\", \"histogram\", \"mountain\", \"polygon\", \"h\", \"boxplot\", \"gradient\", \"heatmap\", \"horizon\")}. See 'Details' section in \\code{\\linkS4class{DataTrack}} for more information on the individual plotting types.",
-                            v="Integer scalar. Parameter controlling the number of vertical grid lines, see \\code{\\link{panel.grid}} for details.",
+                            type="Character vector. The plot type, one or several in \\code{c(\"p\",\"l\", \"b\", \"a\", \"a_confint\", \"s\", \"g\", \"r\", \"S\", \"confint\", \"smooth\", \"histogram\", \"mountain\", \"polygon\", \"h\", \"boxplot\", \"gradient\", \"heatmap\", \"horizon\")}. See 'Details' section in \\code{\\linkS4class{DataTrack}} for more information on the individual plotting types.",
+
                             varwidth="Logical scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
-                            window="Numeric or character scalar. Aggregate the rows values of the data matrix to \\code{window} equally sized slices on the data range using the method defined in \\code{aggregation}. If negative, apply a running window of size \\code{windowSize} using the same aggregation method. Alternatively, the special value \\code{auto} causes the function to determine the optimal window size to avoid overplotting.",
+                            window="Numeric or character scalar. Aggregate the rows values of the data matrix to \\code{window} equally sized slices on the data range using the method defined in \\code{aggregation}. If negative, apply a running window of size \\code{windowSize} using the same aggregation method. Alternatively, the special value \\code{auto} causes the function to determine the optimal window size to avoid overplotting, and \\code{fixed} uses fixed-size windows of size \\code{windowSize}.",
                             windowSize="Numeric scalar. The size of the running window when the value of \\code{window} is negative.",
                             ylim="Numeric vector of length 2. The range of the y-axis scale."
 
@@ -381,12 +510,14 @@ details <- list(
                 GdObject=c(
 
                            alpha="Numeric scalar. The transparency for all track items.",
+                           alpha.title="Numeric scalar. The transparency for the title panel.",
                            background.panel="Integer or character scalar. The background color of the content panel.",
                            background.title="Integer or character scalar. The background color for the title panel.",
-                           cex.axis="Numeric scalar. The expansion factor for the axis  annotation. Defaults to \\code{NULL}, in which case it is automatically determined based on the available space.",
+                           cex.axis="Numeric scalar. The expansion factor for the axis annotation. Defaults to \\code{NULL}, in which case it is automatically determined based on the available space.",
                            cex.title="Numeric scalar. The expansion factor for the title panel. This effects the fontsize of both the title and the axis, if any. Defaults to \\code{NULL}, which means that the text size is automatically adjusted to the available space.",
                            cex="Numeric scalar. The overall font expansion factor for all text and glyphs, unless a more specific definition exists.",
                            col.axis="Integer or character scalar. The font and line color for the y axis, if any.",
+                           col.border.title="Integer or character scalar. The border color for the title panels.",
                            col.frame="Integer or character scalar. The line color used for the panel frame, if \\code{frame==TRUE}",
                            col.grid="Integer or character scalar. Default line color for grid lines, both when \\code{type==\"g\"} in \\code{\\link{DataTrack}}s and when display parameter \\code{grid==TRUE}.",
                            col.line="Integer or character scalar. Default colors for plot lines. Usually the same as the global \\code{col} parameter.",
@@ -408,6 +539,7 @@ details <- list(
                            lineheight="Numeric scalar. The font line height for all text, unless a more specific definition exists.",
                            lty.grid="Integer or character scalar. Default line type for grid lines, both when \\code{type==\"g\"} in \\code{\\link{DataTrack}}s and when display parameter \\code{grid==TRUE}.",
                            lty="Numeric scalar. Default line type setting for all plotting elements, unless there is a more specific control defined elsewhere.",
+                           lwd.border.title="Integer scalar. The border width for the title panels.",
                            lwd.grid="Numeric scalar. Default line width for grid lines, both when \\code{type==\"g\"} in \\code{\\link{DataTrack}}s and when display parameter \\code{grid==TRUE}.",
                            lwd.title="Integer scalar. The border width for the title panels",
                            lwd="Numeric scalar. Default line width setting for all plotting elements, unless there is a more specific control defined elsewhere.",
@@ -416,7 +548,7 @@ details <- list(
                            min.width="Numeric scalar. The minimum range width in pixels to display. All ranges are expanded to this size in order to avoid rendering issues. See \\code{\\link{collapsing}} for details.",
                            reverseStrand="Logical scalar. Set up the plotting coordinates in 3' -> 5' direction if \\code{TRUE}. This will effectively mirror the plot on the vertical axis.",
                            rotation.title="The rotation angle for the text in the title panel. Even though this can be adjusted, the automatic resizing of the title panel will currently not work, so use at own risk.",
-                           rotation="The rotation angle for all text unless a more specific definiton exists",
+                           rotation="The rotation angle for all text unless a more specific definiton exists.",
                            showAxis="Boolean controlling whether to plot a y axis (only applies to track types where axes are implemented).",
                            showTitle="Boolean controlling whether to plot a title panel. Although this can be set individually for each track, in multi-track plots as created by \\code{\\link{plotTracks}} there will still be an empty placeholder in case any of the other tracks include a title. The same holds true for axes. Note that the the title panel background color could be set to transparent in order to completely hide it.",
                            size="Numeric scalar. The relative size of the track. Can be overridden in the \\code{\\link{plotTracks}} function.",
@@ -432,6 +564,7 @@ details <- list(
                                   background.title="Character scalar. The background color for the title panel. Defaults to omit the background.",
                                   cex.id="Numeric scalar. The text size for the optional range annotation.",
                                   cex="Numeric scalar. The overall font expansion factor for the axis annotation text.",
+                                  col.border.title="Integer or character scalar. The border color for the title panels.",
                                   col.id="Character scalar. The text color for the optional range annotation.",
                                   col.range="Character scalar. The border color for highlighted regions on the axis.",
                                   col="Character scalar. The color for the axis lines and tickmarks.",
@@ -439,12 +572,11 @@ details <- list(
                                   exponent="Numeric scalar. The exponent for the axis coordinates, e.g., 3 means mb, 6 means gb, etc. The default is to automatically determine the optimal exponent.",
                                   fill.range="Character scalar. The fill color for highlighted regions on the axis.",
                                   fontcolor="Character scalar. The font color for the axis annotation text.",
-                                  fontface="Character scalar. The font face for the axis annotation text.",
-                                  fontfamily="Character scalar. The font family for the axis annotation text.",
                                   fontsize="Numeric scalar. Font size for the axis annotation text in points.",
                                   labelPos="Character vector, one in \"alternating\", \"revAlternating\", \"above\" or \"below\". The vertical positioning of the axis labels. If \\code{scale} is not \\code{NULL}, the possible values are \"above\", \"below\" and \"beside\".",
                                   littleTicks="Logical scalar. Add more fine-grained tick marks.",
                                   lwd="Numeric scalar. The line width for the axis elementes.",
+                                  lwd.border.title="Integer scalar. The border width for the title panels.",
                                   scale="Numeric scalar. If not \\code{NULL} a small scale is drawn instead of the full axis, if the value is between 0 and 1 it is interpreted as a fraction of the current plotting region, otherwise as an absolute length value in genomic coordinates.",
                                   showId="Logical scalar. Show the optional range highlighting annotation.",
                                   showTitle="Logical scalar. Plot a title panel. Defaults to omit the title panel.",
@@ -454,8 +586,7 @@ details <- list(
 
                 AnnotationTrack=c(
 
-                                  alpha="Numeric scalar between 0 and 1. The opacity of the plotting elements, if supported by the device.",
-                                  arrowHeadMaxWidth="Numeric scalar. The maximum width of the arrow head in pixels if \\code{shape} is \\code{arrow}.",
+                    arrowHeadMaxWidth="Numeric scalar. The maximum width of the arrow head in pixels if \\code{shape} is \\code{arrow}.",
                                   arrowHeadWidth="Numeric scalar. The width of the arrow head in pixels if \\code{shape} is \\code{fixedArrow}.",
                                   cex.group="Numeric scalar. The font expansion factor for the group-level annotation.",
                                   cex="Numeric scalar. The font expansion factor for item identifiers.",
@@ -463,14 +594,11 @@ details <- list(
                                   col="Character or integer scalar. The border color for all track items.",
                                   featureAnnotation="Character scalar. Add annotation information to the individual track elements. This can be a value in \\code{id}, \\code{group} or \\code{feature}. Defaults to \\code{id}. Only works if \\code{showFeatureId} is not \\code{FALSE}.",
                                   fontcolor.group="Character or integer scalar. The font color for the group-level annotation.",
-                                  fontcolor="Character or integer scalar. The font color for item identifiers.",
+                                  fontcolor.item="Character or integer scalar. The font color for item identifiers.",
                                   fontface.group="Numeric scalar. The font face for the group-level annotation.",
-                                  fontface="Integer scalar. The font face for item identifiers.",
                                   fontfamily.group="Character scalar. The font family for the group-level annotation.",
-                                  fontfamily="Character scalar. The font family for item identifiers.",
                                   fontsize.group="Numeric scalar. The font size for the group-level annotation.",
-                                  fontsize="Numeric scalar. The font size for item identifiers.",
-                                  groupAnnotation="Character scalar. Add annotation information as group labels. This can be a value in \\code{id}, \\code{group} or \\code{feature}. Defaults to \\code{group}. Only works if \\code{showId} is not \\code{FALSE}.",
+                    groupAnnotation="Character scalar. Add annotation information as group labels. This can be a value in \\code{id}, \\code{group} or \\code{feature}. Defaults to \\code{group}. Only works if \\code{showId} is not \\code{FALSE}.",
                                   just.group="Character scalar. the justification of group labels. Either \\code{left}, \\code{right}, \\code{above} or \\code{below}.",
                                   lex="Numeric scalar. The line expansion factor for all track items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",
                                   lineheight="Numeric scalar. The font line height for item identifiers.",
@@ -479,6 +607,7 @@ details <- list(
                                   mergeGroups="Logical scalar. Merge fully overlapping groups if \\code{collapse==TRUE}.",
                                   min.height="Numeric scalar. The minimum range height in pixels to display. All ranges are expanded to this size in order to avoid rendering issues.  See \\code{\\link{collapsing}} for details. For feathered bars indicating the strandedness of grouped items this also controls the height of the arrow feathers.",
                                   min.width="Numeric scalar. The minimum range width in pixels to display. All ranges are expanded to this size in order to avoid rendering issues. See \\code{\\link{collapsing}} for details.",
+                                  rotation="Numeric scalar. The degree of text rotation for item identifiers.",
                                   rotation.group="Numeric scalar. The degree of text rotation for group labels.",
                                   rotation.item="Numeric scalar. The degree of text rotation for item identifiers.",
                                   shape="Character scalar. The shape in which to display the track items. Currently only \\code{box}, \\code{arrow}, \\code{fixedArrow}, \\code{ellipse}, and \\code{smallArrow} are implemented.",
@@ -616,6 +745,7 @@ details <- list(
 
                                   alpha.mismatch="Numeric scalar between 0 and 1. The transparency of the mismatch base information.",
                                   alpha.reads="Numeric scalar between 0 and 1. The transparency of the individual read icons. Can be used to indicate overlapping regions in read pairs. Only on supported devices.",
+                                  cex="Numeric Scalar. The global character expansion factor.",
                                   cex.mismatch="Numeric Scalar. The character expansion factor for the mismatch base letters.",
                                   col.coverage="Integer or character scalar. The line color for the coverage profile.",
                                   col.gap="Integer or character scalar. The color of the line that is bridging the gap regions in gapped alignments.",
@@ -647,7 +777,7 @@ details <- list(
                                   max.height="Integer scalar. The maximum height of an individual read in pixels. Can be used in combination with \\code{min.height} to control the read and stacking appearance. ",
                                   min.height="Integer scalar. The minimum height of an individual read in pixels. Can be used in combination with \\code{max.height} to control the read and stacking appearance.",
                                   minCoverageHeight="Integer scalar. The minimum height of the coverage section. Uselful in combination with a relative setting of \\code{coverageHeight}.",
-                                  minSashimi="Integer scalar. The minimum height of the sashimi section. Uselful in combination with a relative setting of \\code{sashimiHeight}.",
+                                  minSashimiHeight="Integer scalar. The minimum height of the sashimi section. Uselful in combination with a relative setting of \\code{sashimiHeight}.",
                                   showMismatches="Logical scalar. Add mismatch information, either as individual base letters or using color coded bars. This implies that the reference sequence has been provided, either to the class constructor or as part of the track list.",
                                   sashimiFilter="GRanges object. Only junctions which overlap equally with \\code{sashimiFilter} GRanges are shown. Default \\code{NULL}, no filtering.",
                                   sashimiFilterTolerance="Integer scalar. Only used in combination with \\code{sashimiFilter}. It allows to include junctions whose starts/ends are within specified distance from \\code{sashimiFilter} GRanges. This is useful for cases where the aligner did not place the junction reads precisely. Default \\code{0L} , no tolerance.",
@@ -655,8 +785,8 @@ details <- list(
                                   sashimiScore="Integer scalar. The minimum number of reads supporting the junction.",
                                   sashimiStrand="Integer scalar. Only reads which have the specified strand are considered to count the junctions.",
                                   size="Numeric scalar. The size of the track. Defaults to automatic sizing.",
-                                  transformation: "Function. Applied to the coverage vector prior to plotting. The function should accept exactly one input argument and its return value needs to be a numeric Rle of identical length as the input data."
-                                  type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, for \\code{sashimi} a sashimi plot, showing the juctions, and for \\code{pileup} the pileups of the individual reads. Theese three can be combined."
+                                  transformation= "Function. Applied to the coverage vector prior to plotting. The function should accept exactly one input argument and its return value needs to be a numeric Rle of identical length as the input data.",
+                                  type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, for \\code{sashimi} a sashimi plot, showing the juctions, and for \\code{pileup} the pileups of the individual reads. These three can be combined."
 
                                   )
                 )
@@ -664,6 +794,7 @@ details <- list(
 
 updateDocumentation <- function(outdir="~/Rpacks/Gviz/man")
 {
+    library(Gviz)
     library(IRanges)
     library(rtracklayer)
     library(GenomicRanges)
@@ -675,7 +806,29 @@ updateDocumentation <- function(outdir="~/Rpacks/Gviz/man")
     library(AnnotationDbi)
     ##source(file.path(dirname(outdir), "inst/scripts/sourcePackage.R"))
     dps <- sapply(c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-                    "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"), updateRdFile, outdir)
+                    "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack", "AlignmentsTrack"),
+                  updateRdFile, outdir)
     settings <- updateSettingsFile(outdir)
     links <- updateLinks(outdir)
 }
+
+
+
+## Instructions to rebuild the docs
+## In general, changes to the documentation for a class' display parameters set should be handled in this file, in the details
+## list above. Default values for display parameters should be set in the class' initializer method.
+##
+## To update just a single class:
+## run
+##       compareDtContent(<className>, <documentationDir>, details)
+## and check the results. This should show you what is different between the current man page file and the central definitions
+## It will also find things that may have been added/edited manually in the man page file, and might need backporting into the
+## central definition list.
+## When you are happy with the results, run
+##       updateRdFile(<className>, <documentationDir>)
+##       updateSettingsFile(<documentationDir>)
+##       updateLinks(<documentationDir>)
+##
+## To update all classes, run
+##       updateDocumentation(<documentationDir>)
+## Of course you should have checked all changes before using compareDtContent()
