@@ -661,13 +661,15 @@
     for(i in 1:nrow(bars)){
         b <- bars[i,]
         cur.level <- b$y%/%1
-        ct <- setdiff(IRanges(start=b$x1, end=b$x2), resize(levels[[cur.level]], width=width(levels[[cur.level]])-1))
+        ct <- if(cur.level != 0) setdiff(IRanges(start=b$x1, end=b$x2),
+                                         resize(levels[[cur.level]], width=width(levels[[cur.level]])-1)) else IRanges()
         if(length(ct))
             cutBars <- rbind(cutBars, data.frame(x1=start(ct), x2=end(ct), y=b$y, col=b$col, stringsAsFactors=FALSE))
     }
     ## fix bug when no introns are present
     if (nrow(cutBars))
-        grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y, default.units="native", gp=gpar(col=cutBars$col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
+        grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y, default.units="native",
+                      gp=gpar(col=cutBars$col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
     ##grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
 }
 
@@ -977,7 +979,7 @@
                                             min.distance=1,
                                             min.height=3,
                                             min.width=1,
-                                            rot.title=90,
+                                            rotation.title=90,
                                             rotation=0,
                                             showAxis=TRUE,
                                             showTitle=TRUE,
