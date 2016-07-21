@@ -1447,7 +1447,7 @@ setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, 
         if(diff(ylim)==0)
             ylim <- ylim+c(-1,1)
         hSpaceAvail <- vpLocation()$isize["width"]/6
-        yscale <-c(if(is.null(.dpOrDefault(GdObject, "transformation"))) 0 else min(ylim, max(ylim) + diff(range(ylim)) * 0.05)
+        yscale <- if(is.null(.dpOrDefault(GdObject, "transformation"))) 0 else min(ylim, max(ylim) + diff(range(ylim)) * 0.05)
         col <- .dpOrDefault(GdObject, "col.axis", "white")
         acex <- .dpOrDefault(GdObject, "cex.axis")
         acol <- .dpOrDefault(GdObject, "col.axis", "white")
