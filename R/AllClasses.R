@@ -1035,9 +1035,10 @@ setClass("BiomartGeneRegionTrack",
                                                              u5e="5_utr_end",
                                                              u3s="3_utr_start",
                                                              u3e="3_utr_end",
+                                                             cdsl="cds_length",
                                                              phase="phase")))
     needed <- c("gene_id","transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
-                "chromosome", "u5s", "u5e", "u3s", "u3e", "phase")
+                "chromosome", "u5s", "u5e", "u3s", "u3e", "cdsl", "phase")
     if(!all(needed %in% names(featureMap)))
         stop("'featureMap' needs to include items '", paste(setdiff(needed, names(featureMap)), collapse=", "), "'")
     avail <- listAttributes(object@biomart)[,1]
@@ -1071,6 +1072,8 @@ setClass("BiomartGeneRegionTrack",
                      mart=object@biomart, uniqueRows=TRUE)
         colnames(ens) <- names(featureMap)
     }
+    ## Only those transcripts that have a CDS length will be considered protein_coding
+    ens$feature <- ifelse(is.na(ens$cdsl) & ens$feature == "protein_coding", "non_coding", ens$feature)
     ## We may have to split exons if they contain UTRs
     hasUtr <- !is.na(ens$u5s) | !is.na(ens$u3s)
     ensUtr <- ens[hasUtr,, drop=FALSE]
