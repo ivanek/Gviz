@@ -1029,9 +1029,10 @@ setClass("BiomartGeneRegionTrack",
                                                              u5e="5_utr_end",
                                                              u3s="3_utr_start",
                                                              u3e="3_utr_end",
+                                                             cdsl="cds_length",
                                                              phase="phase")))
     needed <- c("gene_id","transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
-                "chromosome", "u5s", "u5e", "u3s", "u3e", "phase")
+                "chromosome", "u5s", "u5e", "u3s", "u3e", "cdsl", "phase")
     if(!all(needed %in% names(featureMap)))
         stop("'featureMap' needs to include items '", paste(setdiff(needed, names(featureMap)), collapse=", "), "'")
     avail <- listAttributes(object@biomart)[,1]
@@ -1065,6 +1066,8 @@ setClass("BiomartGeneRegionTrack",
                      mart=object@biomart, uniqueRows=TRUE)
         colnames(ens) <- names(featureMap)
     }
+    ## Only those transcripts that have a CDS length will be considered protein_coding
+    ens$feature <- ifelse(is.na(ens$cdsl) & ens$feature == "protein_coding", "non_coding", ens$feature)
     ## We may have to split exons if they contain UTRs
     hasUtr <- !is.na(ens$u5s) | !is.na(ens$u3s)
     ensUtr <- ens[hasUtr,, drop=FALSE]
@@ -1187,7 +1190,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start=NULL, 
         .Object <- setPar(.Object, "size", 0, interactive=FALSE)
     }else{
         chromosome <- if(is.null(chromosome)) seqlevels(range)[1] else chromosome
-        rr <- range(range, ignore.strand=TRUE, na.rm=TRUE)
+        rr <- range(range, ignore.strand=TRUE)
         s <- start(rr[seqnames(rr) == chromosome])
         e <- end(rr[seqnames(rr) == chromosome])
         start <- min(s, start)
@@ -1714,7 +1717,7 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
             out
         }), env, cenv)
     }
-    
+
     return(list(availableGenomes=genomes, bands=bands))
 }
 .cacheMartData <- function(bmtrack, chromosome=NULL, staged=FALSE){
