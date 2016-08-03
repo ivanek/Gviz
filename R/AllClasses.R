@@ -1005,7 +1005,7 @@ setClass("BiomartGeneRegionTrack",
     return(c(gene_id="ensembl_gene_id",transcript_id="ensembl_transcript_id", exon_id="ensembl_exon_id",
              start="exon_chrom_start", end="exon_chrom_end", rank="rank", strand="strand",
              symbol="external_gene_name", feature="gene_biotype", chromosome="chromosome_name",
-             u5s="5_utr_start", u5e="5_utr_end", u3s="3_utr_start", u3e="3_utr_end", phase="phase"))
+             u5s="5_utr_start", u5e="5_utr_end", u3s="3_utr_start", u3e="3_utr_end", cdsl="cds_length", phase="phase"))
 }
 
 ## Helper to do the actual fetching of data from Biomart
