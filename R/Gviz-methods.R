@@ -3074,7 +3074,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         pushViewport(viewport(height=0.95, clip=TRUE))
         for(i in seq_along(yy)){
             yi <- yy[[i]]
-            horizonscale <- .dpOrDefault(GdObject, "horizon.scale", max(abs(yi - origin))/nband)
+            horizonscale <- .dpOrDefault(GdObject, "horizon.scale", max(abs(yi - origin), na.rm=TRUE)/nband)
             yr <- origin + c(0, horizonscale)
             pushViewport(viewport(y=(i-1)/length(yy), height=1/length(yy), just=c(0.5, 0), clip=TRUE))
             pushViewport(viewport(height=unit(1, "npc") - unit(separator, "points"), clip=TRUE))
