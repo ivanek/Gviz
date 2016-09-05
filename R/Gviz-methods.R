@@ -2031,11 +2031,13 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             sashStrand <- .dpOrDefault(GdObject, "sashimiStrand", "*")
             sashFilter <- .dpOrDefault(GdObject, "sashimiFilter", NULL)
             sashFilterTolerance <- .dpOrDefault(GdObject, "sashimiFilterTolerance", 0L)
+            sashNumbers <- .dpOrDefault(GdObject, "sashimiNumbers", FALSE)
             displayPars(GdObject) <- list(".__sashimi"=.sashimi.junctions(ranges(GdObject), score=sashScore,
                                               lwd.max=sashLwdMax, strand=sashStrand, filter=sashFilter,
                                               filterTolerance=sashFilterTolerance),
                                           ".__sashimiHeight"=sashHeight,
-                                          ".__sashimiSpace"=sashSpace)
+                                          ".__sashimiSpace"=sashSpace,
+                                          ".__sashimiNumbers"=sashNumbers)
         } else {
             sashHeight <- c(npc=0, points=0)
             sashSpace <- 0
@@ -2121,18 +2123,28 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     sashSpace <- .dpOrDefault(GdObject, ".__sashimiSpace", 0)
     if("sashimi" %in% type){
         sash <- .dpOrDefault(GdObject, ".__sashimi", list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
+        sashNumbers <- .dpOrDefault(GdObject, ".__sashimiNumbers", FALSE)
         yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.05), 0) else c(-1,0)
         vp <- viewport(height=sashHeight["npc"], y=1-(covHeight["npc"] + covSpace + sashHeight["npc"] + sashSpace), just=c(0.5, 0),
                        xscale=xscale, yscale=yscale, clip=TRUE)
         pushViewport(vp)
-        gp <- gpar(col=.dpOrDefault(GdObject, c("col.coverage", "col"), .DEFAULT_SHADED_COL),
-                   fill=.dpOrDefault(GdObject, c("fill.coverage", "fill"), "#BABABA"),
-                   lwd=.dpOrDefault(GdObject, c("lwd.coverage", "lwd"), 1),
-                   lty=.dpOrDefault(GdObject, c("lty.coverage", "lty"), 1),
+        gp <- gpar(col=.dpOrDefault(GdObject, c("col.sashimi", "col"), .DEFAULT_SHADED_COL),
+                   fill=.dpOrDefault(GdObject, c("fill.sashimi", "fill"), "#FFFFFF"),
+                   lwd=.dpOrDefault(GdObject, c("lwd.sashimi", "lwd"), 1),
+                   lty=.dpOrDefault(GdObject, c("lty.sashimi", "lty"), 1),
                    alpha=.alpha(GdObject))
         if (length(sash$x)) {
             grid.xspline(sash$x, -sash$y, id=sash$id, shape=-1, open=TRUE,
                          default.units="native", gp=gpar(col=gp$col, lwd=sash$scaled))
+            ## print the number of reads together with the connecting lines (currently no scaling/resolution)
+            if (sashNumbers) {
+                grid.rect(sash$x[c(F,T,F)], -sash$y[c(F,T,F)],
+                          width=convertUnit(stringWidth(sash$score)*1.5, "inches"),
+                          height=convertUnit(stringHeight(sash$score)*1.5, "inches"),
+                          default.units="native", gp=gpar(col=gp$col, fill=gp$fill))
+                grid.text(label=sash$score, sash$x[c(F,T,F)], -sash$y[c(F,T,F)],
+                          default.units="native", gp=gpar(col=gp$col))
+            }
         }
         popViewport(1)
     }
