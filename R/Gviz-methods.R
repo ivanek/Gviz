@@ -2125,10 +2125,10 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
         vp <- viewport(height=sashHeight["npc"], y=1-(covHeight["npc"] + covSpace + sashHeight["npc"] + sashSpace), just=c(0.5, 0),
                        xscale=xscale, yscale=yscale, clip=TRUE)
         pushViewport(vp)
-        gp <- gpar(col=.dpOrDefault(GdObject, c("col.coverage", "col"), .DEFAULT_SHADED_COL),
-                   fill=.dpOrDefault(GdObject, c("fill.coverage", "fill"), "#BABABA"),
-                   lwd=.dpOrDefault(GdObject, c("lwd.coverage", "lwd"), 1),
-                   lty=.dpOrDefault(GdObject, c("lty.coverage", "lty"), 1),
+        gp <- gpar(col=.dpOrDefault(GdObject, c("col.sashimi", "col"), .DEFAULT_SHADED_COL),
+                   fill=.dpOrDefault(GdObject, c("fill.sashimi", "fill"), "#BABABA"),
+                   lwd=.dpOrDefault(GdObject, c("lwd.sashimi", "lwd"), 1),
+                   lty=.dpOrDefault(GdObject, c("lty.sashimi", "lty"), 1),
                    alpha=.alpha(GdObject))
         if (length(sash$x)) {
             grid.xspline(sash$x, -sash$y, id=sash$id, shape=-1, open=TRUE,
