@@ -2127,7 +2127,12 @@ and  read  pairs are  connected by  a bright  gray  line.  Gaps in
 the alignments are show by the connecting dark gray lines. Numbers of
 reads supporting each gap can be visualized as ``sashimi plot''
 \cite{Katz22012015} by adding \Rfunarg{``sashimi''} as an additional
-agument to the \Rfunarg{type} display parameter.
+agument to the \Rfunarg{type} display parameter. 
+
+The axis in the title panel shows the relationship between the line
+width the the number of reads spanning a given junction. The height of
+each arc is not informative, it is optimized to fit all overlapping
+junctions in a small window.
 
 <<alignmentstrack_5_1, results=hide, width=7.5, height=2, fig=TRUE>>=
 plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12",
