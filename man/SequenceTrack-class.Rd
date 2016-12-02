@@ -809,9 +809,15 @@ importFunction, stream=FALSE, ...)
 
   \code{\linkS4class{AnnotationTrack}}
 
+  \code{\linkS4class{BSgenome}}
+
   \code{\linkS4class{DataTrack}}
 
   \code{\linkS4class{DisplayPars}}
+
+  \code{\linkS4class{DNAString}}
+
+  \code{\linkS4class{DNAStringSet}}
 
   \code{\linkS4class{GdObject}}
 
@@ -823,9 +829,9 @@ importFunction, stream=FALSE, ...)
 
   \code{\linkS4class{IRanges}}
 
-  \code{\linkS4class{BSgenome}}
+  \code{\link{collapsing}}
 
-  \code{\linkS4class{DNAStringSet}}
+  \code{\link{panel.grid}}
 
   \code{\link{plotTracks}}
 
@@ -908,6 +914,7 @@ subseq(sTrack, start=length(sTrack), width=20)
 
 
 \keyword{classes}
+
 
 
 

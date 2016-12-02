@@ -892,8 +892,6 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 
 \seealso{
 
-  \code{\linkS4class{OverlayTrack}}
-
   \code{\linkS4class{DisplayPars}}
 
   \code{\linkS4class{GdObject}}
@@ -903,6 +901,8 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
   \code{\linkS4class{ImageMap}}
 
   \code{\linkS4class{IRanges}}
+
+  \code{\linkS4class{OverlayTrack}}
 
   \code{\linkS4class{RangeTrack}}
 
@@ -922,6 +922,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 
 
 \keyword{classes}
+
 
 
 

@@ -1008,10 +1008,11 @@ setClass("BiomartGeneRegionTrack",
 
 ## Helper to return the default biomart to feature mapping
 .getBMFeatureMap <- function(){
-    return(c(gene_id="ensembl_gene_id",transcript_id="ensembl_transcript_id", exon_id="ensembl_exon_id",
+    return(list(gene_id="ensembl_gene_id",transcript_id="ensembl_transcript_id", exon_id="ensembl_exon_id",
              start="exon_chrom_start", end="exon_chrom_end", rank="rank", strand="strand",
-             symbol="external_gene_name", feature="gene_biotype", chromosome="chromosome_name",
-             u5s="5_utr_start", u5e="5_utr_end", u3s="3_utr_start", u3e="3_utr_end", cdsl="cds_length", phase="phase"))
+             symbol=c("external_gene_name", "external_gene_id"), feature="gene_biotype", chromosome="chromosome_name",
+             u5s="5_utr_start", u5e="5_utr_end", u3s="3_utr_start", u3e="3_utr_end", cdsl=c("cds_length", "cds_start"),
+             phase="phase"))
 }
 
 ## Helper to do the actual fetching of data from Biomart
@@ -1021,22 +1022,23 @@ setClass("BiomartGeneRegionTrack",
     }
     ## The map between Biomart DB fields and annotation features. The individual values can be vectors for cases where there is
     ## ambiguity between different marts. This will be dynamically evaluated against available filters.
-    featureMap <- as.list(.dpOrDefault(object, ".__featureMap", list(gene_id="ensembl_gene_id",
-                                                             transcript_id="ensembl_transcript_id",
-                                                             exon_id="ensembl_exon_id",
-                                                             start="exon_chrom_start",
-                                                             end="exon_chrom_end",
-                                                             rank="rank",
-                                                             strand="strand",
-                                                             symbol=c("external_gene_name", "external_gene_id"),
-                                                             feature="gene_biotype",
-                                                             chromosome="chromosome_name",
-                                                             u5s="5_utr_start",
-                                                             u5e="5_utr_end",
-                                                             u3s="3_utr_start",
-                                                             u3e="3_utr_end",
-                                                             cdsl="cds_length",
-                                                             phase="phase")))
+    origFeatureMap <- list(gene_id="ensembl_gene_id",
+                           transcript_id="ensembl_transcript_id",
+                           exon_id="ensembl_exon_id",
+                           start="exon_chrom_start",
+                           end="exon_chrom_end",
+                           rank="rank",
+                           strand="strand",
+                           symbol=c("external_gene_name", "external_gene_id"),
+                           feature="gene_biotype",
+                           chromosome="chromosome_name",
+                           u5s="5_utr_start",
+                           u5e="5_utr_end",
+                           u3s="3_utr_start",
+                           u3e="3_utr_end",
+                           cdsl=c("cds_length", "cds_start"),
+                           phase="phase")
+    featureMap <- modifyList(origFeatureMap, as.list(.dpOrDefault(object, ".__featureMap", list())))
     needed <- c("gene_id","transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
                 "chromosome", "u5s", "u5e", "u3s", "u3e", "cdsl", "phase")
     if(!all(needed %in% names(featureMap)))
@@ -1324,7 +1326,7 @@ setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...){
     if(missing(range) || is.null(range))
         range <- GRanges()
     if(is(range, "IRanges"))
-        range <- GRanges(range=range, seqnames="dummy", id=ids)
+        range <- GRanges(ranges=range, seqnames="dummy", id=ids)
     .Object@range <- range
     .Object<- callNextMethod(.Object, ...)
     return(.Object)
@@ -1628,7 +1630,7 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
         bnames[sel] <- paste("band", seq_len(sum(sel)), sep="_")
     if(any(bnames == ""))
         bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
-    ranges <- GRanges(seqnames=bnames, range=IRanges(start=bands$chromStart, end=bands$chromEnd),
+    ranges <- GRanges(seqnames=bnames, ranges=IRanges(start=bands$chromStart, end=bands$chromEnd),
                       name=bnames, type=as.character(bands$gieStain))
     .Object <- callNextMethod(.Object=.Object, range=ranges, genome=genome, chromosome=chromosome, name=name, ...)
     return(.Object)
@@ -1885,7 +1887,7 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
       ## to <- max(unlist(lapply(.Object@coverage, function(y) if(length(y)) max(end(y)))))
       from <- min(start(range(.Object)))
       to <- max(end(range(.Object)))
-        .Object@range <- GRanges(range=IRanges(start=from, end=to),
+        .Object@range <- GRanges(ranges=IRanges(start=from, end=to),
                                  strand=names(.Object@coverage), seqnames=.Object@chromosome)
         .Object@coverageOnly <- coverageOnly
     }

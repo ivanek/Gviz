@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.20.0
+-------------------------
+BUG FIXES
+
+    o BiomartGeneRegionTracks can now deal with a featureMap list to provide
+      alternative conditional mappings for different Biomarts.
+
+CHANGES IN VERSION 1.18.0
+-------------------------
+BUG FIXES
+
+    o Various bug fixes.
+
 CHANGES IN VERSION 1.16.0
 -------------------------
 

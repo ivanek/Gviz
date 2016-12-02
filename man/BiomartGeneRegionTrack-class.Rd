@@ -69,9 +69,10 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
   \item{filters}{A list of additional filters to be applied in the
     Biomart query. See \code{\link{getBM}} for details.}
 
-  \item{featureMap}{Named character vector to map between the fields in
+  \item{featureMap}{Named character vector or list to map between the fields in
     the Biomart data base and the features as they are used to construct
-    the track.}
+    the track. If multiple values are provided in a single list item,
+    the package will use the first one that is defined in the selected Biomart.}
 
   \item{name}{Character scalar of the track's name used in the title
     panel when plotting.}
@@ -1229,328 +1230,409 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 }
 
 
-\section{Display Parameters}{
+\section{Display Parameters}{ 
 
   The following display parameters are set for objects of class
   \code{BiomartGeneRegionTrack} upon instantiation, unless one or more
   of them have already been set by one of the optional sub-class
   initializers, which always get precedence over these global defaults.
   See \code{\link{settings}} for details on setting graphical parameters
-  for tracks. \describe{
+  for tracks. \describe{ 
 
     \item{}{\code{C_segment="burlywood4"}: Character or integer scalar.
-      Fill color for annotation objects of type 'C_segment'.}
+      Fill color for annotation objects of type 'C_segment'.} 
 
     \item{}{\code{D_segment="lightblue"}: Character or integer scalar.
-      Fill color for annotation objects of type 'C_segment'.}
+      Fill color for annotation objects of type 'C_segment'.} 
 
     \item{}{\code{J_segment="dodgerblue2"}: Character or integer scalar.
-      Fill color for annotation objects of type 'C_segment'.}
+      Fill color for annotation objects of type 'C_segment'.} 
 
     \item{}{\code{miRNA="cornflowerblue"}: Character or integer scalar.
-      Fill color for annotation objects of type 'L_segment'.}
+      Fill color for annotation objects of type 'L_segment'.} 
 
     \item{}{\code{miRNA_pseudogene="cornsilk"}: Character or integer
-      scalar. Fill color for annotation objects of type 'miRNA_pseudogene'.}
+      scalar. Fill color for annotation objects of type 'miRNA_pseudogene'.} 
 
     \item{}{\code{misc_RNA="cornsilk3"}: Character or integer scalar.
-      Fill color for annotation objects of type 'misc_RNA'.}
+      Fill color for annotation objects of type 'misc_RNA'.} 
 
     \item{}{\code{misc_RNA_pseudogene="cornsilk4"}: Character or integer
-      scalar. Fill color for annotation objects of type 'misc_RNA_pseudogene'.}
+      scalar. Fill color for annotation objects of type 'misc_RNA_pseudogene'.} 
 
     \item{}{\code{Mt_rRNA="yellow"}: Character or integer scalar. Fill
-      color for annotation objects of type 'Mt_rRNA'.}
+      color for annotation objects of type 'Mt_rRNA'.} 
 
     \item{}{\code{Mt_tRNA="darkgoldenrod"}: Character or integer scalar.
-      Fill color for annotation objects of type 'Mt_tRNA'.}
+      Fill color for annotation objects of type 'Mt_tRNA'.} 
 
     \item{}{\code{Mt_tRNA_pseudogene="darkgoldenrod1"}: Character or
       integer scalar. Fill color for annotation objects of type
-      'Mt_tRNA_pseudogene'.}
+      'Mt_tRNA_pseudogene'.} 
 
-    \item{}{\code{protein_coding="gold4"}: Character or integer scalar.
-      Fill color for annotation objects of type 'protein_coding'.}
+    \item{}{\code{protein_coding="#FFD58A"}: Character or integer
+      scalar. Fill color for annotation objects of type 'protein_coding'.} 
 
     \item{}{\code{pseudogene="brown1"}: Character or integer scalar.
-      Fill color for annotation objects of type 'pseudogene'.}
+      Fill color for annotation objects of type 'pseudogene'.} 
 
     \item{}{\code{retrotransposed="blueviolet"}: Character or integer
-      scalar. Fill color for annotation objects of type 'retrotransposed'.}
+      scalar. Fill color for annotation objects of type 'retrotransposed'.} 
 
     \item{}{\code{rRNA="darkolivegreen1"}: Character or integer scalar.
-      Fill color for annotation objects of type 'rRNA'.}
+      Fill color for annotation objects of type 'rRNA'.} 
 
     \item{}{\code{rRNA_pseudogene="darkolivegreen"}: Character or
       integer scalar. Fill color for annotation objects of type
-      'rRNA_pseudogene'.}
+      'rRNA_pseudogene'.} 
 
-    \item{}{\code{scRNA="darkorange"}: Character or integer scalar.
-      Fill color for annotation objects of type 'scRNA'.}
+    \item{}{\code{scRNA="gold4"}: Character or integer scalar. Fill
+      color for annotation objects of type 'scRNA'.} 
 
     \item{}{\code{scRNA_pseudogene="darkorange2"}: Character or integer
-      scalar. Fill color for annotation objects of type 'scRNA_pseudogene'.}
+      scalar. Fill color for annotation objects of type 'scRNA_pseudogene'.} 
 
     \item{}{\code{snoRNA="cyan"}: Character or integer scalar. Fill
-      color for annotation objects of type 'snoRNA'.}
+      color for annotation objects of type 'snoRNA'.} 
 
     \item{}{\code{snoRNA_pseudogene="cyan2"}: Character or integer
-      scalar. Fill color for annotation objects of type 'snoRNA_pseudogene'.}
+      scalar. Fill color for annotation objects of type 'snoRNA_pseudogene'.} 
 
     \item{}{\code{snRNA="coral"}: Character or integer scalar. Fill
-      color for annotation objects of type 'snRNA'.}
+      color for annotation objects of type 'snRNA'.} 
 
     \item{}{\code{snRNA_pseudogene="coral3"}: Character or integer
-      scalar. Fill color for annotation objects of type 'snRNA_pseudogene'.}
+      scalar. Fill color for annotation objects of type 'snRNA_pseudogene'.} 
 
     \item{}{\code{tRNA_pseudogene="antiquewhite3"}: Character or integer
-      scalar. Fill color for annotation objects of type 'tRNA_pseudogene'.}
+      scalar. Fill color for annotation objects of type 'tRNA_pseudogene'.} 
+
+    \item{}{\code{utr3="#FFD58A"}: FIXME: PLEASE ADD PARAMETER
+      DESCRIPTION.} 
+
+    \item{}{\code{utr5="#FFD58A"}: FIXME: PLEASE ADD PARAMETER
+      DESCRIPTION.} 
 
     \item{}{\code{V_segment="aquamarine"}: Character or integer scalar.
-      Fill color for annotation objects of type 'V_segment'.}
+      Fill color for annotation objects of type 'V_segment'.} 
 
-  }
+    \item{}{\code{verbose=FALSE}: Logical scalar. Report data loading
+      events from Bioamart or retrieval from cache.} 
+
+  } 
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{BiomartGeneRegionTrack} objects.
+  plotting of \code{BiomartGeneRegionTrack} objects. 
 
-    \describe{
+    \describe{ 
 
-    \item{}{\code{\linkS4class{GeneRegionTrack}}:
+    \item{}{\code{\linkS4class{GeneRegionTrack}}: 
 
-      \describe{
+      \describe{ 
+
+        \item{}{\code{arrowHeadMaxWidth=20}: Numeric scalar. The maximum
+          width of the arrow head in pixels if \code{shape} is \code{arrow}.} 
+
+        \item{}{\code{arrowHeadWidth=10}: Numeric scalar. The width of
+          the arrow head in pixels if \code{shape} is \code{fixedArrow}.} 
+
+        \item{}{\code{col=NULL}: Character or integer scalar. The border
+          color for all track items. Defaults to using the same color
+          as in \code{fill}, also taking into account different track
+          \code{features}.} 
+
+        \item{}{\code{collapseTranscripts=FALSE}: Logical or character
+          scalar. Can be one in \code{gene}, \code{longest}, \code{shortest}
+          or \code{meta}. Merge all transcripts of the same gene into
+          one single gene model. In the case of \code{gene} (or
+          \code{TRUE}), this will only keep the start location of the
+          first exon and the end location of the last exon from all
+          transcripts of the gene. For \code{shortest} and \code{longest},
+          only the longest or shortest transcript model is retained.
+          For \code{meta}, a meta-transcript containing the union of
+          all exons is formed (essentially identical to the operation
+          \code{reduce(geneModel)}).} 
+
+        \item{}{\code{exonAnnotation=NULL}: Character scalar. Add
+          annotation information to the individual exon models. This
+          can be a value in \code{symbol}, \code{gene}, \code{transcript},
+          \code{exon} or \code{feature}. Defaults to \code{exon}. Only
+          works if \code{showExonId} is not \code{FALSE}.} 
 
         \item{}{\code{fill="orange"}: Character or integer scalar. The
           fill color for untyped items. This is also used to connect
-          grouped items. See \code{\link{grouping}} for details.}
+          grouped items. See \code{\link{grouping}} for details.} 
 
-        \item{}{\code{geneSymbols=TRUE}: Logical scalar. Use human-readable
-          gene symbols or gene IDs for the transcript annotation.}
+        \item{}{\code{min.distance=0}: Numeric scalar. The minimum
+          pixel distance before collapsing range items, only if
+          \code{collapse==TRUE}. See \code{\link{collapsing}} for
+          details. Note that a value larger than 0 may lead to UTR
+          regions being merged to CDS regions, which in most cases is
+          not particularly useful.} 
 
         \item{}{\code{shape=c("smallArrow", "box")}: Character scalar.
           The shape in which to display the track items. Currently only
           \code{box}, \code{arrow}, \code{ellipse}, and \code{smallArrow}
-          are implemented.}
+          are implemented.} 
 
-        \item{}{\code{showExonId=FALSE}: Logical scalar. Control whether
-          to plot the individual exon identifiers.}
+        \item{}{\code{showExonId=NULL}: Logical scalar. Control whether
+          to plot the individual exon identifiers.} 
 
-	\item{}{\code{collapseTranscripts=FALSE}: Logical or character
-	  scalar. Can be one in \code{gene}, \code{longest}, \code{shortest}
-	  or \code{meta}. Merge all
-	  transcripts of the same gene into one single gene
-	  model. In the case of \code{gene} (or \code{TRUE}),  this will only keep the start location of the
-	  first exon and the end location of the last exon from all
-	  transcripts of the gene. For \code{shortest} and \code{longest},
-	  only the longest or shortest transcript model is retained. For
-	  \code{meta}, a meta-transcript containing the union of all exons
-	  is formed (essentially identical to the operation
-	  \code{reduce(geneModel)}).
-	}
+        \item{}{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5",
+          "3UTR", "5UTR", "miRNA", "lincRNA", "three_prime_UTR",
+          "five_prime_UTR")}: Character vector. A listing of feature
+          types that should be drawn with thin boxes. Typically those
+          are non-coding elements.} 
 
-	\item{}{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5",
-	    "miRNA", "lincRNA")}: Character vector. A listing of feature
-	  types that should be drawn with thin boxes. Typically those
-	  are non-coding elements.}
+        \item{}{\code{transcriptAnnotation=NULL} \code{(Aliases:
+          transcriptAnnotation)}: Character scalar. Add annotation
+          information as transcript labels. This can be a value in
+          \code{symbol}, \code{gene}, \code{transcript}, \code{exon}
+          or \code{feature}. Defaults to \code{symbol}. Only works if
+          \code{showId} is not \code{FALSE}.} 
 
-      }
+      } 
 
-    }
+    } 
 
-    \item{}{\code{\linkS4class{AnnotationTrack}}:
+    \item{}{\code{\linkS4class{AnnotationTrack}}: 
 
-      \describe{
+      \describe{ 
 
         \item{}{\code{cex=1}: Numeric scalar. The font expansion factor
-          for item identifiers.}
+          for item identifiers.} 
 
         \item{}{\code{cex.group=0.6}: Numeric scalar. The font expansion
-          factor for the group-level annotation.}
+          factor for the group-level annotation.} 
 
-        \item{}{\code{col="transparent"}: Character or integer scalar.
-          The border color for all track items.}
+        \item{}{\code{col.line="darkgray"}: Character scalar. The color
+          used for connecting lines between grouped items. Defaults to
+          a light gray, but if set to \code{NULL} the same color as
+          for the first item in the group is used.} 
 
-        \item{}{\code{fontcolor="white"}: Character or integer scalar.
-          The font color for item identifiers.}
+        \item{}{\code{featureAnnotation=NULL}: Character scalar. Add
+          annotation information to the individual track elements. This
+          can be a value in \code{id}, \code{group} or \code{feature}.
+          Defaults to \code{id}. Only works if \code{showFeatureId} is
+          not \code{FALSE}.} 
 
-        \item{}{\code{fontcolor.group="#808080"}: Character or integer
-          scalar. The font color for the group-level annotation.}
+        \item{}{\code{fontcolor.group="#808080"} \code{(Aliases:
+          fontcolor.group)}: Character or integer scalar. The font
+          color for the group-level annotation.} 
 
-        \item{}{\code{fontface=1}: Integer scalar. The font face for
-          item identifiers.}
+        \item{}{\code{fontcolor.item="white"} \code{(Aliases:
+          fontcolor.item)}: Character or integer scalar. The font color
+          for item identifiers.} 
 
         \item{}{\code{fontface.group=2}: Numeric scalar. The font face
-          for the group-level annotation.}
+          for the group-level annotation.} 
 
-        \item{}{\code{fontfamily="sans"}: Character scalar. The font
-          family for item identifiers.}
+        \item{}{\code{fontfamily.group="sans"}: Character scalar. The
+          font family for the group-level annotation.} 
 
-        \item{}{\code{fontsize=12}: Numeric scalar. The font size for
-          item identifiers.}
+        \item{}{\code{fontsize.group=12}: Numeric scalar. The font size
+          for the group-level annotation.} 
+
+        \item{}{\code{groupAnnotation=NULL}: Character scalar. Add
+          annotation information as group labels. This can be a value
+          in \code{id}, \code{group} or \code{feature}. Defaults to
+          \code{group}. Only works if \code{showId} is not \code{FALSE}.} 
+
+        \item{}{\code{just.group="left"} \code{(Aliases: just.group)}:
+          Character scalar. the justification of group labels. Either
+          \code{left}, \code{right}, \code{above} or \code{below}.} 
 
         \item{}{\code{lex=1}: Numeric scalar. The line expansion factor
           for all track items. This is also used to connect grouped
-          items. See \code{\link{grouping}} for details.}
+          items. See \code{\link{grouping}} for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for item identifiers.}
+          height for item identifiers.} 
 
         \item{}{\code{lty="solid"}: Character or integer scalar. The
           line type for all track items. This is also used to connect
-          grouped items. See \code{\link{grouping}} for details.}
+          grouped items. See \code{\link{grouping}} for details.} 
 
         \item{}{\code{lwd=1}: Integer scalar. The line width for all
           track items. This is also used to connect grouped items. See
-          \code{\link{grouping}} for details.}
+          \code{\link{grouping}} for details.} 
+
+        \item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
+          overlapping groups if \code{collapse==TRUE}.} 
+
+        \item{}{\code{min.height=3}: Numeric scalar. The minimum range
+          height in pixels to display. All ranges are expanded to this
+          size in order to avoid rendering issues. See \code{\link{collapsing}}
+          for details. For feathered bars indicating the strandedness
+          of grouped items this also controls the height of the arrow
+          feathers.} 
+
+        \item{}{\code{min.width=1}: Numeric scalar. The minimum range
+          width in pixels to display. All ranges are expanded to this
+          size in order to avoid rendering issues. See \code{\link{collapsing}}
+          for details.} 
 
         \item{}{\code{rotation=0}: Numeric scalar. The degree of text
-          rotation for item identifiers.}
+          rotation for item identifiers.} 
+
+        \item{}{\code{rotation.group=0}: Numeric scalar. The degree of
+          text rotation for group labels.} 
+
+        \item{}{\code{rotation.item=0}: Numeric scalar. The degree of
+          text rotation for item identifiers.} 
 
         \item{}{\code{showFeatureId=FALSE}: Logical scalar. Control
-          whether to plot the individual track item identifiers.}
+          whether to plot the individual track item identifiers.} 
 
         \item{}{\code{showId=FALSE}: Logical scalar. Control whether
-          to annotate individual groups.}
+          to annotate individual groups.} 
 
         \item{}{\code{showOverplotting=FALSE}: Logical scalar. Use a
           color gradient to show the amount of overplotting for collapsed
-          items. This implies that \code{collapse==TRUE}}
+          items. This implies that \code{collapse==TRUE}} 
 
         \item{}{\code{size=1}: Numeric scalar. The relative size of
           the track. Can be overridden in the \code{\link{plotTracks}}
-          function.}
+          function.} 
 
-	\item{}{\code{mergeGroups=FALSE}: Logical scalar. Merge fully
-	  overlapping groups if \code{collapse==TRUE}.}
+      } 
 
-      }
+    } 
 
-    }
+    \item{}{\code{\linkS4class{StackedTrack}}: 
 
-    \item{}{\code{\linkS4class{StackedTrack}}:
+      \describe{ 
 
-      \describe{
+        \item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse
+          the y-ordering of stacked items. I.e., features that are
+          plotted on the bottom-most stacks will be moved to the top-most
+          stack and vice versa.} 
 
-	\item{}{\code{reverseStacking=FALSE}: Logical flag. Reverse the
-	  y-ordering of stacked items. I.e., features that are plotted on
-	  the bottom-most stacks will be moved to the top-most stack and
-	  vice versa.}
+        \item{}{\code{stackHeight=0.75}: Numeric between 0 and 1.
+          Controls the vertical size and spacing between stacked
+          elements. The number defines the proportion of the total
+          available space for the stack that is used to draw the glyphs.
+          E.g., a value of 0.5 means that half of the available vertical
+          drawing space (for each stacking line) is used for the glyphs,
+          and thus one quarter of the available space each is used for
+          spacing above and below the glyph. Defaults to 0.75.} 
 
-	\item{}{\code{stackHeight=0.75}: Numeric between 0 and 1. Controls
-	  the vertical size and spacing between stacked elements. The number
-	  defines the proportion of the total available space for the stack
-	  that is used to draw the glyphs. E.g., a value of 0.5 means that
-	  half of the available vertical drawing space (for each stacking
-	  line) is used for the glyphs, and thus one quarter of the available
-	  space each is used for spacing above and below the glyph. Defaults
-	  to 0.75.}
+      } 
 
-      }
+    } 
 
-    }
+    \item{}{\code{\linkS4class{GdObject}}: 
 
-    \item{}{\code{\linkS4class{GdObject}}:
-
-      \describe{
+      \describe{ 
 
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
-          all track items.}
+          all track items.} 
+
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
-          character scalar. The background color of the content panel.}
+          character scalar. The background color of the content panel.} 
 
         \item{}{\code{background.title="lightgray"}: Integer or character
-          scalar. The background color for the title panels.}
-
-
-        \item{}{\code{col.border.title="transparent"}: Integer or character
-          scalar. The border color for the title panels.}
-
-        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-          width for the title panels.}
-
+          scalar. The background color for the title panel.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.}
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
           the title and the axis, if any. Defaults to \code{NULL},
           which means that the text size is automatically adjusted to
-          the available space.}
+          the available space.} 
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
-          The font and line color for the y axis, if any.}
+          The font and line color for the y axis, if any.} 
+
+        \item{}{\code{col.border.title="white"}: Integer or character
+          scalar. The border color for the title panels.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
-          \code{frame==TRUE}}
+          \code{frame==TRUE}} 
 
         \item{}{\code{col.grid="#808080"}: Integer or character scalar.
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
-
-        \item{}{\code{col.line=NULL}: Integer or character scalar.
-          Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the
-          global \code{col} parameter.}
+          global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.}
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
-        \item{}{\code{collapse=TRUE}: Boolean controlling wether to
+        \item{}{\code{collapse=TRUE}: Boolean controlling whether to
           collapse the content of the track to accomodate the minimum
           current device resolution. See \code{\link{collapsing}} for
-          details.}
+          details.} 
+
+        \item{}{\code{fontcolor="black"}: Integer or character scalar.
+          The font color for all text, unless a more specific definition
+          exists.} 
+
+        \item{}{\code{fontface=1}: Integer or character scalar. The
+          font face for all text, unless a more specific definition exists.} 
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
-          The font face for the title panels.}
+          The font face for the title panels.} 
+
+        \item{}{\code{fontfamily="sans"}: Integer or character scalar.
+          The font family for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
-          scalar. The font family for the title panels.}
+          scalar. The font family for the title panels.} 
+
+        \item{}{\code{fontsize=12}: Numeric scalar. The font size for
+          all text, unless a more specific definition exists.} 
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
-          track when plotting.}
+          track when plotting.} 
 
         \item{}{\code{grid=FALSE}: Boolean, switching on/off the plotting
-          of a grid.}
+          of a grid.} 
 
         \item{}{\code{h=-1}: Integer scalar. Parameter controlling the
           number of horizontal grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
         \item{}{\code{lty.grid="solid"}: Integer or character scalar.
           Default line type for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
+          \code{grid==TRUE}.} 
+
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
 
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
-          and when display parameter \code{grid==TRUE}.}
+          and when display parameter \code{grid==TRUE}.} 
 
-        \item{}{\code{min.distance=1}: Numeric scalar. The minimum
-          pixel distance before collapsing range items, only if
-          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.}
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
 
-        \item{}{\code{min.height=3}: Numeric scalar. The minimum range
-          height in pixels to display. All ranges are expanded to this
-          size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
 
-        \item{}{\code{min.width=1}: Numeric scalar. The minimum range
-          width in pixels to display. All ranges are expanded to this
-          size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
-          implemented).}
+          implemented).} 
 
         \item{}{\code{showTitle=TRUE}: Boolean controlling whether to
           plot a title panel. Although this can be set individually
@@ -1559,17 +1641,17 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
           placeholder in case any of the other tracks include a title.
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
-          completely hide it.}
+          completely hide it.} 
 
         \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
           number of vertical grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
-      }
+      } 
 
-    }
+    } 
 
-  }
+  } 
 
 }
 
@@ -1727,6 +1809,8 @@ tags(bmTrack)
 }
 
 \keyword{classes}
+
+
 
 
 

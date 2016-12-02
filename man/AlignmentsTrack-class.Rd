@@ -1483,6 +1483,8 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
   \code{\linkS4class{RangeTrack}}
 
+  \code{\linkS4class{SequenceTrack}}
+
   \code{\linkS4class{StackedTrack}}
 
   \code{\link{collapsing}}
@@ -1529,6 +1531,7 @@ to=44946660)
 
 }
 \keyword{classes}
+
 
 
 

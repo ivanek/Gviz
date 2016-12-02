@@ -541,13 +541,13 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
 \seealso{
 
-  \code{\linkS4class{HighlightTrack}}
-
   \code{\linkS4class{DisplayPars}}
 
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GRanges}}
+
+  \code{\linkS4class{HighlightTrack}}
 
   \code{\linkS4class{ImageMap}}
 
@@ -571,6 +571,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
 
 \keyword{classes}
+
 
 
 

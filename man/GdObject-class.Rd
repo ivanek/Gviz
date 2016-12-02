@@ -591,6 +591,8 @@
 
   \code{\link{DataTrack}}
 
+  \code{\link{grouping}}
+
   \code{\link{panel.grid}}
 
   \code{\link{plotTracks}}
@@ -600,6 +602,7 @@
 }
 
 \keyword{classes}
+
 
 
 

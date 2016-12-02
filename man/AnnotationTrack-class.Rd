@@ -1678,12 +1678,13 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 
   \code{\linkS4class{GRanges}}
 
+  \code{\linkS4class{GRangesList}}
+
   \code{\linkS4class{ImageMap}}
 
   \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
-  
 
   \code{\linkS4class{StackedTrack}}
 
@@ -1698,6 +1699,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
   \code{\link{plotTracks}}
 
   \code{\link{settings}}
+
 }
 
 \examples{
@@ -1847,6 +1849,7 @@ plotTracks(deTrack)
 
 
 \keyword{classes}
+
 
 
 

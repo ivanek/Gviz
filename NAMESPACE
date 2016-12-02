@@ -70,6 +70,12 @@ importFrom(utils, assignInNamespace, browseURL, write.table)
 
 importFrom(GenomicAlignments, extractAlignmentRangesOnReference, sequenceLayer, GAlignments, summarizeJunctions)
 
+importFrom(grDevices, "dev.cur", "dev.off")
+
+importFrom(stats, "setNames")
+
+importFrom(utils, "modifyList", "type.convert")
+
 ###
 
 export(".chrName",

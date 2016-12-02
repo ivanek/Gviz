@@ -924,7 +924,7 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
         {
             sc <- matrix(agFun(sc), ncol=1)
             rtmp  <- IRanges(start=max(1,drange[1]), end=max(1, drange[2]-1))
-            r <- if(is(r, "GRanges"))  GRanges(seqnames=seqnames(r)[1], range=rtmp) else rtmp
+            r <- if(is(r, "GRanges"))  GRanges(seqnames=seqnames(r)[1], ranges=rtmp) else rtmp
         } else if(window<1){
             if(is.null(windowSize))
                 windowSize <- (max(GdObject)-min(GdObject))/100
@@ -965,7 +965,7 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
                 scn <- matrix(scn, nrow=nrow(values(GdObject)), dimnames=list(NULL, as.character(unique(ol[,1]))))
             sc <- matrix(NA, ncol=length(ir), nrow=nrow(scn))
             sc[, as.integer(colnames(scn))] <- scn
-            r <- if(is(r, "GRanges")) GRanges(seqnames=chromosome(GdObject), range=ir,
+            r <- if(is(r, "GRanges")) GRanges(seqnames=chromosome(GdObject), ranges=ir,
                                               strand=unique(as.character(strand(GdObject)))) else ir
         }
         GdObject@range <- r
@@ -1003,7 +1003,7 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
         }
         sc <- values(GdObject)
         if(length(rr)==1){
-            r <- GRanges(seqnames=1, strand=strand(GdObject)[1], range=rr)
+            r <- GRanges(seqnames=1, strand=strand(GdObject)[1], ranges=rr)
             GdObject@range <- r
             GdObject@data <- matrix(rowMeans(sc, na.rm=TRUE), ncol=1)
         } else if(length(rr) < length(r)){
@@ -1024,7 +1024,7 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
                     sapply(vsplit, function(x) apply(matrix(x, nrow=nrow(sc), byrow=TRUE), 1, function(y) agFun(y)[1]), USE.NAMES=FALSE)
                 } else stop("display parameter 'aggregation' has to be a function or a character ", "scalar in c('mean', 'median', 'sum')")
             }
-            r <- GRanges(seqnames=seq_len(length(rr)), strand=st, range=rr)
+            r <- GRanges(seqnames=seq_len(length(rr)), strand=st, ranges=rr)
             GdObject@data <- newScore
             GdObject@range <- r
         }
@@ -1244,7 +1244,7 @@ setMethod("subset", signature(x="AlignedReadTrack"), function(x, from=NULL, to=N
         from <- min(unlist(lapply(x@coverage, function(y) if(length(y)) head(start(y)[runValue(y)!=0],1))))
         to <- max(unlist(lapply(x@coverage, function(y) if(length(y)) tail(end(y),2)[1])))
         }
-        x@range <- GRanges(range=IRanges(start=from, end=to), strand=names(x@coverage), seqnames=x@chromosome)
+        x@range <- GRanges(ranges=IRanges(start=from, end=to), strand=names(x@coverage), seqnames=x@chromosome)
     }else{
         x <- callNextMethod(x=x, from=from, to=to, sort=sort, stacks=stacks)
     }
@@ -4203,7 +4203,7 @@ setMethod(".buildRange", signature("IRanges"),
                   return(range)
               if(missing(chromosome) || is.null(chromosome))
                   stop("Unable to find chromosome information in any of the arguments")
-              range <- GRanges(seqnames=.chrName(chromosome), range=range, strand=if(!is.null(args$strand)) args$strand else "*")
+              range <- GRanges(seqnames=.chrName(chromosome), ranges=range, strand=if(!is.null(args$strand)) args$strand else "*")
               if(length(range))
               {
                   vals <- .fillWithDefaults(defaults=defaults, args=args, len=(length(range)), by=NULL, ignore="strand")

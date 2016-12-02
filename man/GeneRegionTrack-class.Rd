@@ -1462,7 +1462,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
     \item{}{\code{min.distance=0}: Numeric scalar. The minimum pixel
       distance before collapsing range items, only if
-      \\code{collapse==TRUE}. See \\code{\\link{collapsing}} for
+      \code{collapse==TRUE}. See \code{\link{collapsing}} for
       details. Note that a value larger than 0 may lead to UTR regions
       being merged to CDS regions, which in most cases is not particularly
       useful.}
@@ -1748,6 +1748,8 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
   \code{\linkS4class{StackedTrack}}
 
+  \code{\linkS4class{TxDb}}
+
   \code{\link{collapsing}}
 
   \code{\link{DataTrack}}
@@ -1886,6 +1888,7 @@ tags(grTrack)
 }
 
 \keyword{classes}
+
 
 
 
