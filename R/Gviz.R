@@ -2595,14 +2595,17 @@ availableDefaultMapping <- function(file, trackType){
 ## Create list for drawing sashimi-like plots
 ## using summarizeJunctions on GAlignments
 ## plotting is done via grid.xspline (requires x, y, id, score)
-.sashimi.junctions <- function(range, score=1L, lwd.max=10, strand="*", filter=NULL, filterTolerance=0L) {
-    ## summarizeJunctions
+.create.summarizedJunctions.for.sashimi.junctions <- function(range) {
     range <- sort(range)
     range <- range[!duplicated(range$entityId)]
     ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar,
                       strand=if(is.null(range$readStrand)) strand(range) else range$readStrand,
                       seqlengths=seqlengths(range))
     juns <- summarizeJunctions(ga)
+    juns
+}
+
+.convert.summarizedJunctions.to.sashimi.junctions <- function(juns, score=1L, lwd.max=10, strand="*", filter=NULL, filterTolerance=0L) {
     ## filter junctions
     if (!is.null(filter)) {
         ## if filterTolerance is > 0 than pass it as maxgap parameter in findOverlaps

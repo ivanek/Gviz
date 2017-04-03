@@ -2032,9 +2032,23 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             sashFilter <- .dpOrDefault(GdObject, "sashimiFilter", NULL)
             sashFilterTolerance <- .dpOrDefault(GdObject, "sashimiFilterTolerance", 0L)
             sashNumbers <- .dpOrDefault(GdObject, "sashimiNumbers", FALSE)
-            displayPars(GdObject) <- list(".__sashimi"=.sashimi.junctions(ranges(GdObject), score=sashScore,
-                                              lwd.max=sashLwdMax, strand=sashStrand, filter=sashFilter,
-                                              filterTolerance=sashFilterTolerance),
+            sash <- .dpOrDefault(GdObject, "sashimiJunctions", NULL)
+            if (is.null(sash)) {
+                sash <- .create.summarizedJunctions.for.sashimi.junctions(ranges(GdObject))
+            } else {
+                if (class(sash)!="GRanges")
+                    stop("\"sashimiJunctions\" object must be of \"GRanges\" class!")
+                sashMcolName <- if (sashStrand=="+") "plus_score" else if (sashStrand=="-") "minus_score" else "score"
+                if (sum(colnames(mcols(sash))==sashMcolName) != 1)
+                    stop(sprintf("\"mcols\" of \"sashimiJunctions\" object must contain column named \"%s\",\n which matches the specified (%s) \"sashimiStrand\"!", sashMcolName, sashStrand))
+            }
+            sash <- .convert.summarizedJunctions.to.sashimi.junctions(juns=sash,
+                                                                      score=sashScore,
+                                                                      lwd.max=sashLwdMax,
+                                                                      strand=sashStrand,
+                                                                      filter=sashFilter,
+                                                                      filterTolerance=sashFilterTolerance)
+            displayPars(GdObject) <- list(".__sashimi"=sash,
                                           ".__sashimiHeight"=sashHeight,
                                           ".__sashimiSpace"=sashSpace,
                                           ".__sashimiNumbers"=sashNumbers)
