@@ -4245,9 +4245,9 @@ setMethod(".buildRange", signature("TxDb"),
                   ## restore the old values after we are done
                   oldAct <- seqlevels(range)
                   oldRange <- range
-                  on.exit({restoreSeqlevels(oldRange); seqlevels(oldRange, force=TRUE) <- oldAct})
+                  on.exit({restoreSeqlevels(oldRange); seqlevels(oldRange, pruning.mode="coarse") <- oldAct})
                   restoreSeqlevels(range)
-                  seqlevels(range, force=TRUE) <- chromosome
+                  seqlevels(range, pruning.mode="coarse") <- chromosome
                   sl <- seqlengths(range)
                   if(is.null(tstart))
                       tstart <- rep(1, length(chromosome))
