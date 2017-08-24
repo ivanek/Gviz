@@ -29,6 +29,7 @@ BiocStyle::latex()
 \newcommand{\mgg}[0]{\Rpackage{Gviz} }
 \newcommand{\Reference}[1]{{\texttt{#1}}}
 \newcommand{\link}[1]{{#1}}
+\soulregister{\link}{1}% necessary for compatibility with LaTeX soul package used by BiocStyle for inline code highlighting
 \newcommand{\RR}[0]{{\texttt{R}}}
 
 \title{The Gviz User Guide}
