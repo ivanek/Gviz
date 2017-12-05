@@ -2241,11 +2241,15 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             rmap <- GdObject@stackRanges[as.character(seqnames(pairGaps))]
             pairGaps <- pairGaps[start(rmap) <= start(pairGaps) & end(rmap) >= end(pairGaps)]
             gy <- readInfo$stack[match(as.character(seqnames(pairGaps)), readInfo$groupid)]
-            pairsCoords <- data.frame(x1=start(pairGaps)-1, y1=gy, x2=end(pairGaps)+1, y2=gy,
-                                      col=.dpOrDefault(GdObject, c("col.mates", "col"), .DEFAULT_BRIGHT_SHADED_COL),
-                                      lwd=.dpOrDefault(GdObject, c("lwd.mates", "lwd"), 1),
-                                      lty=.dpOrDefault(GdObject, c("lty.mates", "lty"), 1),
-                                      alpha=.alpha(GdObject, "mates"), stringsAsFactors=FALSE)
+            if (length(pairGaps)) {
+              pairsCoords <- data.frame(x1=start(pairGaps)-1, y1=gy, x2=end(pairGaps)+1, y2=gy,
+                                        col=.dpOrDefault(GdObject, c("col.mates", "col"), .DEFAULT_BRIGHT_SHADED_COL),
+                                        lwd=.dpOrDefault(GdObject, c("lwd.mates", "lwd"), 1),
+                                        lty=.dpOrDefault(GdObject, c("lty.mates", "lty"), 1),
+                                        alpha=.alpha(GdObject, "mates"), stringsAsFactors=FALSE)
+            } else {
+              pairsCoords <- NULL
+            }
             lineCoords <- rbind(lineCoords, pairsCoords[!duplicated(pairsCoords), ])
         }
         ## The mismatch information on the reads if needed
