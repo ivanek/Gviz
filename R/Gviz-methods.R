@@ -2544,14 +2544,14 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     }
     ## The direction indicators
     rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
-    p3 <- expression("5'")
-    p5 <- expression("3'")
+    p5 <- expression("5'")
+    p3 <- expression("3'")
     if(add53)
     {
-        grid.text(label=p3, x=min(axRange)-textXOff, y=pyOff,
+        grid.text(label=p5, x=min(axRange)-textXOff, y=pyOff,
                   just=c(ifelse(rev, "left", "right"), "bottom"), gp=gpar(cex=cex*.75, fontface=fontface),
                   default.units="native")
-        grid.text(label=p5, x=max(axRange)+textXOff, y=pyOff,
+        grid.text(label=p3, x=max(axRange)+textXOff, y=pyOff,
                   just=c(ifelse(rev, "right", "left"), "bottom"), gp=gpar(cex=cex*.75, fontface=fontface),
                   default.units="native")
     }
