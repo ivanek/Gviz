@@ -5,7 +5,7 @@
 \alias{GenomeAxisTrack}
 \alias{[,GenomeAxisTrack-method}
 \alias{[,GenomeAxisTrack,ANY,ANY-method}
-\alias{[,GenomeAxisTrack,ANY,AN,ANY-method}
+\alias{[,GenomeAxisTrack,ANY,ANY,ANY-method}
 \alias{collapseTrack,GenomeAxisTrack-method}
 \alias{drawGD,GenomeAxisTrack-method}
 \alias{end,GenomeAxisTrack-method}

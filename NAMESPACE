@@ -23,7 +23,7 @@ importMethodsFrom(AnnotationDbi, colnames, get, ls, mget, tail)
 
 importMethodsFrom(BSgenome, providerVersion)
 
-importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", exonsBy, transcriptsBy, transcripts)
+importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", cdsBy, exonsBy, fiveUTRsByTranscript, threeUTRsByTranscript, transcriptsBy, transcripts)
 
 importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
                   ucscTableQuery, trackNames, tableNames, import, import.gff,
@@ -90,6 +90,7 @@ export(".chrName",
        "DisplayPars",
        "SequenceTrack",
        "OverlayTrack",
+       "drawAxis",
        "drawGD",
        "GeneRegionTrack",
        "GenomeAxisTrack",
