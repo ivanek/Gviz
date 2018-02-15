@@ -6,6 +6,7 @@
 \alias{displayPars,GdObject,character-method}
 \alias{displayPars,GdObject,missing-method}
 \alias{displayPars<-,GdObject,list-method}
+\alias{drawAxis}
 \alias{drawAxis,GdObject-method}
 \alias{drawGrid,GdObject-method}
 \alias{subset,GdObject-method}
