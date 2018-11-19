@@ -3134,9 +3134,10 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         y <- y[!sel]
         groups <- groups[!sel]
     }
-    plot_args[["x"]] <- x;
-    plot_args[["y"]] <- y;
-    plot_args[["subscripts"]]   <- seq_along(x);
+    plot_args[["x"]] <- x
+    plot_args[["y"]] <- y
+    plot_args[["groups"]] <- groups
+    plot_args[["subscripts"]] <- seq_along(x)
 
     ## confidence interval bands
     if ("confint" %in% type) {
