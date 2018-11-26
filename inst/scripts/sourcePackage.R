@@ -7,8 +7,11 @@ library(lattice)
 library(biomaRt)
 library(RColorBrewer)
 library(Biobase)
-library(grid)
 library(AnnotationDbi)
+library(biovizBase)
+library(Biostrings)
+library(Rsamtools)
+library(GenomicAlignments)
 
 ## options(error=recover)
 removeAndSource <- function(file, remove=FALSE){
