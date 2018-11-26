@@ -2116,7 +2116,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
         grid.lines(y=c(0, 0), gp=gpar(col=gp$col, alpha=gp$alpha))
         if(!is.null(mm)){
             fcol <- .dpOrDefault(GdObject@referenceSequence, "fontcolor", getBioColor("DNA_BASES_N"))
-            vpos <- tapply(as.character(mm$base), mm$position, table, simplify=FALSE)
+            vpos <- tapply(as.character(mm$base[mm$base!="."]), mm$position[mm$base!="."], table, simplify=FALSE)
             x <- rep(as.integer(names(vpos)), listLen(vpos))
             y <- unlist(lapply(vpos, cumsum), use.names=FALSE)
             col <- fcol[unlist(lapply(vpos, names), use.names=FALSE)]
