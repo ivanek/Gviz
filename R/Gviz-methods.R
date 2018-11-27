@@ -2847,6 +2847,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                      row <- (((i)-1) %/% dims[2])+1
                      col <- (((i)-1) %% dims[2])+1
                      pushViewport(viewport(width=1/dims[2], height=1/dims[1], x=(1/dims[2])*(col-1), y=1-((1/dims[1])*(row-1)), just=c(0,1)))
+                     grid.rect(gp=gpar(col="transparent", fill=.dpOrDefault(GdObject, "background.legend", "transparent")))
                      if(length(setdiff(legFactors, c("col")))==0){
                          grid.rect(width=unit(boxSize, "inches"), height=unit(boxSize, "inches"), x=0, just=c(0, 0.5),
                                    gp=gpar(fill=pcols$col[i], col=.DEFAULT_SHADED_COL))

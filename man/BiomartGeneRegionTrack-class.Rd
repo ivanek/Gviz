@@ -1307,11 +1307,11 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
     \item{}{\code{tRNA_pseudogene="antiquewhite3"}: Character or integer
       scalar. Fill color for annotation objects of type 'tRNA_pseudogene'.} 
 
-    \item{}{\code{utr3="#FFD58A"}: FIXME: PLEASE ADD PARAMETER
-      DESCRIPTION.} 
+    \item{}{\code{utr3="#FFD58A"}: Character or integer scalar. Fill
+      color for annotation objects of type 'utr3'.} 
 
-    \item{}{\code{utr5="#FFD58A"}: FIXME: PLEASE ADD PARAMETER
-      DESCRIPTION.} 
+    \item{}{\code{utr5="#FFD58A"}: Character or integer scalar. Fill
+      color for annotation objects of type 'utr5'.} 
 
     \item{}{\code{V_segment="aquamarine"}: Character or integer scalar.
       Fill color for annotation objects of type 'V_segment'.} 
@@ -1531,6 +1531,9 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
         \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
           for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
@@ -1809,6 +1812,8 @@ tags(bmTrack)
 }
 
 \keyword{classes}
+
+
 
 
 

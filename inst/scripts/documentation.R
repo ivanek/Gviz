@@ -513,6 +513,7 @@ details <- list(
                            alpha.title="Numeric scalar. The transparency for the title panel.",
                            background.panel="Integer or character scalar. The background color of the content panel.",
                            background.title="Integer or character scalar. The background color for the title panel.",
+                           background.legend="Integer or character scalar. The background color for the legend.",
                            cex.axis="Numeric scalar. The expansion factor for the axis annotation. Defaults to \\code{NULL}, in which case it is automatically determined based on the available space.",
                            cex.title="Numeric scalar. The expansion factor for the title panel. This effects the fontsize of both the title and the axis, if any. Defaults to \\code{NULL}, which means that the text size is automatically adjusted to the available space.",
                            cex="Numeric scalar. The overall font expansion factor for all text and glyphs, unless a more specific definition exists.",

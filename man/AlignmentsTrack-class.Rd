@@ -1151,12 +1151,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     \item{}{\code{col.coverage=NULL}: Integer or character scalar. The
       line color for the coverage profile.} 
 
-    \item{}{\code{col.gap="#808080"}: Integer or character scalar. The
-      color of the line that is bridging the gap regions in gapped
-      alignments.} 
+    \item{}{\code{col.gap="#808080"} \code{(Aliases: col.gap)}: Integer
+      or character scalar. The color of the line that is bridging the
+      gap regions in gapped alignments.} 
 
-    \item{}{\code{col.mates="#E0E0E0"}: Integer or character scalar.
-      The color of the line that is connecting two paired reads.} 
+    \item{}{\code{col.mates="#E0E0E0"} \code{(Aliases: col.mate)}:
+      Integer or character scalar. The color of the line that is
+      connecting two paired reads.} 
 
     \item{}{\code{col.mismatch="#808080"}: Integer or character scalar.
       The box color around mismatch bases.} 
@@ -1193,11 +1194,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     \item{}{\code{lty.coverage=NULL}: Integer or character scalar. The
       line type of the coverage profile.} 
 
-    \item{}{\code{lty.gap=NULL}: Integer or character scalar. The type
-      of the line that is bridging the gap regions in gapped alignments.} 
+    \item{}{\code{lty.gap=NULL} \code{(Aliases: lty.gap)}: Integer or
+      character scalar. The type of the line that is bridging the gap
+      regions in gapped alignments.} 
 
-    \item{}{\code{lty.mates=NULL}: Integer or character scalar. The
-      type of the line that is connecting two paired reads.} 
+    \item{}{\code{lty.mates=NULL} \code{(Aliases: lty.mate)}: Integer
+      or character scalar. The type of the line that is connecting two
+      paired reads.} 
 
     \item{}{\code{lty.mismatch=NULL}: Integer or character scalar. The
       box line type around mismatch bases.} 
@@ -1211,11 +1214,12 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     \item{}{\code{lwd.coverage=NULL}: Integer or character scalar. The
       line width of the coverage profile.} 
 
-    \item{}{\code{lwd.gap=NULL}: Integer scalar. The width of the line
-      that is bridging the gap regions in gapped alignments.} 
+    \item{}{\code{lwd.gap=NULL} \code{(Aliases: lwd.gap)}: Integer
+      scalar. The width of the line that is bridging the gap regions
+      in gapped alignments.} 
 
-    \item{}{\code{lwd.mates=NULL}: Integer scalar. The width of the
-      line that is connecting two paired reads.} 
+    \item{}{\code{lwd.mates=NULL} \code{(Aliases: lwd.mate)}: Integer
+      scalar. The width of the line that is connecting two paired reads.} 
 
     \item{}{\code{lwd.mismatch=NULL}: Integer scalar. The box line
       width around mismatch bases.} 
@@ -1324,8 +1328,11 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
           all track items.} 
 
-        \item{}{\code{alpha.title=NULL}: FIXME: PLEASE ADD PARAMETER
-          DESCRIPTION.} 
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
@@ -1347,8 +1354,8 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
         \item{}{\code{col.axis="white"}: Integer or character scalar.
           The font and line color for the y axis, if any.} 
 
-        \item{}{\code{col.border.title="white"}: FIXME: PLEASE ADD
-          PARAMETER DESCRIPTION.} 
+        \item{}{\code{col.border.title="white"}: Integer or character
+          scalar. The border color for the title panels.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
@@ -1367,8 +1374,8 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
           Default colors for plot symbols. Usually the same as the
           global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The border color for the title panels} 
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
         \item{}{\code{fontcolor="black"}: Integer or character scalar.
           The font color for all text, unless a more specific definition
@@ -1408,6 +1415,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
           in \code{\link{DataTrack}}s and when display parameter
           \code{grid==TRUE}.} 
 
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
+
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
           and when display parameter \code{grid==TRUE}.} 
@@ -1429,12 +1439,12 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
           This will effectively mirror the plot on the vertical axis.} 
 
         \item{}{\code{rotation=0}: The rotation angle for all text
-          unless a more specific definiton exists} 
+          unless a more specific definiton exists.} 
 
-        \item{}{\code{rotation.title=90}: The rotation angle for the
-          text in the title panel. Even though this can be adjusted,
-          the automatic resizing of the title panel will currently not
-          work, so use at own risk.} 
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
@@ -1531,6 +1541,8 @@ to=44946660)
 
 }
 \keyword{classes}
+
+
 
 
 

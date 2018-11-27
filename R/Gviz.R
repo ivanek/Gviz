@@ -948,6 +948,7 @@
                                             alpha=1,
                                             background.panel="transparent",
                                             background.title="lightgray",
+                                            background.legend="transparent",
                                             cex.axis=NULL,
                                             cex.title=NULL,
                                             cex=1,
