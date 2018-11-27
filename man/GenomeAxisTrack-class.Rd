@@ -628,234 +628,237 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 }
 
 
-\section{Display Parameters}{
+\section{Display Parameters}{ 
 
   The following display parameters are set for objects of class
   \code{GenomeAxisTrack} upon instantiation, unless one or more of them
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   \code{\link{settings}} for details on setting graphical parameters
-  for tracks. \describe{
+  for tracks. \describe{ 
 
     \item{}{\code{add35=FALSE}: Logical scalar. Add 3' to 5' direction
-      indicators.}
+      indicators.} 
 
     \item{}{\code{add53=FALSE}: Logical scalar. Add 5' to 3' direction
-      indicators.}
+      indicators.} 
 
     \item{}{\code{background.title="transparent"}: Character scalar.
       The background color for the title panel. Defaults to omit the
-      background.}
+      background.} 
 
     \item{}{\code{cex=0.8}: Numeric scalar. The overall font expansion
-      factor for the axis annotation text.}
+      factor for the axis annotation text.} 
 
     \item{}{\code{cex.id=0.7}: Numeric scalar. The text size for the
-      optional range annotation.}
+      optional range annotation.} 
 
     \item{}{\code{col="darkgray"}: Character scalar. The color for the
-      axis lines and tickmarks.}
+      axis lines and tickmarks.} 
 
     \item{}{\code{col.border.title="transparent"}: Integer or character
-      scalar. The border color for the title panels.}
+      scalar. The border color for the title panels.} 
 
     \item{}{\code{col.id="white"}: Character scalar. The text color
-      for the optional range annotation.}
+      for the optional range annotation.} 
 
     \item{}{\code{col.range="cornsilk4"}: Character scalar. The border
-      color for highlighted regions on the axis.}
+      color for highlighted regions on the axis.} 
 
     \item{}{\code{distFromAxis=1}: Numeric scalar. Control the distance
-      of the axis annotation from the tick marks.}
+      of the axis annotation from the tick marks.} 
 
     \item{}{\code{exponent=NULL}: Numeric scalar. The exponent for the
       axis coordinates, e.g., 3 means mb, 6 means gb, etc. The default
-      is to automatically determine the optimal exponent.}
+      is to automatically determine the optimal exponent.} 
 
     \item{}{\code{fill.range="cornsilk3"}: Character scalar. The fill
-      color for highlighted regions on the axis.}
+      color for highlighted regions on the axis.} 
 
     \item{}{\code{fontcolor="#808080"}: Character scalar. The font
-      color for the axis annotation text.}
+      color for the axis annotation text.} 
 
     \item{}{\code{fontsize=10}: Numeric scalar. Font size for the axis
-      annotation text in points.}
+      annotation text in points.} 
 
     \item{}{\code{labelPos="alternating"}: Character vector, one in
       "alternating", "revAlternating", "above" or "below". The vertical
       positioning of the axis labels. If \code{scale} is not \code{NULL},
-      the possible values are "above", "below" and "beside".}
+      the possible values are "above", "below" and "beside".} 
 
     \item{}{\code{littleTicks=FALSE}: Logical scalar. Add more fine-grained
-      tick marks.}
+      tick marks.} 
 
     \item{}{\code{lwd=2}: Numeric scalar. The line width for the axis
-      elementes.}
+      elementes.} 
 
     \item{}{\code{lwd.border.title=1}: Integer scalar. The border width
-      for the title panels.}
+      for the title panels.} 
 
     \item{}{\code{scale=NULL}: Numeric scalar. If not \code{NULL} a
       small scale is drawn instead of the full axis, if the value is
       between 0 and 1 it is interpreted as a fraction of the current
       plotting region, otherwise as an absolute length value in genomic
-      coordinates.}
+      coordinates.} 
 
     \item{}{\code{showId=FALSE}: Logical scalar. Show the optional
-      range highlighting annotation.}
+      range highlighting annotation.} 
 
     \item{}{\code{showTitle=FALSE}: Logical scalar. Plot a title panel.
-      Defaults to omit the title panel.}
+      Defaults to omit the title panel.} 
 
     \item{}{\code{size=NULL}: Numeric scalar. The relative size of the
       track. Can be overridden in the \code{\link{plotTracks}} function.
-      Defaults to the ideal size based on the other track settings.}
+      Defaults to the ideal size based on the other track settings.} 
 
-  }
+  } 
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
-  plotting of \code{GenomeAxisTrack} objects.
+  plotting of \code{GenomeAxisTrack} objects. 
 
-    \describe{
+    \describe{ 
 
-    \item{}{\code{\linkS4class{GdObject}}:
+    \item{}{\code{\linkS4class{GdObject}}: 
 
-      \describe{
+      \describe{ 
 
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
-          all track items.}
+          all track items.} 
 
         \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
-          for the title panel.}
+          for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
-          character scalar. The background color of the content panel.}
+          character scalar. The background color of the content panel.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
           which case it is automatically determined based on the
-          available space.}
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
           the title and the axis, if any. Defaults to \code{NULL},
           which means that the text size is automatically adjusted to
-          the available space.}
+          the available space.} 
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
-          The font and line color for the y axis, if any.}
+          The font and line color for the y axis, if any.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
-          \code{frame==TRUE}}
+          \code{frame==TRUE}} 
 
         \item{}{\code{col.grid="#808080"}: Integer or character scalar.
           Default line color for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{col.line=NULL}: Integer or character scalar.
           Default colors for plot lines. Usually the same as the global
-          \code{col} parameter.}
+          \code{col} parameter.} 
 
         \item{}{\code{col.symbol=NULL}: Integer or character scalar.
           Default colors for plot symbols. Usually the same as the
-          global \code{col} parameter.}
+          global \code{col} parameter.} 
 
         \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
-          Integer or character scalar. The border color for the title panels}
+          Integer or character scalar. The border color for the title panels} 
 
         \item{}{\code{collapse=TRUE}: Boolean controlling whether to
           collapse the content of the track to accomodate the minimum
           current device resolution. See \code{\link{collapsing}} for
-          details.}
+          details.} 
 
         \item{}{\code{fill="lightgray"}: Integer or character scalar.
           Default fill color setting for all plotting elements, unless
-          there is a more specific control defined elsewhere.}
+          there is a more specific control defined elsewhere.} 
 
         \item{}{\code{fontface=1}: Integer or character scalar. The
-          font face for all text, unless a more specific definition exists.}
+          font face for all text, unless a more specific definition exists.} 
 
         \item{}{\code{fontface.title=2}: Integer or character scalar.
-          The font face for the title panels.}
+          The font face for the title panels.} 
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
           The font family for all text, unless a more specific definition
-          exists.}
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
-          scalar. The font family for the title panels.}
+          scalar. The font family for the title panels.} 
 
         \item{}{\code{frame=FALSE}: Boolean. Draw a frame around the
-          track when plotting.}
+          track when plotting.} 
 
         \item{}{\code{grid=FALSE}: Boolean, switching on/off the plotting
-          of a grid.}
+          of a grid.} 
 
         \item{}{\code{h=-1}: Integer scalar. Parameter controlling the
           number of horizontal grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text, unless a more specific definition exists.}
+          height for all text, unless a more specific definition exists.} 
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
-          specific control defined elsewhere.}
+          specific control defined elsewhere.} 
 
         \item{}{\code{lty.grid="solid"}: Integer or character scalar.
           Default line type for grid lines, both when \code{type=="g"}
           in \code{\link{DataTrack}}s and when display parameter
-          \code{grid==TRUE}.}
+          \code{grid==TRUE}.} 
 
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
-          and when display parameter \code{grid==TRUE}.}
+          and when display parameter \code{grid==TRUE}.} 
 
         \item{}{\code{lwd.title=1}: Integer scalar. The border width
-          for the title panels}
+          for the title panels} 
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
-          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.}
+          \code{collapse==TRUE}. See \code{\link{collapsing}} for details.} 
 
         \item{}{\code{min.height=3}: Numeric scalar. The minimum range
           height in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+          for details.} 
 
         \item{}{\code{min.width=1}: Numeric scalar. The minimum range
           width in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
-          for details.}
+          for details.} 
 
         \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
           plotting coordinates in 3' -> 5' direction if \code{TRUE}.
-          This will effectively mirror the plot on the vertical axis.}
+          This will effectively mirror the plot on the vertical axis.} 
 
         \item{}{\code{rotation=0}: The rotation angle for all text
-          unless a more specific definiton exists.}
+          unless a more specific definiton exists.} 
 
         \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
           The rotation angle for the text in the title panel. Even
           though this can be adjusted, the automatic resizing of the
-          title panel will currently not work, so use at own risk.}
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
-          implemented).}
+          implemented).} 
 
         \item{}{\code{v=-1}: Integer scalar. Parameter controlling the
           number of vertical grid lines, see \code{\link{panel.grid}}
-          for details.}
+          for details.} 
 
-      }
+      } 
 
-    }
+    } 
 
-  }
+  } 
 
 }
 
@@ -961,6 +964,8 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale=0.5, labelPos="below")))
 }
 
 \keyword{classes}
+
+
 
 
 
