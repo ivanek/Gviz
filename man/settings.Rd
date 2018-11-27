@@ -216,6 +216,9 @@ getScheme(name=getOption("Gviz.scheme"))
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
 
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
+
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
           which case it is automatically determined based on the
@@ -626,6 +629,9 @@ getScheme(name=getOption("Gviz.scheme"))
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panel.} 
 
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
+
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
           which case it is automatically determined based on the
@@ -843,6 +849,9 @@ getScheme(name=getOption("Gviz.scheme"))
 
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
@@ -1105,6 +1114,9 @@ getScheme(name=getOption("Gviz.scheme"))
 
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
@@ -1425,6 +1437,9 @@ getScheme(name=getOption("Gviz.scheme"))
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panel.} 
 
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
+
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
           which case it is automatically determined based on the
@@ -1620,11 +1635,11 @@ getScheme(name=getOption("Gviz.scheme"))
           integer scalar. Fill color for annotation objects of type
           'tRNA_pseudogene'.} 
 
-        \item{}{\code{utr3="#FFD58A"}: FIXME: PLEASE ADD PARAMETER
-          DESCRIPTION.} 
+        \item{}{\code{utr3="#FFD58A"}: Character or integer scalar.
+          Fill color for annotation objects of type 'utr3'.} 
 
-        \item{}{\code{utr5="#FFD58A"}: FIXME: PLEASE ADD PARAMETER
-          DESCRIPTION.} 
+        \item{}{\code{utr5="#FFD58A"}: Character or integer scalar.
+          Fill color for annotation objects of type 'utr5'.} 
 
         \item{}{\code{verbose=FALSE}: Logical scalar. Report data
           loading events from Bioamart or retrieval from cache.} 
@@ -1833,6 +1848,9 @@ getScheme(name=getOption("Gviz.scheme"))
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panel.} 
 
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
+
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
           which case it is automatically determined based on the
@@ -2011,6 +2029,9 @@ getScheme(name=getOption("Gviz.scheme"))
 
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
@@ -2199,6 +2220,8 @@ getScheme(name=getOption("Gviz.scheme"))
   \code{\link{plotTracks}}
 
 }
+
+
 
 
 

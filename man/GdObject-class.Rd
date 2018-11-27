@@ -410,6 +410,9 @@
     \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
       for the title panel.} 
 
+    \item{}{\code{background.legend="transparent"}: Integer or character
+      scalar. The background color for the legend.} 
+
     \item{}{\code{background.panel="transparent"}: Integer or character
       scalar. The background color of the content panel.} 
 
@@ -603,6 +606,8 @@
 }
 
 \keyword{classes}
+
+
 
 
 
