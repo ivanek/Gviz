@@ -6,7 +6,7 @@
 
 | Travis CI | Bioc ([devel](http://bioconductor.org/packages/devel/bioc/html/Gviz.html)) | Bioc ([release](http://bioconductor.org/packages/release/bioc/html/Gviz.html)) | Coverage |
 |:---------:|:--------------:|:----------------:|:--------:|
-| [![Travis CI status](https://travis-ci.org/ivanek/Gviz.svg?branch=master)](https://travis-ci.org/ivanek/Gviz) | [![Bioconductor-devel Build Status](http://bioconductor.org/shields/build/devel/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Bioconductor-release Build Status](http://bioconductor.org/shields/build/release/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) |          |
+| [![Travis CI status](https://travis-ci.org/ivanek/Gviz.svg?branch=master)](https://travis-ci.org/ivanek/Gviz) | [![Bioconductor-devel Build Status](http://bioconductor.org/shields/build/devel/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Bioconductor-release Build Status](http://bioconductor.org/shields/build/release/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Codecov.io coverage status](https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master)](https://codecov.io/github/ivanek/Gviz) |
 
 ## Authors
 
