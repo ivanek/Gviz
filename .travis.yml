@@ -1,25 +1,16 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
-r: bioc-devel
+r: bioc-release
 
 cache: packages
 warnings_are_errors: false
 
 before_install:
   - tlmgr install bera nowidow parnotes marginfix etoolbox titlesec sectsty framed enumitem parskip soul placeins footmisc changepage xstring caption mathtools 
-# - Rscript -e 'install.packages("devtools")'
-# - Rscript -e 'devtools::install(dependencies=TRUE)'
 
 r_build_args: "--no-manual --no-resave-data"
 r_check_args: "--no-build-vignettes --no-manual --timings"
-
-# r_packages:
-# - covr
-# - BiocManager
-
-# after_success:
-# - Rscript -e 'library(covr); codecov()'
 
 notifications:
   slack:
