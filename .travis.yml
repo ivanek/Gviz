@@ -1,0 +1,25 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: r
+r: bioc-devel
+
+cache: packages
+warnings_are_errors: false
+
+# before_install:
+# - Rscript -e 'install.packages("devtools")'
+# - Rscript -e 'devtools::install(dependencies=TRUE)'
+
+r_build_args: "--no-manual --no-resave-data"
+r_check_args: "--no-build-vignettes --no-manual --timings"
+
+# r_packages:
+# - covr
+# - BiocManager
+
+# after_success:
+# - Rscript -e 'library(covr); codecov()'
+
+notifications:
+  slack:
+    secure: AWaLtA3aEi9Btmvrr5EsG9xhbIXLDuba+1aKqNZkuRTENa5oeFirIUWtTM8QHzdomIjCWAzTsrnYkgfRba71V+QOaRZeQAxxPsei7l40p7rdM/r4Z9CuqjrKe7gWCtQL75oGYNEx/H6xF5MSwfk8m2pRbQuzuDetlykmM8ssaUpWGPOSWafIPmTF2vLL+tJAUVG+BFU0DZT4CJra1oiQbl00tpMioy2cPjZPmy8uyGu8qnf8xegbZ9/o+DPwpGSttf+hWhW0I1ifdW3sAYT/Dzqyibnn9jJuNYyt95e8lSNz2MhtWpMXplfdNSZcA4vvYLVbXxQRw6FRXiQ4rTL2sQzO54Rh/OBykUIEKKFujLIJMddWF7bw6OHKjoqXtIG7kH5wWQ731fA6TGkP7ETssOVFvqdG1XjldGC1jRJib9fn8+aI+O7TyeXUrcmIGkl440wcOgTXZ/SpCbSPygZ/i4XE6uHmfeaeMeI6JI7U7Wq0cd8FCyrkj/+mLckNNUHGkBCyifOrUr+JWZzV1/02e36yuVe1LtlAex+NBCom+mP6dpTgOK6o2CkJnTnr3ueEgp6zu9hapEJnBTAoBwgcSmTKrkqgI/9HKcWQyoT/RfucayQTNngZ2G+LlsFGSt/cmPnu1WGaXJbQnygEF1n/LiW8yvTnW6ijjvuVHB8O+3s=
