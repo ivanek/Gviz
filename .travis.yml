@@ -6,7 +6,8 @@ r: bioc-devel
 cache: packages
 warnings_are_errors: false
 
-# before_install:
+before_install:
+  - tlmgr install bera nowidow parnotes marginfix etoolbox titlesec sectsty framed enumitem parskip soul placeins footmisc changepage xstring caption mathtools 
 # - Rscript -e 'install.packages("devtools")'
 # - Rscript -e 'devtools::install(dependencies=TRUE)'
 
