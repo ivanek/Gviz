@@ -3,5 +3,5 @@
 ^.Rbuildignore$
 ^.gitignore$
 ^.travis.yml$
-^codecov\.yml$
+^\.codecov\.yml$
 ^Dockerfile$
