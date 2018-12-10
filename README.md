@@ -1,4 +1,4 @@
-<img src="vignettes/Gviz.png" align="right" alt="" width="120" />
+<img src="vignettes/Gviz-logo.png" align="right" alt="" width="120" />
 
 # _Gviz_ - Plotting data and annotation information along genomic coordinates
 
