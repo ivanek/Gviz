@@ -21,7 +21,7 @@
 
 ## Overview
 
-Genomic data analyses requires integrated visualization of known genomic information and new experimental data. Gviz uses the `biomaRt` and the `rtracklayer` packages to perform live annotation queries to Ensembl and UCSC and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.
+Genomic data analyses requires integrated visualization of known genomic information and new experimental data. Gviz uses the [biomaRt](http://bioconductor.org/packages/biomaRt/) and the [rtracklayer](http://bioconductor.org/packages/rtracklayer/) packages to perform live annotation queries to [Ensembl](https://www.ensembl.org/) and [UCSC](https://genome.ucsc.edu) and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.
 
 ## Citation 
 
