@@ -811,23 +811,23 @@ importFunction, stream=FALSE, ...)
 
   \code{\linkS4class{BSgenome}}
 
+  \code{\linkS4class{DNAString}}
+
+  \code{\linkS4class{DNAStringSet}}
+
   \code{\linkS4class{DataTrack}}
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{DNAString}}
-
-  \code{\linkS4class{DNAStringSet}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{GRanges}}
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{ImageMap}}
-
-  \code{\linkS4class{IRanges}}
 
   \code{\link{collapsing}}
 
@@ -914,6 +914,7 @@ subseq(sTrack, start=length(sTrack), width=20)
 
 
 \keyword{classes}
+
 
 
 

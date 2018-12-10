@@ -585,11 +585,13 @@ getScheme(name=getOption("Gviz.scheme"))
           as the input data.} 
 
         \item{}{\code{type="p"}: Character vector. The plot type, one
-          or several in \code{c("p","l", "b", "a", "a_confint", "s",
-          "g", "r", "S", "confint", "smooth", "histogram", "mountain",
-          "polygon", "h", "boxplot", "gradient", "heatmap", "horizon")}.
-          See 'Details' section in \code{\linkS4class{DataTrack}} for
-          more information on the individual plotting types.} 
+          or several in \code{p},\code{l}, \code{b}, \code{a},
+          \code{a_confint}, \code{s}, \code{g}, \code{r}, \code{S},
+          \code{confint}, \code{smooth}, \code{histogram}, \code{mountain},
+          \code{polygon}, \code{h}, \code{boxplot}, \code{gradient},
+          \code{heatmap}, \code{horizon}. See 'Details' section in
+          \code{\linkS4class{DataTrack}} for more information on the
+          individual plotting types.} 
 
         \item{}{\code{varwidth=FALSE}: Logical scalar. Parameter
           controlling the boxplot appearance. See \code{\link{panel.bwplot}}
@@ -2220,6 +2222,8 @@ getScheme(name=getOption("Gviz.scheme"))
   \code{\link{plotTracks}}
 
 }
+
+
 
 
 

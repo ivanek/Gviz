@@ -1297,15 +1297,15 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
   \code{\linkS4class{DisplayPars}}
 
+  \code{\linkS4class{GRanges}}
+
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{GRanges}}
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{ImageMap}}
-
-  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
@@ -1386,6 +1386,8 @@ as(arTrack, "data.frame")
 
 }
 \keyword{classes}
+
+
 
 
 

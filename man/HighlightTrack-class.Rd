@@ -894,21 +894,21 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{GdObject}}
-
   \code{\linkS4class{GRanges}}
 
-  \code{\linkS4class{ImageMap}}
+  \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{IRanges}}
+
+  \code{\linkS4class{ImageMap}}
 
   \code{\linkS4class{OverlayTrack}}
 
   \code{\linkS4class{RangeTrack}}
 
-  \code{\link{collapsing}}
-
   \code{\link{DataTrack}}
+
+  \code{\link{collapsing}}
 
   \code{\link{grouping}}
 
@@ -922,6 +922,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, c
 
 
 \keyword{classes}
+
 
 
 

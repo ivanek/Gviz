@@ -491,9 +491,9 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){}, variables
 
   \code{\linkS4class{ImageMap}}
 
-  \code{\link{collapsing}}
-
   \code{\link{DataTrack}}
+
+  \code{\link{collapsing}}
 
   \code{\link{panel.grid}}
 
@@ -505,6 +505,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){}, variables
 
 
 \keyword{classes}
+
 
 
 

@@ -1481,15 +1481,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
 
   \code{\linkS4class{DisplayPars}}
 
+  \code{\linkS4class{GRanges}}
+
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{GRanges}}
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{ImageMap}}
-
-  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
@@ -1541,6 +1541,8 @@ to=44946660)
 
 }
 \keyword{classes}
+
+
 
 
 

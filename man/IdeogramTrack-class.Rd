@@ -1093,29 +1093,29 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
   \code{\linkS4class{AnnotationTrack}}
 
-  \code{\linkS4class{data.frame}}
-
   \code{\linkS4class{DisplayPars}}
+
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{GRanges}}
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{ImageMap}}
-
-  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
   \code{\linkS4class{StackedTrack}}
 
+  \code{\linkS4class{data.frame}}
+
+  \code{\link{DataTrack}}
+
   \code{\link{clearSessionCache}}
 
   \code{\link{collapsing}}
-
-  \code{\link{DataTrack}}
 
   \code{\link{grouping}}
 
@@ -1189,6 +1189,8 @@ as(idTrack, "data.frame")
 }
 
 \keyword{classes}
+
+
 
 
 
