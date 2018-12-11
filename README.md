@@ -4,9 +4,9 @@
 
 ## Software status
 
-| Travis CI | Bioc ([devel](http://bioconductor.org/packages/devel/bioc/html/Gviz.html)) | Bioc ([release](http://bioconductor.org/packages/release/bioc/html/Gviz.html)) | Coverage |
-|:---------:|:--------------:|:----------------:|:--------:|
-| [![Travis CI status](https://travis-ci.org/ivanek/Gviz.svg?branch=master)](https://travis-ci.org/ivanek/Gviz) | [![Bioconductor-devel Build Status](http://bioconductor.org/shields/build/devel/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Bioconductor-release Build Status](http://bioconductor.org/shields/build/release/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Codecov.io coverage status](https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master)](https://codecov.io/github/ivanek/Gviz) |
+| In BioC | Travis CI | Bioc ([devel](http://bioconductor.org/packages/devel/bioc/html/Gviz.html)) | Bioc ([release](http://bioconductor.org/packages/release/bioc/html/Gviz.html)) | Coverage |
+|:--------|:---------:|:--------------:|:----------------:|:--------:|
+| ![In Bioc](https://bioconductor.org/shields/years-in-bioc/Gviz.svg) | [![Travis CI status](https://travis-ci.org/ivanek/Gviz.svg?branch=master)](https://travis-ci.org/ivanek/Gviz) | [![Bioconductor-devel Build Status](https://bioconductor.org/shields/build/devel/bioc/Gviz.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Bioconductor-release Build Status](https://bioconductor.org/shields/build/release/bioc/Gviz.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Codecov.io coverage status](https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master)](https://codecov.io/github/ivanek/Gviz) |
 
 ## Authors
 
@@ -21,7 +21,36 @@
 
 ## Overview
 
+![Gviz UCSC like screenshot](vignettes/Gviz-example.png)
+
 Genomic data analyses requires integrated visualization of known genomic information and new experimental data. Gviz uses the [biomaRt](http://bioconductor.org/packages/biomaRt/) and the [rtracklayer](http://bioconductor.org/packages/rtracklayer/) packages to perform live annotation queries to [Ensembl](https://www.ensembl.org/) and [UCSC](https://genome.ucsc.edu) and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.
+
+## Installation
+
+### Release version
+
+```
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Gviz", version = "release")
+```
+
+### Developmental version
+
+```
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("Gviz", version = "devel")
+```
+
+### Github
+
+```
+if (!requireNamespace("devtools", quietly = TRUE))
+    install.packages("devtools")
+devtools::install_github("ivanek/Gviz")
+```
+
 
 ## Citation 
 

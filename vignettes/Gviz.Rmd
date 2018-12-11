@@ -18,7 +18,7 @@ output:
   BiocStyle::pdf_document: 
     default
 vignette: >
-    %\VignetteIndexEntry{Gviz User Guide}
+    %\VignetteIndexEntry{The Gviz User Guide}
     %\VignetteKeywords{visualization, genomics, grid}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
@@ -27,13 +27,7 @@ editor_options:
     console
 ---
 
-__Compiled date__: `r BiocStyle::doc_date()`
-
 __Last edited__: 10 December 2018
-
-<!-- 
-__Last edited__: `r format(as.Date(system("git log -1 --format='%ai' vignettes/Gviz.Rnw", intern = TRUE)), "%d %B %Y")`
--->
 
 <!--
 knit: (function(inputFile, encoding) {rmarkdown::render(input=inputFile, encoding = encoding,  output_format='BiocStyle::html_document',output_file=paste0(dirname(inputFile),'/',basename(tools::file_path_sans_ext(inputFile)),'.html'));rmarkdown::render(input=inputFile, encoding = encoding,  output_format='BiocStyle::pdf_document',output_file=paste0(dirname(inputFile),'/',basename(tools::file_path_sans_ext(inputFile)),'.pdf'));})
@@ -61,7 +55,7 @@ library(kableExtra)
 source(system.file("scripts/documentation.R", package="Gviz"))
 xtabDetails <- details
 
-addParTable <- function(class, skip=c("showTitle", "size", "background.title"), add=NULL, out_type="html") {
+addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "background.title"), add=NULL, out_type="html") {
   Parameters <- data.frame("Display Parameter"=names(xtabDetails[[class]]),
                            "Description"=xtabDetails[[class]], check.names=FALSE)
   if(!is.null(add)) {
@@ -675,7 +669,7 @@ see the table below or the man page of the `GenomeAxisTrack`
 class by typing in `?GenomeAxisTrack` on the `R` command line.
 
 ```{r GenomeAxisTrackClassTable, echo=FALSE, results='asis'}
-addParTable("GenomeAxisTrack", out_type = out_type)
+addParTable(xtabDetails,"GenomeAxisTrack", out_type = out_type)
 ```
 
 ## IdeogramTrack
@@ -744,7 +738,7 @@ see the table below or the man page of the `IdeogramTrack`
 class by typing in `?IdeogramTrack` on the `R` command line.
 
 ```{r IdeogramTrackClassTable, echo=FALSE, results='asis'}
-addParTable("IdeogramTrack", out_type = out_type)
+addParTable(xtabDetails,"IdeogramTrack", out_type = out_type)
 ```
 
 ## DataTrack
@@ -1138,7 +1132,7 @@ see the table below or the man page of the `DataTrack`
 class by typing in `?DataTrack` on the `R` command line.
 
 ```{r DataTrackClassTable, echo=FALSE, results='asis'}
-addParTable("DataTrack", out_type = out_type)
+addParTable(xtabDetails,"DataTrack", out_type = out_type)
 ```
 
 ## AnnotationTrack
@@ -1478,7 +1472,7 @@ see the table below or the man page of the `AnnotationTrack`
 class by typing in `?AnnotationTrack` on the `R` command line.
 
 ```{r AnnotationTrackClassTable, echo=FALSE, results='asis'}
-addParTable("AnnotationTrack", out_type = out_type)
+addParTable(xtabDetails,"AnnotationTrack", out_type = out_type)
 ```
 
 ## GeneRegionTrack
@@ -1619,7 +1613,7 @@ see the table below or the man page of the `GeneRegionTrack`
 class by typing in `?GeneRegionTrack` on the `R` command line.
 
 ```{r GeneRegionTrackClassTable, echo=FALSE, results='asis'}
-addParTable("GeneRegionTrack", out_type = out_type)
+addParTable(xtabDetails,"GeneRegionTrack", out_type = out_type)
 ```
 
 ## BiomartGeneRegionTrack
@@ -1778,7 +1772,7 @@ types.
 ```{r BiomartGeneRegionTrackClassTable, echo=FALSE, results='asis'}
 addInfo <- t(data.frame(displayPars(biomTrack, names(details[["BiomartGeneRegionTrack"]]))))
 colnames(addInfo) <- "Color"
-addParTable("BiomartGeneRegionTrack", add=addInfo, , out_type = out_type)
+addParTable(xtabDetails,"BiomartGeneRegionTrack", add=addInfo, out_type = out_type)
 ```
 
 ## DetailsAnnotationTrack
@@ -1939,7 +1933,7 @@ plotTracks(deTrack, details.size=0.75, detailsConnector.pch=NA, detailsConnector
 ```
 
 ```{r DetailsAnnotationTrackClassTableSec, echo=FALSE, results='asis'}
-addParTable("DetailsAnnotationTrack", out_type = out_type)
+addParTable(xtabDetails,"DetailsAnnotationTrack", out_type = out_type)
 ```
 
 ## SequenceTrack
@@ -2041,7 +2035,7 @@ see the table below or the man page of the `SequenceTrack`
 class by typing in `?SequenceTrack` on the `R` command line.
 
 ```{r SequenceTrackClassTableSec, echo=FALSE, results='asis'}
-addParTable("SequenceTrack", out_type = out_type)
+addParTable(xtabDetails,"SequenceTrack", out_type = out_type)
 ```
 
 ## AlignmentsTrack
@@ -2259,7 +2253,7 @@ see the table below or the man page of the `AlignmentsTrack`
 class by typing in `?AlignmentsTrack` on the `R` command line.
 
 ```{r AlignmentsTrackClassTable, echo=FALSE, results='asis'}
-addParTable("AlignmentsTrack", out_type = out_type)
+addParTable(xtabDetails,"AlignmentsTrack", out_type = out_type)
 ```
 
 # Creating tracks from UCSC data
@@ -2442,7 +2436,7 @@ see the table below or the man page of the `HighlightTrack`
 class by typing in `?HighlightTrack` on the \RR command line.
 
 ```{r HighlightTrackClassTable, echo=FALSE, results='asis'}
-addParTable("HighlightTrack", out_type = out_type)
+addParTable(xtabDetails,"HighlightTrack", out_type = out_type)
 ```
 
 ## Overlays
