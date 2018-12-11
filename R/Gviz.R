@@ -1574,8 +1574,20 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     ## Open a fresh page and set up the bounding box, unless add==TRUE
     if(!panel.only) {
         ## We want a margin pixel border
-        borderFacts <- 1-((margin*2)/vpLocation()$size)
-        vpBound <- viewport(width=borderFacts[1], height=borderFacts[2])
+        ## for backward compatibility, if margin has length of 2, 
+        ## the first one will be used as a horizontal, second as a vertical margin
+        if (length(margin)==2) {
+          margin <- rev(margin)
+        }
+        ## we switched to same settings as in par
+        ## c(bottom, left, top, right)
+        margin <- rep(as.numeric(margin), length.out = 4)
+        vpWidth <- vpLocation()$size["width"]
+        vpHeight <- vpLocation()$size["height"]
+        vpBound <- viewport(x = margin[2L]/vpWidth, y = margin[1L]/vpHeight,
+                           width = (vpWidth - sum(margin[c(2, 4)]))/vpWidth,
+                           height = (vpHeight - sum(margin[c(1, 3)]))/vpHeight,
+                           just = c("left", "bottom"))
         pushViewport(vpBound)
         ## If there is a header we have to make some room for it here
         if(!missing(main) && main != "")
