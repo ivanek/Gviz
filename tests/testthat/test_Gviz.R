@@ -10,8 +10,9 @@ test_that("checking the class and structure works", {
 test_that("conversion of chromosome names works", {
   expect_identical(Gviz:::.chrName(character()), character())
   options("ucscChromosomeNames" = TRUE)
-  expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "X")), c("chr1","chr1","chrM","chrX"))
-  expect_identical(Gviz:::.chrName(c("foo"), force=TRUE), c("chrfoo"))
+  expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "MT", "X")), c("chr1","chr1","chrM","chrM","chrX"))
+  expect_identical(Gviz:::.chrName("foo", force=TRUE), "chrfoo")
+  expect_error(Gviz:::.chrName("foo"), "Please consider setting options\\(ucscChromosomeNames=FALSE\\)")
   options("ucscChromosomeNames" = FALSE)
   expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "X")), c("1","chr1","M","X"))
 })
