@@ -19,6 +19,7 @@ test_that("conversion of chromosome names works", {
   expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "X")), c("1","chr1","M","X"))
 })
 
+context("Gviz functions, graphical device")
 ## not sure how to set up the test for the device resolution
 ## with opening PDF device?
 test_that("finding location and pixel-size of current viewport works", {
@@ -62,3 +63,29 @@ test_that("estimating of coordinates for an HTML image map works", {
   # unlink("Rplots.pdf")
 })
 
+context("Gviz functions, helper functions")
+
+test_that("conversion of ranges to summarizedJunctions works", {
+  ## with + strand defined in readStrand column
+  range <- GRanges("chr1", IRanges(1,10), cigar="1M8N1M", readStrand=Rle(factor("+", levels=c("+","-","*"))), entityId=1)
+  juns <- GRanges("chr1", IRanges(start=2,end=9), score=1L, plus_score=1L, minus_score=0L)
+  expect_identical(Gviz:::.create.summarizedJunctions.for.sashimi.junctions(range), juns)
+  ## without strand definition
+  range <- GRanges("chr1", IRanges(1,10), cigar="1M8N1M", entityId=1)
+  juns <- GRanges("chr1", IRanges(start=2,end=9), score=1L, plus_score=0L, minus_score=0L)
+  expect_identical(Gviz:::.create.summarizedJunctions.for.sashimi.junctions(range), juns)
+})
+
+
+test_that("conversion of junction to list for plotting works", {
+  #<- function(juns, score=1L, lwd.max=10, strand="*", filter=NULL, filterTolerance=0L) {
+  juns <- GRanges("chr1", IRanges(start=2,end=9), score=1L, plus_score=0L, minus_score=0L)
+  out <- list(x = c(2, 5, 9), 
+              y = c(0, 1, 0), 
+              id = c(1L, 1L, 1L), 
+              score = 1, scaled = 10)
+  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns), out)
+  # if minimum score filter works
+  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, score=2L), 
+                   list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
+})

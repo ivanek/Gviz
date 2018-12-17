@@ -2667,7 +2667,7 @@ availableDefaultMapping <- function(file, trackType){
                          mid(ranges(juns)), end(juns))),
                      y=as.numeric(rbind(0, juns$y, 0)),
                      id=rep(seq_len(length(juns)), each=3),
-                     score=juns$score,
+                     score=as.numeric(juns$score),
                      scaled=juns$scaled)
     } else {
         juns <- list(x=numeric(),
