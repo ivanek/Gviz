@@ -29,10 +29,6 @@ editor_options:
 
 __Last edited__: 10 December 2018
 
-<!--
-knit: (function(inputFile, encoding) {rmarkdown::render(input=inputFile, encoding = encoding,  output_format='BiocStyle::html_document',output_file=paste0(dirname(inputFile),'/',basename(tools::file_path_sans_ext(inputFile)),'.html'));rmarkdown::render(input=inputFile, encoding = encoding,  output_format='BiocStyle::pdf_document',output_file=paste0(dirname(inputFile),'/',basename(tools::file_path_sans_ext(inputFile)),'.pdf'));})
--->
-
 ```{r init, echo=FALSE, results='hide'}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -70,8 +66,8 @@ addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "backgro
   rownames(Parameters) <- NULL
   if (out_type == "html") {
     out <- kable(Parameters) %>% kable_styling(full_width = FALSE)
-  } else if (out_type == "pdf") {
-    out <- kable(Parameters, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
+  } else if (out_type == "latex") {
+    out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
   }
   print(out)
   return(invisible())
@@ -127,10 +123,10 @@ It is worth mentioning that, at a given time, tracks in the sense of the
 genome, at least for the duration of a given plotting operation. You will later see
 that a track may still contain information for multiple chromosomes,
 however most of this is hidden except for the currently active
-chromosome, and the user will have to explicitely switch the chromsome
+chromosome, and the user will have to explicitly switch the chromosome
 to access the inactive parts. While the package in principle imposes
 no fixed structure on the chromosome or on the genome names, it makes
-sense to stick to a standaradized naming paradigm, in particular when
+sense to stick to a standardized naming paradigm, in particular when
 fetching additional annotation information from online resources. By
 default this is enforced by a global option
 `ucscChromosomeNames`, which is set during package loading and
@@ -175,7 +171,7 @@ atrack <- AnnotationTrack(cpgIslands, name="CpG")
 ```
 
 Please note that the `AnnotationTrack` constructor (as most
-constructors in this package) is fairly flexible and can accomodate
+constructors in this package) is fairly flexible and can accommodate
 many different types of inputs. For instance, the start and end
 coordinates of the annotation features could be passed in as
 individual arguments `start` and `end`, as a
@@ -205,13 +201,13 @@ spectacular. There is a title region showing the track's name on a
 gray background on the left side of the plot and a data region showing
 the seven individual CpG islands on the right. This structure is
 similar for all the available track objects classes and it somewhat
-mimicks the layout of the popular UCSC Genome Browser. If you are not
+mimics the layout of the popular UCSC Genome Browser. If you are not
 happy with the default settings, the `r Biocpkg("Gviz")`
 package offers a multitude of options to fine-tune the track
 appearance, which will be shown in the \@ref(plotting-parameters)
 section.
 
-Appart from the relative distance of the Cpg islands, this
+Apart from the relative distance of the CpG islands, this
 visualization does not tell us much. One obvious next step would be to
 indicate the genomic coordinates we are currently looking at in order
 to provide some reference. For this purpose, the `r Biocpkg("Gviz")` package offers
@@ -248,7 +244,7 @@ is always defined for exactly one chromosome on a particular
 genome. We can include this information in our plot by means of a
 chromosome ideogram. An ideogram is a simplified visual representation
 of a chromosome, with the different chromosomal staining bands
-indicated by color, and the centromer (if present) indicated by the
+indicated by color, and the centromere (if present) indicated by the
 shape. The necessary information to produce this visualization is
 stored in online data repositories, for instance at UCSC. The `r Biocpkg("Gviz")`
 package offers very convenient connections to some of these
@@ -292,7 +288,7 @@ to give a point of reference to our plots. Naturally, we also want to
 be able to handle more complex genomic features, such as gene
 models. One potential use case would be to utilize gene model
 information from an existing local source. Alternatively, we could
-dowload such data from one of the available online resources like UCSC
+download such data from one of the available online resources like UCSC
 or ENSEBML, and there are constructor functions to handle these
 tasks. For this example we are going to load gene model data from a
 stored `data.frame`. The track class of choice here is a
@@ -392,7 +388,7 @@ The first thing to notice is that the title panel to the right of the
 plot now contains a y-axis indicating the range of the displayed
 data. The default plotting type for numeric vectors is a simple dot
 plot. This is by far not the only visualization option, and in a sense
-it is waisting quite a lot of information because the run-length
+it is wasting quite a lot of information because the run-length
 encoded ranges are not immediately apparent. We can change the plot
 type by supplying the `type` argument to
 `plotTracks`. A complete description of the available
@@ -421,7 +417,7 @@ options.
 
 ## Setting parameters
 
-Although not implicitely mentioned before, we have already made use of
+Although not implicitly mentioned before, we have already made use of
 the plotting parameter facilities in the `r Biocpkg("Gviz")` package, or, as we will
 call them from now on, the 'display parameters'. Display parameters
 are properties of individual track objects (i.e., of any object
@@ -460,7 +456,7 @@ particular display parameter may not make any sense, and in that case
 it is simply ignored. Also, the settings only apply for one single
 plotting operation and will not be retained in the plotted track
 objects. They do however get precedence over the object-internal
-parameters. The following line of code exemplifies this behaviour.
+parameters. The following line of code exemplifies this behavior.
 
 ```{r displayPars2f, fig.width=7.5, fig.height=3}
 plotTracks(list(itrack, gtrack, atrack, grtrack), background.panel="#FFFEDB", background.title="darkblue")
@@ -497,7 +493,7 @@ supports display parameter schemes. A scheme is essentially just a
 bunch of nested named lists, where the names on the first level of
 nesting should correspond to track class names, and the names on the
 second level to the display parameters to set. The currently active
-schmeme can be changed by setting the global option
+scheme can be changed by setting the global option
 `Gviz.scheme`, and a new scheme can be registered by using the
 `addScheme` function, providing both the list and the name
 for the new scheme. The `getScheme` function is useful to
@@ -519,7 +515,7 @@ grtrack <- GeneRegionTrack(geneModels, genome=gen, chromosome=chr, name="Gene Mo
                            transcriptAnnotation="symbol")
 ```
 
-In order to make these settings persitant across R sessions one can
+In order to make these settings persistent across R sessions one can
 create one or several schemes in the global environment in the special
 object `.GvizSchemes`, for instance by putting the necessary
 code in the `.Rprofile` file. This object needs to be a named
@@ -559,7 +555,7 @@ strand is also reflected in the `GenomeAxis` track.
 
 In this section we will highlight all of the available annotation
 track classes in the `r Biocpkg("Gviz")` package. For the complete reference of all
-the nuts and bolts, including all the avaialable methods, please see
+the nuts and bolts, including all the available methods, please see
 the respective class man pages. We will try to keep this vignette up
 to date, but in cases of discrepancies between here and the man pages
 you should assume the latter to be correct.
@@ -569,7 +565,7 @@ you should assume the latter to be correct.
 `GenomeAxisTrack` objects can be used to add some reference to
 the currently displayed genomic location to a `r Biocpkg("Gviz")` plot. In their most
 basic form they are really just a horizontal axis with genomic
-coordinate tickmarks. Using the `GenomeAxisTrack`
+coordinate tick-marks. Using the `GenomeAxisTrack`
 constructor function is the recommended way to instantiate objects
 from the class. There is no need to know in advance about a particular
 genomic location when constructing the object. Instead, the displayed
@@ -634,7 +630,7 @@ plotTracks(axisTrack, from=1e6, to=9e6, exponent=4)
 Another useful parameter, `labelPos` controls the arrangement
 of the tick marks. It takes one of the values `alternating`,
 `revAlternating`, `above` or `below`. For instance we
-could aline all tick marks underneath the axis.
+could align all tick marks underneath the axis.
 
 ```{r GenomeAxisTrackClass6, fig.width=7.5, fig.height=0.5}
 plotTracks(axisTrack, from=1e6, to=9e6, labelPos="below")
@@ -675,8 +671,8 @@ addParTable(xtabDetails,"GenomeAxisTrack", out_type = out_type)
 ## IdeogramTrack
 While a genomic axis provides helpful points of reference to a plot,
 it is sometimes important to show the currently displayed region in
-the broader context of the whole chromosme. Are we looking at distal
-regions, or somewhere close to the centromer? And how much of the
+the broader context of the whole chromosome. Are we looking at distal
+regions, or somewhere close to the centromere? And how much of the
 complete chromosome is covered in our plot. To that end the `r Biocpkg("Gviz")`
 package defines the `IdeogramTrack` class, which is an
 idealized representation of a single chromosome. When plotted, these
@@ -725,7 +721,7 @@ plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE)
 
 The chromosome bands in the ideogram come with a unique identifier,
 and we can add this information to the plot, at least for those bands
-that are wide enought to accomodate the text.
+that are wide enough to accommodate the text.
 
 ```{r IdeogramTrackClass3, fig.width=7.5, fig.height=0.5}
 plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE, showBandId=TRUE, cex.bands=0.5)
@@ -743,7 +739,7 @@ addParTable(xtabDetails,"IdeogramTrack", out_type = out_type)
 
 ## DataTrack
 
-Probably the most powerfull of all the track classes in the `r Biocpkg("Gviz")`
+Probably the most powerful of all the track classes in the `r Biocpkg("Gviz")`
 package are `DataTracks`. Essentially they constitute
 run-length encoded numeric vectors or matrices, meaning that one or
 several numeric values are associated to a particular genomic
@@ -751,7 +747,7 @@ coordinate range. These ranges may even be overlapping, for instance
 when looking at results from a running window operation. There can be
 multiple samples in a single data set, in which case the ranges are
 associated to the columns of a numeric matrix rather than a numeric
-vector, and the plotting method provides tools to incoorporate sample
+vector, and the plotting method provides tools to incorporate sample
 group information. Thus the starting point for creating
 `DataTrack` objects will always be a set of ranges, either in
 the form of an `IRanges` or `GRanges` object, or
@@ -772,9 +768,9 @@ plotTracks(dTrack)
 ```
 
 The default visualization for our very simplistic sample
-`DataTrack` is a rather unispiring dot plot. The track comes
+`DataTrack` is a rather uninspiring dot plot. The track comes
 with a scale to indicate the range of the numeric values on the
-y-axis, appart from that it looks very much like the previous
+y-axis, apart from that it looks very much like the previous
 examples. A whole battery of display parameters is to our disposal to
 control the track's look and feel. The most important one is the
 `type` parameter. It determines the type of plot to use and
@@ -791,7 +787,7 @@ types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "confin
 
 if (out_type == "html") {
   kable(types) %>% kable_styling(full_width = FALSE)
-} else if (out_type == "pdf") {
+} else if (out_type == "latex") {
   kable(types, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
 }
 ```
@@ -835,7 +831,7 @@ plotTracks(dTrack, type=c("boxplot", "a", "g"))
 ```
 
 For the heatmap plotting type we arrange all the data in a
-well-structured two-dimensional matrix which gives us the oportunity
+well-structured two-dimensional matrix which gives us the opportunity
 to add a little extra information about the individual
 samples. Depending on how the `DataTrack` was created in the
 first place we can choose to display the sample names (which in our
@@ -874,7 +870,7 @@ variable. The following gives an overview over some of the other
 groupable `DataTrack` types. Please note that there are many
 more display parameters that control the layout of both grouped and of
 ungrouped `DataTracks`. You may want to check the class' help
-page for details. ^[PLese note, that in the example, a different data 
+page for details. ^[Please note, that in the example, a different data 
 set is plotted for the horizon type for the sake of clarity.]
 
 ```{r typeGroupedPlots, fig.width=7.5, fig.height=6, echo=FALSE, results='hide'}
@@ -951,7 +947,7 @@ plotTracks(dTrack2)
 
 As we can see the constructor has returned a regular
 `DataTrack` object. The function to be used in order to read
-the data off the file has been automatically choosen by the package
+the data off the file has been automatically chosen by the package
 based on the file extension of the input file. Of course the number of
 these supported standard file types is limited, and a user may want to
 import a non-standard file through the same mechanism. To this end,
@@ -1009,7 +1005,7 @@ plotting operation. Obviously, streaming from the disk comes with a
 price in that file access is much slower than accessing RAM, however
 the file indexing allows for fairly rapid data retrieval, and other
 processes during the plotting operation tend to be much more costly,
-anyways. It is woth mentioning however that each plotting operation
+anyways. It is worth mentioning however that each plotting operation
 will cause reading off the file, and there are currently no caching
 mechanisms in place to avoid that. Nevertheless, plotting a larger
 chunk of the `bam` file still finishes in a reasonable time.
@@ -1043,7 +1039,7 @@ well as summarization and smoothing operations (the values for several
 genomic locations are summarized into one derived value on the track's
 x-axis). To illustrate this let's create a significantly bigger
 `DataTrack` than the one we used before, containing purely
-syntetic data for only a single sample.
+synthetic data for only a single sample.
 
 ```{r biggerdata, results='hide', fig.width=7.5, fig.height=1.5}
 dat <- sin(seq(pi, 10*pi, len=500))
@@ -1058,7 +1054,7 @@ longer distinguish between individual coordinate ranges. The `r Biocpkg("Gviz")`
 package tries to avoid overplotting by collapsing overlapping ranges
 (assuming the `collapseTracks` parameter is set to
 `TRUE`). However, it is often desirable to summarize the data,
-for instance by binning values into a fixed number of windows followe
+for instance by binning values into a fixed number of windows followed
 by the calculation of a meaningful summary statistic. This can be
 archived by a combination of the `window` and
 `aggregation` display parameters. The former can be an integer
@@ -1080,7 +1076,7 @@ plotTracks(dTrack.big, type="hist", window=50)
 Instead of binning the data in fixed width bins one can also use the
 `window` parameter to perform more elaborate running window
 operations. For this to happen the parameter value has to be smaller
-than zero, and the addtional display parameter `windowSize`
+than zero, and the additional display parameter `windowSize`
 can be used to control the size of the running window. This operation
 does not change the number of coordinate ranges on the plot, but
 instead the original value at a particular position is replaced by the
@@ -1141,7 +1137,7 @@ addParTable(xtabDetails,"DataTrack", out_type = out_type)
 `r Biocpkg("Gviz")` package. Essentially they consist of one or several genomic
 ranges that can be grouped into composite annotation elements if
 needed. In principle this would be enough to represent everything from
-CpG islands to complex gene models, however for the latter the packge
+CpG islands to complex gene models, however for the latter the package
 defines the specialized `GeneRegionTrack` class, which will be
 highlighted in a separate section. Most of the features discussed here
 will also apply to `GeneRegionTrack` objects, though. As a
@@ -1216,11 +1212,11 @@ plotTracks(aTrack.groups, groupAnnotation="group", just.group="above")
 ```
 
 Arranging items on the plotting canvas is relatively straight forward
-as long as there are no overlaps between invidiual regions or groups
+as long as there are no overlaps between individual regions or groups
 of regions. Those inevitably cause overplotting which could seriously
 obfuscate the information on the plot. A logical solution to this
 problem is to stack overlapping items in separate horizontal lines to
-accomodate all of them. This involves some optimization, and the `r Biocpkg("Gviz")`
+accommodate all of them. This involves some optimization, and the `r Biocpkg("Gviz")`
 package automatically tries to come up with the most compact
 arrangement. Let's exemplify this feature with a slightly modified
 `AnnotationTrack` object.
@@ -1272,7 +1268,7 @@ plotTracks(aTrack.stacked, featureAnnotation="feature", groupAnnotation="feature
 Unless we tell the `r Biocpkg("Gviz")` package how to deal with the respective
 feature types they will all be treated in a similar fashion, i.e.,
 they will be plotted using the default color as defined by the
-`fill` display paramter. To define colors for individual
+`fill` display parameter. To define colors for individual
 feature types we simply have to add them as additional display
 parameters, where the parameter name matches the feature type and its
 value is supposed to be a valid R color qualifier. Of course this
@@ -1288,8 +1284,8 @@ Stacking of annotation items to avoid overplotting only works as long
 as there is enough real estate on the plotting canvas to separate all
 items, i.e., we need all items to be at least a single pixel wide to
 correctly display them. This limitation is automatically enforced by
-the `r Biocpkg("Gviz")` package, however it implies that unless neighbouring items
-are more than one pixel appart we can not distinguish between them and
+the `r Biocpkg("Gviz")` package, however it implies that unless neighboring items
+are more than one pixel apart we can not distinguish between them and
 will inevitably introduce a certain amount of overplotting. This means
 that on a common screen device we can only look at a very limited
 genomic region of a few kb in full resolution. Given that an average
@@ -1300,7 +1296,7 @@ items into one unified meta-item and only plot that (see 'Collapse'
 section below for details). In order to indicate the amount of
 overplotting that was introduced by this process we can use the
 `showOverplotting` display parameter. It uses a color scale
-(based on the orginal colors defined for the track), with lighter
+(based on the original colors defined for the track), with lighter
 colors indicating areas of low or no overplotting, and more saturated
 colors indicating areas of high overplotting density. We exemplify
 this feature on an `AnnotationTrack` object that represents a
@@ -1322,14 +1318,14 @@ them. For instance, two elements of a feature group may be separated
 by 100 base pairs on the genomic scale, however when plotted to the
 screen, those 100 base pairs translate to a distance of less than one
 pixel. In this case we can no longer show the items as two separate
-entitites. One solution to this problem would be to allow for
+entities. One solution to this problem would be to allow for
 arbitrary overplotting, in which case the last one of the overlapping
 items that is drawn on the device wins. This is not optimal in many
 ways, and it also poses a significant burden on the graphical engine
 because a lot of stuff has to be drawn which no one will ever see.
 
 To this end the `r Biocpkg("Gviz")` package provides an infrastructure to reasonably
-collapse overlappig items, thereby adjusting the information content
+collapse overlapping items, thereby adjusting the information content
 that can be shown to the available device resolution. By default this
 feature is turned on, and the user does not have to worry too much
 about it. However, one should be aware of the consequences this may
@@ -1369,7 +1365,7 @@ plotTracks(ctrack, min.width=1)
 ```
 
 Now the item `d` has a plotable size and can be drawn to the
-device. The overplotted items are still rather anoying, but the only way to
+device. The overplotted items are still rather annoying, but the only way to
 get rid of those is to turn item collapsing back on.
 
 ```{r collapse3f, results='hide', fig.width=7.5, fig.height=0.85}
@@ -1394,7 +1390,7 @@ This time also the two items `b` and `c` have been merged,
 and all ranges are now at least 3 pixels wide. Depending on the
 density of items on the plot even this reduction can be
 insufficient. Because we did not merge complete groups we might still
-end up with quite a lot of stacks to accomodate all the
+end up with quite a lot of stacks to accommodate all the
 information. To this end the display parameter `mergeGroups` can
 be used to disable absolute group separation. Rather than blindly
 merging all groups (as it is done when `stacking='dense'`)
@@ -1526,7 +1522,7 @@ plotTracks(grtrack, transcriptAnnotation="transcript")
 plotTracks(grtrack, exonAnnotation="exon", extend.left=-0.8, fontcolor.exon=1)
 ```
 
-Since we have the gene and trancript level information as part of our
+Since we have the gene and transcript level information as part of our
 `GeneRegionTrack` objects we can ask the package to collapse
 all of our gene models from individual exons and transcripts down to
 gene body locations by setting the `collapseTranscripts`
@@ -1537,7 +1533,7 @@ plotTracks(grtrack, collapseTranscripts=TRUE, shape="arrow", transcriptAnnotatio
 ```
 
 Collapsing down all the way to a gene is not always the desired
-oparation, and the parameters offers a bit more control. For instance
+operation, and the parameters offers a bit more control. For instance
 we could decide to plot just the longest transcript by setting it to
 `longest`.
 
@@ -1572,7 +1568,7 @@ GeneRegionTrack(txdb)
 ```
 
 In this context, the constructor's `chromosome`,
-`start` and `end` argument take on a slightly differnt
+`start` and `end` argument take on a slightly different
 meaning in that they can be used to subset the data that is fetched
 from the `TxDb` object. Please note that while the
 `chromosome` alone can be supplied, providing `start`
@@ -1586,10 +1582,10 @@ A nice bonus when building `GeneRegionTracks` from
 `TxDb` objects is that we get additional information
 about coding and non-coding regions of the transcripts, i.e.,
 coordinates of the 5' and 3' UTRs and of the CDS regions. The class'
-plotting method can use this inforamtion to distinguish between coding
+plotting method can use this information to distinguish between coding
 and non-coding regions based on the shape of the feature. All coding
 regions are plotted just as we have seen in the previous examples,
-whereas the non-coding regions are drawn as slighly thinner boxes. The
+whereas the non-coding regions are drawn as slightly thinner boxes. The
 distinction between coding and non-coding is made on the basis of the
 object's `feature` values in combination with a special display
 parameter `thinBoxFeature` that enumerates all feature types that
@@ -1619,7 +1615,7 @@ addParTable(xtabDetails,"GeneRegionTrack", out_type = out_type)
 ## BiomartGeneRegionTrack
 
 As seen before it can be very useful to quickly download gene
-annotation information from an online repositry rather than having to
+annotation information from an online repository rather than having to
 construct it each time from scratch. To this end, the `r Biocpkg("Gviz")` package
 also defines the `BiomartGeneRegionTrack` class, which directly
 extends `GeneRegionTrack` but provides a direct interface to
@@ -1633,7 +1629,7 @@ fetch the necessary information and build the gene model on the
 fly. Please note that you will need an internet connection for this to
 work, and that contacting Biomart can take a significant amount of
 time depending on usage and network traffic. Hence the results are
-almost never going to be returned instantaniously.
+almost never going to be returned instantaneously.
 
 ```{r BiomartGeneRegionTrackShow, eval=FALSE}
 biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
@@ -1676,7 +1672,7 @@ plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 
 The `filter` argument to the
 `BiomartGeneRegionTrack` constructor can be used to pass on
-arbitratry additional filters to the Biomart query. We could for
+arbitrary additional filters to the Biomart query. We could for
 instance limit the returned gene models to RefSeq models only. Please
 see the documentation in the `r Biocpkg("biomaRt")` package for details.
 
@@ -1704,7 +1700,7 @@ mechanisms as described before for this purpose, however the
 `BiomartGeneRegionTrack` implements a more generic way. By
 providing the gene symbol as the `symbol` argument, the track
 will be initialized around the locus for this gene, if it can be
-found. Alternatively, one can provide the Ensembl trancript or gene id
+found. Alternatively, one can provide the Ensembl transcript or gene id
 via the  `transcript` or `gene` arguments, or an Entrez id via
 the `entrez` argument. In all of these cases the constructor
 will also fetch models for other genes that overlap the same
@@ -1728,12 +1724,12 @@ if(hasBiomartConnection){
 ### Using custom biomaRt objects for BiomartGeneRegionTracks
 `r Biocpkg("Gviz")` tries hard to automatically set up the necessary connection to
 the Biomart service to retrieve the relevant data. Sometimes however
-it can be advantagous to fully control the Biomart connector, for
+it can be advantageous to fully control the Biomart connector, for
 instance when trying to retrieve data from an archived Ensembl version
 (by default, `r Biocpkg("biomaRt")` will always link to the most recent
 version). To that end, the `biomart` parameter can be used to
 supply a `biomaRt` object. Please note that a data set has to
-be selected in that object. A second prerequesite for this to work is
+be selected in that object. A second prerequisite for this to work is
 that `r Biocpkg("Gviz")` is able to guess which of the values that are queried
 from the Ensembl data base represent which track feature. If there
 were no changes in the schema of Ensembl, or if the schema for all
@@ -1741,7 +1737,7 @@ marts was similar this would not be an issue, but that is not the
 case. In the following example we show how to fetch data for the same
 region from the older version Ensembl version 47. The internal
 `.getBMFeatureMap` is helpful to set up the feature mapping
-which is necessary because Esembl used to call the gene symbol field
+which is necessary because Ensembl used to call the gene symbol field
 `external_gene_id` in that release.
 
 ```{r BiomartGeneRegionTrackCustom, fig.width=7.5, fig.height=1.25}
@@ -1789,7 +1785,7 @@ information. This is archived by splitting the
 `AnnotationTrack` plotting region into two horizontal sections:
 the lower section containing the range data in genomic coordinates, and
 the upper one containing the additional data for each of the displayed
-ranges in verticaly tiled panels of equal size. The connection between
+ranges in vertically tiled panels of equal size. The connection between
 a range item and its details panel is indicated by connecting
 lines.
 
@@ -1799,8 +1795,8 @@ commands. This function has to accept a number of mandatory
 parameters, notably the start, end, strand, chromosome and identifier
 information for the genomic range, as well as an integer counter
 indicating the index of the currently plotted details tile. This
-information can be used to fetch abtritray details, e.g. from a list,
-and environement or even from a `GRanges` object which will
+information can be used to fetch arbitrary details, e.g. from a list,
+and environment or even from a `GRanges` object which will
 then be processed and visualized within the plotting function. This
 may sound rather abstract, and for more details please refer to the
 class' help page. For now we just want to demonstrate the
@@ -1835,7 +1831,7 @@ what we really need. Luckily, the `r Rpackage("lattice")` package gives us
 a nice `densityplot` function that supports grouping, so all
 that's left to do now is to write a little wrapper that handles the
 extraction of the relevant data from the matrix. This is easily
-archieved by using the range identifiers, which conveniently map to
+achieved by using the range identifiers, which conveniently map to
 the row names of the data matrix.
 
 ```{r DetailsAnnotationTrack3}
@@ -1848,7 +1844,7 @@ details <- function(identifier, ...) {
 }
 ```
 
-Finaly, it is as simple as calling the `AnnotationTrack`
+Finally, it is as simple as calling the `AnnotationTrack`
 constructor, passing along the wrapper function and calling
 `plotTracks`.
 
@@ -1862,7 +1858,7 @@ plotTracks(deTrack)
 It should be noted here that in our little example we rely on the
 methylation data matrix and the grouping vector to be present in the
 working environment. This is not necessarily the cleanest solution and
-one should consider storing additional data in an evironment, passing
+one should consider storing additional data in an environment, passing
 it along using the `detailFunArgs` parameter, or making it
 part of the details function in form of a closure. The class' help
 page provides further instructions.
@@ -1920,7 +1916,7 @@ plotTracks(deTrack2, extend.left=90000)
 
 ### Display parameters for DetailsAnnotationTrack objects
 
-In addtion to the display parameters for the `AnnotationTrack`
+In addition to the display parameters for the `AnnotationTrack`
 class, some additional parameters can be used to control the look and
 feel of the details sections. For a complete listing of all the available display parameters please
 see the tables below and the one above in the `AnnotationTrack` section
@@ -1960,7 +1956,7 @@ objects in that the actual sequence is only loaded into memory when a
 particular chromosome is first accessed. Plotting the track yields the
 expected result: a character representation of the genomic sequence in
 the current plot window. It may be worth noting that the color scheme
-that is used to encode the indvidual nucleotides is defined in the
+that is used to encode the individual nucleotides is defined in the
 `r Biocpkg("biovizBase")` package and the user is referred to its
 documentation for more details.
 
@@ -2010,8 +2006,8 @@ plotTracks(sTrack, chromosome=1, from=20000, to=20100)
 ```
 
 For added flexibility one can set the `noLetters` display
-paramter to `TRUE` to always force the drawing of boxes.  Of
-course also the colored box represenation of a sequence has its
+parameter to `TRUE` to always force the drawing of boxes.  Of
+course also the colored box representation of a sequence has its
 limits, and if we cross the threshold when individual boxes can not be
 separated anymore, the plotting method falls back to drawing a single
 line indicating the presence of a sequence at the given position.
@@ -2047,7 +2043,7 @@ stored in `BAM` files.  As shown in some of the previous section
 we can deal with these files in a fairly crude way by coupling them to
 either an `AnnotationTrack` or a `DataTrack`. The utility
 of the generated plots however is fairly limited, and we want in
-particular support for gapped and paired aligments, and show
+particular support for gapped and paired alignments, and show
 differences of the individual read sequences to a reference.
 
 The `AlignmentsTrack` class is designed to help in exactly
@@ -2057,10 +2053,10 @@ directly off a file. Even though this file does not necessarily have
 to be a `BAM` file, the automatic import will only work for
 those. For all other file representations of alignments a user will
 have to provide their own import function, and this topic is further
-discussed in the class' documentation. For this demonstation let's use
+discussed in the class' documentation. For this demonstration let's use
 a small `BAM` file for which paired NGS reads have been mapped to
 an extract of the human hg19 genome. The data originate from an RNASeq
-experiment, and the alignements have been performed using the
+experiment, and the alignments have been performed using the
 `STAR` aligner allowing for gaps. We also download some gene
 annotation data for that region from Biomart.
 
@@ -2071,8 +2067,8 @@ constructor that it should expect paired reads. Please note that
 `TRUE` is the default value for this parameter and usually things
 will still work even if the reads do not originate from a paired end
 library. In other words, the default setting could be used as a
-poor-man's autodetection, however it make more sense to supply the
-argument explicitely if you know what type of data to expect.
+poor-man's auto-detection, however it make more sense to supply the
+argument explicitly if you know what type of data to expect.
 
 ```{r alignmentstrack_1_do, echo=FALSE, results='hide'}
 afrom <- 2960000
@@ -2090,7 +2086,7 @@ bmt <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr12", start=afrom, en
 ```
 
 We can create a first plot of our read alignments data from a birds
-eye perspecive, say a range of 20,000 nucleotides.
+eye perspective, say a range of 20,000 nucleotides.
 
 ```{r alignmentstrack_2, results='hide', fig.width=7.5, fig.height=5}
 plotTracks(c(bmt, alTrack), from=afrom, to=ato, chromosome="chr12")
@@ -2115,7 +2111,7 @@ plotTracks(c(bmt, alTrack), from=afrom, to=ato, chromosome="chr12", min.height=0
            minCoverageHeight=0)
 ```
 
-From that far out the pile-ups are not particlularly useful, and we
+From that far out the pile-ups are not particularly useful, and we
 can turn those off by setting the `type` display parameter
 accordingly.
 
@@ -2135,7 +2131,7 @@ and  read  pairs are  connected by  a bright  gray  line.  Gaps in
 the alignments are show by the connecting dark gray lines. Numbers of
 reads supporting each gap can be visualized as "sashimi plot"
 [@Katz22012015] by adding `'sashimi'` as an additional
-agument to the `type` display parameter.
+argument to the `type` display parameter.
 
 The axis in the title panel shows the relationship between the line
 width the the number of reads spanning a given junction. The height of
@@ -2169,7 +2165,7 @@ plotTracks(c(bmt, alTrack), from=afrom+12700, to=afrom+15200, chromosome="chr12"
            type=c("coverage", "sashimi"), sashimiFilter=introns, sashimiFilterTolerance=5L)
 ```
 
-On devices that support transparancy we  can also see that some of
+On devices that support transparency we  can also see that some of
 the read pairs are actually overlapping. Like  before, we can not
 display  the full depth of the pile-up,  and the clipping that takes
 place hides  a lot of the reads from  the view. Another way of
@@ -2259,13 +2255,13 @@ addParTable(xtabDetails,"AlignmentsTrack", out_type = out_type)
 # Creating tracks from UCSC data
 
 The UCSC data bases contain a multitude of genome annotation data for
-dozents of different organisms. Some of those data are very simple
+dozens of different organisms. Some of those data are very simple
 annotations like CpG island locations or SNP locations. Others are
 more complicated gene models, or even numeric annotations like
 conservation information. In order to provide a unified interface to
 all this information, the `r Biocpkg("Gviz")` package defines a meta-constructor
 function `UcscTrack`. The idea here is that we can express
-all of the available Ucsc data in one of the package's track types. We
+all of the available UCSC data in one of the package's track types. We
 use the functionality provided in the `r Biocpkg("rtracklayer")` package
 to connect to UCSC and to download the relevant information. As a
 little illustrative example, let's reproduce a view from the famous
@@ -2399,13 +2395,13 @@ Some features of a typical genome browser plot are not specific for
 just a single track, but instead span multiple tracks. One prominent
 example are highlighting regions. Assume you want to draw the
 attention on the plot to a particular genomic stretch where the visual
-clues across serveral or maybe even all tracks indicate a particular
-interesting behaviour. Because the individual tracks in the `r Biocpkg("Gviz")`
+clues across several or maybe even all tracks indicate a particular
+interesting behavior. Because the individual tracks in the `r Biocpkg("Gviz")`
 package are all represented by individual objects, there is no
 straight forward way to define such a region. Here is where the
 `HighlightingTrack` class comes into play. Objects from this
 class are essentially just containers for one or several of the
-previously described track objects, togehter with a very simple range
+previously described track objects, together with a very simple range
 definition that is to be superimposed over the individual tracks once
 they have been rendered. Going back to our final example from the
 second chapter we could highlight two areas on the plot on the
@@ -2433,7 +2429,7 @@ plotTracks(list(ht1, grtrack, ht2), from=lim[1], to=lim[2])
 
 For a complete listing of all the available display parameters please
 see the table below or the man page of the `HighlightTrack`
-class by typing in `?HighlightTrack` on the \RR command line.
+class by typing in `?HighlightTrack` on the `R` command line.
 
 ```{r HighlightTrackClassTable, echo=FALSE, results='asis'}
 addParTable(xtabDetails,"HighlightTrack", out_type = out_type)
@@ -2484,8 +2480,8 @@ the two `DataTracks` we can even ask for a legend to be added.
 
 On devices that support it, alpha blending can be a useful tool to
 tease out even more information out of track overlays, at least when
-comparing just a small number of samples. The resulting transparancy
-effctively eliminates the probelm of overplotting. The following
+comparing just a small number of samples. The resulting transparency
+effectively eliminates the problem of overplotting. The following
 example will only work if this vignette has been built on a system
 with alpha blending support.
 
@@ -2510,7 +2506,7 @@ can build our own composite plot using multiple consecutive
 `plotTracks` calls. All we need to take care of is an
 adequate layout structure to plot into, and we also need to tell
 `plotTracks` not to clear the graphics device before
-plotting, which can be archieved by setting the function's
+plotting, which can be achieved by setting the function's
 `add` argument to `FALSE`. For details on how to create a
 layout structure in the grid graphics system, please see the help page
 at `?grid.layout)`.
@@ -2537,7 +2533,7 @@ mgTrack <- GenomeAxisTrack(scale=50, labelPos="below", exponent=3)
 chromosome(itrack) <- "chr1"
 ```
 
-Finaly, we build a layout in which the plots for each chromosome are
+Finally, we build a layout in which the plots for each chromosome are
 placed in a rectangular grid and repeatedly call
 `plotTracks` for each chromosome.
 
@@ -2570,7 +2566,7 @@ xyplot(1~chromosome|chromosome, data=chroms, panel=function(x){plotTracks(list(i
 This short section is supposed to give a very brief overview over the
 different track classes in the `r Biocpkg("Gviz")` package and how those can be
 constructed from the typical Bioconductor classes that deal with
-genomic data. The list ist by no means complete, and a closer look at
+genomic data. The list is by no means complete, and a closer look at
 a track class' documentation should provide all the possible options.
 
 ```{r biocStruct1, echo=FALSE, results='asis'}
@@ -2588,7 +2584,7 @@ dt <- data.frame(`Gviz class` = rep(c("AnnotationTrack","GeneRegionTrack","DataT
 if (out_type == "html") {
   kable(dt) %>% kable_styling(full_width = FALSE) %>%
     column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
-} else if (out_type == "pdf") {
+} else if (out_type == "latex") {
   kable(dt, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
     column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
 }
@@ -2617,16 +2613,16 @@ dt <- data.frame(`Gviz class`=rep(c("AnnotationTrack","GeneRegionTrack","DataTra
                                "(YES","YES",
                                "YES"),
                  `Details`=c("Genomic locations from the mandatory `chrom`, `chromStart` and `chromEnd` fields, and optionally the strand from the strand field. If present, the information in the field is mapped to track item ids, and is mapped to track item feature type. All other fields are currently ignored.", "Only the following basic GFF fields are recognized: `seqname`, `start`, `end`, `strand`, (mapped to track item feature type) and `group` (to allow for track item grouping).", "Same as above, but feature grouping information may be provided either as `Group` or `Parent` attribute. Feature ids are mapped to one of the ID, Name or Alias attributes.", "Same as above, but feature grouping information has to be provided as the `Parent` attribute.", "Only start and end locations as well as the strand information for the reads are used. Read identifiers are used for track item grouping.", 
-                             "A somewhat looser format definition for `gtf` files is applied here where gene, transcript and exon identifiers and names can be parsed from the `gene_id`, `gene_name`, `transcript_id`, `transcript_name`, `exon_id`, or `exon_id attributes`", "This only supports very limited item grouping and thus complete gene mod- els can not be properly encoded.", "In most instances this is identical to the `GTF` standard and it could make sense to rename the file accordingly.", "The gene-to-transcript and transcript-to- exon relationships are encoded in the parent and `type` attributes and the parser tries to accomodate most of the exisiting `GFF3` variants.",
+                             "A somewhat looser format definition for `gtf` files is applied here where gene, transcript and exon identifiers and names can be parsed from the `gene_id`, `gene_name`, `transcript_id`, `transcript_name`, `exon_id`, or `exon_id attributes`", "This only supports very limited item grouping and thus complete gene models can not be properly encoded.", "In most instances this is identical to the `GTF` standard and it could make sense to rename the file accordingly.", "The gene-to-transcript and transcript-to- exon relationships are encoded in the parent and `type` attributes and the parser tries to accommodate most of the existing `GFF3` variants.",
                              "", "", "", "Read coverage only is extracted from the bam file.",
-                             "Streaming only possible if an index file is found in the same directory as the origi- nal fasta file.", "",
+                             "Streaming only possible if an index file is found in the same directory as the original fasta file.", "",
                              "Always needs an index file is found in the same directory as the original `BAM` file."),
                  stringsAsFactors = FALSE, check.names=FALSE)
 
 if (out_type == "html") {
   kable(dt) %>% kable_styling(full_width = FALSE) %>%
     column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
-} else if (out_type == "pdf") {
+} else if (out_type == "latex") {
   kable(dt, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
     column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
 }
