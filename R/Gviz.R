@@ -59,7 +59,11 @@
         if (!is.na(xx))
             y <- xx
         if(is.numeric(y))
-            y <- paste("chr", y, sep = "")
+          y <- paste("chr", y, sep = "")
+        if (y == "MT") # ensembl  `MT` to `chrM` in UCSC 
+          y <- "chrM"
+        if (y %in% c("M", "X", "Y", "Z", "W")) # mitochondrial genome and sex chromosomes
+          y <- paste("chr", y, sep = "")
         head <- tolower(substring(y, 1, 3)) == "chr"
         if(!head && force){
             y <-  paste("chr", y, sep = "")
