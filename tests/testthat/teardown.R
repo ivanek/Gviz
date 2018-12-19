@@ -1,0 +1,2 @@
+# teardown
+unlink("Rplots.pdf")

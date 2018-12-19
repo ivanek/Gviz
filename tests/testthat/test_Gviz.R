@@ -85,13 +85,23 @@ test_that("conversion of junction to list for plotting works", {
               id = c(1L, 1L, 1L), 
               score = 1, scaled = 10)
   filt <- GRanges("chr1", IRanges(start=2,end=9))
+  out2 <- list(x = c(3, 5, 8), 
+              y = c(0, 1, 0), 
+              id = c(1L, 1L, 1L), 
+              score = 1, scaled = 10)
+  filt2 <- GRanges("chr1", IRanges(start=3,end=8))
   expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns), out)
   # if minimum score filter works
   expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, score=2L), 
                    list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
   ## filter match
   expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt), out)
-  # negative filter
+  ## filter match (none)
+  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt2), 
+                   list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
+  ## filter match (with filterTolerance)
+  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt2, filterTolerance=1), out2)
+  # negative filterTolerance
   expect_warning(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt, filterTolerance=-1), 
                  "can't be negative, taking absolute value of it")
 })
