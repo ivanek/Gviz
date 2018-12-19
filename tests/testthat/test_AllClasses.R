@@ -2,11 +2,12 @@ library(Gviz)
 
 context("Gviz classes")
 
-test_that("checking the class and structure works", {
+test_that("building ImageMap works", {
   mat <- matrix(1, ncol=4, dimnames=list("a",NULL))
   tags <- list(a=c(a="tag"))
   expect_error(Gviz:::ImageMap(matrix(1, ncol=3), tags=tags), "must be a numeric matrix with 4 column")
   expect_error(Gviz:::ImageMap(matrix(1, ncol=4), tags=tags), "Rownames must be set for the matrix in")
+  expect_error(Gviz:::ImageMap(mat, tags=list(c(a="tag1"))), "must be a named list with character vector items.")
   expect_error(Gviz:::ImageMap(mat, tags=list(a=c(a="tag1", b="tag2"))), "following values in the")
   expect_error(Gviz:::ImageMap(mat, tags=list(a=c("tag1"))), "items in the 'tags' list must be named character")
   # check the class
