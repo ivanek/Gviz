@@ -32,7 +32,7 @@ __Last edited__: 10 December 2018
 ```{r init, echo=FALSE, results='hide'}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
+  ## comment = "#>",
   error = FALSE,
   warning = FALSE,
   message = FALSE
@@ -40,8 +40,16 @@ knitr::opts_chunk$set(
 ## stopifnot(requireNamespace("htmltools"))
 ## htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
-# check the output type
+## check the output type
 out_type <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+
+## add styling
+if (out_type == "html") {
+    BiocStyle::markdown()
+    ## BiocStyle::markdown(css.files = c('custom.css'))
+} else if (out_type == "latex") {
+    BiocStyle::latex()
+}
 ```
 
 ```{r init2, echo=FALSE, results='hide'}
