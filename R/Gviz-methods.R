@@ -2479,7 +2479,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
                   x1=c(axRange[2], axRange[1]+pxOff), y1=c(pyOff, -pyHook),
                   default.units="native", gp=gpar(col=color, alpha=alpha, lwd=lwd))
     ## Here we plot the top level ticks
-    tck <- .ticks(axRange)
+    tck <- .dpOrDefault(GdObject, "ticksAt", .ticks(axRange))
     tck <- tck[tck<axRange[2]-pxOff*2 & tck>axRange[1]+pxOff*2]
     y0t <- rep(c(1,-1)*pyOff, length(tck))[1:length(tck)]
     y1t <- y0t + rep(c(tickHeight, -tickHeight), length(tck))[1:length(tck)]
@@ -2499,7 +2499,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
             grid.text(label=label[[i]], x=ttck[i], y=ylabs[i], just=c("centre", "centre"),
                       gp=gpar(cex=cex, fontface=fontface), default.units="native")
     }
-    ## The scecond level ticks and labels if necessary
+    ## The second level ticks and labels if necessary
     if (.dpOrDefault(GdObject, "littleTicks", FALSE) && length(tck)>1)
     {
         avSpace <- min(diff(tck))

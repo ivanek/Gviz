@@ -1316,6 +1316,7 @@ setClass("GenomeAxisTrack",
                                   scale=NULL,
                                   showId=FALSE,
                                   showTitle=FALSE,
+                                  ticksAt=NULL,
                                   size=NULL,
                                   col="darkgray")))
 

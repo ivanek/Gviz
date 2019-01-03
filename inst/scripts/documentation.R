@@ -581,6 +581,7 @@ details <- list(
                                   scale="Numeric scalar. If not \\code{NULL} a small scale is drawn instead of the full axis, if the value is between 0 and 1 it is interpreted as a fraction of the current plotting region, otherwise as an absolute length value in genomic coordinates.",
                                   showId="Logical scalar. Show the optional range highlighting annotation.",
                                   showTitle="Logical scalar. Plot a title panel. Defaults to omit the title panel.",
+                                  ticksAt="Numeric scalar. The exact x-position for tickmarks (in base-pairs).",
                                   size="Numeric scalar. The relative size of the track. Can be overridden in the \\code{\\link{plotTracks}} function. Defaults to the ideal size based on the other track settings."
 
                                   ),
