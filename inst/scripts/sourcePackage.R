@@ -12,6 +12,7 @@ library(biovizBase)
 library(Biostrings)
 library(Rsamtools)
 library(GenomicAlignments)
+library(BSgenome)
 
 ## options(error=recover)
 removeAndSource <- function(file, remove=FALSE){
