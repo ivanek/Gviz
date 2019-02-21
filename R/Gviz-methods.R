@@ -2138,7 +2138,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     if("sashimi" %in% type){
         sash <- .dpOrDefault(GdObject, ".__sashimi", list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
         sashNumbers <- .dpOrDefault(GdObject, ".__sashimiNumbers", FALSE)
-        yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.05), 0) else c(-1,0)
+        yscale <- if (length(sash$y)) c(-(max(sash$y) + diff(range(sash$y)) * 0.15), 0) else c(-1,0) # changed from 0.05 to 0.15 to make sure that numbers fit in the viewport
         vp <- viewport(height=sashHeight["npc"], y=1-(covHeight["npc"] + covSpace + sashHeight["npc"] + sashSpace), just=c(0.5, 0),
                        xscale=xscale, yscale=yscale, clip=TRUE)
         pushViewport(vp)
