@@ -3769,7 +3769,11 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     if((is.logical(debug) && debug) || debug=="prepare")
         browser()
     imageMap(GdObject) <- NULL
-    chrnam <- paste("Chromosome", gsub("chr", "", chromosome(GdObject)))
+    if (names(GdObject)[1] != chromosome(GdObject)) {
+        chrnam <- names(GdObject)[1]
+    } else {
+        chrnam <- paste("Chromosome", gsub("chr", "", chromosome(GdObject)))
+    }
     cex <- .dpOrDefault(GdObject, "cex", 1)
     ## Nothing to do if there are no ranges in the object
     if(!length(GdObject))
