@@ -102,16 +102,18 @@ reasonable job in displaying genome annotation data, and there are
 options to connect to some of them from within `R` (e.g., using the
 `r Biocpkg("rtracklayer")` package). However, none of these solutions
 offer the flexibility of the full `R` graphics system to display large
-numeric data in a multitude of different ways. The `r Biocpkg("Gviz")` package aims
-to close this gap by providing a structured visualization framework to
-plot any type of data along genomic coordinates. It is loosely based
-on the `r Biocpkg("GenomeGraphs")` package by Steffen Durinck and James
-Bullard, however the complete class hierarchy as well as all the
-plotting methods have been restructured in order to increase
-performance and flexibility. All plotting is done using the grid
-graphics system, and several specialized annotation classes allow to
-integrate publicly available genomic annotation data from sources like
-[UCSC](https://genome.ucsc.edu/) or [ENSEMBL](https://www.ensembl.org/).
+numeric data in a multitude of different ways. The `r Biocpkg("Gviz")`
+package [@Hahne2016] aims to close this gap by providing a structured
+visualization framework to plot any type of data along genomic
+coordinates. It is loosely based on the `r Biocpkg("GenomeGraphs")`
+package by Steffen Durinck and James Bullard, however the complete
+class hierarchy as well as all the plotting methods have been
+restructured in order to increase performance and flexibility. All
+plotting is done using the grid graphics system, and several
+specialized annotation classes allow to integrate publicly available
+genomic annotation data from sources like
+[UCSC](https://genome.ucsc.edu/) or
+[ENSEMBL](https://www.ensembl.org/). 
 
 
 # Basic Features
@@ -2618,7 +2620,7 @@ dt <- data.frame(`Gviz class`=rep(c("AnnotationTrack","GeneRegionTrack","DataTra
                  `Streaming`=c("no","no","no","no","YES",
                                "no","no","no","no",
                                "no","no","YES","YES",
-                               "(YES","YES",
+                               "YES","YES",
                                "YES"),
                  `Details`=c("Genomic locations from the mandatory `chrom`, `chromStart` and `chromEnd` fields, and optionally the strand from the strand field. If present, the information in the field is mapped to track item ids, and is mapped to track item feature type. All other fields are currently ignored.", "Only the following basic GFF fields are recognized: `seqname`, `start`, `end`, `strand`, (mapped to track item feature type) and `group` (to allow for track item grouping).", "Same as above, but feature grouping information may be provided either as `Group` or `Parent` attribute. Feature ids are mapped to one of the ID, Name or Alias attributes.", "Same as above, but feature grouping information has to be provided as the `Parent` attribute.", "Only start and end locations as well as the strand information for the reads are used. Read identifiers are used for track item grouping.", 
                              "A somewhat looser format definition for `gtf` files is applied here where gene, transcript and exon identifiers and names can be parsed from the `gene_id`, `gene_name`, `transcript_id`, `transcript_name`, `exon_id`, or `exon_id attributes`", "This only supports very limited item grouping and thus complete gene models can not be properly encoded.", "In most instances this is identical to the `GTF` standard and it could make sense to rename the file accordingly.", "The gene-to-transcript and transcript-to- exon relationships are encoded in the parent and `type` attributes and the parser tries to accommodate most of the existing `GFF3` variants.",
