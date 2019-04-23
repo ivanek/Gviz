@@ -1642,6 +1642,15 @@ work, and that contacting Biomart can take a significant amount of
 time depending on usage and network traffic. Hence the results are
 almost never going to be returned instantaneously.
 
+NOTE: `r Biocpkg("Gviz")` tries hard to automatically set up the necessary connection to
+the Biomart service to retrieve the relevant data. Sometimes however
+it can be advantageous to fully control the Biomart connector, for
+instance when trying to retrieve data from an archived Ensembl version
+(by default, `r Biocpkg("biomaRt")` will always link to the most recent
+version). To that end, the `biomart` parameter can be used to
+supply a `biomaRt` object. Please note that a data set has to
+be selected in that object. In the example code below, the older version of human genome assembly (hg19) and matching Biomart version are used.
+
 ```{r BiomartGeneRegionTrackShow, eval=FALSE}
 library(biomaRt)
 bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
