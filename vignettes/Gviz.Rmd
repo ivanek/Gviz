@@ -27,7 +27,7 @@ editor_options:
     console
 ---
 
-__Last edited__: 10 December 2018
+__Last edited__: 23 April 2019
 
 ```{r init, echo=FALSE, results='hide'}
 knitr::opts_chunk$set(
@@ -85,6 +85,7 @@ hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-e
 oto <- options(timeout=5)
 hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
                          !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
+## hasBiomartConnection <- FALSE
 options(timeout=oto)
 ## ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
@@ -1642,14 +1643,18 @@ time depending on usage and network traffic. Hence the results are
 almost never going to be returned instantaneously.
 
 ```{r BiomartGeneRegionTrackShow, eval=FALSE}
+library(biomaRt)
+bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
-                                  name="ENSEMBL")
+                                  name="ENSEMBL", biomart=bm)
 plotTracks(biomTrack)
 ```
 ```{r BiomartGeneRegionTrackDo, echo=FALSE, results='hide', fig.width=7.5, fig.height=1.25}
+library(biomaRt)
 if(hasBiomartConnection){
+    bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
     biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
-                                        name="ENSEMBL")
+                                        name="ENSEMBL", biomart=bm)
 }else{
     data("biomTrack")
 }
@@ -1688,17 +1693,19 @@ see the documentation in the `r Biocpkg("biomaRt")` package for details.
 
 
 ```{r BiomartGeneRegionTrackFilterShow, eval=FALSE}
+bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
-                                  name="ENSEMBL", filter=list(with_ox_refseq_mrna=TRUE))
+                                  name="ENSEMBL", filter=list(with_refseq_mrna=TRUE), biomart=bm)
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 ```
 ```{r BiomartGeneRegionTrackFilterDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection){
+    bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
     biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome=chr, start=20e6, end=21e6,
-                                  name="ENSEMBL", filter=list(with_ox_refseq_mrna=TRUE))
+                                  name="ENSEMBL", filter=list(with_refseq_mrna=TRUE), biomart=bm)
     plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 }else{
-    biomTrack@filter <- list(with_ox_refseq_mrna=TRUE)
+    biomTrack@filter <- list(with_refseq_mrna=TRUE)
     plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
     biomTrack@filter <- list()
 }
@@ -1718,19 +1725,21 @@ region. If that is not desired one needs to provide an explicit
 Biomart filter.
 
 ```{r BiomartGeneRegionTrackSymbolShow, eval=FALSE}
-biomTrack <- BiomartGeneRegionTrack(genome="hg19", name="ENSEMBL", symbol="ABCB5")
-plotTracks(biomTrack)
+bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
+biomTrack <- BiomartGeneRegionTrack(genome="hg19", name="ENSEMBL", symbol="ABCB5", biomart=bm)
+plotTracks(biomTrack, transcriptAnnotation="symbol")
 ```
 ```{r BiomartGeneRegionTrackSymbolDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection){
-    biomTrack <- BiomartGeneRegionTrack(genome="hg19", name="ENSEMBL", symbol="ABCB5")
-    plotTracks(biomTrack, transcriptAnnotation="symbol")
+    bm <- useMart(host="grch37.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL", dataset="hsapiens_gene_ensembl")
+    biomTrack <- BiomartGeneRegionTrack(genome="hg19", name="ENSEMBL", symbol="ABCB5", biomart=bm)
 }else{
     ranges(biomTrack) <- ranges(biomTrack)[symbol(biomTrack) == "ABCB5"]
-    plotTracks(biomTrack, transcriptAnnotation="symbol")
 }
+plotTracks(biomTrack, transcriptAnnotation="symbol")
 ```
 
+<!--
 ### Using custom biomaRt objects for BiomartGeneRegionTracks
 `r Biocpkg("Gviz")` tries hard to automatically set up the necessary connection to
 the Biomart service to retrieve the relevant data. Sometimes however
@@ -1750,9 +1759,9 @@ region from the older version Ensembl version 47. The internal
 which is necessary because Ensembl used to call the gene symbol field
 `external_gene_id` in that release.
 
-```{r BiomartGeneRegionTrackCustom, fig.width=7.5, fig.height=1.25}
+```{r BiomartGeneRegionTrackCustom, fig.width=7.5, fig.height=1.25, eval=FALSE, echo=F}
 library(biomaRt)
-bm <- useMart(host="may2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
+bm <- useMart(host="dec2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
               dataset="hsapiens_gene_ensembl")
 fm <- Gviz:::.getBMFeatureMap()
 fm[["symbol"]] <- "external_gene_id"
@@ -1760,7 +1769,7 @@ biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr7", start=20e6
                                     featureMap=fm, biomart=bm)
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 ```
-
+-->
 
 ### Display parameters for BiomartGeneRegionTrack objects
 
@@ -2092,7 +2101,7 @@ afrom <- 2960000
 ato <- 3160000
 alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata", "gapped.bam"), isPaired=TRUE)
 bmt <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr12", start=afrom, end=ato,
-                              filter=list(with_ox_refseq_mrna=TRUE), stacking="dense")
+                              filter=list(with_refseq_mrna=TRUE), stacking="dense")
 ```
 
 We can create a first plot of our read alignments data from a birds
