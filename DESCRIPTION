@@ -7,7 +7,7 @@ Authors@R: c(person("Florian", "Hahne", role="aut"),
 	     person("Arne", "Mueller", role="aut"),
 	     person("Steve", "Lianoglou", role="aut"),
 	     person("Ge", "Tan", role="aut", email="ge.tan09@imperial.ac.uk"),
-	     person("Lance", "Parsons", role="aut", email="lparsons@princeton.edu")
+	     person("Lance", "Parsons", role="aut", email="lparsons@princeton.edu"),
 	     person("Shraddha", "Pai", role="aut", email="shraddha.pai@utoronto.ca"))
 Description: Genomic data analyses requires integrated visualization
     of known genomic information and new experimental data.  Gviz uses
