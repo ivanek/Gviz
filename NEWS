@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.28.0
+-------------------------
+BUG FIXES
+
+    o Fixed issue with hg19 genome version and BiomartGeneRegionTrack:
+      user needs to provide biomart object pointing to grch37.ensembl.org
+    o Fixed IdeogramTrack to use user provided title
+
 CHANGES IN VERSION 1.20.0
 -------------------------
 BUG FIXES
