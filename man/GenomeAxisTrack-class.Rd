@@ -711,6 +711,9 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       track. Can be overridden in the \code{\link{plotTracks}} function.
       Defaults to the ideal size based on the other track settings.} 
 
+    \item{}{\code{ticksAt=NULL}: Numeric scalar. The exact x-position
+      for tickmarks (in base-pairs).} 
+
   } 
 
   Additional display parameters are being inherited from the respective
@@ -964,6 +967,8 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale=0.5, labelPos="below")))
 }
 
 \keyword{classes}
+
+
 
 
 

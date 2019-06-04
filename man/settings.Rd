@@ -193,6 +193,9 @@ getScheme(name=getOption("Gviz.scheme"))
         \item{}{\code{showTitle=FALSE}: Logical scalar. Plot a title
           panel. Defaults to omit the title panel.} 
 
+        \item{}{\code{ticksAt=NULL}: Numeric scalar. The exact x-position
+          for tickmarks (in base-pairs).} 
+
         \item{}{\code{size=NULL}: Numeric scalar. The relative size of
           the track. Can be overridden in the \code{\link{plotTracks}}
           function. Defaults to the ideal size based on the other track
@@ -2222,6 +2225,8 @@ getScheme(name=getOption("Gviz.scheme"))
   \code{\link{plotTracks}}
 
 }
+
+
 
 
 
