@@ -1896,6 +1896,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         ## Plotting of the (arrow)bar
         if(nrow(bar)>0)
             .arrowBar(bar$sx1, bar$sx2, y=bar$y, bar$strand, box[,1:4, drop=FALSE],
+                      W=.dpOrDefault(GdObject, "arrowFeatherWidth", 3), D=.dpOrDefault(GdObject, "arrowFeatherDistance", 20),
                       col=if(is.null(col.line)) bar$col else rep(col.line, length(bar$col)), lwd=lwd, lty=lty,
                       alpha=alpha, barOnly=(!"smallArrow" %in% .dpOrDefault(GdObject, "shape", "box") || stacking(GdObject)=="dense"),
                       diff=res, min.height=.dpOrDefault(GdObject, "min.height", 3))
