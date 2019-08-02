@@ -2487,11 +2487,12 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     labelPos <- match.arg(labelPos, c("alternating", "revAlternating", "above", "below", "beside"))
     y0t <- switch(labelPos, "alternating"=y0t, "revAlternating"=-y0t, "above"=abs(y0t), "below"=-abs(y0t), "beside"=y0t)
     y1t <- switch(labelPos, "alternating"=y1t, "revAlternating"=-y1t, "above"=abs(y1t), "below"=-abs(y1t), "beside"=y1t)
-    grid.segments(x0=tck, x1=tck, y0=y0t, y1=y1t,  default.units="native", gp=gpar(col=color, alpha=alpha, lwd=lwd, lineend="square"))
+    ##ttck <- if(min(diff(tck))==1) tck+0.5 else tck # to align labels with ticks, shift by 0.5
+    ttck <- tck+0.5 # to align labels with ticks, shift by 0.5
+    grid.segments(x0=ttck, x1=ttck, y0=y0t, y1=y1t,  default.units="native", gp=gpar(col=color, alpha=alpha, lwd=lwd, lineend="square"))
     ## The top level tick labels
     label <- .expLabel(GdObject, tck)
     ylabs <- y1t + (ifelse(y1t>0, 1, -1) * (textYOff + (as.numeric(convertHeight(stringHeight("1"),"native"))/2)*cex))
-    ttck <- if(min(diff(tck))==1) tck+0.5 else tck
     if(is.character(label)){
         grid.text(label=label, x=ttck, y=ylabs, just=c("centre", "centre"),
                   gp=gpar(cex=cex, fontface=fontface), default.units="native")
@@ -2903,7 +2904,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     lty.baseline <- .dpOrDefault(GdObject, "lty.baseline", pcols$lty[1])
     ## The actual plotting values
     pos <- position(GdObject)
-    x <- rep(pos, each=nrow(vals))
+    x <- rep(pos+0.5, each=nrow(vals))  # to align it with ticks position
     y <- as.numeric(vals)
     ## A grid should always be plotted first, so we need to catch this here
     wg <- match("g", type, nomatch = NA_character_)
@@ -3955,7 +3956,7 @@ setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxB
                                lwd=.dpOrDefault(GdObject, "lwd", 2)))
     }else{
         sequence <- as.character(as(subseq(GdObject, start=minBase, end=maxBase-1), "Rle"))
-        at <- seq((minBase+0.5), maxBase - 1 + 0.5, by=1)
+        at <- seq((minBase+0.5), maxBase - 1 + 0.5, by=1) # to align sequence (letters) with ticks position
         sequence[sequence=="-"] <- ""
         if(perLetter<0.5 && .dpOrDefault(GdObject, "add53", FALSE))
             sequence[c(1, length(sequence))] <- ""
