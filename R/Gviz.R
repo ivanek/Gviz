@@ -60,7 +60,7 @@
             y <- xx
         if(is.numeric(y))
           y <- paste("chr", y, sep = "")
-        if (y == "MT") # ensembl  `MT` to `chrM` in UCSC 
+        if (y == "MT") # ensembl  `MT` to `chrM` in UCSC
           y <- "chrM"
         if (y %in% c("M", "X", "Y", "Z", "W")) # mitochondrial genome and sex chromosomes
           y <- paste("chr", y, sep = "")
@@ -1578,7 +1578,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     ## Open a fresh page and set up the bounding box, unless add==TRUE
     if(!panel.only) {
         ## We want a margin pixel border
-        ## for backward compatibility, if margin has length of 2, 
+        ## for backward compatibility, if margin has length of 2,
         ## the first one will be used as a horizontal, second as a vertical margin
         if (length(margin)==2) {
           margin <- rev(margin)
@@ -2338,7 +2338,7 @@ availableDefaultMapping <- function(file, trackType){
                  dev.off()
          })
     options(warn=2)
-    ok <- !is(try({grob <- grid.rect(width=0, height=0, gp=gpar(alpha=0.5))
+    ok <- !is(try({grob <- grid.rect(x=unit(0, "npc"), y=unit(0, "npc"), width=0, height=0, gp=gpar(alpha=0.5))
                    ##grid.remove(grob$name)
                }, silent=TRUE), "try-error")
     return(ok)
