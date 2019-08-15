@@ -98,7 +98,7 @@ setReplaceMethod("values", "DataTrack", function(x, value){
 
 
 ## Extract a subsequence from a SequenceTrack. For performance reasons we restrict this to a maximum
-## of one million nucleotides (which is already more than plenty...)
+## of ten million nucleotides (which is already more than plenty...)
 setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
     padding <- "-"
     if(!is.na(start[1]+end[1]+width[1])){
@@ -133,7 +133,7 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
     if((rend-rstart+1)>10e6)
         stop("Sequence is too big! Unable to extract")
     finalSeq <- rep(DNAString(padding), end-start+1)
-    if(chromosome(x) %in% seqnames(x) && rend>rstart){
+    if(chromosome(x) %in% seqnames(x) && rend>=rstart){
         chrSeq <- x@sequence[[chromosome(x)]]
         seq <- subseq(chrSeq, start=rstart, end=rend)
         if(is(x, "SequenceBSgenomeTrack")) seq <- unmasked(seq)
@@ -147,6 +147,10 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
 })
 
 setMethod("subseq", "ReferenceSequenceTrack", function(x, start=NA, end=NA, width=NA){
+    if(!is.na(start[1]+end[1]+width[1])){
+        warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
+        width <- NA
+    }
     ## We want start and end to be set if width is provided
     if(!is.na(width[1])){
         if(is.na(start) && is.na(end))
@@ -156,7 +160,7 @@ setMethod("subseq", "ReferenceSequenceTrack", function(x, start=NA, end=NA, widt
         if(is.na(end))
             end <- start+width[1]-1
     }
-    x@sequence <- x@stream(file=x@reference, selection=GRanges(chromosome(x), ranges=IRanges(start, end)))
+    x@sequence <- x@stream(file=x@reference, selection=GRanges(chromosome(x), ranges=IRanges(1, end)))
     return(callNextMethod())
 })
 
@@ -4544,7 +4548,7 @@ setMethod("show",signature(object="IdeogramTrack"),
     msg <- sprintf(paste("Sequence track '%s':\n",
                          "| genome: %s\n",
                          "| chromosomes: %s\n",
-                         "| active chromosome: %s (%s nulceotides)\n", sep=""),
+                         "| active chromosome: %s (%s nucleotides)\n", sep=""),
                    names(object),
                    genome(object),
                    length(seqnames(object)),
