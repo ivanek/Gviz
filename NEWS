@@ -1,3 +1,18 @@
+CHANGES IN VERSION 1.28.1
+-------------------------
+BUG FIXES
+
+    o Fixed issue with `subseq` function for `ReferenceSequenceTrack`
+
+    o Changed the visualized position of tickmarks, and values in
+      `DataTrack` => align all to + 0.5 position, which matches
+      the `SequenceTrack` and `AnnotationTrack` visualization
+
+    o Changed the check for transparency support in currently opened
+      device `supportsAlpha`, point moved from center to the left
+      bottom corner
+
+
 CHANGES IN VERSION 1.28.0
 -------------------------
 BUG FIXES
