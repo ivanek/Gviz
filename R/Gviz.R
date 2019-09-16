@@ -1436,15 +1436,22 @@ addScheme <- function(scheme, name){
         if(!is.factor(groups))
             groups <- factor(groups)
         col <- .dpOrDefault(GdObject, "col", trellis.par.get("superpose.line")$col)
-        col <- rep(col, nlevels(groups))
-        col.line <- rep(.dpOrDefault(GdObject, "col.line", col), nlevels(groups))
-        col.symbol <- rep(.dpOrDefault(GdObject, "col.symbol", col), nlevels(groups))
-        lwd <- rep(lwd, nlevels(groups))
-        lty <- rep(lty, nlevels(groups))
-        pch <- rep(pch, nlevels(groups))
-        cex <- rep(cex, nlevels(groups))
+        col <- rep(col, nlevels(groups))[seq_along(levels(groups))]
+        col.line <- rep(.dpOrDefault(GdObject, "col.line", col), nlevels(groups))[seq_along(levels(groups))]
+        col.symbol <- rep(.dpOrDefault(GdObject, "col.symbol", col), nlevels(groups))[seq_along(levels(groups))]
+        names(col) <- unique(groups)
+        names(col.line) <- unique(groups)
+        names(col.symbol) <- unique(groups)
+        lwd <- rep(lwd, nlevels(groups))[seq_along(levels(groups))]
+        names(lwd) <- unique(groups)
+        lty <- rep(lty, nlevels(groups))[seq_along(levels(groups))]
+        names(lty) <- unique(groups)
+        pch <- rep(pch, nlevels(groups))[seq_along(levels(groups))]
+        names(pch) <- unique(groups)
+        cex <- rep(cex, nlevels(groups))[seq_along(levels(groups))]
+        names(cex) <- unique(groups)
     }
-    col.baseline <- .dpOrDefault(GdObject, "col.baseline", col)
+    col.baseline <- .dpOrDefault(GdObject, "col.baseline", col)[1]
     col.grid <- .dpOrDefault(GdObject, "col.grid", "#e6e6e6")[1]
     fill <- .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)[1]
     fill.histogram <- .dpOrDefault(GdObject, "fill.histogram", fill)[1]
