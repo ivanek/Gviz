@@ -2849,19 +2849,20 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                  spacing <- .dpOrDefault(GdObject, ".__spacing")
                  dims <- .dpOrDefault(GdObject, ".__layoutDims")
                  for(i in seq_along(grpLevels)){
+                     grpLev <- grpLevels[i]
                      row <- (((i)-1) %/% dims[2])+1
                      col <- (((i)-1) %% dims[2])+1
                      pushViewport(viewport(width=1/dims[2], height=1/dims[1], x=(1/dims[2])*(col-1), y=1-((1/dims[1])*(row-1)), just=c(0,1)))
                      grid.rect(gp=gpar(col="transparent", fill=.dpOrDefault(GdObject, "background.legend", "transparent")))
                      if(length(setdiff(legFactors, c("col")))==0){
                          grid.rect(width=unit(boxSize, "inches"), height=unit(boxSize, "inches"), x=0, just=c(0, 0.5),
-                                   gp=gpar(fill=pcols$col[i], col=.DEFAULT_SHADED_COL))
+                                   gp=gpar(fill=pcols$col[grpLev], col=.DEFAULT_SHADED_COL))
                      } else {
                          if(any(c("pch", "col.symbol") %in% legFactors))
-                             panel.points(unit(boxSize/2, "inches"), 0.5, pch=pcols$pch[i], cex=pcols$cex[i], col=pcols$col.symbol[i])
+                             panel.points(unit(boxSize/2, "inches"), 0.5, pch=pcols$pch[grpLev], cex=pcols$cex[grpLev], col=pcols$col.symbol[grpLev])
                          if(any(c("lwd", "lty", "col.lines") %in% legFactors))
-                             ##panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i])
-                             grid.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), gp=gpar(col=pcols$col.line[i], lwd=pcols$lwd[i], lty=pcols$lty[i]))
+                             ##panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[grpLev], lwd=pcols$lwd[grpLev], lty=pcols$lty[grpLev])
+                             grid.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), gp=gpar(col=pcols$col.line[grpLev], lwd=pcols$lwd[grpLev], lty=pcols$lty[grpLev]))
                      }
                      grid.text(x=unit(boxSize+spacing, "inches"), y=0.5, just=c(0, 0.5), label=grpLevels[i])
                      popViewport(1)
