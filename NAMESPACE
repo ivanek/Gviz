@@ -10,7 +10,7 @@ import(grid)
 
 importClassesFrom(biomaRt, Mart)
 
-importClassesFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString)
+importClassesFrom(Biostrings, DNAStringSet, RNAStringSet, BStringSet, DNAString, RNAString, BString)
 
 importClassesFrom(BSgenome, BSgenome, MaskedBSgenome)
 
@@ -36,7 +36,7 @@ importMethodsFrom(Biostrings, consensusMatrix, consensusString, unmasked, comple
 
 importFrom(Biobase, listLen, rowMax, rowMin)
 
-importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
+importFrom(Biostrings, DNAStringSet, RNAStringSet, BStringSet, DNAString, RNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
 
 importFrom(biomaRt, getBM, useMart, listDatasets, listAttributes, listFilters)
 
