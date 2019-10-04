@@ -133,7 +133,11 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
         stop("'end' has to be bigger than 'start'")
     if((rend-rstart+1)>10e6)
         stop("Sequence is too big! Unable to extract")
-    class <- paste0(seqtype(x@sequence),"String")
+    seqtype <- try(seqtype(x@sequence))
+    if(is(seqtype,"try-error")){
+      seqtype <- "DNA"
+    }
+    class <- paste0(seqtype,"String")
     finalSeq <- rep(do.call(class,list(padding)), end-start+1)
     if(chromosome(x) %in% seqnames(x) && rend>=rstart){
         chrSeq <- x@sequence[[chromosome(x)]]
