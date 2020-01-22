@@ -12,6 +12,14 @@ before_install:
 # - Rscript -e 'install.packages("devtools")'
 # - Rscript -e 'devtools::install(dependencies=TRUE)'
 
+addons:
+  apt:
+    update: true
+    sources:
+      - sourceline: 'ppa:opencpu/imagemagick'
+    packages:
+      - libmagick++-dev
+
 r_build_args: "--no-manual --no-resave-data"
 r_check_args: "--no-build-vignettes --no-manual --timings"
 

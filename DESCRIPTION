@@ -45,6 +45,7 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     BiocStyle,
     knitr,
+    magick,
     kableExtra,
     rmarkdown,
     testthat
