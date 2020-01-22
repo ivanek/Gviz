@@ -2298,7 +2298,7 @@ UCSC genome browser using the `r Biocpkg("Gviz")` package. As a final result we 
 to show something similar to Figure \@ref(fig:UCSC1).
 
 ```{r UCSC1, echo=FALSE,fig.cap="A screen shot of a UCSC genome browser view around the FMR1 locus on the mouse chromosome."}
-include_graphics("ucsc1.png", error=FALSE)
+include_graphics("ucsc1.png")
 ```
 
 To start we first need to know about the available data in the UCSC
@@ -2316,7 +2316,7 @@ is exactly what the `UcscTrack` meta-constructor is supposed
 to do for us.
 
 ```{r UCSC2, echo=FALSE, fig.cap="A screen shot of a UCSC table browser view on the UCSC Known Genes track."}
-include_graphics("ucsc2.png", error=FALSE)
+include_graphics("ucsc2.png")
 ```
 
 It needs to know about the track for which to extract the data (and
