@@ -1302,6 +1302,12 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{min.distance=0}: Numeric scalar. The mimimum distance
       in pixel below which to collapse ranges.} 
 
+    \item{}{\code{missingAsZero=TRUE}: Logical scalar. Defines how the
+      missing values are treated in the aggregation procedure with
+      running window. Setting it to \code{TRUE} fills empty positions
+      with zeros, which is default. \code{FALSE} fills empty positions
+      with \code{NA}.} 
+
     \item{}{\code{na.rm=FALSE}: Boolean controlling whether to discard
       all NA values when plotting or to keep empty spaces for NAs} 
 

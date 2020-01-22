@@ -904,6 +904,7 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
     ## When an averaging window has been set, split the data up into these average chunks
     window <- .dpOrDefault(GdObject, "window")
     windowSize <- .dpOrDefault(GdObject, "windowSize")
+    missingAsZero <- .dpOrDefault(GdObject, "missingAsZero", TRUE)
     if(!is.null(window) || collapse)
         GdObject <- GdObject[,order(range(GdObject))]
     r <- ranges(GdObject)
@@ -934,10 +935,14 @@ setMethod("collapseTrack", signature(GdObject="DataTrack"), function(GdObject, d
                 windowSize <- (max(GdObject)-min(GdObject))/100
             if(windowSize %% 2 !=1)
                 windowSize <- windowSize+1
-            rm <- vector("integer", width(range(range(GdObject))))
+            if (missingAsZero) {
+              rm <- vector("integer", width(range(range(GdObject))))
+            } else {
+              rm <- as.integer(rep(NA, width(range(range(GdObject)))))
+            }
             ind <- unlist(mapply(function(x, y) x:y, start(GdObject), end(GdObject)))-min(GdObject)+1
             rm[ind] <- rep(sc[1,], width(GdObject))
-            runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k=windowSize, endrule="constant"))
+            runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k=windowSize, endrule="constant", na.rm = TRUE))
             seqSel <- findRun(as.integer(position(GdObject))-min(GdObject)+1, runwin)
             newDat <- matrix(runValue(runwin)[seqSel], nrow=1)
             if(nrow(sc)>1)

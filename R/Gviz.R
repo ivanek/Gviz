@@ -1108,6 +1108,7 @@
                               DataTrack=list(
                                              aggregateGroups=FALSE,
                                              aggregation="mean",
+                                             missingAsZero=TRUE,
                                              amount=NULL,
                                              baseline=NULL,
                                              box.ratio=1,

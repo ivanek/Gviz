@@ -426,6 +426,7 @@ details <- list(
 
                             aggregateGroups="Logical scalar. Aggregate the values within a sample group using the aggregation funnction specified in the \\code{aggregation} parameter.",
                             aggregation="Function or character scalar. Used to aggregate values in windows or for collapsing overlapping items. The function has to accept a numeric vector as a single input parameter and has to return a numeric scalar with the aggregated value. Alternatively, one of the predefined options \\code{mean}, \\code{median} \\code{sum}, \\code{min}, \\code{max} or \\code{extreme} can be supplied as a character scalar. Defaults to \\code{mean}.",
+                            missingAsZero="Logical scalar. Defines how the missing values are treated in the aggregation procedure with running window. Setting it to \\code{TRUE} fills empty positions with zeros, which is default. \\code{FALSE} fills empty positions with \\code{NA}.",
                             alpha.confint="Numeric scalar. The transparency for the confidence intervalls in confint-type plots.",
                             amount="Numeric scalar. Amount of jittering in xy-type plots. See \\code{\\link{panel.xyplot}} for details.",
                             baseline="Numeric scalar. Y-axis position of an optional baseline. This parameter has a special meaning for mountain-type and polygon-type plots, see the 'Details' section in \\code{\\linkS4class{DataTrack}} for more information.",
