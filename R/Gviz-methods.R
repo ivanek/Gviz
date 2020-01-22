@@ -1370,8 +1370,11 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
     col <- .dpOrDefault(GdObject, "col.axis", "white")
     acex <- .dpOrDefault(GdObject, "cex.axis")
     acol <- .dpOrDefault(GdObject, "col.axis", "white")
-    at <- pretty(yscale)
-    at <- at[at>=sort(ylim)[1] & at<=sort(ylim)[2]]
+    at <- .dpOrDefault(GdObject, "yTicksAt", pretty(yscale))
+    at <- at[which(at>=sort(ylim)[1] & at<=sort(ylim)[2])]
+    if (!length(at)) {
+      at <- sort(ylim)[1:2]
+    }
     if(is.null(acex))
     {
         vSpaceNeeded <- max(as.numeric(convertWidth(stringHeight(at), "inches")))*length(at)*1.5

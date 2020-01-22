@@ -497,8 +497,8 @@ details <- list(
                             varwidth="Logical scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             window="Numeric or character scalar. Aggregate the rows values of the data matrix to \\code{window} equally sized slices on the data range using the method defined in \\code{aggregation}. If negative, apply a running window of size \\code{windowSize} using the same aggregation method. Alternatively, the special value \\code{auto} causes the function to determine the optimal window size to avoid overplotting, and \\code{fixed} uses fixed-size windows of size \\code{windowSize}.",
                             windowSize="Numeric scalar. The size of the running window when the value of \\code{window} is negative.",
-                            ylim="Numeric vector of length 2. The range of the y-axis scale."
-
+                            ylim="Numeric vector of length 2. The range of the y-axis scale.",
+                            yTicksAt="Numeric vector. The points at which y-axis tick-marks are to be drawn. By default, when \\code{NULL}, tickmark locations are computed."
                             ),
 
                 StackedTrack=c(

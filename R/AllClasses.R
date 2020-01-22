@@ -1456,7 +1456,8 @@ setClass("DataTrack",
                                             varwidth=FALSE,
                                             window=NULL,
                                             windowSize=NULL,
-                                            ylim=NULL)))
+                                            ylim=NULL,
+                                            yTicksAt=NULL)))
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ...){

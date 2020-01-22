@@ -1378,6 +1378,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{windowSize=NULL}: Numeric scalar. The size of the
       running window when the value of \code{window} is negative.} 
 
+    \item{}{\code{yTicksAt=NULL}: Numeric vector. The points at which
+      y-axis tick-marks are to be drawn. By default, when \code{NULL},
+      tickmark locations are computed.} 
+
     \item{}{\code{ylim=NULL}: Numeric vector of length 2. The range of
       the y-axis scale.} 
 

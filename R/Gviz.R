@@ -1162,7 +1162,8 @@
                                              varwidth=FALSE,
                                              window=NULL,
                                              windowSize=NULL,
-                                             ylim=NULL
+                                             ylim=NULL,
+                                             yTicksAt=NULL
                                              ),
 
                               IdeogramTrack=list(
