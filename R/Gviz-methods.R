@@ -19,6 +19,7 @@ setMethod("range", "GenomeAxisTrack", function(x) ranges(x@range))
 ## seqnames, levels and infofrom the range track
 setMethod("seqnames", "RangeTrack", function(x) as.character(seqnames(ranges(x))))
 setMethod("seqnames", "SequenceDNAStringSetTrack", function(x) as.character(names(x@sequence)))
+setMethod("seqnames", "SequenceRNAStringSetTrack", function(x) as.character(names(x@sequence)))
 setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames(x@sequence)))
 setMethod("seqlevels", "RangeTrack", function(x) unique(seqnames(x)))
 setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence)>0])
@@ -132,7 +133,12 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
         stop("'end' has to be bigger than 'start'")
     if((rend-rstart+1)>10e6)
         stop("Sequence is too big! Unable to extract")
-    finalSeq <- rep(DNAString(padding), end-start+1)
+    seqtype <- try(seqtype(x@sequence))
+    if(is(seqtype,"try-error")){
+      seqtype <- "DNA"
+    }
+    class <- paste0(seqtype,"String")
+    finalSeq <- rep(do.call(class,list(padding)), end-start+1)
     if(chromosome(x) %in% seqnames(x) && rend>=rstart){
         chrSeq <- x@sequence[[chromosome(x)]]
         seq <- subseq(chrSeq, start=rstart, end=rend)
@@ -4076,6 +4082,7 @@ setAs("GRangesList", "GeneRegionTrack", function(from, to) GeneRegionTrack(range
 setAs("TxDb", "GeneRegionTrack", function(from, to) GeneRegionTrack(range=from))
 
 setAs("DNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
+setAs("RNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
 
 setMethod("head", "InferredDisplayPars", function(x, n=10, ...){
     sel <- 1:min(n, length(x))
@@ -4597,6 +4604,7 @@ setMethod("show",signature(object="SequenceBSgenomeTrack"),
 
 ## Here we only need the name, genome and currently active chromosome information
 setMethod("show", signature(object="SequenceDNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
+setMethod("show", signature(object="SequenceRNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
 
 setMethod("show",signature(object="AlignedReadTrack"),
 		  function(object){

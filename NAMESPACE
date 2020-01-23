@@ -10,7 +10,7 @@ import(grid)
 
 importClassesFrom(biomaRt, Mart)
 
-importClassesFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString)
+importClassesFrom(Biostrings, DNAStringSet, RNAStringSet, BStringSet, DNAString, RNAString, BString)
 
 importClassesFrom(BSgenome, BSgenome, MaskedBSgenome)
 
@@ -31,12 +31,12 @@ importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
                   import.bw, import.ucsc, import.bed, import.bedGraph, import.chain,
                   import.wig, seqinfo)
 
-importMethodsFrom(Biostrings, consensusMatrix, consensusString, unmasked, complement)
+importMethodsFrom(Biostrings, seqtype, "seqtype<-", consensusMatrix, consensusString, unmasked, complement)
 
 
 importFrom(Biobase, listLen, rowMax, rowMin)
 
-importFrom(Biostrings, DNAStringSet, BStringSet, DNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
+importFrom(Biostrings, DNAStringSet, RNAStringSet, BStringSet, DNAString, RNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
 
 importFrom(biomaRt, getBM, useMart, listDatasets, listAttributes, listFilters)
 

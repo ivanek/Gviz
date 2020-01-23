@@ -1965,7 +1965,6 @@ setClass("SequenceTrack",
                                             background.title="transparent",
                                             col="darkgray",
                                             complement=FALSE,
-                                            fontcolor=getBioColor("DNA_BASES_N"),
                                             fontface=2,
                                             fontsize=10,
                                             lwd=2,
@@ -1981,10 +1980,16 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
     ## the diplay parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "SequenceTrack")
-     if(!missing(chromosome) && !is.null(chromosome)){
+    if(!missing(chromosome) && 
+       !is.na(chromosome) && 
+       !is.null(chromosome)){
+      if(!is.null(names(sequence))){
+        .Object@chromosome <- .chrName(names(sequence)[1])[1]
+      } else {
         .Object@chromosome <- .chrName(chromosome)[1]
+      }
     }
-    if(missing(genome) || is.null(genome))
+    if(missing(genome) || is.na(genome) || is.null(genome))
         genome <- as.character(NA)
     .Object@genome <- genome
     .Object <- callNextMethod(.Object, ...)
@@ -1997,10 +2002,10 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
 ##      chromosome if available, and genome as supplied or NA if missing
 ##   c) sequence is BSgenome => build SequenceBSgenomeTrack where chromosome is seqnames(sequence)[1] or the supplied
 ##      chromosome if available, and genome is the supplied genome or the one extracted from the BSgenome object
-SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", importFunction, stream=FALSE, ...){
+.SequenceTrack <- function(SeqTrackType, seqtype, sequence, chromosome, genome, name="SequenceTrack", importFunction, stream=FALSE, ...){
     .missingToNull(c("chromosome", "genome", "sequence"))
     if(is.null(sequence)){
-        return(new("SequenceDNAStringSetTrack", chromosome=chromosome, genome=genome, name=name, ...))
+        return(new(SeqTrackType, chromosome=chromosome, genome=genome, name=name, ...))
     }
     if(is(sequence, "BSgenome")){
         if(is.null(genome))
@@ -2008,14 +2013,17 @@ SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", im
         if(is.null(chromosome))
             chromosome <- seqnames(sequence)[1]
         obj <- new("SequenceBSgenomeTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
-    }else if(is(sequence, "DNAStringSet")){
+    } else if(is(sequence, "XStringSet")){
+        if(seqtype(sequence) != seqtype){
+          seqtype(sequence) <- seqtype
+        }
         if(is.null(names(sequence)))
-            stop("The sequences in the DNAStringSet must be named")
+            stop("The sequences in the ",seqtype,"StringSet must be named")
         if(any(duplicated(names(sequence))))
-            stop("The sequence names in the DNAStringSet must be unique")
+            stop("The sequence names in the ",seqtype,"StringSet must be unique")
         if(is.null(chromosome))
             chromosome <- names(sequence)[1]
-        obj <- new("SequenceDNAStringSetTrack", sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
+        obj <- new(SeqTrackType, sequence=sequence, chromosome=chromosome, genome=genome, name=name, ...)
     } else if(is.character(sequence)){
         sequence <- sequence[1]
         if(!file.exists(sequence))
@@ -2051,10 +2059,30 @@ SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", im
             }
         }
     }else{
-        stop("Argument sequence must be of class 'BSgenome', 'DNAStringSet' or 'character'")
+        stop("Argument sequence must be of class 'BSgenome', 'XStringSet' or 'character'")
     }
     return(obj)
 }
+
+SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", importFunction, stream=FALSE, ...){
+  .SequenceTrack("SequenceDNAStringSetTrack",
+                 "DNA",
+                 sequence,
+                 chromosome,
+                 genome,
+                 ...)
+}
+
+RNASequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", importFunction, stream=FALSE, ...){
+  .SequenceTrack("SequenceRNAStringSetTrack",
+                 "RNA",
+                 sequence,
+                 chromosome,
+                 genome,
+                 ...)
+}
+
+
 ##----------------------------------------------------------------------------------------------------------------------
 
 
@@ -2062,14 +2090,26 @@ SequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack", im
 ##----------------------------------------------------------------------------------------------------------------------
 ## SequenceDNAStringSetTrack:
 ##
-## A track to visualize nucleotide sequences that are stored in a DNSStringSet
+## A track to visualize nucleotide sequences that are stored in a DNAStringSet
 ## Slots:
 ##    o sequence: a DNAStringSet object that contains all the sequence data
 ##----------------------------------------------------------------------------------------------------------------------
 setClass("SequenceDNAStringSetTrack",
          representation=representation(sequence="DNAStringSet"),
          contains="SequenceTrack",
-         prototype=prototype(sequence=DNAStringSet()))
+         prototype=prototype(sequence=DNAStringSet(),
+                             dp=DisplayPars(add53=FALSE,
+                                            background.title="transparent",
+                                            col="darkgray",
+                                            complement=FALSE,
+                                            fontcolor=getBioColor("DNA_BASES_N"),
+                                            fontface=2,
+                                            fontsize=10,
+                                            lwd=2,
+                                            min.width=2,
+                                            noLetters=FALSE,
+                                            showTitle=FALSE,
+                                            size=NULL)))
 
 setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
     if(missing(sequence) || is.null(sequence))
@@ -2077,6 +2117,38 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
     .Object@sequence <- sequence
     .Object <- callNextMethod(.Object, ...)
      return(.Object)
+})
+##----------------------------------------------------------------------------------------------------------------------
+
+## SequenceRNAStringSetTrack:
+##
+## A track to visualize nucleotide sequences that are stored in a RNAStringSet
+## Slots:
+##    o sequence: a RNAStringSet object that contains all the sequence data
+##----------------------------------------------------------------------------------------------------------------------
+setClass("SequenceRNAStringSetTrack",
+         representation=representation(sequence="RNAStringSet"),
+         contains="SequenceTrack",
+         prototype=prototype(sequence=RNAStringSet(),
+                             dp=DisplayPars(add53=FALSE,
+                                            background.title="transparent",
+                                            col="darkgray",
+                                            complement=FALSE,
+                                            fontcolor=getBioColor("RNA_BASES_N"),
+                                            fontface=2,
+                                            fontsize=10,
+                                            lwd=2,
+                                            min.width=2,
+                                            noLetters=FALSE,
+                                            showTitle=FALSE,
+                                            size=NULL)))
+
+setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence, ...) {
+  if(missing(sequence) || is.null(sequence))
+    sequence <- RNAStringSet()
+  .Object@sequence <- sequence
+  .Object <- callNextMethod(.Object, ...)
+  return(.Object)
 })
 ##----------------------------------------------------------------------------------------------------------------------
 
