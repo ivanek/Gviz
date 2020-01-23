@@ -36,7 +36,7 @@ knitr::opts_chunk$set(
   error = FALSE,
   warning = FALSE,
   message = FALSE,
-  crop = NULL
+  crop = NULL                           # fix vignette rendering based on yihui/knitr#1796 , added also error=FALSE to include_graphics
 )
 ## stopifnot(requireNamespace("htmltools"))
 ## htmltools::tagList(rmarkdown::html_dependency_font_awesome())
