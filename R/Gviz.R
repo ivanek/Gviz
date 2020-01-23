@@ -1187,7 +1187,7 @@
                                                  cex=1,
                                                  col="darkgray",
                                                  complement=FALSE,
-                                                 fontcolor=getBioColor("DNA_BASES_N"),
+                                                 fontcolor=NULL,
                                                  fontface=2,
                                                  fontsize=10,
                                                  lwd=2,

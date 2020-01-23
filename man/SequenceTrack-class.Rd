@@ -12,14 +12,17 @@
 \alias{subseq,ReferenceSequenceTrack-method}
 \alias{initialize,SequenceBSgenomeTrack-method}
 \alias{initialize,SequenceDNAStringSetTrack-method}
+\alias{initialize,SequenceRNAStringSetTrack-method}
 \alias{seqlevels,SequenceBSgenomeTrack-method}
 \alias{seqnames,SequenceBSgenomeTrack-method}
 \alias{seqlevels,SequenceDNAStringSetTrack-method}
 \alias{seqnames,SequenceDNAStringSetTrack-method}
+\alias{seqnames,SequenceRNAStringSetTrack-method}
 \alias{length,SequenceTrack-method}
 \alias{start,SequenceTrack-method}
 \alias{subseq,SequenceTrack-method}
 \alias{coerce,DNAString,Rle-method}
+\alias{coerce,RNAString,Rle-method}
 \alias{width,SequenceTrack-method}
 \alias{consolidateTrack,SequenceTrack-method}
 
