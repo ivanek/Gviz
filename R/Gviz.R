@@ -1439,7 +1439,7 @@ addScheme <- function(scheme, name){
             groups <- factor(groups)
             nms <- unique(groups)
         } else {
-            nms <- levels(groups)          
+            nms <- levels(groups)
         }
         col <- .dpOrDefault(GdObject, "col", trellis.par.get("superpose.line")$col)
         col <- rep(col, nlevels(groups))[seq_along(levels(groups))]
@@ -2202,8 +2202,11 @@ availableDisplayPars <- function(class)
     pairedEnd <- parent.env(environment())[["._isPaired"]]
     if(is.null(pairedEnd))
         pairedEnd <- TRUE
+    flag <- parent.env(environment())[["._flag"]]
+    if(is.null(flag))
+        flag <- scanBamFlag(isUnmappedQuery=FALSE)
     bf <- BamFile(file, index=index, asMates=pairedEnd)
-    param <- ScanBamParam(which=selection, what=scanBamWhat(), tag="MD", flag=scanBamFlag(isUnmappedQuery=FALSE))
+    param <- ScanBamParam(which=selection, what=scanBamWhat(), tag="MD", flag=flag)
     reads <- if(as.character(seqnames(selection)[1]) %in% names(scanBamHeader(bf)$targets)) scanBam(bf, param=param)[[1]] else list()
     md <- if(is.null(reads$tag$MD)) rep(as.character(NA), length(reads$pos)) else reads$tag$MD
     if(length(reads$pos)){

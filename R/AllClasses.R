@@ -2220,7 +2220,7 @@ setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, re
 
 ## Constructor
 AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome, genome,
-                            stacking="squish", id, cigar, mapq, flag, isize, groupid, status, md, seqs,
+                            stacking="squish", id, cigar, mapq, flag=scanBamFlag(isUnmappedQuery=FALSE), isize, groupid, status, md, seqs,
                             name="AlignmentsTrack", isPaired=TRUE, importFunction, referenceSequence, ...){
     ## Some defaults
     if(missing(importFunction))
@@ -2280,6 +2280,7 @@ AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand
             e <- new.env()
             e[["._trackType"]] <- "AlignmentsTrack"
             e[["._isPaired"]] <- isPaired
+            e[["._flag"]] <- flag
             environment(slist[["stream"]]) <- e
             return(new("ReferenceAlignmentsTrack", chromosome=chromosome[1], range=range, stackRanges=stackRanges,
                        name=name, genome=genome, stacking=stacking, stream=slist[["stream"]], reference=slist[["reference"]],
