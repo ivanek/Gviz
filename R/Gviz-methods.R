@@ -133,7 +133,7 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
         stop("'end' has to be bigger than 'start'")
     if((rend-rstart+1)>10e6)
         stop("Sequence is too big! Unable to extract")
-    seqtype <- try(seqtype(x@sequence))
+    seqtype <- try(seqtype(x@sequence), silent=TRUE)
     if(is(seqtype,"try-error")){
       seqtype <- "DNA"
     }
