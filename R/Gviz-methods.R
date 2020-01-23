@@ -1771,7 +1771,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
         rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
         sizes <- .dpOrDefault(GdObject, ".__groupLabelWidths")[names(grpRanges), , drop=FALSE]
         pr <- .dpOrDefault(GdObject, ".__plottingRange", data.frame(from=min(start(GdObject)), to=max(end(GdObject))))
-        grpRangesCut <- restrict(grpRanges, start=as.integer(pr["from"]), end=as.integer(pr["to"]))
+        ## grpRangesCut <- restrict(grpRanges, start=as.integer(pr["from"]), end=as.integer(pr["to"]))
         switch(just,
                "left"={
                    cx <- if(!rev) start(grpRanges) - sizes$after else end(grpRanges) + sizes$after
@@ -1785,17 +1785,23 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
 
                },
                "above"={
-                   cx <- start(grpRangesCut) + width(grpRangesCut)/2
-                   indx <- which(seq_len(length(grpRanges)) %in% queryHits(findOverlaps(grpRanges, grpRangesCut)))
-                   cy <- yloc[indx] + 0.5
-                   labs <- labs[indx]
+                   ## cx <- start(grpRangesCut) + width(grpRangesCut)/2
+                   ## indx <- which(seq_len(length(grpRanges)) %in% queryHits(findOverlaps(grpRanges, grpRangesCut)))
+                   ## cx <- cx[indx] # needs revision
+                   ## cy <- yloc[indx] + 0.5
+                   ## labs <- labs[indx]
+                   cx <- start(grpRanges) + width(grpRanges)/2
+                   cy <- yloc + 0.5
                    algn <- c("center", "top")
                },
                "below"={
-                   cx <- start(grpRangesCut) + width(grpRangesCut)/2
-                   indx <- which(seq_len(length(grpRanges)) %in% queryHits(findOverlaps(grpRanges, grpRangesCut)))
-                   cy <- yloc[indx] - 0.5
-                   labs <- labs[indx]
+                   ## cx <- start(grpRangesCut) + width(grpRangesCut)/2
+                   ## indx <- which(seq_len(length(grpRanges)) %in% queryHits(findOverlaps(grpRanges, grpRangesCut)))
+                   ## cx <- cx[indx] # needs revision
+                   ## cy <- yloc[indx] - 0.5
+                   ## labs <- labs[indx]
+                   cx <- start(grpRanges) + width(grpRanges)/2
+                   cy <- yloc - 0.5
                    algn <- c("center", "bottom")
                },
                stop(sprintf("Unknown label justification '%s'", just)))
