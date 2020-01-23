@@ -117,7 +117,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
     unique \code{id}.}
 
   \item{cigar}{A character vector of valid CIGAR strings describing
-    details of the alignment. Typically those include alignemnts gaps or
+    details of the alignment. Typically those include alignment gaps or
     insertions and deletions, but also hard and soft clipped read
     regions. If missing, a fully mapped read without gaps or indels is
     assumed. Needs to be of equal length as the provided genomic
@@ -126,9 +126,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome
   \item{mapq}{A numeric vector of read mapping qualities. Needs to be of
     equal length as the provided genomic coordinates, or of length 1.}
 
-  \item{flag}{A numeric vector of flag values. Needs to be of equal
-    length as the provided genomic coordinates, or of length
-    1. Currently not used.}
+  \item{flag}{A named integer vector of length 2, as is produced by
+    Rsamtools::scanBamFlag(), used to filter out undesirable reads. If
+    missing, all mapped reads will be included.}
 
   \item{isize}{A numeric vector of empirical insert sizes. This only
     applies if the reads are paired. Needs to be of equal length as the
