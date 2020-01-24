@@ -1,7 +1,11 @@
+^\.Rhistory$
+^\.RData$
+^\.Ruserdata$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^.Rbuildignore$
-^.gitignore$
-^.travis.yml$
+^\.Rbuildignore$
+^\.gitignore$
+^\.travis\.yml$
 ^\.codecov\.yml$
 ^Dockerfile$
+^Rplots\.pdf$
