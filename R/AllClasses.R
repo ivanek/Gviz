@@ -85,22 +85,20 @@ setMethod("initialize", "DisplayPars", function(.Object, ...) {
   e = new.env(hash=TRUE)
   args <- list(...)
   n <- names(args)
-  if(any(n == ""))
+  if((is.null(n) & length(args)==1) || any(n == ""))
     stop("All supplied arguments must be named.")
   .Object@pars <- args
   return(.Object)
 })
 
 ## Constructor, all supplied arguments are added to the environment.
-DisplayPars <- function(...)
-{
+DisplayPars <- function(...) {
   return(new("DisplayPars", ...))
 }
 
 ## Update function and deprecation message to show that an old environment-based
 ## DisplayParameter object has been updated to a list-based object.
-.updateDp <- function(x, interactive=TRUE)
-{
+.updateDp <- function(x, interactive=TRUE) {
     if(interactive)
         message("Note that the behaviour of the 'setPar' method has changed. You need to reassign the result to an ",
                 "object for the side effects to happen. Pass-by-reference semantic is no longer supported.")
@@ -174,7 +172,7 @@ setMethod("getPar", c("DisplayPars", "character"),
               return(if(length(tmp)) tmp else NULL)
           })
 
-setMethod("getPar", c("DisplayPars", "missing"), function(x, hideInternal=TRUE){
+setMethod("getPar", c("DisplayPars", "missing"), function(x, hideInternal=TRUE) {
     pars <- as.list(x@pars)
     if(hideInternal)
         pars <- pars[!grepl("^\\.__", names(pars))]
@@ -1915,8 +1913,7 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
 ## All additional items in ... are being treated as further DisplayParameters
 ## (N)
 AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand, genome, stacking="squish",
-                             name="AlignedReadTrack", coverageOnly=FALSE, ...)
-{
+                             name="AlignedReadTrack", coverageOnly=FALSE, ...) {
     .missingToNull(c("strand", "chromosome", "genome"))
     ## Build a GRanges object from the inputs
     range <- .buildRange(range=range, start=start, end=end, width=width,

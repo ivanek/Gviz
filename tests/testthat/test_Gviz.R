@@ -1,7 +1,5 @@
 library(Gviz)
 
-context("Gviz functions")
-
 test_that("checking the class and structure works", {
   expect_null(Gviz:::.checkClass(data.frame(), "data.frame"))
   expect_error(Gviz:::.checkClass(data.frame(), "matrix"), "of class")
@@ -19,7 +17,7 @@ test_that("conversion of chromosome names works", {
   expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "X")), c("1","chr1","M","X"))
 })
 
-context("Gviz functions, graphical device")
+
 ## not sure how to set up the test for the device resolution
 ## with opening PDF device?
 test_that("finding location and pixel-size of current viewport works", {
@@ -66,8 +64,6 @@ test_that("estimating of coordinates for an HTML image map works", {
   # dev.off()
   # unlink("Rplots.pdf")
 })
-
-context("Gviz functions, helper functions")
 
 test_that("conversion of ranges to summarizedJunctions works", {
   ## with + strand defined in readStrand column

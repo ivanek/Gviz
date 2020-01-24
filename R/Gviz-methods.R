@@ -4606,15 +4606,28 @@ setMethod("show",signature(object="SequenceBSgenomeTrack"),
 setMethod("show", signature(object="SequenceDNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
 setMethod("show", signature(object="SequenceRNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
 
+setMethod("show",signature(object="AlignmentsTrack"),
+          function(object){
+            cat(sprintf(paste("AlignmentsTrack track '%s' \n",
+                              "| genome: %s\n",
+                              "| active chromosome: %s\n",
+                              "| containing %i read%s\n", sep=""),
+                        names(object), genome(object), 
+                        gsub("^chr", "", chromosome(object)),
+                        length(object),
+                        ifelse(length(object)==1, "", "s")))
+          })
+
 setMethod("show",signature(object="AlignedReadTrack"),
 		  function(object){
-			  cat(sprintf(paste("AlignedRead track '%s' containing %i read%s all mapping",
-									  "to chromosome %s of the %s genome:\n"),
-							  names(object), length(object),
-							  ifelse(length(object)==1, "", "s"),
-							  gsub("^chr", "", chromosome(object)),
-							  genome(object)), "\n")
-			  print(ranges(object))
+		    cat(sprintf(paste("AlignedReadTrack track '%s' \n",
+		                      "| genome: %s\n",
+		                      "| active chromosome: %s\n",
+		                      "| containing %i read%s\n", sep=""),
+		                names(object), genome(object), 
+		                gsub("^chr", "", chromosome(object)),
+		                length(object),
+		                ifelse(length(object)==1, "", "s")))
 		  })
 
 setMethod("show", "DisplayPars", function(object) {
