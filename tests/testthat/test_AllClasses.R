@@ -26,18 +26,26 @@ test_that("DisplayPars works", {
 # })
 
 test_that("GenomeAxisTrack works", {
+  expect_s4_class(GenomeAxisTrack(), "GdObject")
   expect_s4_class(GenomeAxisTrack(), "GenomeAxisTrack")
 })
 
 test_that("DataTrack works", {
+  expect_s4_class(DataTrack(), "GdObject")
+  expect_s4_class(DataTrack(), "RangeTrack")
+  expect_s4_class(DataTrack(), "NumericTrack")
   expect_s4_class(DataTrack(), "DataTrack")
 })
 
 test_that("AnnnotationTrack works", {
+  expect_s4_class(AnnotationTrack(), "GdObject")
+  expect_s4_class(AnnotationTrack(), "RangeTrack")
+  expect_s4_class(AnnotationTrack(), "StackedTrack")
   expect_s4_class(AnnotationTrack(), "AnnotationTrack")
 })
 
 test_that("GeneRegionTrack works", {
+  expect_s4_class(GeneRegionTrack(), "AnnotationTrack")
   expect_s4_class(GeneRegionTrack(), "GeneRegionTrack")
 })
 
@@ -50,9 +58,18 @@ test_that("DetailsAnnotationTrack works", {
 })
 
 test_that("SequenceTrack works", {
+  expect_s4_class(SequenceTrack(), "GdObject")
   expect_s4_class(SequenceTrack(), "SequenceTrack")
+  expect_s4_class(SequenceTrack(), "SequenceDNAStringSetTrack")
 })
 
 test_that("AlignmentsTrack works", {
+  expect_s4_class(AlignmentsTrack(), "GdObject")
+  expect_s4_class(AlignmentsTrack(), "RangeTrack")
   expect_s4_class(AlignmentsTrack(), "AlignmentsTrack")
+})
+
+test_that("CustomTrack works", {
+  expect_s4_class(CustomTrack(), "GdObject")
+  expect_s4_class(CustomTrack(), "CustomTrack")
 })
