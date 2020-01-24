@@ -17,11 +17,13 @@
 \alias{split,AlignedReadTrack-method}
 \alias{subset,AlignedReadTrack-method}
 
-\title{AlignedReadTrack class and methods (NOTE: THIS IS STILL IN
-  DEVELOPMENT AND SUBJECT TO CHANGE)}
+\title{DEPRECATED! AlignedReadTrack class and methods)}
 
 \description{
-
+  
+  DEPRECATED! This class and methods are deprecated, please use \code{DataTrack}, 
+  \code{AnnotationTrack} or \code{AlignmentsTrack} instead.
+  
   A class to represent short sequences that have been aligned to a
   reference genome as they are typically generated in a next generation
   sequencing experiment.
@@ -1325,64 +1327,11 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
 \examples{
 
-## Construct from individual arguments
-arTrack <- AlignedReadTrack(start=runif(1000, 100, 200), width=24,
-genome="mm9", chromosome=7, strand=sample(c("+", "-"), 1000, TRUE))
-
-\dontshow{
-## For some annoying reason the postscript device does not know about
-## the sans font
-if(!interactive())
-{
-font <- ps.options()$family
-displayPars(arTrack) <- list(fontfamily=font, fontfamily.title=font)
-}
-}
-
-## Plotting
-plotTracks(arTrack)
-
-## Track names
-names(arTrack)
-names(arTrack) <- "foo"
-plotTracks(arTrack)
-
-## Subsetting and splitting
-subTrack <- subset(arTrack, from=110, to=130)
-length(subTrack)
-subTrack[1:2]
-split(arTrack, strand(arTrack))
-
-## Accessors
-start(arTrack)
-end(arTrack)
-width(arTrack)
-position(arTrack)
-width(subTrack) <- 30
-
-strand(arTrack)
-strand(subTrack) <- "-"
-
-chromosome(arTrack)
-chromosome(subTrack) <- "chrX"
-
-genome(arTrack)
-genome(subTrack) <- "mm9"
-
-range(arTrack)
-ranges(arTrack)
-
-coverage(arTrack)
-
-## Annotation
-values(arTrack)
-
-## Stacking
-stacking(arTrack)
-stacking(arTrack) <- "dense"
-
-## coercion
-as(arTrack, "data.frame")
+## This class is deprecated!
+## Please use instead:
+## - DataTrack
+## - AnnotationTrack
+## - AlignmentsTrack
 
 }
 \keyword{classes}

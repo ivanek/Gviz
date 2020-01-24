@@ -1914,6 +1914,7 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly=FALSE
 ## (N)
 AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chromosome, strand, genome, stacking="squish",
                              name="AlignedReadTrack", coverageOnly=FALSE, ...) {
+    .Deprecated("AlignmentsTrack")
     .missingToNull(c("strand", "chromosome", "genome"))
     ## Build a GRanges object from the inputs
     range <- .buildRange(range=range, start=start, end=end, width=width,
