@@ -25,7 +25,8 @@
 
 \usage{
 
-CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){}, variables=list(), name="CustomTrack",  ...)
+CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){}, 
+            variables=list(), name="CustomTrack",  ...)
 
 }
 

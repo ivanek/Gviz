@@ -1715,20 +1715,24 @@ ed <- c(2050000, 2130000, 2150000, 2170000)
 str <- c("-", "+", "-", "-")
 gr <- c("Group1","Group2","Group1", "Group3")
 
-annTrack <- AnnotationTrack(start=st, end=ed, strand=str, chromosome=7, genome="hg19", feature="test",
-                            group=gr, id=paste("annTrack item", 1:4), name="generic annotation", stacking="squish")
+annTrack <- AnnotationTrack(start=st, end=ed, strand=str, chromosome=7, 
+                            genome="hg19", feature="test", group=gr, 
+                            id=paste("annTrack item", 1:4), 
+                            name="generic annotation", stacking="squish")
 
 ## Or from a data.frame
-df <- data.frame(start=st, end=ed, strand=str, id=paste("annTrack item", 1:4), feature="test",
-                 group=gr)
-annTrack <- AnnotationTrack(range=df, genome="hg19", chromosome=7, name="generic annotation", 
-                             stacking="squish")
+df <- data.frame(start=st, end=ed, strand=str, id=paste("annTrack item", 1:4), 
+                 feature="test", group=gr)
+annTrack <- AnnotationTrack(range=df, genome="hg19", chromosome=7, 
+                            name="generic annotation", stacking="squish")
 
 ## Or from a GRanges object
-gr <- GRanges(seqnames="chr7", range=IRanges(start=df$start, end=df$end), strand=str)
+gr <- GRanges(seqnames="chr7", range=IRanges(start=df$start, end=df$end), 
+              strand=str)
 genome(gr) <- "hg19"
 mcols(gr) <- df[,-(1:3)]
-annTrack <- AnnotationTrack(range=gr, name="generic annotation", stacking="squish")
+annTrack <- AnnotationTrack(range=gr, name="generic annotation", 
+                            stacking="squish")
 
 ## Finally from a GRangesList
 grl <- split(gr, values(gr)$group)

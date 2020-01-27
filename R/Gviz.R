@@ -360,7 +360,7 @@
                         nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups"))))-1
                         atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches"))*nlevs
                     }
-                    if(type %in% c("heatmap", "horizon") && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+                    if(any(type %in% c("heatmap", "horizon")) && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
                         sn <- rownames(values(GdObject))
                         axSpace <- ifelse(isOnlyHoriz, 0, 10)
                         wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(axSpace, "points"), "inches")))
@@ -574,8 +574,8 @@
         id <- c(id, paste("pols", boxC$pols$id))
         pars <- rbind(pars, data.frame(fill=boxC$polpars$fill, col=boxC$polpars$col, lwd=lwd, lty=lty, alpha=alpha, stringsAsFactors=FALSE))
     }
-    grid.polygon(x=xx, y=yy, gp=gpar(fill=pars$fill, col=pars$col, alpha=pars$alpha, lwd=pars$lwd, lty=pars$lty), default.units="native",
-                 id=factor(id))
+    grid.polygon(x=xx, y=yy, gp=gpar(fill=pars$fill, col=pars$col, alpha=unique(pars$alpha), lwd=pars$lwd, lty=pars$lty), default.units="native",
+                 id=factor(id)) # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true") Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
 }
 
 
@@ -1664,7 +1664,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
                                                       viewport(width=1, xscale=rscales)}
             pushViewport(vpContent)
             grid.rect(x=htBoxes$x, just=c(0,1), width=htBoxes$width, y=htBoxes$y+htBoxes$height, height=htBoxes$height,
-                      gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=htBoxes$alpha), default.units="native")
+                      gp=gpar(col=htBoxes$col, fill=htBoxes$fill, lwd=htBoxes$lwd, lty=htBoxes$lty, alpha=unique(htBoxes$alpha)), default.units="native")
             popViewport(1)
         }
     }

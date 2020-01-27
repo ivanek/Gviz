@@ -1,9 +1,16 @@
 A to-do list for the Gviz package
 
-General structure:
-   o introduce file-reference classes that draw genomic coordinates and associated data from bigBed, bigWig, BAM or tabix files
+General
+   o fix the tables in vignette (xtable instead of kableExtra)
+   o check that alpha works correctly
 
 AnnotationTrack/GeneRegionTrack
-   o get the data from TxDb objects
    o speed up .prepareGene (may need a C code module)
    o deal with additional annotation features (UTRs, etc.)
+
+DataTrack/AnnotationTrack => SNPsTrack?
+   o issue: #5
+   o new track type to hnadle LD information
+   o ideally as heatmap, with defined depth (range)
+   o check following: snpStats (data structure), ldblock, gwascat 
+   o similar thing already implemented in LDheatmap

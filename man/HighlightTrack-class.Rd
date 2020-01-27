@@ -30,8 +30,8 @@
 
 \usage{
 
-HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, chromosome, genome,
-                           name="HighlightTrack",  ...)
+HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL, 
+               chromosome, genome, name="HighlightTrack",  ...)
 
 
 }

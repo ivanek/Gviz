@@ -9,6 +9,7 @@ warnings_are_errors: false
 
 before_install:
   - tlmgr install bera nowidow parnotes marginfix etoolbox titlesec sectsty framed enumitem parskip soul placeins footmisc changepage xstring caption mathtools 
+  - Rscript -e 'Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")'
 # - Rscript -e 'install.packages("devtools")'
 # - Rscript -e 'devtools::install(dependencies=TRUE)'
 
