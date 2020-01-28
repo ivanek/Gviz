@@ -47,7 +47,6 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     BiocStyle,
     knitr,
-    kableExtra,
     rmarkdown,
     testthat
 Collate: Gviz.R AllGenerics.R AllClasses.R Gviz-methods.R

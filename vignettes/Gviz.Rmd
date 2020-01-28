@@ -55,7 +55,6 @@ if (out_type == "html") {
 
 ```{r init2, echo=FALSE, results='hide'}
 library(knitr)
-#library(kableExtra)
 
 source(system.file("scripts/documentation.R", package="Gviz"))
 xtabDetails <- details
@@ -74,21 +73,22 @@ addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "backgro
   Parameters[,2] <- gsub("\\\\\\link\\{(.*?)\\}", "\\1", Parameters[,2])
   rownames(Parameters) <- NULL
   if (out_type == "html") {
-    out <- kable(Parameters) #%>% kable_styling(full_width = FALSE)
+    ## print(xtable(Parameters), type="html", include.rownames=FALSE, comment=FALSE, html.table.attributes=NULL)
+    kable(Parameters)
   } else if (out_type == "latex") {
-    out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE) #%>% kable_styling(full_width = FALSE, latex_options = "hold_position")
+    ## print(xtable(Parameters), booktabs=TRUE, tabular.environment="longtable", floating=FALSE, include.rownames=FALSE, comment=FALSE)
+    kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE)
   }
-  print(out)
   return(invisible())
 }
 
 hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
 oto <- options(timeout=5)
+## hasBiomartConnection <- FALSE
 hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
                          !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
-## hasBiomartConnection <- FALSE
 options(timeout=oto)
-## ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
+## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 ```
 
@@ -2609,13 +2609,11 @@ dt <- data.frame(`Gviz class` = rep(c("AnnotationTrack","GeneRegionTrack","DataT
                              "Constructor","Constructor + additional data matrix","Constructor or setAs method, numeric data in metadata columns",
                             "DNAStringSet & Constructor", "Constructor"), 
                  stringsAsFactors = FALSE, check.names=FALSE)
-
+dt[duplicated(dt[,1]),1] <- "" 
 if (out_type == "html") {
-  kable(dt) #%>% kable_styling(full_width = FALSE) %>%
-    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt)
 } else if (out_type == "latex") {
-  kable(dt, "latex", booktabs=TRUE, longtable=TRUE) #%>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
-    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt, "latex", booktabs=TRUE, longtable=TRUE)
 }
 ```
 
@@ -2647,13 +2645,11 @@ dt <- data.frame(`Gviz class`=rep(c("AnnotationTrack","GeneRegionTrack","DataTra
                              "Streaming only possible if an index file is found in the same directory as the original fasta file.", "",
                              "Always needs an index file is found in the same directory as the original `BAM` file."),
                  stringsAsFactors = FALSE, check.names=FALSE)
-
+dt[duplicated(dt[,1]),1] <- "" 
 if (out_type == "html") {
-  kable(dt) #%>% kable_styling(full_width = FALSE) %>%
-    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt)
 } else if (out_type == "latex") {
-  kable(dt, "latex", booktabs=TRUE, longtable=TRUE) #%>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
-    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt, "latex", booktabs=TRUE, longtable=TRUE)
 }
 ```
 
