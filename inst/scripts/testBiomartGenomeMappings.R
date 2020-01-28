@@ -56,10 +56,9 @@ testBiomartVersion <- function(){
     tmp2 <- gens[dt2$current,c("db", "date", "name", "version")]
     colnames(tmp2) <- paste("UCSC", colnames(tmp2), sep="_")
     dt3 <- cbind(dt2, tmp2)
-    if(require(xlsx)){
-        write.xlsx2(dt3, file="ensMappings.xlsx", sheetName="Sheet1")
-    }else{
-        write.table(dt3, file="ensMappings.xls", sep="\t", quote=FALSE)
+    if(require(writexl)){
+        write_xlsx(list("Sheet1"=dt3), path="ensMappings.xlsx")
     }
+    write.table(dt3, file="ensMappings.txt", sep="\t", quote=FALSE)
     return(dt3)
 }

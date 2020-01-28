@@ -1878,18 +1878,18 @@ exportTracks <- function(tracks, range, chromosome, file)
 
 
 
-## Construct a URL to UCSC showing the custom tracks
-ucscUrl <- function(chr, range, spec, gen, open=TRUE)
-{
-    hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz"),
-                           "customTracks.bed", spec, gen), intern=TRUE, ignore.stderr=TRUE)
-
-    url <- sprintf(paste("http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=%s&Submit=go+to+genome+browser",
-                         "&position=%s%%3A%i-%i", sep=""), hgid, chr, range[1], range[2])
-    if(open)
-        browseURL(url)
-    return(url)
-}
+# ## Construct a URL to UCSC showing the custom tracks
+# ucscUrl <- function(chr, range, spec, gen, open=TRUE)
+# {
+#     hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz"),
+#                            "customTracks.bed", spec, gen), intern=TRUE, ignore.stderr=TRUE)
+# 
+#     url <- sprintf(paste("http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=%s&Submit=go+to+genome+browser",
+#                          "&position=%s%%3A%i-%i", sep=""), hgid, chr, range[1], range[2])
+#     if(open)
+#         browseURL(url)
+#     return(url)
+# }
 
 
 
