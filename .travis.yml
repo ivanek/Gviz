@@ -9,17 +9,14 @@ warnings_are_errors: false
 
 before_install:
   - tlmgr install bera nowidow parnotes marginfix etoolbox titlesec sectsty framed enumitem parskip soul placeins footmisc changepage xstring caption mathtools 
-  - Rscript -e 'Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")'
 # - Rscript -e 'install.packages("devtools")'
 # - Rscript -e 'devtools::install(dependencies=TRUE)'
 
-# addons:
-#   apt:
-#     update: true
-#     sources:
-#       - sourceline: 'ppa:opencpu/imagemagick'
-#     packages:
-#       - libmagick++-dev
+env:
+ global:
+#   - _R_CHECK_FORCE_SUGGESTS_: false
+   - _R_CHECK_LENGTH_1_CONDITION_: true
+   - _R_CHECK_LENGTH_1_LOGIC2_: true
 
 r_build_args: "--no-manual --no-resave-data"
 r_check_args: "--no-build-vignettes --no-manual --timings"
