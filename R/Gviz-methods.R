@@ -2293,16 +2293,16 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             mw <- res * .dpOrDefault(GdObject, "min.width", 1)
             mwy <- max(1, mw)
             if(nrow(mm)){
-                x <- c(x, mm$position + rep(c(0, mwy, mwy, 0), each=nrow(mm)))
-                y <- c(y, rep(mm$stack - sh, 2), rep(mm$stack + sh, 2))
-                id <- c(id, rep(seq(max(id, na.rm=TRUE)+1, len=nrow(mm)), 4))
-                gps <- rbind(data.frame(col=rep(if(!(lwidth < perLetterW && lheight < perLetterH)) "transparent" else
+                x <- c(mm$position + rep(c(0, mwy, mwy, 0), each=nrow(mm)))
+                y <- c(rep(mm$stack - sh, 2), rep(mm$stack + sh, 2))
+                id <- c(rep(seq(max(id, na.rm=TRUE)+1, len=nrow(mm)), 4))
+                gps <- data.frame(col=rep(if(!(lwidth < perLetterW && lheight < perLetterH)) "transparent" else
                                                      .dpOrDefault(GdObject, "col.mismatch", .DEFAULT_SHADED_COL), nrow(mm)),
                                              fill=rep(fcol[as.character(mm$base)]),
                                              lwd=rep(.dpOrDefault(GdObject, "lwd.mismatch", 1), nrow(mm)),
                                              lty=rep(.dpOrDefault(GdObject, "lty.mismatch", 1), nrow(mm)),
                                              alpha=rep(.dpOrDefault(GdObject, "alpha.mismatch", 1), nrow(mm)),
-                                             stringsAsFactors=FALSE))
+                                             stringsAsFactors=FALSE)
                 ## Finally we draw mm (we need to draw in two steps because of the different alpha levels, reads vs. mismatches)
                 grid.polygon(x=x, y=y, id=id, default.units="native", gp=gpar(col=gps$col, fill=gps$fill, lwd=gps$lwd, lty=gps$lty, alpha=unique(gps$alpha))) # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
                 if(!.dpOrDefault(GdObject, "noLetters", FALSE) && lwidth < perLetterW && lheight < perLetterH)
