@@ -1,20 +1,20 @@
-library(Gviz)
+# Gviz functions
 
 test_that("checking the class and structure works", {
-  expect_null(Gviz:::.checkClass(data.frame(), "data.frame"))
-  expect_error(Gviz:::.checkClass(data.frame(), "matrix"), "of class")
-  expect_error(Gviz:::.checkClass(class="matrix"), "is missing with no default")
-  expect_error(Gviz:::.checkClass(data.frame(), "data.frame", length=2), "of length")
+  expect_null(.checkClass(data.frame(), "data.frame"))
+  expect_error(.checkClass(data.frame(), "matrix"), "of class")
+  expect_error(.checkClass(class="matrix"), "is missing with no default")
+  expect_error(.checkClass(data.frame(), "data.frame", length=2), "of length")
 })
 
 test_that("conversion of chromosome names works", {
-  expect_identical(Gviz:::.chrName(character()), character())
+  expect_identical(.chrName(character()), character())
   options("ucscChromosomeNames" = TRUE)
-  expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "MT", "X")), c("chr1","chr1","chrM","chrM","chrX"))
-  expect_identical(Gviz:::.chrName("foo", force=TRUE), "chrfoo")
-  expect_error(Gviz:::.chrName("foo"), "Please consider setting options\\(ucscChromosomeNames=FALSE\\)")
+  expect_identical(.chrName(c("1", "chr1", "M", "MT", "X")), c("chr1","chr1","chrM","chrM","chrX"))
+  expect_identical(.chrName("foo", force=TRUE), "chrfoo")
+  expect_error(.chrName("foo"), "Please consider setting options\\(ucscChromosomeNames=FALSE\\)")
   options("ucscChromosomeNames" = FALSE)
-  expect_identical(Gviz:::.chrName(c("1", "chr1", "M", "X")), c("1","chr1","M","X"))
+  expect_identical(.chrName(c("1", "chr1", "M", "X")), c("1","chr1","M","X"))
 })
 
 
@@ -27,8 +27,8 @@ test_that("finding location and pixel-size of current viewport works", {
             isize = c(width = 7, height = 7))
   #if (file.exists("Rplots.pdf")) unlink("Rplots.pdf")
   #pdf(file="Rplots.pdf", width=7, height=5, pointsize=12)
-  #expect_identical(Gviz:::vpLocation(), l)
-  expect_equal(Gviz:::vpLocation(), l)
+  #expect_identical(vpLocation(), l)
+  expect_equal(vpLocation(), l)
   #dev.off()
   #unlink("Rplots.pdf")
 })
@@ -37,16 +37,16 @@ test_that("finding location and pixel-size of current viewport works", {
 test_that("estimating of device resolution works", {
   #if (file.exists("Rplots.pdf")) unlink("Rplots.pdf")
   #pdf(file="Rplots.pdf", width=7, height=5, pointsize=12)
-  #expect_identical(Gviz:::devRes(), c(xres=72, yres=72))
-  expect_equal(Gviz:::devRes(), c(xres=72, yres=72))
+  #expect_identical(devRes(), c(xres=72, yres=72))
+  expect_equal(devRes(), c(xres=72, yres=72))
   #dev.off()
   #unlink("Rplots.pdf")
   
   #if (file.exists("Rplots.pdf")) unlink("Rplots.pdf")
   #pdf(file="Rplots.pdf", width=7, height=5, pointsize=12)
   pushViewport(viewport())
-  #expect_identical(Gviz:::devRes(), c(xres=72, yres=72))
-  expect_equal(Gviz:::devRes(), c(xres=72, yres=72))
+  #expect_identical(devRes(), c(xres=72, yres=72))
+  expect_equal(devRes(), c(xres=72, yres=72))
   popViewport()
   #dev.off()
   #unlink("Rplots.pdf")
@@ -59,8 +59,8 @@ test_that("estimating of coordinates for an HTML image map works", {
   mm <- as.data.frame(mm)
   # if (file.exists("Rplots.pdf")) unlink("Rplots.pdf")
   # pdf(file="Rplots.pdf", width=7, height=5, pointsize=12)
-  #expect_identical(Gviz:::.getImageMap(m), mm)
-  expect_equal(Gviz:::.getImageMap(m), mm)
+  #expect_identical(.getImageMap(m), mm)
+  expect_equal(.getImageMap(m), mm)
   # dev.off()
   # unlink("Rplots.pdf")
 })
@@ -69,11 +69,11 @@ test_that("conversion of ranges to summarizedJunctions works", {
   ## with + strand defined in readStrand column
   range <- GRanges("chr1", IRanges(1,10), cigar="1M8N1M", readStrand=Rle(factor("+", levels=c("+","-","*"))), entityId=1)
   juns <- GRanges("chr1", IRanges(start=2,end=9), score=1L, plus_score=1L, minus_score=0L)
-  expect_identical(Gviz:::.create.summarizedJunctions.for.sashimi.junctions(range), juns)
+  expect_identical(.create.summarizedJunctions.for.sashimi.junctions(range), juns)
   ## without strand definition
   range <- GRanges("chr1", IRanges(1,10), cigar="1M8N1M", entityId=1)
   juns <- GRanges("chr1", IRanges(start=2,end=9), score=1L, plus_score=0L, minus_score=0L)
-  expect_identical(Gviz:::.create.summarizedJunctions.for.sashimi.junctions(range), juns)
+  expect_identical(.create.summarizedJunctions.for.sashimi.junctions(range), juns)
 })
 
 
@@ -90,18 +90,18 @@ test_that("conversion of junction to list for plotting works", {
               id = c(1L, 1L, 1L), 
               score = 1, scaled = 10)
   filt2 <- GRanges("chr1", IRanges(start=3,end=8))
-  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns), out)
+  expect_identical(.convert.summarizedJunctions.to.sashimi.junctions(juns), out)
   # if minimum score filter works
-  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, score=2L), 
+  expect_identical(.convert.summarizedJunctions.to.sashimi.junctions(juns, score=2L), 
                    list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
   ## filter match
-  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt), out)
+  expect_identical(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt), out)
   ## filter match (none)
-  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt2), 
+  expect_identical(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt2), 
                    list(x=numeric(), y=numeric(), id=integer(), score=numeric(), scaled=numeric()))
   ## filter match (with filterTolerance)
-  expect_identical(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt2, filterTolerance=1), out2)
+  expect_identical(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt2, filterTolerance=1), out2)
   # negative filterTolerance
-  expect_warning(Gviz:::.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt, filterTolerance=-1), 
+  expect_warning(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt, filterTolerance=-1), 
                  "can't be negative, taking absolute value of it")
 })

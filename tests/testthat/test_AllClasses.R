@@ -1,16 +1,16 @@
-library(Gviz)
+# Classes in Gviz
 
 test_that("ImageMap works", {
   mat <- matrix(1, ncol=4, dimnames=list("a",NULL))
   tags <- list(a=c(a="tag"))
-  expect_s4_class(Gviz:::ImageMap(mat, tags=tags), "ImageMap")
-  expect_identical(Gviz:::ImageMap(mat, tags=tags)@coords,mat) 
-  expect_identical(Gviz:::ImageMap(mat, tags=tags)@tags,tags)
-  expect_error(Gviz:::ImageMap(matrix(1, ncol=3), tags=tags), "must be a numeric matrix with 4 column")
-  expect_error(Gviz:::ImageMap(matrix(1, ncol=4), tags=tags), "Rownames must be set for the matrix in")
-  expect_error(Gviz:::ImageMap(mat, tags=list(c(a="tag1"))), "must be a named list with character vector items.")
-  expect_error(Gviz:::ImageMap(mat, tags=list(a=c(a="tag1", b="tag2"))), "following values in the")
-  expect_error(Gviz:::ImageMap(mat, tags=list(a=c("tag1"))), "items in the 'tags' list must be named character")
+  expect_s4_class(ImageMap(mat, tags=tags), "ImageMap")
+  expect_identical(ImageMap(mat, tags=tags)@coords,mat) 
+  expect_identical(ImageMap(mat, tags=tags)@tags,tags)
+  expect_error(ImageMap(matrix(1, ncol=3), tags=tags), "must be a numeric matrix with 4 column")
+  expect_error(ImageMap(matrix(1, ncol=4), tags=tags), "Rownames must be set for the matrix in")
+  expect_error(ImageMap(mat, tags=list(c(a="tag1"))), "must be a named list with character vector items.")
+  expect_error(ImageMap(mat, tags=list(a=c(a="tag1", b="tag2"))), "following values in the")
+  expect_error(ImageMap(mat, tags=list(a=c("tag1"))), "items in the 'tags' list must be named character")
 })
 
 test_that("DisplayPars works", {
@@ -21,12 +21,12 @@ test_that("DisplayPars works", {
   expect_error(DisplayPars(1), "All supplied arguments must be named.")
   expect_error(DisplayPars(1, b=2), "All supplied arguments must be named.")
   # .updateDp
-  expect_message(Gviz:::.updateDp(dp), "Note that the behaviour of the")
-  expect_identical(Gviz:::.updateDp(dp, interactive=FALSE)@pars, list(a=1))
+  expect_message(.updateDp(dp), "Note that the behaviour of the")
+  expect_identical(.updateDp(dp, interactive=FALSE)@pars, list(a=1))
   dp@pars <- new.env()
   dp@pars[["a"]] <- 1
-  expect_identical(Gviz:::.updateDp(dp, interactive=FALSE)@pars, list(a=1))
-  expect_message(Gviz:::.updateDp(dp, interactive=FALSE), "The DisplayPars object has been updated")
+  expect_identical(.updateDp(dp, interactive=FALSE)@pars, list(a=1))
+  expect_message(.updateDp(dp, interactive=FALSE), "The DisplayPars object has been updated")
   # getPar
   expect_identical(getPar(dp), list(a=1))
   expect_identical(getPar(dp, "a"), 1)
@@ -68,6 +68,8 @@ test_that("AnnnotationTrack works", {
   expect_s4_class(AnnotationTrack(), "RangeTrack")
   expect_s4_class(AnnotationTrack(), "StackedTrack")
   expect_s4_class(AnnotationTrack(), "AnnotationTrack")
+  
+  expect_error(AnnotationTrack(stacking="allover"), "following values for 'stacking'")
 })
 
 test_that("GeneRegionTrack works", {
@@ -75,9 +77,16 @@ test_that("GeneRegionTrack works", {
   expect_s4_class(GeneRegionTrack(), "GeneRegionTrack")
 })
 
-# test_that("BiomartGeneRegionTrack works", {
-#   expect_s4_class(BiomartGeneRegionTrack(), "BiomartGeneRegionTrack")
-# })
+test_that("BiomartGeneRegionTrack works", {
+  # expect_s4_class(BiomartGeneRegionTrack(), "BiomartGeneRegionTrack")
+  
+  biomartMapping <- list(gene_id="ensembl_gene_id",transcript_id="ensembl_transcript_id", exon_id="ensembl_exon_id",
+       start="exon_chrom_start", end="exon_chrom_end", rank="rank", strand="strand",
+       symbol=c("external_gene_name", "external_gene_id"), feature="gene_biotype", chromosome="chromosome_name",
+       u5s="5_utr_start", u5e="5_utr_end", u3s="3_utr_start", u3e="3_utr_end", cdsl=c("cds_length", "cds_start"),
+       phase="phase")
+  expect_identical(.getBMFeatureMap(), biomartMapping)
+})
 
 test_that("DetailsAnnotationTrack works", {
   expect_s4_class(DetailsAnnotationTrack(), "AnnotationTrack")
@@ -99,3 +108,4 @@ test_that("CustomTrack works", {
   expect_s4_class(CustomTrack(), "GdObject")
   expect_s4_class(CustomTrack(), "CustomTrack")
 })
+

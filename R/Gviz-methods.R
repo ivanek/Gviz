@@ -4105,7 +4105,7 @@ setMethod("tail", "InferredDisplayPars", function(x, n=10, ...){
 ## Helper methods to build a GRanges object from the input arguments.
 ##---------------------------------------------------------------------------------
 ## Coordinates for grouped elements may be passed in as comma-separated values (e.g. "1,5,9"), in which case
-## we need to split and convert to numerics. This also implies that the additional arguments (like feature, group, etc.)
+## we need to split and convert to numeric. This also implies that the additional arguments (like feature, group, etc.)
 ## have to be replicated accordingly. We handle this by passing along the repeat vector 'by' to the numeric method below.
 setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "FactorOrCharacterOrNULL",
                                    "FactorOrCharacterOrNULL"),
@@ -4118,11 +4118,9 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
               lengths <-sapply(coords, function(x) length(get(x)))
               items <- structure(as.list(rep(0, 3)), names=coords)
               by <- NULL
-              for(i in coords)
-              {
+              for(i in coords) {
                   val <- get(i)
-                  if(!is.null(val))
-                  {
+                  if(!is.null(val)) {
                       val <- strsplit(as.character(val), delim)
                       lengths[i] <- length(val)
                       items[[i]] <- listLen(val)
@@ -4137,11 +4135,10 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
               return(.buildRange(start=start, end=end, width=width, asIRanges=asIRanges, by=by, len=len, ...))})
 
 ## Helper function to handle settings and defaults
-.fillWithDefaults <- function(range=as.data.frame(matrix(ncol=0, nrow=len)), defaults, args, len, by=NULL, ignore=NULL)
-{
-    for(a in setdiff(names(defaults), ignore))
-    {
-        range[[a]] <- if(is.null(args[[a]])){
+.fillWithDefaults <- function(range=as.data.frame(matrix(ncol=0, nrow=len)), 
+                              defaults, args, len, by=NULL, ignore=NULL) {
+    for(a in setdiff(names(defaults), ignore)) {
+        range[[a]] <- if(is.null(args[[a]])) {
             if(is.null(defaults[[a]]))
                 stop("The mandatory argument '", a, "' is missing with no default")
             val <- defaults[[a]]
@@ -4150,7 +4147,7 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
             if(!length(val) %in% c(len, sum(by)))
                 stop("Number of elements in '", a, "' is invalid")
             if(!is.null(by) && length(val)!=sum(by)) rep(val, by) else val
-        } else{
+        } else {
             val <- args[[a]]
             if(length(val)==1)
                 val <- rep(val, len)
@@ -4164,11 +4161,12 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
 
 ## For numeric vectors we can immediately create a data frame after some sanity checking and pass that on to the next method.
 setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrNULL", "NumericOrNULL"),
-          function(range, start, end, width, asIRanges=FALSE, by=NULL, len, args, defaults, ...){
-              range <- data.frame()
+          function(range, start, end, width, asIRanges=FALSE, by=NULL, len, args, defaults, ...) {
+              ## The inputs coordinates are all empty
+              if(!length(start) && !length(end))
+                return(if(asIRanges) IRanges() else GRanges())
               ## Some of the arguments are mutually exclusive and we want to catch this here.
-              if(is.null(width))
-              {
+              if(is.null(width)) {
                   if (is.null(start) || is.null(end))
                       stop("Must specify either start and end or width")
               } else {
@@ -4182,8 +4180,8 @@ setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrN
                   stop("Start and end must be vectors of the same length")
               if(missing(len))
                   len <- length(start)
-              if(length(start) > 0)
-              {
+              range <- data.frame()
+              if(length(start) > 0) {
                   if(asIRanges)
                       return(IRanges(start=as.integer(start), end=as.integer(end)))
                   range <- .fillWithDefaults(data.frame(start=as.integer(start), end=as.integer(end)), defaults, args, len, by)

@@ -538,8 +538,8 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
     if(!missing(stacking))
     {
         if(!all(stacking %in% pt@stackingValues))
-            stop("Problem initializing AnnotationTrack need the following values for 'stacking':",
-                 paste(pt@stackingValues, collpase=", "), "\n")
+            stop(sprintf("Problem initializing %s, accepts the following values for 'stacking': ", class(.Object)),
+                 paste(pt@stackingValues, collapse=", "), "\n")
         .Object@stacking <- stacking
         r <- list(...)$range
         ##stacks <- if(length(r)>0) disjointBins(ranges(r)) else 0
@@ -1021,22 +1021,7 @@ setClass("BiomartGeneRegionTrack",
     }
     ## The map between Biomart DB fields and annotation features. The individual values can be vectors for cases where there is
     ## ambiguity between different marts. This will be dynamically evaluated against available filters.
-    origFeatureMap <- list(gene_id="ensembl_gene_id",
-                           transcript_id="ensembl_transcript_id",
-                           exon_id="ensembl_exon_id",
-                           start="exon_chrom_start",
-                           end="exon_chrom_end",
-                           rank="rank",
-                           strand="strand",
-                           symbol=c("external_gene_name", "external_gene_id"),
-                           feature="gene_biotype",
-                           chromosome="chromosome_name",
-                           u5s="5_utr_start",
-                           u5e="5_utr_end",
-                           u3s="3_utr_start",
-                           u3e="3_utr_end",
-                           cdsl=c("cds_length", "cds_start"),
-                           phase="phase")
+    origFeatureMap <- .getBMFeatureMap()
     featureMap <- modifyList(origFeatureMap, as.list(.dpOrDefault(object, ".__featureMap", list())))
     needed <- c("gene_id","transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
                 "chromosome", "u5s", "u5e", "u3s", "u3e", "cdsl", "phase")

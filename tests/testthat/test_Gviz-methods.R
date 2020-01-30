@@ -1,4 +1,4 @@
-library(Gviz)
+# Gviz methods
 
 test_that("General accessors work", {
   ir <- IRanges(1,1)
