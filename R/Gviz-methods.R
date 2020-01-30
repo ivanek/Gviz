@@ -4162,9 +4162,6 @@ setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "
 ## For numeric vectors we can immediately create a data frame after some sanity checking and pass that on to the next method.
 setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrNULL", "NumericOrNULL"),
           function(range, start, end, width, asIRanges=FALSE, by=NULL, len, args, defaults, ...) {
-              ## The inputs coordinates are all empty
-              if(!length(start) && !length(end))
-                return(if(asIRanges) IRanges() else GRanges())
               ## Some of the arguments are mutually exclusive and we want to catch this here.
               if(is.null(width)) {
                   if (is.null(start) || is.null(end))
