@@ -16,7 +16,7 @@ setReplaceMethod("ranges", "GenomeAxisTrack", function(x, value) {
 setMethod("range", "RangeTrack", function(x) ranges(x@range))
 setMethod("range", "GenomeAxisTrack", function(x) ranges(x@range))
 
-## seqnames, levels and infofrom the range track
+## seqnames, levels and info from the range track
 setMethod("seqnames", "RangeTrack", function(x) as.character(seqnames(ranges(x))))
 setMethod("seqnames", "SequenceDNAStringSetTrack", function(x) as.character(names(x@sequence)))
 setMethod("seqnames", "SequenceRNAStringSetTrack", function(x) as.character(names(x@sequence)))
@@ -2210,7 +2210,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             y <- c(rep(readInfo$stack + sh, 2), rep(readInfo$stack - sh, 2))
             id <- rep(readInfo$uid, 4)
         }else{
-             ## We first precompute the coordinates for all the arrow polygons
+            ## We first precompute the coordinates for all the arrow polygons
             uid2strand <- setNames(as.character(readInfo$readStrand), as.character(readInfo$uid))
             arrowMap <- unlist(setNames(lapply(split(as.character(readInfo$uid), readInfo$entityId), function(x){
                 str <- uid2strand[x][1]

@@ -74,11 +74,12 @@ addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "backgro
   rownames(Parameters) <- NULL
   if (out_type == "html") {
     ## print(xtable(Parameters), type="html", include.rownames=FALSE, comment=FALSE, html.table.attributes=NULL)
-    kable(Parameters)
+    out <- kable(Parameters)
   } else if (out_type == "latex") {
     ## print(xtable(Parameters), booktabs=TRUE, tabular.environment="longtable", floating=FALSE, include.rownames=FALSE, comment=FALSE)
-    kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE)
+    out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE)
   }
+  print(out)
   return(invisible())
 }
 
