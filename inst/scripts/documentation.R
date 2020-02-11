@@ -439,9 +439,9 @@ details <- list(
                             coef="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             col.baseline="Character scalar. Color for the optional baseline, defaults to the setting of \\code{col}.",
                             col.confint="Character vector. Border colors for the confidence intervals for confint-type plots.",
+                            col.boxplotFrame="Character scalar. Line color of the frame around grouped boxplots.",
                             col.histogram="Character scalar. Line color in histogram-type plots.",
                             col.horizon="The line color for the segments in the \\code{horizon}-type plot. See \\code{\\link{horizonplot}} for details.",
-
                             col.mountain="Character scalar. Line color in mountain-type and polygon-type plots, defaults to the setting of \\code{col}.",
                             col.sampleNames="Character or integer scalar. The color used for the sample names in heatmap plots.",
                             col="Character or integer vector. The color used for all line and symbol elements, unless there is a more specific control defined elsewhere. Unless \\code{groups} are specified, only the first color in the vector is usually regarded.",
@@ -451,7 +451,6 @@ details <- list(
                             evaluation="Numeric scalar. Parameter controlling the loess calculation for smooth and mountain-type plots. See \\code{\\link{panel.loess}} for details.",
                             factor="Numeric scalar. Factor to control amount of jittering in xy-type plots. See \\code{\\link{panel.xyplot}} for details.",
                             family="Character scalar. Parameter controlling the loess calculation for smooth and mountain-type plots. See \\code{\\link{panel.loess}} for details.",
-                            col.confint="Character vector. Fill colors for the confidence intervals for confint-type plots.",
                             fill.confint="Character vector. Fill colors for the confidence intervals for confint-type plots.",
                             fill.histogram="Character scalar. Fill color in histogram-type plots, defaults to the setting of \\code{fill}.",
                             fill.horizon="The fill colors for the segments in the \\code{horizon}-type plot. This should be a vector of length six, where the first three entries are the colors for positive changes, and the latter three entries are the colors for negative changes. Defaults to a red-blue color scheme. See \\code{\\link{horizonplot}} for details.",

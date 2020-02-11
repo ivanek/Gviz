@@ -1118,6 +1118,7 @@
                                              cex=0.7,
                                              coef=1.5,
                                              col.baseline=NULL,
+                                             col.boxplotFrame=.DEFAULT_SHADED_COL,
                                              col.histogram=.DEFAULT_SHADED_COL,
                                              col.horizon=NA,
                                              col.mountain=NULL,

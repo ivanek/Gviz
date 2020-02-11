@@ -1176,6 +1176,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{col.confint}: Character vector. Border colors for
       the confidence intervals for confint-type plots.} 
 
+    \item{}{\code{col.boxplotFrame="#808080"}: Character scalar. 
+      Line color of the frame around grouped boxplots.} 
+
     \item{}{\code{col.histogram="#808080"}: Character scalar. Line
       color in histogram-type plots.} 
 

@@ -2969,23 +2969,20 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             panel.abline(h=mbaseline, col=col.baseline, lwd=lwd.baseline, lty=lty.baseline, alpha=alpha)
     }
     ## Also the type 'boxplot' is handled up front
-    if("boxplot" %in% type)
-    {
+    if("boxplot" %in% type) {
         diff <- .pxResolution(coord="x")
         box.ratio <- .dpOrDefault(GdObject, "box.ratio", 1)
         sx <- sort(unique(x))
         sxd <- if(length(sx) == 1) 1 else diff(sx)
         box.width <- .dpOrDefault(GdObject, "box.width", (((min(sxd)*0.5)/box.ratio)/diff))*diff
-        if(!is.null(groups))
-        {
+        if(!is.null(groups)) {
             tw <- min(width(GdObject))
             spacer <- diff
             nb <- nlevels(groups)
             bw <- .dpOrDefault(GdObject, "box.width", ((tw-(nb+2)*spacer)/nb)/diff)*diff
             bcex <- min(pcols$cex[1], (bw/diff)/20)
             by <- lapply(split(vals, groups), matrix, ncol=ncol(vals))
-            for(j in seq_along(by))
-            {
+            for(j in seq_along(by)) {
                 nn <- nrow(by[[j]])
                 off <- (width(GdObject) - (bw*nb) - ((nb + 2) * spacer))/2
                 xx <- rep(start(GdObject)+(j*spacer)+(j*bw)+off, each=nn) - (bw/2)
@@ -3001,7 +2998,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             diffY <- .pxResolution(coord="y", 2)
             outline <- apply(vals, 2, range)
             grid.rect(start(GdObject), outline[1,]-diffY, width=width(GdObject), height=abs(outline[2,]-outline[1,])+(2*diffY),
-                  gp=gpar(col=pcols$col.histogram, fill="transparent", alpha=alpha, lty="dotted"),
+                  gp=gpar(col=.dpOrDefault(GdObject, "col.boxplotFrame", .DEFAULT_SHADED_COL), fill="transparent", alpha=alpha, lty="dotted"),
                   default.units="native", just=c("left", "bottom"))
         } else {
             bcex <- min(pcols$cex[1], ((box.width*2)/diff)/20)
