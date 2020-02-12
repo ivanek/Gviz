@@ -17,3 +17,14 @@
 
   }
 }
+\seealso{
+
+
+
+  \code{\link{AlignmentsTrack}}
+
+  \code{\link{AnnotationTrack}}
+
+  \code{\link{DataTrack}}
+
+}

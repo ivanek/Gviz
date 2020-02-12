@@ -1173,11 +1173,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{col.baseline=NULL}: Character scalar. Color for the
       optional baseline, defaults to the setting of \code{col}.} 
 
+    \item{}{\code{col.boxplotFrame="#808080"}: Character scalar. Line
+      color of the frame around grouped boxplots.} 
+
     \item{}{\code{col.confint}: Character vector. Border colors for
       the confidence intervals for confint-type plots.} 
-
-    \item{}{\code{col.boxplotFrame="#808080"}: Character scalar. 
-      Line color of the frame around grouped boxplots.} 
 
     \item{}{\code{col.histogram="#808080"}: Character scalar. Line
       color in histogram-type plots.} 
@@ -1381,12 +1381,12 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \item{}{\code{windowSize=NULL}: Numeric scalar. The size of the
       running window when the value of \code{window} is negative.} 
 
+    \item{}{\code{ylim=NULL}: Numeric vector of length 2. The range of
+      the y-axis scale.} 
+
     \item{}{\code{yTicksAt=NULL}: Numeric vector. The points at which
       y-axis tick-marks are to be drawn. By default, when \code{NULL},
       tickmark locations are computed.} 
-
-    \item{}{\code{ylim=NULL}: Numeric vector of length 2. The range of
-      the y-axis scale.} 
 
   } 
 
@@ -1686,13 +1686,13 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{GRanges}}
-
   \code{\linkS4class{GdObject}}
 
-  \code{\linkS4class{IRanges}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{ImageMap}}
+
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{NumericTrack}}
 
@@ -1800,6 +1800,8 @@ as(dtTrack, "data.frame")
 }
 
 \keyword{classes}
+
+
 
 
 

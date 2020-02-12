@@ -1308,7 +1308,7 @@ setMethod("subset", signature(x="ReferenceAlignmentsTrack"), function(x, from, t
         cMap <- .resolveColMapping(x@stream(x@reference, subRegion), x@args, x@mapping)
         seqs <- cMap$data$seq
         cMap$data$seq <- NULL
-        range <- .computeAlignments(.buildRange(cMap$data, args=cMap$args, defaults=x@defaults, trackType="AnnotationTrack"))
+        range <- .computeAlignments(.buildRange(cMap$data, args=cMap$args, defaults=x@defaults, trackType="AnnotationTrack"), drop.D.ranges=.dpOrDefault(x, "showIndels", FALSE))
         ranges(x) <- range$range
         x@stackRanges <- range$stackRanges
         x@stacks <- range$stacks
@@ -2279,6 +2279,37 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             }
             lineCoords <- rbind(lineCoords, pairsCoords[!duplicated(pairsCoords), ])
         }
+        ## Consider the indels if needed
+        ## - deletion as lines
+        ## - insertions as vertical bars
+        showIndels <- .dpOrDefault(GdObject, "showIndels", FALSE)
+        delCoords <- NULL
+        insCoords <- NULL
+        if (showIndels) {
+          cigarTmp <- DataFrame(cigar=readInfo$cigar, start=start(readInfo), entityId=readInfo$entityId, groupId=readInfo$groupid)
+          cigarTmp <- cigarTmp[order(cigarTmp$entityId, cigarTmp$start),]
+          cigarTmp <- cigarTmp[!duplicated(cigarTmp$entityId),]
+          delGaps <- unlist(cigarRangesAlongReferenceSpace(cigarTmp$cigar, pos=cigarTmp$start, ops="D", f=as.factor(cigarTmp$entityId)))
+          gy <- readInfo$stack[match(names(delGaps), readInfo$entityId)]
+          if (length(delGaps)) {
+            delCoords <- data.frame(x1=start(delGaps)-1, y1=gy, x2=end(delGaps)+1, y2=gy,
+                                    col=.dpOrDefault(GdObject, c("col.deletion", "col"), .DEFAULT_BRIGHT_SHADED_COL),
+                                    lwd=.dpOrDefault(GdObject, c("lwd.deletion", "lwd"), 1),
+                                    lty=.dpOrDefault(GdObject, c("lty.deletion", "lty"), 1),
+                                    alpha=.alpha(GdObject, "deletions"), stringsAsFactors=FALSE)
+            lineCoords <- rbind(delCoords, lineCoords)
+            lineCoords <- lineCoords[!duplicated(lineCoords[,c("x1","y1","x2","y2")]),]
+          }
+          insGaps <- unlist(cigarRangesAlongReferenceSpace(cigarTmp$cigar, pos=cigarTmp$start, ops="I", f=as.factor(cigarTmp$entityId)))
+          gy <- readInfo$stack[match(names(insGaps), readInfo$entityId)]
+          if (length(insGaps)) {
+            insCoords <- data.frame(x1=start(insGaps), y1=gy-sh, x2=start(insGaps), y2=gy+sh, # should both x coordinates be equal to start 
+                                    col=.dpOrDefault(GdObject, c("col.insertion", "col"), .DEFAULT_BRIGHT_SHADED_COL),
+                                    lwd=.dpOrDefault(GdObject, c("lwd.insertion", "lwd"), 1),
+                                    lty=.dpOrDefault(GdObject, c("lty.insertion", "lty"), 1),
+                                    alpha=.alpha(GdObject, "insertions"), stringsAsFactors=FALSE)
+          }
+        }
         ## The mismatch information on the reads if needed
         mmLetters <- NULL
         if(!is.null(mm)){
@@ -2309,12 +2340,22 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
                     mmLetters <- data.frame(x=mm$position+0.5, y=mm$stack, label=mm$base, col=ccol[mm$base], stringsAsFactors=FALSE)
             }
         }
-        if(!is.null(lineCoords))
-            grid.segments(lineCoords$x1, lineCoords$y1, lineCoords$x2, lineCoords$y2, gp=gpar(col=lineCoords$col, alpha=unique(lineCoords$alpha), # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
-                                                                                              lwd=lineCoords$lwd, lty=lineCoords$lty),
+        if(!is.null(lineCoords)) {
+            grid.segments(lineCoords$x1, lineCoords$y1, lineCoords$x2, lineCoords$y2, 
+                          gp=gpar(col=lineCoords$col, alpha=unique(lineCoords$alpha), # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
+                                  lwd=lineCoords$lwd, lty=lineCoords$lty),
                           default.units="native")
-        if(!is.null(mmLetters))
-            grid.text(x=mmLetters$x, y=mmLetters$y, label=mmLetters$label, gp=gpar(col=mmLetters$col), default.units="native")
+        }
+        if(!is.null(insCoords)) {
+          grid.segments(insCoords$x1, insCoords$y1, insCoords$x2, insCoords$y2, 
+                        gp=gpar(col=insCoords$col, alpha=unique(insCoords$alpha), # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
+                                lwd=insCoords$lwd, lty=insCoords$lty),
+                        default.units="native")
+        }
+        if(!is.null(mmLetters)) {
+            grid.text(x=mmLetters$x, y=mmLetters$y, label=mmLetters$label, 
+                      gp=gpar(col=mmLetters$col), default.units="native")
+        }
         popViewport(2)
     }
     ## Eventually we set up the image map

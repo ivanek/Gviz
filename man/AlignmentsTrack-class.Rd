@@ -39,7 +39,7 @@
 AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, 
                 chromosome, genome, stacking="squish", id, cigar, mapq, flag,
                 isize, groupid, status, md, seqs, name="AlignmentsTrack", 
-                isPaired=TRUE, importFunction, referenceSequence, ...)
+                isPaired=TRUE, importFunction, referenceSequence,  ...)
 
 }
 
@@ -1272,6 +1272,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
     \item{}{\code{sashimiStrand="*"}: Integer scalar. Only reads which
       have the specified strand are considered to count the junctions.} 
 
+    \item{}{\code{showIndels=FALSE}: Logical scalar. Consider insertions
+      and deletions in coverage and pile-up. Default is \code{FALSE}.
+      If set to \code{TRUE} the deletions defined in the CIGAR string are
+      not considered in the coverage plot. The deletions are displayed as
+      bridging lines in the pile-up track. Insertions are shown as vertical
+      bars.} 
+
     \item{}{\code{showMismatches=TRUE}: Logical scalar. Add mismatch
       information, either as individual base letters or using color
       coded bars. This implies that the reference sequence has been
@@ -1482,15 +1489,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{GRanges}}
-
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{IRanges}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{ImageMap}}
+
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
@@ -1542,6 +1549,8 @@ to=44946660)
 
 }
 \keyword{classes}
+
+
 
 
 

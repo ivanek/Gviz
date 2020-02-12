@@ -2171,7 +2171,7 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL
 setClass("ReferenceSequenceTrack", contains=c("SequenceDNAStringSetTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
-## multiple inheritence has some strange features with regards to method selection
+## multiple inheritance has some strange features with regards to method selection
 setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream)
     .Object <- callNextMethod(.Object, ...)
@@ -2184,7 +2184,7 @@ setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, refe
 ##----------------------------------------------------------------------------------------------------------------------
 ## AlignmentsTrack
 ##
-## A track that represents aligned NGS reads on a genome. This supports gapped an paired alignments.
+## A track that represents aligned NGS reads on a genome. This supports gapped and paired alignments.
 ##----------------------------------------------------------------------------------------------------------------------
 setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 setClass("AlignmentsTrack",
@@ -2205,6 +2205,8 @@ setClass("AlignmentsTrack",
                                             col.coverage=NULL,
                                             col.gap=.DEFAULT_SHADED_COL,
                                             col.mates=.DEFAULT_BRIGHT_SHADED_COL,
+                                            col.deletion="#000000",
+                                            col.insertion="#984EA3",
                                             col.mismatch=.DEFAULT_SHADED_COL,
                                             col.reads=NULL,
                                             col.sashimi=NULL,
@@ -2218,12 +2220,16 @@ setClass("AlignmentsTrack",
                                             lty.coverage=NULL,
                                             lty.gap=NULL,
                                             lty.mates=NULL,
+                                            lty.deletion=NULL,
+                                            lty.insertion=NULL,
                                             lty.mismatch=NULL,
                                             lty.reads=NULL,
                                             lty=1,
                                             lwd.coverage=NULL,
                                             lwd.gap=NULL,
                                             lwd.mates=NULL,
+                                            lwd.deletion=NULL,
+                                            lwd.insertion=NULL,
                                             lwd.mismatch=NULL,
                                             lwd.reads=NULL,
                                             lwd.sashimiMax=10,
@@ -2238,6 +2244,7 @@ setClass("AlignmentsTrack",
                                             sashimiHeight=0.1,
                                             sashimiScore=1,
                                             sashimiStrand="*",
+                                            showIndels=FALSE,
                                             showMismatches=TRUE,
                                             size=NULL,
                                             transformation=NULL,
@@ -2247,7 +2254,7 @@ setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges=GRanges
                                                     referenceSequence=NULL, ...) {
     ## the diplay parameter defaults
     .makeParMapping()
-    .Object <- .updatePars(.Object, "AlignedReadTrack")
+    .Object <- .updatePars(.Object, "AlignmentsTrack")
     .Object@stackRanges <- stackRanges
     .Object <- callNextMethod(.Object, ...)
     .Object@stacks <- stacks
@@ -2305,7 +2312,7 @@ AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand
                          args=args, defaults=defs, chromosome=chromosome, trackType="AlignmentsTrack",
                          importFun=importFunction, stream=TRUE, autodetect=TRUE)
     ## This is going to be a list if we have to stream data from a file, otherwise we can compute some additional values
-    if(is.list(range)){
+    if(is.list(range)) {
         isStream <- TRUE
         slist <- range
         range <- GRanges()
@@ -2313,15 +2320,21 @@ AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand
         stacks <- NULL
         seqs <- DNAStringSet()
     }else{
-        if(is.null(seqs)){
+        if(is.null(seqs)) {
             seqs <- DNAStringSet(sapply(width(range), function(x) paste(rep("N", x), collapse="")))
         }
-        tmp <- .computeAlignments(range)
+        addArgs <- list(...)
+        if ("showIndels" %in% names(addArgs)) {
+          showIndels <- addArgs$showIndels
+        } else {
+          showIndels <- FALSE
+        }
+        tmp <- .computeAlignments(range, drop.D.ranges=showIndels)
         range <- tmp$range
         stackRanges <- tmp$stackRange
         stacks <- tmp$stacks
     }
-    ## If no chromosome was explicitely asked for we just take the first one in the GRanges object
+    ## If no chromosome was explicitly asked for we just take the first one in the GRanges object
     if(missing(chromosome) || is.null(chromosome))
         chromosome <- if(length(range)>0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     ## And finally the object instantiation

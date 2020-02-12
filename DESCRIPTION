@@ -1,6 +1,6 @@
 Package: Gviz
 Title: Plotting data and annotation information along genomic coordinates
-Version: 1.31.6
+Version: 1.31.7
 Authors@R: c(person("Florian", "Hahne", role="aut"),
    person("Steffen", "Durinck", role="aut"),
 	 person("Robert", "Ivanek", role=c("aut", "cre"), email="robert.ivanek@unibas.ch", comment=c(ORCID="0000-0002-8403-056X")),

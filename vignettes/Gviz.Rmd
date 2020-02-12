@@ -2272,6 +2272,21 @@ them. This can be controlled using the display parameters
 plotTracks(c(alTrack, sTrack), chromosome="chr21", from=44946590, to=44946660, cex=0.5, min.height=8)
 ```
 
+It is also possible to visualize the "indels" present in the alignments. This 
+can be achieved by setting the `showIndels` parameter to `TRUE`. The coverage 
+plot will no longer count the part of the reads corresponding to deletions. The
+appearance of insertions and deletions in pile-up track can be defined by 
+setting the color, line width and line type (`col.deletion`, `col.insertion`, 
+`lty.deletion`, `lty.insertion`, `lwd.deletion`, `lwd.insertion`). By default 
+the insertions are indicated with violet vertical bars and the deletions 
+are shown as black connecting lines.
+
+```{r alignmentstrack_11, results='hide', fig.width=7.5, fig.height=5}
+indelTrack1 <- AlignmentsTrack(system.file(package="Gviz", "extdata", "indels.bam"), name="Standard")
+indelTrack2 <- AlignmentsTrack(system.file(package="Gviz", "extdata", "indels.bam"), showIndels=TRUE, name="Indels")
+plotTracks(c(indelTrack1, indelTrack2), chromosome="chr2", from=126442000, to=126453000)
+```
+
 ### Display parameters for AlignmentsTrack objects
 
 For a complete listing of all the available display parameters please

@@ -362,6 +362,12 @@ getScheme(name=getOption("Gviz.scheme"))
           \code{max} or \code{extreme} can be supplied as a character
           scalar. Defaults to \code{mean}.} 
 
+        \item{}{\code{missingAsZero=TRUE}: Logical scalar. Defines how
+          the missing values are treated in the aggregation procedure
+          with running window. Setting it to \code{TRUE} fills empty
+          positions with zeros, which is default. \code{FALSE} fills
+          empty positions with \code{NA}.} 
+
         \item{}{\code{alpha.confint=0.3}: Numeric scalar. The transparency
           for the confidence intervalls in confint-type plots.} 
 
@@ -404,6 +410,9 @@ getScheme(name=getOption("Gviz.scheme"))
 
         \item{}{\code{col.confint=NA}: Character vector. Border colors
           for the confidence intervals for confint-type plots.} 
+
+        \item{}{\code{col.boxplotFrame="#808080"}: Character scalar.
+          Line color of the frame around grouped boxplots.} 
 
         \item{}{\code{col.histogram="#808080"}: Character scalar. Line
           color in histogram-type plots.} 
@@ -615,6 +624,10 @@ getScheme(name=getOption("Gviz.scheme"))
 
         \item{}{\code{ylim=NULL}: Numeric vector of length 2. The range
           of the y-axis scale.} 
+
+        \item{}{\code{yTicksAt=NULL}: Numeric vector. The points at
+          which y-axis tick-marks are to be drawn. By default, when
+          \code{NULL}, tickmark locations are computed.} 
 
       } 
 
@@ -2225,6 +2238,8 @@ getScheme(name=getOption("Gviz.scheme"))
   \code{\link{plotTracks}}
 
 }
+
+
 
 
 

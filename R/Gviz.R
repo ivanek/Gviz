@@ -1957,7 +1957,7 @@ devRes <- function(){
 
 
 
-devDims <- function(width, height, ncol=12, nrow=8, res=72){
+devDims <- function(width, height, ncol=12, nrow=8, res=72) {
  f <- (((ncol+1)*0.1+ncol+1)/((nrow+1)*0.1+nrow+1))
  if((missing(width) & missing(height) || !missing(width) & !missing(height)))
    stop("Need either argument 'width' or argument 'height'")
@@ -1968,10 +1968,9 @@ devDims <- function(width, height, ncol=12, nrow=8, res=72){
 }
 
 ## Record the display parameters for each class once
-.makeParMapping <- function()
-{
+.makeParMapping <- function() {
     classes <-  c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-                  "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack")
+                  "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack", "AlignedReadTrack")
     defs <- try(sapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list"), simplify=FALSE), silent=TRUE)
     if(!is(defs, "try-error") && is.null(.parMappings))
         assignInNamespace(x=".parMappings", value=defs, ns="Gviz")
@@ -1979,19 +1978,17 @@ devDims <- function(width, height, ncol=12, nrow=8, res=72){
 .parMappings <- NULL
 
 ## Show available display parameters for a class and their defaults
-availableDisplayPars <- function(class)
-{
+availableDisplayPars <- function(class) {
     if(!is.character(class))
         class <- class(class)
     class <- match.arg(class, c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
                                 "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack",
-                                "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNSStringSetTrack"))
+                                "AlignmentsTrack", "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNAStringSetTrack", "SequenceRNAStringSetTrack"))
     parents <- names(getClassDef(class)@contains)
     .makeParMapping()
     pars <- .parMappings[c(parents, class)]
     finalPars <- inherited <- list()
-    for(p in names(pars))
-    {
+    for(p in names(pars)) {
         finalPars[names(pars[[p]])] <- pars[[p]]
         inherited[names(pars[[p]])] <- p
     }
@@ -2001,8 +1998,7 @@ availableDisplayPars <- function(class)
 }
 
 ## Compute ellipse outline coordinates for bounding boxes
-.box2Ellipse <- function(box, np=50)
-{
+.box2Ellipse <- function(box, np=50) {
     t <- seq(0, 2*pi, len=np)
     box$width <- box$cx2-box$cx1
     box$height <- box$cy2-box$cy1
@@ -2319,10 +2315,10 @@ availableDefaultMapping <- function(file, trackType){
 
 
 ## A helper function to process alignment information from a GRanges object
-.computeAlignments <- function(range){
+.computeAlignments <- function(range, drop.D.ranges=FALSE) {
     res <- list(range=range, stackRanges=GRanges(), stacks=numeric())
     if(length(range)){
-        alg <- extractAlignmentRangesOnReference(range$cigar)
+        alg <- extractAlignmentRangesOnReference(range$cigar, drop.D.ranges=drop.D.ranges)
         rp <- elementNROWS(alg)
         range <- sort(GRanges(seqnames=rep(seqnames(range), rp), strand=rep("*", sum(rp)), ranges=shift(unlist(alg), rep(start(range), rp)-1),
                               id=rep(range$id, rp), entityId=rep(seq_along(rp), rp), cigar=rep(range$cigar, rp), md=rep(range$md, rp),
@@ -2623,12 +2619,28 @@ availableDefaultMapping <- function(file, trackType){
 ## Create list for drawing sashimi-like plots
 ## using summarizeJunctions on GAlignments
 ## plotting is done via grid.xspline (requires x, y, id, score)
+.ranges2ga <- function(range) {
+  range <- sort(range)
+  range <- range[!duplicated(range$entityId)]
+  ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar,
+                    strand=if(is.null(range$readStrand)) strand(range) else range$readStrand,
+                    # id=range$id,
+                    # entityId=range$entityId,
+                    # md=range$md,
+                    # readStrand=range$readStrand,
+                    # mapq=range$mapq,
+                    # flag=range$flag,
+                    # isize=range$isize,
+                    # groupid=range$groupid,
+                    # status=range$status,
+                    # uid=range$uid,
+                    # stack=range$stack,
+                    seqlengths=seqlengths(range))
+  ga
+}
+
 .create.summarizedJunctions.for.sashimi.junctions <- function(range) {
-    range <- sort(range)
-    range <- range[!duplicated(range$entityId)]
-    ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar,
-                      strand=if(is.null(range$readStrand)) strand(range) else range$readStrand,
-                      seqlengths=seqlengths(range))
+    ga <- .ranges2ga(range)
     juns <- summarizeJunctions(ga)
     juns
 }
