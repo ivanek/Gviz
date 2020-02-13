@@ -3906,7 +3906,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     wd <- diff(c(stExt,1))
     ls <- ol[1]+1
     rs <- ol[2]+1
-    ## The centrosome is treated separately
+    ## The centromere is treated separately
     cent <- grep("acen", valsExt$type)
     if(length(cent))
     {
@@ -3927,15 +3927,22 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     if(!is.null(aft))
         grid.rect(stExt[aft], margin, width=wd[aft], height=1-margin*2, gp=gpar(col=lcolBands[aft], fill=valsExt[aft,"col"]),
                   just=c("left","bottom"))
-    ## Now the centrosome, if there is any
-    if(length(cent))
-    {
-        grid.polygon(c(stExt[min(cent)], stExt[min(cent)]+wd[min(cent)], rep(stExt[min(cent)],2)),
-                     c(margin, 0.5, (1-margin), margin),
-                     gp=gpar(col=cols["acen"], fill=cols["acen"]))
-        grid.polygon(c(stExt[max(cent)], rep(stExt[max(cent)]+wd[max(cent)], 2), stExt[max(cent)]),
-                     c(0.5, margin, (1-margin), 0.5),
-                     gp=gpar(col=cols["acen"], fill=cols["acen"]))
+    ## Now the centromere, if there is any
+    if(length(cent)) {
+        centromereShape <- .dpOrDefault(GdObject, "centromereShape", "triangle")
+        if (centromereShape == "circle") {
+          sc <- as.numeric(convertHeight(unit(sum(wd[cent]), "points"), "native")) / 
+            as.numeric(convertWidth(unit(sum(wd[cent]), "points"), "native"))
+          grid.circle(x=stExt[min(cent)]+sum(wd[cent])/2, y=0.5, r=sc*sum(wd[cent])/2,
+                      gp = gpar(col = cols["acen"], fill = cols["acen"]))
+        } else {
+          grid.polygon(c(stExt[min(cent)], stExt[min(cent)]+wd[min(cent)], rep(stExt[min(cent)],2)),
+                       c(margin, 0.5, (1-margin), margin),
+                       gp=gpar(col=cols["acen"], fill=cols["acen"]))
+          grid.polygon(c(stExt[max(cent)], rep(stExt[max(cent)]+wd[max(cent)], 2), stExt[max(cent)]),
+                       c(0.5, margin, (1-margin), 0.5),
+                       gp=gpar(col=cols["acen"], fill=cols["acen"]))
+        }
     }
     ## Now the caps
     str <- if(length(st)==1) 0:1 else st

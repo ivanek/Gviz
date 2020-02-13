@@ -1152,9 +1152,16 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
     \item{}{\code{col.coverage=NULL}: Integer or character scalar. The
       line color for the coverage profile.} 
 
+    \item{}{\code{col.deletion="#000000"}: Integer or character scalar.
+      The color of the line that is bridging the deleted regions in
+      alignments.} 
+
     \item{}{\code{col.gap="#808080"} \code{(Aliases: col.gap)}: Integer
       or character scalar. The color of the line that is bridging the
       gap regions in gapped alignments.} 
+
+    \item{}{\code{col.insertion="#984EA3"}: Integer or character scalar.
+      The color of the line that highlighting insertions in alignments.} 
 
     \item{}{\code{col.mates="#E0E0E0"} \code{(Aliases: col.mate)}:
       Integer or character scalar. The color of the line that is
@@ -1195,9 +1202,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
     \item{}{\code{lty.coverage=NULL}: Integer or character scalar. The
       line type of the coverage profile.} 
 
+    \item{}{\code{lty.deletion=NULL}: Integer or character scalar. The
+      type of the line that is bridging the deleted regions in alignments.} 
+
     \item{}{\code{lty.gap=NULL} \code{(Aliases: lty.gap)}: Integer or
       character scalar. The type of the line that is bridging the gap
       regions in gapped alignments.} 
+
+    \item{}{\code{lty.insertion=NULL}: Integer or character scalar.
+      The type of the line that highlighting insertions in alignments.} 
 
     \item{}{\code{lty.mates=NULL} \code{(Aliases: lty.mate)}: Integer
       or character scalar. The type of the line that is connecting two
@@ -1215,9 +1228,15 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
     \item{}{\code{lwd.coverage=NULL}: Integer or character scalar. The
       line width of the coverage profile.} 
 
+    \item{}{\code{lwd.deletion=NULL}: Integer scalar. The width of the
+      line that is bridging the deleted regions in alignments.} 
+
     \item{}{\code{lwd.gap=NULL} \code{(Aliases: lwd.gap)}: Integer
       scalar. The width of the line that is bridging the gap regions
       in gapped alignments.} 
+
+    \item{}{\code{lwd.insertion=NULL}: Integer scalar. The width of
+      the line that highlighting insertions in alignments.} 
 
     \item{}{\code{lwd.mates=NULL} \code{(Aliases: lwd.mate)}: Integer
       scalar. The width of the line that is connecting two paired reads.} 
@@ -1274,9 +1293,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
     \item{}{\code{showIndels=FALSE}: Logical scalar. Consider insertions
       and deletions in coverage and pile-up. Default is \code{FALSE}.
-      If set to \code{TRUE} the deletions defined in the CIGAR string are
-      not considered in the coverage plot. The deletions are displayed as
-      bridging lines in the pile-up track. Insertions are shown as vertical
+      If set to \code{TRUE} the deletions defined in CIGAR string are
+      not considered in coverage plot. The deletions are displayed as
+      bridging lines in pile-up track. Insertions are shown as vertical
       bars.} 
 
     \item{}{\code{showMismatches=TRUE}: Logical scalar. Add mismatch
@@ -1479,6 +1498,29 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \author{Florian Hahne}
 
 \seealso{
@@ -1549,50 +1591,3 @@ to=44946660)
 
 }
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

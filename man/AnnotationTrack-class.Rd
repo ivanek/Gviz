@@ -1677,23 +1677,23 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 
   \code{\linkS4class{DisplayPars}}
 
+  \code{\linkS4class{GdObject}}
+
   \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{GRangesList}}
 
-  \code{\linkS4class{GdObject}}
+  \code{\linkS4class{ImageMap}}
 
   \code{\linkS4class{IRanges}}
-
-  \code{\linkS4class{ImageMap}}
 
   \code{\linkS4class{RangeTrack}}
 
   \code{\linkS4class{StackedTrack}}
 
-  \code{\link{DataTrack}}
-
   \code{\link{collapsing}}
+
+  \code{\link{DataTrack}}
 
   \code{\link{grouping}}
 
@@ -1856,51 +1856,3 @@ plotTracks(deTrack)
 
 
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

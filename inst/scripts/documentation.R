@@ -185,7 +185,7 @@ displayParsDoc <- function(class, details)
         text <- c(text, indent("}", 1))
     }
     text <- c(text, indent("}", 0))
-    text <- paste(text, collapse=" \n\n")
+    text <- sub("\n*$", "", paste(text, collapse=" \n\n"))
     parsDets <- sapply(union(names(pars[[1]]), names(details[[class]])), function(x){
         txt <- if(x %in% names(details[[class]])) details[[class]][[x]] else NA
         if(!is.na(txt))
@@ -234,7 +234,7 @@ extractDpContent <- function(file){
             def <- gsub(".*=", "", gsub("\n", "", paste(as.character(unlist(istruct[sel])), collapse="")))
         list(id=gsub("=.*", "", item[1]),
           default=def,
-          text=trimws(gsub("\\s+", " ", gsub("\n", "", gsub("^: ?| :\\n *|.*): ", "", paste(item[-sel], collapse=""))))))
+          text=trimws(gsub("\\s+", " ", gsub("\n", "", gsub("^: ?| :\\n *|.*): ", "", trimws(paste(item[-sel], collapse="")))))))
     })
     names(items) <- sapply(items, function(x) x[["id"]])
     return(items)
@@ -305,7 +305,7 @@ injectContent <- function(file, content, section)
     if(!length(ind)) tmp <- c(tmp, list(content)) else tmp[[ind]] <- content
     class(tmp) <- "Rd"
     file.copy(file, file.path(dirname(file), paste("~", basename(file), sep="")), overwrite=TRUE)
-    writeLines(paste(as.character(as(tmp, "Rd")), collapse=""), file)
+    writeLines(sub("\n*$", "", paste(as.character(as(tmp, "Rd")), collapse="")), file)
     trash <- tryCatch(parse_Rd(file), warning=function(x) {
         file.copy(file.path(dirname(file), paste("~", basename(file), sep="")), file, overwrite=TRUE)
         unlink(file.path(dirname(file), paste("~", basename(file), sep="")))
@@ -314,13 +314,12 @@ injectContent <- function(file, content, section)
     return(invisible(content))
 }
 
-## Create display parameters section for the settings man page that list all availabe parameters for all classes
-allDisplayParsDoc <- function(details)
-{
+## Create display parameters section for the settings man page that list all available parameters for all classes
+allDisplayParsDoc <- function(details) {
     require(Gviz)
     text <- indent(c("\\section{Display Parameters}{", "\\describe{"), level=0:1)
     for(cl in c("GenomeAxisTrack", "DataTrack", "IdeogramTrack",
-         "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack"))
+         "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack", "AlignedReadTrack"))
     {
         parents <- names(getClassDef(cl)@contains)
         pars <- sapply(c(cl, parents), function(x) as.list(getClassDef(x)@prototype@dp), simplify=FALSE)
@@ -351,7 +350,7 @@ allDisplayParsDoc <- function(details)
         text <- c(text, indent(rep("}", 2), level=3:2))
     }
     text <- c(text, indent(rep("}", 2), level=1:0))
-    return(paste(text, collapse=" \n\n", sep=""))
+    return(sub("\n*$", "", paste(text, collapse=" \n\n", sep="")))
 }
 
 
@@ -389,7 +388,7 @@ updateLinks <- function(outdir, toUpdate)
                       if(!is.null(classes)) indent(paste("\\code{\\linkS4class{", sort(classes), "}}", sep=""), 1) else "",
                       if(!is.null(functions)) indent(paste("\\code{\\link{", sort(functions), "}}", sep=""), 1) else "",
                       "}")
-            res <- c(res, injectContent(f, paste(text, collapse="\n\n"), "seealso"))
+            res <- c(res, injectContent(f, sub("\n*$", "", paste(text, collapse="\n\n")), "seealso"))
         }
     }
     return(res)
@@ -401,11 +400,12 @@ details <- list(
 
                                 background.title="Character scalar. The background color for the title panel. Defaults to omit the background.",
                                 bevel="Numeric scalar, between 0 and 1. The level of smoothness for the two ends of the ideogram.",
+                                centromereShape="Character scalar. The shape of the centromere. Only \"triangle\" or \"circle\" is accepted. Default to \"triangle\"",
                                 cex.bands="Numeric scalar. The  font expansion factor for the chromosome band identifier text.",
                                 cex="Numeric scalar. The overall font expansion factor for the chromosome name text.",
                                 col="Character scalar. The border color used for the highlighting of the currently displayed genomic region.",
-                    col.border.title="Integer or character scalar. The border color for the title panels.",
-                    lwd.border.title="Integer scalar. The border width for the title panels.",
+                                col.border.title="Integer or character scalar. The border color for the title panels.",
+                                lwd.border.title="Integer scalar. The border width for the title panels.",
                                 fill="Character scalar. The fill color used for the highlighting of the currently displayed genomic region.",
                                 fontcolor="Character scalar. The font color for the chromosome name text.",
                                 fontface="Character scalar. The font face for the chromosome name text.",
@@ -470,13 +470,9 @@ details <- list(
                             levels.fos="Numeric scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             lineheight.legend="Numeric scalar. The line height for the legend text.",
                             lty.baseline="Character or numeric scalar. Line type of the optional baseline, defaults to the setting of \\code{lty}.",
-
                             lty.mountain="Character or numeric scalar. Line type in mountain-type and polygon-type plots, defaults to the setting of \\code{lty}.",
-
                             lwd.baseline="Numeric scalar. Line width of the optional baseline, defaults to the setting of \\code{lwd}.",
-
                             lwd.mountain="Numeric scalar. Line width in mountain-type and polygon-type plots, defaults to the setting of \\code{lwd}.",
-
                             min.distance="Numeric scalar. The mimimum distance in pixel below which to collapse ranges.",
                             na.rm="Boolean controlling whether to discard all NA values when plotting or to keep empty spaces for NAs",
                             ncolor="Integer scalar. The number of colors for the 'gradient' plotting type",
@@ -492,7 +488,6 @@ details <- list(
                             stats="Function. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             transformation="Function. Applied to the data  matrix prior to plotting or when calling the \\code{score} method. The function should accept exactly one input argument and its return value needs to be a numeric vector which can be coerced back into a data matrix of identical dimensionality as the input data.",
                             type="Character vector. The plot type, one or several in \\code{p},\\code{l}, \\code{b}, \\code{a}, \\code{a_confint}, \\code{s}, \\code{g}, \\code{r}, \\code{S}, \\code{confint}, \\code{smooth}, \\code{histogram}, \\code{mountain}, \\code{polygon}, \\code{h}, \\code{boxplot}, \\code{gradient}, \\code{heatmap}, \\code{horizon}. See 'Details' section in \\code{\\linkS4class{DataTrack}} for more information on the individual plotting types.",
-
                             varwidth="Logical scalar. Parameter controlling the boxplot appearance. See \\code{\\link{panel.bwplot}} for details.",
                             window="Numeric or character scalar. Aggregate the rows values of the data matrix to \\code{window} equally sized slices on the data range using the method defined in \\code{aggregation}. If negative, apply a running window of size \\code{windowSize} using the same aggregation method. Alternatively, the special value \\code{auto} causes the function to determine the optimal window size to avoid overplotting, and \\code{fixed} uses fixed-size windows of size \\code{windowSize}.",
                             windowSize="Numeric scalar. The size of the running window when the value of \\code{window} is negative.",
@@ -600,7 +595,7 @@ details <- list(
                                   fontface.group="Numeric scalar. The font face for the group-level annotation.",
                                   fontfamily.group="Character scalar. The font family for the group-level annotation.",
                                   fontsize.group="Numeric scalar. The font size for the group-level annotation.",
-                    groupAnnotation="Character scalar. Add annotation information as group labels. This can be a value in \\code{id}, \\code{group} or \\code{feature}. Defaults to \\code{group}. Only works if \\code{showId} is not \\code{FALSE}.",
+                                  groupAnnotation="Character scalar. Add annotation information as group labels. This can be a value in \\code{id}, \\code{group} or \\code{feature}. Defaults to \\code{group}. Only works if \\code{showId} is not \\code{FALSE}.",
                                   just.group="Character scalar. the justification of group labels. Either \\code{left}, \\code{right}, \\code{above} or \\code{below}.",
                                   lex="Numeric scalar. The line expansion factor for all track items. This is also used to connect grouped items. See \\code{\\link{grouping}} for details.",
                                   lineheight="Numeric scalar. The font line height for item identifiers.",
@@ -777,8 +772,8 @@ details <- list(
                                   lwd.coverage="Integer or character scalar. The line width of the coverage profile.",
                                   lwd.gap="Integer scalar. The width of the line that is bridging the gap regions in gapped alignments.",
                                   lwd.mates="Integer scalar. The width of the line that is connecting two paired reads.",
-                                  lty.deletion="Integer scalar. The width of the line that is bridging the deleted regions in alignments.",
-                                  lty.insertion="Integer scalar. The width of the line that highlighting insertions in alignments.",
+                                  lwd.deletion="Integer scalar. The width of the line that is bridging the deleted regions in alignments.",
+                                  lwd.insertion="Integer scalar. The width of the line that highlighting insertions in alignments.",
                                   lwd.mismatch="Integer scalar. The box line width around mismatch bases.",
                                   lwd.reads="Integer scalar. The box line width around reads.",
                                   lwd.sashimiMax="Integer scalar. The maximal width of the line in sashimi plots.",

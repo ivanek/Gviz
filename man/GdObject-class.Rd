@@ -591,9 +591,9 @@
 
   \code{\linkS4class{ImageMap}}
 
-  \code{\link{DataTrack}}
-
   \code{\link{collapsing}}
+
+  \code{\link{DataTrack}}
 
   \code{\link{grouping}}
 
@@ -606,53 +606,3 @@
 }
 
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

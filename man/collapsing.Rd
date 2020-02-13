@@ -49,15 +49,3 @@
   \code{\link{settings}}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

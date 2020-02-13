@@ -874,21 +874,21 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{GRanges}}
-
   \code{\linkS4class{GdObject}}
 
-  \code{\linkS4class{IRanges}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{ImageMap}}
+
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
   \code{\linkS4class{StackedTrack}}
 
-  \code{\link{DataTrack}}
-
   \code{\link{collapsing}}
+
+  \code{\link{DataTrack}}
 
   \code{\link{grouping}}
 
@@ -967,47 +967,3 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale=0.5, labelPos="below")))
 }
 
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

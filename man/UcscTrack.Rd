@@ -129,15 +129,3 @@ Florian Hahne
   \code{\link{plotTracks}}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

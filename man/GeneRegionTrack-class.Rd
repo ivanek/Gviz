@@ -1798,13 +1798,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{GRanges}}
-
   \code{\linkS4class{GdObject}}
 
-  \code{\linkS4class{IRanges}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{ImageMap}}
+
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
@@ -1812,9 +1812,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
   \code{\linkS4class{TxDb}}
 
-  \code{\link{DataTrack}}
-
   \code{\link{collapsing}}
+
+  \code{\link{DataTrack}}
 
   \code{\link{grouping}}
 
@@ -1950,43 +1950,3 @@ tags(grTrack)
 }
 
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

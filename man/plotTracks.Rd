@@ -202,14 +202,3 @@ xyplot(b~a|c, data.frame(a=a, b=1, c=cut(a, 4)), panel=myPanel,
 scales=list(x="free"))
 }
 }
-
-
-
-
-
-
-
-
-
-
-

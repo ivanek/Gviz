@@ -1248,19 +1248,6 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
     \item{}{\code{J_segment="dodgerblue2"}: Character or integer scalar.
       Fill color for annotation objects of type 'C_segment'.} 
 
-    \item{}{\code{Mt_rRNA="yellow"}: Character or integer scalar. Fill
-      color for annotation objects of type 'Mt_rRNA'.} 
-
-    \item{}{\code{Mt_tRNA="darkgoldenrod"}: Character or integer scalar.
-      Fill color for annotation objects of type 'Mt_tRNA'.} 
-
-    \item{}{\code{Mt_tRNA_pseudogene="darkgoldenrod1"}: Character or
-      integer scalar. Fill color for annotation objects of type
-      'Mt_tRNA_pseudogene'.} 
-
-    \item{}{\code{V_segment="aquamarine"}: Character or integer scalar.
-      Fill color for annotation objects of type 'V_segment'.} 
-
     \item{}{\code{miRNA="cornflowerblue"}: Character or integer scalar.
       Fill color for annotation objects of type 'L_segment'.} 
 
@@ -1273,11 +1260,24 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
     \item{}{\code{misc_RNA_pseudogene="cornsilk4"}: Character or integer
       scalar. Fill color for annotation objects of type 'misc_RNA_pseudogene'.} 
 
+    \item{}{\code{Mt_rRNA="yellow"}: Character or integer scalar. Fill
+      color for annotation objects of type 'Mt_rRNA'.} 
+
+    \item{}{\code{Mt_tRNA="darkgoldenrod"}: Character or integer scalar.
+      Fill color for annotation objects of type 'Mt_tRNA'.} 
+
+    \item{}{\code{Mt_tRNA_pseudogene="darkgoldenrod1"}: Character or
+      integer scalar. Fill color for annotation objects of type
+      'Mt_tRNA_pseudogene'.} 
+
     \item{}{\code{protein_coding="#FFD58A"}: Character or integer
       scalar. Fill color for annotation objects of type 'protein_coding'.} 
 
     \item{}{\code{pseudogene="brown1"}: Character or integer scalar.
       Fill color for annotation objects of type 'pseudogene'.} 
+
+    \item{}{\code{retrotransposed="blueviolet"}: Character or integer
+      scalar. Fill color for annotation objects of type 'retrotransposed'.} 
 
     \item{}{\code{rRNA="darkolivegreen1"}: Character or integer scalar.
       Fill color for annotation objects of type 'rRNA'.} 
@@ -1286,26 +1286,23 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
       integer scalar. Fill color for annotation objects of type
       'rRNA_pseudogene'.} 
 
-    \item{}{\code{retrotransposed="blueviolet"}: Character or integer
-      scalar. Fill color for annotation objects of type 'retrotransposed'.} 
-
     \item{}{\code{scRNA="gold4"}: Character or integer scalar. Fill
       color for annotation objects of type 'scRNA'.} 
 
     \item{}{\code{scRNA_pseudogene="darkorange2"}: Character or integer
       scalar. Fill color for annotation objects of type 'scRNA_pseudogene'.} 
 
-    \item{}{\code{snRNA="coral"}: Character or integer scalar. Fill
-      color for annotation objects of type 'snRNA'.} 
-
-    \item{}{\code{snRNA_pseudogene="coral3"}: Character or integer
-      scalar. Fill color for annotation objects of type 'snRNA_pseudogene'.} 
-
     \item{}{\code{snoRNA="cyan"}: Character or integer scalar. Fill
       color for annotation objects of type 'snoRNA'.} 
 
     \item{}{\code{snoRNA_pseudogene="cyan2"}: Character or integer
       scalar. Fill color for annotation objects of type 'snoRNA_pseudogene'.} 
+
+    \item{}{\code{snRNA="coral"}: Character or integer scalar. Fill
+      color for annotation objects of type 'snRNA'.} 
+
+    \item{}{\code{snRNA_pseudogene="coral3"}: Character or integer
+      scalar. Fill color for annotation objects of type 'snRNA_pseudogene'.} 
 
     \item{}{\code{tRNA_pseudogene="antiquewhite3"}: Character or integer
       scalar. Fill color for annotation objects of type 'tRNA_pseudogene'.} 
@@ -1315,6 +1312,9 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
     \item{}{\code{utr5="#FFD58A"}: Character or integer scalar. Fill
       color for annotation objects of type 'utr5'.} 
+
+    \item{}{\code{V_segment="aquamarine"}: Character or integer scalar.
+      Fill color for annotation objects of type 'V_segment'.} 
 
     \item{}{\code{verbose=FALSE}: Logical scalar. Report data loading
       events from Bioamart or retrieval from cache.} 
@@ -1673,15 +1673,15 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
   \code{\linkS4class{DisplayPars}}
 
-  \code{\linkS4class{GRanges}}
-
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{IRanges}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{ImageMap}}
+
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{Mart}}
 
@@ -1689,9 +1689,9 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
   \code{\linkS4class{StackedTrack}}
 
-  \code{\link{DataTrack}}
-
   \code{\link{collapsing}}
+
+  \code{\link{DataTrack}}
 
   \code{\link{getBM}}
 
@@ -1812,57 +1812,3 @@ tags(bmTrack)
 }
 
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

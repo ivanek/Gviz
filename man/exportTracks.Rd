@@ -47,14 +47,3 @@ FIXME: Need to support wgl exports as well...
 \author{
   Florian Hahne  
 }
-
-
-
-
-
-
-
-
-
-
-

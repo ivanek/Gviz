@@ -896,6 +896,10 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
     \item{}{\code{bevel=0.45}: Numeric scalar, between 0 and 1. The
       level of smoothness for the two ends of the ideogram.} 
 
+    \item{}{\code{centromereShape="triangle"}: Character scalar. The
+      shape of the centromere. Only "triangle" or "circle" is accepted.
+      Default to "triangle"} 
+
     \item{}{\code{cex=0.8}: Numeric scalar. The overall font expansion
       factor for the chromosome name text.} 
 
@@ -1093,29 +1097,29 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
   \code{\linkS4class{AnnotationTrack}}
 
-  \code{\linkS4class{DisplayPars}}
+  \code{\linkS4class{data.frame}}
 
-  \code{\linkS4class{GRanges}}
+  \code{\linkS4class{DisplayPars}}
 
   \code{\linkS4class{GdObject}}
 
   \code{\linkS4class{GeneRegionTrack}}
 
-  \code{\linkS4class{IRanges}}
+  \code{\linkS4class{GRanges}}
 
   \code{\linkS4class{ImageMap}}
+
+  \code{\linkS4class{IRanges}}
 
   \code{\linkS4class{RangeTrack}}
 
   \code{\linkS4class{StackedTrack}}
 
-  \code{\linkS4class{data.frame}}
-
-  \code{\link{DataTrack}}
-
   \code{\link{clearSessionCache}}
 
   \code{\link{collapsing}}
+
+  \code{\link{DataTrack}}
 
   \code{\link{grouping}}
 
@@ -1189,45 +1193,3 @@ as(idTrack, "data.frame")
 }
 
 \keyword{classes}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
