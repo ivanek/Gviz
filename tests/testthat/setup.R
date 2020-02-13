@@ -30,6 +30,27 @@ sam <- c("@HD	VN:1.0	GO:none	SO:coordinate",
 samfile <- tempfile(fileext = ".sam")
 cat(paste(sam, collapse="\n"), file=samfile)
 bamfile <- Rsamtools::asBam(samfile, indexDestination = TRUE)
+
+bamgr <- GRanges("chr1", IRanges(c(189892390L, 189892202L, 189893347L, 189891483L, 189893352L),
+                                 c(189892465L, 189892277L, 189893422L, 189891558L, 189893427L)),
+                 strand=rep(c("-","+"), c(2,3)))
+mcols(bamgr) <- DataFrame(id=c("NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932", 
+                      "NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932", 
+                      "NRCHBS-WDL30299:125:D1415ACXX:8:1313:16113:75579", 
+                      "NRCHBS-WDL30299:125:D1415ACXX:8:2215:20868:43279", 
+                      "NRCHBS-WDL30299:126:D14UTACXX:8:2215:4526:88225"),
+                 cigar=c("76M", "76M", "76M", "15S51M6207N10M", "76M"),
+                 mapq=rep(255L, 5),
+                 flag=c(113L, 177L, 65L, 65L, 65L),
+                 md=c("14C61", NA, NA, NA, NA),
+                 seq=DNAStringSet(c(`1`=paste(rep("+", 2600), collapse=""),
+                                  `2`=paste(rep("+", 2600), collapse=""),
+                                  `3`=paste(rep("+", 2600), collapse=""),
+                                  `4`=paste(rep("+", 2600), collapse=""),
+                                  `5`=paste(rep("+", 2600), collapse=""))),
+                 isize=c(113L, 113L, 48L, 47L, 30L),
+                 groupid=c(1L, 1L, 2L, 3L, 4L),
+                 status=factor(rep(c("mated", "unmated"), c(2,3)), levels=c("mated", "ambiguous", "unmated")))
 ## classes --------------------------------------------------------------------
 
 ## IdeogramTrack

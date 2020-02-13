@@ -105,3 +105,7 @@ test_that("conversion of junction to list for plotting works", {
   expect_warning(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt, filterTolerance=-1), 
                  "can't be negative, taking absolute value of it")
 })
+
+test_that("import of alignments from BAM file works", {
+  expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), bamgr)
+})
