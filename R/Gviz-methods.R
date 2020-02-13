@@ -3928,21 +3928,14 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         grid.rect(stExt[aft], margin, width=wd[aft], height=1-margin*2, gp=gpar(col=lcolBands[aft], fill=valsExt[aft,"col"]),
                   just=c("left","bottom"))
     ## Now the centromere, if there is any
-    if(length(cent)) {
-        centromereShape <- .dpOrDefault(GdObject, "centromereShape", "triangle")
-        if (centromereShape == "circle") {
-          sc <- as.numeric(convertHeight(unit(sum(wd[cent]), "points"), "native")) / 
-            as.numeric(convertWidth(unit(sum(wd[cent]), "points"), "native"))
-          grid.circle(x=stExt[min(cent)]+sum(wd[cent])/2, y=0.5, r=sc*sum(wd[cent])/2,
-                      gp = gpar(col = cols["acen"], fill = cols["acen"]))
-        } else {
+    centromereShape <- .dpOrDefault(GdObject, "centromereShape", "triangle")
+    if(length(cent) && centromereShape == "triangle") {
           grid.polygon(c(stExt[min(cent)], stExt[min(cent)]+wd[min(cent)], rep(stExt[min(cent)],2)),
                        c(margin, 0.5, (1-margin), margin),
                        gp=gpar(col=cols["acen"], fill=cols["acen"]))
           grid.polygon(c(stExt[max(cent)], rep(stExt[max(cent)]+wd[max(cent)], 2), stExt[max(cent)]),
                        c(0.5, margin, (1-margin), 0.5),
                        gp=gpar(col=cols["acen"], fill=cols["acen"]))
-        }
     }
     ## Now the caps
     str <- if(length(st)==1) 0:1 else st
@@ -3966,6 +3959,13 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
         y1 <- y0
     }
     grid.segments(x0, y0, x1, y1, gp=gpar(col=lcol, lwd=lwd, lty=lty))
+    ## centromere (circle)
+    if(length(cent) && centromereShape == "circle") {
+        sc <- as.numeric(convertHeight(unit(sum(wd[cent]), "points"), "native")) / 
+          as.numeric(convertWidth(unit(sum(wd[cent]), "points"), "native"))
+        grid.circle(x=stExt[min(cent)]+sum(wd[cent])/2, y=0.5, r=sc*sum(wd[cent])/2,
+                    gp = gpar(col = lcol, fill = cols["acen"]))
+    }
     ## The outlines of the box
     if(!missing(minBase) && !missing(maxBase))
     {

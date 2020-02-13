@@ -865,7 +865,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 \details{
 
   Ideograms are schematic depictions of chromosomes, including
-  chromosome band information and centromer location. The relevant data
+  chromosome band information and centromere location. The relevant data
   for various species is stored in the UCSC data base. The initializer
   method of the class will automatically fetch the respective data for a
   given genome and chromosome from UCSC and fill the appropriate object

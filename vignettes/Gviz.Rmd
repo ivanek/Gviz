@@ -27,7 +27,7 @@ editor_options:
     console
 ---
 
-__Last edited__: 23 April 2019
+__Last edited__: 13 February 2020
 
 ```{r init, echo=FALSE, results='hide'}
 knitr::opts_chunk$set(
@@ -739,6 +739,13 @@ that are wide enough to accommodate the text.
 ```{r IdeogramTrackClass3, fig.width=7.5, fig.height=0.5}
 plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE, showBandId=TRUE, cex.bands=0.5)
 ```
+
+We can also change the shape of the centromere to "circle" instead of default "triangle".
+
+```{r IdeogramTrackClass4, fig.width=7.5, fig.height=0.5}
+plotTracks(ideoTrack, from=85e6, to=129e6, showId=FALSE, centromereShape="circle")
+```
+
 
 ### Display parameters for IdeogramTrack objects
 
