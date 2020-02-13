@@ -61,6 +61,20 @@ test_that("General replacement methods work", {
   expect_identical(ranges(annoTrack), gr2)
   expect_identical(range(annoTrack), ir2)
   
+  start(annoTrack) <- 3L
+  expect_identical(start(annoTrack), 3L)
+  start(axisTrack) <- 3L
+  expect_identical(start(axisTrack), 3L)
+  start(ideoTrack) <- 3L
+  expect_identical(start(ideoTrack), NULL)
+  
+  end(annoTrack) <- 4L
+  expect_identical(end(annoTrack), 4L)
+  end(axisTrack) <- 4L
+  expect_identical(end(axisTrack), 4L)
+  end(ideoTrack) <- 4L
+  expect_identical(end(ideoTrack), NULL)
+  
 })
 
 

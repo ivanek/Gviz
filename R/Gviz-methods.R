@@ -6,6 +6,14 @@ setMethod("ranges", "RangeTrack", function(x) x@range)
 setReplaceMethod("ranges", "RangeTrack", function(x, value) {
     x@range <- value
     return(x)})
+# setMethod("ranges", "DataTrack", function(x) {
+#   values(x@range) <- t(x@data)
+#   x@range
+#   })
+# setReplaceMethod("ranges", "DataTrack", function(x, value) {
+#   x@data <- t(as.matrix(as.data.frame(values(value))))
+#   x@range <- granges(value)
+#   return(x)})
 setMethod("ranges", "GenomeAxisTrack", function(x) x@range)
 setReplaceMethod("ranges", "GenomeAxisTrack", function(x, value) {
     x@range <- value
@@ -39,7 +47,9 @@ setReplaceMethod("start", "RangeTrack", function(x, value) {
 setReplaceMethod("start", "GenomeAxisTrack", function(x, value) {
     start(x@range) <- value
     return(x)})
-setReplaceMethod("start", "IdeogramTrack", function(x, value) return(x))
+setReplaceMethod("start", "IdeogramTrack", function(x, value) {
+    #start(x@range) <- value
+    return(x)})
 setMethod("end", "RangeTrack", function(x) if(length(x)) as.integer(end(range(x))) else NULL)
 setReplaceMethod("end", "RangeTrack", function(x, value) {
     end(x@range) <- value
@@ -47,7 +57,9 @@ setReplaceMethod("end", "RangeTrack", function(x, value) {
 setReplaceMethod("end", "GenomeAxisTrack", function(x, value) {
     end(x@range) <- value
     return(x)})
-setReplaceMethod("end", "IdeogramTrack", function(x, value) return(x))
+setReplaceMethod("end", "IdeogramTrack", function(x, value) {
+    #end(x@range) <- value
+    return(x)})
 setMethod("width", "RangeTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
 setReplaceMethod("width", "RangeTrack", function(x, value) {
     width(x@range) <- value
@@ -56,11 +68,11 @@ setReplaceMethod("width", "IdeogramTrack", function(x, value) return(x))
 setMethod("start", "GenomeAxisTrack", function(x) if(length(x)) start(range(x)) else NULL)
 setMethod("end", "GenomeAxisTrack", function(x) if(length(x)) end(range(x)) else NULL)
 setMethod("width", "GenomeAxisTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
-setMethod("start", "IdeogramTrack", function(x) NULL)
+setMethod("start", "IdeogramTrack", function(x) NULL)#if(length(x)) start(range(x)) else NULL)
 setMethod("start", "SequenceTrack", function(x) NULL)
-setMethod("end", "IdeogramTrack", function(x) NULL)
+setMethod("end", "IdeogramTrack", function(x) NULL)#if(length(x)) end(range(x)) else NULL)
 setMethod("end", "SequenceTrack", function(x) NULL)
-setMethod("width", "IdeogramTrack", function(x) NULL)
+setMethod("width", "IdeogramTrack", function(x) NULL)#if(length(x)) width(range(x)) else NULL)
 setMethod("width", "SequenceTrack", function(x) NULL)
 
 ## Return the number of individual annotation items (independent of any grouping) in a RangeTrack
