@@ -1,7 +1,6 @@
 ## libs -----------------------------------------------------------------------
 
-
-library(BSgenome.Celegans.UCSC.ce2)
+library(BSgenome.Hsapiens.UCSC.hg19)
 
 ## general --------------------------------------------------------------------
 set.seed(789)
@@ -40,7 +39,7 @@ annoTrack <- AnnotationTrack(gr)
 ## SequenceTrack
 seqTrack.dna <- SequenceTrack(dna.sq)
 seqTrack.rna <- SequenceTrack(rna.sq)
-seqTrack.bs <- SequenceTrack(BSgenome.Celegans.UCSC.ce2)
+seqTrack.bs <- SequenceTrack(BSgenome.Hsapiens.UCSC.hg19)
 
 ## AlignmentsTrack
 

@@ -12,13 +12,13 @@ test_that("General accessors work", {
   expect_identical(seqnames(dataTrack), "chr1")
   expect_identical(seqnames(seqTrack.dna), "chr1")
   expect_identical(seqnames(seqTrack.rna), "chr1")
-  expect_identical(seqnames(seqTrack.bs), seqnames(BSgenome.Celegans.UCSC.ce2))
+  expect_identical(seqnames(seqTrack.bs), seqnames(BSgenome.Hsapiens.UCSC.hg19))
 
   expect_identical(seqlevels(annoTrack), "chr1")
   expect_identical(seqlevels(dataTrack), "chr1")
   expect_identical(seqlevels(seqTrack.dna), "chr1")
   expect_identical(seqlevels(seqTrack.rna), "chr1")
-  expect_identical(seqlevels(seqTrack.bs), seqlevels(BSgenome.Celegans.UCSC.ce2))
+  expect_identical(seqlevels(seqTrack.bs), seqlevels(BSgenome.Hsapiens.UCSC.hg19))
 
   expect_identical(seqinfo(annoTrack), table("chr1"))
   
