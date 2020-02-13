@@ -1,6 +1,6 @@
-##----------------------------------------------------------------------------------------------------------------------------
+## general accessors ---------------------------------------------------------------------------------------------------------
 ## Some rather general accessors to extract information from all kinds of GdObjects
-##----------------------------------------------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------------------------------------------- -
 ## Extract the full GRanges object from the range slot of an object inheriting from RangeTrack
 setMethod("ranges", "RangeTrack", function(x) x@range)
 setReplaceMethod("ranges", "RangeTrack", function(x, value) {
@@ -23,7 +23,8 @@ setMethod("seqnames", "SequenceRNAStringSetTrack", function(x) as.character(name
 setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames(x@sequence)))
 setMethod("seqlevels", "RangeTrack", function(x) unique(seqnames(x)))
 setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence)>0])
-setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames)
+setMethod("seqlevels", "SequenceRNAStringSetTrack", function(x) seqnames(x)[width(x@sequence)>0])
+setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify=T))>0])
 setMethod("seqinfo", "RangeTrack", function(x) table(seqnames(x)))
 
 ## Min and max ranges
@@ -318,7 +319,7 @@ setMethod("[", signature(x="AlignedReadTrack"), function(x, i, j, ..., drop=TRUE
     return(x)})
 
 ## Split a RangeTrack or DataTrack by a factor or character
-setMethod("split", signature("RangeTrack"),
+setMethod("split", signature("RangeTrack"), 
           definition=function(x, f, ...){
               rs <- split(ranges(x), factor(f))
               lapply(rs, function(y) {x@range <- y; return(x)})
@@ -345,18 +346,17 @@ setMethod("coverage", signature("AlignedReadTrack"),
 			return(if(!is.null(x@coverage[[str]])) x@coverage[[str]] else Rle())
 		})
 
-##----------------------------------------------------------------------------------------------------------------------------
+## annotation accessors ------------------------------------------------------------------------------------------------------
 ## There are several levels of annotation information for most RangeTrack objects: individual features (e.g. exons, biotype),
 ## groups (e.g. transcripts) and even groups of groups (e.g. genes). Not all are relevant for all subclasses, however we want
 ## to have accessors and replacement methods for a clean interface.
-##----------------------------------------------------------------------------------------------------------------------------
+##-------------------------------------------------------------------------------------------------------------------------- -
 ## Helper functions to extract or replace the various annotation data of a track.
 ##   o GdObject: the input GeneRegionTrack track object
 ##   o type: the annotation type, i.e., a metadata column in the GRanges object
 ##   o value: the replacement value, has to be of the same length as length(GdObject)
-.getAnn <- function(GdObject, type) return(as.character(values(GdObject)[[type]]))
-.setAnn <-  function(GdObject, value, type)
-{
+.getAnn <- function(GdObject, type)  return(as.character(values(GdObject)[[type]]))
+.setAnn <-  function(GdObject, value, type) {
     v <- values(GdObject)
     if(length(value)>1 && length(value) != nrow(v))
         stop("The length of the replacement value for the '", type, "' annotation does not match the number ",

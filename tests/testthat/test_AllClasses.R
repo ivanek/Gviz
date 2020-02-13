@@ -109,3 +109,13 @@ test_that("CustomTrack works", {
   expect_s4_class(CustomTrack(), "CustomTrack")
 })
 
+test_that("HighlightTrack works", {
+  expect_s4_class(HighlightTrack(), "GdObject")
+  expect_s4_class(HighlightTrack(), "HighlightTrack")
+})
+
+test_that("OverlayTrack works", {
+  expect_s4_class(OverlayTrack(), "GdObject")
+  expect_s4_class(OverlayTrack(), "OverlayTrack")
+})
+

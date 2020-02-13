@@ -1,34 +1,66 @@
 # Gviz methods
 
-ir <- IRanges(1L,5L)
-gr <- GRanges("chr1", ir, score=1)
-ir2 <- IRanges(2L,6L)
-gr2 <- GRanges("chr1", ir2, score=2)
-
-dt <- DataTrack(gr)
-gt <- GenomeAxisTrack(gr)
-at <- AnnotationTrack(gr)
-
-
 test_that("General accessors work", {
 
-  ranges(dt) <- gr2
-  expect_identical(ranges(dt), gr2)
-  expect_identical(range(dt), ir2)
+  expect_identical(ranges(dataTrack), granges(gr))
+  expect_identical(range(dataTrack), ir)
   
-  ranges(gt) <- gr2
-  expect_identical(ranges(gt), gr2)
-  expect_identical(range(gt), ir2)
+  expect_identical(ranges(axisTrack), gr)
+  expect_identical(range(axisTrack), ir)
   
-  expect_identical(seqnames(at), "chr1")
-  expect_identical(seqnames(dt), "chr1")
+  expect_identical(seqnames(annoTrack), "chr1")
+  expect_identical(seqnames(dataTrack), "chr1")
+  expect_identical(seqnames(seqTrack.dna), "chr1")
+  expect_identical(seqnames(seqTrack.rna), "chr1")
+  expect_identical(seqnames(seqTrack.bs), seqnames(BSgenome.Celegans.UCSC.ce2))
+
+  expect_identical(seqlevels(annoTrack), "chr1")
+  expect_identical(seqlevels(dataTrack), "chr1")
+  expect_identical(seqlevels(seqTrack.dna), "chr1")
+  expect_identical(seqlevels(seqTrack.rna), "chr1")
+  expect_identical(seqlevels(seqTrack.bs), seqlevels(BSgenome.Celegans.UCSC.ce2))
+
+  expect_identical(seqinfo(annoTrack), table("chr1"))
   
-  expect_identical(min(dt), 2L)
-  expect_identical(max(dt), 6L)
+  expect_identical(min(dataTrack), 1L)
+  expect_identical(max(dataTrack), 5L)
+  
+  expect_identical(start(dataTrack), 1L)
+  expect_identical(end(dataTrack), 5L)
+  expect_identical(width(dataTrack), 5L)
+  expect_identical(length(dataTrack), 1L)
+  
+  expect_identical(start(ideoTrack), NULL)
+  expect_identical(end(ideoTrack), NULL)
+  expect_identical(width(ideoTrack), NULL)
+  expect_identical(length(ideoTrack), 4L)
+  
+  expect_identical(start(axisTrack), 1L)
+  expect_identical(end(axisTrack), 5L)
+  expect_identical(width(axisTrack), 5L)
+  
+  expect_identical(start(seqTrack.dna), NULL)
+  expect_identical(end(seqTrack.dna), NULL)
+  expect_identical(width(seqTrack.dna), NULL)
+  expect_identical(length(seqTrack.dna), 100L) # !
+  
+  expect_identical(length(highTrack), 1L)
+  expect_identical(length(overTrack), 2L)
+})
+
+test_that("General replacement methods work", {
+  ranges(dataTrack) <- gr2
+  expect_identical(ranges(dataTrack), gr2)
+  expect_identical(range(dataTrack), ir2)
+  
+  ranges(axisTrack) <- gr2
+  expect_identical(ranges(axisTrack), gr2)
+  expect_identical(range(axisTrack), ir2)
+  
 })
 
 
 test_that("chromosome accessor works", {
-  expect_identical(chromosome(at), "chr1")
-  expect_identical(chromosome(dt), "chr1")
+  expect_identical(chromosome(annoTrack), "chr1")
+  expect_identical(chromosome(dataTrack), "chr1")
 })
