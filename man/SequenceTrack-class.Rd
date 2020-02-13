@@ -16,6 +16,7 @@
 \alias{seqlevels,SequenceBSgenomeTrack-method}
 \alias{seqnames,SequenceBSgenomeTrack-method}
 \alias{seqlevels,SequenceDNAStringSetTrack-method}
+\alias{seqlevels,SequenceRNAStringSetTrack-method}
 \alias{seqnames,SequenceDNAStringSetTrack-method}
 \alias{seqnames,SequenceRNAStringSetTrack-method}
 \alias{length,SequenceTrack-method}

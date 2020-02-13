@@ -38,6 +38,8 @@ importFrom(Biobase, listLen, rowMax, rowMin)
 
 importFrom(Biostrings, DNAStringSet, RNAStringSet, BStringSet, DNAString, RNAString, BString, reverseComplement, readDNAStringSet, DNA_ALPHABET, stackStrings)
 
+importFrom(BSgenome, bsapply)
+
 importFrom(biomaRt, getBM, useMart, listDatasets, listAttributes, listFilters)
 
 importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa, BamFile, scanBamWhat, bamWhich)
