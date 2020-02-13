@@ -38,7 +38,7 @@ annoTrack <- AnnotationTrack(gr)
 
 ## SequenceTrack
 seqTrack.dna <- SequenceTrack(dna.sq)
-seqTrack.rna <- SequenceTrack(rna.sq)
+seqTrack.rna <- RNASequenceTrack(rna.sq)
 seqTrack.bs <- SequenceTrack(BSgenome.Hsapiens.UCSC.hg19)
 
 ## AlignmentsTrack

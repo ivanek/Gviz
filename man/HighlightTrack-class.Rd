@@ -696,10 +696,10 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
   \code{\link{settings}} for details on setting graphical parameters
   for tracks. \describe{ 
 
-    \item{}{\code{col="red"}: Integer or character scalar. The boder
+    \item{}{\code{col="red"}: Integer or character vector. The border
       color for the highlighting regions.} 
 
-    \item{}{\code{fill="#FFE3E6"}: Integer or character scalar. The
+    \item{}{\code{fill="#FFE3E6"}: Integer or character vector. The
       fill color for the highlighting regions.} 
 
     \item{}{\code{inBackground=TRUE}: Logical scalar. Place the box in
@@ -722,6 +722,9 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
         \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
           for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
 
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 

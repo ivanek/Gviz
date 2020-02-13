@@ -3,6 +3,7 @@
 \docType{class}
 \alias{SequenceTrack-class}
 \alias{SequenceTrack}
+\alias{RNASequenceTrack}
 \alias{chromosome,SequenceTrack-method}
 \alias{chromosome<-,SequenceTrack-method}
 \alias{end,SequenceTrack-method}
@@ -32,10 +33,10 @@
 
 \description{
 
-  A track class to represent genomic sequences. The two child classes
-  \code{SequenceDNAStringSetTrack} and \code{SequenceBSgenomeTrack} do
-  most of the work, however in practise they are of no particular
-  relevance to the user. 
+  A track class to represent genomic sequences. The three child classes
+  \code{SequenceDNAStringSetTrack}, \code{SequenceRNAStringSetTrack} 
+  and \code{SequenceBSgenomeTrack} do most of the work, however in 
+  practise they are of no particular relevance to the user. 
   
 }
 
@@ -49,6 +50,9 @@
 \usage{
 
 SequenceTrack(sequence, chromosome, genome, name="SequenceTrack",
+importFunction, stream=FALSE, ...)
+
+RNASequenceTrack(sequence, chromosome, genome, name="SequenceTrack",
 importFunction, stream=FALSE, ...)
 
 }
@@ -629,59 +633,54 @@ importFunction, stream=FALSE, ...)
 }
 
 
-\section{Display Parameters}{
+\section{Display Parameters}{ 
 
   The following display parameters are set for objects of class
-  \code{SequenceTrack} upon instantiation
-  
-  \describe{ 
-   
-     \item{}{\code{size=null}: Numeric scalar. The size of
-       the track item. Defaults to auto-detect the size based on the
-       other parameter settings.}
+  \code{SequenceTrack} upon instantiation, unless one or more of them
+  have already been set by one of the optional sub-class initializers,
+  which always get precedence over these global defaults. See
+  \code{\link{settings}} for details on setting graphical parameters
+  for tracks. \describe{ 
 
-     \item{}{\code{fontcolor=getBioColor("DNA_BASES_N")}: Character
-       vector. The colors
-       used for the 5 possible nucleotides (G, A, T, C, N). Defaults to
-       use colors as defined in the \code{biovizBase} package.}
+    \item{}{\code{add53=FALSE}: Logical scalar. Add a direction
+      indicator.} 
 
-     \item{}{\code{fontsize=10}: Numeric scalar. Controls the size of
-       the sequence and thus also the level of plotable details. }
+    \item{}{\code{background.title="transparent"}: Character scalar.
+      Make the title panel background transparent by default.} 
 
-     \item{}{\code{fontface=2}: Numeric scalar. The face of the font. }
+    \item{}{\code{col="darkgray"}: Character scalar. The color of the
+      line when no indiviual letters can be plotted due to size
+      limitations.} 
 
-     \item{}{\code{lwd=2}: Numeric scalar. The width of the line when no
-       indiviual letters can be plotted due to size limitations.}
+    \item{}{\code{complement=FALSE}: Logical scalar. Plot the sequence
+      complement.} 
 
-     \item{}{\code{col="darkgray"}: Character scalar. The color of the
-       line when no indiviual letters can be plotted due to size
-       limitations.}
+    \item{}{\code{fontface=2}: Numeric scalar. The face of the font.} 
 
-     \item{}{\code{min.width=2}: Numeric scalar. The minimum width of
-       the colored boxes that are drawn when no indiviual letters can be
-       plotted due to size limitations.}
+    \item{}{\code{fontsize=10}: Numeric scalar. Controls the size of
+      the sequence letters and thus also the level of plotable details.} 
 
-     \item{}{\code{showTitle=FALSE}: Logical scalar. Do not show a title
-       panel by default.}
-       
-     \item{}{\code{background.title="transparent"}: Character
-       scalar. Make the title panel transparent by default.}
+    \item{}{\code{lwd=2}: Numeric scalar. The width of the line when
+      no indiviual letters can be plotted due to size limitations.} 
 
-     \item{}{\code{col.border.title="transparent"}: Integer or character
-      scalar. The border color for the title panels.}  
+    \item{}{\code{min.width=2}: Numeric scalar. The minimum width in
+      pixels of the colored boxes that are drawn when no indiviual
+      letters can be plotted due to size limitations. If the horizontal
+      space that a single base occupies is smaller than this value,
+      only a horizontal line is drawn to indicate the presence of a
+      sequence.} 
 
-    \item{}{\code{lwd.border.title=1}: Integer scalar. The border
-      width for the title panels.}
+    \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
+      boxes (or a line) regardles of the available space.} 
 
-     \item{}{\code{noLetters=FALSE}: Logical scalar. Always plot colored
-       boxes (or a line) regardles of the available space.}
-     
-     \item{}{\code{add53=FALSE}: Logical scalar. Add a direction
-       indicator.}
-     
-     \item{}{\code{add53=FALSE}: Logical scalar. Plot the sequence complement.}
-     
-   }
+    \item{}{\code{showTitle=FALSE}: Logical scalar. Do not show a title
+      panel by default.} 
+
+    \item{}{\code{size=NULL}: Numeric scalar. The size of the track
+      item. Defaults to auto-detect the size based on the other parameter
+      settings.} 
+
+  } 
 
   Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
@@ -696,15 +695,23 @@ importFunction, stream=FALSE, ...)
         \item{}{\code{alpha=1}: Numeric scalar. The transparency for
           all track items.} 
 
+        \item{}{\code{alpha.title=NULL}: Numeric scalar. The transparency
+          for the title panel.} 
+
+        \item{}{\code{background.legend="transparent"}: Integer or
+          character scalar. The background color for the legend.} 
+
         \item{}{\code{background.panel="transparent"}: Integer or
           character scalar. The background color of the content panel.} 
 
         \item{}{\code{cex=1}: Numeric scalar. The overall font expansion
-          factor for all text.} 
+          factor for all text and glyphs, unless a more specific
+          definition exists.} 
 
         \item{}{\code{cex.axis=NULL}: Numeric scalar. The expansion
           factor for the axis annotation. Defaults to \code{NULL}, in
-          which case it is computed based on the available space.} 
+          which case it is automatically determined based on the
+          available space.} 
 
         \item{}{\code{cex.title=NULL}: Numeric scalar. The expansion
           factor for the title panel. This effects the fontsize of both
@@ -714,6 +721,9 @@ importFunction, stream=FALSE, ...)
 
         \item{}{\code{col.axis="white"}: Integer or character scalar.
           The font and line color for the y axis, if any.} 
+
+        \item{}{\code{col.border.title="white"}: Integer or character
+          scalar. The border color for the title panels.} 
 
         \item{}{\code{col.frame="lightgray"}: Integer or character
           scalar. The line color used for the panel frame, if
@@ -732,10 +742,10 @@ importFunction, stream=FALSE, ...)
           Default colors for plot symbols. Usually the same as the
           global \code{col} parameter.} 
 
-        \item{}{\code{col.title="white"}: Integer or character scalar.
-          The font color for the title panels.} 
+        \item{}{\code{col.title="white"} \code{(Aliases: fontcolor.title)}:
+          Integer or character scalar. The border color for the title panels} 
 
-        \item{}{\code{collapse=TRUE}: Boolean controlling wether to
+        \item{}{\code{collapse=TRUE}: Boolean controlling whether to
           collapse the content of the track to accomodate the minimum
           current device resolution. See \code{\link{collapsing}} for
           details.} 
@@ -744,12 +754,16 @@ importFunction, stream=FALSE, ...)
           Default fill color setting for all plotting elements, unless
           there is a more specific control defined elsewhere.} 
 
-        
+        \item{}{\code{fontcolor="black"}: Integer or character scalar.
+          The font color for all text, unless a more specific definition
+          exists.} 
+
         \item{}{\code{fontface.title=2}: Integer or character scalar.
           The font face for the title panels.} 
 
         \item{}{\code{fontfamily="sans"}: Integer or character scalar.
-          The font family for all text.} 
+          The font family for all text, unless a more specific definition
+          exists.} 
 
         \item{}{\code{fontfamily.title="sans"}: Integer or character
           scalar. The font family for the title panels.} 
@@ -765,7 +779,7 @@ importFunction, stream=FALSE, ...)
           for details.} 
 
         \item{}{\code{lineheight=1}: Numeric scalar. The font line
-          height for all text.} 
+          height for all text, unless a more specific definition exists.} 
 
         \item{}{\code{lty="solid"}: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
@@ -776,9 +790,15 @@ importFunction, stream=FALSE, ...)
           in \code{\link{DataTrack}}s and when display parameter
           \code{grid==TRUE}.} 
 
+        \item{}{\code{lwd.border.title=1}: Integer scalar. The border
+          width for the title panels.} 
+
         \item{}{\code{lwd.grid=1}: Numeric scalar. Default line width
           for grid lines, both when \code{type=="g"} in \code{\link{DataTrack}}s
           and when display parameter \code{grid==TRUE}.} 
+
+        \item{}{\code{lwd.title=1}: Integer scalar. The border width
+          for the title panels} 
 
         \item{}{\code{min.distance=1}: Numeric scalar. The minimum
           pixel distance before collapsing range items, only if
@@ -788,6 +808,18 @@ importFunction, stream=FALSE, ...)
           height in pixels to display. All ranges are expanded to this
           size in order to avoid rendering issues. See \code{\link{collapsing}}
           for details.} 
+
+        \item{}{\code{reverseStrand=FALSE}: Logical scalar. Set up the
+          plotting coordinates in 3' -> 5' direction if \code{TRUE}.
+          This will effectively mirror the plot on the vertical axis.} 
+
+        \item{}{\code{rotation=0}: The rotation angle for all text
+          unless a more specific definiton exists.} 
+
+        \item{}{\code{rotation.title=90} \code{(Aliases: rotation.title)}:
+          The rotation angle for the text in the title panel. Even
+          though this can be adjusted, the automatic resizing of the
+          title panel will currently not work, so use at own risk.} 
 
         \item{}{\code{showAxis=TRUE}: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are

@@ -715,15 +715,17 @@ details <- list(
 
                 SequenceTrack=c(
 
-                                add53="Logical scalar. Add a direction indicator",
+                                add53="Logical scalar. Add a direction indicator.",
                                 background.title="Character scalar. Make the title panel background transparent by default.",
                                 cex="The character expansion factor for the size of the sequence letters. Together with \\code{fontsize} this determines the final font size and thus the level of plotable details.",
                                 col="Character scalar. The color of the line when no indiviual letters can be plotted due to size limitations.",
+                                col.border.title="Integer or character scalar. The border color for the title panels.",
                                 complement="Logical scalar. Plot the sequence complement.",
                                 fontcolor="Character vector. The colors used for the 5 possible nucleotides (G, A, T, C, N). Defaults to use colors as defined in the \\code{biovizBase} package.",
                                 fontface="Numeric scalar. The face of the font.",
                                 fontsize="Numeric scalar. Controls the size of the sequence letters and thus also the level of plotable details.",
                                 lwd="Numeric scalar. The width of the line when no indiviual letters can be plotted due to size limitations.",
+                                lwd.border.title="Integer scalar. The border width for the title panels.",
                                 min.width="Numeric scalar. The minimum width in pixels of the colored boxes that are drawn when no indiviual letters can be plotted due to size limitations. If the horizontal space that a single base occupies is smaller than this value, only a horizontal line is drawn to indicate the presence of a sequence.",
                                 noLetters="Logical scalar. Always plot colored boxes (or a line) regardles of the available space.",
                                 rotation="Numeric scalar. The rotation angle for each individual letter in the sequence.",

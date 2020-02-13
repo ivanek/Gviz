@@ -21,7 +21,7 @@ importClassesFrom(rtracklayer, UCSCData)
 importMethodsFrom(AnnotationDbi, colnames, get, ls, mget, tail)
 
 
-importMethodsFrom(BSgenome, providerVersion)
+importMethodsFrom(BSgenome, providerVersion, seqnames)
 
 importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", cdsBy, exonsBy, fiveUTRsByTranscript, threeUTRsByTranscript, transcriptsBy, transcripts)
 
@@ -91,6 +91,7 @@ export(".chrName",
        "DataTrack",
        "DisplayPars",
        "SequenceTrack",
+       "RNASequenceTrack",
        "OverlayTrack",
        "drawAxis",
        "drawGD",

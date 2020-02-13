@@ -56,6 +56,10 @@ test_that("General replacement methods work", {
   ranges(axisTrack) <- gr2
   expect_identical(ranges(axisTrack), gr2)
   expect_identical(range(axisTrack), ir2)
+ 
+  ranges(annoTrack) <- gr2
+  expect_identical(ranges(annoTrack), gr2)
+  expect_identical(range(annoTrack), ir2)
   
 })
 
