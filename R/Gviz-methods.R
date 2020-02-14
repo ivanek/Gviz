@@ -41,6 +41,19 @@ setMethod("max", "RangeTrack", function(x) max(end(x)))
 
 ## Extract start and end coordinates
 setMethod("start", "RangeTrack", function(x) if(length(x)) as.integer(start(range(x))) else NULL)
+setMethod("start", "GenomeAxisTrack", function(x) if(length(x)) start(range(x)) else NULL)
+setMethod("start", "IdeogramTrack", function(x) NULL)#if(length(x)) start(range(x)) else NULL)
+setMethod("start", "SequenceTrack", function(x) NULL)
+setMethod("end", "RangeTrack", function(x) if(length(x)) as.integer(end(range(x))) else NULL)
+setMethod("end", "GenomeAxisTrack", function(x) if(length(x)) end(range(x)) else NULL)
+setMethod("end", "IdeogramTrack", function(x) NULL)#if(length(x)) end(range(x)) else NULL)
+setMethod("end", "SequenceTrack", function(x) NULL)
+setMethod("width", "RangeTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
+setMethod("width", "GenomeAxisTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
+setMethod("width", "IdeogramTrack", function(x) NULL)#if(length(x)) width(range(x)) else NULL)
+setMethod("width", "SequenceTrack", function(x) NULL)
+
+## Set start and end coordinates
 setReplaceMethod("start", "RangeTrack", function(x, value) {
     start(x@range) <- value
     return(x)})
@@ -50,7 +63,6 @@ setReplaceMethod("start", "GenomeAxisTrack", function(x, value) {
 setReplaceMethod("start", "IdeogramTrack", function(x, value) {
     #start(x@range) <- value
     return(x)})
-setMethod("end", "RangeTrack", function(x) if(length(x)) as.integer(end(range(x))) else NULL)
 setReplaceMethod("end", "RangeTrack", function(x, value) {
     end(x@range) <- value
     return(x)})
@@ -60,20 +72,11 @@ setReplaceMethod("end", "GenomeAxisTrack", function(x, value) {
 setReplaceMethod("end", "IdeogramTrack", function(x, value) {
     #end(x@range) <- value
     return(x)})
-setMethod("width", "RangeTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
 setReplaceMethod("width", "RangeTrack", function(x, value) {
     width(x@range) <- value
     return(x)})
 setReplaceMethod("width", "IdeogramTrack", function(x, value) return(x))
-setMethod("start", "GenomeAxisTrack", function(x) if(length(x)) start(range(x)) else NULL)
-setMethod("end", "GenomeAxisTrack", function(x) if(length(x)) end(range(x)) else NULL)
-setMethod("width", "GenomeAxisTrack", function(x) if(length(x)) as.integer(width(range(x))) else NULL)
-setMethod("start", "IdeogramTrack", function(x) NULL)#if(length(x)) start(range(x)) else NULL)
-setMethod("start", "SequenceTrack", function(x) NULL)
-setMethod("end", "IdeogramTrack", function(x) NULL)#if(length(x)) end(range(x)) else NULL)
-setMethod("end", "SequenceTrack", function(x) NULL)
-setMethod("width", "IdeogramTrack", function(x) NULL)#if(length(x)) width(range(x)) else NULL)
-setMethod("width", "SequenceTrack", function(x) NULL)
+
 
 ## Return the number of individual annotation items (independent of any grouping) in a RangeTrack
 setMethod("length", "RangeTrack", function(x) sum(seqnames(x) == chromosome(x)))
@@ -81,11 +84,11 @@ setMethod("length", "GenomeAxisTrack", function(x) length(ranges(x)))
 setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
 setMethod("length", "SequenceTrack", function(x)
           if(chromosome(x) %in% seqnames(x)) length(x@sequence[[chromosome(x)]]) else 0)
+setMethod("length", "HighlightTrack", function(x) length(x@trackList))
+setMethod("length", "OverlayTrack", function(x) length(x@trackList))
 ## setMethod("length", "ReferenceAnnotationTrack", function(x) 0)
 ## setMethod("length", "ReferenceGeneRegionTrack", function(x) 0)
 ## setMethod("length", "ReferenceDataTrack", function(x) 0)
-setMethod("length", "HighlightTrack", function(x) length(x@trackList))
-setMethod("length", "OverlayTrack", function(x) length(x@trackList))
 
 ## Extract the metadata columns from the GRanges object of an object inheriting from RangeTrack as a data.frame.
 ## For a DataTrack object these values are stored as a numeric matrix in the data slot, and we return this instead.

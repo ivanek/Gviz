@@ -65,6 +65,41 @@ test_that("estimating of coordinates for an HTML image map works", {
   # unlink("Rplots.pdf")
 })
 
+test_that("deep copying of displaypars works", {
+  expect_identical(.needsStacking(annoTrack), TRUE)
+  expect_identical(.deepCopyPars(annoTrack), annoTrack)
+  expect_identical(displayPars(.deepCopyPars(annoTrack)), displayPars(annoTrack))
+})
+
+test_that("check for stacking works", {
+  expect_identical(.needsStacking(annoTrack), TRUE)
+})
+
+test_that("checking of the strand works", {
+  displayPars(dataTrack)$reverseStrand <- TRUE
+  displayPars(overTrack@trackList[[1]])$reverseStrand <- TRUE
+  expect_identical(.whichStrand(list(dataTrack, annoTrack, highTrack, overTrack)), 
+                   c("reverse", "forward", "forward", "reverse", "forward"))
+})
+
+test_that("import of alignments from BAM file works", {
+  empty <- GRanges()
+  mcols(empty) <- DataFrame(id=character(), cigar=character(), mapq=integer(), flag=integer(), 
+                            md=character(), seq=DNAStringSet(), isize=integer(), groupid=integer(), 
+                            status=factor(levels=c("mated", "ambiguous", "unmated")))
+  
+  unlink(paste(bamfile,"bai",sep="."))
+  expect_error(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), "Unable to find index for BAM file")
+  bamfile <- Rsamtools::asBam(samfile, indexDestination = TRUE, overwrite=TRUE)
+  
+  expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), bamgr)
+  expect_identical(.import.bam.alignments(bamfile, GRanges("chr2", IRanges(1,2))), empty)
+  seqlevels(empty) <- "chr1"
+  expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(1,2))), empty)
+  
+})
+
+
 test_that("conversion of ranges to summarizedJunctions works", {
   ## with + strand defined in readStrand column
   range <- GRanges("chr1", IRanges(1,10), cigar="1M8N1M", readStrand=Rle(factor("+", levels=c("+","-","*"))), entityId=1)
@@ -106,21 +141,3 @@ test_that("conversion of junction to list for plotting works", {
                  "can't be negative, taking absolute value of it")
 })
 
-test_that("import of alignments from BAM file works", {
-  empty <- GRanges()
-  mcols(empty) <- DataFrame(id=character(), cigar=character(), mapq=integer(), flag=integer(), 
-                   md=character(), seq=DNAStringSet(), isize=integer(), groupid=integer(), 
-                   status=factor(levels=c("mated", "ambiguous", "unmated")))
-
-  unlink(paste(bamfile,"bai",sep="."))
-  expect_error(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), "Unable to find index for BAM file")
-  bamfile <- Rsamtools::asBam(samfile, indexDestination = TRUE, overwrite=TRUE)
-                                          
-  expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), bamgr)
-  expect_identical(.import.bam.alignments(bamfile, GRanges("chr2", IRanges(1,2))), empty)
-  seqlevels(empty) <- "chr1"
-  expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(1,2))), empty)
-  
-})
-
-  

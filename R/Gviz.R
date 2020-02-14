@@ -81,8 +81,7 @@
 
 
 ## Make a deep copy of the display parameter environment
-.deepCopyPars <- function(GdObject)
-{
+.deepCopyPars <- function(GdObject) {
     oldPars <- displayPars(GdObject, hideInternal=FALSE)
     GdObject@dp <- DisplayPars()
     displayPars(GdObject) <- oldPars
@@ -104,8 +103,7 @@
 ## Arguments:
 ##     o coordinates: a numeric matrix of annotation region coordinates (the bounding box if not rectangular)
 ## Value: valid HTML image map coordinates based on the current device dimensions
-.getImageMap <- function(coordinates)
-{
+.getImageMap <- function(coordinates) {
     devSize <- devRes()*par("din")
     loc <- vpLocation()
     size <- loc$location[3:4] - loc$location[1:2]
@@ -121,12 +119,16 @@
 }
 
 
-.whichStrand <- function(trackList){
+.whichStrand <- function(trackList) {
     if(!is.list(trackList))
         trackList <- list(trackList)
-    str <- unlist(lapply(trackList, function(x)
-                         if(is(x, "HighlightTrack") || is(x, "OverlayTrack")) sapply(x@trackList, .dpOrDefault, "reverseStrand") else{
-                             .dpOrDefault(x, "reverseStrand")}))
+    str <- unlist(lapply(trackList, function(x) {
+                         if(is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
+                           sapply(x@trackList, .dpOrDefault, "reverseStrand") 
+                           } else {
+                             .dpOrDefault(x, "reverseStrand")
+                           } 
+      }))
     return(ifelse(str, "reverse", "forward"))
 }
 
@@ -136,8 +138,7 @@
 ## Arguments:
 ##    o x: an object inheriting from class GdObject
 ## Value: the relative vertical space needed for the track
-.verticalSpace <- function(x, totalSpace)
-{
+.verticalSpace <- function(x, totalSpace) {
     if(is(x, "AlignedReadTrack")){
         size <- if(is.null(displayPars(x, "size"))){
             type <- match.arg(.dpOrDefault(x, "detail", "coverage"), c("reads", "coverage"))
@@ -145,21 +146,21 @@
                 if(stacking(x) %in% c("sqish", "full")) 5 else 1 else 7} else displayPars(x, "size")
         return(size)
     }
-    if(is(x, "DataTrack") && is.null(displayPars(x, "size"))){
+    if(is(x, "DataTrack") && is.null(displayPars(x, "size"))) {
         type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok=TRUE)
         size <- if(length(type)==1L){ if(type=="gradient") 1 else if(type=="heatmap") nrow(values(x)) else 5} else 5
         return(size)
     }
-    if(is(x, "GenomeAxisTrack") || is(x, "IdeogramTrack") || is(x, "SequenceTrack"))
-    {
+    if(is(x, "GenomeAxisTrack") || is(x, "IdeogramTrack") || is(x, "SequenceTrack")) {
         nv <- displayPars(x, "neededVerticalSpace")
         size <- displayPars(x, "size")
         if(is.null(size))
-            if(!is.null(nv))
-            {
+            if(!is.null(nv)) {
                 size <- nv
                 attr(size, "absolute") <- TRUE
-            } else size <- 1
+            } else {
+              size <- 1
+            }
         return(size)
     }
     size <- .dpOrDefault(x, "size", 1)
