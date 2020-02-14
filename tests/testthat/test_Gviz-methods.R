@@ -75,10 +75,12 @@ test_that("General replacement methods work", {
   end(ideoTrack) <- 4L
   expect_identical(end(ideoTrack), NULL)
   
+  width(annoTrack) <- 10L
+  expect_identical(width(annoTrack), 10L)
 })
 
 
-test_that("chromosome accessor works", {
+test_that("chromosome accessors and replacement methods work", {
   expect_identical(chromosome(annoTrack), "chr1")
   expect_identical(chromosome(dataTrack), "chr1")
 })

@@ -71,15 +71,30 @@ test_that("deep copying of displaypars works", {
   expect_identical(displayPars(.deepCopyPars(annoTrack)), displayPars(annoTrack))
 })
 
-test_that("check for stacking works", {
+test_that("check of stacking works", {
   expect_identical(.needsStacking(annoTrack), TRUE)
 })
 
 test_that("checking of the strand works", {
   displayPars(dataTrack)$reverseStrand <- TRUE
   displayPars(overTrack@trackList[[1]])$reverseStrand <- TRUE
+  expect_identical(.whichStrand(annoTrack), "forward")
   expect_identical(.whichStrand(list(dataTrack, annoTrack, highTrack, overTrack)), 
                    c("reverse", "forward", "forward", "reverse", "forward"))
+})
+
+test_that("import of sequence from FASTA file works", {
+  fastafile <- system.file("extdata/test.fa", package="Gviz")
+  expect_identical(.import.fasta(fastafile, GRanges("chr3", IRanges(1, 4))), DNAStringSet())
+  expect_identical(.import.fasta(fastafile, GRanges("chr1", IRanges(1, 4))), DNAStringSet(c("chr1"="CTAN")))
+})
+
+
+
+test_that("import of sequence from 2bit file works", {
+  twobitfile <- system.file("extdata/test.2bit", package="Gviz")
+  expect_identical(.import.2bit(twobitfile, GRanges("chr3", IRanges(1, 4))), DNAStringSet())
+  expect_identical(.import.2bit(twobitfile, GRanges("chr1", IRanges(1, 4))), DNAStringSet(c("chr1"="CTAN")))
 })
 
 test_that("import of alignments from BAM file works", {
@@ -98,6 +113,17 @@ test_that("import of alignments from BAM file works", {
   expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(1,2))), empty)
   
 })
+
+test_that("estimate of required verticalSpace works", {
+  expect_identical(.verticalSpace(suppressWarnings(AlignedReadTrack()), 10), 7)
+  expect_identical(.verticalSpace(dataTrack, 10), 5)
+  expect_identical(.verticalSpace(axisTrack, 10), 1)
+  expect_identical(.verticalSpace(ideoTrack, 10), 1)
+  expect_identical(.verticalSpace(seqTrack.dna, 10), 1)
+  expect_identical(.verticalSpace(setStacks(annoTrack), 10), 1) # require stacks
+  expect_identical(.verticalSpace(alnTrack, 10), 1)
+  })
+
 
 
 test_that("conversion of ranges to summarizedJunctions works", {

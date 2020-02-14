@@ -77,6 +77,7 @@ seqTrack.rna <- RNASequenceTrack(rna.sq)
 seqTrack.bs <- SequenceTrack(BSgenome.Hsapiens.UCSC.hg19)
 
 ## AlignmentsTrack
+alnTrack <- AlignmentsTrack(bamfile)
 
 ## HighlightTrack
 highTrack <- HighlightTrack(dataTrack, ranges=gr, chromosome="chr1")

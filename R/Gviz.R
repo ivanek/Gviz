@@ -178,8 +178,7 @@
 ##       the supplied default value
 ##    o default: a default value for the parameter if it can't be found in GdObject
 ## Value: the value of the displayPar
-.dpOrDefault <- function(GdObject, par, default=NULL, fromPrototype=FALSE)
-{
+.dpOrDefault <- function(GdObject, par, default=NULL, fromPrototype=FALSE) {
     val <- getPar(x=GdObject, name=par, asIs=TRUE)
     val <- val[!sapply(val, is.null)]
     if(length(val)==0) {
