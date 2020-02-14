@@ -107,5 +107,16 @@ test_that("conversion of junction to list for plotting works", {
 })
 
 test_that("import of alignments from BAM file works", {
+  empty <- GRanges()
+  mcols(empty) <- DataFrame(id=character(), cigar=character(), mapq=integer(), flag=integer(), 
+                   md=character(), seq=DNAStringSet(), isize=integer(), groupid=integer(), 
+                   status=factor(levels=c("mated", "ambiguous", "unmated")))
+  
   expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), bamgr)
+  expect_identical(.import.bam.alignments(bamfile, GRanges("chr2", IRanges(1,2))), empty)
+  seqlevels(empty) <- "chr1"
+  expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(1,2))), empty)
+  
 })
+
+  

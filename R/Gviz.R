@@ -2217,9 +2217,14 @@ availableDisplayPars <- function(class) {
     return(GRanges(seqnames=if(is.null(reads$rname)) character() else reads$rname,
                    strand=if(is.null(reads$strand)) character() else reads$strand,
                    ranges=IRanges(start=reads$pos, width=reads$qwidth),
-                   id=reads$qname, cigar=reads$cigar, mapq=reads$mapq, flag=reads$flag, md=md, seq=ans,
-                   isize=reads$isize, groupid=if(pairedEnd) reads$groupid else seq_along(reads$pos),
-                   status=if(pairedEnd) reads$mate_status else rep(factor("unmated", levels=c("mated", "ambiguous", "unmated")),
+                   id=if(is.null(reads$qname)) character() else reads$qname, 
+                   cigar=if(is.null(reads$cigar)) character() else reads$cigar, 
+                   mapq=if(is.null(reads$mapq)) integer() else reads$mapq, 
+                   flag=if(is.null(reads$flag)) integer() else reads$flag, 
+                   md=md, seq=ans,
+                   isize=if(is.null(reads$isize)) integer() else reads$isize, 
+                   groupid=if(pairedEnd) if(is.null(reads$groupid)) integer() else reads$groupid else seq_along(reads$pos),
+                   status=if(pairedEnd) if(is.null(reads$mate_status)) factor(levels=c("mated", "ambiguous", "unmated")) else reads$mate_status else rep(factor("unmated", levels=c("mated", "ambiguous", "unmated")),
                                                                    length(reads$pos))))
 }
 
