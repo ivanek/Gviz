@@ -4,9 +4,18 @@
 
 ## Software status
 
-| In BioC | Travis CI | Bioc ([devel](http://bioconductor.org/packages/devel/bioc/html/Gviz.html)) | Bioc ([release](http://bioconductor.org/packages/release/bioc/html/Gviz.html)) | Coverage |
-|:--------|:---------:|:--------------:|:----------------:|:--------:|
-| [![In Bioc](https://bioconductor.org/shields/years-in-bioc/Gviz.svg)](http://bioconductor.org/packages/Gviz) | [![Travis CI status](https://travis-ci.org/ivanek/Gviz.svg?branch=master)](https://travis-ci.org/ivanek/Gviz) | [![Bioconductor-devel Build Status](https://bioconductor.org/shields/build/devel/bioc/Gviz.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz) | [![Bioconductor-release Build Status](https://bioconductor.org/shields/build/release/bioc/Gviz.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | [![Codecov.io coverage status](https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master)](https://codecov.io/github/ivanek/Gviz) |
+
+[![How long since the package was first in a released Bioconductor version](https://bioconductor.org/shields/years-in-bioc/Gviz.svg)](https://bioconductor.org/packages/Gviz) 
+[![Support site activity in last 6 months: agged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts](https://bioconductor.org/shields/posts/Gviz.svg)](https://support.bioconductor.org/t/gviz/)
+
+
+| Platform  |      OS   |    Last Update |      Status      |      Coverage    | Downloads |
+|:----------|:---------:|:--------------:|:----------------:|:----------------:|:---------:|
+| Travis CI |   Linux   | ![GitHub last commit](https://img.shields.io/github/last-commit/ivanek/Gviz) | [![Travis CI](https://travis-ci.org/ivanek/Gviz.svg?branch=master)](https://travis-ci.org/ivanek/Gviz) | [![Codecov.io coverage status](https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master)](https://codecov.io/github/ivanek/Gviz) | NA |
+| Bioc ([devel](http://bioconductor.org/packages/devel/bioc/html/Gviz.html))     | [![Platforms](https://bioconductor.org/shields/availability/devel/Gviz.svg)](https://bioconductor.org/packages/Gviz#archives) | [![Bioconductor-devel Last Commit](https://bioconductor.org/shields/lastcommit/devel/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz/) | [![Bioconductor-devel Build Status](https://bioconductor.org/shields/build/devel/bioc/Gviz.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz) | NA | [![Bioconductor-devel Downloads](https://bioconductor.org/shields/downloads/devel/Gviz.svg)](http://bioconductor.org/packages/stats/bioc/Gviz/) |
+| Bioc ([release](http://bioconductor.org/packages/release/bioc/html/Gviz.html)) | [![Platforms](https://bioconductor.org/shields/availability/release/Gviz.svg)](https://bioconductor.org/packages/Gviz#archives) | [![Bioconductor-release Last Commit](https://bioconductor.org/shields/lastcommit/release/bioc/Gviz.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/Gviz/) | [![Bioconductor-release Build Status](https://bioconductor.org/shields/build/release/bioc/Gviz.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz) | NA | [![Bioconductor-release Downloads](https://bioconductor.org/shields/downloads/release/Gviz.svg)](http://bioconductor.org/packages/stats/bioc/Gviz/) |
+
+
 
 ## Authors
 
