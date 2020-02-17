@@ -89,8 +89,6 @@ test_that("import of sequence from FASTA file works", {
   expect_identical(.import.fasta(fastafile, GRanges("chr1", IRanges(1, 4))), DNAStringSet(c("chr1"="CTAN")))
 })
 
-
-
 test_that("import of sequence from 2bit file works", {
   twobitfile <- system.file("extdata/test.2bit", package="Gviz")
   expect_identical(.import.2bit(twobitfile, GRanges("chr3", IRanges(1, 4))), DNAStringSet())

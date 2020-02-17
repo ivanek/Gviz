@@ -77,10 +77,43 @@ test_that("General replacement methods work", {
   
   width(annoTrack) <- 10L
   expect_identical(width(annoTrack), 10L)
+  
+  width(ideoTrack) <- 10L
+  expect_identical(ideoTrack, ideoTrack)
 })
 
+test_that("values accessors and replacement methods work", {
+  expect_identical(values(annoTrack), data.frame(feature = "unknown", group = "1", 
+                               id = "unknown", density = 1, stringsAsFactors = F))
+  expect_identical(values(axisTrack), data.frame(score = 1, stringsAsFactors = F))
+  expect_identical(values(dataTrack), as.matrix(c(score = 1)))
+  expect_identical(values(alnTrack), NULL)
+})
+
+test_that("subseq works", {
+  expect_error(subseq(SequenceTrack(), start=10, end=1), "'end' has to be bigger than 'start'")
+  expect_error(subseq(seqTrack.dna, start=10, end=1), "'end' has to be bigger than 'start'")
+  expect_error(subseq(SequenceTrack(), start=1, end=10e6+2), "Sequence is too big")
+  expect_error(subseq(seqTrack.bs, start=1, end=10e6+2), "Sequence is too big")
+  expect_warning(subseq(seqTrack.dna, start=1, end=10, width=10), "are provided, ignoring")
+  expect_identical(subseq(SequenceTrack(), start=1, end=10), DNAString("----------"))
+  expect_identical(subseq(seqTrack.dna, start=1, end=10), DNAString("ATTTCCCTGA"))
+  expect_identical(subseq(seqTrack.dna, start=1, width=10), DNAString("ATTTCCCTGA"))
+  expect_identical(subseq(seqTrack.dna, start=91, end=110), DNAString("ACGTCTTCCA----------"))
+})
 
 test_that("chromosome accessors and replacement methods work", {
   expect_identical(chromosome(annoTrack), "chr1")
+  chromosome(annoTrack) <- "chr2"
+  expect_identical(chromosome(annoTrack), "chr2")
+
   expect_identical(chromosome(dataTrack), "chr1")
+
+  expect_identical(chromosome(seqTrack.dna), "chr1")
+  chromosome(seqTrack.dna) <- "chr2"
+  expect_identical(chromosome(seqTrack.dna), "chr2")
+  
+  expect_identical(chromosome(ideoTrack), "chrI")
+  chromosome(ideoTrack) <- "chrII"
+  expect_identical(chromosome(ideoTrack), "chrII")
 })

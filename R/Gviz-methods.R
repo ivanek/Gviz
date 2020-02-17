@@ -75,7 +75,8 @@ setReplaceMethod("end", "IdeogramTrack", function(x, value) {
 setReplaceMethod("width", "RangeTrack", function(x, value) {
     width(x@range) <- value
     return(x)})
-setReplaceMethod("width", "IdeogramTrack", function(x, value) return(x))
+setReplaceMethod("width", "IdeogramTrack", function(x, value) 
+  return(x))
 
 
 ## Return the number of individual annotation items (independent of any grouping) in a RangeTrack
@@ -102,8 +103,7 @@ setMethod("values", "DataTrack", function(x, all=FALSE){
 })
 setMethod("values", "AlignmentsTrack", function(x) .dpOrDefault(x, ".__coverage"))
 setReplaceMethod("values", "DataTrack", function(x, value){
-    if(!is.matrix(value))
-    {
+    if(!is.matrix(value))     {
         if(!is.numeric(value) || length(value) != length(x))
             stop("Invalid length of replacement vector.")
         if(!is.matrix(value) || !is.numeric(value) || ncol(value)!=length(x))
@@ -116,8 +116,8 @@ setReplaceMethod("values", "DataTrack", function(x, value){
 
 ## Extract a subsequence from a SequenceTrack. For performance reasons we restrict this to a maximum
 ## of ten million nucleotides (which is already more than plenty...)
-setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
-    padding <- "-"
+setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA) {
+   padding <- "-"
     if(!is.na(start[1]+end[1]+width[1])){
         warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
         width <- NA
@@ -131,9 +131,9 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
         if(is.na(end))
             end <- start+width[1]-1
     }
-    w <- length(x)
     if(is.na(start))
         start <- 1
+    w <- length(x)
     if(w>0){
         if(is.na(end))
             end <- w
@@ -145,7 +145,7 @@ setMethod("subseq", "SequenceTrack", function(x, start=NA, end=NA, width=NA){
         rend <- end
         rstart <- start
     }
-    if(rend<rstart)
+    if(rend<rstart || end<start)
         stop("'end' has to be bigger than 'start'")
     if((rend-rstart+1)>10e6)
         stop("Sequence is too big! Unable to extract")
