@@ -1375,7 +1375,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
         acex <- max(0.6, min(vSpaceAvail/vSpaceNeeded, hSpaceAvail/hSpaceNeeded))
     }
     nlevs <- max(1, nlevels(factor(.dpOrDefault(GdObject, "groups"))))
-    if(type %in% c("heatmap", "horizon") && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
+    if(any(type %in% c("heatmap", "horizon")) && .dpOrDefault(GdObject, "showSampleNames", FALSE)){
         groups <- .dpOrDefault(GdObject, "groups")
         sn <- if(is.null(groups)) rownames(values(GdObject)) else rev(unlist(split(rownames(values(GdObject)), factor(groups))))
         cex.sn <- .dpOrDefault(GdObject, "cex.sampleNames", acex)
@@ -1872,7 +1872,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     if(nrow(box)>0){
         ## If we want to place a label on top or below the ranges we need to know how much size that will take up
         ## and adjust the plotting shapes accordingly
-        drawLabel <- .dpOrDefault(GdObject, ".__hasAnno", FALSE) && !is.null(bartext) && !is.na(bartext) &&
+        drawLabel <- .dpOrDefault(GdObject, ".__hasAnno", FALSE) && !is.null(bartext) && !anyNA(bartext) &&
             nrow(bartext)>0 && stacking(GdObject) != "dense"
         bs <- as.vector((stacks-bins)+1)
         if(drawLabel && just %in% c("above", "below")){
@@ -2223,6 +2223,8 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
                           lwd=rep(.dpOrDefault(GdObject, c("lwd.reads", "lwd"), 1), nn),
                           lty=rep(.dpOrDefault(GdObject, c("lty.reads", "lty"), 1), nn),
                           alpha=rep(.alpha(GdObject, "reads"), nn), stringsAsFactors=FALSE)
+        ## Finally we draw reads (we need to draw in two steps because of the different alpha levels, reads vs. mismatches)
+        grid.polygon(x=x, y=y, id=id, default.units="native", gp=gpar(col=gps$col, fill=gps$fill, lwd=gps$lwd, lty=gps$lty, alpha=unique(gps$alpha))) # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
         ## Now the coordinates for the connecting lines
         lineCoords <- NULL
         if(anyDuplicated(readInfo$entityId) != 0){
@@ -2271,24 +2273,24 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             mw <- res * .dpOrDefault(GdObject, "min.width", 1)
             mwy <- max(1, mw)
             if(nrow(mm)){
-                x <- c(x, mm$position + rep(c(0, mwy, mwy, 0), each=nrow(mm)))
-                y <- c(y, rep(mm$stack - sh, 2), rep(mm$stack + sh, 2))
-                id <- c(id, rep(seq(max(id, na.rm=TRUE)+1, len=nrow(mm)), 4))
-                gps <- rbind(gps, data.frame(col=rep(if(!(lwidth < perLetterW && lheight < perLetterH)) "transparent" else
+                x <- c(mm$position + rep(c(0, mwy, mwy, 0), each=nrow(mm)))
+                y <- c(rep(mm$stack - sh, 2), rep(mm$stack + sh, 2))
+                id <- rep(seq(max(id, na.rm=TRUE)+1, len=nrow(mm)), 4)
+                gps <- data.frame(col=rep(if(!(lwidth < perLetterW && lheight < perLetterH)) "transparent" else
                                                      .dpOrDefault(GdObject, "col.mismatch", .DEFAULT_SHADED_COL), nrow(mm)),
                                              fill=rep(fcol[as.character(mm$base)]),
                                              lwd=rep(.dpOrDefault(GdObject, "lwd.mismatch", 1), nrow(mm)),
                                              lty=rep(.dpOrDefault(GdObject, "lty.mismatch", 1), nrow(mm)),
                                              alpha=rep(.dpOrDefault(GdObject, "alpha.mismatch", 1), nrow(mm)),
-                                             stringsAsFactors=FALSE))
+                                             stringsAsFactors=FALSE)
+                ## Finally we draw mm (we need to draw in two steps because of the different alpha levels, reads vs. mismatches)
+                grid.polygon(x=x, y=y, id=id, default.units="native", gp=gpar(col=gps$col, fill=gps$fill, lwd=gps$lwd, lty=gps$lty, alpha=unique(gps$alpha))) # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
                 if(!.dpOrDefault(GdObject, "noLetters", FALSE) && lwidth < perLetterW && lheight < perLetterH)
                     mmLetters <- data.frame(x=mm$position+0.5, y=mm$stack, label=mm$base, col=ccol[mm$base], stringsAsFactors=FALSE)
             }
         }
-        ## Finally we draw everything
-        grid.polygon(x=x, y=y, id=id, default.units="native", gp=gpar(col=gps$col, fill=gps$fill, lwd=gps$lwd, lty=gps$lty, alpha=gps$alpha))
         if(!is.null(lineCoords))
-            grid.segments(lineCoords$x1, lineCoords$y1, lineCoords$x2, lineCoords$y2, gp=gpar(col=lineCoords$col, alpha=lineCoords$alpha,
+            grid.segments(lineCoords$x1, lineCoords$y1, lineCoords$x2, lineCoords$y2, gp=gpar(col=lineCoords$col, alpha=unique(lineCoords$alpha), # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true"); Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
                                                                                               lwd=lineCoords$lwd, lty=lineCoords$lty),
                           default.units="native")
         if(!is.null(mmLetters))

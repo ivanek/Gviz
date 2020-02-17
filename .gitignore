@@ -1,5 +1,8 @@
-.Rproj.user
 .Rhistory
+.Rprofile
 .RData
 .Ruserdata
 *.Rproj
+.Rproj.user
+Dockerfile
+Rplots.pdf

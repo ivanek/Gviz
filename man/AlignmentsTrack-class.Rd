@@ -36,9 +36,10 @@
 
 \usage{
 
-AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, chromosome, genome,
-                stacking="squish", id, cigar, mapq, flag, isize, groupid, status, md, seqs,
-                name="AlignmentsTrack", isPaired=TRUE, importFunction, referenceSequence, ...)
+AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand, 
+                chromosome, genome, stacking="squish", id, cigar, mapq, flag, 
+                isize, groupid, status, md, seqs, name="AlignmentsTrack", 
+                isPaired=TRUE, importFunction, referenceSequence, ...)
 
 }
 

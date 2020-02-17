@@ -1,14 +1,14 @@
 Package: Gviz
 Title: Plotting data and annotation information along genomic coordinates
-Version: 1.30.1
+Version: 1.30.2
 Authors@R: c(person("Florian", "Hahne", role="aut"),
              person("Steffen", "Durinck", role="aut"),
-	     person("Robert", "Ivanek", role=c("aut", "cre"), email="robert.ivanek@unibas.ch", comment=c(ORCID="0000-0002-8403-056X")),
-	     person("Arne", "Mueller", role="aut"),
-	     person("Steve", "Lianoglou", role="aut"),
-	     person("Ge", "Tan", role="aut", email="ge.tan09@imperial.ac.uk"),
-	     person("Lance", "Parsons", role="aut", email="lparsons@princeton.edu"),
-	     person("Shraddha", "Pai", role="aut", email="shraddha.pai@utoronto.ca"))
+             person("Robert", "Ivanek", role=c("aut", "cre"), email="robert.ivanek@unibas.ch", comment=c(ORCID="0000-0002-8403-056X")),
+             person("Arne", "Mueller", role="aut"),
+             person("Steve", "Lianoglou", role="aut"),
+             person("Ge", "Tan", role="aut", email="ge.tan09@imperial.ac.uk"),
+             person("Lance", "Parsons", role="aut", email="lparsons@princeton.edu"),
+             person("Shraddha", "Pai", role="aut", email="shraddha.pai@utoronto.ca"))
 Description: Genomic data analyses requires integrated visualization
     of known genomic information and new experimental data.  Gviz uses
     the biomaRt and the rtracklayer packages to perform live
@@ -45,7 +45,6 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     BiocStyle,
     knitr,
-    kableExtra,
     rmarkdown,
     testthat
 Collate: Gviz.R AllGenerics.R AllClasses.R Gviz-methods.R

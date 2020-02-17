@@ -12,6 +12,12 @@ before_install:
 # - Rscript -e 'install.packages("devtools")'
 # - Rscript -e 'devtools::install(dependencies=TRUE)'
 
+env:
+ global:
+#   - _R_CHECK_FORCE_SUGGESTS_: false
+   - _R_CHECK_LENGTH_1_CONDITION_: true
+   - _R_CHECK_LENGTH_1_LOGIC2_: true
+
 r_build_args: "--no-manual --no-resave-data"
 r_check_args: "--no-build-vignettes --no-manual --timings"
 

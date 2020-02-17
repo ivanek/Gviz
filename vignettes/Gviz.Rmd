@@ -55,7 +55,6 @@ if (out_type == "html") {
 
 ```{r init2, echo=FALSE, results='hide'}
 library(knitr)
-library(kableExtra)
 
 source(system.file("scripts/documentation.R", package="Gviz"))
 xtabDetails <- details
@@ -74,9 +73,9 @@ addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "backgro
   Parameters[,2] <- gsub("\\\\\\link\\{(.*?)\\}", "\\1", Parameters[,2])
   rownames(Parameters) <- NULL
   if (out_type == "html") {
-    out <- kable(Parameters) %>% kable_styling(full_width = FALSE)
+    out <- kable(Parameters) # %>% kable_styling(full_width = FALSE)
   } else if (out_type == "latex") {
-    out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
+    out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE) # %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
   }
   print(out)
   return(invisible())
@@ -798,9 +797,9 @@ types <- data.frame(Value=c("p", "l", "b", "a", "s", "S", "g", "r", "h", "confin
                            "Horizon plot indicating magnitude and direction of a change relative to a baseline"))
 
 if (out_type == "html") {
-  kable(types) %>% kable_styling(full_width = FALSE)
+  kable(types) # %>% kable_styling(full_width = FALSE)
 } else if (out_type == "latex") {
-  kable(types, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
+  kable(types, "latex", booktabs=TRUE, longtable=TRUE) # %>% kable_styling(full_width = FALSE, latex_options = "hold_position")
 }
 ```
 
@@ -2609,13 +2608,13 @@ dt <- data.frame(`Gviz class` = rep(c("AnnotationTrack","GeneRegionTrack","DataT
                              "Constructor","Constructor + additional data matrix","Constructor or setAs method, numeric data in metadata columns",
                             "DNAStringSet & Constructor", "Constructor"), 
                  stringsAsFactors = FALSE, check.names=FALSE)
-
+dt[duplicated(dt[,1]),1] <- ""
 if (out_type == "html") {
-  kable(dt) %>% kable_styling(full_width = FALSE) %>%
-    column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt) #%>% kable_styling(full_width = FALSE) %>%
+    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
 } else if (out_type == "latex") {
-  kable(dt, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
-    column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt, "latex", booktabs=TRUE, longtable=TRUE) #%>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
+    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
 }
 ```
 
@@ -2647,13 +2646,13 @@ dt <- data.frame(`Gviz class`=rep(c("AnnotationTrack","GeneRegionTrack","DataTra
                              "Streaming only possible if an index file is found in the same directory as the original fasta file.", "",
                              "Always needs an index file is found in the same directory as the original `BAM` file."),
                  stringsAsFactors = FALSE, check.names=FALSE)
-
+dt[duplicated(dt[,1]),1] <- ""
 if (out_type == "html") {
-  kable(dt) %>% kable_styling(full_width = FALSE) %>%
-    column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt) #%>% kable_styling(full_width = FALSE) %>%
+    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
 } else if (out_type == "latex") {
-  kable(dt, "latex", booktabs=TRUE, longtable=TRUE) %>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
-    column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
+  kable(dt, "latex", booktabs=TRUE, longtable=TRUE) #%>% kable_styling(full_width = FALSE, latex_options = "hold_position") %>%
+    #column_spec(1, bold = TRUE) %>% collapse_rows(columns = 1, valign = "top")
 }
 ```
 
