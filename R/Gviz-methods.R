@@ -4225,7 +4225,8 @@ setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrN
               ## Some of the arguments are mutually exclusive and we want to catch this here.
               if(is.null(width)) {
                   if (is.null(start) || is.null(end))
-                      stop("Must specify either start and end or width")
+                      # return(if(asIRanges) IRanges() else GRanges())    # CHECK if this might be the issue for failing on windows
+                      stop("Must specify either start and end or width")  # CHECK if this might be the issue for failing on windows
               } else {
                   if(is.null(end) && !is.null(start))
                       end <- as.integer(start)+as.integer(width)
