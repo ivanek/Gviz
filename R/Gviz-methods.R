@@ -102,8 +102,8 @@ setMethod("values", "DataTrack", function(x, all=FALSE){
     }
 })
 setMethod("values", "AlignmentsTrack", function(x) .dpOrDefault(x, ".__coverage"))
-setReplaceMethod("values", "DataTrack", function(x, value){
-    if(!is.matrix(value))     {
+setReplaceMethod("values", "DataTrack", function(x, value) {
+    if(!is.matrix(value)) {
         if(!is.numeric(value) || length(value) != length(x))
             stop("Invalid length of replacement vector.")
         if(!is.matrix(value) || !is.numeric(value) || ncol(value)!=length(x))

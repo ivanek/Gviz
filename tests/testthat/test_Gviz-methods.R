@@ -87,7 +87,11 @@ test_that("values accessors and replacement methods work", {
                                id = "unknown", density = 1, stringsAsFactors = F))
   expect_identical(values(axisTrack), data.frame(score = 1, stringsAsFactors = F))
   expect_identical(values(dataTrack), as.matrix(c(score = 1)))
+  expect_identical(values(DataTrack()), matrix(logical(), 0, 0))
   expect_identical(values(alnTrack), NULL)
+  
+  values(dataTrack) <- matrix(3, dimnames=list("score", NULL))
+  expect_identical(values(dataTrack), as.matrix(c(score = 3)))
 })
 
 test_that("subseq works", {
@@ -99,7 +103,15 @@ test_that("subseq works", {
   expect_identical(subseq(SequenceTrack(), start=1, end=10), DNAString("----------"))
   expect_identical(subseq(seqTrack.dna, start=1, end=10), DNAString("ATTTCCCTGA"))
   expect_identical(subseq(seqTrack.dna, start=1, width=10), DNAString("ATTTCCCTGA"))
+  expect_identical(subseq(seqTrack.dna, end=10, width=10), DNAString("ATTTCCCTGA"))
   expect_identical(subseq(seqTrack.dna, start=91, end=110), DNAString("ACGTCTTCCA----------"))
+  expect_identical(subseq(seqTrack.bs, start=1, width=10), DNAString("----------"))
+  expect_identical(subseq(seqTrack.dna, start=1), dna.sq[[1]])
+  expect_identical(subseq(SequenceTrack(), start=1), DNAString("-")) 
+  expect_identical(subseq(seqTrack.dna, end=1), DNAString("A"))
+  expect_identical(subseq(SequenceTrack(), end=1), DNAString("-")) 
+  displayPars(seqTrack.dna)$complenet <- TRUE
+  expect_identical(subseq(seqTrack.dna, start=1, end=10), DNAString("TAAAGGGACT"))
 })
 
 test_that("chromosome accessors and replacement methods work", {

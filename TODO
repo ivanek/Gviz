@@ -1,16 +1,15 @@
 A to-do list for the Gviz package
 
 General
-   o fix the tables in vignette (xtable instead of kableExtra)
-   o check that alpha works correctly
-
+   o check the plotting with small coordinates, do all track types align?
+   
 AnnotationTrack/GeneRegionTrack
    o speed up .prepareGene (may need a C code module)
    o deal with additional annotation features (UTRs, etc.)
 
 DataTrack/AnnotationTrack => SNPsTrack?
    o issue: #5
-   o new track type to hnadle LD information
-   o ideally as heatmap, with defined depth (range)
+   o new track type to handle LD information
+   o ideally as heatmap with defined depth (range)
    o check following: snpStats (data structure), ldblock, gwascat 
    o similar thing already implemented in LDheatmap
