@@ -92,6 +92,10 @@ test_that("values accessors and replacement methods work", {
   
   values(dataTrack) <- matrix(3, dimnames=list("score", NULL))
   expect_identical(values(dataTrack), as.matrix(c(score = 3)))
+  expect_error(values(dataTrack) <- matrix("3", dimnames=list("score", NULL)), "Not numeric or dimensions of replacement value do not match.")
+  values(dataTrack) <- 3
+  expect_identical(values(dataTrack), as.matrix(c(3)))
+  
 })
 
 test_that("subseq works", {

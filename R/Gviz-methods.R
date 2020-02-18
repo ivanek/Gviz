@@ -1,6 +1,7 @@
-## general accessors ---------------------------------------------------------------------------------------------------------
+## General accessors ---------------------------------------------------------------------------------------------------------
+## 
 ## Some rather general accessors to extract information from all kinds of GdObjects
-##-------------------------------------------------------------------------------------------------------------------------- -
+
 ## Extract the full GRanges object from the range slot of an object inheriting from RangeTrack
 setMethod("ranges", "RangeTrack", function(x) x@range)
 setReplaceMethod("ranges", "RangeTrack", function(x, value) {
@@ -102,12 +103,18 @@ setMethod("values", "DataTrack", function(x, all=FALSE){
     }
 })
 setMethod("values", "AlignmentsTrack", function(x) .dpOrDefault(x, ".__coverage"))
+
 setReplaceMethod("values", "DataTrack", function(x, value) {
     if(!is.matrix(value)) {
-        if(!is.numeric(value) || length(value) != length(x))
-            stop("Invalid length of replacement vector.")
-        if(!is.matrix(value) || !is.numeric(value) || ncol(value)!=length(x))
-            stop("Dimensions of replacement value do not match.")
+        if(!is.numeric(value) || length(value) != length(x)) {
+            stop("Not numeric or invalid length of replacement vector.")
+        } else { 
+             value <- t(as.matrix(value))
+        }
+    } else {
+        if(!is.numeric(value) || ncol(value)!=length(x)) {
+            stop("Not numeric or dimensions of replacement value do not match.")
+        }
     }
     x@data <- value
     return(x)
@@ -361,15 +368,17 @@ setMethod("coverage", signature("AlignedReadTrack"),
 			return(if(!is.null(x@coverage[[str]])) x@coverage[[str]] else Rle())
 		})
 
-## annotation accessors ------------------------------------------------------------------------------------------------------
+## Annotation accessors ------------------------------------------------------------------------------------------------------
+##
 ## There are several levels of annotation information for most RangeTrack objects: individual features (e.g. exons, biotype),
 ## groups (e.g. transcripts) and even groups of groups (e.g. genes). Not all are relevant for all subclasses, however we want
 ## to have accessors and replacement methods for a clean interface.
-##-------------------------------------------------------------------------------------------------------------------------- -
+## 
 ## Helper functions to extract or replace the various annotation data of a track.
 ##   o GdObject: the input GeneRegionTrack track object
 ##   o type: the annotation type, i.e., a metadata column in the GRanges object
 ##   o value: the replacement value, has to be of the same length as length(GdObject)
+
 .getAnn <- function(GdObject, type)  return(as.character(values(GdObject)[[type]]))
 .setAnn <-  function(GdObject, value, type) {
     v <- values(GdObject)
@@ -478,13 +487,12 @@ setReplaceMethod("identifier", c("GeneRegionTrack", "character"), function(GdObj
                  symbol(GdObject) <- value)
     return(GdObject)
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## Stacking ------------------------------------------------------------------------------------------------------------------
 ## Stacking controls what to do with overlapping annotation regions.
-##----------------------------------------------------------------------------------------------------------------------------
+
 setMethod("stacking", "StackedTrack", function(GdObject) GdObject@stacking)
 setReplaceMethod("stacking", c("StackedTrack", "character"),
                  function(GdObject, value) {
@@ -496,11 +504,8 @@ setReplaceMethod("stacking", c("StackedTrack", "character"),
                      displayPars(GdObject) <- list(stacking=value)
                      return(GdObject)
                  })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
-
-##----------------------------------------------------------------------------------------------------------------------------
 ## Recompute or return the stacking information for different types of StackedTrack objects. Stacking in needed when
 ## annotation regions in the objects overlap and when the stacking type is set to squish, full or pack. Since stacking
 ## can be dependent on the available space (if feature annotation is added) we need to be able to recompute this before
@@ -513,7 +518,7 @@ setReplaceMethod("stacking", c("StackedTrack", "character"),
 ##      pushed to the stack. Hence we have to call setStacks immediately before the actual plotting.
 ## 'stacks' should return a vector of stacks, where each factor level of the vector indicates membeship
 ## to a particular stacking level. 'setStacks' returns the updated GdObject.
-##----------------------------------------------------------------------------------------------------------------------------
+
 setMethod("stacks", "StackedTrack",
           function(GdObject) if(length(GdObject@stacks)) GdObject@stacks else NULL)
 
@@ -567,14 +572,13 @@ setMethod("setStacks", "AlignmentsTrack", function(GdObject, ...) {
     }
     return(GdObject)
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## Position ------------------------------------------------------------------------------------------------------------
 ## In some cases we don't need a range but rather a single position. Most of the time this is simply taking the geometric
 ## mean of the range. If numeric values are associated to positions we have to be able to extract those as well.
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## The geometric mean of annotation ranges
 setMethod("position", signature("RangeTrack"), definition=function(GdObject, from=NULL, to=NULL, sort=FALSE, ...)
       {

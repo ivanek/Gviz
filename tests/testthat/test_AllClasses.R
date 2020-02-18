@@ -46,10 +46,12 @@ test_that("DisplayPars works", {
   expect_identical(as.list(dp), list(a=1, b=2))
 })
 
-# test_that("IdeogramTrack works", {
-#   bands <- 
-#   expect_s4_class(IdeogramTrack(genome="hg38", chromosome="chrX", bands=), "IdeogramTrack")
-# })
+test_that("IdeogramTrack works", {
+  ideoTrack <- IdeogramTrack(chromosome="chrI", genome="sacCer3", bands=cyto.bands)
+  expect_s4_class(ideoTrack, "GdObject")
+  expect_s4_class(ideoTrack, "RangeTrack")
+  expect_s4_class(ideoTrack, "IdeogramTrack")
+})
 
 test_that("GenomeAxisTrack works", {
   expect_s4_class(GenomeAxisTrack(), "GdObject")
@@ -88,10 +90,6 @@ test_that("BiomartGeneRegionTrack works", {
   expect_identical(.getBMFeatureMap(), biomartMapping)
 })
 
-test_that("DetailsAnnotationTrack works", {
-  expect_s4_class(DetailsAnnotationTrack(), "AnnotationTrack")
-})
-
 test_that("SequenceTrack works", {
   expect_s4_class(SequenceTrack(), "GdObject")
   expect_s4_class(SequenceTrack(), "SequenceTrack")
@@ -102,6 +100,7 @@ test_that("SequenceTrack works", {
 test_that("AlignmentsTrack works", {
   expect_s4_class(AlignmentsTrack(), "GdObject")
   expect_s4_class(AlignmentsTrack(), "RangeTrack")
+  expect_s4_class(AlignmentsTrack(), "StackedTrack")
   expect_s4_class(AlignmentsTrack(), "AlignmentsTrack")
   
   expect_s4_class(AlignmentsTrack(bamfile), "ReferenceTrack")
@@ -115,11 +114,24 @@ test_that("CustomTrack works", {
 
 test_that("HighlightTrack works", {
   expect_s4_class(HighlightTrack(), "GdObject")
+  expect_s4_class(HighlightTrack(), "RangeTrack")
   expect_s4_class(HighlightTrack(), "HighlightTrack")
 })
 
 test_that("OverlayTrack works", {
   expect_s4_class(OverlayTrack(), "GdObject")
   expect_s4_class(OverlayTrack(), "OverlayTrack")
+})
+
+test_that("DetailsAnnotationTrack works", {
+  expect_s4_class(DetailsAnnotationTrack(), "GdObject")
+  expect_s4_class(DetailsAnnotationTrack(), "StackedTrack")
+  expect_s4_class(DetailsAnnotationTrack(), "RangeTrack")
+  expect_s4_class(DetailsAnnotationTrack(), "AnnotationTrack")
+  
+  expect_s4_class(detTrack, "AnnotationTrack")
+  expect_identical(detTrack@selectFun, selFun)
+  expect_identical(detTrack@fun, detFun)
+  
 })
 

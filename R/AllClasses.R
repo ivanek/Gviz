@@ -8,9 +8,9 @@
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## Some usefull class unions to allow for NULL values in certain slots
-##----------------------------------------------------------------------------------------------------------------------
+## Class unions --------------------------------------------------------------------------------------------------------
+## 
+## Some useful class unions to allow for NULL values in certain slots
 setClassUnion("DfOrNULL", c("data.frame", "NULL"))
 setClassUnion("MartOrNULL", c("Mart", "NULL"))
 setClassUnion("FactorOrCharacterOrNULL", c("factor", "character", "NULL"))
@@ -19,22 +19,21 @@ setClassUnion("ListOrEnv", c("list", "environment"))
 setClassUnion("GRangesOrIRanges", c("GRanges", "IRanges"))
 setClassUnion("NULLOrMissing", c("NULL", "missing"))
 setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## ImageMap:
+## ImageMap ------------------------------------------------------------------------------------------------------------
+## 
+## ImageMap - A class to hold HTML image map information
 ##
-## A class to hold HTML image map information
 ## Slots :
-##    o coords: a numeric matrix of rectangular image map cordinates, in the order x bl, y bl, x tr, y tr. Rownames are
-##       mandatory for the matrix and have to be unique
+##    o coords: a numeric matrix of rectangular image map coordinates, in the order x bl, y bl, x tr, y tr. 
+##      Rownames are mandatory for the matrix and have to be unique
 ##    o tags: a list of tags that are to be added to the <map> tag, where the name of the list item is used as the
 ##      tagname. The value of each list item has to be a named character vector, where the names must match back into
 ##      the rownames of the 'coords' matrix
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("ImageMap", representation(coords="matrix", tags="list"),
          prototype=prototype(coords=matrix(1, ncol=4, nrow=0), tags=list()))
 
@@ -60,22 +59,21 @@ ImageMap <- function(coords, tags)
 
 ## Allow for NULL value slots
 setClassUnion("ImageMapOrNULL", c("ImageMap", "NULL"))
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## DisplayPars:
+## DisplayPars ---------------------------------------------------------------------------------------------------------
 ##
-## A class to control the plotting parameters for GdObjects
+## DisplayPars: A class to control the plotting parameters for GdObjects
+## 
 ## Slots :
 ##    o pars: an environment or a list containing parameter key value pairs
 ##       The initial idea was for the class to uses pass by reference semantic, allowing to update the object
 ##       without reassigning to a symbol. However this turned out to be problematic whenever a GdObject was
 ##       copied and to avoid confusion with the users about unwanted side-effects we decided to deprecate this
 ##       feature.
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("DisplayPars", representation(pars="ListOrEnv"))
 
 ## The initializer needs to create the environment, we can't take this
@@ -218,30 +216,24 @@ setAs("DisplayPars", "list", function(from, to) if(!is.null(from)) as.list(from@
 .dpAliasReverseTable[names(.dpAliasTable)] <- names(.dpAliasTable)
 .dpAliasReverseTable[unlist(.dpAliasTable, use.names=FALSE)] <- rep(names(.dpAliasTable), listLen(.dpAliasTable))
 .dpAliasReverseTable <- .dpAliasReverseTable[order(names(.dpAliasReverseTable))]
-##----------------------------------------------------------------------------------------------------------------------
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## InferredDisplayPars:
-##
-## A class to allow for querrying of available display parameters. Essentially this is a normal list with
-## a bit of a fancyfied show method.
+## InferredDisplayPars -------------------------------------------------------------------------------------------------
+## 
+## InferredDisplayPars: A class to allow for querying of available display parameters. 
+##                      Essentially this is a normal list with a bit of a fancyfied show method.
 ## Slots :
 ##    o name: the name of the class
 ##    o inheritance: a character vector indicating the inheritance structure
-##----------------------------------------------------------------------------------------------------------------------
 setClass("InferredDisplayPars", representation(name="character", inheritance="character"), contains="list")
 
 setMethod("as.list", "InferredDisplayPars", function(x) as(x, "list"))
 
 setAs("InferredDisplayPars", "list",
           function(from, to) {ll <- from@.Data; names(ll) <- names(from); ll})
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-##  GdObject:
+##  GdObject ------------------------------------------------------------------------------------------------------------
 ##
 ## The GdObject is the parent of all Gviz objects in the system.
 ## This class is virtual.
@@ -291,7 +283,6 @@ setAs("InferredDisplayPars", "list",
 ##	 later be matched to optional track item types as defined in the 'feature' range
 ##	 attribute, and all tracks of the matched types are colored accordingly. See the
 ##	 documentation of the 'GeneRegion' and 'AnnotationTrack' classes for details.
-##----------------------------------------------------------------------------------------------------------------------
 setClass("GdObject",
          representation=representation("VIRTUAL",
                                        dp="DisplayPars",
@@ -389,15 +380,12 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
     .Object <- setPar(.Object, list(...), interactive=FALSE)
     return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## RangeTrack:
+## RangeTrack ----------------------------------------------------------------------------------------------------------
 ##
-## Parent class for all region-like annotation tracks, storing information
+## RangeTrack: Parent class for all region-like annotation tracks, storing information
 ## about start, end, strand, chromosome and the associated genome.
 ## Slots:
 ##    o range: object of class GRangesOrIRanges containing all the necessary information
@@ -409,7 +397,7 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
 ##          - a single numeric character
 ##	    - a string, starting with 'chr', followed by any additional characters
 ##    o genome: character giving the reference genome for which the track is defined.
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("RangeTrack",
          representation=representation("VIRTUAL",
                                        range="GRangesOrIRanges",
@@ -439,15 +427,14 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
     .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## ReferenceTrack:
+## ReferenceTrack ------------------------------------------------------------------------------------------------------
+## 
 ##
-## Parent class for all tracks that provide a reference to data somewhere on the file system. This class is virtual
-## and only exists for the purpose of dispatching
+## ReferenceTrack: Parent class for all tracks that provide a reference to data somewhere on the file system. 
+##                 This class is virtual and only exists for the purpose of dispatching
 ## Slots:
 ##   o stream: the import function to stream data off the disk. Needs to be able to handle the two mandatory arguments
 ##      'file' (a character containing a valid file path) and 'selection' (a GRanges object with the genomic region to plot)
@@ -458,6 +445,7 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
 ##     fetching the data in order to fill all necessary slots
 ##   o defaults: a list with the relevant default values to be used when neither 'mapping' nor 'args' provides the
 ##     necessary information
+
 setClass("ReferenceTrack",  representation=representation("VIRTUAL",
                                                           stream="function",
                                                           reference="character",
@@ -485,31 +473,26 @@ setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, m
     validObject(.Object)
     return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## NumericTrack:
+## NumericTrack --------------------------------------------------------------------------------------------------------
 ##
-## Parent class for all annotation tracks that include numeric values. This is for
-## dispatching purpose only.
-##----------------------------------------------------------------------------------------------------------------------
+## NumericTrack: Parent class for all annotation tracks that include numeric values. 
+##               This is for dispatching purpose only.
+
 setClass("NumericTrack",
          representation=representation("VIRTUAL"),
          prototype=prototype(name="NumericTrack",
                              dp=DisplayPars()),
          contains="RangeTrack")
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## StackedTrack
+## StackedTrack --------------------------------------------------------------------------------------------------------
 ##
-## Parent class for all tracks that involve stacking. This is for
-## dispatching purpose only.
+## StackedTrack: Parent class for all tracks that involve stacking. 
+##               This is for dispatching purpose only.
 ## Slots:
 ##    o stacking: character controlling the stacking of overlapping items on the final plot.
 ##       One in 'hide', 'dense', 'squish', 'pack' or 'full'.
@@ -517,7 +500,7 @@ setClass("NumericTrack",
 ## This is part of the prototype only
 ##    o stackingValues: possible values of the stacking slot
 ##	 [c("hide", "dense", "squish", "pack", "full")]
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("StackedTrack",
          representation=representation("VIRTUAL",
                                        stacking="character",
@@ -549,16 +532,14 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
     .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## AnnotationTrack:
+## AnnotationTrack -----------------------------------------------------------------------------------------------------
 ##
-## A generic Annotation track, storing information about start, end, chromosome,
-## strand and the associated genome.
+## AnnotationTrack: A generic Annotation track, storing information about start, end, chromosome,
+##                  strand and the associated genome.
+## 
 ## Slots: no additional formal slots are defined, but the following are part of the prototype
 ##    o columns: column names that are allowed as part of the internal GRanges object in
 ##       the ranges slot [c("feature", "group")]
@@ -581,8 +562,7 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
 ##       group-level annotation
 ##    o shape: the shape used for the annotation items. Currently only 'box' and 'arrow' are implemented.
 ##    o rotation: the rotation of the item annotation in degrees.
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("AnnotationTrack",
          contains="StackedTrack",
          prototype=prototype(columns=c("feature", "group", "id"),
@@ -675,7 +655,7 @@ setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, re
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as further DisplayParameters
-## (N)
+
 AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, feature, group, id, strand, chromosome,
                             genome, stacking="squish", name="AnnotationTrack", fun, selectFun, importFunction,
                             stream=FALSE, ...)
@@ -737,19 +717,18 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
                    name=name, genome=genome, stacking=stacking, fun=fun, selectFun=selectFun, ...))
     }
 }
-##----------------------------------------------------------------------------------------------------------------------
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## DetailsAnnotationTrack is an AnnotationTrack for which each fearture (annotation)
+## DetailsAnnotationTrack ----------------------------------------------------------------------------------------------
+##
+## DetailsAnnotationTrack: is an AnnotationTrack for which each feature (annotation)
 ## has a detail plot (e.g. a scatter plot e.g. using lattice). The details plot
-## is generated by a user defined funnction that gets called internally with
+## is generated by a user defined function that gets called internally with
 ## arguments start, end and chromosome for the feature. The details plots are placed
 ## on top of the AnnotationTrack. As details plots can take relatively much space
-## compared to features of an AnnotationTrack it only makse sense to prove details
+## compared to features of an AnnotationTrack it only make sense to prove details
 ## for an AnnotationTrack with few features. The details plots are distributed evenly
-## on top of the annotation and can be connected to their corresponding featurs (they're
+## on top of the annotation and can be connected to their corresponding features (they're
 ## providing details for) with lines for better readability.
 ##
 ## The function must have the '...' arguments. All items from the list in
@@ -763,8 +742,7 @@ AnnotationTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, featur
 ## Note, use plot with newpage=FALSE and an explicit prefix (otherwise plotting
 ## get more and more slow the more trellis plots you create!). See '?plot.trellis'
 ## for details.
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("DetailsAnnotationTrack",
          contains="AnnotationTrack",
          representation=representation(fun="function", selectFun="function"),
@@ -796,17 +774,16 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 			.Object <- callNextMethod(.Object, ...)
 			return(.Object)
 		})
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## GeneRegionTrack:
+## GeneRegionTrack -----------------------------------------------------------------------------------------------------
 ##
-## A track containing all genes in a particular region. The data are usually fetched dynamially
+## GeneRegionTrack:
+## A track containing all genes in a particular region. The data are usually fetched dynamically
 ## from an online data store. Of course it would
-## also be possible to manully construct an object from local data. Particular data sources
-## should be implemented as sub-classes, this is just the commone denominator that is being
+## also be possible to manually construct an object from local data. Particular data sources
+## should be implemented as sub-classes, this is just the common denominator that is being
 ## used for plotting later on. There are several levels of data associated to a GeneRegionTrack:
 ##   - exon level: identifiers are stored in the exon column of the GRanges object. Data may be extracted
 ##          using the 'exons' method.
@@ -822,7 +799,7 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ## A bunch of DisplayPars are set during object instantiation:
 ##    o fill: the fill color for untyped items. Defaults to lightblue.
 ##    o col: the border color for all track items. This is also used to connect grouped items.
-##    o alpha: the transparancy for all track items.
+##    o alpha: the transparency for all track items.
 ##    o lty, lwd: the line type and width for all track items. This is also used to connect grouped items.
 ##    o lex: the line expansion factor
 ##    o fontsize, fontfamily, fontface, fontcolor: the face, size, family and color for the
@@ -832,8 +809,7 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ##    o showId: boolean controlling whether to plot group identifiers, e.g, gene symbols or transcript IDs.
 ##    o shape: the shape used for the annotation items. Currently only 'box' and 'arrow' are implemented.
 ##    o rotation: the rotation of the exon annotation in degrees.
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("GeneRegionTrack",
          contains="AnnotationTrack",
          representation=representation(start="NumericOrNULL", end="NumericOrNULL"),
@@ -884,21 +860,21 @@ setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, re
 })
 
 ## Constructor. The following arguments are supported:
-##    o range: one in a whole number of differerent potential inputs upon which the .buildRanges method will dispatch
+##    o range: one in a whole number of different potential inputs upon which the .buildRanges method will dispatch
 ##    o start, end: numeric vectors of the track start and end coordinates.
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
 ##    o rstarts, rends, rwidths: integer vectors of exon start and end locations or widths, or a character vector of
 ##      comma-delimited exon locations, one vector element for each transcript
 ##    o strand, feature, exon, transcript, gene, symbol, chromosome: vectors of equal length containing
-##       the exon strand, biotype, exon id, transcript id, gene id, human-readable gene symboland chromosome information
+##       the exon strand, biotype, exon id, transcript id, gene id, human-readable gene symbol and chromosome information
 ##    o stacking: character controlling the stacking of overlapping items. One in 'hide',
 ##       'dense', 'squish', 'pack' or 'full'.
 ##    o name: the name of the track. This will be used for the title panel.
-##    o exonList: boolean, causing the values in starts, rends or rwidths to be interpreted as delim-deparated
+##    o exonList: boolean, causing the values in starts, rends or rwidths to be interpreted as delim-separated
 ##       lists that have to be exploded. All other annotation arguments will be repeated accordingly.
 ##    o delim: the delimiter if coordinates are in a list
 ## All additional items in ... are being treated as DisplayParameters
-## (N)
+
 GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, strand, feature, exon,
                             transcript, gene, symbol, chromosome, genome, stacking="squish",
                             name="GeneRegionTrack", start=NULL, end=NULL, importFunction, stream=FALSE, ...)
@@ -947,18 +923,18 @@ GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, 
                    reference=slist[["reference"]], mapping=slist[["mapping"]], args=args, defaults=defs, ...))
     }
 }
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
+## BiomartGeneRegionTrack ----------------------------------------------------------------------------------------------
+##
 ## BiomartGeneRegionTrack:
 ##
 ## A GeneRegionTrack that fetches its information from Biomart
 ## Slots:
 ##    o biomart: a biomaRt object providing the connection to the data source.
-##        currently we assume that this connects to a esembl_gene source for
+##        currently we assume that this connects to a ensembl_gene source for
 ##        a particular organism.
 ##    o filter: a named list of additional filters that are passed on to the Biomart query.
 ## This is defined only in the prototype:
@@ -969,8 +945,7 @@ GeneRegionTrack <- function(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL, 
 ## This class mainly exists for dispatching purpose and to keep things as flexible
 ## as possible, the actual plottable information is all contained in the parent
 ## class definition.
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("BiomartGeneRegionTrack",
          contains="GeneRegionTrack",
          representation=representation(biomart="MartOrNULL", filter="list"),
@@ -1210,7 +1185,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start=NULL, 
 ##     	 are the filter identifiers and the item values are the filter values.
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
-## (N)
+
 BiomartGeneRegionTrack <- function(start=NULL, end=NULL, biomart, chromosome=NULL, strand, genome=NULL,
                                    stacking="squish", filters=list(), featureMap=NULL, name="BiomartGeneRegionTrack",
                                    symbol=NULL, gene=NULL, entrez=NULL, transcript=NULL, ...)
@@ -1241,15 +1216,13 @@ BiomartGeneRegionTrack <- function(start=NULL, end=NULL, biomart, chromosome=NUL
 
 ## This filters for genes with refseq IDs only
 .refseqFilter <- list("with_refseq_dna"=TRUE)
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## GenomeAxisTrack:
+## GenomeAxisTrack -----------------------------------------------------------------------------------------------------
+## 
+## GenomeAxisTrack: A track for the genome axis
 ##
-## A track for the genome axis
 ## Slots:
 ##    o range: an object of class GRanges containing ranges to be highlighted along the axis.
 ## A bunch of DisplayPars are set during object instantiation:
@@ -1272,8 +1245,7 @@ BiomartGeneRegionTrack <- function(start=NULL, end=NULL, biomart, chromosome=NUL
 ##    o showId: boolean, show range annotation
 ##    o scale: numeric, if not NULL a small scale is drawn instead of the full axis,
 ##      if between 0 and 1 it is interpreted as a fraction of the region (otherwise absolute).
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("GenomeAxisTrack",
          contains="GdObject",
          representation=representation(range="GRanges"),
@@ -1328,15 +1300,14 @@ GenomeAxisTrack <- function(range=NULL, name="Axis", id, ...)
         id <- names(range)
     new("GenomeAxisTrack", name=name, range=range, id=id, ...)
 }
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## DataTrack:
+## DataTrack -----------------------------------------------------------------------------------------------------------
 ##
-## A track for all sorts of quantitative values
+## DataTrack: A track for all sorts of quantitative values
+## 
 ## Slots:
 ##    o data: a numeric matrix containing the data values
 ## A bunch of DisplayPars are set during object instantiation:
@@ -1353,7 +1324,7 @@ GenomeAxisTrack <- function(range=NULL, name="Axis", id, ...)
 ##    o cex: the default pixel size
 ##    o ncolor, gradient: the number of colors and the base colors for the gradient type
 ##    o collpase: collapse overlapping ranges
-##    o min.distance: the mimimum distance in pixel below which to collapse
+##    o min.distance: the minimum distance in pixel below which to collapse
 ##    o window: average the rows of the data matrix to 'window' slices on the data range
 ##    o separator: number of pixels used to separate individual samples in heatmap-type plots
 ##    o transformation: a function applied on the data matrix prior to plotting. The function
@@ -1366,8 +1337,8 @@ GenomeAxisTrack <- function(range=NULL, name="Axis", id, ...)
 ##    o stackedBars: logical, draw stacked histograms if groups!=NULL. Else show grouped data as
 ##         side-by-side bars.
 ##    o na.rm: remove NA values before plotting
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
+
 setClass("DataTrack",
          contains="NumericTrack",
          representation=representation(data="matrix", strand="character"),
@@ -1460,7 +1431,7 @@ setMethod("initialize", "DataTrack", function(.Object, data=matrix(), strand, ..
 setClass("ReferenceDataTrack", contains=c("DataTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
-## multiple inheritence has some strange features with regards to method selection
+## multiple inheritance has some strange features with regards to method selection
 setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, reference, mapping=list(),
                                                        args=list(), defaults=list(), ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object=.Object, reference=reference, stream=stream,
@@ -1481,7 +1452,7 @@ setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, referenc
 ##      strands ("+-" or "-+" or 2). Currently has to be unique for the whole track.
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
-## (N)
+
 DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromosome, strand, genome,
                       name="DataTrack", importFunction, stream=FALSE, ...)
 {
@@ -1540,15 +1511,14 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
                    mapping=slist[["mapping"]], args=args, defaults=defs, ...))
     }
 }
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## IdeogramTrack:
-##
-## A track for chromosome ideograms
+## IdeogramTrack --------------------------------------------------------------------------------------------------------
+## 
+## IdeogramTrack: A track for chromosome ideograms
+## 
 ## A bunch of DisplayPars are set during object instantiation:
 ##    o size: the relative size of the track
 ##    o col, fill: the border and fill color used for the highlighted currently displayed region on the chromosome
@@ -1558,8 +1528,7 @@ DataTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, data, chromo
 ##    o showBandId: show the identifiers of the chromosome bands
 ##    o cex.bands: character expansion factor for the chromosome band information
 ##    o bevel: the amount of beveling at the ends of the ideogram. A number between 0 and 1.
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("IdeogramTrack", contains = "RangeTrack",
          representation=representation(bandTable="data.frame"),
          prototype=prototype(name="IdeogramTrack",
@@ -1634,12 +1603,11 @@ IdeogramTrack <- function(chromosome=NULL, genome, name=NULL, bands=NULL, ...){
     if(missing(genome)) stop("Need to specify genome for creating an IdeogramTrack")
     new("IdeogramTrack", chromosome=chromosome, genome=genome, name=name, bands=bands, ...)
 }
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
+## UcscTrack -----------------------------------------------------------------------------------------------------------
+##
 ## UcscTrack:
 ##
 ## Strictly speaking this is not a class, but rather some sort of meta-constructor for several of the previously
@@ -1772,8 +1740,7 @@ clearSessionCache <- function(){
 }
 
 
-
-## (N)
+## Constructor
 UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneRegionTrack",
                                            "DataTrack", "GenomeAxisTrack"),
                       genome, chromosome, name=NULL, from, to, ...)
@@ -1821,20 +1788,17 @@ UcscTrack <- function(track, table=NULL, trackType=c("AnnotationTrack", "GeneReg
     trackObject <- do.call(trackType, args=c(list(chromosome=chromosome, genome=genome, name=name), args))
     return(trackObject)
   }
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## AlignedReadTrack:
-##
-## A track to visualize sequence reads, as typically produced by NGS experiments
+## AlignedReadTrack ----------------------------------------------------------------------------------------------------
+## 
+## AlignedReadTrack: A track to visualize sequence reads, as typically produced by NGS experiments
+## 
 ## Slots: no additional formal slots are defined
 ## A bunch of DisplayPars are set during object instantiation:
 ##    o detail: the amount of plotting details to show for the aligned reads, one in c("reads", "coverage")
-##----------------------------------------------------------------------------------------------------------------------
-## (N)
+
 setClass("AlignedReadTrack",
          representation=representation(coverage="list",
                                        coverageOnly="logical"),
@@ -1921,17 +1885,10 @@ AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chrom
 
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-##----------------------------------------------------------------------------------------------------------------------
-## SequenceTrack:
+## SequenceTrack -------------------------------------------------------------------------------------------------------
+## 
+## SequenceTrack: A generic track to visualize nucleotide sequences. This class is virtual.
 ##
-## A generic track to visualize nucleotide sequences. This class is virtual.
 ## Slots:
 ##    o chromosome: a character vector giving the active chromosome for which the
 ##	 track is defined. Valid chromosome names are:
@@ -1940,6 +1897,7 @@ AlignedReadTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, chrom
 ##    o genome: character giving the reference genome for which the track is defined.
 ## A bunch of DisplayPars are set during object instantiation:
 ##    o foo: bar
+
 setClass("SequenceTrack",
          representation=representation("VIRTUAL",
                                        chromosome="character",
@@ -2068,17 +2026,15 @@ RNASequenceTrack <- function(sequence, chromosome, genome, name="SequenceTrack",
 }
 
 
-##----------------------------------------------------------------------------------------------------------------------
 
 
-
-##----------------------------------------------------------------------------------------------------------------------
-## SequenceDNAStringSetTrack:
+## SequenceDNAStringSetTrack -------------------------------------------------------------------------------------------
 ##
-## A track to visualize nucleotide sequences that are stored in a DNAStringSet
+## SequenceDNAStringSetTrack: A track to visualize nucleotide sequences that are stored in a DNAStringSet
+## 
 ## Slots:
 ##    o sequence: a DNAStringSet object that contains all the sequence data
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("SequenceDNAStringSetTrack",
          representation=representation(sequence="DNAStringSet"),
          contains="SequenceTrack",
@@ -2103,14 +2059,14 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
     .Object <- callNextMethod(.Object, ...)
      return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
-## SequenceRNAStringSetTrack:
+
+## SequenceRNAStringSetTrack -------------------------------------------------------------------------------------------
 ##
-## A track to visualize nucleotide sequences that are stored in a RNAStringSet
+## SequenceRNAStringSetTrack: A track to visualize nucleotide sequences that are stored in a RNAStringSet
 ## Slots:
 ##    o sequence: a RNAStringSet object that contains all the sequence data
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("SequenceRNAStringSetTrack",
          representation=representation(sequence="RNAStringSet"),
          contains="SequenceTrack",
@@ -2135,19 +2091,18 @@ setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence,
   .Object <- callNextMethod(.Object, ...)
   return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## SequenceBSgenomeTrack:
+## SequenceBSgenomeTrack -----------------------------------------------------------------------------------------------
 ##
-## A track to visualize nucleotide sequences that are stored in a BSgenome package
+## SequenceBSgenomeTrack: A track to visualize nucleotide sequences that are stored in a BSgenome package
+##
 ## Slots:
 ##    o sequence: a DNAStringSet object that contains all the sequence data
-##    o pointerCache: an environemnt to hold pointers to the BSgenome sequences to prevent garbage collection. This
+##    o pointerCache: an environment to hold pointers to the BSgenome sequences to prevent garbage collection. This
 ##       will only be filled once the individual sequences have been accessed for the first time
-##----------------------------------------------------------------------------------------------------------------------
+
 setClass("SequenceBSgenomeTrack",
          representation=representation(sequence="BSgenomeOrNULL", pointerCache="environment"),
          contains="SequenceTrack",
@@ -2159,16 +2114,15 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL
     .Object <- callNextMethod(.Object, ...)
      return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## ReferenceSequenceTrack:
+## ReferenceSequenceTrack ----------------------------------------------------------------------------------------------
 ##
-## The file-based version of the ReferenceTrack class. This will mainly provide a means to dispatch to
-## a special 'subseq' method which should stream the necessary data from disk.
-##----------------------------------------------------------------------------------------------------------------------
+## ReferenceSequenceTrack: The file-based version of the ReferenceTrack class. 
+##                         This will mainly provide a means to dispatch to a special 'subseq' method 
+##                         which should stream the necessary data from disk.
+
 setClass("ReferenceSequenceTrack", contains=c("SequenceDNAStringSetTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
@@ -2178,15 +2132,14 @@ setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, refe
     .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## AlignmentsTrack
+
+## AlignmentsTrack------------------------------------------------------------------------------------------------------
 ##
-## A track that represents aligned NGS reads on a genome. This supports gapped and paired alignments.
-##----------------------------------------------------------------------------------------------------------------------
+## AlignmentsTrack: A track that represents aligned NGS reads on a genome. This supports gapped and paired alignments.
+
 setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 setClass("AlignmentsTrack",
          representation=representation(stackRanges="GRanges",
@@ -2357,15 +2310,13 @@ AlignmentsTrack <- function(range=NULL, start=NULL, end=NULL, width=NULL, strand
                        mapping=slist[["mapping"]], args=args, defaults=defs, stacks=stacks, referenceSequence=referenceSequence, ...))
         }
 }
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## HighlightTrack:
+## HighlightTrack ------------------------------------------------------------------------------------------------------
 ##
-## A collection container for several track objects for which a particular area needs to be highlighted.
-##----------------------------------------------------------------------------------------------------------------------
+## HighlightTrack: A collection container for several track objects for which a particular area needs to be highlighted.
+
 setClass("HighlightTrack",
          representation=representation(trackList="list"),
          contains=c("RangeTrack"),
@@ -2415,15 +2366,13 @@ setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x,
     }
     return(x)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## OverlayTrack:
-##
-## A collection container for several track objects which will all be plotted on top of each other
-##----------------------------------------------------------------------------------------------------------------------
+## OverlayTrack --------------------------------------------------------------------------------------------------------
+## 
+## OverlayTrack: A collection container for several track objects which will all be plotted on top of each other
+
 setClass("OverlayTrack",
          representation=representation(trackList="list"),
          contains=c("GdObject"),
@@ -2453,15 +2402,13 @@ setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, r
     }
     return(x)
 })
-##----------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------
-## CustomTrack:
-##
-## A track class to allow for user-defined plotting functions
-##----------------------------------------------------------------------------------------------------------------------
+## CustomTrack ---------------------------------------------------------------------------------------------------------
+## 
+## CustomTrack: A track class to allow for user-defined plotting functions
+
 setClass("CustomTrack",
          contains=c("GdObject"),
          representation=representation(plottingFunction="function",
@@ -2480,8 +2427,3 @@ setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, varia
 CustomTrack <- function(plottingFunction=function(GdObject, prepare=FALSE, ...){}, variables=list(), name="CustomTrack",  ...){
     return(new("CustomTrack", plottingFunction=plottingFunction, variables=variables, name=name, ...))
 }
-##----------------------------------------------------------------------------------------------------------------------
-
-
-
-

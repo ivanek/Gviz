@@ -50,7 +50,23 @@ mcols(bamgr) <- DataFrame(id=c("NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932
                                   `5`=paste(rep("+", 2600), collapse=""))),
                  isize=c(113L, 113L, 48L, 47L, 30L),
                  groupid=c(1L, 1L, 2L, 3L, 4L),
-                 status=factor(rep(c("mated", "unmated"), c(2,3)), levels=c("mated", "ambiguous", "unmated")))
+                 status=factor(rep(c("mated", "unmated"), c(2,3)), 
+                               levels=c("mated", "ambiguous", "unmated")))
+
+
+
+selFun <- function(identifier, start, end, track, GdObject, ...){
+  gcount <- table(group(GdObject))
+  ## This computes the width of 2 pixels in genomic coordinates
+  pxRange <- Gviz:::.pxResolution(min.width=20, coord="x")
+  return((end-start)<pxRange && gcount[identifier]==1)
+}
+detFun <- function(identifier, GdObject.original, ...){
+  plotTracks(list(GenomeAxisTrack(scale=0.3, size=0.2, cex=0.7), 
+                  GdObject.original[group(GdObject.original)==identifier]),
+             add=TRUE, showTitle=FALSE)
+}
+data(geneDetails)
 ## classes --------------------------------------------------------------------
 
 ## IdeogramTrack
@@ -70,6 +86,10 @@ annoTrack <- AnnotationTrack(gr)
 ## BiomartGeneRegionTrack
 
 ## DetailsAnnotationTrack
+detTrack <- DetailsAnnotationTrack(geneDetails, fun=detFun, selectFun=selFun,
+                                   groupDetails=TRUE, details.size=0.5, 
+                                   detailsConnector.cex=0.5, detailsConnector.lty="dotted",
+                                   shape=c("smallArrow", "arrow"), groupAnnotation="group")
 
 ## SequenceTrack
 seqTrack.dna <- SequenceTrack(dna.sq)
