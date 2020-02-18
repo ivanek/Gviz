@@ -33,7 +33,7 @@ setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames
 setMethod("seqlevels", "RangeTrack", function(x) unique(seqnames(x)))
 setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence)>0])
 setMethod("seqlevels", "SequenceRNAStringSetTrack", function(x) seqnames(x)[width(x@sequence)>0])
-setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify=T))>0])
+setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify=T))>0]) # maybe seqnames only to speed-up 
 setMethod("seqinfo", "RangeTrack", function(x) table(seqnames(x)))
 
 ## Min and max ranges
@@ -614,14 +614,16 @@ setMethod("score", signature("DataTrack"), function(x, from=NULL, to=NULL, sort=
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## consolidateTrack ----------------------------------------------------------------------------------------------------
+##
 ## Before starting of the plotting operation there are a bunch of housekeeping task that should be performed on each
 ## track, and the mileage may vary between track types, hence we add a layer of abstraction here by using a method.
+##
 ## Available arguments are:
 ##    o GdObject: the input track object
 ##    o chromosome: the currently active chromosome which may have to be set for a RangeTrack or a SequenceTrack object
 ##    o ...: additional arguments that are considered to be display parameters
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## For all track types we want to update the display parameters
 setMethod("consolidateTrack", signature(GdObject="GdObject"), function(GdObject, alpha, ...) {
     pars <- list(...)
@@ -687,11 +689,10 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
     GdObject@trackList <- lapply(GdObject@trackList, consolidateTrack, chromosome=chromosome, ...)
     return(GdObject)
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
-
-##----------------------------------------------------------------------------------------------------------------------------
+## collapseTrack -------------------------------------------------------------------------------------------------------
+##
 ## There is a natural limit of what can be plotted as individual features caused by the maximum resolution of the device.
 ## Essentially no object can be smaller than the equivalent of a single pixel on the screen or whatever a pixel corresponds
 ## to on other devices.
@@ -708,7 +709,7 @@ setMethod("consolidateTrack", signature(GdObject="OverlayTrack"), function(GdObj
 ##    o collapse: logical, collapse overlapping items into a single meta-item.
 ##    o diff: the equivalent of 1 pixel in the native coordinate system.
 ##    o xrange: the data range on the x axis. Can be used for some preliminary subsetting to speed things up
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## A slightly quicker function to compute overlaps between two GRanges objects
 .myFindOverlaps <- function(gr1, gr2)
 {
@@ -1087,13 +1088,13 @@ setMethod("collapseTrack", signature(GdObject="GenomeAxisTrack"),
               r <- .resize(r, min.width, diff)
               GdObject@range <- r
               return(GdObject)})
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## subset --------------------------------------------------------------------------------------------------------------
+##
 ## Truncate a GdObject and sort by coordinates if necessary.
-##----------------------------------------------------------------------------------------------------------------------------
+##
 ## The default is not to clip at all
 setMethod("subset", signature(x="GdObject"), function(x, ...) x)
 
@@ -1338,17 +1339,18 @@ setMethod("subset", signature(x="ReferenceAlignmentsTrack"), function(x, from, t
     chromosome(x) <- chromosome[1]
     return(callNextMethod(x=x, from=from, to=to, drop=FALSE, ...))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
-## The indivdual bits and pieces of a Gviz plot are all drawn by separate renderers. Currently, those are a y-axis,
+## drawAxis ------------------------------------------------------------------------------------------------------------
+##
+## The individual bits and pieces of a Gviz plot are all drawn by separate renderers. Currently, those are a y-axis,
 ## a grid, and the actual track panel.
-##----------------------------------------------------------------------------------------------------------------------------
+##
 ## For certain GdObject subclasses we may want to draw a y-axis. For others an axis is meaningless, and the default function
 ## will return NULL without plotting anything.
+
 setMethod("drawAxis", signature(GdObject="GdObject"), function(GdObject, ...) return(NULL))
 
 setMethod("drawAxis", signature(GdObject="DataTrack"), function(GdObject, ...) {
@@ -1474,7 +1476,6 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
 })
 
 
-
 setMethod("drawAxis", signature(GdObject="AlignmentsTrack"), function(GdObject, ...) {
     type <- match.arg(.dpOrDefault(GdObject, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok=TRUE)
     if("coverage" %in% type){
@@ -1579,8 +1580,11 @@ setMethod("drawAxis", signature(GdObject="AlignedReadTrack"), function(GdObject,
     }
 })
 
+## drawGrid ------------------------------------------------------------------------------------------------------------
+## 
 ## Draw a grid in the background of a GdObject. For some subclasses this is meaningless, and the default function will
 ## return NULL without plotting anything.
+
 setMethod("drawGrid", signature(GdObject="GdObject"), function(GdObject, ...) return(NULL))
 setMethod("drawGrid", signature(GdObject="NumericTrack"), function(GdObject, from, to){
     if(.dpOrDefault(GdObject, "grid", FALSE)) {
@@ -1650,11 +1654,11 @@ setMethod("drawGrid", signature(GdObject="AlignmentsTrack"), function(GdObject, 
         popViewport(1)
     }
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD --------------------------------------------------------------------------------------------------------------
+##
 ## All the drawGD methods should support two modes, triggered by the boolean argument 'prepare':
 ##    In prepare mode: nothing is plotted but the object is prepared for plotting bases on the available space. The return
 ##       value of the method in this mode should always be the updated object. If nothing needs to be prepared, i.e., if the
@@ -1664,12 +1668,11 @@ setMethod("drawGrid", signature(GdObject="AlignmentsTrack"), function(GdObject, 
 ## Since subsetting can be potentially expensive when the data are large we want to minimize this operation. Essentially it
 ## should be done only once before any other plotting or computation starts, hence we expect the GdObject in the drawGD
 ## methods to already be trimmed to the correct size
-##----------------------------------------------------------------------------------------------------------------------------
 
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## The default method for all StackedTrack types which always should be called (this has to be done explicitely using
 ## callNextMethod)
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## Although the stacking type is not stored as a displayParameter we still want to check whether it is
 ## included there and set the actual stacking of the object accordingly
 setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
@@ -1681,12 +1684,12 @@ setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...){
         stacking(GdObject) <- st
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD - CustomTrack ------------------------------------------------------------------------------------------------
+##
 ## The plotting method for a CustomTrack actually just calls the user-defined plotting function
-##----------------------------------------------------------------------------------------------------------------------------
+##
 ## Although the stacking type is not stored as a displayParameter we still want to check whether it is
 ## included there and set the actual stacking of the object accordingly
 setMethod("drawGD", signature("CustomTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...){
@@ -1702,22 +1705,21 @@ setMethod("drawGD", signature("CustomTrack"), function(GdObject, minBase, maxBas
     popViewport(1)
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD - OverlayTracks ----------------------------------------------------------------------------------------------
 ## The method for OverlayTracks simply delegates to the methods for each of the elements in trackList
-##----------------------------------------------------------------------------------------------------------------------------
+
 setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...){
     GdObject@trackList <- lapply(GdObject@trackList, drawGD, ...)
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD - AnnotationTracks or GeneRegionTracks -----------------------------------------------------------------------
+##
 ## Draw gene models as found in AnnotationTracks or GeneRegionTracks
-##----------------------------------------------------------------------------------------------------------------------------
+##
 ## Calculate all coordinates and values for the individual stacks first, and append to the
 ## input list 'toDraw'. This allows us to plot the whole track at once, making use of grid's
 ## vectorization. Without this tweak, every stack would have to be drawn individually, which
@@ -2381,13 +2383,15 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     ##imageMap(GdObject) <- im
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+
+## drawGD - GenomeAxisTrack --------------------------------------------------------------------------------------------
+##
 ## Draw a genome axis
-##----------------------------------------------------------------------------------------------------------------------------
+
+## 
 .expLabel <- function(GdObject, tckText, prune=FALSE){
     tck <- tckText
     exponent <- if(is.null(.dpOrDefault(GdObject, "exponent"))){
@@ -2654,11 +2658,13 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     }
     popViewport()
     return(invisible(GdObject))})
-##----------------------------------------------------------------------------------------------------------------------------
 
-##----------------------------------------------------------------------------------------------------------------------------
+
+
+## drawGD - DetailsAnnotationTrack -------------------------------------------------------------------------------------
+##
 ## Draw DetailsAnnotationTrack
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## Create a data.frame with the distinct details function arguments (like start, end, ...)
 .buildArgsDf <- function(GdObject)
 {
@@ -2790,12 +2796,12 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
               }
               return(invisible(GdObject))
           })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD - DataTrack --------------------------------------------------------------------------------------------------
+##
 ## Draw a data track
-##----------------------------------------------------------------------------------------------------------------------------
+
 ## Helper function to return the absolute extreme value in a vector
 .extreme <- function(x) if(all(is.na(x))) NA else x[which.max(abs(x))]
 
@@ -3339,14 +3345,14 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
 
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD - AlignedReadTrack -------------------------------------------------------------------------------------------
+## 
 ## Draw a AlignedRead track
-##----------------------------------------------------------------------------------------------------------------------------
+
 setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
     if((is.logical(debug) && debug) || debug=="prepare")
@@ -3653,14 +3659,14 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     popViewport(1)
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD AlignedReadTrack 2 ---------------------------------------------------------------------------------------------
+##
 ## Draw a AlignedRead track
-##----------------------------------------------------------------------------------------------------------------------------
+
 setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, subset=TRUE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
     if((is.logical(debug) && debug) || debug=="prepare")
@@ -3797,14 +3803,15 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     }
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## drawGD - IdeogramTrack ----------------------------------------------------------------------------------------------
+## 
 ## Draw an ideogram track
-##----------------------------------------------------------------------------------------------------------------------------
+## 
+
 ## Helper function to compute coordinates for a rounded ideogram cap
 .roundedCap <- function(bl, tr, st, vals, side=c("left", "right"), bevel=0.4, n=100)
 {
@@ -4010,11 +4017,13 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
     popViewport(1)
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
-##----------------------------------------------------------------------------------------------------------------------------
+
+
+## drawGD - SequenceTrack ----------------------------------------------------------------------------------------------
+##
 ## Draw a SequenceTrack
-##----------------------------------------------------------------------------------------------------------------------------
+
 setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
     if((is.logical(debug) && debug) || debug=="prepare")
@@ -4074,14 +4083,14 @@ setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxB
     popViewport(1)
     return(invisible(GdObject))
 })
-##----------------------------------------------------------------------------------------------------------------------------
 
 
 
 
-##----------------------------------------------------------------------------------------------------------------------------
+## Object coercion -----------------------------------------------------------------------------------------------------
+##
 ## Object coercion
-##----------------------------------------------------------------------------------------------------------------------------
+
 setAs("AnnotationTrack", "UCSCData",
           function(from, to){
               ranges <- range(from)
@@ -4161,16 +4170,15 @@ setMethod("tail", "InferredDisplayPars", function(x, n=10, ...){
                structure(x@.Data[sel], names=names(x)[sel])))})
 
 
-##---------------------------------------------------------------------------------
 
-
-
-##---------------------------------------------------------------------------------
+## .buildRange ---------------------------------------------------------------------------------------------------------
+##
 ## Helper methods to build a GRanges object from the input arguments.
-##---------------------------------------------------------------------------------
+##
 ## Coordinates for grouped elements may be passed in as comma-separated values (e.g. "1,5,9"), in which case
 ## we need to split and convert to numeric. This also implies that the additional arguments (like feature, group, etc.)
 ## have to be replicated accordingly. We handle this by passing along the repeat vector 'by' to the numeric method below.
+
 setMethod(".buildRange", signature("NULLOrMissing", "FactorOrCharacterOrNULL", "FactorOrCharacterOrNULL",
                                    "FactorOrCharacterOrNULL"),
           function(range, start, end, width, asIRanges=FALSE, ...){
@@ -4481,26 +4489,27 @@ setMethod(".buildRange", signature("character"),
                               stream=if(is.null(importFun)) .registerImportFun(range) else importFun))
               }
           })
-##---------------------------------------------------------------------------------
 
 
 
-##---------------------------------------------------------------------------------
+
+## Methods ImageMap ----------------------------------------------------------------------------------------------------
+##
 ## Interact with ImageMap objects
-##---------------------------------------------------------------------------------
+
 setMethod("coords", "NULL", function(ImageMap) NULL)
 setMethod("coords", "ImageMap", function(ImageMap) ImageMap@coords)
 setMethod("coords", "GdObject", function(ImageMap) coords(imageMap(ImageMap)))
 setMethod("tags", "NULL", function(ImageMap) NULL)
 setMethod("tags", "ImageMap", function(ImageMap) ImageMap@tags)
 setMethod("tags", "GdObject", function(ImageMap) tags(imageMap(ImageMap)))
-##---------------------------------------------------------------------------------
 
 
 
-##---------------------------------------------------------------------------------
+## Show methods --------------------------------------------------------------------------------------------------------
+##
 ## Show methods for the various classes
-##---------------------------------------------------------------------------------
+
 
 ## A helper function to plot information regarding additional features on other chromosomes
 .addFeatInfo <- function(object, addfeat){
@@ -4717,4 +4726,3 @@ setMethod("show", "InferredDisplayPars", function(object){
              }
     }
 })
-##---------------------------------------------------------------------------------
