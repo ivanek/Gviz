@@ -4236,9 +4236,14 @@ setMethod(".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrN
           function(range, start, end, width, asIRanges=FALSE, by=NULL, len, args, defaults, ...) {
               ## Some of the arguments are mutually exclusive and we want to catch this here.
               if(is.null(width)) {
-                  if (is.null(start) || is.null(end))
-                      # return(if(asIRanges) IRanges() else GRanges())    # CHECK if this might be the issue for failing on windows
-                      stop("Must specify either start and end or width")  # CHECK if this might be the issue for failing on windows
+                  ## The inputs coordinates are all empty
+                  ## CHECK if this might solve the issue on windows
+                  if(is.null(start) && is.null(end)) {
+                    return(if(asIRanges) IRanges() else GRanges())
+                  }
+                  if (is.null(start) || is.null(end)) {
+                      stop("Must specify either start and end or width")
+                  }
               } else {
                   if(is.null(end) && !is.null(start))
                       end <- as.integer(start)+as.integer(width)
