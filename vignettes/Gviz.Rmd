@@ -27,7 +27,7 @@ editor_options:
     console
 ---
 
-__Last edited__: 13 February 2020
+__Last edited__: 19 February 2020
 
 ```{r init, echo=FALSE, results='hide'}
 ## crop=NULL or FALSE =>  fix vignette rendering based on yihui/knitr#1796
@@ -45,6 +45,8 @@ knitr::opts_chunk$set(
 
 ## check the output type
 out_type <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+if (is.null(out_type))
+    out_type <- "html"
 
 ## add styling
 if (out_type == "html") {
@@ -398,8 +400,8 @@ set.seed(255)
 lim <- c(26700000, 26750000)
 coords <- sort(c(lim[1], sample(seq(from=lim[1], to=lim[2]), 99), lim[2]))
 dat <- runif(100, min=-10, max=10)
-dtrack <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], chromosome=chr,
-                    genome=gen, name="Uniform")
+dtrack <- DataTrack(data=dat, start=coords[-length(coords)], end=coords[-1], 
+                    chromosome=chr, genome=gen, name="Uniform")
 plotTracks(list(itrack, gtrack, atrack, grtrack, dtrack), from=lim[1], to=lim[2])
 ```
 
