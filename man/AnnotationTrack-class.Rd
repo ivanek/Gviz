@@ -79,48 +79,48 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
     \describe{
 
       \item{}{A \code{GRanges} object: the genomic ranges for the
-	\code{Annotation} track as well as the optional additional
-	metadata columns \code{feature}, \code{group} and
-	\code{id} (see description of the individual function parameters
-	below for details). Calling the constructor on a \code{GRanges}
-	object without further arguments, e.g.
-	\code{AnnotationTrack(range=obj)} is equivalent to calling the coerce
-	method \code{as(obj, "AnnotationTrack")}.}
+    \code{Annotation} track as well as the optional additional
+    metadata columns \code{feature}, \code{group} and
+    \code{id} (see description of the individual function parameters
+    below for details). Calling the constructor on a \code{GRanges}
+    object without further arguments, e.g.
+    \code{AnnotationTrack(range=obj)} is equivalent to calling the coerce
+    method \code{as(obj, "AnnotationTrack")}.}
 
       \item{}{A \code{GRangesList} object: this is very similar to the
-	previous case, except that the grouping information that is part
-	of the list structure is preserved in the
-	\code{AnnotationTrack}. I.e., all the elements within one list
-	item receive the same group id. For consistancy, there is also a
-	coercion method from \code{GRangesLists} \code{as(obj,
-	"AnnotationTrack")}.}
+    previous case, except that the grouping information that is part
+    of the list structure is preserved in the
+    \code{AnnotationTrack}. I.e., all the elements within one list
+    item receive the same group id. For consistancy, there is also a
+    coercion method from \code{GRangesLists} \code{as(obj,
+    "AnnotationTrack")}.}
 
       \item{}{An \code{\linkS4class{IRanges}} object: almost identical
-	to the \code{GRanges} case, except that the chromosome and
-	strand information as well as all additional metadata has to be
-	provided in the separate \code{chromosome}, \code{strand},
-	\code{feature}, \code{group} or \code{id} arguments, because it
-	can not be directly encoded in an \code{IRange} object. Note
-	that none of those inputs are mandatory, and if not provided
-	explicitely the more or less reasonable default values
-	\code{chromosome=NA} and \code{strand="*"} are used. }
+    to the \code{GRanges} case, except that the chromosome and
+    strand information as well as all additional metadata has to be
+    provided in the separate \code{chromosome}, \code{strand},
+    \code{feature}, \code{group} or \code{id} arguments, because it
+    can not be directly encoded in an \code{IRange} object. Note
+    that none of those inputs are mandatory, and if not provided
+    explicitely the more or less reasonable default values
+    \code{chromosome=NA} and \code{strand="*"} are used. }
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
-	contain at least the two mandatory columns \code{start} and
-	\code{end} with the range coordinates. It may also contain a
-	\code{chromosome} and a \code{strand} column with the chromosome
-	and strand information for each range. If missing it will be
-	drawn from the separate \code{chromosome} or \code{strand}
-	arguments. In addition, the \code{feature}, \code{group} and
-	\code{id} data can be provided as additional columns. The above
-	comments about potential default values also apply here.}
+    contain at least the two mandatory columns \code{start} and
+    \code{end} with the range coordinates. It may also contain a
+    \code{chromosome} and a \code{strand} column with the chromosome
+    and strand information for each range. If missing it will be
+    drawn from the separate \code{chromosome} or \code{strand}
+    arguments. In addition, the \code{feature}, \code{group} and
+    \code{id} data can be provided as additional columns. The above
+    comments about potential default values also apply here.}
 
       \item{}{A \code{character} scalar: in this case the value of the
-	\code{range} argument is considered to be a file path to an
-	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
-	the \code{importFunction} documentation below for further
-	details.}
+    \code{range} argument is considered to be a file path to an
+    annotation file on disk. A range of file types are supported by
+    the \code{Gviz} package as identified by the file extension. See
+    the \code{importFunction} documentation below for further
+    details.}
 
     }
   }
@@ -204,28 +204,28 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
     \itemize{
       
       \item{\code{start}: the genomic start coordinate of the range
-	item.}
+    item.}
       
       \item{\code{end}: the genomic end coordinates of the range
-	item.}
+    item.}
       
       \item{\code{strand}: the strand information for the range item.}
       
       \item{\code{chromosome}: the chromosome of the range item.}
       
       \item{\code{identifier}: the identifier of the range item, i.e.,
-	the result of calling \code{identifier(DetailsAnnotationTrack,
-	  lowest=TRUE)}. Typically those identifiers are passed on to
-	the object constructor during instantiation as the \code{id}
-	argument.}
+    the result of calling \code{identifier(DetailsAnnotationTrack,
+      lowest=TRUE)}. Typically those identifiers are passed on to
+    the object constructor during instantiation as the \code{id}
+    argument.}
 
       \item{\code{index}: a counter enumerating the ranges. The
-	\code{AnnotationTrack} object is sorted internally for
-	visibility, and the \code{index} argument refers to the index
-	of plotting.}
+    \code{AnnotationTrack} object is sorted internally for
+    visibility, and the \code{index} argument refers to the index
+    of plotting.}
 
        \item{\code{GdObject}: a reference to the currently plotted
-	 \code{DetailsAnnotationTrack} object.}
+     \code{DetailsAnnotationTrack} object.}
 
         \item{\code{GdObject.original}: a reference to the
           \code{DetailsAnnotationTrack} before any processing like item
@@ -301,7 +301,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 
 
 \section{Details}{
-	
+    
   The \code{DetailsAnnotationTrack} class directly extends
   \code{AnnotationTrack}. The purpose of this track type is to add an
   arbitrarily detailed plot section (typically consisting of additional
@@ -338,7 +338,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
   argument names like \code{start}, \code{end} or \code{identifier} are
   reserved and can not be used in the \code{detailsFunArgs} list. For
   examples of plotting functions, see the 'Examples' section.
-	
+    
 }
 
 
@@ -418,12 +418,12 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{group(obj)}}
-	
+    
+    \item{}{\code{group(obj)}}
+    
       }
     }
-		
+        
     \item{group<-}{\code{signature(GdObject="AnnotationTrack",
       value="character")}: replace the grouping information for track
       items. The replacement value must be a factor of appropriate
@@ -436,12 +436,12 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{group(obj) <- c("a", "a", "b", "c", "a")}}
+    
+    \item{}{\code{group(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
-	    
+        
     \item{identifier}{\code{signature(GdObject="AnnotationTrack")}:
       return track item identifiers. Depending on the setting of the
       optional argument \code{lowest}, these are either the group
@@ -454,26 +454,26 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{lowest}: return the lowest-level identifier, i.e.,
-	the item IDs, or the higher level group IDs which do not have to
-	be unqiue.}
-	
+    
+    \item{}{\code{lowest}: return the lowest-level identifier, i.e.,
+    the item IDs, or the higher level group IDs which do not have to
+    be unqiue.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{identifier(obj)}}
-	
-	\item{}{\code{identifier(obj, lowest=TRUE)}}
+    \item{}{\code{identifier(obj)}}
+    
+    \item{}{\code{identifier(obj, lowest=TRUE)}}
 
       }
     }
-	    
+        
     \item{identifier<-}{\code{signature(GdObject="AnnotationTrack",
-	value="character")}: Set the track item identifiers. The
+    value="character")}: Set the track item identifiers. The
       replacement value has to be a character vector of appropriate
       length. This always replaces the group-level identifiers, so
       essentially it is similar to \code{groups<-}.
@@ -485,8 +485,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{identifier(obj) <- c("foo", "bar")}}
+    
+    \item{}{\code{identifier(obj) <- c("foo", "bar")}}
 
       }
     }
@@ -497,15 +497,15 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
   \describe{
     
     \item{coerce}{\code{signature(from="AnnotationTrack",
-	to="UCSCData")}: coerce to a \code{UCSCData} object for export to
+    to="UCSCData")}: coerce to a \code{UCSCData} object for export to
       the UCSC genome browser.
 
       \emph{Examples:}
       
       \describe{
   
-	\item{}{\code{as(obj, "UCSCData")}}
-	
+    \item{}{\code{as(obj, "UCSCData")}}
+    
       }
     }
 
@@ -523,18 +523,18 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{diff}: the minimum pixel width to display,
-	  everything below that will be inflated to a width of
-	  \code{diff}.}
-	
+    
+    \item{}{\code{diff}: the minimum pixel width to display,
+      everything below that will be inflated to a width of
+      \code{diff}.}
+    
       }
 
       \emph{Examples:}
       
       \describe{
   
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+    \item{}{\code{Gviz:::collapseTrack(obj)}}
   
       }
     }
@@ -553,36 +553,36 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
       
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{Gviz:::drawGD(obj)}}
-	
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
-	
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
-	
+    
+    \item{}{\code{Gviz:::drawGD(obj)}}
+    
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
+    
       }
     }
 
@@ -595,20 +595,20 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{from}, \code{to}: integer scalars, draw grid
-	  within a certain coordinates range. This needs to be supplied
-	  for the plotting function to know the current genomic
-	  coordinates.}
-	
+    
+    \item{}{\code{from}, \code{to}: integer scalars, draw grid
+      within a certain coordinates range. This needs to be supplied
+      for the plotting function to know the current genomic
+      coordinates.}
+    
       }
 
       \emph{Examples:}
       
       \describe{
-	
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
-	
+    
+          \item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+    
       }
     }
 
@@ -623,19 +623,19 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{from}, \code{to}: integer scalars, compute
-	  stacking within a certain coordinates range. This needs to be
-	  supplied for the plotting function to know the current genomic
-	  coordinates.}
-	
+    
+    \item{}{\code{from}, \code{to}: integer scalars, compute
+      stacking within a certain coordinates range. This needs to be
+      supplied for the plotting function to know the current genomic
+      coordinates.}
+    
       }
 
       \emph{Examples:}
       
       \describe{
-	
-      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
+    
+          \item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -651,10 +651,10 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
   \bold{\emph{Inherited methods:}}
 
   \describe{
-	  
+      
     \item{stacking}{\code{signature(GdObject="AnnotationTrack")}: return
       the current stacking type.
-    	
+        
       \emph{Usage:}
       
       \code{stacking(GdObject)}
@@ -662,33 +662,33 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{stacking(obj)}}
+    
+    \item{}{\code{stacking(obj)}}
 
       }
     }
-    	
+        
     \item{stacking<-}{\code{signature(GdObject="AnnotationTrack",
       value="character")}: set the object's stacking type to one in
       \code{c(hide, dense, squish, pack,full)}.
-    	
+        
       \emph{Usage:}
       
       \code{stacking<-(GdObject, value)}
 
       \emph{Additional Arguments:}
       
-	\describe{
-	
-	  \item{}{\code{value}: replacement value.}
-	  
-	}
+    \describe{
+    
+      \item{}{\code{value}: replacement value.}
+      
+    }
 
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{stacking(obj) <- "squish" }}
+    \item{}{\code{stacking(obj) <- "squish" }}
 
       }
     }
@@ -703,14 +703,14 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-      	\item{}{\code{Gviz:::stacks(obj)}}
-	
+    
+          \item{}{\code{Gviz:::stacks(obj)}}
+    
       }
     }
     
     \item{[}{\code{signature(x="AnnotationTrack", i="ANY", j="ANY",
-	drop="ANY")}: subset the items in the \code{AnnotationTrack}
+    drop="ANY")}: subset the items in the \code{AnnotationTrack}
       object. This is essentially similar to subsetting of the
       \code{\linkS4class{GRanges}} object in the \code{range}
       slot. For most applications, the \code{subset} method may be
@@ -719,20 +719,20 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
-	  ignored.}
-	
-	\item{}{\code{drop}: argument is ignored.}
-	
+    
+    \item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
+      ignored.}
+    
+    \item{}{\code{drop}: argument is ignored.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{obj[1:5]}}
-	
+    
+    \item{}{\code{obj[1:5]}}
+    
       }
     }
       
@@ -749,9 +749,9 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{chromosome(obj)}}
-	
+    
+    \item{}{\code{chromosome(obj)}}
+    
       }
     }
     
@@ -770,17 +770,17 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	
+    
+    \item{}{\code{value}: replacement value.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{chromosome(obj) <- "chr12"}}
-	
+    
+    \item{}{\code{chromosome(obj) <- "chr12"}}
+    
       }
     }
     
@@ -800,11 +800,11 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       
       \describe{
 
-	\item{}{\code{start(obj)}}
-	
-	\item{}{\code{end(obj)}}
+    \item{}{\code{start(obj)}}
+    
+    \item{}{\code{end(obj)}}
       
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -823,21 +823,21 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
 
       \emph{Additional Arguments:}
       
-	\describe{
-	
-	  \item{}{\code{value}: replacement value.}
-	  
-	}
+    \describe{
+    
+      \item{}{\code{value}: replacement value.}
+      
+    }
 
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
       
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
       
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -854,7 +854,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -872,7 +872,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -891,16 +891,16 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -915,7 +915,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -923,7 +923,7 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
     \item{genome<-}{\code{signature(x="AnnotationTrack")}: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
       this is not formally enforced here.
-	    
+        
       \emph{Usage:}
       
       \code{genome<-(x, value)}
@@ -931,16 +931,16 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{genome(obj) <- "mm9"}}
+    
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -955,8 +955,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{length(obj)}}
+    
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -972,8 +972,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{range(obj)}}
+    
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -989,8 +989,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{ranges(obj)}}
+    
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -1008,18 +1008,18 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{f}: the splitting factor.}
-	
-	\item{}{\code{\dots}: all further arguments are ignored.}
-	
+    
+    \item{}{\code{f}: the splitting factor.}
+    
+    \item{}{\code{\dots}: all further arguments are ignored.}
+    
       }
 
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -1036,8 +1036,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{strand(obj)}}
+    
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -1053,16 +1053,16 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{strand(obj) <- "+"}}
+    
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -1078,21 +1078,21 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{values(obj)}}
+    
+    \item{}{\code{values(obj)}}
 
       }
     }
     
     \item{coerce}{\code{signature(from="AnnotationTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
       
        \emph{Examples:}
       
       \describe{
   
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -1107,22 +1107,22 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
-	
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
-	
-	\item{}{\code{\dots}: additional arguments are ignored.}
-	
+    
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
+    
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
+    
+    \item{}{\code{\dots}: additional arguments are ignored.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
@@ -1139,9 +1139,9 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj, "col")}}
-	
+    
+    \item{}{\code{displayPars(obj, "col")}}
+    
       }
     }
       
@@ -1154,8 +1154,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj)}}
+    
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -1172,8 +1172,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj, "col")}}
+    
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -1186,8 +1186,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj)}}
+    
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -1204,8 +1204,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -1224,16 +1224,16 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{name}: the name of the display parameter to set.}
-	
+    
+    \item{}{\code{name}: the name of the display parameter to set.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, "col", "red")}}
+    
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -1250,8 +1250,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -1266,8 +1266,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj)}}
+    
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -1282,8 +1282,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj) <- "foo"}}
+    
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -1298,8 +1298,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{coords(obj)}}
+    
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -1314,8 +1314,8 @@ AnnotationTrack(range=NULL, start=NULL, end=NULL, width=NULL, feature,
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{tags(obj)}}
+    
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -1832,10 +1832,10 @@ rownames(m) <- identifier(annTrack, "lowest")
 ## function is defined in. To avoid overwriting 'm' you should use a closure
 ## or environment to access 'm'. 
 details <- function(identifier, ...) {
-	d = data.frame(signal=m[identifier,], group=rep(c("grp1","grp2"), each=50))
+    d = data.frame(signal=m[identifier,], group=rep(c("grp1","grp2"), each=50))
     print(densityplot(~signal, group=group, data=d, main=identifier,
-	scales=list(draw=FALSE, x=list(draw=TRUE)), ylab="", xlab="",
-	), newpage=FALSE, prefix="plot")
+    scales=list(draw=FALSE, x=list(draw=TRUE)), ylab="", xlab="",
+    ), newpage=FALSE, prefix="plot")
 }
 
 deTrack <- AnnotationTrack(range=gr, genome="hg19", chromosome=7,

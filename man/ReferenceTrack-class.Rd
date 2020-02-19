@@ -31,6 +31,14 @@ availableDefaultMapping(file, trackType)
 
 }
 
+\value{
+
+  Constructor functions of \code{AnnotationTrack}, \code{DataTrack}, 
+  \code{SequenceTrack} and \code{AlignmentsTrack} can create a special object 
+  of coresponding Reference*Track subclass with pointer to the referenced file.
+
+}
+
 \section{Objects from the class}{
 
   A virtual class: No objects may be created from it.
@@ -71,7 +79,7 @@ availableDefaultMapping(file, trackType)
 
 \section{Methods}{
   
-  \bold{\emph{Internal methods:}}	
+  \bold{\emph{Internal methods:}}    
 
   \describe{
     

@@ -66,6 +66,12 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
 }
 
+\value{
+
+  The return value of the constructor function is a new object of class
+  \code{CustomTrack}.
+
+}
 
 \section{Slots}{
 
@@ -129,7 +135,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -144,7 +150,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -162,7 +168,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -176,7 +182,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -194,7 +200,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -214,7 +220,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -222,7 +228,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -240,7 +246,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -257,7 +263,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -273,7 +279,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -289,7 +295,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -305,7 +311,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -334,7 +340,7 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panels.}
 
- 	\item{}{\code{col.border.title="transparent"}: Integer or character
+     \item{}{\code{col.border.title="transparent"}: Integer or character
           scalar. The border color for the title panels.}
 
         \item{}{\code{lwd.border.title=1}: Integer scalar. The border
@@ -504,5 +510,12 @@ CustomTrack(plottingFunction=function(GdObject, prepare=FALSE, ...){},
 
 }
 
+\examples{
+
+## Object construction:
+
+## An empty object
+CustomTrack()
+}
 
 \keyword{classes}

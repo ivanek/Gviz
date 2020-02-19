@@ -102,7 +102,7 @@ availableDisplayPars(class)
   \describe{
     
     \item{displayPars}{\code{signature(x="DisplayPars",
-	name="character")}: return the value of a subset of display
+    name="character")}: return the value of a subset of display
       parameters, as identified by \code{name}.
       
       \emph{Usage:}
@@ -112,16 +112,16 @@ availableDisplayPars(class)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj, c("foo", "bar"))}}
+    
+    \item{}{\code{displayPars(obj, c("foo", "bar"))}}
       
-	\item{}{\code{displayPars(obj, "foobar")}}
+    \item{}{\code{displayPars(obj, "foobar")}}
     
       }
     }
     
     \item{displayPars}{\code{signature(x="DisplayPars",
-	name="missing")}: return all available display parameters.
+    name="missing")}: return all available display parameters.
   
       \emph{Usage:}
       
@@ -130,8 +130,8 @@ availableDisplayPars(class)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj)}}
+    
+    \item{}{\code{displayPars(obj)}}
       
       }
     }
@@ -146,8 +146,8 @@ availableDisplayPars(class)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj, "col")}}
+    
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -162,14 +162,14 @@ availableDisplayPars(class)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj)}}
+    
+    \item{}{\code{getPar(obj)}}
 
       }
     }
     
     \item{displayPars<-}{\code{signature(x="DisplayPars",
-	value="list")}: replace or add display parameters as provided by
+    value="list")}: replace or add display parameters as provided by
       the named list items.
     
       \emph{Usage:}
@@ -179,8 +179,8 @@ availableDisplayPars(class)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj) <- list(foo="a", bar=2)}}
+    
+    \item{}{\code{displayPars(obj) <- list(foo="a", bar=2)}}
       
       }
     }
@@ -198,16 +198,16 @@ availableDisplayPars(class)
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{name}: the name of the display parameter to set.}
-	
+    
+    \item{}{\code{name}: the name of the display parameter to set.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, "col", "red")}}
+    
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -222,8 +222,8 @@ availableDisplayPars(class)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }

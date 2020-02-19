@@ -47,8 +47,8 @@ Class \code{"ImageMapOrNULL"}, directly.
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{coords(obj)}}
+    
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -63,8 +63,8 @@ Class \code{"ImageMapOrNULL"}, directly.
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{tags(obj)}}
+    
+    \item{}{\code{tags(obj)}}
 
       }
     }

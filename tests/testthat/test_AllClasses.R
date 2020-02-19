@@ -31,8 +31,8 @@ test_that("DisplayPars works", {
   expect_identical(getPar(dp), list(a=1))
   expect_identical(getPar(dp, "a"), 1)
   # setPar
-  expect_identical(setPar(dp, "b", 2, interactive=F)@pars$b, 2)
-  expect_error(setPar(dp, "b", c(1,2), interactive=F), "equal length")
+  expect_identical(setPar(dp, "b", 2, interactive=FALSE)@pars$b, 2)
+  expect_error(setPar(dp, "b", c(1,2), interactive=FALSE), "equal length")
   # displayPars <-
   displayPars(dp) <- list(b=2)
   expect_identical(dp@pars, list(a=1, b=2))
@@ -134,4 +134,3 @@ test_that("DetailsAnnotationTrack works", {
   expect_identical(detTrack@fun, detFun)
   
 })
-

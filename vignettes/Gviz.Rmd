@@ -30,13 +30,15 @@ editor_options:
 __Last edited__: 13 February 2020
 
 ```{r init, echo=FALSE, results='hide'}
+## crop=NULL or FALSE =>  fix vignette rendering based on yihui/knitr#1796
+## added also error=FALSE to include_graphics
 knitr::opts_chunk$set(
   collapse = TRUE,
   ## comment = "#>",
   error = FALSE,
   warning = FALSE,
   message = FALSE,
-  crop = NULL                           # fix vignette rendering based on yihui/knitr#1796 , added also error=FALSE to include_graphics
+  crop = NULL                           
 )
 ## stopifnot(requireNamespace("htmltools"))
 ## htmltools::tagList(rmarkdown::html_dependency_font_awesome())
@@ -59,9 +61,12 @@ library(knitr)
 source(system.file("scripts/documentation.R", package="Gviz"))
 xtabDetails <- details
 
-addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "background.title"), add=NULL, out_type="html") {
+addParTable <- function(xtabDetails, class, 
+                        skip=c("showTitle", "size", "background.title"), 
+                        add=NULL, out_type="html") {
   Parameters <- data.frame("Display Parameter"=names(xtabDetails[[class]]),
-                           "Description"=xtabDetails[[class]], check.names=FALSE)
+                           "Description"=xtabDetails[[class]], 
+                           check.names=FALSE)
   if(!is.null(add)) {
     Parameters <- cbind(Parameters, add)
   }
@@ -69,15 +74,14 @@ addParTable <- function(xtabDetails, class, skip=c("showTitle", "size", "backgro
   sel <- !Parameters[,1] %in% skip
   Parameters <- Parameters[sel,]
   Parameters[,2] <- gsub("\\\\\\code\\{(.*?)\\}", "`\\1`", Parameters[,2])
-  Parameters[,2] <- gsub("\\\\\\link[sS]4[Cc]lass\\{(.*?)\\}", "\\1", Parameters[,2])
+  Parameters[,2] <- gsub("\\\\\\link[sS]4[Cc]lass\\{(.*?)\\}", "\\1", 
+                         Parameters[,2])
   Parameters[,2] <- gsub("\\\\\\link\\{(.*?)\\}", "\\1", Parameters[,2])
   rownames(Parameters) <- NULL
   if (out_type == "html") {
-    ## print(xtable(Parameters), type="html", include.rownames=FALSE, comment=FALSE, html.table.attributes=NULL)
-    out <- kable(Parameters)
+     out <- kable(Parameters)
   } else if (out_type == "latex") {
-    ## print(xtable(Parameters), booktabs=TRUE, tabular.environment="longtable", floating=FALSE, include.rownames=FALSE, comment=FALSE)
-    out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE)
+     out <- kable(Parameters, format="latex", booktabs=TRUE, longtable=TRUE)
   }
   print(out)
   return(invisible())
@@ -89,8 +93,10 @@ oto <- options(timeout=5)
 hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
                          !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
 options(timeout=oto)
+
 ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
-## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
+## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && 
+##   !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 ```
 
 # Introduction
@@ -1723,9 +1729,8 @@ if(hasBiomartConnection){
                                   name="ENSEMBL", filter=list(with_refseq_mrna=TRUE), biomart=bm)
     plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 }else{
-    biomTrack@filter <- list(with_refseq_mrna=TRUE)
-    plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
-    biomTrack@filter <- list()
+    data(biomTrack2)
+    plotTracks(biomTrack2, col.line=NULL, col=NULL, stackHeight=0.3)
 }
 ```
 
@@ -2462,7 +2467,8 @@ second chapter we could highlight two areas on the plot on the
 the following call:
 
 ```{r HighlightTrack, fig.width=7.5, fig.height=4}
-ht <- HighlightTrack(trackList=list(atrack, grtrack, dtrack), start=c(26705000, 26720000), width=7000, chromosome=7)
+ht <- HighlightTrack(trackList=list(atrack, grtrack, dtrack), 
+                     start=c(26705000, 26720000), width=7000, chromosome=7)
 plotTracks(list(itrack, gtrack, ht), from = lim[1], to = lim[2])
 ```
 

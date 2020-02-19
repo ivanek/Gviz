@@ -116,6 +116,11 @@ getScheme(name=getOption("Gviz.scheme"))
   
 }
 
+\value{
+
+  The \code{getScheme} function returns current scheme as a list structure.
+
+}
 
 \section{Display Parameters}{ 
 
@@ -2601,5 +2606,26 @@ getScheme(name=getOption("Gviz.scheme"))
   \code{\link{panel.xyplot}}
 
   \code{\link{plotTracks}}
+
+}
+
+\examples{
+## Which scheme is used?
+getOption("Gviz.scheme")
+
+## Change default settings for GeneRegionTrack
+scheme <- getScheme()
+scheme$GeneRegionTrack$fill <- "salmon"
+scheme$GeneRegionTrack$col <- NULL
+scheme$GeneRegionTrack$transcriptAnnotation <- "transcript"
+
+## replace default scheme with myScheme
+addScheme(scheme, "myScheme")
+options(Gviz.scheme="myScheme")
+getOption("Gviz.scheme")
+
+data(geneModels)
+grtrack <- GeneRegionTrack(geneModels, genome="hg19", chromosome="chr7", name="Gene Model")
+plotTracks(grtrack)
 
 }

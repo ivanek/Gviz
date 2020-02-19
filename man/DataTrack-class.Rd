@@ -74,46 +74,46 @@ name="DataTrack", importFunction, stream=FALSE, ...)
     \describe{
 
       \item{}{A \code{GRanges} object: essentially all the necessary
-	information to create a \code{DataTrack} can be contained in a
-	single \code{GRanges} object. The track's coordinates are taken
-	from the \code{start}, \code{end} and \code{seqnames} slots, the
-	genome information from the genome slot, and the numeric data
-	values can be extracted from additional metadata columns
-	columns (please note that non-numeric columns are being ignored
-	with a warning). As a matter of fact, calling the constructor on
-	a \code{GRanges} object without further arguments, e.g.
-	\code{DataTrack(range=obj)} is equivalent to calling the coerce
-	method \code{as(obj, "DataTrack")}. Alternatively, the
-	\code{GRanges} object may only contain the coordinate
-	information, in which case the numeric data part is expected to
-	be present in the separate \code{data} argument, and the ranges
-	have to match the dimensions of the data matrix. If \code{data}
-	is not \code{NULL}, this will always take precedence over
-	anything defined in the \code{range} argument. See below for
-	details.}
+    information to create a \code{DataTrack} can be contained in a
+    single \code{GRanges} object. The track's coordinates are taken
+    from the \code{start}, \code{end} and \code{seqnames} slots, the
+    genome information from the genome slot, and the numeric data
+    values can be extracted from additional metadata columns
+    columns (please note that non-numeric columns are being ignored
+    with a warning). As a matter of fact, calling the constructor on
+    a \code{GRanges} object without further arguments, e.g.
+    \code{DataTrack(range=obj)} is equivalent to calling the coerce
+    method \code{as(obj, "DataTrack")}. Alternatively, the
+    \code{GRanges} object may only contain the coordinate
+    information, in which case the numeric data part is expected to
+    be present in the separate \code{data} argument, and the ranges
+    have to match the dimensions of the data matrix. If \code{data}
+    is not \code{NULL}, this will always take precedence over
+    anything defined in the \code{range} argument. See below for
+    details.}
 
       \item{}{An \code{\linkS4class{IRanges}} object: this is very
-	similar to the above case, except that the numeric data part now
-	always has to be provided in the separate \code{data}
-	argument. Also the chromosome information must be provided in
-	the \code{chromosome} argument, because neither of the two can
-	be directly encoded in an \code{IRange} object.}
+    similar to the above case, except that the numeric data part now
+    always has to be provided in the separate \code{data}
+    argument. Also the chromosome information must be provided in
+    the \code{chromosome} argument, because neither of the two can
+    be directly encoded in an \code{IRange} object.}
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
-	contain at least the two mandatory columns \code{start} and
-	\code{end} with the range coordinates. It may also contain a
-	\code{chromosome} column with the chromosome information for
-	each range. If missing it will be drawn from the separate
-	\code{chromosome} argument. All additional numeric columns will
-	be interpreted as data columns, unless the \code{data} argument
-	is explicitely provided.}
+    contain at least the two mandatory columns \code{start} and
+    \code{end} with the range coordinates. It may also contain a
+    \code{chromosome} column with the chromosome information for
+    each range. If missing it will be drawn from the separate
+    \code{chromosome} argument. All additional numeric columns will
+    be interpreted as data columns, unless the \code{data} argument
+    is explicitely provided.}
 
        \item{}{A \code{character} scalar: in this case the value of the
-	\code{range} argument is considered to be a file path to an
-	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
-	the \code{importFunction} documentation below for further
-	details.}
+    \code{range} argument is considered to be a file path to an
+    annotation file on disk. A range of file types are supported by
+    the \code{Gviz} package as identified by the file extension. See
+    the \code{importFunction} documentation below for further
+    details.}
 
     }
   }
@@ -291,8 +291,8 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{i}, \code{j}: subsetting indices for coordinates
-	  (\code{i}) or samples (\code{j}).}
+    \item{}{\code{i}, \code{j}: subsetting indices for coordinates
+      (\code{i}) or samples (\code{j}).}
 
       }
 
@@ -300,9 +300,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{obj[1:3,]}}
+    \item{}{\code{obj[1:3,]}}
 
-	\item{}{\code{obj[,2:4]}}
+    \item{}{\code{obj[,2:4]}}
 
       }
     }
@@ -319,7 +319,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
@@ -335,7 +335,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -343,7 +343,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{values(obj) <- matrix(1:10, ncol=2)}}
+    \item{}{\code{values(obj) <- matrix(1:10, ncol=2)}}
 
       }
     }
@@ -361,18 +361,18 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: restrict to data
-	  within a certain coordinates range.}
+    \item{}{\code{from}, \code{to}: restrict to data
+      within a certain coordinates range.}
 
-	\item{}{\code{sort}: sort the return values by
-	  coordinates. This is usually not necessary since the data
-	  should already be ordererd, however this is not formaly
-	  checked anywhere and some operations strictly depend on
-	  ordered data.}
+    \item{}{\code{sort}: sort the return values by
+      coordinates. This is usually not necessary since the data
+      should already be ordererd, however this is not formaly
+      checked anywhere and some operations strictly depend on
+      ordered data.}
 
-	\item{}{\code{transformation}: apply a data transformation
-	  in case one is defined as the \code{transformation} display
-	  parameter.}
+    \item{}{\code{transformation}: apply a data transformation
+      in case one is defined as the \code{transformation} display
+      parameter.}
 
       }
 
@@ -380,11 +380,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{score(obj)}}
+    \item{}{\code{score(obj)}}
 
-	\item{}{\code{score(obj, from=100, to=10000)}}
+    \item{}{\code{score(obj, from=100, to=10000)}}
 
-	\item{}{\code{score(obj, sort=TRUE, transformation=FALSE)}}
+    \item{}{\code{score(obj, sort=TRUE, transformation=FALSE)}}
 
       }
     }
@@ -402,9 +402,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -412,7 +412,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -431,9 +431,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -451,7 +451,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -468,7 +468,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -476,7 +476,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{strand(obj) <- "+"}}
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -493,7 +493,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -511,7 +511,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -519,7 +519,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -544,9 +544,9 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{diff}: the minimum pixel width to display,
-	  everything below that will be inflated to a width of
-	  \code{diff}.}
+    \item{}{\code{diff}: the minimum pixel width to display,
+      everything below that will be inflated to a width of
+      \code{diff}.}
 
       }
 
@@ -554,7 +554,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+    \item{}{\code{Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -573,22 +573,22 @@ name="DataTrack", importFunction, stream=FALSE, ...)
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -596,12 +596,12 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -617,10 +617,10 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: compute axis range from the data
-	  within a certain coordinates range only.}
+    \item{}{\code{from}, \code{to}: compute axis range from the data
+      within a certain coordinates range only.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -628,7 +628,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawAxis(obj)}}
+          \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -657,8 +657,8 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, restrict to
-	  coordinate range before computing the grid lines.}
+    \item{}{\code{from}, \code{to}: integer scalars, restrict to
+      coordinate range before computing the grid lines.}
 
       }
 
@@ -666,7 +666,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+    \item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }
@@ -684,7 +684,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{chromosome(obj)}}
+    \item{}{\code{chromosome(obj)}}
 
       }
     }
@@ -705,7 +705,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -713,7 +713,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -734,11 +734,11 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -757,21 +757,21 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -788,7 +788,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -803,7 +803,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -820,7 +820,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -828,7 +828,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -844,20 +844,20 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
 
     \item{coerce}{\code{signature(from="DataTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -873,16 +873,16 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
 
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
 
-	\item{}{\code{drop}: drop unused regions on the other,
-	  non-active chromosomes.w}
+    \item{}{\code{drop}: drop unused regions on the other,
+      non-active chromosomes.w}
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -890,7 +890,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
@@ -908,7 +908,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -923,7 +923,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -941,7 +941,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -955,7 +955,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -973,7 +973,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -993,7 +993,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -1001,7 +1001,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -1019,7 +1019,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -1037,7 +1037,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -1053,7 +1053,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -1069,7 +1069,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -1085,7 +1085,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -1101,7 +1101,7 @@ name="DataTrack", importFunction, stream=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }

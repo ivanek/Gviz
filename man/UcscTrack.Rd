@@ -129,3 +129,20 @@ Florian Hahne
   \code{\link{plotTracks}}
 
 }
+
+
+\examples{
+
+\dontrun{
+## Create UcscTrack for Known Genes from mm9 genome
+from <- 65921878
+to <- 65980988
+knownGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="knownGene", 
+                        from=from, to=to, trackType="GeneRegionTrack", 
+                        rstarts="exonStarts", rends="exonEnds", gene="name",
+                        symbol="name", transcript="name", strand="strand", 
+                        fill="#8282d2", name="UCSC Genes")
+
+}
+
+}

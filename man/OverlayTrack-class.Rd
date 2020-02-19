@@ -58,6 +58,13 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
 }
 
+\value{
+
+  The return value of the constructor function is a new object of class
+  \code{OverlayTrack}.
+
+}
+
 
 \section{Slots}{
 
@@ -109,7 +116,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+          \item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
@@ -130,7 +137,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -148,8 +155,8 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{\dots}: additional arguments are passed on to the
-	  next methods.}
+    \item{}{\code{\dots}: additional arguments are passed on to the
+      next methods.}
 
       }
 
@@ -157,7 +164,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{subset(obj)}}
+    \item{}{\code{subset(obj)}}
 
       }
     }
@@ -181,7 +188,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -196,7 +203,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -214,7 +221,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -228,7 +235,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -246,7 +253,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -266,7 +273,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -274,7 +281,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -292,7 +299,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -309,7 +316,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -325,7 +332,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -341,7 +348,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -357,7 +364,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -389,7 +396,7 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
         \item{}{\code{background.title="lightgray"}: Integer or character
           scalar. The background color for the title panels.}
 
- 	\item{}{\code{col.border.title="transparent"}: Integer or character
+     \item{}{\code{col.border.title="transparent"}: Integer or character
           scalar. The border color for the title panels.}
 
         \item{}{\code{lwd.border.title=1}: Integer scalar. The border
@@ -569,5 +576,15 @@ OverlayTrack(trackList=list(), name="OverlayTrack", ...)
 
 }
 
+\examples{
+
+## Object construction:
+set.seed(123)
+dat <- runif(100, min=-2, max=22)
+dt1 <- DataTrack(data=dat, start=sort(sample(200, 100)), width=1, genome="hg19")
+dt2 <- DataTrack(data=dat, start=sort(sample(200, 100)), width=1, genome="hg19")
+ot <- OverlayTrack(trackList=list(dt1, dt2))
+
+}
 
 \keyword{classes}

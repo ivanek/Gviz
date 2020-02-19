@@ -85,72 +85,72 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
     \describe{
 
       \item{}{A \code{TxDb} object: all the necessary gene model
-	information including exon locations, transcript groupings and
-	associated gene ids are contained in \code{TxDb}
-	objects, and the coercion between the two is almost completely
-	automated. If desired, the data to be fetched from the
-	\code{TxDb} object can be restricted using the
-	constructor's \code{chromosome}, \code{start} and \code{end}
-	arguments. See below for details. A direct coercion method
-	\code{as(obj, "GeneRegionTrack")} is also available. A nice
-	added benefit of this input option is that the UTR and coding
-	region information that is part of the original
-	\code{TxDb} object is retained in the
-	\code{GeneRegionTrack}.}
+    information including exon locations, transcript groupings and
+    associated gene ids are contained in \code{TxDb}
+    objects, and the coercion between the two is almost completely
+    automated. If desired, the data to be fetched from the
+    \code{TxDb} object can be restricted using the
+    constructor's \code{chromosome}, \code{start} and \code{end}
+    arguments. See below for details. A direct coercion method
+    \code{as(obj, "GeneRegionTrack")} is also available. A nice
+    added benefit of this input option is that the UTR and coding
+    region information that is part of the original
+    \code{TxDb} object is retained in the
+    \code{GeneRegionTrack}.}
 
       \item{}{A \code{GRanges} object: the genomic ranges for the
-	\code{GeneRegion} track as well as the optional additional
-	metadata columns \code{feature},
-	\code{transcript}, \code{gene}, \code{exon} and \code{symbol}
-	(see description of the individual function parameters below for
-	details). Calling the constructor on a \code{GRanges} object
-	without further arguments, e.g.
-	\code{GeneRegionTrack(range=obj)} is equivalent to calling the
-	coerce method \code{as(obj, "GeneRegionTrack")}.}
+    \code{GeneRegion} track as well as the optional additional
+    metadata columns \code{feature},
+    \code{transcript}, \code{gene}, \code{exon} and \code{symbol}
+    (see description of the individual function parameters below for
+    details). Calling the constructor on a \code{GRanges} object
+    without further arguments, e.g.
+    \code{GeneRegionTrack(range=obj)} is equivalent to calling the
+    coerce method \code{as(obj, "GeneRegionTrack")}.}
 
       \item{}{A \code{GRangesList} object: this is very similar to the
-	previous case, except that the grouping information that is part
-	of the list structure is preserved in the
-	\code{GeneRegionTrack}. I.e., all the elements within one list
-	item receive the same group id. For consistancy, there is also a
-	coercion method from \code{GRangesLists} \code{as(obj,
-	"GeneRegionTrack")}. Please note that unless the necessary
-	information about gene ids, symbols, etc. is present in the
-	individual \code{GRanges} meta data slots, the object will not
-	be particularly useful, because all the identifiers will be set
-	to a common default value.}
+    previous case, except that the grouping information that is part
+    of the list structure is preserved in the
+    \code{GeneRegionTrack}. I.e., all the elements within one list
+    item receive the same group id. For consistancy, there is also a
+    coercion method from \code{GRangesLists} \code{as(obj,
+    "GeneRegionTrack")}. Please note that unless the necessary
+    information about gene ids, symbols, etc. is present in the
+    individual \code{GRanges} meta data slots, the object will not
+    be particularly useful, because all the identifiers will be set
+    to a common default value.}
 
       \item{}{An \code{\linkS4class{IRanges}} object: almost identical
-	to the \code{GRanges} case, except that the chromosome and
-	strand information as well as all additional data has to be
-	provided in the separate \code{chromosome}, \code{strand},
-	\code{feature}, \code{transcript}, \code{symbol}, \code{exon} or
-	\code{gene} arguments, because it can not be directly encoded in
-	an \code{IRanges} object. Note that only the former two are
-	mandatory (if not provided explicitely the more or less
-	reasonable default values \code{chromosome=NA} and
-	\code{strand=*} are used, but not providing information about
-	the gene-to-transcript relationship or the human-readble symbols
-	renders a lot of the class' functionality useles.}
+    to the \code{GRanges} case, except that the chromosome and
+    strand information as well as all additional data has to be
+    provided in the separate \code{chromosome}, \code{strand},
+    \code{feature}, \code{transcript}, \code{symbol}, \code{exon} or
+    \code{gene} arguments, because it can not be directly encoded in
+    an \code{IRanges} object. Note that only the former two are
+    mandatory (if not provided explicitely the more or less
+    reasonable default values \code{chromosome=NA} and
+    \code{strand=*} are used, but not providing information about
+    the gene-to-transcript relationship or the human-readble symbols
+    renders a lot of the class' functionality useles.}
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
-	contain at least the two mandatory columns \code{start} and
-	\code{end} with the range coordinates. It may also contain a
-	\code{chromosome} and a \code{strand} column with the chromosome
-	and strand information for each range. If missing, this
-	information will be drawn from the constructor's
-	\code{chromosome} or \code{strand} arguments. In addition, the
-	\code{feature}, \code{exon}, \code{transcript}, \code{gene} and
-	\code{symbol} data can be provided as columns in the
-	\code{data.frame}. The above comments about potential default
-	values also apply here.}
+    contain at least the two mandatory columns \code{start} and
+    \code{end} with the range coordinates. It may also contain a
+    \code{chromosome} and a \code{strand} column with the chromosome
+    and strand information for each range. If missing, this
+    information will be drawn from the constructor's
+    \code{chromosome} or \code{strand} arguments. In addition, the
+    \code{feature}, \code{exon}, \code{transcript}, \code{gene} and
+    \code{symbol} data can be provided as columns in the
+    \code{data.frame}. The above comments about potential default
+    values also apply here.}
 
       \item{}{A \code{character} scalar: in this case the value of the
-	\code{range} argument is considered to be a file path to an
-	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
-	the \code{importFunction} documentation below for further
-	details.}
+    \code{range} argument is considered to be a file path to an
+    annotation file on disk. A range of file types are supported by
+    the \code{Gviz} package as identified by the file extension. See
+    the \code{importFunction} documentation below for further
+    details.}
 
     }
   }
@@ -408,7 +408,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -426,7 +426,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{group(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{group(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -444,9 +444,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{lowest}: return the lowest-level identifier, i.e.,
-	the item IDs, or the higher level group IDs which do not have to
-	be unqiue.}
+    \item{}{\code{lowest}: return the lowest-level identifier, i.e.,
+    the item IDs, or the higher level group IDs which do not have to
+    be unqiue.}
 
       }
 
@@ -454,13 +454,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{identifier(obj, lowest=FALSE)}}
+    \item{}{\code{identifier(obj, lowest=FALSE)}}
 
       }
     }
 
     \item{identifier<-}{\code{signature(gdObject="GeneRegionTrack",
-	value="character")}: Set the track item identifiers. The
+    value="character")}: Set the track item identifiers. The
       replacement value has to be a character vector of appropriate
       length. This always replaces the group-level identifiers, so
       essentially it is similar to \code{groups<-}.
@@ -473,7 +473,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{identifier(obj) <- c("foo", "bar")}}
+    \item{}{\code{identifier(obj) <- c("foo", "bar")}}
 
       }
     }
@@ -489,7 +489,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{exon(obj)}}
+    \item{}{\code{exon(obj)}}
 
       }
     }
@@ -508,7 +508,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{exon(obj) <- paste("Exon", 1:5)}}
+    \item{}{\code{exon(obj) <- paste("Exon", 1:5)}}
 
       }
     }
@@ -524,13 +524,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{gene(obj)}}
+    \item{}{\code{gene(obj)}}
 
       }
     }
 
     \item{gene<-}{\code{signature(GdObject="GeneRegionTrack",
-	value="character")}: replace the gene identifiers for all gene
+    value="character")}: replace the gene identifiers for all gene
       models.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
       such.
@@ -543,7 +543,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{gene(obj) <- paste("Gene", LETTERS[1:5])}}
+    \item{}{\code{gene(obj) <- paste("Gene", LETTERS[1:5])}}
 
       }
     }
@@ -559,13 +559,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{symbol(obj)}}
+    \item{}{\code{symbol(obj)}}
 
       }
     }
 
     \item{symbol<-}{\code{signature(GdObject="GeneRegionTrack",
-	value="character")}: replace the human-readable gene symbol for
+    value="character")}: replace the human-readable gene symbol for
       all gene models.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
       such.
@@ -578,7 +578,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{symbol(obj) <- letters[1:5]}}
+    \item{}{\code{symbol(obj) <- letters[1:5]}}
 
       }
     }
@@ -595,13 +595,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{transcript(obj)}}
+    \item{}{\code{transcript(obj)}}
 
       }
     }
 
     \item{transcript<-}{\code{signature(GdObject="GeneRegionTrack",
-	value="character")}: replace the transcript identifiers for
+    value="character")}: replace the transcript identifiers for
       all transcripts in the gene model.  The replacement value must
       be a character of appropriate length or another vector that
       can be coerced into such.
@@ -614,7 +614,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{transcript(obj) <- paste("Exon", 1:5)}}
+    \item{}{\code{transcript(obj) <- paste("Exon", 1:5)}}
 
       }
     }
@@ -625,14 +625,14 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
   \describe{
 
     \item{coerce}{\code{signature(from="GeneRegionTrack",
-	to="UCSCData")}: coerce to a \code{UCSCData} object for export to
+    to="UCSCData")}: coerce to a \code{UCSCData} object for export to
       the UCSC genome browser.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "UCSCData")}}
+    \item{}{\code{as(obj, "UCSCData")}}
 
       }
     }
@@ -652,9 +652,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{diff}: the minimum pixel width to display,
-	  everything below that will be inflated to a width of
-	  \code{diff}.}
+    \item{}{\code{diff}: the minimum pixel width to display,
+      everything below that will be inflated to a width of
+      \code{diff}.}
 
       }
 
@@ -662,7 +662,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+    \item{}{\code{Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -693,22 +693,22 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -716,12 +716,12 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -736,10 +736,10 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, draw grid
-	  within a certain coordinates range. This needs to be supplied
-	  for the plotting function to know the current genomic
-	  coordinates.}
+    \item{}{\code{from}, \code{to}: integer scalars, draw grid
+      within a certain coordinates range. This needs to be supplied
+      for the plotting function to know the current genomic
+      coordinates.}
 
       }
 
@@ -747,7 +747,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+          \item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
 
       }
     }
@@ -764,10 +764,10 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, compute
-	  stacking within a certain coordinates range. This needs to be
-	  supplied for the plotting function to know the current genomic
-	  coordinates.}
+    \item{}{\code{from}, \code{to}: integer scalars, compute
+      stacking within a certain coordinates range. This needs to be
+      supplied for the plotting function to know the current genomic
+      coordinates.}
 
       }
 
@@ -775,7 +775,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
+          \item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -791,7 +791,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{stacking(obj)}}
+    \item{}{\code{stacking(obj)}}
 
       }
     }
@@ -806,17 +806,17 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{stacking(obj) <- "squish" }}
+    \item{}{\code{stacking(obj) <- "squish" }}
 
       }
     }
@@ -832,13 +832,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+          \item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }
 
     \item{[}{\code{signature(x="GeneRegionTrack", i="ANY", j="ANY",
-	drop="ANY")}: subset the items in the \code{GeneRegionTrack}
+    drop="ANY")}: subset the items in the \code{GeneRegionTrack}
       object. This is essentially similar to subsetting of the
       \code{\linkS4class{GRanges}} object in the \code{range}
       slot. For most applications, the \code{subset} method may be
@@ -848,10 +848,10 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
-	  ignored.}
+    \item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
+      ignored.}
 
-	\item{}{\code{drop}: argument is ignored.}
+    \item{}{\code{drop}: argument is ignored.}
 
       }
 
@@ -859,7 +859,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -878,7 +878,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{chromosome(obj)}}
+    \item{}{\code{chromosome(obj)}}
 
       }
     }
@@ -899,7 +899,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -907,7 +907,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -928,11 +928,11 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -951,21 +951,21 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -982,7 +982,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -1000,7 +1000,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -1020,7 +1020,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -1028,7 +1028,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -1043,7 +1043,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -1060,7 +1060,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -1068,7 +1068,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -1084,7 +1084,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -1101,7 +1101,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -1118,7 +1118,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -1137,9 +1137,9 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -1147,7 +1147,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -1165,7 +1165,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -1182,7 +1182,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -1190,7 +1190,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{strand(obj) <- "+"}}
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -1207,20 +1207,20 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
 
     \item{coerce}{\code{signature(from="GeneRegionTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -1236,13 +1236,13 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
 
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -1250,7 +1250,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
@@ -1268,7 +1268,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -1283,7 +1283,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -1301,7 +1301,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -1315,7 +1315,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -1333,7 +1333,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -1353,7 +1353,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -1361,7 +1361,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -1379,7 +1379,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -1395,7 +1395,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -1411,7 +1411,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -1427,7 +1427,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -1443,7 +1443,7 @@ GeneRegionTrack(range=NULL, rstarts=NULL, rends=NULL, rwidths=NULL,
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }

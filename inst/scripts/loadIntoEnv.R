@@ -2,7 +2,8 @@
 # 
 # 
 
-.gassign <- function(what) assignInNamespace(ns="Gviz", x=what, value=get(what, envir=globalenv()))
+.gassign <- function(what) assignInNamespace(ns="Gviz", x=what, 
+                                             value=get(what, envir=globalenv()))
 
 assignInNamespace(ns="Gviz", x=".computeGroupRange", value=.computeGroupRange)
 .dpOrDefault <- Gviz:::.dpOrDefault
@@ -80,23 +81,31 @@ data(cyp2b10)
 dt<-GeneRegionTrack(cyp2b10)
 plotTracks(dt)
 
-plotTracks(dt, showId=T, just.group="left", cex.group=0.8, reverseStrand=F, title.width=1)
+plotTracks(dt, showId=TRUE, just.group="left", cex.group=0.8, 
+           reverseStrand=FALSE, title.width=1)
 
 
 
-plotTracks(c(dt), just.group="left", cex.group=1, reverseStrand=F, title.width=1, geneSymbols="symbol", fontface.group="bold.italic", fontcolor.group="red", showExonId=F, fontcolor.item=1, from=25897620-500, to=25897855, fontfamily="serif", fontfamily.item="sans", showId=T, just.group="left")
+plotTracks(c(dt), just.group="left", cex.group=1, reverseStrand=FALSE, 
+           title.width=1, geneSymbols="symbol", fontface.group="bold.italic", 
+           fontcolor.group="red", showExonId=FALSE, fontcolor.item=1, 
+           from=25897620-500, to=25897855, fontfamily="serif", 
+           fontfamily.item="sans", showId=TRUE, just.group="left")
 
 
-plotTracks(c(dt), showId=T, alpha=1, lwd=1, col=1, debug="draw", collapseTranscripts=F)
+plotTracks(c(dt), showId=TRUE, alpha=1, lwd=1, col=1, debug="draw", 
+           collapseTranscripts=FALSE)
 
 
 plotTracks(dt, col=1, shape=c("smallArrow", "arrow"))
 
 
-plotTracks(list(GenomeAxisTrack(), dt), transcriptAnnotation="symbol", fill="#FFD58A", just.group="below", extend.left=-0.9)
+plotTracks(list(GenomeAxisTrack(), dt), transcriptAnnotation="symbol",
+           fill="#FFD58A", just.group="below", extend.left=-0.9)
 
 ## This is broken:
-plotTracks(list(GenomeAxisTrack(), dt), fill="#FFD58A", showId=T, just.group="below", extend.left=-0.99, extend.right=-0.99)
+plotTracks(list(GenomeAxisTrack(), dt), fill="#FFD58A", showId=TRUE, 
+           just.group="below", extend.left=-0.99, extend.right=-0.99)
 
 
 st <- c(2000000, 2070000, 2100000, 2160000)
@@ -104,8 +113,10 @@ ed <- c(2050000, 2130000, 2150000, 2170000)
 str <- c("-", "+", "-", "-")
 gr <- c("Group1","Group2","Group1", "Group3")
 
-annTrack <- AnnotationTrack(start=st, end=ed, strand=str, chromosome=7, genome="hg19", feature="test",
-                            group=gr, id=paste("annTrack item", 1:4), name="generic annotation", stacking="squish")
+annTrack <- AnnotationTrack(start=st, end=ed, strand=str, chromosome=7, 
+                            genome="hg19", feature="test",
+                            group=gr, id=paste("annTrack item", 1:4), 
+                            name="generic annotation", stacking="squish")
 plotTracks(annTrack)
 
 

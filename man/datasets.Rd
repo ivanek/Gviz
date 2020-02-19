@@ -3,6 +3,7 @@
 \alias{cyp2b10}
 \alias{idTrack}
 \alias{biomTrack}
+\alias{biomTrack2}
 \alias{cpgIslands}
 \alias{axTrack}
 \alias{conservation}

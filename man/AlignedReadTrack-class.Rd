@@ -53,12 +53,12 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
     \describe{
 
       \item{}{\code{start}, \code{end}: the start and end coordinates
-	for the track items.}
+    for the track items.}
 
       \item{}{\code{strand}: the strand information for the track
-	items. It may be provided in the form \code{+} for the Watson
-	strand, \code{-} for the Crick strand or \code{*} for either one
-	of the two.}
+    items. It may be provided in the form \code{+} for the Watson
+    strand, \code{-} for the Crick strand or \code{*} for either one
+    of the two.}
 
     }
 
@@ -189,7 +189,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{i}: subsetting indices}
+    \item{}{\code{i}: subsetting indices}
 
       }
 
@@ -197,7 +197,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -213,14 +213,14 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
 
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
 
-	\item{}{\code{stacks}: recompute the stacking after subsetting
-	  which can be expensive and is not always necessary.}
+    \item{}{\code{stacks}: recompute the stacking after subsetting
+      which can be expensive and is not always necessary.}
 
       }
 
@@ -228,9 +228,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20)}}
+    \item{}{\code{subset(obj, from=10, to=20)}}
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)}}
 
       }
     }
@@ -244,9 +244,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -258,7 +258,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -274,9 +274,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{strand}: the selector for the strand, \code{+} for
-	  the Watson strand, \code{-} for the Crick strand or \code{*}
-	  for both strands.}
+    \item{}{\code{strand}: the selector for the strand, \code{+} for
+      the Watson strand, \code{-} for the Crick strand or \code{*}
+      for both strands.}
 
       }
 
@@ -284,9 +284,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{coveraget(obj)}}
+    \item{}{\code{coveraget(obj)}}
 
-	\item{}{\code{coverage(obj, strand="-")}}
+    \item{}{\code{coverage(obj, strand="-")}}
 
       }
     }
@@ -309,7 +309,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{setCoverage(obj)}}
+    \item{}{\code{setCoverage(obj)}}
 
       }
     }
@@ -325,13 +325,13 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: compute axis range from the data
-	  within a certain coordinates range only.}
+    \item{}{\code{from}, \code{to}: compute axis range from the data
+      within a certain coordinates range only.}
 
-	\item{}{\code{subset}: subset the object prior to calculating
-	  the axis ranges. Can be expensive and is not always needed.}
+    \item{}{\code{subset}: subset the object prior to calculating
+      the axis ranges. Can be expensive and is not always needed.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -339,7 +339,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawAxis(obj)}}
+          \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -358,22 +358,22 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -381,12 +381,12 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -401,9 +401,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: draw grid within a certain
-	  coordinates range. This needs to be supplied for the plotting
-	  function to know the current genomic coordinates.}
+    \item{}{\code{from}, \code{to}: draw grid within a certain
+      coordinates range. This needs to be supplied for the plotting
+      function to know the current genomic coordinates.}
 
       }
 
@@ -411,7 +411,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+          \item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
 
       }
     }
@@ -440,7 +440,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{stacking(obj)}}
+    \item{}{\code{stacking(obj)}}
 
       }
     }
@@ -455,17 +455,17 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{stacking(obj) <- "squish" }}
+    \item{}{\code{stacking(obj) <- "squish" }}
 
       }
     }
@@ -482,9 +482,9 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: compute stacking within a
-	  certain coordinates range. This needs to be supplied for the
-	  plotting function to know the current genomic coordinates.}
+    \item{}{\code{from}, \code{to}: compute stacking within a
+      certain coordinates range. This needs to be supplied for the
+      plotting function to know the current genomic coordinates.}
 
       }
 
@@ -492,7 +492,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+          \item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
@@ -508,7 +508,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+          \item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }
@@ -524,7 +524,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{chromosome(obj)}}
+    \item{}{\code{chromosome(obj)}}
 
       }
     }
@@ -542,7 +542,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -550,7 +550,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -571,11 +571,11 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -594,21 +594,21 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -625,7 +625,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -645,7 +645,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -666,7 +666,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -674,7 +674,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -689,7 +689,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -706,7 +706,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -714,7 +714,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -730,7 +730,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -747,7 +747,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -764,7 +764,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -782,7 +782,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -799,7 +799,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -807,7 +807,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{strand(obj) <- "+"}}
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -824,20 +824,20 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
 
     \item{coerce}{\code{signature(from="AlignedReadTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -855,7 +855,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -870,7 +870,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -888,7 +888,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -902,7 +902,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -920,7 +920,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -940,7 +940,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -948,7 +948,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -966,7 +966,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -984,7 +984,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -1000,7 +1000,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -1016,7 +1016,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -1032,7 +1032,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -1048,7 +1048,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -1328,6 +1328,7 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 \examples{
 
 ## This class is deprecated!
+
 ## Please use instead:
 ## - DataTrack
 ## - AnnotationTrack

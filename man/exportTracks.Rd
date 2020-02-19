@@ -35,7 +35,7 @@ exportTracks(tracks, range, chromosome, file)
 }
 
 \details{
-FIXME: Need to support wgl exports as well...
+FIXME: Need to support WIG exports as well...
 }
 
 \value{
@@ -43,7 +43,17 @@ FIXME: Need to support wgl exports as well...
   The function is called for its side effect of writing to a file.
 
 }
-  
+
+\examples{
+
+## export AnnotationTrack to BED file
+at <- AnnotationTrack(start=seq(1,10), width=1, chromosome="chr1")
+exportTracks(list(at), range=c(1, 10), chromosome="chr1", 
+             file=paste0(tempfile(),".bed"))
+
+}
+
+
 \author{
   Florian Hahne  
 }

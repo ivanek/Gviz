@@ -66,42 +66,42 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
     \describe{
 
       \item{}{A \code{character} string: the path to a \code{BAM} file
-	containing the read alignments. To be precise, this will result
-	in the instantiation of a \code{ReferenceAlignmentsTrack}
-	object, but for the user this implementation detail should be of
-	no concern.}
+    containing the read alignments. To be precise, this will result
+    in the instantiation of a \code{ReferenceAlignmentsTrack}
+    object, but for the user this implementation detail should be of
+    no concern.}
 
       \item{}{A \code{GRanges} object: the genomic ranges of the
-	individual reads as well as the optional additional
-	metadata columns \code{id}, \code{cigar},
-	\code{mapq}, \code{flag}, \code{isize}, \code{groupid},
-	\code{status}, \code{md} and \code{seqs} (see description of the
-	individual function parameters below for details). Calling the
-	constructor on a \code{GRanges} object without further
-	arguments, e.g. \code{AlignmentsTrack(range=obj)} is equivalent
-	to calling the coerce method \code{as(obj, "AlignmentsTrack")}.}
+    individual reads as well as the optional additional
+    metadata columns \code{id}, \code{cigar},
+    \code{mapq}, \code{flag}, \code{isize}, \code{groupid},
+    \code{status}, \code{md} and \code{seqs} (see description of the
+    individual function parameters below for details). Calling the
+    constructor on a \code{GRanges} object without further
+    arguments, e.g. \code{AlignmentsTrack(range=obj)} is equivalent
+    to calling the coerce method \code{as(obj, "AlignmentsTrack")}.}
 
       \item{}{An \code{\linkS4class{IRanges}} object: almost identical
-	to the \code{GRanges} case, except that the chromosome and
-	strand information as well as all additional metadata has to be
-	provided in the separate \code{chromosome}, \code{strand},
-	\code{feature}, \code{group} or \code{id} arguments, because it
-	can not be directly encoded in an \code{IRanges} object. Note
-	that none of those inputs are mandatory, and if not provided
-	explicitely the more or less reasonable default values
-	\code{chromosome=NA} and \code{strand="*"} are used. }
+    to the \code{GRanges} case, except that the chromosome and
+    strand information as well as all additional metadata has to be
+    provided in the separate \code{chromosome}, \code{strand},
+    \code{feature}, \code{group} or \code{id} arguments, because it
+    can not be directly encoded in an \code{IRanges} object. Note
+    that none of those inputs are mandatory, and if not provided
+    explicitely the more or less reasonable default values
+    \code{chromosome=NA} and \code{strand="*"} are used. }
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
-	contain at least the two mandatory columns \code{start} and
-	\code{end} with the range coordinates. It may also contain a
-	\code{chromosome} and a \code{strand} column with the chromosome
-	and strand information for each range. If missing it will be
-	drawn from the separate \code{chromosome} or \code{strand}
-	arguments. In addition, the \code{id}, \code{cigar},
-	\code{mapq}, \code{flag}, \code{isize}, \code{groupid},
-	\code{status}, \code{md} and \code{seqs} data can be provided as
-	additional columns. The above comments about potential default
-	values also apply here.}
+    contain at least the two mandatory columns \code{start} and
+    \code{end} with the range coordinates. It may also contain a
+    \code{chromosome} and a \code{strand} column with the chromosome
+    and strand information for each range. If missing it will be
+    drawn from the separate \code{chromosome} or \code{strand}
+    arguments. In addition, the \code{id}, \code{cigar},
+    \code{mapq}, \code{flag}, \code{isize}, \code{groupid},
+    \code{status}, \code{md} and \code{seqs} data can be provided as
+    additional columns. The above comments about potential default
+    values also apply here.}
 
     }
   }
@@ -325,7 +325,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{i}: subsetting indices}
+    \item{}{\code{i}: subsetting indices}
 
       }
 
@@ -333,7 +333,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -349,14 +349,14 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
 
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
 
-	\item{}{\code{stacks}: recompute the stacking after subsetting
-	  which can be expensive and is not always necessary.}
+    \item{}{\code{stacks}: recompute the stacking after subsetting
+      which can be expensive and is not always necessary.}
 
       }
 
@@ -364,9 +364,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20)}}
+    \item{}{\code{subset(obj, from=10, to=20)}}
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)}}
 
       }
     }
@@ -380,9 +380,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -394,7 +394,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -417,13 +417,13 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: compute axis range from the data
-	  within a certain coordinates range only.}
+    \item{}{\code{from}, \code{to}: compute axis range from the data
+      within a certain coordinates range only.}
 
-	\item{}{\code{subset}: subset the object prior to calculating
-	  the axis ranges. Can be expensive and is not always needed.}
+    \item{}{\code{subset}: subset the object prior to calculating
+      the axis ranges. Can be expensive and is not always needed.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -431,7 +431,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawAxis(obj)}}
+          \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -450,22 +450,22 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -473,12 +473,12 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -507,7 +507,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{stacking(obj)}}
+    \item{}{\code{stacking(obj)}}
 
       }
     }
@@ -522,17 +522,17 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{stacking(obj) <- "squish" }}
+    \item{}{\code{stacking(obj) <- "squish" }}
 
       }
     }
@@ -549,9 +549,9 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: compute stacking within a
-	  certain coordinates range. This needs to be supplied for the
-	  plotting function to know the current genomic coordinates.}
+    \item{}{\code{from}, \code{to}: compute stacking within a
+      certain coordinates range. This needs to be supplied for the
+      plotting function to know the current genomic coordinates.}
 
       }
 
@@ -559,7 +559,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+          \item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
@@ -575,7 +575,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+          \item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }
@@ -591,7 +591,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{chromosome(obj)}}
+    \item{}{\code{chromosome(obj)}}
 
       }
     }
@@ -609,7 +609,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -617,7 +617,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -638,11 +638,11 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -661,21 +661,21 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -692,7 +692,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -712,7 +712,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -733,7 +733,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -741,7 +741,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -756,7 +756,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -773,7 +773,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -781,7 +781,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -797,7 +797,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -814,7 +814,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -831,7 +831,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -849,7 +849,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -866,7 +866,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -874,7 +874,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{strand(obj) <- "+"}}
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -891,20 +891,20 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
 
     \item{coerce}{\code{signature(from="AlignmentsTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -922,7 +922,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -937,7 +937,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -955,7 +955,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -969,7 +969,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -987,7 +987,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -1007,7 +1007,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -1015,7 +1015,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -1033,7 +1033,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -1051,7 +1051,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -1067,7 +1067,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -1083,7 +1083,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -1099,7 +1099,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -1115,7 +1115,7 @@ AlignmentsTrack(range=NULL, start=NULL, end=NULL, width=NULL, strand,
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }

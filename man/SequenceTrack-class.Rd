@@ -69,20 +69,20 @@ importFunction, stream=FALSE, ...)
     \describe{ 
       
       \item{}{An object of class \code{\linkS4class{DNAStringSet}}. The
-	individual \code{\linkS4class{DNAString}}s are considered to be
-	the different chromosome sequences.}
+    individual \code{\linkS4class{DNAString}}s are considered to be
+    the different chromosome sequences.}
       
       \item{}{An object of class \code{\linkS4class{BSgenome}}. The
-	\code{Gviz} package tries to follow the \code{BSgenome}
-	philosophy in that the respective chromosome sequences are only
-	realized once they are first accessed.}
+    \code{Gviz} package tries to follow the \code{BSgenome}
+    philosophy in that the respective chromosome sequences are only
+    realized once they are first accessed.}
       
       \item{}{A \code{character} scalar: in this case the value of the
-	\code{sequence} argument is considered to be a file path to an
-	annotation file on disk. A range of file types are supported by
-	the \code{Gviz} package as identified by the file extension. See
-	the \code{importFunction} documentation below for further
-	details.}
+    \code{sequence} argument is considered to be a file path to an
+    annotation file on disk. A range of file types are supported by
+    the \code{Gviz} package as identified by the file extension. See
+    the \code{importFunction} documentation below for further
+    details.}
 
     }
   }
@@ -186,7 +186,7 @@ importFunction, stream=FALSE, ...)
 \section{Slots}{
 
   \describe{
-    	
+        
     \item{\code{chromosome}:}{Object of class \code{"character"}, the
       chromosome on which the track is defined. There can only be a
       single chromosome for one track. Throughout the
@@ -231,45 +231,45 @@ importFunction, stream=FALSE, ...)
   \describe{
       
       \item{chromosome}{\code{signature(GdObject="SequenceTrack")}:
-	return the chromosome for which the track is defined.
+    return the chromosome for which the track is defined.
       
-	\emph{Usage:}
+    \emph{Usage:}
       
-	\code{chromosome(GdObject)}
+    \code{chromosome(GdObject)}
 
         \emph{Examples:}
       
-	\describe{
+    \describe{
 
-	  \item{}{\code{chromosome(obj)}}
+      \item{}{\code{chromosome(obj)}}
 
-	}
+    }
       }
     
       \item{chromosome<-}{\code{signature(GdObject="SequenceTrack")}:
-	replace the value of the track's chromosome. This has to be a
-	valid UCSC chromosome identifier or an integer or character
-	scalar that can be reasonably coerced into one.
+    replace the value of the track's chromosome. This has to be a
+    valid UCSC chromosome identifier or an integer or character
+    scalar that can be reasonably coerced into one.
       
-	\emph{Usage:}
+    \emph{Usage:}
       
-	\code{chromosome<-(GdObject, value)}
+    \code{chromosome<-(GdObject, value)}
 
-	\emph{Additional Arguments:}
+    \emph{Additional Arguments:}
       
-	\describe{
-	
-	  \item{}{\code{value}: replacement value.}
-	  
-	}
+    \describe{
+    
+      \item{}{\code{value}: replacement value.}
+      
+    }
 
         \emph{Examples:}
       
-	\describe{
+    \describe{
 
-	  \item{}{\code{chromosome(obj) <- "chr12"}}
+      \item{}{\code{chromosome(obj) <- "chr12"}}
 
-	}
+    }
       }
     
     \item{genome}{\code{signature(x="SequenceTrack")}: return the track's genome. 
@@ -282,7 +282,7 @@ importFunction, stream=FALSE, ...)
       
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -290,7 +290,7 @@ importFunction, stream=FALSE, ...)
     \item{genome<-}{\code{signature(x="SequenceTrack")}: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
       this is not formally enforced here.
-	    
+        
       \emph{Usage:}
       
       \code{genome<-(x, value)}
@@ -298,16 +298,16 @@ importFunction, stream=FALSE, ...)
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{genome(obj) <- "mm9"}}
+    
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -322,8 +322,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{length(obj)}}
+    
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -338,8 +338,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{seqnames(obj)}}
+    
+    \item{}{\code{seqnames(obj)}}
 
       }
     }
@@ -348,31 +348,31 @@ importFunction, stream=FALSE, ...)
       sub-sequence from the track.
       
       \emph{Usage:}
-	
+    
       \code{subseq(x, start=NA, end=NA, width=NA)}
 
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{start}: the start coordinate for the sub-sequence.}
+    
+    \item{}{\code{start}: the start coordinate for the sub-sequence.}
 
-	\item{}{\code{end}: the end coordinate for the sub-sequence.}
+    \item{}{\code{end}: the end coordinate for the sub-sequence.}
 
-	\item{}{\code{width}: the width of the sub-sequence.}
-	  
+    \item{}{\code{width}: the width of the sub-sequence.}
+      
       }
       
        \emph{Examples:}
       
       \describe{
   
-	\item{}{\code{subseq(obj, 1, 10)}}
+    \item{}{\code{subseq(obj, 1, 10)}}
 
       }
     }
   }
-	
+    
   \bold{\emph{Internal methods:}}
   
   \describe{
@@ -397,8 +397,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj, "col")}}
+    
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -412,8 +412,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj)}}
+    
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -430,8 +430,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj, "col")}}
+    
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -444,8 +444,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj)}}
+    
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -462,8 +462,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -482,16 +482,16 @@ importFunction, stream=FALSE, ...)
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{name}: the name of the display parameter to set.}
-	
+    
+    \item{}{\code{name}: the name of the display parameter to set.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, "col", "red")}}
+    
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -507,8 +507,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -523,8 +523,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj)}}
+    
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -539,8 +539,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj) <- "foo"}}
+    
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -555,8 +555,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{coords(obj)}}
+    
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -571,8 +571,8 @@ importFunction, stream=FALSE, ...)
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{tags(obj)}}
+    
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -590,15 +590,15 @@ importFunction, stream=FALSE, ...)
       
       \describe{
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+    
+    \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -617,16 +617,16 @@ importFunction, stream=FALSE, ...)
       
       \describe{
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{Gviz:::drawGrid(obj)}}
-	
+    
+    \item{}{\code{Gviz:::drawGrid(obj)}}
+    
       }
     }
   }

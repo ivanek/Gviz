@@ -84,8 +84,8 @@ test_that("General replacement methods work", {
 
 test_that("values accessors and replacement methods work", {
   expect_identical(values(annoTrack), data.frame(feature = "unknown", group = "1", 
-                               id = "unknown", density = 1, stringsAsFactors = F))
-  expect_identical(values(axisTrack), data.frame(score = 1, stringsAsFactors = F))
+                               id = "unknown", density = 1, stringsAsFactors=FALSE))
+  expect_identical(values(axisTrack), data.frame(score = 1, stringsAsFactors=FALSE))
   expect_identical(values(dataTrack), as.matrix(c(score = 1)))
   expect_identical(values(DataTrack()), matrix(logical(), 0, 0))
   expect_identical(values(alnTrack), NULL)

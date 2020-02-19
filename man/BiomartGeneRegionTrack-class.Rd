@@ -200,7 +200,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -218,7 +218,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{group(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{group(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -236,9 +236,9 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{lowest}: return the lowest-level identifier, i.e.,
-	the item IDs, or the higher level group IDs which do not have to
-	be unqiue.}
+    \item{}{\code{lowest}: return the lowest-level identifier, i.e.,
+    the item IDs, or the higher level group IDs which do not have to
+    be unqiue.}
 
       }
 
@@ -246,13 +246,13 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{identifier(obj, lowest=FALSE)}}
+    \item{}{\code{identifier(obj, lowest=FALSE)}}
 
       }
     }
 
     \item{identifier<-}{\code{signature(gdObject="BiomartGeneRegionTrack",
-	value="character")}: Set the track item identifiers. The
+    value="character")}: Set the track item identifiers. The
       replacement value has to be a character vector of appropriate
       length. This always replaces the group-level identifiers, so
       essentially it is similar to \code{groups<-}.
@@ -265,7 +265,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{identifier(obj) <- c("foo", "bar")}}
+    \item{}{\code{identifier(obj) <- c("foo", "bar")}}
 
       }
     }
@@ -281,7 +281,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{exon(obj)}}
+    \item{}{\code{exon(obj)}}
 
       }
     }
@@ -300,7 +300,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{exon(obj) <- paste("Exon", 1:5)}}
+    \item{}{\code{exon(obj) <- paste("Exon", 1:5)}}
 
       }
     }
@@ -316,13 +316,13 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{gene(obj)}}
+    \item{}{\code{gene(obj)}}
 
       }
     }
 
     \item{gene<-}{\code{signature(GdObject="BiomartGeneRegionTrack",
-	value="character")}: replace the gene identifiers for all gene
+    value="character")}: replace the gene identifiers for all gene
       models.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
       such.
@@ -335,7 +335,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{gene(obj) <- paste("Gene", LETTERS[1:5])}}
+    \item{}{\code{gene(obj) <- paste("Gene", LETTERS[1:5])}}
 
       }
     }
@@ -351,13 +351,13 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{symbol(obj)}}
+    \item{}{\code{symbol(obj)}}
 
       }
     }
 
     \item{symbol<-}{\code{signature(GdObject="BiomartGeneRegionTrack",
-	value="character")}: replace the human-readable gene symbol for
+    value="character")}: replace the human-readable gene symbol for
       all gene models.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
       such.
@@ -370,7 +370,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{symbol(obj) <- letters[1:5]}}
+    \item{}{\code{symbol(obj) <- letters[1:5]}}
 
       }
     }
@@ -387,13 +387,13 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{transcript(obj)}}
+    \item{}{\code{transcript(obj)}}
 
       }
     }
 
     \item{transcript<-}{\code{signature(GdObject="BiomartGeneRegionTrack",
-	value="character")}: replace the transcript identifiers for
+    value="character")}: replace the transcript identifiers for
       all transcripts in the gene model.  The replacement value must
       be a character of appropriate length or another vector that
       can be coerced into such.
@@ -406,7 +406,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{transcript(obj) <- paste("Exon", 1:5)}}
+    \item{}{\code{transcript(obj) <- paste("Exon", 1:5)}}
 
       }
     }
@@ -417,14 +417,14 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
   \describe{
 
     \item{coerce}{\code{signature(from="BiomartGeneRegionTrack",
-	to="UCSCData")}: coerce to a \code{UCSCData} object for export to
+    to="UCSCData")}: coerce to a \code{UCSCData} object for export to
       the UCSC genome browser.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "UCSCData")}}
+    \item{}{\code{as(obj, "UCSCData")}}
 
       }
     }
@@ -444,9 +444,9 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{diff}: the minimum pixel width to display,
-	  everything below that will be inflated to a width of
-	  \code{diff}.}
+    \item{}{\code{diff}: the minimum pixel width to display,
+      everything below that will be inflated to a width of
+      \code{diff}.}
 
       }
 
@@ -454,7 +454,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+    \item{}{\code{Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -476,22 +476,22 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -499,12 +499,12 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -519,10 +519,10 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, draw grid
-	  within a certain coordinates range. This needs to be supplied
-	  for the plotting function to know the current genomic
-	  coordinates.}
+    \item{}{\code{from}, \code{to}: integer scalars, draw grid
+      within a certain coordinates range. This needs to be supplied
+      for the plotting function to know the current genomic
+      coordinates.}
 
       }
 
@@ -530,7 +530,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-      	\item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
+          \item{}{\code{Gviz:::drawGrid(obj, from=10, to=100)}}
 
       }
     }
@@ -547,10 +547,10 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, compute
-	  stacking within a certain coordinates range. This needs to be
-	  supplied for the plotting function to know the current genomic
-	  coordinates.}
+    \item{}{\code{from}, \code{to}: integer scalars, compute
+      stacking within a certain coordinates range. This needs to be
+      supplied for the plotting function to know the current genomic
+      coordinates.}
 
       }
 
@@ -558,7 +558,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
+          \item{}{\code{Gviz:::setStacks(obj, from=1, to=100)}}
 
       }
     }
@@ -574,7 +574,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{stacking(obj)}}
+    \item{}{\code{stacking(obj)}}
 
       }
     }
@@ -589,17 +589,17 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{stacking(obj) <- "squish" }}
+    \item{}{\code{stacking(obj) <- "squish" }}
 
       }
     }
@@ -615,13 +615,13 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-      	\item{}{\code{Gviz:::stacks(obj)}}
+          \item{}{\code{Gviz:::stacks(obj)}}
 
       }
     }
 
     \item{[}{\code{signature(x="BiomartGeneRegionTrack", i="ANY", j="ANY",
-	drop="ANY")}: subset the items in the \code{BiomartGeneRegionTrack}
+    drop="ANY")}: subset the items in the \code{BiomartGeneRegionTrack}
       object. This is essentially similar to subsetting of the
       \code{\linkS4class{GRanges}} object in the \code{range}
       slot. For most applications, the \code{subset} method may be
@@ -631,10 +631,10 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
-	  ignored.}
+    \item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
+      ignored.}
 
-	\item{}{\code{drop}: argument is ignored.}
+    \item{}{\code{drop}: argument is ignored.}
 
       }
 
@@ -642,7 +642,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -659,7 +659,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{chromosome(obj)}}
+    \item{}{\code{chromosome(obj)}}
 
       }
     }
@@ -677,7 +677,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -685,7 +685,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -706,11 +706,11 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -729,21 +729,21 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -760,7 +760,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -778,7 +778,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -798,7 +798,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -806,7 +806,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -821,7 +821,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -838,7 +838,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -846,7 +846,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -862,7 +862,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -879,7 +879,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -896,7 +896,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -915,9 +915,9 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -925,7 +925,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -943,7 +943,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -960,7 +960,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -968,7 +968,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{strand(obj) <- "+"}}
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -985,20 +985,20 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
 
     \item{coerce}{\code{signature(from="BiomartGeneRegionTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -1014,13 +1014,13 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
 
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -1028,7 +1028,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
@@ -1046,7 +1046,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -1061,7 +1061,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -1079,7 +1079,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -1093,7 +1093,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -1111,7 +1111,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -1131,7 +1131,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -1139,7 +1139,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -1157,7 +1157,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -1173,7 +1173,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -1189,7 +1189,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -1205,7 +1205,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -1221,7 +1221,7 @@ BiomartGeneRegionTrack(start, end, biomart, chromosome, strand, genome,
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }

@@ -55,7 +55,7 @@
   A virtual class: No objects may be created from it.
   
 }
-	
+    
 \section{Slots}{
   
   \describe{
@@ -101,8 +101,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj, "col")}}
+    
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -116,8 +116,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj)}}
+    
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -134,8 +134,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj, "col")}}
+    
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -147,8 +147,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj)}}
+    
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -165,8 +165,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -185,16 +185,16 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{name}: the name of the display parameter to set.}
-	
+    
+    \item{}{\code{name}: the name of the display parameter to set.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, "col", "red")}}
+    
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -210,8 +210,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -228,8 +228,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{group(obj)}}
+    
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -244,8 +244,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj)}}
+    
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -260,8 +260,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj) <- "foo"}}
+    
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -276,8 +276,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{coords(obj)}}
+    
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -292,8 +292,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{tags(obj)}}
+    
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -312,15 +312,15 @@
       
       \describe{
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{subset(obj)}}
+    
+    \item{}{\code{subset(obj)}}
 
       }
     }
@@ -343,15 +343,15 @@
       
       \describe{
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+    
+    \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -370,7 +370,7 @@
       
       \describe{
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -378,7 +378,7 @@
       
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+    \item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }

@@ -59,7 +59,7 @@
 
 \section{Methods}{
   
-  \bold{\emph{Internal methods:}}	
+  \bold{\emph{Internal methods:}}    
   
   \describe{
 
@@ -74,10 +74,10 @@
       
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, restrict to
-	  coordinate range before computing the axis ranges.}
+    \item{}{\code{from}, \code{to}: integer scalars, restrict to
+      coordinate range before computing the axis ranges.}
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -85,7 +85,7 @@
       
       \describe{
 
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+    \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -102,8 +102,8 @@
       
       \describe{
 
-	\item{}{\code{from}, \code{to}: integer scalars, restrict to
-	  coordinate range before computing the grid lines.}
+    \item{}{\code{from}, \code{to}: integer scalars, restrict to
+      coordinate range before computing the grid lines.}
 
       }
 
@@ -111,7 +111,7 @@
       
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+    \item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }
@@ -126,29 +126,29 @@
   \describe{
     
     \item{[}{\code{signature(x="NumericTrack", i="ANY", j="ANY",
-	drop="ANY")}: subset the items in the \code{NumericTrack}
-	object. This is essentially similar to subsetting of the
-	\code{\linkS4class{GRanges}} object in the \code{range}
-	slot. For most applications, the \code{subset} method may be
-	more appropriate.
+    drop="ANY")}: subset the items in the \code{NumericTrack}
+    object. This is essentially similar to subsetting of the
+    \code{\linkS4class{GRanges}} object in the \code{range}
+    slot. For most applications, the \code{subset} method may be
+    more appropriate.
       
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
-	  ignored.}
-	
-	\item{}{\code{drop}: argument is ignored.}
-	
+    
+    \item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
+      ignored.}
+    
+    \item{}{\code{drop}: argument is ignored.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{obj[1:5]}}
-	
+    
+    \item{}{\code{obj[1:5]}}
+    
       }
     }
       
@@ -163,9 +163,9 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{chromosome(obj)}}
-	
+    
+    \item{}{\code{chromosome(obj)}}
+    
       }
     }
     
@@ -181,17 +181,17 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	
+    
+    \item{}{\code{value}: replacement value.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{chromosome(obj) <- "chr12"}}
-	
+    
+    \item{}{\code{chromosome(obj) <- "chr12"}}
+    
       }
     }
     
@@ -211,11 +211,11 @@
       
       \describe{
 
-	\item{}{\code{start(obj)}}
-	
-	\item{}{\code{end(obj)}}
+    \item{}{\code{start(obj)}}
+    
+    \item{}{\code{end(obj)}}
       
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -234,21 +234,21 @@
 
       \emph{Additional Arguments:}
       
-	\describe{
-	
-	  \item{}{\code{value}: replacement value.}
-	  
-	}
+    \describe{
+    
+      \item{}{\code{value}: replacement value.}
+      
+    }
 
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
       
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
       
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -265,7 +265,7 @@
       
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -285,7 +285,7 @@
       
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -305,16 +305,16 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -329,7 +329,7 @@
       
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -337,7 +337,7 @@
     \item{genome<-}{\code{signature(x="NumericTrack")}: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
       this is not formally enforced here.
-	    
+        
       \emph{Usage:}
       
       \code{genome<-(x, value)}
@@ -345,16 +345,16 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{genome(obj) <- "mm9"}}
+    
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -369,8 +369,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{length(obj)}}
+    
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -386,8 +386,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{range(obj)}}
+    
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -403,8 +403,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{ranges(obj)}}
+    
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -422,18 +422,18 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{f}: the splitting factor.}
-	
-	\item{}{\code{\dots}: all further arguments are ignored.}
-	
+    
+    \item{}{\code{f}: the splitting factor.}
+    
+    \item{}{\code{\dots}: all further arguments are ignored.}
+    
       }
 
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -450,8 +450,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{strand(obj)}}
+    
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -467,16 +467,16 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{value}: replacement value.}
-	  
+    
+    \item{}{\code{value}: replacement value.}
+      
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{strand(obj) <- "+"}}
+    
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -492,21 +492,21 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{values(obj)}}
+    
+    \item{}{\code{values(obj)}}
 
       }
     }
     
     \item{coerce}{\code{signature(from="NumericTrack",
-	to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
-	object in the \code{range} slot into a regular data.frame.
+    to="data.frame")}: coerce the \code{\linkS4class{GRanges}}
+    object in the \code{range} slot into a regular data.frame.
       
        \emph{Examples:}
       
       \describe{
   
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
@@ -521,22 +521,22 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
-	
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
-	
-	\item{}{\code{\dots}: additional arguments are ignored.}
-	
+    
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
+    
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
+    
+    \item{}{\code{\dots}: additional arguments are ignored.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
@@ -553,9 +553,9 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj, "col")}}
-	
+    
+    \item{}{\code{displayPars(obj, "col")}}
+    
       }
     }
       
@@ -568,8 +568,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj)}}
+    
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -586,8 +586,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj, "col")}}
+    
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -600,8 +600,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{getPar(obj)}}
+    
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -618,8 +618,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -638,16 +638,16 @@
       \emph{Additional Arguments:}
       
       \describe{
-	
-	\item{}{\code{name}: the name of the display parameter to set.}
-	
+    
+    \item{}{\code{name}: the name of the display parameter to set.}
+    
       }
       
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, "col", "red")}}
+    
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -664,8 +664,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -682,8 +682,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{group(obj)}}
+    
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -698,8 +698,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj)}}
+    
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -714,8 +714,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{names(obj) <- "foo"}}
+    
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -730,8 +730,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{coords(obj)}}
+    
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -746,8 +746,8 @@
       \emph{Examples:}
       
       \describe{
-	
-	\item{}{\code{tags(obj)}}
+    
+    \item{}{\code{tags(obj)}}
 
       }
     }

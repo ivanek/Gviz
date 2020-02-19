@@ -19,7 +19,7 @@ Description: Genomic data analyses requires integrated visualization
     package. This results in genomic information plotted together with
     your data.
 Depends:
-    R (>= 2.10.0),
+    R (>= 4.0),
     methods,
     S4Vectors (>= 0.9.25),
     IRanges (>= 1.99.18),
@@ -42,7 +42,11 @@ Imports:
     GenomicAlignments (>= 1.1.16),
     GenomeInfoDb (>= 1.1.3),
     BiocGenerics (>= 0.11.3),
-    digest(>= 0.6.8)
+    digest(>= 0.6.8),
+    graphics, 
+    grDevices, 
+    stats, 
+    utils
 Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     BiocStyle,

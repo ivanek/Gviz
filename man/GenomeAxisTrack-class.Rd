@@ -123,7 +123,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{i}: subsetting incides.}
+    \item{}{\code{i}: subsetting incides.}
 
       }
 
@@ -131,7 +131,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -152,11 +152,11 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -173,7 +173,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -190,7 +190,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -208,7 +208,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -225,7 +225,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
@@ -242,13 +242,13 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{from}, \code{to}: the coordinates range to subset
-	  to.}
+    \item{}{\code{from}, \code{to}: the coordinates range to subset
+      to.}
 
-	\item{}{\code{sort}: sort the object after subsetting. Usually
-	  not necessary.}
+    \item{}{\code{sort}: sort the object after subsetting. Usually
+      not necessary.}
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -256,7 +256,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
+    \item{}{\code{subset(obj, from=10, to=20, sort=TRUE)}}
 
       }
     }
@@ -272,7 +272,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -288,22 +288,22 @@ Class \code{"\linkS4class{GdObject}"}, directly.
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	  or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+      or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -311,12 +311,12 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -336,9 +336,9 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{diff}: the minimum pixel width to display,
-	  everything below that will be inflated to a width of
-	  \code{diff}.}
+    \item{}{\code{diff}: the minimum pixel width to display,
+      everything below that will be inflated to a width of
+      \code{diff}.}
 
       }
 
@@ -346,7 +346,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{Gviz:::collapseTrack(obj)}}
+    \item{}{\code{Gviz:::collapseTrack(obj)}}
 
       }
     }
@@ -376,7 +376,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -391,7 +391,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -409,7 +409,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -422,7 +422,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -440,7 +440,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -460,7 +460,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -468,7 +468,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -485,7 +485,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -503,7 +503,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -519,7 +519,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -535,7 +535,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -551,7 +551,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -567,7 +567,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -585,7 +585,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -593,7 +593,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+    \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -612,7 +612,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -620,7 +620,7 @@ Class \code{"\linkS4class{GdObject}"}, directly.
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+    \item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }
@@ -955,9 +955,9 @@ tags(axTrack)
 ## adding an axis to another track
 data(cyp2b10)
 grTrack <- GeneRegionTrack(start=26682683, end=26711643,
-		rstart=cyp2b10$start, rends=cyp2b10$end, chromosome=7, genome="mm9",
-		transcript=cyp2b10$transcript, gene=cyp2b10$gene, symbol=cyp2b10$symbol,
-		name="Cyp2b10", strand=cyp2b10$strand)
+        rstart=cyp2b10$start, rends=cyp2b10$end, chromosome=7, genome="mm9",
+        transcript=cyp2b10$transcript, gene=cyp2b10$gene, symbol=cyp2b10$symbol,
+        name="Cyp2b10", strand=cyp2b10$strand)
 
 plotTracks(list(grTrack, GenomeAxisTrack()))
 plotTracks(list(grTrack, GenomeAxisTrack(scale=0.1)))

@@ -8,8 +8,8 @@ ir <- IRanges(1L,5L)
 gr <- GRanges("chr1", ir, score=1)
 ir2 <- IRanges(2L,6L)
 gr2 <- GRanges("chr1", ir2, score=2)
-dna.sq <- DNAStringSet(c(chr1=paste(sample(DNA_BASES, 100, replace=T), collapse="")))
-rna.sq <- RNAStringSet(c(chr1=paste(sample(RNA_BASES, 100, replace=T), collapse="")))
+dna.sq <- DNAStringSet(c(chr1=paste(sample(DNA_BASES, 100, replace=TRUE), collapse="")))
+rna.sq <- RNAStringSet(c(chr1=paste(sample(RNA_BASES, 100, replace=TRUE), collapse="")))
 cyto.bands <- data.frame(chrom = rep(c("chrI", "chrII"), each=4),
                          chromStart = rep(c(1L, 148071L, 151524L, 154977L),2),
                          chromEnd = rep(c(148071L, 151524L, 154977L, 230218L),2),

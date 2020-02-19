@@ -53,20 +53,20 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
     \describe{
 
       \item{}{A \code{GRanges} object: the genomic ranges for the
-	highlighting regions.}
+    highlighting regions.}
 
       \item{}{An \code{\linkS4class{IRanges}} object: almost identical
-	to the \code{GRanges} case, except that the chromosome
-	information has to be provided in the separate \code{chromosome}
-	argument, because it can not be directly encoded in an
-	\code{IRanges} object.}
+    to the \code{GRanges} case, except that the chromosome
+    information has to be provided in the separate \code{chromosome}
+    argument, because it can not be directly encoded in an
+    \code{IRanges} object.}
 
       \item{}{A \code{data.frame} object: the \code{data.frame} needs to
-	contain at least the two mandatory columns \code{start} and
-	\code{end} with the range coordinates. It may also contain a
-	\code{chromosome} column with the chromosome information for
-	each range. If missing, this information will be drawn from the
-	constructor's \code{chromosome} argument.}
+    contain at least the two mandatory columns \code{start} and
+    \code{end} with the range coordinates. It may also contain a
+    \code{chromosome} column with the chromosome information for
+    each range. If missing, this information will be drawn from the
+    constructor's \code{chromosome} argument.}
 
     }
   }
@@ -119,6 +119,14 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
   objects.
 
 }
+
+\value{
+
+  The return value of the constructor function is a new object of class
+  \code{HighlightTrack}.
+
+}
+
 
 
 \section{Slots}{
@@ -183,7 +191,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-      	\item{}{\code{Gviz:::setStacks(obj)}}
+          \item{}{\code{Gviz:::setStacks(obj)}}
 
       }
     }
@@ -204,8 +212,8 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{\dots}: additional arguments are passed on to the
-	  next methods.}
+    \item{}{\code{\dots}: additional arguments are passed on to the
+      next methods.}
 
       }
 
@@ -213,7 +221,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{subset(obj)}}
+    \item{}{\code{subset(obj)}}
 
       }
     }
@@ -229,7 +237,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -241,7 +249,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
   \describe{
 
     \item{[}{\code{signature(x="HighlightTrack", i="ANY", j="ANY",
-	drop="ANY")}: subset the items in the \code{HighlightTrack}
+    drop="ANY")}: subset the items in the \code{HighlightTrack}
       object. This is essentially similar to subsetting of the
       \code{\linkS4class{GRanges}} object in the \code{range}
       slot. For most applications, the \code{subset} method may be
@@ -251,10 +259,10 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
-	  ignored.}
+    \item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
+      ignored.}
 
-	\item{}{\code{drop}: argument is ignored.}
+    \item{}{\code{drop}: argument is ignored.}
 
       }
 
@@ -262,7 +270,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -279,7 +287,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{chromosome(obj)}}
+    \item{}{\code{chromosome(obj)}}
 
       }
     }
@@ -297,7 +305,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -305,7 +313,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -326,11 +334,11 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -349,21 +357,21 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -380,7 +388,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{position(obj)}}
+    \item{}{\code{position(obj)}}
 
       }
     }
@@ -395,7 +403,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -412,7 +420,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -420,7 +428,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -438,7 +446,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -455,7 +463,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -474,9 +482,9 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -484,7 +492,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -503,7 +511,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -518,7 +526,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -536,7 +544,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -550,7 +558,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -568,7 +576,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -588,7 +596,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -596,7 +604,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -614,7 +622,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -631,7 +639,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -647,7 +655,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -663,7 +671,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -679,7 +687,7 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -923,5 +931,16 @@ HighlightTrack(trackList=list(), range=NULL, start=NULL, end=NULL, width=NULL,
 
 }
 
+\examples{
+
+## Object construction:
+set.seed(123)
+dat <- runif(100, min=-2, max=22)
+gt <- GenomeAxisTrack()
+dt <- DataTrack(data=dat, start=sort(sample(200, 100)), width=1, genome="hg19")
+
+ht <- HighlightTrack(trackList=list(gt, dt))
+
+}
 
 \keyword{classes}

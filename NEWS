@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.31.10
+-------------------------
+NEW FEATURES
+
+    o Exposed the possibility to specify centromere shape
+    o `AlignmentsTracks` can visualize "indels"
+    o SequenceTrack has new subclass: SequenceRNAStringSetTrack
+
+BUG FIXES
+
+    o Fixed issue in .buildRange (internal) to correctly build package on windows
+    
+
 CHANGES IN VERSION 1.29.1
 -------------------------
 NEW FEATURES

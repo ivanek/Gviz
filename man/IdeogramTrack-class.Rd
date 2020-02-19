@@ -161,11 +161,11 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{start(obj)}}
+    \item{}{\code{start(obj)}}
 
-	\item{}{\code{end(obj)}}
+    \item{}{\code{end(obj)}}
 
-	\item{}{\code{width(obj)}}
+    \item{}{\code{width(obj)}}
 
       }
     }
@@ -186,21 +186,21 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \emph{Additional Arguments:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{value}: replacement value.}
+      \item{}{\code{value}: replacement value.}
 
-	}
+    }
 
       \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{start(obj) <- 1:10}}
+    \item{}{\code{start(obj) <- 1:10}}
 
-	\item{}{\code{end(obj) <- 20:30}}
+    \item{}{\code{end(obj) <- 20:30}}
 
-	\item{}{\code{width(obj) <- 1}}
+    \item{}{\code{width(obj) <- 1}}
 
       }
     }
@@ -219,7 +219,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -227,7 +227,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{chromosome(obj) <- "chr12"}}
+    \item{}{\code{chromosome(obj) <- "chr12"}}
 
       }
     }
@@ -244,7 +244,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -252,7 +252,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{genome(obj) <- "mm9"}}
+    \item{}{\code{genome(obj) <- "mm9"}}
 
       }
     }
@@ -270,7 +270,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -278,13 +278,13 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-      	\item{}{\code{subset(obj)}}
+          \item{}{\code{subset(obj)}}
 
       }
     }
 
     \item{[}{\code{signature(x="IdeogramTrack", i="ANY", j="ANY",
-	drop="ANY")}: subsetting of \code{IdeogramTrack} objects does
+    drop="ANY")}: subsetting of \code{IdeogramTrack} objects does
       not make much sense, hence the unaltered input argument is
       returned.
 
@@ -292,10 +292,10 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
-	  ignored.}
+    \item{}{\code{i}, \code{j}: subsetting indices, \code{j} is
+      ignored.}
 
-	\item{}{\code{drop}: argument is ignored.}
+    \item{}{\code{drop}: argument is ignored.}
 
       }
 
@@ -303,7 +303,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{obj[1:5]}}
+    \item{}{\code{obj[1:5]}}
 
       }
     }
@@ -327,22 +327,22 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
       \emph{Usage:}
 
       \code{drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-	subset=TRUE, ...)}
+    subset=TRUE, ...)}
 
       \emph{Additional Arguments:}
 
       \describe{
 
-	\item{}{\code{minBase}, \code{maxBase}: the coordinate range to
-	  plot.}
+    \item{}{\code{minBase}, \code{maxBase}: the coordinate range to
+      plot.}
 
-	\item{}{\code{prepare}: run method in preparation or in
-	  production mode.}
+    \item{}{\code{prepare}: run method in preparation or in
+      production mode.}
 
-	\item{}{\code{subset}: subset the object to the visible region
-	or skip the potentially expensive subsetting operation.}
+    \item{}{\code{subset}: subset the object to the visible region
+    or skip the potentially expensive subsetting operation.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -350,12 +350,12 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGD(obj)}}
+    \item{}{\code{Gviz:::drawGD(obj)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
+    \item{}{\code{Gviz:::drawGD(obj, minBase=1, maxBase=100)}}
 
-	\item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
-	    subset=FALSE)}}
+    \item{}{\code{Gviz:::drawGD(obj, prepare=TRUE,
+        subset=FALSE)}}
 
       }
     }
@@ -364,7 +364,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
       initialize the object. }
 
     \item{show}{\code{signature(object="IdeogramTrack")}: show a
-	human-readable summary of the object. }
+    human-readable summary of the object. }
     }
 
     \bold{\emph{Inherited methods:}}
@@ -372,19 +372,19 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
     \describe{
 
       \item{chromosome}{\code{signature(GdObject="IdeogramTrack")}:
-	return the chromosome for which the track is defined.
+    return the chromosome for which the track is defined.
 
-	\emph{Usage:}
+    \emph{Usage:}
 
-	\code{chromosome(GdObject)}
+    \code{chromosome(GdObject)}
 
         \emph{Examples:}
 
-	\describe{
+    \describe{
 
-	  \item{}{\code{chromosome(obj)}}
+      \item{}{\code{chromosome(obj)}}
 
-	}
+    }
       }
 
 
@@ -404,7 +404,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{feature(obj)}}
+    \item{}{\code{feature(obj)}}
 
       }
     }
@@ -425,7 +425,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -433,7 +433,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
+    \item{}{\code{feature(obj) <- c("a", "a", "b", "c", "a")}}
 
       }
     }
@@ -448,7 +448,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{genome(obj)}}
+    \item{}{\code{genome(obj)}}
 
       }
     }
@@ -464,7 +464,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{length(obj)}}
+    \item{}{\code{length(obj)}}
 
       }
     }
@@ -481,7 +481,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{range(obj)}}
+    \item{}{\code{range(obj)}}
 
       }
     }
@@ -498,7 +498,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{ranges(obj)}}
+    \item{}{\code{ranges(obj)}}
 
       }
     }
@@ -512,9 +512,9 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{f}: the splitting factor.}
+    \item{}{\code{f}: the splitting factor.}
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -522,7 +522,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
+    \item{}{\code{split(obj, c("a", "a", "b", "c", "a"))}}
 
       }
     }
@@ -538,7 +538,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{strand(obj)}}
+    \item{}{\code{strand(obj)}}
 
       }
     }
@@ -554,7 +554,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{value}: replacement value.}
+    \item{}{\code{value}: replacement value.}
 
       }
 
@@ -562,7 +562,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{strand(obj) <- "+"}}
+    \item{}{\code{strand(obj) <- "+"}}
 
       }
     }
@@ -579,26 +579,26 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{values(obj)}}
+    \item{}{\code{values(obj)}}
 
       }
     }
 
     \item{coerce}{\code{signature(from="IdeogramTrack", to="data.frame")}:
-	coerce the \code{\linkS4class{GRanges}} object in the
-	\code{range} slot into a regular data.frame.
+    coerce the \code{\linkS4class{GRanges}} object in the
+    \code{range} slot into a regular data.frame.
 
        \emph{Examples:}
 
       \describe{
 
-	\item{}{\code{as(obj, "data.frame")}}
+    \item{}{\code{as(obj, "data.frame")}}
 
       }
     }
 
     \item{displayPars}{\code{signature(x="IdeogramTrack",
-	name="character")}: list the value of the display parameter
+    name="character")}: list the value of the display parameter
       \code{name}. See \code{\link{settings}} for details on display
       parameters and customization.
 
@@ -610,7 +610,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj, "col")}}
+    \item{}{\code{displayPars(obj, "col")}}
 
       }
     }
@@ -625,7 +625,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj)}}
+    \item{}{\code{displayPars(obj)}}
 
       }
     }
@@ -643,7 +643,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj, "col")}}
+    \item{}{\code{getPar(obj, "col")}}
 
       }
     }
@@ -657,7 +657,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{getPar(obj)}}
+    \item{}{\code{getPar(obj)}}
 
       }
     }
@@ -675,7 +675,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
+    \item{}{\code{displayPars(obj) <- list(col="red", lwd=2)}}
 
       }
     }
@@ -695,7 +695,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{name}: the name of the display parameter to set.}
+    \item{}{\code{name}: the name of the display parameter to set.}
 
       }
 
@@ -703,7 +703,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, "col", "red")}}
+    \item{}{\code{setPar(obj, "col", "red")}}
 
       }
     }
@@ -720,7 +720,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{setPar(obj, list(col="red", lwd=2))}}
+    \item{}{\code{setPar(obj, list(col="red", lwd=2))}}
 
       }
     }
@@ -738,7 +738,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{group(obj)}}
+    \item{}{\code{group(obj)}}
 
       }
     }
@@ -754,7 +754,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{names(obj)}}
+    \item{}{\code{names(obj)}}
 
       }
     }
@@ -770,7 +770,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{names(obj) <- "foo"}}
+    \item{}{\code{names(obj) <- "foo"}}
 
       }
     }
@@ -786,7 +786,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{coords(obj)}}
+    \item{}{\code{coords(obj)}}
 
       }
     }
@@ -802,7 +802,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{tags(obj)}}
+    \item{}{\code{tags(obj)}}
 
       }
     }
@@ -820,7 +820,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{\dots}: all further arguments are ignored.}
+    \item{}{\code{\dots}: all further arguments are ignored.}
 
       }
 
@@ -828,7 +828,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawAxis(obj)}}
+    \item{}{\code{Gviz:::drawAxis(obj)}}
 
       }
     }
@@ -847,7 +847,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{\dots}: additional arguments are ignored.}
+    \item{}{\code{\dots}: additional arguments are ignored.}
 
       }
 
@@ -855,7 +855,7 @@ IdeogramTrack(chromosome=NULL, genome, name=NULL, bands=NULL, ...)
 
       \describe{
 
-	\item{}{\code{Gviz:::drawGrid(obj)}}
+    \item{}{\code{Gviz:::drawGrid(obj)}}
 
       }
     }
