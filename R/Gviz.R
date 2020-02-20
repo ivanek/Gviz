@@ -297,13 +297,12 @@
                 stop("The 'sizes' vector has to match the size of the 'trackList'.")
             rev(sizes)
         }
-    whichAbs <- sapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"))
+    whichAbs <- vapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"), FUN.VALUE=logical(1))
     spaceNeeded <- unlist(spaceNeeded)
     leftVetSpace <- curVp$size["height"]-sum(spaceNeeded[whichAbs])
     spaceNeeded[!whichAbs] <- spaceNeeded[!whichAbs]/sum(spaceNeeded[!whichAbs])*leftVetSpace
     spaceNeeded <- spaceNeeded/sum(spaceNeeded)
-    if(!panelOnly)
-    {
+    if(!panelOnly) {
         ## Figure out the fontsize for the titles based on available space. If the space is too small (<atLeast)
         ## we don't plot any text, and we also limit to 'maximum' to avoid overblown labels. If the displayPars
         ## 'cex.title' or 'cex.axis are not NULL, those override everything else.
@@ -2542,8 +2541,8 @@ availableDefaultMapping <- function(file, trackType){
                 tfact <- ifelse(twidth > 1, 1, 1 / (1 - twidth))
                 ## The labels and spacers are plotted in a temporary viewport to figure out their size
                 labels <- if(needsGrp)
-                              sapply(split(identifier(GdObject), gp), function(x)
-                                  paste(sort(unique(x)), collapse="/")) else setNames(identifier(GdObject), gp)
+                              vapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/"), FUN.VALUE=character(1)) 
+                          else setNames(identifier(GdObject), gp)
                 xscale <- c(max(pr["from"], min(start(finalRanges))), min(pr["to"], max(end(finalRanges))))
                 if(diff(xscale) == 0)
                     xscale[2] <- xscale[2] + 1
@@ -2687,7 +2686,7 @@ availableDefaultMapping <- function(file, trackType){
         ## count how many overlaps to determine the y
         ov <- findOverlaps(juns, reduce(juns, min.gapwidth=0L))
         ov <- split(queryHits(ov), subjectHits(ov))
-        juns$y <- as.integer(unlist(sapply(ov, order)))
+        juns$y <- as.integer(unlist(lapply(ov, order)))
         ## scale the score to lwd.max
         juns$scaled <- (lwd.max-1)/pmax((max(juns$score)-min(c(1, juns$score))), 1)*(juns$score-max(juns$score))+lwd.max
         ## create list
