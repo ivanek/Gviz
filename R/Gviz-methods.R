@@ -216,8 +216,7 @@ setReplaceMethod("chromosome", "SequenceTrack", function(GdObject, value) {
 setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value) {
     ## We have changed the class definition to include the bands for all chromosomes, but still want the old objects to work
     chromosome <- .chrName(value[1])
-    if(.hasSlot(GdObject, "bandTable") && chromosome %in% as.character(GdObject@bandTable$chrom))
-    {
+    if(.hasSlot(GdObject, "bandTable") && chromosome %in% as.character(GdObject@bandTable$chrom)) {
         ranges <- GdObject@bandTable[GdObject@bandTable$chrom==chromosome,]
         bnames <- as.character(ranges$name)
         sel <- is.na(bnames)
