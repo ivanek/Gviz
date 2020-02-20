@@ -153,6 +153,14 @@ test_that("chromosome accessors and replacement methods work", {
   chromosome(overTrack) <- "chr2"
   expect_identical(chromosome(overTrack), "chr2")
   
+  expect_identical(chromosome(axisTrack), NULL)
+  chromosome(axisTrack) <- "chr1"
+  expect_identical(chromosome(axisTrack), NULL)
+  
+  expect_identical(chromosome(alnTrack), "chrNA")
+  chromosome(alnTrack) <- "chr1"
+  expect_identical(chromosome(alnTrack), "chr1")
+  
 })
 
 

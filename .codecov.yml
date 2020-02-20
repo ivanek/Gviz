@@ -12,12 +12,12 @@ coverage:
       default:
         target: auto
         threshold: 1%
-	if_no_uploads: error
+        if_no_uploads: error
     patch:
       default:
         target: auto
         threshold: 1%
-	if_no_uploads: error
+        if_no_uploads: error
     changes: no
 
 parsers:
