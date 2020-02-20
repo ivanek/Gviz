@@ -69,7 +69,10 @@ detFun <- function(identifier, GdObject.original, ...){
                   GdObject.original[group(GdObject.original)==identifier]),
              add=TRUE, showTitle=FALSE)
 }
+
 data(geneDetails)
+data(geneModels)
+
 ## classes --------------------------------------------------------------------
 
 ## IdeogramTrack
@@ -85,7 +88,7 @@ dataTrack <- DataTrack(gr)
 annoTrack <- AnnotationTrack(gr)
 
 ## GeneRegionTrack
-
+geneTrack <- GeneRegionTrack(geneModels, genome="hg19", chromosome="chr7", name="foo")
 ## BiomartGeneRegionTrack
 
 ## DetailsAnnotationTrack

@@ -122,6 +122,11 @@ test_that("subseq works", {
   
   expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1")), "at least two out of ")
   expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1), "at least two out of ")
+  expect_warning(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=10, width=10)), "All ")
+  expect_error(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=NA, end=NA, width=10)), "Two ")
+  expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, width=10)), as.character(DNAString("CTANGAGACG")))
+  expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), end=10, width=10)), as.character(DNAString("CTANGAGACG")))
+  ## expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=NA, width=10)), as.character(DNAString("CTANGAGACG")))
   expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=10)), as.character(DNAString("CTANGAGACG")))
 })
 
@@ -163,6 +168,10 @@ test_that("genome accessors and replacement methods work", {
   expect_identical(genome(ideoTrack), "sacCer3")
   ## genome(ideoTrack) <- "sacCer2"
   ## expect_identical(genome(ideoTrack), "sacCer2")
+  
+  expect_identical(genome(overTrack), NULL)
+  genome(overTrack) <- "hg38"
+  expect_identical(genome(overTrack), NULL)
 })
 
 test_that("strand accessors and replacement methods work", {
@@ -182,5 +191,39 @@ test_that("strand accessors and replacement methods work", {
   strand(annoTrack) <- rep("+", 2)
   expect_identical(strand(annoTrack), rep("+", 2))
   expect_error(strand(annoTrack) <- rep("+", 3), "Invalid replacement value or length of replacement")
+})
+
+test_that("names accessors and replacement methods work", {
+  expect_identical(names(annoTrack), "AnnotationTrack")
+  names(annoTrack) <- "AnnoTrack"
+  expect_identical(names(annoTrack), "AnnoTrack")
+})
+
+
+test_that("gene, symbol, transcript, feature, exon and group accessors and replacement methods work", {
+  expect_identical(gene(geneTrack), as.character(geneModels$gene))
+  gene(geneTrack) <- paste0(as.character(geneModels$gene), ".1")
+  expect_identical(gene(geneTrack), paste0(as.character(geneModels$gene), ".1"))
+  
+  expect_identical(symbol(geneTrack), as.character(geneModels$symbol))
+  symbol(geneTrack) <- paste0(as.character(geneModels$symbol), ".1")
+  expect_identical(symbol(geneTrack), paste0(as.character(geneModels$symbol), ".1"))
+  
+  expect_identical(transcript(geneTrack), as.character(geneModels$transcript))
+  transcript(geneTrack) <- paste0(as.character(geneModels$transcript), ".1")
+  expect_identical(transcript(geneTrack), paste0(as.character(geneModels$transcript), ".1"))
+  
+  expect_identical(exon(geneTrack), as.character(geneModels$exon))
+  exon(geneTrack) <- paste0(as.character(geneModels$exon), ".1")
+  expect_identical(exon(geneTrack), paste0(as.character(geneModels$exon), ".1"))
+  
+  expect_identical(feature(geneTrack), as.character(geneModels$feature))
+  feature(geneTrack) <- paste0(as.character(geneModels$feature), ".1")
+  expect_identical(feature(geneTrack), paste0(as.character(geneModels$feature), ".1"))
+  
+  expect_identical(group(geneTrack),paste0(as.character(geneModels$transcript), ".1"))
+  group(geneTrack) <- paste0(as.character(geneModels$transcript), ".2")
+  expect_identical(group(geneTrack), paste0(as.character(geneModels$transcript), ".2"))
+  
 })
 
