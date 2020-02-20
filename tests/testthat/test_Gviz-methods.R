@@ -92,30 +92,37 @@ test_that("values accessors and replacement methods work", {
   
   values(dataTrack) <- matrix(3, dimnames=list("score", NULL))
   expect_identical(values(dataTrack), as.matrix(c(score = 3)))
-  expect_error(values(dataTrack) <- matrix("3", dimnames=list("score", NULL)), "Not numeric or dimensions of replacement value do not match.")
   values(dataTrack) <- 3
   expect_identical(values(dataTrack), as.matrix(c(3)))
+  expect_error(values(dataTrack) <- matrix("3", dimnames=list("score", NULL)), "Not numeric or dimensions of replacement value do not match.")
+  expect_error(values(dataTrack) <- c(3,3), "Not numeric or invalid length of replacement vector.")
   
 })
 
 test_that("subseq works", {
+  expect_error(subseq(SequenceTrack(), start=NA, end=NA, width=3), "Two out of the three in")
   expect_error(subseq(SequenceTrack(), start=10, end=1), "'end' has to be bigger than 'start'")
   expect_error(subseq(seqTrack.dna, start=10, end=1), "'end' has to be bigger than 'start'")
   expect_error(subseq(SequenceTrack(), start=1, end=10e6+2), "Sequence is too big")
   expect_error(subseq(seqTrack.bs, start=1, end=10e6+2), "Sequence is too big")
   expect_warning(subseq(seqTrack.dna, start=1, end=10, width=10), "are provided, ignoring")
-  expect_identical(subseq(SequenceTrack(), start=1, end=10), DNAString("----------"))
-  expect_identical(subseq(seqTrack.dna, start=1, end=10), DNAString("ATTTCCCTGA"))
-  expect_identical(subseq(seqTrack.dna, start=1, width=10), DNAString("ATTTCCCTGA"))
-  expect_identical(subseq(seqTrack.dna, end=10, width=10), DNAString("ATTTCCCTGA"))
-  expect_identical(subseq(seqTrack.dna, start=91, end=110), DNAString("ACGTCTTCCA----------"))
-  expect_identical(subseq(seqTrack.bs, start=1, width=10), DNAString("----------"))
-  expect_identical(subseq(seqTrack.dna, start=1), dna.sq[[1]])
-  expect_identical(subseq(SequenceTrack(), start=1), DNAString("-")) 
-  expect_identical(subseq(seqTrack.dna, end=1), DNAString("A"))
-  expect_identical(subseq(SequenceTrack(), end=1), DNAString("-")) 
-  displayPars(seqTrack.dna)$complenet <- TRUE
-  expect_identical(subseq(seqTrack.dna, start=1, end=10), DNAString("TAAAGGGACT"))
+  expect_identical(as.character(subseq(SequenceTrack(), start=1, end=10)), as.character(DNAString("----------")))
+  expect_identical(as.character(subseq(seqTrack.dna, start=1, end=10)), as.character(DNAString("ATTTCCCTGA")))
+  expect_identical(as.character(subseq(seqTrack.dna, start=1, width=10)), as.character(DNAString("ATTTCCCTGA")))
+  expect_identical(as.character(subseq(seqTrack.dna, end=10, width=10)), as.character(DNAString("ATTTCCCTGA")))
+  expect_identical(as.character(subseq(seqTrack.dna, start=91, end=110)), as.character(DNAString("ACGTCTTCCA----------")))
+  expect_identical(as.character(subseq(seqTrack.bs, start=1, width=10)), as.character(DNAString("NNNNNNNNNN")))
+  expect_identical(as.character(subseq(seqTrack.dna, start=1)), as.character(dna.sq[[1]]))
+  expect_identical(as.character(subseq(SequenceTrack(), start=1)), as.character(DNAString("-")))
+  expect_identical(as.character(subseq(seqTrack.dna, end=1)), as.character(DNAString("A")))
+  expect_identical(as.character(subseq(SequenceTrack(), end=1)), as.character(DNAString("-")))
+  displayPars(seqTrack.dna)$complement <- TRUE
+  expect_identical(as.character(subseq(seqTrack.dna, start=1, end=10)), as.character(DNAString("TAAAGGGACT")))
+  
+  
+  expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1")), "at least two out of ")
+  expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1), "at least two out of ")
+  expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=10)), as.character(DNAString("CTANGAGACG")))
 })
 
 test_that("chromosome accessors and replacement methods work", {
@@ -132,4 +139,48 @@ test_that("chromosome accessors and replacement methods work", {
   expect_identical(chromosome(ideoTrack), "chrI")
   chromosome(ideoTrack) <- "chrII"
   expect_identical(chromosome(ideoTrack), "chrII")
+
+  expect_identical(chromosome(highTrack), "chr1")
+  chromosome(highTrack) <- "chr2"
+  expect_identical(chromosome(highTrack), "chr2")
+
+  expect_identical(chromosome(overTrack), "chr1")
+  chromosome(overTrack) <- "chr2"
+  expect_identical(chromosome(overTrack), "chr2")
+  
 })
+
+
+test_that("genome accessors and replacement methods work", {
+  expect_identical(is.na(genome(annoTrack)), TRUE)
+  genome(annoTrack) <- "hg38"
+  expect_identical(genome(annoTrack), "hg38")
+
+  expect_identical(is.na(genome(seqTrack.dna)), TRUE)
+  ## genome(seqTrack.dna) <- "hg38"
+  ## expect_identical(genome(seqTrack.dna), "hg38")
+  
+  expect_identical(genome(ideoTrack), "sacCer3")
+  ## genome(ideoTrack) <- "sacCer2"
+  ## expect_identical(genome(ideoTrack), "sacCer2")
+})
+
+test_that("strand accessors and replacement methods work", {
+  expect_identical(strand(dataTrack), "*")
+  strand(dataTrack) <- "+"
+  expect_identical(strand(dataTrack), "+")
+  expect_error(strand(dataTrack) <- rep("+", 2), "Invalid")  
+  
+  expect_identical(strand(annoTrack), "*")
+  strand(annoTrack) <- "+"
+  expect_identical(strand(annoTrack), "+")
+  
+  expect_identical(strand(axisTrack), "*")
+  
+  annoTrack <- AnnotationTrack(c(gr,gr2))
+  expect_identical(strand(annoTrack), rep("*", 2))
+  strand(annoTrack) <- rep("+", 2)
+  expect_identical(strand(annoTrack), rep("+", 2))
+  expect_error(strand(annoTrack) <- rep("+", 3), "Invalid replacement value or length of replacement")
+})
+

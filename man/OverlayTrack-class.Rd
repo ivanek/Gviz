@@ -10,6 +10,7 @@
 \alias{show,OverlayTrack-method}
 \alias{length,OverlayTrack-method}
 \alias{consolidateTrack,OverlayTrack-method}
+\alias{chromosome,OverlayTrack-method}
 \alias{chromosome<-,OverlayTrack-method}
 \alias{displayPars<-,OverlayTrack,list-method}
 

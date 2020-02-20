@@ -134,6 +134,7 @@ Florian Hahne
 \examples{
 
 \dontrun{
+
 ## Create UcscTrack for Known Genes from mm9 genome
 from <- 65921878
 to <- 65980988
@@ -144,5 +145,14 @@ knownGenes <- UcscTrack(genome="mm9", chromosome="chrX", track="knownGene",
                         fill="#8282d2", name="UCSC Genes")
 
 }
+
+## if the UCSC is not accessible load prepared object
+data(ucscItems)
+
+## knownGenes is essentially GeneRegionTrack 
+knownGenes
+
+## plotting 
+plotTracks(knownGenes, chromosome="chrX", from=65920688, to=65960068)
 
 }

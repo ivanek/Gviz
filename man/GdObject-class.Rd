@@ -20,6 +20,7 @@
 \alias{drawGD,GeneRegionTrack-method}
 \alias{drawGD,SequenceTrack-method}
 \alias{names<-,GdObject,character-method}
+\alias{genome,GdObject-method}
 \alias{genome<-,GdObject-method}
 \alias{chromosome<-,GdObject-method}
 \alias{isActiveSeq<-,GdObject-method}

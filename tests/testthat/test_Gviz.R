@@ -84,7 +84,6 @@ test_that("checking of the strand works", {
 })
 
 test_that("import of sequence from FASTA file works", {
-  fastafile <- system.file("extdata/test.fa", package="Gviz")
   expect_identical(.import.fasta(fastafile, GRanges("chr3", IRanges(1, 4))), DNAStringSet())
   expect_identical(.import.fasta(fastafile, GRanges("chr1", IRanges(1, 4))), DNAStringSet(c("chr1"="CTAN")))
 })
@@ -164,4 +163,16 @@ test_that("conversion of junction to list for plotting works", {
   expect_warning(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt, filterTolerance=-1), 
                  "can't be negative, taking absolute value of it")
 })
+
+# test_that("only first warning works", {
+#   warn_once({
+#     for (i in 1:10) { warn_if_first("foo", "oh, no! foo!") }
+#     for (i in 1:10) { warn_if_first("bar", "oh, no! bar!") }
+#     sapply(1:10, function(x) {
+#       warn_if_first("foo", "oh, no! foo again! (not really)")
+#       warn_if_first("foobar", "foobar, too!")
+#     })
+#     "DONE!"
+#   })
+# })
 

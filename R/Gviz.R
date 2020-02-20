@@ -21,7 +21,7 @@
 
 ## functions -------------------------------------------------------------------
 ## Check the class and structure of an object
-.checkClass <- function (x, class, length=NULL, verbose=FALSE, mandatory=TRUE) {
+.checkClass <- function(x, class, length=NULL, verbose=FALSE, mandatory=TRUE) {
     if (mandatory && missing(x))
         stop("Argument '", substitute(x), "' is missing with no default",
              call.=verbose)
@@ -112,7 +112,7 @@
     yscale <- current.viewport()$yscale
     fw <- diff(xscale)
     fh <- diff(yscale)
-    u2px <- function(x) ((x - xscale[1])/fw *size[1]) + loc$location[1]
+    u2px <- function(x) ((x - xscale[1])/fw * size[1]) + loc$location[1]
     u2py <- function(y) (devSize[2] - loc$location[2]) - ((y - yscale[1])/fh *size[2])
     return(data.frame(x1=u2px(coordinates[,1]), y1=u2py(coordinates[,4]),
                       x2=u2px(coordinates[,3]), y2=u2py(coordinates[,2]),
@@ -290,11 +290,13 @@
 .setupTextSize <- function(trackList, sizes, title.width, panelOnly=FALSE, spacing=5) {
     curVp <- vpLocation()
     trackList <- lapply(trackList, function(x) if(is(x, "OverlayTrack")) x@trackList[[1]] else x)
-    spaceNeeded <- if(is.null(sizes)) lapply(trackList, .verticalSpace, curVp$size["height"]) else {
-                                                                                                  if(length(sizes) != length(trackList))
-                                                                                                      stop("The 'sizes' vector has to match the size of the 'trackList'.")
-                                                                                                  rev(sizes)
-                                                                                              }
+    spaceNeeded <- if(is.null(sizes)) {
+        lapply(trackList, .verticalSpace, curVp$size["height"]) 
+        } else {
+            if(length(sizes) != length(trackList))
+                stop("The 'sizes' vector has to match the size of the 'trackList'.")
+            rev(sizes)
+        }
     whichAbs <- sapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"))
     spaceNeeded <- unlist(spaceNeeded)
     leftVetSpace <- curVp$size["height"]-sum(spaceNeeded[whichAbs])
@@ -2704,35 +2706,3 @@ availableDefaultMapping <- function(file, trackType){
     }
     return(juns)
 }
-
-
-## special fucntion to allow only one warning in apply call
-## from https://stackoverflow.com/questions/25204185/warning-once-in-r
-.warn_once <- function(..., asis = FALSE) {
-    .warnings_seen <- character()
-    if (asis) {
-        exprs <- list(...)
-    } else {
-        exprs <- c(as.list(match.call(expand.dots = FALSE)$...))
-    }
-    sapply(exprs, eval, envir = parent.frame())
-}
-
-.warn_if_first <- function(reason, ...) {
-    ## Look for .warnings_seen
-    for (i in sys.nframe():0) {
-        warn_env <- parent.frame(i)
-        found_it <- exists(".warnings_seen", warn_env)
-        if (found_it) { break }
-    }
-    if (!found_it) { stop("'warn_if_first not inside 'warn_once'") }
-    
-    ## Warn if first, and mark the reason
-    .warnings_seen <- get(".warnings_seen", warn_env)
-    if (! reason %in% .warnings_seen) {
-        warning(...)
-        .warnings_seen <- c(.warnings_seen, reason)
-        assign(".warnings_seen", .warnings_seen, warn_env)
-    }
-}
-

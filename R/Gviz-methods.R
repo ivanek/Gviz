@@ -199,6 +199,9 @@ setMethod("subseq", "ReferenceSequenceTrack", function(x, start=NA, end=NA, widt
 setMethod("chromosome", "GdObject", function(GdObject) return(NULL))
 setMethod("chromosome", "RangeTrack", function(GdObject) GdObject@chromosome)
 setMethod("chromosome", "SequenceTrack", function(GdObject) GdObject@chromosome)
+setMethod("chromosome", "OverlayTrack", function(GdObject) {
+    unique(unlist(lapply(GdObject@trackList, chromosome)))
+})
 setReplaceMethod("chromosome", "GdObject", function(GdObject, value) {
     return(GdObject)
 })
@@ -260,6 +263,7 @@ setReplaceMethod("chromosome", "OverlayTrack", function(GdObject, value) {
 
 
 ## Set or extract the genome from a RangeTrack object
+setMethod("genome", "GdObject", function(x) NULL)
 setMethod("genome", "RangeTrack", function(x) x@genome)
 setMethod("genome", "SequenceTrack", function(x) x@genome)
 setReplaceMethod("genome", "GdObject", function(x, value) {
@@ -290,8 +294,9 @@ setMethod("strand", "RangeTrack", function(x) as.character(strand(ranges(x))))
 setMethod("strand", "GenomeAxisTrack", function(x) as.character(strand(ranges(x))))
 setMethod("strand", "DataTrack", function(x) x@strand)
 setReplaceMethod("strand", "RangeTrack", function(x, value) {
-    if(length(value)!=1 && length(value)!=length(x))
-        stop("Length of replacement value for the strand information does not match the ",
+    if((length(value)!=1 && length(value)!=length(x)) || !all(value %in% c("+", "-", "*")))
+        stop("Invalid replacement value or length of replacement value ",
+             "for the strand information does not match the ",
              "number of items in the track")
     r <- ranges(x)
     strand(r) <- value
@@ -299,7 +304,7 @@ setReplaceMethod("strand", "RangeTrack", function(x, value) {
     return(x)
 })
 setReplaceMethod("strand", "DataTrack", function(x, value) {
-    if(!is.character(value) && length(value)!=1 && !value %in% c("+", "-", "*"))
+    if(!is.character(value) || length(value)!=1 || !value %in% c("+", "-", "*"))
         stop("Invalid replacement value")
     x@strand <- value
     return(x)
@@ -2692,22 +2697,24 @@ setMethod("drawGD", signature("DetailsAnnotationTrack"),
                   indices <- if(groupDetails) seq_len(length(unique(group(GdObject)))) else seq_len(length(GdObject))
                   xscale <- if(!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
                   pushViewport(viewport(xscale=xscale))
-                  .warn_once(
-                      select <- vapply(indices, function(i) {
-                          iargs <- as.list(adf[i,])
-                          iargs$index <- i
-                          iargs$GdObject <- GdObject
-                          iargs$GdObject.original <- .dpOrDefault(GdObject, ".__OriginalGdObject", GdObject)
-                          args <- c(args[setdiff(names(args), names(iargs))], iargs)
-                          res <- do.call(GdObject@selectFun, args)
-                          if(length(res)!=1 || !is.logical(res) || is.na(res)) {
-                              .warn_if_first("forcing", "The result of function 'selectFun' has to be a single logical value. Forcing the value to 'TRUE'",
-                                            call. = FALSE)
-                              res <- TRUE
-                          }
-                          res
-                      }, logical(1))
-                  )
+                  select <- lapply(indices, function(i) {
+                      warn <- FALSE
+                      iargs <- as.list(adf[i,])
+                      iargs$index <- i
+                      iargs$GdObject <- GdObject
+                      iargs$GdObject.original <- .dpOrDefault(GdObject, ".__OriginalGdObject", GdObject)
+                      args <- c(args[setdiff(names(args), names(iargs))], iargs)
+                      res <- do.call(GdObject@selectFun, args)
+                      if(length(res)!=1 || !is.logical(res) || is.na(res)) {
+                          res <- TRUE
+                          warn <- TRUE
+                      }
+                      c(res=res, warn=warn)
+                  })
+                  select <- do.call(rbind, select)
+                  if (any(select[,"warn"]))
+                      warning("The result of function 'selectFun' has to be a single logical value. Forcing the value to 'TRUE'")
+                  select <- select[,"res"]
                   popViewport(1)
                   displayPars(GdObject) <- list(".__select"=select)
                   return(invisible(GdObject))

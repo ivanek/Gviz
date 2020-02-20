@@ -31,6 +31,9 @@ samfile <- tempfile(fileext = ".sam")
 cat(paste(sam, collapse="\n"), file=samfile)
 bamfile <- Rsamtools::asBam(samfile, indexDestination = TRUE)
 
+## FASTA
+fastafile <- system.file("extdata/test.fa", package="Gviz")
+
 bamgr <- GRanges("chr1", IRanges(c(189892390L, 189892202L, 189893347L, 189891483L, 189893352L),
                                  c(189892465L, 189892277L, 189893422L, 189891558L, 189893427L)),
                  strand=rep(c("-","+"), c(2,3)))
