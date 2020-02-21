@@ -30,11 +30,11 @@ setGeneric("identifier<-", function(GdObject, value) standardGeneric("identifier
 ## General accessors
 setGeneric("chromosome", function(GdObject, ...) standardGeneric("chromosome"))
 setGeneric("chromosome<-", function(GdObject, value) standardGeneric("chromosome<-"))
-setGeneric("[")
+## setGeneric("[")
 setGeneric("position", function(GdObject, ...) standardGeneric("position"))
 setGeneric("imageMap", function(GdObject, ...) standardGeneric("imageMap"))
 setGeneric("imageMap<-",  function(GdObject, value) standardGeneric("imageMap<-"))
-##setGeneric("subset",  function(x, ...) standardGeneric("subset"))
+## setGeneric("subset",  function(x, ...) standardGeneric("subset"))
 setGeneric("coords",  function(ImageMap, ...) standardGeneric("coords"))
 setGeneric("tags",  function(ImageMap, ...) standardGeneric("tags"))
 

@@ -208,7 +208,7 @@ test_that("names accessors and replacement methods work", {
 })
 
 
-test_that("gene, symbol, transcript, feature, exon and group accessors and replacement methods work", {
+test_that("gene, symbol, transcript, feature and exon accessors and replacement methods work", {
   expect_identical(gene(geneTrack), as.character(geneModels$gene))
   gene(geneTrack) <- paste0(as.character(geneModels$gene), ".1")
   expect_identical(gene(geneTrack), paste0(as.character(geneModels$gene), ".1"))
@@ -228,10 +228,67 @@ test_that("gene, symbol, transcript, feature, exon and group accessors and repla
   expect_identical(feature(geneTrack), as.character(geneModels$feature))
   feature(geneTrack) <- paste0(as.character(geneModels$feature), ".1")
   expect_identical(feature(geneTrack), paste0(as.character(geneModels$feature), ".1"))
-  
-  expect_identical(group(geneTrack),paste0(as.character(geneModels$transcript), ".1"))
-  group(geneTrack) <- paste0(as.character(geneModels$transcript), ".2")
-  expect_identical(group(geneTrack), paste0(as.character(geneModels$transcript), ".2"))
-  
 })
 
+test_that("group and identifier accessors and replacement methods work", {
+  expect_identical(group(geneTrack), as.character(geneModels$transcript))
+  group(geneTrack) <- paste0(as.character(geneModels$transcript), ".1")
+  expect_identical(group(geneTrack), paste0(as.character(geneModels$transcript), ".1"))
+  
+  expect_identical(identifier(geneTrack), as.character(geneModels$symbol))
+  identifier(geneTrack) <- paste0(as.character(geneModels$symbol), ".1")
+  expect_identical(identifier(geneTrack), paste0(as.character(geneModels$symbol), ".1"))
+  
+  expect_identical(identifier(annoTrack), "1")
+  identifier(annoTrack) <- "1.1"
+  expect_identical(identifier(annoTrack), "1.1")
+})
+
+test_that("stacking works", {
+  expect_identical(stacking(annoTrack), "squish")
+  stacking(annoTrack) <- "dense"
+  expect_identical(stacking(annoTrack), "dense")
+  
+  expect_identical(stacks(annoTrack), NULL)
+  expect_identical(stacks(alnTrack), 0)
+  
+  expect_identical(Gviz:::setStacks(AnnotationTrack(c(gr)))@stacks, c(unknown = 1L))
+})
+
+
+test_that("position calculation works", {
+  expect_identical(position(annoTrack), 3)
+  expect_identical(position(annoTrack, from=1, to=5), 3)
+  expect_identical(position(annoTrack, from=10, to=15), numeric())
+})
+
+
+test_that("imageMap and coords work", {
+  expect_identical(imageMap(annoTrack), NULL)
+  im <- new("ImageMap", 
+            coords=matrix(1, ncol=4, nrow=1, dimnames=list("first")), 
+            tags=list(first=1))
+  imageMap(annoTrack) <- im
+  expect_identical(imageMap(annoTrack), im)
+  
+  expect_identical(coords(NULL), NULL)
+  expect_identical(coords(im), matrix(1, ncol=4, nrow=1, dimnames=list("first")))
+  expect_identical(coords(annoTrack), matrix(1, ncol=4, nrow=1, dimnames=list("first")))
+  
+  expect_identical(tags(NULL), NULL)
+  expect_identical(tags(im), list(first=1))
+  expect_identical(tags(annoTrack), list(first=1))
+})
+
+test_that("consolidating of tracks works", {
+  expect_identical(chromosome(consolidateTrack(annoTrack, chromosome="chr2", alpha=TRUE)), "chr2")
+  expect_identical(getPar(consolidateTrack(annoTrack, chromosome="chr2", alpha=TRUE), ".__hasAlphaSupport"), TRUE)
+  expect_identical(getPar(consolidateTrack(annoTrack, chromosome="chr2", alpha=FALSE, size=2), "size"), 2)
+})
+
+
+
+test_that("collapsing of tracks works", {
+  expect_identical(.myFindOverlaps(gr, gr2), c(queryHits = 1L))
+  expect_identical(Gviz:::.myFindOverlaps(gr, GRanges("chr2", IRanges(1, 5))), integer())
+})
