@@ -9,6 +9,7 @@
 [![How long since the package was first in a released Bioconductor version](https://bioconductor.org/shields/years-in-bioc/Gviz.svg)](https://bioconductor.org/packages/Gviz) 
 [![Bioconductor-devel Downloads](https://bioconductor.org/shields/downloads/devel/Gviz.svg)](https://bioconductor.org/packages/stats/bioc/Gviz/)
 [![Support site activity in last 6 months: agged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts](https://bioconductor.org/shields/posts/Gviz.svg)](https://support.bioconductor.org/t/gviz/)
+[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
 <!-- badges: end -->
 
 &nbsp;
@@ -41,7 +42,7 @@ Genomic data analyses requires integrated visualization of known genomic informa
 
 ## Installation
 
-### Release version
+#### Release version
 
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -49,7 +50,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("Gviz", version = "release")
 ```
 
-### Developmental version
+#### Developmental version
 
 ```
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -57,7 +58,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("Gviz", version = "devel")
 ```
 
-### Github
+#### Github
 
 ```
 if (!requireNamespace("remotes", quietly = TRUE))
