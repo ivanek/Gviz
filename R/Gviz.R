@@ -1189,7 +1189,6 @@
         cex=1,
         col="darkgray",
         complement=FALSE,
-        fontcolor=NULL,
         fontface=2,
         fontsize=10,
         lwd=2,
