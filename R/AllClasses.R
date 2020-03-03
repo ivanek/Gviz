@@ -2033,18 +2033,7 @@ setClass("SequenceDNAStringSetTrack",
          representation=representation(sequence="DNAStringSet"),
          contains="SequenceTrack",
          prototype=prototype(sequence=DNAStringSet(),
-                             dp=DisplayPars(add53=FALSE,
-                                            background.title="transparent",
-                                            col="darkgray",
-                                            complement=FALSE,
-                                            fontcolor=getBioColor("DNA_BASES_N"),
-                                            fontface=2,
-                                            fontsize=10,
-                                            lwd=2,
-                                            min.width=2,
-                                            noLetters=FALSE,
-                                            showTitle=FALSE,
-                                            size=NULL)))
+                             dp=DisplayPars(fontcolor=getBioColor("DNA_BASES_N"))))
 
 setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
     if(missing(sequence) || is.null(sequence))
@@ -2065,18 +2054,7 @@ setClass("SequenceRNAStringSetTrack",
          representation=representation(sequence="RNAStringSet"),
          contains="SequenceTrack",
          prototype=prototype(sequence=RNAStringSet(),
-                             dp=DisplayPars(add53=FALSE,
-                                            background.title="transparent",
-                                            col="darkgray",
-                                            complement=FALSE,
-                                            fontcolor=getBioColor("RNA_BASES_N"),
-                                            fontface=2,
-                                            fontsize=10,
-                                            lwd=2,
-                                            min.width=2,
-                                            noLetters=FALSE,
-                                            showTitle=FALSE,
-                                            size=NULL)))
+                             dp=DisplayPars(fontcolor=getBioColor("RNA_BASES_N"))))
 
 setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence, ...) {
     if(missing(sequence) || is.null(sequence))
@@ -2100,7 +2078,8 @@ setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence,
 setClass("SequenceBSgenomeTrack",
          representation=representation(sequence="BSgenomeOrNULL", pointerCache="environment"),
          contains="SequenceTrack",
-         prototype=prototype(sequence=NULL))
+         prototype=prototype(sequence=NULL,
+                             dp=DisplayPars(fontcolor=getBioColor("DNA_BASES_N"))))
 
 setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence=NULL, ...) {
     .Object@sequence <- sequence
