@@ -33,6 +33,7 @@ Imports:
     AnnotationDbi (>= 1.27.5),
     Biobase (>= 2.15.3),
     GenomicFeatures (>= 1.17.22),
+    ensembldb (>= 2.11.3),
     BSgenome (>= 1.33.1),
     Biostrings (>= 2.33.11),
     biovizBase (>= 1.13.8),

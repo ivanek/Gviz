@@ -4454,6 +4454,100 @@ setMethod(".buildRange", signature("TxDb"),
               args <- list(genome=genome(range)[1])
               return(.buildRange(range=sort(range), chromosome=chromosome, args=args, ...))})
 
+## For ensDb objects we extract the grouping information and use the GRanges method
+setMethod(".buildRange", signature("EnsDb"),
+          function(range, groupId="transcript", tstart, tend, chromosome, args, ...) {
+              ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
+              noSubset <- is.null(tstart) && is.null(tend)
+              if(!is.null(chromosome)) {
+                  chromosome <- .chrName(chromosome)
+                  sl <- seqlengths(range)
+                  if(is.null(tstart))
+                      tstart <- rep(1, length(chromosome))
+                  if(is.null(tend)) {
+                      tend <- sl[chromosome]+1
+                      tend[is.na(tend)] <- tstart[is.na(tend)]+1
+                  }
+                  sRange <- GRanges(seqnames=chromosome, ranges=IRanges(start=tstart, end=tend))
+                  ## sRange <- GRangesFilter(sRange, type = "any") can we filter directly?
+              }
+              ## First the mapping of internal transcript ID to transcript name
+              txs <- as.data.frame(values(transcripts(range, columns = c("tx_id", "tx_name"))))
+              rownames(txs) <- txs[, "tx_id"]
+              ## Now the CDS ranges
+              t2c <- cdsBy(range, "tx")
+              names(t2c) <- txs[names(t2c), 2]
+              tids <- rep(names(t2c), elementNROWS(t2c))
+              t2c <- unlist(t2c)
+              if(length(t2c)) {
+                  t2c$tx_id <- tids
+                  t2c$feature_type <- "CDS"
+              }
+              ## And the 5'UTRS
+              t2f <- fiveUTRsByTranscript(range)
+              names(t2f) <- txs[names(t2f), 2]
+              tids <- rep(names(t2f), elementNROWS(t2f))
+              t2f <- unlist(t2f)
+              if(length(t2f)) {
+                  t2f$tx_id <- tids
+                  t2f$feature_type <- "utr5"
+              }
+              ## And the 3'UTRS
+              t2t <- threeUTRsByTranscript(range)
+              names(t2t) <- txs[names(t2t), 2]
+              tids <- rep(names(t2t), elementNROWS(t2t))
+              t2t <- unlist(t2t)
+              if(length(t2t)) {
+                  t2t$tx_id <- tids
+                  t2t$feature_type <- "utr3"
+              }
+              ## And finally all the non-coding transcripts
+              nt2e <- exonsBy(range, "tx")
+              names(nt2e) <- txs[names(nt2e), 2]
+              nt2e <- nt2e[!names(nt2e) %in% c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)]
+              tids <- rep(names(nt2e), elementNROWS(nt2e))
+              nt2e <- unlist(nt2e)
+              if(length(nt2e)) {
+                  nt2e$tx_id <- tids
+                  nt2e$feature_type <- "ncRNA"
+              }
+              ## Now we can merge the three back together (we need to change the column names of t2c to make them all the same)
+              ## t2e <- c(t2c, t2f, t2t, nt2e) ## This is super-slow, much more efficient if we build the GRanges object from the individual bits and pieces
+              vals <- DataFrame(exon_id=c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
+                                exon_name=c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
+                                exon_rank=c(values(t2c)$exon_rank, values(t2f)$exon_rank, values(t2t)$exon_rank, values(nt2e)$exon_rank),
+                                tx_id=c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id, values(nt2e)$tx_id),
+                                feature_type=c(values(t2c)$feature_type, values(t2f)$feature_type, values(t2t)$feature_type, values(nt2e)$feature_type))
+              t2e <- GRanges(seqnames=c(seqnames(t2c), seqnames(t2f), seqnames(t2t), seqnames(nt2e)),
+                             ranges=IRanges(start=c(start(t2c), start(t2f), start(t2t), start(nt2e)),
+                                            end=c(end(t2c), end(t2f), end(t2t), end(nt2e))),
+                             strand=c(strand(t2c), strand(t2f), strand(t2t), strand(nt2e)))
+              if(all(is.na(vals$exon_name)))
+                  vals$exon_name <- paste(vals$tx_id, vals$exon_rank, sep="_")
+              values(t2e) <- vals
+              if(length(t2e)==0)
+                  return(GRanges())
+              ## Add the gene level annotation
+              g2t <- transcriptsBy(range, "gene")
+              gids <- rep(names(g2t), elementNROWS(g2t))
+              g2t <- unlist(g2t)
+              values(g2t)[["gene_id"]] <- gids
+              values(t2e)$gene_id <- gids[match(values(t2e)$tx_id, as.character(txs[as.character(values(g2t)$tx_id),2]))]
+              vals <- values(t2e)[c("tx_id", "exon_name", "exon_rank", "feature_type", "tx_id", "gene_id")]
+              colnames(vals) <- c("transcript", "exon", "rank", "feature", "symbol", "gene")
+              ## Add the genome information
+              genome(t2e) <- unique(genome(range))
+              ## Finally we re-assign, subset if necessary, and sort
+              range <- t2e
+              values(range) <- vals
+              if(!noSubset && !is.null(chromosome)) {
+                  ## We have to keep all exons for all the overlapping transcripts
+                  txSel <- unique(subsetByOverlaps(g2t, sRange)$tx_name)
+                  range <- range[range$transcript %in% txSel]
+              }
+              args <- list(genome=genome(range)[1])
+              return(.buildRange(range=sort(range), chromosome=chromosome, args=args, ...))})
+
 
 ## For character scalars the data need to be extracted from a file and we have to deal with parser functions
 ## and column assignments here.
