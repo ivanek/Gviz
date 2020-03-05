@@ -16,6 +16,8 @@ importClassesFrom(BSgenome, BSgenome, MaskedBSgenome)
 
 importClassesFrom(GenomicFeatures, "TxDb")
 
+importClassesFrom(ensembldb, "EnsDb")
+
 importClassesFrom(rtracklayer, UCSCData)
 
 importMethodsFrom(AnnotationDbi, colnames, get, ls, mget, tail)
@@ -24,6 +26,9 @@ importMethodsFrom(AnnotationDbi, colnames, get, ls, mget, tail)
 importMethodsFrom(BSgenome, providerVersion)
 
 importMethodsFrom(GenomicFeatures, isActiveSeq, "isActiveSeq<-", cdsBy, exonsBy, fiveUTRsByTranscript, threeUTRsByTranscript, transcriptsBy, transcripts)
+
+importMethodsFrom(ensembldb, cdsBy, exonsBy, fiveUTRsByTranscript, threeUTRsByTranscript, transcriptsBy, transcripts)
+
 
 importMethodsFrom(rtracklayer, chrom, close, getTable, "tableName<-", track,
                   ucscTableQuery, trackNames, tableNames, import, import.gff,
