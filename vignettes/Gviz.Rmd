@@ -1687,10 +1687,23 @@ has to be added manually and the default value of the
 possible cases. It is up to the user to come up with a complete
 list of non-coding feature types depending on the source of the data.
 
-```{r generegtrack4f, results='hide', fig.width=7.5, fig.height=0.35}
+```{r generegtrack4f, results='hide', fig.width=7.5, fig.height=1}
 feature(txTr)
 plotTracks(txTr)
 ```
+
+### Building GeneRegionTrack objects from EnsDbs
+
+It is also possible to build `GeneRegionTrack` from `EnsDb` objects.
+-
+-
+-
+
+
+```{r, ensDb}
+
+```
+
 
 ### Display parameters for GeneRegionTrack objects
 
