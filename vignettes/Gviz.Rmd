@@ -1664,8 +1664,8 @@ from the `TxDb` object. Please note that while the
 or `end` without the chromosome information will not work.
 
 ```{r tdb2grt2}
-txTr <- GeneRegionTrack(txdb, chromosome = "chr6", start = 35000000, 
-                        end = 40000000)
+txTr <- GeneRegionTrack(txdb, chromosome = "chr6", 
+                        start = 35000000,  end = 40000000)
 ```
 
 A nice bonus when building `GeneRegionTracks` from
@@ -1694,16 +1694,42 @@ plotTracks(txTr)
 
 ### Building GeneRegionTrack objects from EnsDbs
 
-It is also possible to build `GeneRegionTrack` from `EnsDb` objects.
--
--
--
+The `r Biocpkg("Gviz")` is able to build `GeneRegionTrack` from `EnsDb` 
+objects. They are similar to `TxDb` objects however their content is based on 
+Ensembl Genome Browser. The `r Biocpkg("ensembldb")` package provides a complete 
+framework to download gene model information from Ensembl Genome Browser and 
+to store it locally in a SQLite database as well. For commonly used organisms and 
+recent Ensembl versions, those databases are available directly in the 
+`r Biocpkg("AnnotationHub")`. The `r Biocpkg("ensembldb")` package itself 
+provides `getGeneRegionTrackForGviz` function to build the 
+`GeneRegionTrack` object from the `EnsDb` objects.
+
+In recent versions of `r Biocpkg("Gviz")` package, the `GeneRegionTrack`can be 
+also build by calling the constructor function with the `EnsDb` object as a single 
+argument. We exemplify this using the database provided by 
+`r Biocpkg("EnsDb.Hsapiens.v75")` package.
+
+It is important to mention that naming convention for chromosomes is different
+between UCSC and Ensembl genome browsers. The `r Biocpkg("Gviz")` uses by 
+default the convention from UCSC and therefore it is important to either:
+ - set the chromosome names of `EnsDb` to UCSC style by calling 
+   `seqlevelsStyle(edb) <- "UCSC"`
+ - or set `Gviz` to accept non-UCSC style chromosome names by calling 
+   `options(ucscChromosomeNames = FALSE)`
 
 
-```{r, ensDb}
+```{r ensDb, eval=FALSE}
+library(ensembldb)
+library(EnsDb.Hsapiens.v75)
 
+edb <- EnsDb.Hsapiens.v75
+seqlevelsStyle(edb) <- "UCSC"
+
+eTrack <- GeneRegionTrack(edb, chromosome = "chr6", 
+                          start = 35000000, end = 40000000)
+
+plotTracks(eTrack)
 ```
-
 
 ### Display parameters for GeneRegionTrack objects
 
