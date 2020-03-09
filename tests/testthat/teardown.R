@@ -1,2 +1,2 @@
 # teardown
-unlink("Rplots.pdf")
+unlink("../Rplots.pdf") # in `Gviz` main directory

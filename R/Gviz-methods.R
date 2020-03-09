@@ -312,7 +312,7 @@ setReplaceMethod("strand", "DataTrack", function(x, value) {
 ## Allow for subsetting of RangeTrack and DataTrack objects
 setMethod("[", signature(x="RangeTrack"), function(x, i, j, ..., drop=TRUE) {
     x <- .deepCopyPars(x)
-    x@range <- x@range[i,]
+    x@range <- x@range[i,,drop=drop]
     return(x)})
 setMethod("[", signature(x="StackedTrack"), function(x, i, j, ..., drop=TRUE) {
     x <- callNextMethod(x,i)
@@ -320,27 +320,25 @@ setMethod("[", signature(x="StackedTrack"), function(x, i, j, ..., drop=TRUE) {
     return(x)})
 setMethod("[", signature(x="GenomeAxisTrack"), function(x, i, j, ..., drop=TRUE) {
     x <- .deepCopyPars(x)
-    x@range <- x@range[i,]
+    x@range <- x@range[i,,drop=drop]
     return(x)})
 setMethod("[", signature(x="IdeogramTrack"), function(x, i, j, ..., drop=TRUE) return(x))
-setMethod("[", signature(x="DataTrack"), function(x, i, j,  ..., drop=TRUE) {
+setMethod("[", signature(x="DataTrack"), function(x, i, j,  ..., drop=FALSE) {
     x <- .deepCopyPars(x)
-    if(!missing(i))
-    {
-        x@data <- x@data[i,, drop=FALSE]
+    if(!missing(i)) {
+        x@data <- x@data[i,,drop=drop]
         displayPars(x) <- list(groups=as.vector(.dpOrDefault(x, "groups")[i]))
     }
-    if(!missing(j))
-    {
+    if(!missing(j)) {
         x@range <- x@range[j,]
         if(ncol(x@data)>0)
-            x@data <- x@data[,j, drop=FALSE]
+            x@data <- x@data[,j,drop=drop]
     }
     return(x)})
 setMethod("[", signature(x="AlignedReadTrack"), function(x, i, j, ..., drop=TRUE) {
     if(x@coverageOnly)
         stop("This AlignedReadTrack object contains coverage information only and can not be subset")
-    x@range <- x@range[i,]
+    x@range <- x@range[i,,drop=drop]
     x <- setCoverage(x)
     return(x)})
 
@@ -359,10 +357,12 @@ setMethod("split", signature("AlignedReadTrack"),
           })
 setMethod("split", signature("DataTrack"),
           definition=function(x, f, ...) {
-              rs <- as.list(split(ranges(x), factor(f)))
+              f <- factor(f)
+              rs <- as.list(split(ranges(x), f))
               ds <- split(t(values(x)), f)
               nr <- nrow(values(x))
-              mapply(function(y, z) {x@range <- y; x@data <- matrix(z, nrow=nr, byrow=TRUE); return(x)}, rs, ds)
+              rnms <- rownames(values(x))
+              mapply(function(y, z) {x@range <- y; x@data <- matrix(z, nrow=nr, byrow=TRUE, dimnames=list(rnms, NULL)); return(x)}, rs, ds)
           })
 
 ## Extract the coverage information

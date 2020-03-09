@@ -201,12 +201,40 @@ test_that("strand accessors and replacement methods work", {
   expect_error(strand(annoTrack) <- rep("+", 3), "Invalid replacement value or length of replacement")
 })
 
+test_that("subsetting with [ works", {
+  expect_identical(annoTrack[1]@range, GRanges("chr1", IRanges(1,5), feature="unknown", group="1", id="unknown", density=1))
+  expect_error(annoTrack[2], "subscript contains out-of-bounds")
+
+  expect_identical(axisTrack[1]@range, GRanges("chr1", IRanges(1,5), score=1))
+  expect_error(dataTrack[2], "subscript out of bounds")
+  
+  expect_identical(ideoTrack[1], ideoTrack)
+  
+  expect_identical(dataTrack[1,,]@range, GRanges("chr1", IRanges(1,5)))
+  expect_error(dataTrack[2], "subscript out of bounds")
+  expect_identical(dataTrack[,1,]@data, matrix(1, nrow=1, dimnames=list("score", NULL)))
+  expect_error(dataTrack[,2,]@data, "subscript contains out-of-bounds indices")
+})
+
+test_that("splitting works", {
+  aTrack <- AnnotationTrack(c(gr, gr2))
+  expect_identical(names(split(aTrack, f=c("a", "b"))), c("a", "b"))
+  expect_identical(split(aTrack, f=c("a", "b"))[[1]]@range, aTrack@range[1])
+  expect_identical(split(aTrack, f=c("a", "b"))[[2]]@range, aTrack@range[2])
+  
+  dTrack <- DataTrack(c(gr, gr2))
+  expect_identical(names(split(dTrack, f=c("a", "b"))), c("a", "b"))
+  expect_identical(split(dTrack, f=c("a", "b"))[[1]]@range, dTrack@range[1])
+  expect_identical(split(dTrack, f=c("a", "b"))[[1]]@data, dTrack@data[,1, drop=F])
+  expect_identical(split(dTrack, f=c("a", "b"))[[2]]@range, dTrack@range[2])
+  expect_identical(split(dTrack, f=c("a", "b"))[[2]]@data, dTrack@data[,2, drop=F])
+})
+
 test_that("names accessors and replacement methods work", {
   expect_identical(names(annoTrack), "AnnotationTrack")
   names(annoTrack) <- "AnnoTrack"
   expect_identical(names(annoTrack), "AnnoTrack")
 })
-
 
 test_that("gene, symbol, transcript, feature and exon accessors and replacement methods work", {
   expect_identical(gene(geneTrack), as.character(geneModels$gene))
@@ -228,6 +256,10 @@ test_that("gene, symbol, transcript, feature and exon accessors and replacement 
   expect_identical(feature(geneTrack), as.character(geneModels$feature))
   feature(geneTrack) <- paste0(as.character(geneModels$feature), ".1")
   expect_identical(feature(geneTrack), paste0(as.character(geneModels$feature), ".1"))
+  
+  expect_identical(feature(dataTrack), NULL)
+  feature(dataTrack) <- "1"
+  expect_identical(dataTrack, dataTrack)
 })
 
 test_that("group and identifier accessors and replacement methods work", {
@@ -235,11 +267,15 @@ test_that("group and identifier accessors and replacement methods work", {
   group(geneTrack) <- paste0(as.character(geneModels$transcript), ".1")
   expect_identical(group(geneTrack), paste0(as.character(geneModels$transcript), ".1"))
   
+  expect_identical(group(dataTrack), NULL)  
+  
   expect_identical(identifier(geneTrack), as.character(geneModels$symbol))
+  expect_identical(identifier(geneTrack, type=NULL), as.character(geneModels$symbol))
   identifier(geneTrack) <- paste0(as.character(geneModels$symbol), ".1")
   expect_identical(identifier(geneTrack), paste0(as.character(geneModels$symbol), ".1"))
   
   expect_identical(identifier(annoTrack), "1")
+  expect_identical(identifier(annoTrack, type=NULL), "1")
   identifier(annoTrack) <- "1.1"
   expect_identical(identifier(annoTrack), "1.1")
 })

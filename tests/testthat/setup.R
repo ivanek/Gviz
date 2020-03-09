@@ -1,5 +1,4 @@
 ## libs -----------------------------------------------------------------------
-
 library(BSgenome.Hsapiens.UCSC.hg19)
 
 ## general --------------------------------------------------------------------
@@ -16,6 +15,18 @@ cyto.bands <- data.frame(chrom = rep(c("chrI", "chrII"), each=4),
                          name = rep(c(NA, "CEN1", "CEN1", NA),2),
                          gieStain = rep(c("gneg", "acen", "acen", "gneg"),2),
                          stringsAsFactors = FALSE)
+## internet access ------------------------------------------------------------
+hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
+oto <- options(timeout=5)
+
+hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
+                           !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
+options(timeout=oto)
+
+## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
+## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && 
+##   !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
+
 ## tmp files ------------------------------------------------------------------
 ## BAM file
 sam <- c("@HD	VN:1.0	GO:none	SO:coordinate",
