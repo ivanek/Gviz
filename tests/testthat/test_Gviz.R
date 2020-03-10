@@ -112,7 +112,6 @@ test_that("import of alignments from BAM file works", {
 })
 
 test_that("estimate of required verticalSpace works", {
-  expect_identical(.verticalSpace(suppressWarnings(AlignedReadTrack()), 10), 7)
   expect_identical(.verticalSpace(dataTrack, 10), 5)
   expect_identical(.verticalSpace(axisTrack, 10), 1)
   expect_identical(.verticalSpace(ideoTrack, 10), 1)

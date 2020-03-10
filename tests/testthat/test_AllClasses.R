@@ -102,6 +102,7 @@ test_that("AlignmentsTrack works", {
   expect_s4_class(AlignmentsTrack(), "RangeTrack")
   expect_s4_class(AlignmentsTrack(), "StackedTrack")
   expect_s4_class(AlignmentsTrack(), "AlignmentsTrack")
+  expect_s4_class(AlignmentsTrack(showIndels=TRUE), "AlignmentsTrack")
   
   expect_s4_class(AlignmentsTrack(bamfile), "ReferenceTrack")
   expect_s4_class(AlignmentsTrack(bamfile), "AlignmentsTrack")
@@ -116,11 +117,31 @@ test_that("HighlightTrack works", {
   expect_s4_class(HighlightTrack(), "GdObject")
   expect_s4_class(HighlightTrack(), "RangeTrack")
   expect_s4_class(HighlightTrack(), "HighlightTrack")
+  
+  expect_true(is(HighlightTrack()@range, "GRanges"))
+  expect_error(HighlightTrack(c(annoTrack, geneModels)), 
+               "All elements in 'trackList' must inherit from 'GdObject'")
+  
+  displayPars(highTrack) <- list(col="black")
+  expect_identical(displayPars(highTrack)$col, "black")
+
+  displayPars(highTrack, recursive=TRUE) <- list(col="red")
+  expect_identical(vapply(highTrack@trackList, function(x) displayPars(x)$col, FUN.VALUE=character(1)), "red")
 })
 
 test_that("OverlayTrack works", {
   expect_s4_class(OverlayTrack(), "GdObject")
   expect_s4_class(OverlayTrack(), "OverlayTrack")
+  
+  expect_true(is.list(OverlayTrack(annoTrack)@trackList))
+  expect_error(OverlayTrack(c(annoTrack, geneModels)), 
+               "All elements in 'trackList' must inherit from 'GdObject'")
+  
+  displayPars(overTrack) <- list(col="black")
+  expect_identical(displayPars(overTrack)$col, "black")
+  
+  displayPars(overTrack, recursive=TRUE) <- list(col="red")
+  expect_identical(vapply(overTrack@trackList, function(x) displayPars(x)$col, FUN.VALUE=character(1)), c("red", "red"))
 })
 
 test_that("DetailsAnnotationTrack works", {
