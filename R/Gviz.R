@@ -1282,7 +1282,7 @@ addScheme <- function(scheme, name){
 .biomartCurrentVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsNow.txt"), package="Gviz"), as.is=TRUE)
 .biomartVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsLatest.txt"), package="Gviz"), as.is=TRUE)
 
-## Helper function to map between UCSC and ENSEMBl genome information
+## Helper function to map between UCSC and ENSEMBL genome information
 ## Arguments:
 ##    o id: character scalar, a UCSC genome identifier
 ## Value: a list with ENSEMBL the genome information

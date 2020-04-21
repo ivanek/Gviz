@@ -1,10 +1,11 @@
-CHANGES IN VERSION 1.31.10
+CHANGES IN VERSION 1.32.0
 -------------------------
 NEW FEATURES
 
     o Exposed the possibility to specify centromere shape
     o `AlignmentsTracks` can visualize "indels"
     o SequenceTrack has new subclass: SequenceRNAStringSetTrack
+    o added RNASequenceTrack
 
 BUG FIXES
 

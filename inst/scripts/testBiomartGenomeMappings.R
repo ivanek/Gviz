@@ -2,9 +2,26 @@ library(Gviz)
 library(biomaRt)
 library(Biobase)
 library(rtracklayer)
+library(RMySQL)
+
+fetchAllGenomesFromUcsc <- function() {
+    mydb <- dbConnect(MySQL(), user="genome", dbname="hgcentral", 
+                     host="genome-mysql.cse.ucsc.edu")
+    rs <- dbSendQuery(mydb, "select * from dbDb")
+    out <- fetch(rs, n=-1)
+    ## rs2 <- dbSendQuery(mydb, "select * from dbDbArch")
+    ## out2 <- fetch(rs2, n=-1)
+    out <- out[out$active!=0, ] # only active
+    cols <- c("name", "description", "organism", "scientificName",
+              "sourceName","taxId", "orderKey") # smallest orderKey == rescent
+    out <- out[, cols]
+    out <- out[order(out$organism, out$orderKey),]
+    ## out <- split(out, out$organism)
+    return(out)
+}
 
 
-testBiomartVersion <- function(){
+testBiomartVersion <- function() {
     allGenomes <- union(read.delim(system.file(package="Gviz", "extdata/biomartVersionsLatest.txt"))$ucscId,
                         read.delim(system.file(package="Gviz", "extdata/biomartVersionsNow.txt"))$ucscId)
     res <- mclapply(allGenomes, function(genome){
@@ -56,7 +73,8 @@ testBiomartVersion <- function(){
     tmp2 <- gens[dt2$current,c("db", "date", "name", "version")]
     colnames(tmp2) <- paste("UCSC", colnames(tmp2), sep="_")
     dt3 <- cbind(dt2, tmp2)
-    if(require(writexl)){
+    dt3 <- dt3[rowSums(is.na(dt3)) < ncol(dt3),]
+    if(require(writexl)) {
         write_xlsx(list("Sheet1"=dt3), path="ensMappings.xlsx")
     }
     write.table(dt3, file="ensMappings.txt", sep="\t", quote=FALSE)

@@ -155,3 +155,21 @@ test_that("DetailsAnnotationTrack works", {
   expect_identical(detTrack@fun, detFun)
   
 })
+
+test_that("md5 hash for BiomartTrack works", {
+  data("biomTrack")
+  expect_identical(.bmGuid(biomTrack), "b0cbf1bb0e4e5a1936fe68e36da5f210")
+})
+
+test_that("interaction with biomart works", {
+  check_biomart()
+  biomartTrack <- BiomartGeneRegionTrack(genome="hg38", chromosome="chr7", 
+                                      start=20e6, end=21e6, name="ENSEMBL")
+  expect_s4_class(biomartTrack, "GdObject")
+  expect_s4_class(biomartTrack, "StackedTrack")
+  expect_s4_class(biomartTrack, "RangeTrack")
+  expect_s4_class(biomartTrack, "AnnotationTrack")
+  expect_s4_class(biomartTrack, "GeneRegionTrack")
+  expect_s4_class(biomartTrack, "BiomartGeneRegionTrack")
+})
+

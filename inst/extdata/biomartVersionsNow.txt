@@ -25,7 +25,7 @@ Gadus morhua (Cod)	gadMor1	gmorhua_gene_ensembl	gadMor1	Cod	Gadus morhua 	head	N
 Gallus gallus (Chicken)	Galgal4	ggallus_gene_ensembl	galGal4	Chicken	Gallus gallus 	head	NA
 Gasterosteus aculeatus (Stickleback)	BROAD S1	gaculeatus_gene_ensembl	gasAcu1	Stickleback	Gasterosteus aculeatus 	head	NA
 Gorilla gorilla (Gorilla)	gorGor3.1	ggorilla_gene_ensembl	gorGor3	Gorilla	Gorilla gorilla 	head	NA
-Homo sapiens (Human)	GRCh38.p12	hsapiens_gene_ensembl	hg38	Human	Homo sapiens 	head	NA
+Homo sapiens (Human)	GRCh38.p13	hsapiens_gene_ensembl	hg38	Human	Homo sapiens 	head	NA
 Ictidomys tridecemlineatus (Squirrel)	spetri2	itridecemlineatus_gene_ensembl	speTri2	Squirrel	Ictidomys tridecemlineatus 	head	NA
 Latimeria chalumnae (Coelacanth)	LatCha1	lchalumnae_gene_ensembl	latCha1	Coelacanth	Latimeria chalumnae 	head	NA
 Lepisosteus oculatus (Spotted gar)	LepOcu1	loculatus_gene_ensembl	lepOcu1	Spotted gar	Lepisosteus oculatus 	head	NA
@@ -35,7 +35,7 @@ Macropus eugenii (Wallaby)	Meug_1.0	meugenii_gene_ensembl	macEug2	Wallaby	Macrop
 Meleagris gallopavo (Turkey)	UMD2	mgallopavo_gene_ensembl	melGa1	Turkey	Meleagris gallopavo 	head	NA
 Microcebus murinus (Mouse lemur)	micMur1	mmurinus_gene_ensembl	micMur1	Mouse lemur	Microcebus murinus 	head	NA
 Monodelphis domestica (Opossum)	monDom5	mdomestica_gene_ensembl	monDom5	Opossum	Monodelphis domestica 	head	NA
-Mus musculus (Mouse)	GRCm38.p4	mmusculus_gene_ensembl	mm10	Mouse	Mus musculus 	head	NA
+Mus musculus (Mouse)	GRCm38.p6	mmusculus_gene_ensembl	mm10	Mouse	Mus musculus 	head	NA
 Mustela putorius furo (Domestic ferret)	MusPutFur1.0	mfuro_gene_ensembl	musFur1	Domestic ferret	Mustela putorius furo 	head	NA
 Myotis lucifugus (Microbat)	myoLuc2	mlucifugus_gene_ensembl	myoLuc2	Microbat	Myotis lucifugus 	head	NA
 Nomascus leucogenys (Gibbon)	Nleu1.0	nleucogenys_gene_ensembl	nomLeu1	Gibbon	Nomascus leucogenys 	head	NA
