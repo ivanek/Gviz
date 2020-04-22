@@ -10,12 +10,12 @@
 .DEFAULT_LINE_COL <- "darkgray"
 .PLOT_TYPES <-  c("p", "l", "b", "a", "s", "g", "r", "S",
                   "smooth", "polygon", "horizon", "histogram",
-                  "mountain", "h", "boxplot", "gradient", 
+                  "mountain", "h", "boxplot", "gradient",
                   "heatmap", "confint")
 .ALIGNMENT_TYPES <- c("coverage", "sashimi", "pileup")
-.THIN_BOX_FEATURES <- c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", 
+.THIN_BOX_FEATURES <- c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR",
                         "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")
-.DEFAULT_HORIZON_COL <- c("#B41414", "#E03231", "#F7A99C", 
+.DEFAULT_HORIZON_COL <- c("#B41414", "#E03231", "#F7A99C",
                           "#9FC8DC", "#468CC8", "#0165B3")
 
 
@@ -291,12 +291,12 @@
     curVp <- vpLocation()
     trackList <- lapply(trackList, function(x) if(is(x, "OverlayTrack")) x@trackList[[1]] else x)
     spaceNeeded <- if(is.null(sizes)) {
-        lapply(trackList, .verticalSpace, curVp$size["height"]) 
-        } else {
-            if(length(sizes) != length(trackList))
-                stop("The 'sizes' vector has to match the size of the 'trackList'.")
-            rev(sizes)
-        }
+                       lapply(trackList, .verticalSpace, curVp$size["height"])
+                   } else {
+                       if(length(sizes) != length(trackList))
+                           stop("The 'sizes' vector has to match the size of the 'trackList'.")
+                       rev(sizes)
+                   }
     whichAbs <- vapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"), FUN.VALUE=logical(1))
     spaceNeeded <- unlist(spaceNeeded)
     leftVetSpace <- curVp$size["height"]-sum(spaceNeeded[whichAbs])
@@ -1878,17 +1878,17 @@ exportTracks <- function(tracks, range, chromosome, file) {
 
 
 ## ## Construct a URL to UCSC showing the custom tracks
-                                        ## ucscUrl <- function(chr, range, spec, gen, open=TRUE)
-                                        ## {
-                                        ##     hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz"),
-                                        ##                            "customTracks.bed", spec, gen), intern=TRUE, ignore.stderr=TRUE)
-                                        ##
-                                        ##     url <- sprintf(paste("http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=%s&Submit=go+to+genome+browser",
-                                        ##                          "&position=%s%%3A%i-%i", sep=""), hgid, chr, range[1], range[2])
-                                        ##     if(open)
-                                        ##         browseURL(url)
-                                        ##     return(url)
-                                        ## }
+## ucscUrl <- function(chr, range, spec, gen, open=TRUE)
+## {
+##     hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz"),
+##                            "customTracks.bed", spec, gen), intern=TRUE, ignore.stderr=TRUE)
+##
+##     url <- sprintf(paste("http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=%s&Submit=go+to+genome+browser",
+##                          "&position=%s%%3A%i-%i", sep=""), hgid, chr, range[1], range[2])
+##     if(open)
+##         browseURL(url)
+##     return(url)
+## }
 
 
 
@@ -2540,7 +2540,7 @@ availableDefaultMapping <- function(file, trackType){
                 tfact <- ifelse(twidth > 1, 1, 1 / (1 - twidth))
                 ## The labels and spacers are plotted in a temporary viewport to figure out their size
                 labels <- if(needsGrp)
-                              vapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/"), FUN.VALUE=character(1)) 
+                              vapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse="/"), FUN.VALUE=character(1))
                           else setNames(identifier(GdObject), gp)
                 xscale <- c(max(pr["from"], min(start(finalRanges))), min(pr["to"], max(end(finalRanges))))
                 if(diff(xscale) == 0)
@@ -2627,17 +2627,17 @@ availableDefaultMapping <- function(file, trackType){
     range <- range[!duplicated(range$entityId)]
     ga <- GAlignments(seqnames=seqnames(range), pos=start(range), cigar=range$cigar,
                       strand=if(is.null(range$readStrand)) strand(range) else range$readStrand,
-                                        ## id=range$id,
-                                        ## entityId=range$entityId,
-                                        ## md=range$md,
-                                        ## readStrand=range$readStrand,
-                                        ## mapq=range$mapq,
-                                        ## flag=range$flag,
-                                        ## isize=range$isize,
-                                        ## groupid=range$groupid,
-                                        ## status=range$status,
-                                        ## uid=range$uid,
-                                        ## stack=range$stack,
+                      ## id=range$id,
+                      ## entityId=range$entityId,
+                      ## md=range$md,
+                      ## readStrand=range$readStrand,
+                      ## mapq=range$mapq,
+                      ## flag=range$flag,
+                      ## isize=range$isize,
+                      ## groupid=range$groupid,
+                      ## status=range$status,
+                      ## uid=range$uid,
+                      ## stack=range$stack,
                       seqlengths=seqlengths(range))
     ga
 }

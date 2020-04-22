@@ -18,24 +18,24 @@ cyto.bands <- data.frame(chrom = rep(c("chrI", "chrII"), each=4),
 ## internet access ------------------------------------------------------------
 hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
 check_ucsc <- function() {
-  if (!hasUcscConnection) {
-    skip("UCSC not available")
-  }
+    if (!hasUcscConnection) {
+        skip("UCSC not available")
+    }
 }
 
 oto <- options(timeout=5)
 hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
-                           !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
+                         !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
 options(timeout=oto)
 check_biomart <- function() {
-  if (!hasBiomartConnection) {
-    skip("Biomart not available")
-  }
+    if (!hasBiomartConnection) {
+        skip("Biomart not available")
+    }
 }
 
 
 ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
-## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && 
+## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") &&
 ##   !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 
 ## tmp files ------------------------------------------------------------------
@@ -59,37 +59,37 @@ fastafile <- system.file("extdata/test.fa", package="Gviz")
 bamgr <- GRanges("chr1", IRanges(c(189892390L, 189892202L, 189893347L, 189891483L, 189893352L),
                                  c(189892465L, 189892277L, 189893422L, 189891558L, 189893427L)),
                  strand=rep(c("-","+"), c(2,3)))
-mcols(bamgr) <- DataFrame(id=c("NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932", 
-                      "NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932", 
-                      "NRCHBS-WDL30299:125:D1415ACXX:8:1313:16113:75579", 
-                      "NRCHBS-WDL30299:125:D1415ACXX:8:2215:20868:43279", 
-                      "NRCHBS-WDL30299:126:D14UTACXX:8:2215:4526:88225"),
-                 cigar=c("76M", "76M", "76M", "15S51M6207N10M", "76M"),
-                 mapq=rep(255L, 5),
-                 flag=c(113L, 177L, 65L, 65L, 65L),
-                 md=c("14C61", NA, NA, NA, NA),
-                 seq=DNAStringSet(c(`1`=paste(rep("+", 2600), collapse=""),
-                                  `2`=paste(rep("+", 2600), collapse=""),
-                                  `3`=paste(rep("+", 2600), collapse=""),
-                                  `4`=paste(rep("+", 2600), collapse=""),
-                                  `5`=paste(rep("+", 2600), collapse=""))),
-                 isize=c(113L, 113L, 48L, 47L, 30L),
-                 groupid=c(1L, 1L, 2L, 3L, 4L),
-                 status=factor(rep(c("mated", "unmated"), c(2,3)), 
-                               levels=c("mated", "ambiguous", "unmated")))
+mcols(bamgr) <- DataFrame(id=c("NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932",
+                               "NRCHBS-WDL30299:126:D14UTACXX:8:2113:17433:81932",
+                               "NRCHBS-WDL30299:125:D1415ACXX:8:1313:16113:75579",
+                               "NRCHBS-WDL30299:125:D1415ACXX:8:2215:20868:43279",
+                               "NRCHBS-WDL30299:126:D14UTACXX:8:2215:4526:88225"),
+                          cigar=c("76M", "76M", "76M", "15S51M6207N10M", "76M"),
+                          mapq=rep(255L, 5),
+                          flag=c(113L, 177L, 65L, 65L, 65L),
+                          md=c("14C61", NA, NA, NA, NA),
+                          seq=DNAStringSet(c(`1`=paste(rep("+", 2600), collapse=""),
+                                             `2`=paste(rep("+", 2600), collapse=""),
+                                             `3`=paste(rep("+", 2600), collapse=""),
+                                             `4`=paste(rep("+", 2600), collapse=""),
+                                             `5`=paste(rep("+", 2600), collapse=""))),
+                          isize=c(113L, 113L, 48L, 47L, 30L),
+                          groupid=c(1L, 1L, 2L, 3L, 4L),
+                          status=factor(rep(c("mated", "unmated"), c(2,3)),
+                                        levels=c("mated", "ambiguous", "unmated")))
 
 
 
 selFun <- function(identifier, start, end, track, GdObject, ...){
-  gcount <- table(group(GdObject))
-  ## This computes the width of 2 pixels in genomic coordinates
-  pxRange <- Gviz:::.pxResolution(min.width=20, coord="x")
-  return((end-start)<pxRange && gcount[identifier]==1)
+    gcount <- table(group(GdObject))
+    ## This computes the width of 2 pixels in genomic coordinates
+    pxRange <- Gviz:::.pxResolution(min.width=20, coord="x")
+    return((end-start)<pxRange && gcount[identifier]==1)
 }
 detFun <- function(identifier, GdObject.original, ...){
-  plotTracks(list(GenomeAxisTrack(scale=0.3, size=0.2, cex=0.7), 
-                  GdObject.original[group(GdObject.original)==identifier]),
-             add=TRUE, showTitle=FALSE)
+    plotTracks(list(GenomeAxisTrack(scale=0.3, size=0.2, cex=0.7),
+                    GdObject.original[group(GdObject.original)==identifier]),
+               add=TRUE, showTitle=FALSE)
 }
 
 data(geneDetails)
@@ -115,7 +115,7 @@ geneTrack <- GeneRegionTrack(geneModels, genome="hg19", chromosome="chr7", name=
 
 ## DetailsAnnotationTrack
 detTrack <- DetailsAnnotationTrack(geneDetails, fun=detFun, selectFun=selFun,
-                                   groupDetails=TRUE, details.size=0.5, 
+                                   groupDetails=TRUE, details.size=0.5,
                                    detailsConnector.cex=0.5, detailsConnector.lty="dotted",
                                    shape=c("smallArrow", "arrow"), groupAnnotation="group")
 
