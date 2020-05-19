@@ -1334,5 +1334,35 @@ stacking="squish", name="AlignedReadTrack", coverageOnly=FALSE, ...)
 ## - AnnotationTrack
 ## - AlignmentsTrack
 
+## Below example from AnnotationTrack
+
+## An empty object
+AnnotationTrack()
+
+## Construct from individual arguments
+st <- c(2000000, 2070000, 2100000, 2160000)
+ed <- c(2050000, 2130000, 2150000, 2170000)
+str <- c("-", "+", "-", "-")
+gr <- c("Group1","Group2","Group1", "Group3")
+
+annTrack <- AnnotationTrack(start=st, end=ed, strand=str, chromosome=7, 
+                            genome="hg19", feature="test", group=gr, 
+                            id=paste("annTrack item", 1:4), 
+                            name="generic annotation", stacking="squish")
+
+\dontshow{
+## For some annoying reason the postscript device does not know about
+## the sans font
+if(!interactive())
+{
+font <- ps.options()$family
+displayPars(annTrack) <- list(fontfamily=font, fontfamily.title=font)
+}
+}
+
+## Plotting
+plotTracks(annTrack)
+
+
 }
 \keyword{classes}

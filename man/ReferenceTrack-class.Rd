@@ -125,4 +125,19 @@ availableDefaultMapping(file, trackType)
 
 }
 
+
+\examples{
+
+# This is a reference class, below example from AlignmentsTrack
+
+afrom <- 2960000
+ato <- 3160000
+alTrack <- AlignmentsTrack(system.file(package="Gviz", "extdata",
+"gapped.bam"), isPaired=TRUE)
+plotTracks(alTrack, from=afrom, to=ato, chromosome="chr12")
+
+}
+
+
 \keyword{classes}
+
