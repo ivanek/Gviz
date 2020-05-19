@@ -6,7 +6,9 @@
 ^\.Rproj\.user$
 ^\.Rbuildignore$
 ^\.gitignore$
+^\.github$
 ^\.travis\.yml$
 ^\.codecov\.yml$
 ^Dockerfile$
 ^Rplots\.pdf$
+^vignettes\/Gviz-logo\.pdf$
