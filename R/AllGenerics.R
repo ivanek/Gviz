@@ -4,9 +4,10 @@
 
 ## Display parameter accessors
 setGeneric("setPar", function(x, value, ...) standardGeneric("setPar"))
-setGeneric("displayPars<-", signature=c("x", "value"),
-           function(x, recursive=FALSE, value) standardGeneric("displayPars<-")
-           )
+setGeneric("displayPars<-",
+    signature = c("x", "value"),
+    function(x, recursive = FALSE, value) standardGeneric("displayPars<-")
+)
 setGeneric("getPar", def = function(x, name, ...) standardGeneric("getPar"))
 setGeneric("displayPars", function(x, name, ...) standardGeneric("displayPars"))
 
@@ -33,10 +34,10 @@ setGeneric("chromosome<-", function(GdObject, value) standardGeneric("chromosome
 ## setGeneric("[")
 setGeneric("position", function(GdObject, ...) standardGeneric("position"))
 setGeneric("imageMap", function(GdObject, ...) standardGeneric("imageMap"))
-setGeneric("imageMap<-",  function(GdObject, value) standardGeneric("imageMap<-"))
+setGeneric("imageMap<-", function(GdObject, value) standardGeneric("imageMap<-"))
 ## setGeneric("subset",  function(x, ...) standardGeneric("subset"))
-setGeneric("coords",  function(ImageMap, ...) standardGeneric("coords"))
-setGeneric("tags",  function(ImageMap, ...) standardGeneric("tags"))
+setGeneric("coords", function(ImageMap, ...) standardGeneric("coords"))
+setGeneric("tags", function(ImageMap, ...) standardGeneric("tags"))
 
 ## Prepare tracks for plotting
 setGeneric("consolidateTrack", function(GdObject, ...) standardGeneric("consolidateTrack"))
@@ -53,14 +54,14 @@ setGeneric("drawGrid", function(GdObject, ...) standardGeneric("drawGrid"))
 setGeneric("drawGD", function(GdObject, ...) standardGeneric("drawGD"))
 
 ## We may need those for dispatch in the name space
-##if(!isGeneric("lapply"))
+## if(!isGeneric("lapply"))
 ##    setGeneric("lapply")
-##if(!isGeneric("sapply"))
+## if(!isGeneric("sapply"))
 ##    setGeneric("sapply")
-##if(!isGeneric("head"))
+## if(!isGeneric("head"))
 ##    setGeneric("head")
-##if(!isGeneric("split"))
+## if(!isGeneric("split"))
 ##    setGeneric("split")
 
 ## Internal methods
-setGeneric(".buildRange",  function(range, start, end, width, ...) standardGeneric(".buildRange"))
+setGeneric(".buildRange", function(range, start, end, width, ...) standardGeneric(".buildRange"))
