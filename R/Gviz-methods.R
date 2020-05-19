@@ -1404,7 +1404,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
     at <- .dpOrDefault(GdObject, "yTicksAt", pretty(yscale))
     at <- at[which(at>=sort(ylim)[1] & at<=sort(ylim)[2])]
     if (!length(at)) {
-        at <- sort(ylim)[1:2]
+        at <- sort(ylim)[c(1,2)]
     }
     if(is.null(acex))
     {
@@ -1448,7 +1448,7 @@ setMethod("drawAxis", signature(GdObject="NumericTrack"), function(GdObject, fro
             cr <- c("white", pcols$col[i])
             if(nlevs<2)
                 cr <- .dpOrDefault(GdObject, "gradient", cr)
-            palette <- colorRampPalette(cr)(ncolor+5)[-c(1:5)]
+            palette <- colorRampPalette(cr)(ncolor+5)[-seq_len(5)]
             pshift <- ifelse(i==nlevs, 1-shift, 0)
             vpTitleAxis <- viewport(x=unit(1, "npc")-unit(4*(i-1), "points"), width=unit(4+pshift, "points"),
                                     yscale=yscale, just=1)
@@ -1944,7 +1944,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
         ## Plotting of the (arrow)bar
         if(nrow(bar)>0)
-            .arrowBar(bar$sx1, bar$sx2, y=bar$y, bar$strand, box[,1:4, drop=FALSE],
+            .arrowBar(bar$sx1, bar$sx2, y=bar$y, bar$strand, box[,seq_len(4), drop=FALSE],
                       W=.dpOrDefault(GdObject, "arrowFeatherWidth", 3), D=.dpOrDefault(GdObject, "arrowFeatherDistance", 20),
                       col=if(is.null(col.line)) bar$col else rep(col.line, length(bar$col)), lwd=lwd, lty=lty,
                       alpha=alpha, barOnly=(!"smallArrow" %in% .dpOrDefault(GdObject, "shape", "box") || stacking(GdObject)=="dense"),
@@ -3015,7 +3015,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     ## The special type 'mountain' has to be handled separately
     if("mountain" %in% type) {
         mbaseline <- if(is.null(baseline)) 0 else baseline[1]
-        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[c(1,2)]
         col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
         col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
         lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
@@ -3029,7 +3029,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     ## The special type 'polygon' has to be handled separately
     if("polygon" %in% type) {
         mbaseline <- if(is.null(baseline)) 0 else baseline[1]
-        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[c(1,2)]
         col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
         col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
         lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
@@ -3176,7 +3176,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             cmf <- c(0, cumsum(freq))
             for(s in seq_along(valsS))
             {
-                gradient <- colorRampPalette(c("white", pcols$col[s]))(ncolor+5)[-(1:5)]
+                gradient <- colorRampPalette(c("white", pcols$col[s]))(ncolor+5)[-seq_len(5)]
                 valsScaled <- .z2icol(valsS[[s]], ncolor, sort(ylim))
                 grid.rect(rep(start(GdObject), each=freq[s]), yy[(cmf[s]+1):cmf[s+1]], width=rep(width(GdObject), each=freq[s]),
                           height=max(ydiff, abs(diff(ylim))*(1/nr)-separator),
@@ -3470,7 +3470,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     ## The special type 'mountain' has to be handled separately
     if("mountain" %in% type) {
         mbaseline <- if(is.null(baseline)) 0 else baseline[1]
-        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[c(1,2)]
         col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
         col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
         lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
@@ -3484,7 +3484,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     ## The special type 'polygon' has to be handled separately
     if("polygon" %in% type) {
         mbaseline <- if(is.null(baseline)) 0 else baseline[1]
-        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[1:2]
+        fill.mountain <- .dpOrDefault(GdObject, "fill.mountain", superpose.symbol$fill)[c(1,2)]
         col.mountain <- .dpOrDefault(GdObject, "col.mountain", pcols$col)[1]
         col.baseline <- .dpOrDefault(GdObject, "col.baseline", col.mountain)[1]
         lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
@@ -3630,7 +3630,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
             cmf <- c(0, cumsum(freq))
             for(s in seq_along(valsS))
             {
-                gradient <- colorRampPalette(c("white", pcols$col[s]))(ncolor+5)[-(1:5)]
+                gradient <- colorRampPalette(c("white", pcols$col[s]))(ncolor+5)[-seq_len(5)]
                 valsScaled <- .z2icol(valsS[[s]], ncolor, sort(ylim))
                 grid.rect(rep(start(GdObject), each=freq[s]), yy[(cmf[s]+1):cmf[s+1]], width=rep(width(GdObject), each=freq[s]),
                           height=max(ydiff, abs(diff(ylim))*(1/nr)-separator),
@@ -3970,8 +3970,8 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
                      gp=gpar(col=cols["acen"], fill=cols["acen"]))
     }
     ## Now the caps
-    str <- if(length(st)==1) 0:1 else st
-    edr <- if(length(ed)==1) 1:2 else ed
+    str <- if(length(st)==1) c(0,1) else st
+    edr <- if(length(ed)==1) c(1,2) else ed
     lc <- .roundedCap(c(stExt[1], margin), c(stExt[ls], 1-margin), str, vals, side="left", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
     rc <- .roundedCap(c(tail(stExt,1), margin), c(1, 1-margin), edr, vals, side="right", bevel=.dpOrDefault(GdObject, "bevel", 0.45))
     ## Now some outlines
@@ -4032,8 +4032,9 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
 
 setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxBase, prepare=FALSE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
-    if((is.logical(debug) && debug) || debug=="prepare")
+    if((is.logical(debug) && debug) || debug=="prepare") {
         browser()
+    }
     fcol <- .dpOrDefault(GdObject, "fontcolor", getBioColor("DNA_BASES_N"))
     cex <- max(0.3, .dpOrDefault(GdObject, "cex", 1))
     xscale <- if(!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
@@ -4046,12 +4047,14 @@ setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxB
         popViewport(1)
         return(invisible(GdObject))
     }
-    if((is.logical(debug) && debug) || debug=="draw")
+    if((is.logical(debug) && debug) || debug=="draw") {
         browser()
+    }
     imageMap(GdObject) <- NULL
     delta <- maxBase-minBase
-    if(delta==0)
+    if(delta==0) {
         return(invisible(GdObject))
+    }
     lwidth <- max(as.numeric(convertUnit(stringWidth(DNA_ALPHABET),"inches")))
     perLetter <- vpLocation()$isize["width"]/(maxBase-minBase+1)
     diff <- .pxResolution(.dpOrDefault(GdObject, "min.width", 2), coord="x")
@@ -4076,8 +4079,7 @@ setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxB
         }
     }
     ## The direction indicators
-    if(.dpOrDefault(GdObject, "add53", FALSE))
-    {
+    if(.dpOrDefault(GdObject, "add53", FALSE)) {
         if(.dpOrDefault(GdObject, "complement", FALSE)) {
             grid.text(label=expression("3'"), x=unit(minBase+0.1, "native"), just=c(0, 0.5), gp=gpar(col="#808080", cex=0.8))
             grid.text(label=expression("5'"), x=unit(maxBase-0.1, "native"), just=c(1, 0.5), gp=gpar(col="#808080", cex=0.8))
@@ -4302,11 +4304,11 @@ setMethod(".buildRange", signature("GRanges"),
               if(length(range))
               {
                   mandArgs <- names(defaults)
-                  ## Not quite sure how whether exisiting chromosome information in a GRanges object should generally have precedence over the
+                  ## Not quite sure how whether existing chromosome information in a GRanges object should generally have precedence over the
                   ## chromosome constructor, but probably that should be the case
                   args$chromosome <- NULL
                   range <- renameSeqlevels(range, setNames(.chrName(seqlevels(range)), seqlevels(range)))
-                  missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!sapply(args, is.null)))), "genome")
+                  missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1))))), "genome")
                   newVars <- .fillWithDefaults(DataFrame(chromosome=as.character(seqnames(range)), strand=as.character(strand(range)), mcols(range), check.names=FALSE),
                                                defaults[missing], args[missing], len=length(range), ignore = c("flag"))
                   if(any(c("start", "end", "strand", "chromosome") %in% colnames(newVars))) {
@@ -4417,7 +4419,7 @@ setMethod(".buildRange", signature("TxDb"),
                   nt2e$feature_type <- "ncRNA"
               }
               ## Now we can merge the three back together (we need to change the column names of t2c to make them all the same)
-              colnames(values(t2c))[1:2] <- c("exon_id", "exon_name")
+              colnames(values(t2c))[c(1,2)] <- c("exon_id", "exon_name")
               ## t2e <- c(t2c, t2f, t2t, nt2e) ## This is super-slow, much more efficient if we build the GRanges object from the individual bits and pieces
               vals <- DataFrame(exon_id=c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
                                 exon_name=c(values(t2c)$exon_name, values(t2f)$exon_name, values(t2t)$exon_name, values(nt2e)$exon_name),

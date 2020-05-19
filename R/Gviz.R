@@ -107,7 +107,7 @@
 .getImageMap <- function(coordinates) {
     devSize <- devRes()*par("din")
     loc <- vpLocation()
-    size <- loc$location[3:4] - loc$location[1:2]
+    size <- loc$location[c(3,4)] - loc$location[c(1,2)]
     xscale <- current.viewport()$xscale
     yscale <- current.viewport()$yscale
     fw <- diff(xscale)
@@ -485,22 +485,22 @@
                             bsel <- c(seq_len(mid-2), (mid+3):length(ylocs))
                             fh <- seq_len(length(bsel)/2)
                             sh <- (length(bsel)/2+1):length(bsel)
-                            ylocs <- c(ylocs[bsel[fh]] + offset[fh], ylocs[asel][1:2] + tail(offset,1), ylocs[asel][1],
+                            ylocs <- c(ylocs[bsel[fh]] + offset[fh], ylocs[asel][c(1,2)] + tail(offset,1), ylocs[asel][1],
                                        ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2, ylocs[asel][4],
                                        ylocs[asel][3:4] - tail(offset,1), ylocs[bsel[sh]] - offset[fh])
                             polFinal <- rbind(polFinal, data.frame(x=c(xlocs, rev(xlocs)), y=ylocs,
                                                                    id=paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
                                                                    stringsAsFactors=FALSE))
-                        }else if(str == "-" && abs(diff(xlocs[1:2])) > min.width){
+                        }else if(str == "-" && abs(diff(xlocs[c(1,2)])) > min.width){
                             yoffset <- c(rep(offset[-1], each=2), -rev(rep(offset[-1], each=2)))
-                            asel <- 1:2
-                            bsel <-  3:length(xlocs)
+                            asel <- c(1,2)
+                            bsel <-  seq(3, length(xlocs))
                             d <- abs(diff(xlocs[asel]))
                             afp <- if(type == "arrow") rep(xlocs[asel][2] - max(d*W, d-max.width), 2) else{
                                                                                                           rep(min(xlocs[asel][2], xlocs[asel][1] + W), 2)}
                             xlocs <- c(xlocs[asel][1], afp, xlocs[asel][2], xlocs[bsel], rev(xlocs[bsel]), xlocs[asel][2], afp, xlocs[asel][1])
-                            asel <- c(1:2, (length(ylocs)-1):length(ylocs))
-                            bsel <- 3:(length(ylocs)-2)
+                            asel <- c(1, 2, seq((length(ylocs)-1), length(ylocs)))
+                            bsel <- seq(3, (length(ylocs)-2))
                             ylocs <- c(ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2, ylocs[asel][1], rep(ylocs[asel][1]+offset[1], 2),
                                        ylocs[bsel]+yoffset, rep(ylocs[asel][3]-offset[1], 2), ylocs[asel][3], ylocs[asel][1] + abs(diff(ylocs[asel][c(1,3)]))/2)
                             polFinal <- rbind(polFinal, data.frame(x=xlocs, y=ylocs,
@@ -541,8 +541,8 @@
     pars <- data.frame()
     if(nrow(boxC$box)){
         box <- boxC$box
-        A <- box[,1:2,drop=FALSE]
-        B <- box[,3:4,drop=FALSE]
+        A <- box[,c(1,2),drop=FALSE]
+        B <- box[,c(3,4),drop=FALSE]
         ## First everything that is still a box
         osel <- abs(B[,1]-A[,1]) < min.width | !box$strand %in% c("+", "-")
         xx <-  c(A[osel,1], B[osel,1], B[osel,1], A[osel,1])
@@ -1465,14 +1465,14 @@ addScheme <- function(scheme, name){
 }
 
 
-.legendInfo <- function()
+.legendInfo <- function() 
 {
     legInfo <- matrix(FALSE, ncol=7, nrow=17, dimnames=list(c("p", "b", "l", "a", "s", "S", "r", "h", "smooth",
                                                               "histogram", "boxplot", "heatmap", "gradient", "mountain", "g", "horizon","confint"),
                                                             c("lty", "lwd", "pch", "col", "cex", "col.lines", "col.symbol")))
-    legInfo[2:9, c("lty", "lwd", "col.lines")] <- TRUE
-    legInfo[1:2, c("pch", "cex", "col.symbol")] <- TRUE
-    legInfo[1:12, "col"] <- TRUE
+    legInfo[seq(2,9), c("lty", "lwd", "col.lines")] <- TRUE
+    legInfo[seq(1,2), c("pch", "cex", "col.symbol")] <- TRUE
+    legInfo[seq(1,12), "col"] <- TRUE
     return(legInfo)
 }
 
@@ -1733,7 +1733,7 @@ plotTracks <- function(trackList, from=NULL, to=NULL, ..., sizes=NULL, panel.onl
     names(tc) <- tc
     if(!is.null(titleCoords))
     {
-        tcoord <- as.matrix(titleCoords[,1:4])
+        tcoord <- as.matrix(titleCoords[,seq(1,4)])
         rownames(tcoord) <- names(tc)
         map$titles <- ImageMap(coords=tcoord, tags=list(title=tc))
     }
