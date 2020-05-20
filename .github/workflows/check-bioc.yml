@@ -247,7 +247,9 @@ jobs:
           ## allowed size). We want the rest of the GHA to proceed even if
           ## there is a BiocCheck error in order to see the full output and
           ## run the tests on all operating systems.
-          BiocCheck::BiocCheck(dir('check', 'tar.gz$', full.names = TRUE), `no-check-R-ver` = TRUE, `no-check-bioc-help` = TRUE)
+          BiocCheck::BiocCheck(dir('check', 'tar.gz$', full.names = TRUE), `no-check-R-ver` = TRUE, `no-check-bioc-help` = TRUE,
+          `no-check-pkg-size` = TRUE, `no-check-file-size` = TRUE)
+          ## disabled checks for size, Gviz is to large
           ## For more options check http://bioconductor.org/packages/release/bioc/vignettes/BiocCheck/inst/doc/BiocCheck.html
         shell: Rscript {0}
 
@@ -266,7 +268,8 @@ jobs:
       - name: Install pkgdown
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
         run: |
-          remotes::install_dev("pkgdown")
+          remotes::install_cran("pkgdown")
+          # was using remotes::install_dev("pkgdown") however that failed
         shell: Rscript {0}
 
       - name: Install package
