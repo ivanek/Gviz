@@ -27,40 +27,49 @@ editor_options:
     console
 ---
 
-__Last edited__: 19 February 2020
+__Last edited__: 19 May 2020
 
 ```{r init, echo=FALSE, results='hide'}
-## crop=NULL or FALSE =>  fix vignette rendering based on yihui/knitr#1796
+library(knitr)
+
+## 1. issue with too large vignette, maybe optimizing png?
+## unfortunately it requires additional system libs -> not feasible
+##           `pngquant=""`, `optipng = "-o7"` both in `opts_chunk`
+## SOLUTION: might be to use `fig.retina = 1` and only set it to 2 (default)
+##           for figures which requires higher resolution
+##           or even decrease res `dpi = 72`, also both in `opts_chunk`
+## 
+## knit_hooks$set(optipng = hook_optipng,
+##                pngquant = hook_pngquant)
+##
+## 2. crop=NULL or FALSE =>  fix vignette rendering based on yihui/knitr#1796
 ## added also error=FALSE to include_graphics
-knitr::opts_chunk$set(
+
+opts_chunk$set(
   collapse = TRUE,
   tidy = FALSE,
+  fig.retina = 1,
   ## comment = "#>",
   error = FALSE,
   warning = FALSE,
   message = FALSE,
   crop = NULL                           
 )
-## stopifnot(requireNamespace("htmltools"))
-## htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 ## check the output type
-out_type <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+out_type <- opts_knit$get("rmarkdown.pandoc.to")
 if (is.null(out_type))
     out_type <- "html"
 
 ## add styling
 if (out_type == "html") {
     BiocStyle::markdown()
-    ## BiocStyle::markdown(css.files = c('custom.css'))
 } else if (out_type == "latex") {
     BiocStyle::latex()
 }
 ```
 
-```{r init2, echo=FALSE, results='hide'}
-library(knitr)
-
+```{r vignetteGvizSetup, echo=FALSE, results='hide'}
 source(system.file("scripts/documentation.R", package="Gviz"))
 xtabDetails <- details
 
@@ -614,7 +623,7 @@ coordinates will be determined from the context, e.g., from the
 `plotTracks` function, or, when plotted together with other
 track objects, from their genomic locations.
 
-```{r GenomeAxisTrackClass1, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass1, fig.width=7.5, fig.height=0.75}
 axisTrack <- GenomeAxisTrack()
 plotTracks(axisTrack, from = 1e6, to = 9e6)
 ```
@@ -625,7 +634,7 @@ gaps in genomic alignments. Such regions have to be supplied to the
 optional `range` argument of the constructor function as
 either an `GRanges` or an `IRanges` object.
 
-```{r GenomeAxisTrackClass2, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass2, fig.width=7.5, fig.height=0.75}
 axisTrack <- GenomeAxisTrack(range=IRanges(start = c(2e6, 4e6),
                                            end = c(3e6, 7e6),
                                            names = rep("N-stretch", 2)))
@@ -635,7 +644,7 @@ plotTracks(axisTrack, from = 1e6, to = 9e6)
 If names have been supplied with the `range` argument, those
 can also be added to the plot.
 
-```{r GenomeAxisTrackClass2a, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass2a, fig.width=7.5, fig.height=0.75}
 plotTracks(axisTrack, from = 1e6, to = 9e6, showId = TRUE)
 ```
 
@@ -645,7 +654,7 @@ of `GenomeAxisTrack` plots. For instance, one could add
 directional indicators to the axis using the `add53` and
 `add35` parameters.
 
-```{r GenomeAxisTrackClass3, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass3, fig.width=7.5, fig.height=0.75}
 plotTracks(axisTrack, from = 1e6, to = 9e6, add53 = TRUE, add35 = TRUE)
 ```
 
@@ -653,7 +662,7 @@ Sometimes the resolution of the tick marks is not sufficient, in which
 case the `littleTicks` argument can be used to have a more
 fine-grained axis annotation.
 
-```{r GenomeAxisTrackClass4, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass4, fig.width=7.5, fig.height=0.75}
 plotTracks(axisTrack, from = 1e6, to = 9e6, add53 = TRUE,
            add35 = TRUE, littleTicks = TRUE)
 ```
@@ -665,7 +674,7 @@ parameter, which takes an integer value greater then zero. The
 location of the tick marks are displayed as a fraction of
 $10^{exponent}$.
 
-```{r GenomeAxisTrackClass5, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass5, fig.width=7.5, fig.height=0.75}
 plotTracks(axisTrack, from = 1e6, to = 9e6, exponent = 4)
 ```
 
@@ -674,7 +683,7 @@ of the tick marks. It takes one of the values `alternating`,
 `revAlternating`, `above` or `below`. For instance we
 could align all tick marks underneath the axis.
 
-```{r GenomeAxisTrackClass6, fig.width=7.5, fig.height=0.5}
+```{r GenomeAxisTrackClass6, fig.width=7.5, fig.height=0.75}
 plotTracks(axisTrack, from = 1e6, to = 9e6, labelPos = "below")
 ```
 
@@ -1691,6 +1700,20 @@ list of non-coding feature types depending on the source of the data.
 feature(txTr)
 plotTracks(txTr)
 ```
+
+<!--
+The `TxDb` do not provide gene symbols, however there is a possibility to set 
+them using the `r Biocpkg("AnnotationDbi")` framework and corresponding 
+`org.eg...db` package. For example here we can use `r Biocpkg("org.eg.Hs.db")`.
+
+```{r generegtrack4g, eval=FALSE, echo=FALSE, results='hide', fig.width=7.5, fig.height=1}
+symbol(txTr) <- mapIds(org.Hs.eg.db, 
+                            keys=sub("\\.\\d+$", "", gene(txTr)), 
+                            keytype="ENSEMBL", column="SYMBOL")
+symbol(txTr) <- ifelse(is.na(symbol(txTr)), gene(txTr), symbol(txTr))
+plotTracks(txTr, transcriptAnnotation = "symbol")
+```
+-->
 
 ### Building GeneRegionTrack objects from EnsDbs
 
