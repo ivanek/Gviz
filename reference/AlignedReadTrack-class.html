@@ -143,7 +143,7 @@ A class to represent short sequences that have been aligned to a
       <td><p>An object of class <code>GRanges</code>, or a
     <code>data.frame</code> which will be coerced into one in which case it
     needs to contain at least the three columns:</p>
-<p></p><dl>
+<p></p><dl'>
 
       <dt></dt><dd><p><code>start</code>, <code>end</code>: the start and end coordinates
     for the track items.</p></dd>
@@ -232,7 +232,7 @@ A class to represent short sequences that have been aligned to a
 
     
 
-<p></p><dl>
+<p></p><dl'>
 
     <dt><code>coverage</code>:</dt><dd><p>Object of class <code>"list"</code>, a list of
       coverage vectors for the plus strand, the minus strand and for
@@ -287,7 +287,7 @@ A class to represent short sequences that have been aligned to a
 <p>In the following code chunks, <code>obj</code> is considered to be an object
   of class <code>AlignedReadTrack</code>.</p>
 <p><b><em>Exported in the name space:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>[</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: subset the items in
       the <code>AlignedReadTrack</code>. This is essentially similar to
@@ -295,38 +295,38 @@ A class to represent short sequences that have been aligned to a
       <code>range</code> slot. For most applications, the <code>subset</code> method
       may be more appropriate. The operation is only supported for
       objects that still contain all the read locations, i.e.,
-      <code>coverageOnly=FALSE</code>.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>i</code>: subsetting indices</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
+      <code>coverageOnly=FALSE</code>.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>i</code>: subsetting indices</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
 
     <dt>subset</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: subset a
-      <code>AlignedReadTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, stacks=FALSE)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
+      <code>AlignedReadTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, stacks=FALSE)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
       to.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the object after subsetting. Usually
       not necessary.</p></dd>    <dt></dt><dd><p><code>stacks</code>: recompute the stacking after subsetting
-      which can be expensive and is not always necessary.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)</a></code></p></dd></dl></p></dd>
+      which can be expensive and is not always necessary.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE, stacks=FALSE)</a></code></p></dd></dl></p></dd>
 
     <dt>split</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: split an
       <code>AlignedReadTrack</code> object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
-      operation is a list of <code>AlignedReadTrack</code> objects.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
+      operation is a list of <code>AlignedReadTrack</code> objects.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
 
     <dt>coverage</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the
-      coverage vector for one of the strands, or the combined vector.      <em>Usage:</em>      <code>coverage(x, strand="*")</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>strand</code>: the selector for the strand, <code>+</code> for
+      coverage vector for one of the strands, or the combined vector.      <em>Usage:</em>      <code>coverage(x, strand="*")</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>strand</code>: the selector for the strand, <code>+</code> for
       the Watson strand, <code>-</code> for the Crick strand or <code>*</code>
-      for both strands.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>coveraget(obj)</code></p></dd>    <dt></dt><dd><p><code>coverage(obj, strand="-")</code></p></dd></dl></p></dd>
+      for both strands.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>coveraget(obj)</code></p></dd>    <dt></dt><dd><p><code>coverage(obj, strand="-")</code></p></dd></dl></p></dd>
   
 </dl>
 
 <p><b><em>Internal methods:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
 
     <dt>setCoverage</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>:
       recompute the coverage on the plus and minus strand as well as for
-      the combined strands and update the respective slot.      <em>Usage:</em>      <code>setCoverage(GdObject)</code>       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>setCoverage(obj)</code></p></dd></dl></p></dd>
+      the combined strands and update the respective slot.      <em>Usage:</em>      <code>setCoverage(GdObject)</code>       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>setCoverage(obj)</code></p></dd></dl></p></dd>
 
     <dt>drawAxis</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: add a y-axis
-      to the title panel of a track.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(GdObject, from, to, subset=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute axis range from the data
+      to the title panel of a track.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(GdObject, from, to, subset=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute axis range from the data
       within a certain coordinates range only.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object prior to calculating
-      the axis ranges. Can be expensive and is not always needed.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
+      the axis ranges. Can be expensive and is not always needed.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
 
     <dt>drawGD</dt><dd><p><code>signature(gdObject="AlignedReadTrack")</code>: plot the
       object to a graphics device. The return value of this method is
@@ -338,15 +338,15 @@ A class to represent short sequences that have been aligned to a
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
+    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
       plot.</p></dd>    <dt></dt><dd><p><code>prepare</code>: run method in preparation or in
       production mode.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object to the visible region
-    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
+    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
         subset=FALSE)</code></p></dd></dl></p></dd>
 
-    <dt>drawGrid</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: draw grid within a certain
+    <dt>drawGrid</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: draw grid within a certain
       coordinates range. This needs to be supplied for the plotting
-      function to know the current genomic coordinates.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::drawGrid(obj, from=10, to=100)</code></p></dd></dl></p></dd>
+      function to know the current genomic coordinates.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::drawGrid(obj, from=10, to=100)</code></p></dd></dl></p></dd>
 
 
     <dt>initialize</dt><dd><p><code>signature(.Object="AligendReadTrack")</code>:
@@ -359,50 +359,50 @@ A class to represent short sequences that have been aligned to a
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>stacking</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: return
-      the current stacking type.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacking(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>stacking(obj)</a></code></p></dd></dl></p></dd>
+      the current stacking type.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacking(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>stacking(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>stacking&lt;-</dt><dd><p><code>signature(GdObject="AlignedReadTrack",
       value="character")</code>: set the object's stacking type to one in
-      <code><a href='https://rdrr.io/r/base/c.html'>c(hide, dense, squish, pack,full)</a></code>.      <em>Usage:</em>      <code>stacking&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>stacking(obj) &lt;- "squish" </code></p></dd></dl></p></dd>
+      <code><a href='https://rdrr.io/r/base/c.html'>c(hide, dense, squish, pack,full)</a></code>.      <em>Usage:</em>      <code>stacking&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>stacking(obj) &lt;- "squish" </code></p></dd></dl></p></dd>
 
     <dt>setStacks</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>:
       recompute the stacks based on the available space and on the
-      object's track items and stacking settings.      <em>Usage:</em>      <code>setStacks(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute stacking within a
+      object's track items and stacking settings.      <em>Usage:</em>      <code>setStacks(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute stacking within a
       certain coordinates range. This needs to be supplied for the
-      plotting function to know the current genomic coordinates.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::setStacks(obj)</code></p></dd></dl></p></dd>
+      plotting function to know the current genomic coordinates.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::setStacks(obj)</code></p></dd></dl></p></dd>
 
     <dt>stacks</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: return
-      the stack indices for each track item.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacks(GdObject)</a></code>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::stacks(obj)</code></p></dd></dl></p></dd>
+      the stack indices for each track item.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacks(GdObject)</a></code>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::stacks(obj)</code></p></dd></dl></p></dd>
 
     <dt>chromosome</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>:
-      return the chromosome for which the track is defined.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
+      return the chromosome for which the track is defined.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>chromosome&lt;-</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>:
       replace the value of the track's chromosome. This has to be a
       valid UCSC chromosome identifier or an integer or character
-      scalar that can be reasonably coerced into one.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
+      scalar that can be reasonably coerced into one.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
 
     <dt>start, end, width</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: the
       start or end coordinates of the track items, or their width in
-      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
+      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
 
     <dt>start&lt;-, end&lt;-, width&lt;-</dt><dd><p><code>signature(x="AlignedReadTrack")</code>:
       replace the start or end coordinates of the track items, or their
-      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
+      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
 
     <dt>position</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: the
       arithmetic mean of the track item's coordionates, i.e.,
-      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
+      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>feature</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: return the
       grouping information for track items. For certain sub-classes,
       groups may be indicated by different color schemes when
       plotting. See <code><a href='grouping.html'>grouping</a></code> or
       <code><a href='AnnotationTrack-class.html'>AnnotationTrack</a></code> and
-      <code><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></code> for details.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
+      <code><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></code> for details.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>feature&lt;-</dt><dd><p><code>signature(gdObject="AlignedReadTrack",
       value="character")</code>: set the grouping information for track
@@ -410,74 +410,74 @@ A class to represent short sequences that have been aligned to a
       that can be coerced into one) of the same length as the number of
       items in the <code>AlignedReadTrack</code>. See <code><a href='grouping.html'>grouping</a></code> or
       <code><a href='AnnotationTrack-class.html'>AnnotationTrack</a></code> and
-      <code><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></code> for details.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      <code><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></code> for details.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
 
-    <dt>genome</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
+    <dt>genome</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
 
     <dt>genome&lt;-</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
-      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
+      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the number
-      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>range</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the genomic
       coordinates for the track as an object of class
-      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
+      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>ranges</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the genomic
       coordinates for the track along with all additional annotation
-      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
+      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
-      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
+      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand&lt;-</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: replace the
       strand information for the track items. The replacement value
-      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
+      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
 
     <dt>values</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return all
       additional annotation information except for the genomic coordinates
-      for the track items as a data.frame.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
+      for the track items as a data.frame.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
 
     <dt>coerce</dt><dd><p><code>signature(from="AlignedReadTrack",
     to="data.frame")</code>: coerce the <code>GRanges</code>
-    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
+    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
 
     <dt>displayPars</dt><dd><p><code>signature(x="AlignedReadTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
 
 
     <dt>displayPars</dt><dd><p><code>signature(x="AlignedReadTrack",
       name="missing")</code>: list the value of all available display
       parameters. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="AlignedReadTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="AlignedReadTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="AlignedReadTrack",
       value="list")</code>: set display parameters using the values of the
       named list in <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details
-      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="AlignedReadTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>AlignedReadTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="AlignedReadTrack", value="list")</code>: set
       display parameters by the values of the named list in
@@ -485,24 +485,24 @@ A class to represent short sequences that have been aligned to a
       <code>AlignedReadTrack</code> class are pass-by-reference, so no
       re-assignmnet to the symbol <code>obj</code> is necessary. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
 
     <dt>group</dt><dd><p><code>signature(GdObject="AlignedReadTrack")</code>: return
       grouping information for the individual items in the track. Unless
       overwritten in one of the sub-classes, this usualy returns
-      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
+      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names&lt;-</dt><dd><p><code>signature(x="AlignedReadTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="AlignedReadTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="AlignedReadTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -515,7 +515,7 @@ A class to represent short sequences that have been aligned to a
   them have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   <code><a href='settings.html'>settings</a></code> for details on setting graphical parameters
-  for tracks.</p><dl>
+  for tracks.</p><dl'>
 
     <dt></dt><dd><p><code>collapse=FALSE</code>: collapse overlapping ranges and
       aggregate the underlying data.</p></dd> 
@@ -546,9 +546,9 @@ A class to represent short sequences that have been aligned to a
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>AlignedReadTrack</code> objects.</p>
-<p></p><dl>
+<p></p><dl'>
 
-    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>StackedTrack</a></code>:       <dl>        <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
+    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>StackedTrack</a></code>:       <dl'>        <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
           stack and vice versa.</p></dd>         <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
@@ -560,7 +560,7 @@ A class to represent short sequences that have been aligned to a
           and thus one quarter of the available space each is used for
           spacing above and below the glyph. Defaults to 0.75.</p></dd> </dl></p></dd> 
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -719,7 +719,7 @@ A class to represent short sequences that have been aligned to a
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

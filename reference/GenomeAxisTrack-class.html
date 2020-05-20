@@ -180,7 +180,7 @@
   <code>GenomeAxisTrack</code>.</p>
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p><dl>
+    <p></p><dl'>
 
     <dt><code>range</code>:</dt><dd><p>Object of class <code>GRanges</code>,
       highlighted on the axis.</p></dd>
@@ -208,52 +208,52 @@
 
 <p>In the following code chunks, <code>obj</code> is considered to be an object of class <code>GenomeAxisTrack</code>.</p>
 <p><b><em>Exported in the name space:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>[</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: subset the
       <code>GRanges</code> object in the <code>range</code> slot. For most
-      applications, the <code>subset</code> method may be more appropriate.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>i</code>: subsetting incides.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
+      applications, the <code>subset</code> method may be more appropriate.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>i</code>: subsetting incides.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
 
     <dt>start, end, width</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: the
       start or end coordinates of the track items, or their width in
-      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
+      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
 
     <dt>range</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return the genomic
       coordinates for the track as an object of class
-      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
+      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>ranges</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return the genomic
       coordinates for the track along with all additional annotation
-      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
+      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
-      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
+      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
 
     <dt>values</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return all
       additional annotation information except for the genomic coordinates
-      for the track items.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
+      for the track items.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
 
     <dt>subset</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: subset a
-      <code>GenomeAxisTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
+      <code>GenomeAxisTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
       to.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the object after subsetting. Usually
-      not necessary.</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
+      not necessary.</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return the
-      number of items stored in the <code>ranges</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      number of items stored in the <code>ranges</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
 <p><em>Internal methods:</em></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>drawGD</dt><dd><p><code>signature(GdObject="GenomeAxisTrack")</code>: the
       workhorse function to plot the object.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
+    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
       plot.</p></dd>    <dt></dt><dd><p><code>prepare</code>: run method in preparation or in
       production mode.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object to the visible region
-      or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
+      or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
         subset=FALSE)</code></p></dd></dl></p></dd>
 
     <dt>collapseTrack</dt><dd><p><code>signature(GdObject="GenomeAxisTrack")</code>:
@@ -261,9 +261,9 @@
       overlapping track items based on the available resolution and
       increase the width and height of all track objects to a minimum
       value to avoid rendering issues. See <code><a href='collapsing.html'>collapsing</a></code> for
-      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
+      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
       everything below that will be inflated to a width of
-      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
+      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
 
     <dt>initialize</dt><dd><p><code>signature(.Object="GenomeAxisTrack")</code>:
       initialize the object</p></dd>
@@ -275,73 +275,73 @@
 </dl>
 
 <p><b><em>Inherited:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>displayPars</dt><dd><p><code>signature(x="GenomeAxisTrack", name="character")</code>:
       list the value of the display parameter <code>name</code>. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
 
 
     <dt>displayPars</dt><dd><p><code>signature(x="GenomeAxisTrack", name="missing")</code>:
       list the value of all available display parameters. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="GenomeAxisTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="GenomeAxisTrack", name="missing")</code>: alias
       for the <code>displayPars</code> method. See <code><a href='settings.html'>settings</a></code> for
-      details on display parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      details on display parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="GenomeAxisTrack", value="list")</code>:
       set display parameters using the values of the named list in
       <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="GenomeAxisTrack", value="character")</code>: set
       the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>GenomeAxisTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="GenomeAxisTrack", value="list")</code>: set
       display parameters by the values of the named list in
       <code>value</code>. Note that display parameters in the <code>GenomeAxisTrack</code>
       class are pass-by-reference, so no re-assignmnet to the symbol
       <code>obj</code> is necessary. See <code><a href='settings.html'>settings</a></code> for details on
-      display parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      display parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
 
     <dt>group</dt><dd><p><code>signature(GdObject="GenomeAxisTrack")</code>: return
       grouping information for the individual items in the track. Unless
       overwritten in one of the sub-classes, this usualy returns
-      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
+      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names&lt;-</dt><dd><p><code>signature(x="GenomeAxisTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="GenomeAxisTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="GenomeAxisTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>drawAxis</dt><dd><p><code>signature(GdObject="GenomeAxisTrack")</code>: add a
       y-axis to the title panel of a track if necessary. Unless
       overwritten in one of the sub-classes this usualy does not plot
-      anything and returns <code>NULL</code>.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(x, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
+      anything and returns <code>NULL</code>.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(x, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
 
     <dt>drawGrid</dt><dd><p><code>signature(GdObject="GenomeAxisTrack")</code>: superpose a
       grid on top of a track if necessary. Unless overwritten in one of
       the sub-classes this usualy does not plot anything and returns
-      <code>NULL</code>.      <em>Usage:</em>      <code>drawGrid(GdObject, ...)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
+      <code>NULL</code>.      <em>Usage:</em>      <code>drawGrid(GdObject, ...)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -354,7 +354,7 @@
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   <code><a href='settings.html'>settings</a></code> for details on setting graphical parameters
-  for tracks.</p><dl>
+  for tracks.</p><dl'>
 
     <dt></dt><dd><p><code>add35=FALSE</code>: Logical scalar. Add 3' to 5' direction
       indicators.</p></dd> 
@@ -439,9 +439,9 @@
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>GenomeAxisTrack</code> objects.</p>
-<p></p><dl>
+<p></p><dl'>
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -602,10 +602,10 @@
 <span class='co'>## Grouping</span>
 <span class='fu'><a href='AnnotationTrack-class.html'>group</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='co'>## HTML image map</span>
-<span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='no'>axTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>axTrack</span>)$<span class='no'>foo</span></div><div class='img'><img src='GenomeAxisTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt;          x1       y1        x2       y2
-#&gt; 1  14.45871 105.6462  48.92837 155.9433
-#&gt; 2 152.33738 105.6462 221.27671 155.9433
-#&gt; 3 497.03405 105.6462 634.91272 155.9433</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; $title
+<span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='no'>axTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>axTrack</span>)$<span class='no'>foo</span></div><div class='img'><img src='GenomeAxisTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt;          x1    y1        x2    y2
+#&gt; 1  13.75372 227.4  40.22553 276.6
+#&gt; 2 119.64095 227.4 172.58457 276.6
+#&gt; 3 384.35905 227.4 489.71685 276.6</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>axTrack</span>)</div><div class='output co'>#&gt; $title
 #&gt;   1   2   3 
 #&gt; "1" "2" "3" 
 #&gt; 
@@ -614,8 +614,8 @@
 #&gt; "100" "300" "800" 
 #&gt; 
 #&gt; $end
-#&gt;      1      2      3 
-#&gt;  "150"  "400" "1000" 
+#&gt;     1     2     3 
+#&gt; "150" "400" "999" 
 #&gt; </div><div class='input'>
 <span class='co'>## adding an axis to another track</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cyp2b10</span>)
@@ -641,7 +641,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

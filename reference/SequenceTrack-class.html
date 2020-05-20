@@ -146,7 +146,7 @@ A track class to represent genomic sequences. The three child classes
 <p>A meta argument to handle the different input types, making the
     construction of a <code>SequenceTrack</code> as flexible as possible.</p>    
 <p>The different input options for <code>sequence</code> are:</p>    
-<p></p><dl>
+<p></p><dl'>
       
       <dt></dt><dd><p>An object of class <code>DNAStringSet</code>. The
     individual <code>DNAString</code>s are considered to be
@@ -282,7 +282,7 @@ A track class to represent genomic sequences. The three child classes
 
     
 
-<p></p><dl>
+<p></p><dl'>
         
     <dt><code>chromosome</code>:</dt><dd><p>Object of class <code>"character"</code>, the
       chromosome on which the track is defined. There can only be a
@@ -324,35 +324,35 @@ A track class to represent genomic sequences. The three child classes
 <p>In the following code chunks, <code>obj</code> is considered to be an object
   inheriting from class <code>SequenceTrack</code>.</p>  
 <p><b><em>Exported in the name space:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
       
       <dt>chromosome</dt><dd><p><code>signature(GdObject="SequenceTrack")</code>:
-    return the chromosome for which the track is defined.    <em>Usage:</em>    <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>        <em>Examples:</em>    <dl>      <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
+    return the chromosome for which the track is defined.    <em>Usage:</em>    <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>        <em>Examples:</em>    <dl'>      <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
     
       <dt>chromosome&lt;-</dt><dd><p><code>signature(GdObject="SequenceTrack")</code>:
     replace the value of the track's chromosome. This has to be a
     valid UCSC chromosome identifier or an integer or character
-    scalar that can be reasonably coerced into one.    <em>Usage:</em>    <code>chromosome&lt;-(GdObject, value)</code>    <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>        <em>Examples:</em>    <dl>      <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
+    scalar that can be reasonably coerced into one.    <em>Usage:</em>    <code>chromosome&lt;-(GdObject, value)</code>    <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>        <em>Examples:</em>    <dl'>      <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
     
-    <dt>genome</dt><dd><p><code>signature(x="SequenceTrack")</code>: return the track's genome.       <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
+    <dt>genome</dt><dd><p><code>signature(x="SequenceTrack")</code>: return the track's genome.       <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
 
     <dt>genome&lt;-</dt><dd><p><code>signature(x="SequenceTrack")</code>: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
-      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
+      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="SequenceTrack")</code>: return the number
-      of nucleotides in the track's sequence.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      of nucleotides in the track's sequence.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
    
     <dt>seqnames</dt><dd><p><code>signature(x="SequenceTrack")</code>: return the
-    names (i.e., the chromosome) of the sequences contained in the object.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>seqnames(obj)</code></p></dd></dl></p></dd>
+    names (i.e., the chromosome) of the sequences contained in the object.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>seqnames(obj)</code></p></dd></dl></p></dd>
 
     <dt>subseq</dt><dd><p><code>signature(x="SequenceTrack")</code>: Extract a
-      sub-sequence from the track.      <em>Usage:</em>      <code>subseq(x, start=NA, end=NA, width=NA)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>start</code>: the start coordinate for the sub-sequence.</p></dd>    <dt></dt><dd><p><code>end</code>: the end coordinate for the sub-sequence.</p></dd>    <dt></dt><dd><p><code>width</code>: the width of the sub-sequence.</p></dd></dl>       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>subseq(obj, 1, 10)</code></p></dd></dl></p></dd>
+      sub-sequence from the track.      <em>Usage:</em>      <code>subseq(x, start=NA, end=NA, width=NA)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>start</code>: the start coordinate for the sub-sequence.</p></dd>    <dt></dt><dd><p><code>end</code>: the end coordinate for the sub-sequence.</p></dd>    <dt></dt><dd><p><code>width</code>: the width of the sub-sequence.</p></dd></dl>       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>subseq(obj, 1, 10)</code></p></dd></dl></p></dd>
   
 </dl>
     
 <p><b><em>Internal methods:</em></b></p>  
-<p></p><dl>
+<p></p><dl'>
     
     <dt>initialize</dt><dd><p><code>signature(.Object="SequenceTrack")</code>:
       initialize the object.</p></dd>
@@ -360,69 +360,69 @@ A track class to represent genomic sequences. The three child classes
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>  
-<p></p><dl>
+<p></p><dl'>
 
      <dt>displayPars</dt><dd><p><code>signature(x="SequenceTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
       
     
     <dt>displayPars</dt><dd><p><code>signature(x="SequenceTrack", name="missing")</code>:
       list the value of all available display parameters. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>getPar</dt><dd><p><code>signature(x="SequenceTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
     
     <dt>getPar</dt><dd><p><code>signature(x="SequenceTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="SequenceTrack", value="list")</code>:
       set display parameters using the values of the named list in
       <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
     
     <dt>setPar</dt><dd><p><code>signature(x="SequenceTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>SequenceTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
     
     <dt>setPar</dt><dd><p><code>signature(x="SequenceTrack", value="list")</code>: set
       display parameters by the values of the named list in
       <code>value</code>.  Note that display parameters in the
       <code>SequenceTrack</code> class are pass-by-reference, so no re-assignmnet
       to the symbol <code>obj</code> is necessary. See <code><a href='settings.html'>settings</a></code>
-      for details on display parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      for details on display parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
     
     <dt>names</dt><dd><p><code>signature(x="SequenceTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>names&lt;-</dt><dd><p><code>signature(x="SequenceTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="SequenceTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="SequenceTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>drawAxis</dt><dd><p><code>signature(GdObject="SequenceTrack")</code>: add a
       y-axis to the title panel of a track if necessary. Unless
       overwritten in one of the sub-classes this usualy does not plot
-      anything and returns <code>NULL</code>.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(x, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
+      anything and returns <code>NULL</code>.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(x, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
     
     <dt>drawGrid</dt><dd><p><code>signature(GdObject="SequenceTrack")</code>: superpose a
       grid on top of a track if necessary. Unless overwritten in one of
       the sub-classes this usualy does not plot anything and returns
-      <code>NULL</code>.      <em>Usage:</em>      <code>drawGrid(GdObject, ...)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
+      <code>NULL</code>.      <em>Usage:</em>      <code>drawGrid(GdObject, ...)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -435,7 +435,7 @@ A track class to represent genomic sequences. The three child classes
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   <code><a href='settings.html'>settings</a></code> for details on setting graphical parameters
-  for tracks.</p><dl>
+  for tracks.</p><dl'>
 
     <dt></dt><dd><p><code>add53=FALSE</code>: Logical scalar. Add a direction
       indicator.</p></dd> 
@@ -481,9 +481,9 @@ A track class to represent genomic sequences. The three child classes
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>SequenceTrack</code> objects.</p>
-<p></p><dl>
+<p></p><dl'>
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -644,10 +644,10 @@ A track class to represent genomic sequences. The three child classes
 <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>sTrack</span>)</div><div class='output co'>#&gt; [1] 243199373</div><div class='input'>
 <span class='co'>## Sequence extraction</span>
 <span class='fu'>subseq</span>(<span class='no'>sTrack</span>, <span class='kw'>start</span><span class='kw'>=</span><span class='fl'>100000</span>, <span class='kw'>width</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; 20-letter DNAString object
-#&gt; seq: <span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #AFFFFF;'>G</span><span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #AFFFAF;'>CC</span><span style='color: #000000;background-color: #FFAFAF;'>AAA</span><span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #FFAFAF;'>A</span><span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #AFFFFF;'>G</span><span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #AFFFAF;'>C</span><span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #AFFFFF;'>GG</span><span style='color: #000000;background-color: #FFD7AF;'>T</span><span style='color: #000000;background-color: #AFFFFF;'>G</span><span style='color: #000000;background-color: #FFAFAF;'>A</span><span></div><div class='input'><span class='co'>## beyond the stored sequence range</span>
+#&gt; seq: TGTCCAAATATGTCTGGTGA</div><div class='input'><span class='co'>## beyond the stored sequence range</span>
 <span class='fu'>subseq</span>(<span class='no'>sTrack</span>, <span class='kw'>start</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>sTrack</span>), <span class='kw'>width</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; 20-letter DNAString object
-#&gt; seq: </span><span style='color: #EEEEEE;background-color: #B2B2B2;'>N</span><span>-------------------</div><div class='input'>
-</div></span></pre>
+#&gt; seq: N-------------------</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -663,7 +663,7 @@ A track class to represent genomic sequences. The three child classes
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

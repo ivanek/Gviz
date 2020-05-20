@@ -145,7 +145,7 @@ A class to store numeric data values along genomic
     to create the object has to be provided as individual function
     arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
-<p></p><dl>
+<p></p><dl'>
 
       <dt></dt><dd><p>A <code>GRanges</code> object: essentially all the necessary
     information to create a <code>DataTrack</code> can be contained in a
@@ -324,7 +324,7 @@ A class to store numeric data values along genomic
 
     
 
-<p></p><dl>
+<p></p><dl'>
 
     <dt><code>data</code>:</dt><dd><p>Object of class <code>"matrix"</code>, containing the
       data values to be plotted. Individual rows of the matrix
@@ -376,72 +376,72 @@ A class to store numeric data values along genomic
 <p>In the following code chunks, <code>obj</code> is considered to be an
   object of class <code>DataTrack</code>.</p>
 <p><b><em>Exported in the name space:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>[</dt><dd><p><code>signature(x="DataTrack")</code>: subsetting of the
       object, either to a subet of coordinates, or to a subset of
-      samples.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices for coordinates
-      (<code>i</code>) or samples (<code>j</code>).</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>obj[1:3,]</code></p></dd>    <dt></dt><dd><p><code>obj[,2:4]</code></p></dd></dl></p></dd>
+      samples.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices for coordinates
+      (<code>i</code>) or samples (<code>j</code>).</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>obj[1:3,]</code></p></dd>    <dt></dt><dd><p><code>obj[,2:4]</code></p></dd></dl></p></dd>
 
     <dt>values</dt><dd><p><code>signature(x="DataTrack")</code>: return the raw data
       values of the object, i.e., the data matrix in the <code>data</code>
-      slot.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
+      slot.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
 
      <dt>values&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>: replace the data
-      matrix in the <code>data</code> slot.      <em>Usage:</em>      <code>values&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj) &lt;- matrix(1:10, ncol=2)</code></p></dd></dl></p></dd>
+      matrix in the <code>data</code> slot.      <em>Usage:</em>      <code>values&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj) &lt;- matrix(1:10, ncol=2)</code></p></dd></dl></p></dd>
 
     <dt>score</dt><dd><p><code>signature(x="DataTrack")</code>: return processed data
       values of the object exactly like they would be plotted to the
       device (modulo any potential aggregration or collapsing), i.e.,
-      the raw data with optional transformations applied.      <em>Usage:</em>      <code>score(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: restrict to data
+      the raw data with optional transformations applied.      <em>Usage:</em>      <code>score(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: restrict to data
       within a certain coordinates range.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the return values by
       coordinates. This is usually not necessary since the data
       should already be ordererd, however this is not formaly
       checked anywhere and some operations strictly depend on
       ordered data.</p></dd>    <dt></dt><dd><p><code>transformation</code>: apply a data transformation
       in case one is defined as the <code>transformation</code> display
-      parameter.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>score(obj)</code></p></dd>    <dt></dt><dd><p><code>score(obj, from=100, to=10000)</code></p></dd>    <dt></dt><dd><p><code>score(obj, sort=TRUE, transformation=FALSE)</code></p></dd></dl></p></dd>
+      parameter.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>score(obj)</code></p></dd>    <dt></dt><dd><p><code>score(obj, from=100, to=10000)</code></p></dd>    <dt></dt><dd><p><code>score(obj, sort=TRUE, transformation=FALSE)</code></p></dd></dl></p></dd>
 
     <dt>split</dt><dd><p><code>signature(x="DataTrack")</code>: split a
       <code>DataTrack</code> object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
-      operation is a list of <code>DataTrack</code> objects.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
+      operation is a list of <code>DataTrack</code> objects.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
 
     <dt>range, ranges</dt><dd><p><code>signature(x="DataTrack")</code>: return the genomic
       coordinates for the track as an object of class
-      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>       <code>ranges(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
+      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>       <code>ranges(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand</dt><dd><p><code>signature(x="DataTrack")</code>: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
-      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
+      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>: replace the
       strand information for the track items. The replacement value
-      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
+      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
 
     <dt>feature</dt><dd><p><code>signature(GdObject="DataTrack")</code>: returns NULL
       since there is no grouping information for the ranges in a
-      <code>DataTrack</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
+      <code>DataTrack</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>feature&lt;-</dt><dd><p><code>signature(gdObject="DataTrack",
       value="character")</code>: this return the unaltered input object since
       there  is no grouping information for the ranges in a
-      <code>DataTrack</code>.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      <code>DataTrack</code>.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
   
 </dl>
 
 <p><b><em>Internal methods:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>collapseTrack</dt><dd><p><code>signature(gdObject="DataTrack")</code>:
       preprocess the track before plotting. This will collapse
       overlapping track items based on the available resolution and
       increase the width and height of all track objects to a minimum
       value to avoid rendering issues. See <code><a href='collapsing.html'>collapsing</a></code> for
-      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
+      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
       everything below that will be inflated to a width of
-      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
+      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
 
     <dt>drawGD</dt><dd><p><code>signature(GdObject="DataTrack")</code>: plot the
       object to a graphics device. The return value of this method is
@@ -453,15 +453,15 @@ A class to store numeric data values along genomic
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
+    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
       plot.</p></dd>    <dt></dt><dd><p><code>prepare</code>: run method in preparation or in
       production mode.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object to the visible region
-    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
+    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
         subset=FALSE)</code></p></dd></dl></p></dd>
 
     <dt>drawAxis</dt><dd><p><code>signature(GdObject="DataTrack")</code>: add a y-axis
-      to the title panel of a track.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(GdObject, from, to, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute axis range from the data
-      within a certain coordinates range only.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
+      to the title panel of a track.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(GdObject, from, to, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute axis range from the data
+      within a certain coordinates range only.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
 
     <dt>initialize</dt><dd><p><code>signature(.Object="DataTrack")</code>:
       initialize the object</p></dd>
@@ -473,16 +473,16 @@ A class to store numeric data values along genomic
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt>drawGrid</dt><dd><p><code>signature(GdObject="DataTrack")</code>:
-      superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to, ...)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, restrict to
-      coordinate range before computing the grid lines.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
+      superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to, ...)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, restrict to
+      coordinate range before computing the grid lines.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
 
     <dt>chromosome</dt><dd><p><code>signature(GdObject="DataTrack")</code>: return the
       currently active chromosome for which the track is defined. For
       consistancy with other Bioconductor packages, the
-      <code>isActiveSeq</code> alias is also provided.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
+      <code>isActiveSeq</code> alias is also provided.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>chromosome&lt;-</dt><dd><p><code>signature(GdObject="DataTrack")</code>: replace
       the value of the track's active chromosome. This has to be a valid
@@ -490,71 +490,71 @@ A class to store numeric data values along genomic
       can be reasonably coerced into one, unless
       <code><a href='https://rdrr.io/r/base/options.html'>options(ucscChromosomeNames=FALSE)</a></code>. For consistancy with
       other Bioconductor packages, the <code>isActiveSeq&lt;-</code> alias is
-      also provided.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
+      also provided.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
 
     <dt>start, end, width</dt><dd><p><code>signature(x="DataTrack")</code>: the
       start or end coordinates of the track items, or their width in
-      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
+      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
 
     <dt>start&lt;-, end&lt;-, width&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>:
       replace the start or end coordinates of the track items, or their
-      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
+      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
 
     <dt>position</dt><dd><p><code>signature(GdObject="DataTrack")</code>: the
       arithmetic mean of the track item's coordionates, i.e.,
-      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
+      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
 
-    <dt>genome</dt><dd><p><code>signature(x="DataTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
+    <dt>genome</dt><dd><p><code>signature(x="DataTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
 
     <dt>genome&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
-      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
+      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="DataTrack")</code>: return the number
-      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>coerce</dt><dd><p><code>signature(from="DataTrack",
     to="data.frame")</code>: coerce the <code><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></code>
-    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
+    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
 
     <dt>subset</dt><dd><p><code>signature(x="DataTrack")</code>: subset a
-      <code>NumericTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, drop=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
+      <code>NumericTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, drop=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
       to.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the object after subsetting. Usually
       not necessary.</p></dd>    <dt></dt><dd><p><code>drop</code>: drop unused regions on the other,
-      non-active chromosomes.w</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
+      non-active chromosomes.w</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars</dt><dd><p><code>signature(x="DataTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
 
 
     <dt>displayPars</dt><dd><p><code>signature(x="DataTrack",
       name="missing")</code>: list the value of all available display
       parameters. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="DataTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="DataTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="DataTrack",
       value="list")</code>: set display parameters using the values of the
       named list in <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details
-      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="DataTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>DataTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="DataTrack", value="list")</code>: set
       display parameters by the values of the named list in
@@ -562,24 +562,24 @@ A class to store numeric data values along genomic
       <code>DataTrack</code> class are pass-by-reference, so no
       re-assignmnet to the symbol <code>obj</code> is necessary. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
 
     <dt>group</dt><dd><p><code>signature(GdObject="DataTrack")</code>: return
       grouping information for the individual items in the track. Unless
       overwritten in one of the sub-classes, this usualy returns
-      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
+      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names</dt><dd><p><code>signature(x="DataTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names&lt;-</dt><dd><p><code>signature(x="DataTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="DataTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="DataTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -591,7 +591,7 @@ A class to store numeric data values along genomic
   <code>DataTrack</code> upon instantiation, unless one or more of them have
   already been set by one of the optional sub-class initializers, which
   always get precedence over these global defaults. See <code><a href='settings.html'>settings</a></code>
-  for details on setting graphical parameters for tracks.</p><dl>
+  for details on setting graphical parameters for tracks.</p><dl'>
 
     <dt></dt><dd><p><code>aggregateGroups=FALSE</code>: Logical scalar. Aggregate
       the values within a sample group using the aggregation funnction
@@ -870,9 +870,9 @@ A class to store numeric data values along genomic
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>DataTrack</code> objects.</p>
-<p></p><dl>
+<p></p><dl'>
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -957,7 +957,7 @@ A class to store numeric data values along genomic
 <p>Depending on the setting of the <code>type</code> display parameter, the
   data can be plotted in various different forms as well as combinations
   thereof. Supported plotting types are:</p>
-<p></p><dl>
+<p></p><dl'>
 
     <dt></dt><dd><p><code>p</code>: simple xy-plot.</p></dd>
 
@@ -1595,7 +1595,7 @@ A class to store numeric data values along genomic
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
