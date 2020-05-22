@@ -37,7 +37,7 @@
         paste("'", class, "'", sep = "", collapse = " or "),
         sep = ""
     )
-    fail <- !any(vapply(class, function(c, y) is(y, c), FUN.VALUE = logical(1), y = x))
+    fail <- !any(vapply(class, function(c, y) is(y, c), FUN.VALUE = logical(1L), y = x))
     if (!is.null(length) && length(x) != length) {
         if (!is.null(x)) {
             fail <- TRUE
@@ -93,7 +93,7 @@
         }
         substring(y, 1, 3) <- tolower(substring(y, 1, 3))
         y
-    }, FUN.VALUE = character(1))
+    }, FUN.VALUE = character(1L))
     names(xum) <- xu
     return(as.vector(xum[as.character(x)]))
 }
@@ -146,7 +146,7 @@
       }
     str <- unlist(lapply(trackList, function(x) {
         if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
-            vapply(x@trackList, .dpOrDefault, par = "reverseStrand", FUN.VALUE = logical(1))
+            vapply(x@trackList, .dpOrDefault, par = "reverseStrand", FUN.VALUE = logical(1L))
         } else {
             .dpOrDefault(x, "reverseStrand")
         }
@@ -289,7 +289,7 @@
         is(x, "NumericTrack") ||
             (is(x, "AlignmentsTrack") && "coverage" %in% match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok = TRUE)) ||
             (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage") == "coverage")
-    }, FUN.VALUE = logical(1))
+    }, FUN.VALUE = logical(1L))
     isOnlyHoriz <- vapply(objects, function(x) {
         res <- FALSE
         if (is(x, "DataTrack")) {
@@ -297,8 +297,8 @@
             res <- length(setdiff(type, "horizon")) == 0 && !.dpOrDefault(x, "showSampleNames", FALSE)
         }
         res
-    }, FUN.VALUE = logical(1))
-    return(atrack & vapply(objects, .dpOrDefault, par = "showAxis", default = TRUE, FUN.VALUE = logical(1)) & !isOnlyHoriz)
+    }, FUN.VALUE = logical(1L))
+    return(atrack & vapply(objects, .dpOrDefault, par = "showAxis", default = TRUE, FUN.VALUE = logical(1L)) & !isOnlyHoriz)
 }
 
 ## Check a list of GdObjects whether a title needs to be drawn for each of them.
@@ -311,11 +311,11 @@
       }
     vapply(objects, function(x) {
         if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
-              any(vapply(x@trackList, .dpOrDefault, par = "showTitle", default = TRUE, FUN.VALUE = logical(1)))
+              any(vapply(x@trackList, .dpOrDefault, par = "showTitle", default = TRUE, FUN.VALUE = logical(1L)))
           } else {
             .dpOrDefault(x, "showTitle", TRUE)
         }
-    }, FUN.VALUE = logical(1))
+    }, FUN.VALUE = logical(1L))
 }
 
 
@@ -341,7 +341,7 @@
           }
         rev(sizes)
     }
-    whichAbs <- vapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"), FUN.VALUE = logical(1))
+    whichAbs <- vapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"), FUN.VALUE = logical(1L))
     spaceNeeded <- unlist(spaceNeeded)
     leftVetSpace <- curVp$size["height"] - sum(spaceNeeded[whichAbs])
     spaceNeeded[!whichAbs] <- spaceNeeded[!whichAbs] / sum(spaceNeeded[!whichAbs]) * leftVetSpace
@@ -350,24 +350,24 @@
         ## Figure out the fontsize for the titles based on available space. If the space is too small (<atLeast)
         ## we don't plot any text, and we also limit to 'maximum' to avoid overblown labels. If the displayPars
         ## 'cex.title' or 'cex.axis are not NULL, those override everything else.
-        nn <- sapply(trackList, names)
-        nwrap <- sapply(nn, function(x) paste(strwrap(x, 10), collapse = "\n"))
+        nn <- vapply(trackList, names, FUN.VALUE = character(1L))
+        nwrap <- vapply(nn, function(x) paste(strwrap(x, 10), collapse = "\n"), character(1))
         needAxis <- .needsAxis(trackList)
-        isOnlyHoriz <- sapply(trackList, function(x) {
+        isOnlyHoriz <- vapply(trackList, function(x) {
             res <- FALSE
             if (is(x, "DataTrack")) {
                 type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok = TRUE)
                 res <- length(setdiff(type, "horizon")) == 0
             }
             res
-        })
+        }, FUN.VALUE = logical(1L))
         nwrap[needAxis] <- nn[needAxis]
         lengths <- as.numeric(convertWidth(stringWidth(nwrap), "inches")) + 0.2
         heights <- curVp$isize["height"] * spaceNeeded
         atLeast <- 0.5
         maximum <- 1.2
         allCex <- heights / lengths
-        parCex <- sapply(trackList, function(x) if (is.null(displayPars(x, "cex.title"))) NA else displayPars(x, "cex.title"))
+        parCex <- vapply(trackList, function(x) if (is.null(displayPars(x, "cex.title"))) NA else displayPars(x, "cex.title"), FUN.VALUE = numeric(1L))
         toSmall <- allCex < atLeast
         cex <- rep(max(c(atLeast, min(c(allCex[!toSmall], maximum), na.rm = TRUE))), length(allCex))
         cex[!is.na(parCex)] <- parCex[!is.na(parCex)]
@@ -380,13 +380,13 @@
         wfac <- curVp$isize["width"]
         leaveSpace <- ifelse(any(needAxis), 0.15, 0.2)
         width <- (as.numeric(convertHeight(stringHeight(paste("g_T", nwrap, "g_T", sep = "")), "inches")) * cex + leaveSpace) / wfac
-        showtitle <- sapply(trackList, .dpOrDefault, "showTitle", TRUE)
+        showtitle <- vapply(trackList, .dpOrDefault, "showTitle", TRUE, FUN.VALUE = logical(1L))
         width[!showtitle & !needAxis] <- 0
         width[!showtitle] <- 0
         twfac <- if (missing(title.width) || is.null(title.width)) 1 else title.width
         title.width <- max(width, na.rm = TRUE)
         if (any(needAxis)) {
-            cex.axis <- structure(sapply(trackList, .dpOrDefault, "cex.axis", 0.6), names = nn)
+            cex.axis <- structure(vapply(trackList, .dpOrDefault, "cex.axis", 0.6, FUN.VALUE = numeric(1L)), names = nn)
             axTicks <- unlist(lapply(trackList, function(GdObject) {
                 if (!is(GdObject, "NumericTrack") && !is(GdObject, "AlignedReadTrack") && !is(GdObject, "AlignmentsTrack")) {
                       return(NULL)
@@ -461,7 +461,7 @@
         }
         x
     }
-    return(sapply(x, fun, extended))
+    return(vapply(x, fun, extended, FUN.VALUE = numeric(1L)))
 }
 
 
@@ -598,7 +598,7 @@
 ##    o lwd: the boundary line width
 ##    o lty: the boundary line type
 ##    o alpha: the transparency
-##    o min.width: the minumum width of the arrow head. Below this size a simple box is drawn
+##    o min.width: the minimum width of the arrow head. Below this size a simple box is drawn
 ## Note that the last arguments 4-9 all have to be of the same length as number of rows in box.
 ## Value: the function is called for its side-effects of drawing on the graphics device
 .filledArrow <- function(box, W = 1 / 4, H = 1 / 3, lwd, lty, alpha, min.width = 10, max.width = Inf, absoluteWidth = FALSE) {
@@ -783,11 +783,9 @@
 ## Value: a color character
 .getBiotypeColor <- function(GdObject) {
     defCol <- .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)
-    col <- sapply(as.character(values(GdObject)[, "feature"]),
-        function(x) .dpOrDefault(GdObject, x)[1],
-        simplify = FALSE
-    )
-    needsDef <- sapply(col, is.null)
+    col <- lapply(as.character(values(GdObject)[, "feature"]),
+        function(x) .dpOrDefault(GdObject, x)[1])
+    needsDef <- vapply(col, is.null, FUN.VALUE = logical(1L))
     col[needsDef] <- rep(defCol, sum(needsDef))[seq_len(sum(needsDef))]
     return(unlist(col))
 }
@@ -972,22 +970,22 @@
     blist <- tapply(y, factor(x, levels = levels.fos), stats,
         coef = coef, do.out = do.out
     )
-    blist.stats <- t(sapply(blist, "[[", "stats"))
+    blist.stats <- do.call(rbind, lapply(blist, "[[", "stats"))
     blist.out <- lapply(blist, "[[", "out")
     blist.height <- box.width
     if (varwidth) {
         maxn <- max(table(x))
-        blist.n <- sapply(blist, "[[", "n")
+        blist.n <- vapply(blist, "[[", "n", FUN.VALUE = numeric(1L))
         blist.height <- sqrt(blist.n / maxn) * blist.height
     }
     blist.conf <- if (notch) {
-          sapply(blist, "[[", "conf")
+          t(vapply(blist, "[[", "conf", FUN.VALUE = numeric(2L)))
       } else {
         t(blist.stats[, c(2, 4), drop = FALSE])
-    }
+      }
     ybnd <- cbind(
-        blist.stats[, 3], blist.conf[2, ], blist.stats[, 4], blist.stats[, 4], blist.conf[2, ],
-        blist.stats[, 3], blist.conf[1, ], blist.stats[, 2], blist.stats[, 2], blist.conf[1, ], blist.stats[, 3]
+        blist.stats[, 3], blist.conf[, 2], blist.stats[, 4], blist.stats[, 4], blist.conf[, 2],
+        blist.stats[, 3], blist.conf[, 1], blist.stats[, 2], blist.stats[, 2], blist.conf[, 1], blist.stats[, 3]
     )
     xleft <- levels.fos - blist.height / 2
     xright <- levels.fos + blist.height / 2
@@ -1035,7 +1033,7 @@
         )
     }
     panel.points(
-        x = rep(levels.fos, sapply(blist.out, length)),
+        x = rep(levels.fos, vapply(blist.out, length, FUN.VALUE = numeric(1L))),
         y = unlist(blist.out), pch = pch, col = col,
         alpha = alpha, cex = cex,
         fontfamily = fontfamily, fontface = .chooseFace(
@@ -1510,22 +1508,22 @@ addScheme <- function(scheme, name) {
           GdObject <- list(GdObject)
       }
     GdObject <- c(GdObject, unlist(lapply(GdObject, function(x) if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) x@trackList else NULL)))
-    if (!length(GdObject) || !all(sapply(GdObject, is, "GdObject"))) {
+    if (!length(GdObject) || !all(vapply(GdObject, is, "GdObject", FUN.VALUE = logical(1L)))) {
           stop("All items in the list must inherit from class 'GdObject'")
       }
-    GdObject <- GdObject[!sapply(GdObject, is, "OverlayTrack")]
+    GdObject <- GdObject[!vapply(GdObject, is, "OverlayTrack", FUN.VALUE = logical(1L))]
     tfrom <- lapply(GdObject, function(x) {
         tmp <- start(x)
         if (is(x, "RangeTrack")) tmp <- tmp[seqnames(x) == chromosome(x)]
         tmp
     })
-    tfrom <- if (is.null(unlist(tfrom))) Inf else min(sapply(tfrom[listLen(tfrom) > 0], min))
+    tfrom <- if (is.null(unlist(tfrom))) Inf else min(vapply(tfrom[listLen(tfrom) > 0], min, FUN.VALUE = numeric(1L)))
     tto <- lapply(GdObject, function(x) {
         tmp <- end(x)
         if (is(x, "RangeTrack")) tmp <- tmp[seqnames(x) == chromosome(x)]
         tmp
     })
-    tto <- if (is.null(unlist(tto))) Inf else max(sapply(tto[listLen(tto) > 0], max))
+    tto <- if (is.null(unlist(tto))) Inf else max(vapply(tto[listLen(tto) > 0], max, FUN.VALUE = numeric(1L)))
     if ((is.null(from) || is.null(to)) && ((is.infinite(tfrom) || is.infinite(tto)) || is(GdObject, "GenomeAxisTrack"))) {
           stop(
               "Unable to automatically determine plotting ranges from the supplied track(s).\nPlease provide ",
@@ -1690,9 +1688,9 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
     })
 
     ## OverlayTracks and HighlightTracks can be discarded if they are empty
-    trackList <- trackList[!sapply(trackList, function(x) (is(x, "HighlightTrack") || is(x, "OverlayTrack")) && length(x) < 1)]
-    isHt <- which(sapply(trackList, is, "HighlightTrack"))
-    isOt <- which(sapply(trackList, is, "OverlayTrack"))
+    trackList <- trackList[!vapply(trackList, function(x) (is(x, "HighlightTrack") || is(x, "OverlayTrack")) && length(x) < 1, FUN.VALUE = logical(1L))]
+    isHt <- which(vapply(trackList, is, "HighlightTrack", FUN.VALUE = logical(1L)))
+    isOt <- which(vapply(trackList, is, "OverlayTrack", FUN.VALUE = logical(1L)))
     ## A mix between forward and reverse strand tracks should trigger an alarm
     strds <- unique(.whichStrand(trackList))
     if (!is.null(strds) && length(strds) > 1) {
@@ -1756,8 +1754,8 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
         trackList
     }
     ## If there is a AlignmentsTrack and also a SequenceTrack we can tell the former to use the latter, unless already provided
-    isAt <- sapply(expandedTrackList, is, "AlignmentsTrack")
-    isSt <- sapply(expandedTrackList, is, "SequenceTrack")
+    isAt <- vapply(expandedTrackList, is, "AlignmentsTrack", FUN.VALUE = logical(1L))
+    isSt <- vapply(expandedTrackList, is, "SequenceTrack", FUN.VALUE = logical(1L))
     for (ai in which(isAt)) {
         if (is.null(expandedTrackList[[ai]]@referenceSequence) && any(isSt)) {
               expandedTrackList[[ai]]@referenceSequence <- expandedTrackList[[min(which(isSt))]]
@@ -1767,7 +1765,7 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
     expandedTrackList <- rev(expandedTrackList)
     map <- vector(mode = "list", length = length(expandedTrackList))
     titleCoords <- NULL
-    names(map) <- rev(sapply(expandedTrackList, names))
+    names(map) <- rev(vapply(expandedTrackList, names, FUN.VALUE = character(1L)))
     ## Open a fresh page and set up the bounding box, unless add==TRUE
     if (!panel.only) {
         ## We want a margin pixel border
@@ -1836,7 +1834,7 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
     htBoxes <- data.frame(stringsAsFactors = FALSE)
     for (hlite in htList) {
         if (length(ranges(hlite$track))) {
-            inds <- setdiff(sort(length(expandedTrackList) - hlite$index + 1), which(sapply(expandedTrackList, is, "IdeogramTrack")))
+            inds <- setdiff(sort(length(expandedTrackList) - hlite$index + 1), which(vapply(expandedTrackList, is, "IdeogramTrack", FUN.VALUE = logical(1L))))
             y <- reduce(IRanges(start = inds, width = 1))
             yy <- ifelse(start(y) == 1, 0, sum(spaceSetup$spaceNeeded[seq_len(start(y)) - 1])) # check
             ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
@@ -2051,7 +2049,7 @@ exportTracks <- function(tracks, range, chromosome, file) {
                 any(sub(",.*", "", blockStarts) != 0)) {
                   stop("blocks must span entire feature")
               }
-            blockCount <- sapply(strsplit(blockSizes, ","), length)
+            blockCount <- vapply(strsplit(blockSizes, ","), length, FUN.VALUE = numeric(1L))
         }
         if (is.null(color)) {
               color <- object$itemRgb
@@ -2215,8 +2213,9 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
         "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack", "AlignedReadTrack"
     )
-    defs <- try(sapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list"), simplify = FALSE), silent = TRUE)
+    defs <- try(lapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list")), silent = TRUE)
     if (!is(defs, "try-error") && is.null(.parMappings)) {
+          names(defs) <- classes
           assignInNamespace(x = ".parMappings", value = defs, ns = "Gviz")
       }
 }
@@ -2307,7 +2306,7 @@ availableDisplayPars <- function(class) {
                   data[, i] <- type.convert(data[, i], as.is = TRUE)
               }
         }
-        isNum <- sapply(data, is.numeric)
+        isNum <- vapply(data, is.numeric, FUN.VALUE = logical(1L))
         if (any(!isNum)) {
               warning(sprintf(
                   "The following non-numeric data column%s been dropped: %s", ifelse(sum(!isNum) > 1, "s have", " has"),
@@ -2699,7 +2698,7 @@ availableDefaultMapping <- function(file, trackType) {
             if (any(sel)) {
                 varRegs <- varRegs[sel]
                 rvg <- rvg[sel]
-                mmTab <- t(sapply(varRegs, function(x) as.character(subseq(GdObject@sequences, x, width = 1))))
+                mmTab <- do.call(rbind, lapply(varRegs, function(x) as.character(subseq(GdObject@sequences, x, width = 1))))
                 isMm <- t(rvg != "-" & mmTab != "+" & mmTab != "-" & mmTab != rvg)
                 mmRelPos <- col(isMm)[which(isMm)]
                 mmPos <- varRegs[mmRelPos] + rgo["from"] - 1
@@ -2890,7 +2889,7 @@ availableDefaultMapping <- function(file, trackType) {
                 tfact <- ifelse(twidth > 1, 1, 1 / (1 - twidth))
                 ## The labels and spacers are plotted in a temporary viewport to figure out their size
                 labels <- if (needsGrp) {
-                      vapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse = "/"), FUN.VALUE = character(1))
+                      vapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse = "/"), FUN.VALUE = character(1L))
                   } else {
                     setNames(identifier(GdObject), gp)
                 }
