@@ -4701,16 +4701,16 @@ setAs(
         )
         ranges <- ranges[order(start(from)), ]
         ranges <- split(ranges, ranges[, "X.transcript"])
-        start <- sapply(ranges, function(x) min(x$start))
-        end <- sapply(ranges, function(x) max(x$end))
-        name <- as.character(sapply(ranges, function(x) unique(x$X.symbol)))
-        color <- as.character(sapply(ranges, function(x) unique(x$color)))
-        strand <- as.character(sapply(ranges, function(x) unique(x$strand)))
+        start <- vapply(ranges, function(x) min(x$start), FUN.VALUE = numeric(1L))
+        end <- vapply(ranges, function(x) max(x$end), FUN.VALUE = numeric(1L))
+        name <- vapply(ranges, function(x) as.character(unique(x$X.symbol)), FUN.VALUE = character(1L))
+        color <- vapply(ranges, function(x) as.character(unique(x$color)), FUN.VALUE = character(1L))
+        strand <- vapply(ranges, function(x) as.character(unique(x$strand)), FUN.VALUE = character(1L))
         strand[strand == "*"] <- "+"
         id <- names(ranges)
-        blocks <- sapply(ranges, nrow)
-        bsizes <- sapply(ranges, function(x) paste(x$end - x$start + 1, collapse = ","))
-        bstarts <- sapply(ranges, function(x) paste(x$start - min(x$start), collapse = ","))
+        blocks <- vapply(ranges, nrow, FUN.VALUE = numeric(1L))
+        bsizes <- vapply(ranges, function(x) paste(x$end - x$start + 1, collapse = ","), FUN.VALUE = character(1L))
+        bstarts <- vapply(ranges, function(x) paste(x$start - min(x$start), collapse = ","), FUN.VALUE = character(1L))
         dcolor <- as.integer(col2rgb(.dpOrDefault(from, "col")))
         line <- new("BasicTrackLine",
             name = names(from),
@@ -4791,7 +4791,7 @@ setMethod(
           }
         delim <- ","
         coords <- c("start", "end", "width")
-        lengths <- sapply(coords, function(x) length(get(x)))
+        lengths <- vapply(coords, function(x) length(get(x)), FUN.VALUE = numeric(1L))
         items <- structure(as.list(rep(0, 3)), names = coords)
         by <- NULL
         for (i in coords) {
@@ -4805,10 +4805,10 @@ setMethod(
             }
         }
         len <- max(lengths)
-        if (!all(sapply(items, function(x) length(x) == 1 && x == 0))) {
-              by <- rowMax(matrix(sapply(items, function(x) {
+        if (!all(unlist(lapply(items, function(x) length(x) == 1 && x == 0)))) {
+              by <- rowMax(do.call(cbind, lapply(items, function(x) {
                     if (length(x) == 1) rep(x, len) else if (length(x)) x else rep(0, len)
-                }), nrow = len))
+                })))
           }
         return(.buildRange(start = start, end = end, width = width, asIRanges = asIRanges, by = by, len = len, ...))
     }
@@ -4894,12 +4894,12 @@ setMethod(
             return(IRanges(start = as.integer(range$start), end = as.integer(range$end)))
         }
         mandArgs <- c("start", "end", "genome", names(defaults))
-        ## Not quite sure how whether exisiting chromosome information in a GRanges object should generally have precedence over the
+        ## Not quite sure how whether existing chromosome information in a GRanges object should generally have precedence over the
         ## chromosome constructor, but probably that should be the case
         if ("chromosome" %in% colnames(range)) {
               args$chromosome <- NULL
           }
-        missing <- setdiff(union(setdiff(mandArgs, c(colnames(range))), names(which(!sapply(args, is.null)))), "genome")
+        missing <- setdiff(union(setdiff(mandArgs, c(colnames(range))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1L))))), "genome")
         range <- .fillWithDefaults(range, defaults[missing], args[missing], len = nrow(range))
         range$chromosome <- .chrName(as.character(range$chromosome))
         grange <- GRanges(ranges = IRanges(start = range$start, end = range$end), strand = range$strand, seqnames = range$chromosome)
