@@ -951,14 +951,14 @@ setMethod(
                 "longest" = {
                     r <- unlist(endoapply(split(r, gene(GdObject)), function(x) {
                         xs <- split(x, x$transcript)
-                        xs[[which.max(vapply(xs, function(y) abs(diff(as.numeric(as.data.frame(ranges(range(y)))[, c("start", "end")]))), FUN.VALUE = numeric(1)))]]
+                        xs[[which.max(vapply(xs, function(y) abs(diff(as.numeric(as.data.frame(ranges(range(y)))[, c("start", "end")]))), FUN.VALUE = numeric(1L)))]]
                     }))
                     GdObject@range <- r
                 },
                 "shortest" = {
                     r <- unlist(endoapply(split(r, gene(GdObject)), function(x) {
                         xs <- split(x, x$transcript)
-                        xs[[which.min(vapply(xs, function(y) abs(diff(as.numeric(as.data.frame(ranges(range(y)))[, c("start", "end")]))), FUN.VALUE = numeric(1)))]]
+                        xs[[which.min(vapply(xs, function(y) abs(diff(as.numeric(as.data.frame(ranges(range(y)))[, c("start", "end")]))), FUN.VALUE = numeric(1L)))]]
                     }))
                     GdObject@range <- r
                 },
@@ -1098,10 +1098,10 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             if (nrow(sc) > 1) {
                 newDat <- rbind(
                     newDat,
-                    matrix(sapply(2:nrow(sc), function(x) {
+                    do.call(rbind, lapply(2:nrow(sc), function(x) {
                         rm[ind] <- rep(sc[x, ], width(GdObject))
                         suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE)))[seqSel]
-                    }), nrow = nrow(sc) - 1, byrow = TRUE)
+                    }))
                 )
             }
             sc <- newDat
@@ -1126,10 +1126,9 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
                   )
               }
             ol <- as.matrix(findOverlaps(ir, rr))
-            scn <- sapply(split(ol[, 2], ol[, 1]), function(i) agFun(sc[, i, drop = FALSE]), USE.NAMES = FALSE)
-            if (is.null(dim(scn))) {
-                  scn <- matrix(scn, nrow = nrow(values(GdObject)), dimnames = list(NULL, as.character(unique(ol[, 1]))))
-              }
+            scn <- lapply(split(ol[, 2], ol[, 1]), function(i) agFun(sc[, i, drop = FALSE]))
+            scn <- do.call(cbind, scn)
+            colnames(scn) <- as.character(unique(ol[, 1]))
             sc <- matrix(NA, ncol = length(ir), nrow = nrow(scn))
             sc[, as.integer(colnames(scn))] <- scn
             r <- if (is(r, "GRanges")) {
@@ -1153,7 +1152,7 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
         agFun <- .aggregator(GdObject)
         dat <- values(GdObject)
         rownames(dat) <- groups
-        datNew <- matrix(t(sapply(levels(groups), function(x) agFun(t(dat[groups == x, , drop = FALSE])), USE.NAMES = FALSE)), nrow = nlevels(groups))
+        datNew <- do.call(rbind, lapply(levels(groups), function(x) agFun(t(dat[groups == x, , drop = FALSE]))))
         GdObject@data <- datNew
         displayPars(GdObject) <- list(groups = levels(groups))
     }
@@ -1166,7 +1165,7 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
         minXDist <- min.distance * diff
         rr <- if (is(r, "GRanges")) ranges(r) else r
         if (minXDist < 1) {
-            ## We have to fake smaller ranges because reduce will merge also neigbouring ranges
+            ## We have to fake smaller ranges because reduce will merge also neighboring ranges
             width(rr) <- width(rr) - 1
             rr <- reduce(rr, min.gapwidth = minXDist)
             width(rr) <- width(rr) + 1
@@ -1179,7 +1178,7 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             GdObject@range <- r
             GdObject@data <- matrix(rowMeans(sc, na.rm = TRUE), ncol = 1)
         } else if (length(rr) < length(r)) {
-            startInd <- sort(unique(sapply(start(rr), function(x) which(start(r) == x))))
+            startInd <- sort(unique(vapply(start(rr), function(x) which(start(r) == x), FUN.VALUE = numeric(1L))))
             st <- strand(GdObject)
             startInd <- if (tail(startInd, 1) == length(r)) c(startInd, length(r) + 1) else c(startInd, length(r))
             vsplit <- split(t(as.data.frame(sc, stringsAsFactors = FALSE)), cut(seq_len(length(r)), startInd, iclude.lowest = TRUE, right = FALSE))
@@ -1188,18 +1187,19 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
                   agFun <- agFun[[1]]
               }
             newScore <- if (is.character(agFun)) {
-                switch(agFun, "mean" = sapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE), USE.NAMES = FALSE),
-                    "sum" = sapply(vsplit, function(x) rowSums(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE), USE.NAMES = FALSE),
-                    "median" = sapply(vsplit, function(x) rowMedians(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE), USE.NAMES = FALSE),
-                    sapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE), USE.NAMES = FALSE)
+                switch(agFun, "mean" = lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
+                    "sum" = lapply(vsplit, function(x) rowSums(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
+                    "median" = lapply(vsplit, function(x) rowMedians(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
+                    lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE))
                 )
             } else {
                 if (is.function(agFun)) {
-                    sapply(vsplit, function(x) apply(matrix(x, nrow = nrow(sc), byrow = TRUE), 1, function(y) agFun(y)[1]), USE.NAMES = FALSE)
+                    lapply(vsplit, function(x) apply(matrix(x, nrow = nrow(sc), byrow = TRUE), 1, function(y) agFun(y)[1]))
                 } else {
                     stop("display parameter 'aggregation' has to be a function or a character ", "scalar in c('mean', 'median', 'sum')")
                 }
             }
+            newScore <- unlist(newScore)
             r <- GRanges(seqnames = seq_len(length(rr)), strand = st, ranges = rr)
             GdObject@data <- newScore
             GdObject@range <- r
@@ -1838,10 +1838,10 @@ setMethod("drawGrid", signature(GdObject = "AlignedReadTrack"), function(GdObjec
         ## We have to figure out the data range, taking transformation into account
         ylim <- .dpOrDefault(GdObject, "ylim")
         if (is.null(ylim)) {
-            maxs <- sapply(c("+", "-"), function(s) {
+            maxs <- vapply(c("+", "-"), function(s) {
                 cvr <- coverage(GdObject, strand = s)
                 if (length(cvr)) max(cvr, na.rm = TRUE, finite = TRUE) else 0L
-            })
+            }, FUN.VALUE = numeric(1L))
             y.max <- max(maxs, na.rm = TRUE, finite = TRUE)
             ylim <- c(0, if (y.max == 0) 1 else y.max)
             trans <- .dpOrDefault(GdObject, "transformation")[[1]]
@@ -2011,24 +2011,24 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
     gp <- group(GdObject)
     grpSplit <- split(range(GdObject), gp)
     grpRanges <- unlist(range(grpSplit))
-    needBar <- sapply(grpSplit, length) > 1 & width(grpRanges) > res
+    needBar <- vapply(grpSplit, length, FUN.VALUE = numeric(1L)) > 1 & width(grpRanges) > res
     ## If we draw the bar from start to end of the range we sometimes see little overlaps that extend beyond the first or last item.
-    ## In order to fix this, we just substract the equivalent of min.width pixels from both ends of each group range
+    ## In order to fix this, we just subtract the equivalent of min.width pixels from both ends of each group range
     min.swidth <- res * .dpOrDefault(GdObject, "min.width", 2)
     nstart <- start(grpRanges[needBar]) + min.swidth
     nend <- end(grpRanges[needBar]) - min.swidth
     sel <- (nend - nstart) > 0
     start(grpRanges[needBar][sel]) <- nstart[sel]
     end(grpRanges[needBar][sel]) <- nend[sel]
-    strand <- sapply(split(strand(GdObject), gp), function(x) {
+    strand <- vapply(split(strand(GdObject), gp), function(x) {
         tmp <- unique(x)
         if (length(tmp) > 1) "*" else tmp
-    })
-    yloc <- sapply(split((stacks - bins) + 1, gp), function(x) unique(x)) + 0.5
+    }, FUN.VALUE = character(1L))
+    yloc <- vapply(split((stacks - bins) + 1, gp), function(x) unique(x), FUN.VALUE = numeric(1L)) + 0.5
     color <- if (length(grep("__desatCol", values(GdObject)$feature[1]))) {
           .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)
       } else {
-        sapply(split(.getBiotypeColor(GdObject), gp), head, 1)
+        vapply(split(.getBiotypeColor(GdObject), gp), head, 1, FUN.VALUE = character(1L))
     }
     bars <- data.frame(
         sx1 = start(grpRanges)[needBar], sx2 = end(grpRanges)[needBar], y = yloc[needBar], strand = strand[needBar],
@@ -2038,7 +2038,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
     if (!is.null(labs)) {
         lsel <- grepl("\\[Cluster_[0-9]*\\]", labs)
         if (any(lsel)) {
-            gdens <- as.integer(sapply(split(.getAnn(GdObject, "gdensity"), gp), head, 1))
+            gdens <- as.integer(vapply(split(.getAnn(GdObject, "gdensity"), gp), head, 1, FUN.VALUE = numeric(1L)))
             labs[lsel] <- sprintf(
                 "%i merged %s  ", gdens[lsel],
                 ifelse(class(GdObject) %in% c("AnnotationTrack", "DetailsAnnotationTrack"), "groups", "transcript models")
@@ -2206,7 +2206,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         if ("box" %in% shape || ("smallArrow" %in% shape && !("arrow" %in% shape || "ellipse" %in% shape))) {
             .filledBoxes(box, lwd = lwd, lty = lty, alpha = alpha)
         }
-        ## Plotting of the elipses
+        ## Plotting of the ellipses
         if ("ellipse" %in% shape) {
             ellCoords <- .box2Ellipse(box)
             grid.polygon(
@@ -2242,16 +2242,16 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
     }
     popViewport(1)
-    ## Finaly we set up the image map
+    ## Finally we set up the image map
     ## FIXME: we may want to record the merging information here
     im <- if (!is.null(box)) {
         coords <- as.matrix(box[, c("x1", "y1", "x2", "y2"), drop = FALSE])
         restCols <- setdiff(colnames(box), c("x1", "x2", "y1", "y2", "cx1", "cx2", "cy1", "cy2", "textX", "textY"))
-        tags <- sapply(restCols, function(x) {
+        tags <- lapply(restCols, function(x) {
             tmp <- as.character(box[, x])
             names(tmp) <- rownames(coords)
             tmp
-        }, simplify = FALSE)
+        })
         tags$title <- identifier(GdObject)
         ImageMap(coords = coords, tags = tags)
     } else {
@@ -2751,7 +2751,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
         "3" = sprintf("%s kb", tckText),
         "6" = sprintf("%s mb", tckText),
         "9" = sprintf("%s gb", tckText),
-        sapply(tckText, function(x) bquote(paste(.(x), " ", 10^.(exponent))))
+        lapply(tckText, function(x) bquote(paste(.(x), " ", 10^.(exponent))))
     ))
 }
 
@@ -4927,7 +4927,7 @@ setMethod(
             ## chromosome constructor, but probably that should be the case
             args$chromosome <- NULL
             range <- renameSeqlevels(range, setNames(.chrName(seqlevels(range)), seqlevels(range)))
-            missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1))))), "genome")
+            missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1L))))), "genome")
             newVars <- .fillWithDefaults(DataFrame(chromosome = as.character(seqnames(range)), strand = as.character(strand(range)), mcols(range), check.names = FALSE),
                 defaults[missing], args[missing],
                 len = length(range), ignore = c("flag")
