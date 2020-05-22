@@ -2038,7 +2038,7 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
     if (!is.null(labs)) {
         lsel <- grepl("\\[Cluster_[0-9]*\\]", labs)
         if (any(lsel)) {
-            gdens <- as.integer(vapply(split(.getAnn(GdObject, "gdensity"), gp), head, 1, FUN.VALUE = numeric(1L)))
+            gdens <- as.integer(vapply(split(.getAnn(GdObject, "gdensity"), gp), head, 1, FUN.VALUE = character(1L)))
             labs[lsel] <- sprintf(
                 "%i merged %s  ", gdens[lsel],
                 ifelse(class(GdObject) %in% c("AnnotationTrack", "DetailsAnnotationTrack"), "groups", "transcript models")
@@ -3133,7 +3133,7 @@ setMethod(
         }
         selection <- .dpOrDefault(GdObject, ".__select", rep(TRUE, length(GdObject)))
         len <- sum(selection)
-        bins <- if (!groupDetails) stacks(GdObject) else sapply(split(stacks(GdObject), group(GdObject)), unique)
+        bins <- if (!groupDetails) stacks(GdObject) else unlist(lapply(split(stacks(GdObject), group(GdObject)), unique))
         stacks <- max(bins)
         if (len > 0) {
             if (((maxBase - minBase) / len) / .pxResolution(coord = "x") < minwidth) {
@@ -3258,10 +3258,10 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             agFun <- .aggregator(GdObject)
             if (!is.null(groups) && nlevels(groups) > 1) {
                 valsS <- if (ncol(vals)) {
-                    matrix(sapply(
+                    do.call(cbind, lapply(
                         split(vals, groups),
                         function(x) agFun(t(matrix(x, ncol = ncol(vals))))
-                    ), nrow = ncol(vals))
+                    ))
                 } else {
                     matrix(nrow = nlevels(groups), ncol = 0, dimnames = list(levels(groups)))
                 }
@@ -4223,7 +4223,7 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
             return(invisible(GdObject))
         } else {
             ## We want to distinguish between strands, so an extra spitting step is needed for this to work
-            val <- c(0, max(unlist(sapply(c("+", "-"), function(x) {
+            val <- c(0, max(unlist(lapply(c("+", "-"), function(x) {
                 if (length(coverage(GdObject, strand = x))) {
                       max(coverage(GdObject, strand = x))
                   } else {
@@ -4286,9 +4286,10 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
             } else {
                 gdSplit <- split(GdObject, factor(strand(GdObject), levels = c("+", "-")))
                 st <- lapply(gdSplit, function(x) if (length(x)) stacks(setStacks(x)) - 1 else 0)
-                omax <- sum(sapply(st, max))
+                omax <- sum(vapply(st, max, FUN.VALUE = numeric(1L)))
                 space <- 0.1
-                ratios <- sapply(st[c("-", "+")], function(x) if (omax == 0) 0.5 else max(x) / omax) + (space / (2:1))
+                ratios <- lapply(st[c("-", "+")], function(x) if (omax == 0) 0.5 else max(x) / omax) + (space / (2:1))
+                names(ratios) <- c("-", "+")
                 y <- if (ratios[["-"]] < ratios[["+"]]) c(0, ratios[["-"]] + space / 2) else c(0, ratios[["-"]] - space / 2)
                 h <- if (ratios[["-"]] < ratios[["+"]]) {
                     c(
