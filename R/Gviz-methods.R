@@ -2252,6 +2252,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
             names(tmp) <- rownames(coords)
             tmp
         })
+        names(tags) <- restCols
         tags$title <- identifier(GdObject)
         ImageMap(coords = coords, tags = tags)
     } else {
