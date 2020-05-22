@@ -32,33 +32,33 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ##      the rownames of the 'coords' matrix
 
 setClass("ImageMap", representation(coords = "matrix", tags = "list"),
-  prototype = prototype(coords = matrix(1, ncol = 4, nrow = 0), tags = list())
+    prototype = prototype(coords = matrix(1, ncol = 4, nrow = 0), tags = list())
 )
 
 ## Constructor
 ImageMap <- function(coords, tags) {
-  if (!(is.matrix(coords) && is.numeric(coords) && ncol(coords) == 4)) {
-    stop("'coords' must be a numeric matrix with 4 columns")
-  }
-  rn <- rownames(coords)
-  if (is.null(rn)) {
-    stop("Rownames must be set for the matrix in 'coords'")
-  }
-  if (!is.list(tags) || is.null(names(tags)) || any(names(tags) == "") || !all(vapply(tags, is.character, logical(1)))) {
-    stop("'tags' must be a named list with character vector items.")
-  }
-  n <- unique(unlist(lapply(tags, names)))
-  if (is.null(n) || any(n == "")) {
-    stop("All items in the 'tags' list must be named character vectors.")
-  }
-  m <- n %in% rn
-  if (!all(m)) {
-    stop(
-      "The following values in the 'tags' list could not be mapped to the 'coords' matrix:\n",
-      paste(n[!m], sep = "", collapse = ", ")
-    )
-  }
-  new("ImageMap", coords = coords, tags = tags)
+    if (!(is.matrix(coords) && is.numeric(coords) && ncol(coords) == 4)) {
+        stop("'coords' must be a numeric matrix with 4 columns")
+    }
+    rn <- rownames(coords)
+    if (is.null(rn)) {
+        stop("Rownames must be set for the matrix in 'coords'")
+    }
+    if (!is.list(tags) || is.null(names(tags)) || any(names(tags) == "") || !all(vapply(tags, is.character, logical(1)))) {
+        stop("'tags' must be a named list with character vector items.")
+    }
+    n <- unique(unlist(lapply(tags, names)))
+    if (is.null(n) || any(n == "")) {
+        stop("All items in the 'tags' list must be named character vectors.")
+    }
+    m <- n %in% rn
+    if (!all(m)) {
+        stop(
+            "The following values in the 'tags' list could not be mapped to the 'coords' matrix:\n",
+            paste(n[!m], sep = "", collapse = ", ")
+        )
+    }
+    new("ImageMap", coords = coords, tags = tags)
 }
 
 ## Allow for NULL value slots
@@ -84,35 +84,35 @@ setClass("DisplayPars", representation(pars = "ListOrEnv"))
 ## directly from the class prototype since this would result in using
 ## the same environment all the time
 setMethod("initialize", "DisplayPars", function(.Object, ...) {
-  e <- new.env(hash = TRUE)
-  args <- list(...)
-  n <- names(args)
-  if ((is.null(n) & length(args) == 1) || any(n == "")) {
-    stop("All supplied arguments must be named.")
-  }
-  .Object@pars <- args
-  return(.Object)
+    e <- new.env(hash = TRUE)
+    args <- list(...)
+    n <- names(args)
+    if ((is.null(n) & length(args) == 1) || any(n == "")) {
+        stop("All supplied arguments must be named.")
+    }
+    .Object@pars <- args
+    return(.Object)
 })
 
 ## Constructor, all supplied arguments are added to the environment.
 DisplayPars <- function(...) {
-  return(new("DisplayPars", ...))
+    return(new("DisplayPars", ...))
 }
 
 ## Update function and deprecation message to show that an old environment-based
 ## DisplayParameter object has been updated to a list-based object.
 .updateDp <- function(x, interactive = TRUE) {
-  if (interactive) {
-    message(
-      "Note that the behaviour of the 'setPar' method has changed. You need to reassign the result to an ",
-      "object for the side effects to happen. Pass-by-reference semantic is no longer supported."
-    )
-  }
-  if (is.environment(x@pars)) {
-    x@pars <- as.list(x@pars)
-    message("The DisplayPars object has been updated to a list-based representation.")
-  }
-  return(x)
+    if (interactive) {
+        message(
+            "Note that the behaviour of the 'setPar' method has changed. You need to reassign the result to an ",
+            "object for the side effects to happen. Pass-by-reference semantic is no longer supported."
+        )
+    }
+    if (is.environment(x@pars)) {
+        x@pars <- as.list(x@pars)
+        message("The DisplayPars object has been updated to a list-based representation.")
+    }
+    return(x)
 }
 
 ## The accessor methods for the DisplayPars class. (they need to be in
@@ -131,15 +131,15 @@ DisplayPars <- function(...) {
 ## parameters in order to harmomize parameter names without loosing
 ## backwards compatability.
 setMethod(
-  "setPar", signature("DisplayPars", "list"),
-  function(x, value, interactive = TRUE) {
-    x <- .updateDp(x, interactive)
-    aliasRes <- .dpAliasReverseTable[names(value)]
-    new <- is.na(aliasRes)
-    aliasRes[new] <- names(value)[new]
-    x@pars[aliasRes] <- value
-    return(x)
-  }
+    "setPar", signature("DisplayPars", "list"),
+    function(x, value, interactive = TRUE) {
+        x <- .updateDp(x, interactive)
+        aliasRes <- .dpAliasReverseTable[names(value)]
+        new <- is.na(aliasRes)
+        aliasRes[new] <- names(value)[new]
+        x@pars[aliasRes] <- value
+        return(x)
+    }
 )
 
 setMethod(
@@ -161,36 +161,36 @@ setMethod(
 )
 
 setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, recursive = FALSE, value) {
-  x <- setPar(x, value, interactive = FALSE)
-  return(x)
+    x <- setPar(x, value, interactive = FALSE)
+    return(x)
 })
 
 setMethod(
-  "getPar", c("DisplayPars", "character"),
-  function(x, name, asIs = FALSE) {
-    aliasRes <- .dpAliasReverseTable[name]
-    new <- is.na(aliasRes)
-    aliasRes[new] <- name[new]
-    if (is.environment(x@pars)) {
-      name <- intersect(aliasRes, base::ls(x@pars, all.names = TRUE))
-      tmp <- mget(name, x@pars)
-    } else {
-      name <- intersect(aliasRes, names(x@pars))
-      tmp <- x@pars[name]
+    "getPar", c("DisplayPars", "character"),
+    function(x, name, asIs = FALSE) {
+        aliasRes <- .dpAliasReverseTable[name]
+        new <- is.na(aliasRes)
+        aliasRes[new] <- name[new]
+        if (is.environment(x@pars)) {
+            name <- intersect(aliasRes, base::ls(x@pars, all.names = TRUE))
+            tmp <- mget(name, x@pars)
+        } else {
+            name <- intersect(aliasRes, names(x@pars))
+            tmp <- x@pars[name]
+        }
+        if (!asIs) {
+            tmp <- if (is.list(tmp) && length(tmp) == 1) tmp[[1]] else tmp
+        }
+        return(if (length(tmp)) tmp else NULL)
     }
-    if (!asIs) {
-      tmp <- if (is.list(tmp) && length(tmp) == 1) tmp[[1]] else tmp
-    }
-    return(if (length(tmp)) tmp else NULL)
-  }
 )
 
 setMethod("getPar", c("DisplayPars", "missing"), function(x, hideInternal = TRUE) {
-  pars <- as.list(x@pars)
-  if (hideInternal) {
-    pars <- pars[!grepl("^\\.__", names(pars))]
-  }
-  return(pars)
+    pars <- as.list(x@pars)
+    if (hideInternal) {
+        pars <- pars[!grepl("^\\.__", names(pars))]
+    }
+    return(pars)
 })
 
 setMethod("displayPars", c("DisplayPars", "missing"), function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal))
@@ -206,27 +206,27 @@ setAs("DisplayPars", "list", function(from, to) if (!is.null(from)) as.list(from
 ## stored, and the element content is a character vector of synonyms. Please note that this structure
 ## is also turned into a reverse lookup table for fast access.
 .dpAliasTable <- list(
-  "fontcolor.title" = "col.title",
-  "rotation.title" = c("rot.title", "rotate.title"),
-  "fontcolor.group" = "col.group",
-  "fontcolor.item" = "col.item",
-  "just.group" = c("labelJust", "labelJustification"),
-  "transcriptAnnotation" = "geneSymbols",
-  "fontcolor.item" = c("fontcolor.exon", "fontcolor.feature"),
-  "fontsize.item" = c("fontsize.exon", "fontsize.feature"),
-  "fontfamily.item" = c("fontfamily.exon", "fontfamily.feature"),
-  "fontface.item" = c("fontface.exon", "fontface.feature"),
-  "lineheight.item" = c("lineheight.exon", "lineheight.feature"),
-  "alpha.item" = c("alpha.exon", "alpha.feature"),
-  "cex.item" = c("cex.exon", "cex.feature"),
-  "col.mate" = c("col.mate", "col.mates", "col.pair", "col.pairs"),
-  "lty.mate" = c("lty.mate", "lty.mates", "lty.pair", "lty.pairs"),
-  "lwd.mate" = c("lwd.mate", "lwd.mates", "lwd.pair", "lwd.pairs"),
-  "alpha.mate" = c("alpha.mate", "alpha.mates", "alpha.pair", "alpha.pairs"),
-  "col.gap" = "col.gaps",
-  "lwd.gap" = "lwd.gaps",
-  "lty.gap" = "lty.gaps",
-  "alpha.gap" = "alpha.gaps"
+    "fontcolor.title" = "col.title",
+    "rotation.title" = c("rot.title", "rotate.title"),
+    "fontcolor.group" = "col.group",
+    "fontcolor.item" = "col.item",
+    "just.group" = c("labelJust", "labelJustification"),
+    "transcriptAnnotation" = "geneSymbols",
+    "fontcolor.item" = c("fontcolor.exon", "fontcolor.feature"),
+    "fontsize.item" = c("fontsize.exon", "fontsize.feature"),
+    "fontfamily.item" = c("fontfamily.exon", "fontfamily.feature"),
+    "fontface.item" = c("fontface.exon", "fontface.feature"),
+    "lineheight.item" = c("lineheight.exon", "lineheight.feature"),
+    "alpha.item" = c("alpha.exon", "alpha.feature"),
+    "cex.item" = c("cex.exon", "cex.feature"),
+    "col.mate" = c("col.mate", "col.mates", "col.pair", "col.pairs"),
+    "lty.mate" = c("lty.mate", "lty.mates", "lty.pair", "lty.pairs"),
+    "lwd.mate" = c("lwd.mate", "lwd.mates", "lwd.pair", "lwd.pairs"),
+    "alpha.mate" = c("alpha.mate", "alpha.mates", "alpha.pair", "alpha.pairs"),
+    "col.gap" = "col.gaps",
+    "lwd.gap" = "lwd.gaps",
+    "lty.gap" = "lty.gaps",
+    "alpha.gap" = "alpha.gaps"
 )
 .dpAliasReverseTable <- character()
 .dpAliasReverseTable[names(.dpAliasTable)] <- names(.dpAliasTable)
@@ -245,12 +245,12 @@ setClass("InferredDisplayPars", representation(name = "character", inheritance =
 setMethod("as.list", "InferredDisplayPars", function(x) as(x, "list"))
 
 setAs(
-  "InferredDisplayPars", "list",
-  function(from, to) {
-    ll <- from@.Data
-    names(ll) <- names(from)
-    ll
-  }
+    "InferredDisplayPars", "list",
+    function(from, to) {
+        ll <- from@.Data
+        names(ll) <- names(from)
+        ll
+    }
 )
 
 
@@ -306,80 +306,80 @@ setAs(
 ##     attribute, and all tracks of the matched types are colored accordingly. See the
 ##     documentation of the 'GeneRegion' and 'AnnotationTrack' classes for details.
 setClass("GdObject",
-  representation = representation("VIRTUAL",
-    dp = "DisplayPars",
-    name = "character",
-    imageMap = "ImageMapOrNULL"
-  ),
-  prototype = prototype(
-    dp = DisplayPars(
-      alpha = 1,
-      alpha.title = NULL,
-      background.panel = "transparent",
-      background.title = "lightgray",
-      background.legend = "transparent",
-      cex.axis = NULL,
-      cex.title = NULL,
-      cex = 1,
-      col.axis = "white",
-      col.border.title = "white",
-      col.frame = "lightgray",
-      col.grid = .DEFAULT_SHADED_COL,
-      col.line = NULL,
-      col.symbol = NULL,
-      col.title = "white",
-      col = .DEFAULT_SYMBOL_COL,
-      collapse = TRUE,
-      fill = .DEFAULT_FILL_COL,
-      fontcolor = "black",
-      fontface.title = 2,
-      fontface = 1,
-      fontfamily.title = "sans",
-      fontfamily = "sans",
-      fontsize = 12,
-      frame = FALSE,
-      grid = FALSE,
-      h = -1,
-      lineheight = 1,
-      lty.grid = "solid",
-      lty = "solid",
-      lwd.border.title = 1,
-      lwd.title = 1,
-      lwd.grid = 1,
-      lwd = 1,
-      min.distance = 1,
-      min.height = 3,
-      min.width = 1,
-      reverseStrand = FALSE,
-      rotation.title = 90,
-      rotation = 0,
-      showAxis = TRUE,
-      showTitle = TRUE,
-      size = 1,
-      v = -1
+    representation = representation("VIRTUAL",
+        dp = "DisplayPars",
+        name = "character",
+        imageMap = "ImageMapOrNULL"
     ),
-    name = "GdObject",
-    imageMap = NULL
-  )
+    prototype = prototype(
+        dp = DisplayPars(
+            alpha = 1,
+            alpha.title = NULL,
+            background.panel = "transparent",
+            background.title = "lightgray",
+            background.legend = "transparent",
+            cex.axis = NULL,
+            cex.title = NULL,
+            cex = 1,
+            col.axis = "white",
+            col.border.title = "white",
+            col.frame = "lightgray",
+            col.grid = .DEFAULT_SHADED_COL,
+            col.line = NULL,
+            col.symbol = NULL,
+            col.title = "white",
+            col = .DEFAULT_SYMBOL_COL,
+            collapse = TRUE,
+            fill = .DEFAULT_FILL_COL,
+            fontcolor = "black",
+            fontface.title = 2,
+            fontface = 1,
+            fontfamily.title = "sans",
+            fontfamily = "sans",
+            fontsize = 12,
+            frame = FALSE,
+            grid = FALSE,
+            h = -1,
+            lineheight = 1,
+            lty.grid = "solid",
+            lty = "solid",
+            lwd.border.title = 1,
+            lwd.title = 1,
+            lwd.grid = 1,
+            lwd = 1,
+            min.distance = 1,
+            min.height = 3,
+            min.width = 1,
+            reverseStrand = FALSE,
+            rotation.title = 90,
+            rotation = 0,
+            showAxis = TRUE,
+            showTitle = TRUE,
+            size = 1,
+            v = -1
+        ),
+        name = "GdObject",
+        imageMap = NULL
+    )
 )
 
 ## We need to set and query DisplayPars in the the initializer, hence
 ## the appropriate methods have to be defined here first.
 setMethod("setPar", signature("GdObject", "character"), function(x, name, value, interactive = TRUE) {
-  newDp <- setPar(x@dp, name, value, interactive = interactive)
-  x@dp <- newDp
-  return(x)
+    newDp <- setPar(x@dp, name, value, interactive = interactive)
+    x@dp <- newDp
+    return(x)
 })
 
 setMethod("setPar", signature("GdObject", "list"), function(x, value, interactive = TRUE) {
-  newDp <- setPar(x@dp, value, interactive = interactive)
-  x@dp <- newDp
-  return(x)
+    newDp <- setPar(x@dp, value, interactive = interactive)
+    x@dp <- newDp
+    return(x)
 })
 
 setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recursive = FALSE, value) {
-  x <- setPar(x, value, interactive = FALSE)
-  return(x)
+    x <- setPar(x, value, interactive = FALSE)
+    return(x)
 })
 
 setMethod("getPar", c("GdObject", "character"), function(x, name, asIs = FALSE) getPar(x@dp, name, asIs = asIs))
@@ -395,19 +395,19 @@ setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal = TR
 ## re-initiated here in order to get a fresh environment for each
 ## instance of the class.
 setMethod("initialize", "GdObject", function(.Object, name, ...) {
-  ## update the default parameters first
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "GdObject")
-  ## now rebuild the slot to get a new environment
-  pars <- getPar(.Object, hideInternal = FALSE)
-  .Object@dp <- DisplayPars()
-  .Object <- setPar(.Object, pars, interactive = FALSE)
-  if (!missing(name)) {
-    .Object@name <- if (is.null(name)) "" else name
-  }
-  ## Finally clobber up everything that's left
-  .Object <- setPar(.Object, list(...), interactive = FALSE)
-  return(.Object)
+    ## update the default parameters first
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "GdObject")
+    ## now rebuild the slot to get a new environment
+    pars <- getPar(.Object, hideInternal = FALSE)
+    .Object@dp <- DisplayPars()
+    .Object <- setPar(.Object, pars, interactive = FALSE)
+    if (!missing(name)) {
+        .Object@name <- if (is.null(name)) "" else name
+    }
+    ## Finally clobber up everything that's left
+    .Object <- setPar(.Object, list(...), interactive = FALSE)
+    return(.Object)
 })
 
 
@@ -428,37 +428,37 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
 ##    o genome: character giving the reference genome for which the track is defined.
 
 setClass("RangeTrack",
-  representation = representation("VIRTUAL",
-    range = "GRangesOrIRanges",
-    chromosome = "character",
-    genome = "character"
-  ),
-  contains = "GdObject",
-  prototype = prototype(
-    chromosome = "chr1",
-    dp = DisplayPars(),
-    genome = "ANY",
-    name = "RangeTrack",
-    range = GRanges()
-  )
+    representation = representation("VIRTUAL",
+        range = "GRangesOrIRanges",
+        chromosome = "character",
+        genome = "character"
+    ),
+    contains = "GdObject",
+    prototype = prototype(
+        chromosome = "chr1",
+        dp = DisplayPars(),
+        genome = "ANY",
+        name = "RangeTrack",
+        range = GRanges()
+    )
 )
 
 ## Coercing all input to the appropriate form
 setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genome, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "RangeTrack")
-  if (!missing(chromosome) && !is.null(chromosome)) {
-    .Object@chromosome <- .chrName(chromosome)[1]
-  }
-  if (!missing(genome) && !is.null(genome)) {
-    .Object@genome <- genome
-  }
-  if (!missing(range) && is(range, "GRanges")) {
-    .Object@range <- range
-  }
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "RangeTrack")
+    if (!missing(chromosome) && !is.null(chromosome)) {
+        .Object@chromosome <- .chrName(chromosome)[1]
+    }
+    if (!missing(genome) && !is.null(genome)) {
+        .Object@genome <- genome
+    }
+    if (!missing(range) && is(range, "GRanges")) {
+        .Object@range <- range
+    }
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -480,38 +480,38 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
 ##     necessary information
 
 setClass("ReferenceTrack",
-  representation = representation("VIRTUAL",
-    stream = "function",
-    reference = "character",
-    mapping = "list",
-    args = "list",
-    defaults = "list"
-  ),
-  prototype = prototype(
-    stream = function(x, selection) {},
-    reference = "~",
-    mapping = list()
-  ),
-  validity = function(object) {
-    msg <- NULL
-    if (!all(c("file", "selection") %in% names(formals(object@stream)))) {
-      msg <- "The streaming function in the 'stream' slot needs to define two arguments, 'file' and 'selection'"
+    representation = representation("VIRTUAL",
+        stream = "function",
+        reference = "character",
+        mapping = "list",
+        args = "list",
+        defaults = "list"
+    ),
+    prototype = prototype(
+        stream = function(x, selection) {},
+        reference = "~",
+        mapping = list()
+    ),
+    validity = function(object) {
+        msg <- NULL
+        if (!all(c("file", "selection") %in% names(formals(object@stream)))) {
+            msg <- "The streaming function in the 'stream' slot needs to define two arguments, 'file' and 'selection'"
+        }
+        if (!file.exists(object@reference)) {
+            msg <- c(msg, sprintf("The referenced file '%s' does not exist", object@reference))
+        }
+        return(if (is.null(msg)) TRUE else msg)
     }
-    if (!file.exists(object@reference)) {
-      msg <- c(msg, sprintf("The referenced file '%s' does not exist", object@reference))
-    }
-    return(if (is.null(msg)) TRUE else msg)
-  }
 )
 setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, mapping = list(),
                                                    args = list(), defaults = list()) {
-  .Object@stream <- stream
-  .Object@reference <- reference
-  .Object@mapping <- mapping
-  .Object@args <- args
-  .Object@defaults <- defaults
-  validObject(.Object)
-  return(.Object)
+    .Object@stream <- stream
+    .Object@reference <- reference
+    .Object@mapping <- mapping
+    .Object@args <- args
+    .Object@defaults <- defaults
+    validObject(.Object)
+    return(.Object)
 })
 
 
@@ -522,12 +522,12 @@ setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, m
 ##               This is for dispatching purpose only.
 
 setClass("NumericTrack",
-  representation = representation("VIRTUAL"),
-  prototype = prototype(
-    name = "NumericTrack",
-    dp = DisplayPars()
-  ),
-  contains = "RangeTrack"
+    representation = representation("VIRTUAL"),
+    prototype = prototype(
+        name = "NumericTrack",
+        dp = DisplayPars()
+    ),
+    contains = "RangeTrack"
 )
 
 
@@ -545,43 +545,43 @@ setClass("NumericTrack",
 ##     [c("hide", "dense", "squish", "pack", "full")]
 
 setClass("StackedTrack",
-  representation = representation("VIRTUAL",
-    stacking = "character",
-    stacks = "numeric"
-  ),
-  prototype = prototype(
-    name = "StackedTrack",
-    stacking = "squish",
-    stackingValues = c("hide", "dense", "squish", "pack", "full"),
-    dp = DisplayPars(
-      stackHeight = 0.75,
-      reverseStacking = FALSE
-    )
-  ),
-  contains = "RangeTrack"
+    representation = representation("VIRTUAL",
+        stacking = "character",
+        stacks = "numeric"
+    ),
+    prototype = prototype(
+        name = "StackedTrack",
+        stacking = "squish",
+        stackingValues = c("hide", "dense", "squish", "pack", "full"),
+        dp = DisplayPars(
+            stackHeight = 0.75,
+            reverseStacking = FALSE
+        )
+    ),
+    contains = "RangeTrack"
 )
 
 ## Need to fill the stacks slot here, don't want to recompute all the time
 setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "StackedTrack")
-  pt <- getClass("StackedTrack")@prototype
-  if (!missing(stacking)) {
-    if (!all(stacking %in% pt@stackingValues)) {
-      stop(
-        sprintf("Problem initializing %s, accepts the following values for 'stacking': ", class(.Object)),
-        paste(pt@stackingValues, collapse = ", "), "\n"
-      )
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "StackedTrack")
+    pt <- getClass("StackedTrack")@prototype
+    if (!missing(stacking)) {
+        if (!all(stacking %in% pt@stackingValues)) {
+            stop(
+                sprintf("Problem initializing %s, accepts the following values for 'stacking': ", class(.Object)),
+                paste(pt@stackingValues, collapse = ", "), "\n"
+            )
+        }
+        .Object@stacking <- stacking
+        r <- list(...)$range
+        ## stacks <- if(length(r)>0) disjointBins(ranges(r)) else 0
+        ## .Object@stacks <- stacks
+        .Object@stacks <- numeric()
     }
-    .Object@stacking <- stacking
-    r <- list(...)$range
-    ## stacks <- if(length(r)>0) disjointBins(ranges(r)) else 0
-    ## .Object@stacks <- stacks
-    .Object@stacks <- numeric()
-  }
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -615,69 +615,69 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
 ##    o rotation: the rotation of the item annotation in degrees.
 
 setClass("AnnotationTrack",
-  contains = "StackedTrack",
-  prototype = prototype(
-    columns = c("feature", "group", "id"),
-    stacking = "squish",
-    name = "AnnotationTrack",
-    dp = DisplayPars(
-      arrowHeadWidth = 30,
-      arrowHeadMaxWidth = 40,
-      cex.group = 0.6,
-      cex = 1,
-      col.line = "darkgray",
-      col = "transparent",
-      featureAnnotation = NULL,
-      fill = "lightblue",
-      fontfamily.group = "sans",
-      fontcolor.group = .DEFAULT_SHADED_COL,
-      fontcolor.item = "white",
-      fontface.group = 2,
-      fontsize.group = 12,
-      groupAnnotation = NULL,
-      just.group = "left",
-      lex = 1,
-      lineheight = 1,
-      lty = "solid",
-      lwd = 1,
-      mergeGroups = FALSE,
-      min.height = 3,
-      min.width = 1,
-      rotation = 0,
-      rotation.group = 0,
-      rotation.item = 0,
-      shape = "arrow",
-      showFeatureId = FALSE,
-      showId = FALSE,
-      showOverplotting = FALSE,
-      size = 1
+    contains = "StackedTrack",
+    prototype = prototype(
+        columns = c("feature", "group", "id"),
+        stacking = "squish",
+        name = "AnnotationTrack",
+        dp = DisplayPars(
+            arrowHeadWidth = 30,
+            arrowHeadMaxWidth = 40,
+            cex.group = 0.6,
+            cex = 1,
+            col.line = "darkgray",
+            col = "transparent",
+            featureAnnotation = NULL,
+            fill = "lightblue",
+            fontfamily.group = "sans",
+            fontcolor.group = .DEFAULT_SHADED_COL,
+            fontcolor.item = "white",
+            fontface.group = 2,
+            fontsize.group = 12,
+            groupAnnotation = NULL,
+            just.group = "left",
+            lex = 1,
+            lineheight = 1,
+            lty = "solid",
+            lwd = 1,
+            mergeGroups = FALSE,
+            min.height = 3,
+            min.width = 1,
+            rotation = 0,
+            rotation.group = 0,
+            rotation.item = 0,
+            shape = "arrow",
+            showFeatureId = FALSE,
+            showId = FALSE,
+            showOverplotting = FALSE,
+            size = 1
+        )
     )
-  )
 )
 
 ## Essentially we just check for the correct GRanges columns here
 setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
-  if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
+    if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
+        return(.Object)
+    }
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "AnnotationTrack")
+    range <- list(...)$range
+    if (!is.null(range) && length(.Object)) {
+        if (!all(.Object@columns %in% colnames(values(range)))) {
+            stop(paste(
+                "Problem initializing AnnotationTrack need the following columns:",
+                paste(.Object@columns, collpase = ", ")
+            ), "\n")
+        }
+        grp <- if (is(.Object, "GeneRegionTrack")) values(range)$transcript else values(range)$group
+        if (any(vapply(split(as.character(strand(range)), grp), function(x) length(unique(x)), numeric(1)) != 1)) {
+            stop("Grouped elments of a RangeTrack can not be on opposing strands")
+        }
+    }
+    .Object <- callNextMethod()
     return(.Object)
-  }
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "AnnotationTrack")
-  range <- list(...)$range
-  if (!is.null(range) && length(.Object)) {
-    if (!all(.Object@columns %in% colnames(values(range)))) {
-      stop(paste(
-        "Problem initializing AnnotationTrack need the following columns:",
-        paste(.Object@columns, collpase = ", ")
-      ), "\n")
-    }
-    grp <- if (is(.Object, "GeneRegionTrack")) values(range)$transcript else values(range)$group
-    if (any(vapply(split(as.character(strand(range)), grp), function(x) length(unique(x)), numeric(1)) != 1)) {
-      stop("Grouped elments of a RangeTrack can not be on opposing strands")
-    }
-  }
-  .Object <- callNextMethod()
-  return(.Object)
 })
 
 ## The file-based version of the AnnotationTrack class. This will mainly provide a means to dispatch to
@@ -688,10 +688,10 @@ setClass("ReferenceAnnotationTrack", contains = c("AnnotationTrack", "ReferenceT
 ## multiple inheritance has some strange features with regards to method selection
 setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), ...) {
-  .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
-    mapping = mapping, args = args, defaults = defaults)
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
+        mapping = mapping, args = args, defaults = defaults)
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -719,78 +719,78 @@ setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, re
 AnnotationTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, feature, group, id, strand, chromosome,
                             genome, stacking = "squish", name = "AnnotationTrack", fun, selectFun, importFunction,
                             stream = FALSE, ...) {
-  ## Some defaults
-  covars <- .getCovars(range)
-  isStream <- FALSE
-  if (!is.character(range)) {
-    n <- max(c(length(start), length(end), length(width)), nrow(covars))
-    if (is.null(covars[["feature"]]) && missing(feature)) {
-      feature <- rep("unknown", n)
+    ## Some defaults
+    covars <- .getCovars(range)
+    isStream <- FALSE
+    if (!is.character(range)) {
+        n <- max(c(length(start), length(end), length(width)), nrow(covars))
+        if (is.null(covars[["feature"]]) && missing(feature)) {
+            feature <- rep("unknown", n)
+        }
+        if (is.null(covars[["id"]]) && missing(id)) {
+            id <- make.unique(rep(if (!is.null(feature)) as.character(feature) else covars[["feature"]], n)[seq_len(n)])
+        }
+        if (is.null(covars[["group"]]) && missing(group)) {
+            group <- seq_len(n)
+        }
     }
-    if (is.null(covars[["id"]]) && missing(id)) {
-      id <- make.unique(rep(if (!is.null(feature)) as.character(feature) else covars[["feature"]], n)[seq_len(n)])
+    ## Build a GRanges object from the inputs
+    .missingToNull(c("feature", "group", "id", "strand", "chromosome", "importFunction", "genome"))
+    args <- list(feature = feature, group = group, id = id, strand = strand, chromosome = chromosome, genome = genome)
+    defs <- list(feature = "unknown", group = "unknown", id = "unknown", strand = "*", density = 1, chromosome = "chrNA", genome = NA)
+    range <- .buildRange(
+        range = range, groupId = "group", start = start, end = end, width = width,
+        args = args, defaults = defs, chromosome = chromosome, trackType = "AnnotationTrack",
+        importFun = importFunction, stream = stream
+    )
+    if (is.list(range)) {
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
     }
-    if (is.null(covars[["group"]]) && missing(group)) {
-      group <- seq_len(n)
+    ## Pipes have a special meaning for merged groups, so we can't have them in the initial group vector
+    mcols(range)[["group"]] <- gsub("|", "", mcols(range)[["group"]], fixed = TRUE)
+    ## If no chromosome was explicitely asked for we just take the first one in the GRanges object
+    if (missing(chromosome) || is.null(chromosome)) {
+        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
     }
-  }
-  ## Build a GRanges object from the inputs
-  .missingToNull(c("feature", "group", "id", "strand", "chromosome", "importFunction", "genome"))
-  args <- list(feature = feature, group = group, id = id, strand = strand, chromosome = chromosome, genome = genome)
-  defs <- list(feature = "unknown", group = "unknown", id = "unknown", strand = "*", density = 1, chromosome = "chrNA", genome = NA)
-  range <- .buildRange(
-    range = range, groupId = "group", start = start, end = end, width = width,
-    args = args, defaults = defs, chromosome = chromosome, trackType = "AnnotationTrack",
-    importFun = importFunction, stream = stream
-  )
-  if (is.list(range)) {
-    isStream <- TRUE
-    slist <- range
-    range <- GRanges()
-  }
-  ## Pipes have a special meaning for merged groups, so we can't have them in the initial group vector
-  mcols(range)[["group"]] <- gsub("|", "", mcols(range)[["group"]], fixed = TRUE)
-  ## If no chromosome was explicitely asked for we just take the first one in the GRanges object
-  if (missing(chromosome) || is.null(chromosome)) {
-    chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-  }
-  ## And finally the object instantiation, we have to distinguish between DetailsAnnotationTracks and normal ones
-  genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
-  if (missing(fun)) {
-    if (!isStream) {
-      return(new("AnnotationTrack",
-        chromosome = as.character(chromosome[1]), range = range,
-        name = name, genome = genome, stacking = stacking, ...
-      ))
+    ## And finally the object instantiation, we have to distinguish between DetailsAnnotationTracks and normal ones
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    if (missing(fun)) {
+        if (!isStream) {
+            return(new("AnnotationTrack",
+                chromosome = as.character(chromosome[1]), range = range,
+                name = name, genome = genome, stacking = stacking, ...
+            ))
+        } else {
+            ## A bit hackish but for some functions we may want to know which track type we need but at the
+            ## same time we do not want to enforce this as an additional argument
+            e <- new.env()
+            e[["._trackType"]] <- "AnnotationTrack"
+            environment(slist[["stream"]]) <- e
+            return(new("ReferenceAnnotationTrack",
+                chromosome = as.character(chromosome[1]), range = range,
+                name = name, genome = genome, stacking = stacking, stream = slist[["stream"]], reference = slist[["reference"]],
+                mapping = slist[["mapping"]], args = args, defaults = defs, ...
+            ))
+        }
     } else {
-      ## A bit hackish but for some functions we may want to know which track type we need but at the
-      ## same time we do not want to enforce this as an additional argument
-      e <- new.env()
-      e[["._trackType"]] <- "AnnotationTrack"
-      environment(slist[["stream"]]) <- e
-      return(new("ReferenceAnnotationTrack",
-        chromosome = as.character(chromosome[1]), range = range,
-        name = name, genome = genome, stacking = stacking, stream = slist[["stream"]], reference = slist[["reference"]],
-        mapping = slist[["mapping"]], args = args, defaults = defs, ...
-      ))
+        if (!is.function(fun)) {
+            stop("'fun' must be a function")
+        }
+        if (missing(selectFun)) {
+            selectFun <- function(...) {
+                return(TRUE)
+            }
+        }
+        if (!is.function(selectFun)) {
+            stop("'selectFun' must be a function")
+        }
+        return(new("DetailsAnnotationTrack",
+            chromosome = as.character(chromosome[1]), range = range,
+            name = name, genome = genome, stacking = stacking, fun = fun, selectFun = selectFun, ...
+        ))
     }
-  } else {
-    if (!is.function(fun)) {
-      stop("'fun' must be a function")
-    }
-    if (missing(selectFun)) {
-      selectFun <- function(...) {
-        return(TRUE)
-      }
-    }
-    if (!is.function(selectFun)) {
-      stop("'selectFun' must be a function")
-    }
-    return(new("DetailsAnnotationTrack",
-      chromosome = as.character(chromosome[1]), range = range,
-      name = name, genome = genome, stacking = stacking, fun = fun, selectFun = selectFun, ...
-    ))
-  }
 }
 
 
@@ -819,42 +819,42 @@ AnnotationTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL
 ## for details.
 
 setClass("DetailsAnnotationTrack",
-  contains = "AnnotationTrack",
-  representation = representation(fun = "function", selectFun = "function"),
-  prototype = prototype(
-    fun = function(...) {},
-    selectFun = function(...) {
-      return(TRUE)
-    },
-    dp = DisplayPars(
-      details.minWidth = 100,
-      details.ratio = Inf,
-      details.size = 0.5,
-      detailsBorder.col = "darkgray",
-      detailsBorder.fill = "transparent",
-      detailsBorder.lty = "solid",
-      detailsBorder.lwd = 1,
-      detailsConnector.cex = 1,
-      detailsConnector.col = "darkgray",
-      detailsConnector.lty = "dashed",
-      detailsConnector.lwd = 1,
-      detailsConnector.pch = 20,
-      detailsFunArgs = list(),
-      groupDetails = FALSE
+    contains = "AnnotationTrack",
+    representation = representation(fun = "function", selectFun = "function"),
+    prototype = prototype(
+        fun = function(...) {},
+        selectFun = function(...) {
+            return(TRUE)
+        },
+        dp = DisplayPars(
+            details.minWidth = 100,
+            details.ratio = Inf,
+            details.size = 0.5,
+            detailsBorder.col = "darkgray",
+            detailsBorder.fill = "transparent",
+            detailsBorder.lty = "solid",
+            detailsBorder.lwd = 1,
+            detailsConnector.cex = 1,
+            detailsConnector.col = "darkgray",
+            detailsConnector.lty = "dashed",
+            detailsConnector.lwd = 1,
+            detailsConnector.pch = 20,
+            detailsFunArgs = list(),
+            groupDetails = FALSE
+        )
     )
-  )
 )
 
 DetailsAnnotationTrack <- function(...) AnnotationTrack(...)
 
 setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectFun, ...) {
-  ## the diplay parameter defaults
-  .Object <- .updatePars(.Object, "DetailsAnnotationTrack")
-  .makeParMapping()
-  .Object@fun <- fun
-  .Object@selectFun <- selectFun
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    ## the diplay parameter defaults
+    .Object <- .updatePars(.Object, "DetailsAnnotationTrack")
+    .makeParMapping()
+    .Object@fun <- fun
+    .Object@selectFun <- selectFun
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -893,44 +893,44 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ##    o rotation: the rotation of the exon annotation in degrees.
 
 setClass("GeneRegionTrack",
-  contains = "AnnotationTrack",
-  representation = representation(start = "NumericOrNULL", end = "NumericOrNULL"),
-  prototype = prototype(
-    columns = c("feature", "transcript", "symbol", "gene", "exon"),
-    stacking = "squish",
-    stacks = 0,
-    start = 0,
-    end = 0,
-    name = "GeneRegionTrack",
-    dp = DisplayPars(
-      arrowHeadWidth = 10,
-      arrowHeadMaxWidth = 20,
-      col = NULL,
-      collapseTranscripts = FALSE,
-      exonAnnotation = NULL,
-      fill = "orange",
-      min.distance = 0,
-      shape = c("smallArrow", "box"),
-      showExonId = NULL,
-      thinBoxFeature = .THIN_BOX_FEATURES,
-      transcriptAnnotation = NULL
+    contains = "AnnotationTrack",
+    representation = representation(start = "NumericOrNULL", end = "NumericOrNULL"),
+    prototype = prototype(
+        columns = c("feature", "transcript", "symbol", "gene", "exon"),
+        stacking = "squish",
+        stacks = 0,
+        start = 0,
+        end = 0,
+        name = "GeneRegionTrack",
+        dp = DisplayPars(
+            arrowHeadWidth = 10,
+            arrowHeadMaxWidth = 20,
+            col = NULL,
+            collapseTranscripts = FALSE,
+            exonAnnotation = NULL,
+            fill = "orange",
+            min.distance = 0,
+            shape = c("smallArrow", "box"),
+            showExonId = NULL,
+            thinBoxFeature = .THIN_BOX_FEATURES,
+            transcriptAnnotation = NULL
+        )
     )
-  )
 )
 
 
 ## Making sure all the display parameter defaults are being set
 setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...) {
-  if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
+    if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
+        return(.Object)
+    }
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "GeneRegionTrack")
+    .Object@start <- ifelse(is.null(start), 0, start)
+    .Object@end <- ifelse(is.null(end), 0, end)
+    .Object <- callNextMethod(.Object, ...)
     return(.Object)
-  }
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "GeneRegionTrack")
-  .Object@start <- ifelse(is.null(start), 0, start)
-  .Object@end <- ifelse(is.null(end), 0, end)
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
 })
 
 ## The file-based version of the GeneRegionTrack class. This will mainly provide a means to dispatch to
@@ -941,10 +941,10 @@ setClass("ReferenceGeneRegionTrack", contains = c("GeneRegionTrack", "ReferenceT
 ## multiple inheritence has some strange features with regards to method selection
 setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), ...) {
-  .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
-    mapping = mapping, args = args, defaults = defaults)
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
+        mapping = mapping, args = args, defaults = defaults)
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -966,66 +966,66 @@ setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, re
 GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths = NULL, strand, feature, exon,
                             transcript, gene, symbol, chromosome, genome, stacking = "squish",
                             name = "GeneRegionTrack", start = NULL, end = NULL, importFunction, stream = FALSE, ...) {
-  ## Some defaults
-  covars <- if (is.data.frame(range)) range else if (is(range, "GRanges")) as.data.frame(mcols(range)) else data.frame()
-  isStream <- FALSE
-  if (!is.character(range)) {
-    n <- if (is.null(range)) max(c(length(start), length(end), length(width))) else if (is(range, "data.frame")) nrow(range) else length(range)
-    if (is.null(covars[["feature"]]) && missing(feature)) {
-      feature <- paste("exon", seq_len(n), sep = "_")
+    ## Some defaults
+    covars <- if (is.data.frame(range)) range else if (is(range, "GRanges")) as.data.frame(mcols(range)) else data.frame()
+    isStream <- FALSE
+    if (!is.character(range)) {
+        n <- if (is.null(range)) max(c(length(start), length(end), length(width))) else if (is(range, "data.frame")) nrow(range) else length(range)
+        if (is.null(covars[["feature"]]) && missing(feature)) {
+            feature <- paste("exon", seq_len(n), sep = "_")
+        }
+        if (is.null(covars[["exon"]]) && missing(exon)) {
+            exon <- make.unique(rep(if (!missing(feature) && !is.null(feature)) as.character(feature) else covars[["feature"]], n)[seq_len(n)])
+        }
+        if (is.null(covars[["transcript"]]) && missing(transcript)) {
+            transcript <- paste("transcript", seq_len(n), sep = "_")
+        }
+        if (is.null(covars[["gene"]]) && missing(gene)) {
+            gene <- paste("gene", seq_len(n), sep = "_")
+        }
     }
-    if (is.null(covars[["exon"]]) && missing(exon)) {
-      exon <- make.unique(rep(if (!missing(feature) && !is.null(feature)) as.character(feature) else covars[["feature"]], n)[seq_len(n)])
+    ## Build a GRanges object from the inputs
+    .missingToNull(c("feature", "exon", "transcript", "gene", "symbol", "strand", "chromosome", "importFunction", "genome"))
+    args <- list(
+        feature = feature, id = exon, exon = exon, transcript = transcript, gene = gene, symbol = symbol, strand = strand,
+        chromosome = chromosome, genome = genome
+    )
+    defs <- list(
+        feature = "unknown", id = "unknown", exon = "unknown", transcript = "unknown", genome = NA,
+        gene = "unknown", symbol = "unknown", strand = "*", density = 1, chromosome = "chrNA"
+    )
+    range <- .buildRange(
+        range = range, groupId = "transcript", start = rstarts, end = rends, width = rwidths, args = args, defaults = defs,
+        chromosome = chromosome, tstart = start, tend = end, trackType = "GeneRegionTrack", importFun = importFunction,
+        genome = genome
+    )
+    if (is.list(range)) {
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
     }
-    if (is.null(covars[["transcript"]]) && missing(transcript)) {
-      transcript <- paste("transcript", seq_len(n), sep = "_")
+    if (is.null(start)) {
+        start <- if (!length(range)) NULL else min(start(range))
     }
-    if (is.null(covars[["gene"]]) && missing(gene)) {
-      gene <- paste("gene", seq_len(n), sep = "_")
+    if (is.null(end)) {
+        end <- if (!length(range)) NULL else max(end(range))
     }
-  }
-  ## Build a GRanges object from the inputs
-  .missingToNull(c("feature", "exon", "transcript", "gene", "symbol", "strand", "chromosome", "importFunction", "genome"))
-  args <- list(
-    feature = feature, id = exon, exon = exon, transcript = transcript, gene = gene, symbol = symbol, strand = strand,
-    chromosome = chromosome, genome = genome
-  )
-  defs <- list(
-    feature = "unknown", id = "unknown", exon = "unknown", transcript = "unknown", genome = NA,
-    gene = "unknown", symbol = "unknown", strand = "*", density = 1, chromosome = "chrNA"
-  )
-  range <- .buildRange(
-    range = range, groupId = "transcript", start = rstarts, end = rends, width = rwidths, args = args, defaults = defs,
-    chromosome = chromosome, tstart = start, tend = end, trackType = "GeneRegionTrack", importFun = importFunction,
-    genome = genome
-  )
-  if (is.list(range)) {
-    isStream <- TRUE
-    slist <- range
-    range <- GRanges()
-  }
-  if (is.null(start)) {
-    start <- if (!length(range)) NULL else min(start(range))
-  }
-  if (is.null(end)) {
-    end <- if (!length(range)) NULL else max(end(range))
-  }
-  if (missing(chromosome) || is.null(chromosome)) {
-    chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-  }
-  genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
-  if (!isStream) {
-    return(new("GeneRegionTrack",
-      start = start, end = end, chromosome = chromosome[1], range = range,
-      name = name, genome = genome, stacking = stacking, ...
-    ))
-  } else {
-    return(new("ReferenceGeneRegionTrack",
-      start = start, end = end, chromosome = chromosome[1], range = range,
-      name = name, genome = genome, stacking = stacking, stream = slist[["stream"]],
-      reference = slist[["reference"]], mapping = slist[["mapping"]], args = args, defaults = defs, ...
-    ))
-  }
+    if (missing(chromosome) || is.null(chromosome)) {
+        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    }
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    if (!isStream) {
+        return(new("GeneRegionTrack",
+            start = start, end = end, chromosome = chromosome[1], range = range,
+            name = name, genome = genome, stacking = stacking, ...
+        ))
+    } else {
+        return(new("ReferenceGeneRegionTrack",
+            start = start, end = end, chromosome = chromosome[1], range = range,
+            name = name, genome = genome, stacking = stacking, stream = slist[["stream"]],
+            reference = slist[["reference"]], mapping = slist[["mapping"]], args = args, defaults = defs, ...
+        ))
+    }
 }
 
 
@@ -1051,255 +1051,255 @@ GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths 
 ## class definition.
 
 setClass("BiomartGeneRegionTrack",
-  contains = "GeneRegionTrack",
-  representation = representation(biomart = "MartOrNULL", filter = "list"),
-  prototype = prototype(
-    biomart = NULL,
-    filter = list(),
-    columns = c("feature", "transcript", "symbol", "gene", "rank"),
-    name = "BiomartGeneRegionTrack",
-    dp = DisplayPars(
-      C_segment = "burlywood4",
-      D_segment = "lightblue",
-      J_segment = "dodgerblue2",
-      Mt_rRNA = "yellow",
-      Mt_tRNA = "darkgoldenrod",
-      Mt_tRNA_pseudogene = "darkgoldenrod1",
-      V_segment = "aquamarine",
-      miRNA = "cornflowerblue",
-      miRNA_pseudogene = "cornsilk",
-      misc_RNA = "cornsilk3",
-      misc_RNA_pseudogene = "cornsilk4",
-      protein_coding = "#FFD58A",
-      pseudogene = "brown1",
-      rRNA = "darkolivegreen1",
-      rRNA_pseudogene = "darkolivegreen",
-      retrotransposed = "blueviolet",
-      scRNA = "gold4",
-      scRNA_pseudogene = "darkorange2",
-      snRNA = "coral",
-      snRNA_pseudogene = "coral3",
-      snoRNA = "cyan",
-      snoRNA_pseudogene = "cyan2",
-      tRNA_pseudogene = "antiquewhite3",
-      utr3 = "#FFD58A",
-      utr5 = "#FFD58A",
-      verbose = FALSE
+    contains = "GeneRegionTrack",
+    representation = representation(biomart = "MartOrNULL", filter = "list"),
+    prototype = prototype(
+        biomart = NULL,
+        filter = list(),
+        columns = c("feature", "transcript", "symbol", "gene", "rank"),
+        name = "BiomartGeneRegionTrack",
+        dp = DisplayPars(
+            C_segment = "burlywood4",
+            D_segment = "lightblue",
+            J_segment = "dodgerblue2",
+            Mt_rRNA = "yellow",
+            Mt_tRNA = "darkgoldenrod",
+            Mt_tRNA_pseudogene = "darkgoldenrod1",
+            V_segment = "aquamarine",
+            miRNA = "cornflowerblue",
+            miRNA_pseudogene = "cornsilk",
+            misc_RNA = "cornsilk3",
+            misc_RNA_pseudogene = "cornsilk4",
+            protein_coding = "#FFD58A",
+            pseudogene = "brown1",
+            rRNA = "darkolivegreen1",
+            rRNA_pseudogene = "darkolivegreen",
+            retrotransposed = "blueviolet",
+            scRNA = "gold4",
+            scRNA_pseudogene = "darkorange2",
+            snRNA = "coral",
+            snRNA_pseudogene = "coral3",
+            snoRNA = "cyan",
+            snoRNA_pseudogene = "cyan2",
+            tRNA_pseudogene = "antiquewhite3",
+            utr3 = "#FFD58A",
+            utr5 = "#FFD58A",
+            verbose = FALSE
+        )
     )
-  )
 )
 
 ## Helper to return the default biomart to feature mapping
 .getBMFeatureMap <- function() {
-  return(list(
-    gene_id = "ensembl_gene_id", transcript_id = "ensembl_transcript_id", exon_id = "ensembl_exon_id",
-    start = "exon_chrom_start", end = "exon_chrom_end", rank = "rank", strand = "strand",
-    symbol = c("external_gene_name", "external_gene_id"), feature = "gene_biotype", chromosome = "chromosome_name",
-    u5s = "5_utr_start", u5e = "5_utr_end", u3s = "3_utr_start", u3e = "3_utr_end", cdsl = c("cds_length", "cds_start"),
-    phase = "phase"
-  ))
+    return(list(
+        gene_id = "ensembl_gene_id", transcript_id = "ensembl_transcript_id", exon_id = "ensembl_exon_id",
+        start = "exon_chrom_start", end = "exon_chrom_end", rank = "rank", strand = "strand",
+        symbol = c("external_gene_name", "external_gene_id"), feature = "gene_biotype", chromosome = "chromosome_name",
+        u5s = "5_utr_start", u5e = "5_utr_end", u3s = "3_utr_start", u3e = "3_utr_end", cdsl = c("cds_length", "cds_start"),
+        phase = "phase"
+    ))
 }
 
 ## Helper to do the actual fetching of data from Biomart
 .fetchBMData <- function(object, chromosome_name = NULL, staged = FALSE) {
-  if (!is.null(chromosome_name)) {
-    chromosome_name <- gsub("^chr", "", chromosome_name)
-  }
-  ## The map between Biomart DB fields and annotation features. The individual values can be vectors for cases where there is
-  ## ambiguity between different marts. This will be dynamically evaluated against available filters.
-  origFeatureMap <- .getBMFeatureMap()
-  featureMap <- modifyList(origFeatureMap, as.list(.dpOrDefault(object, ".__featureMap", list())))
-  needed <- c(
-    "gene_id", "transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
-    "chromosome", "u5s", "u5e", "u3s", "u3e", "cdsl", "phase"
-  )
-  if (!all(needed %in% names(featureMap))) {
-    stop("'featureMap' needs to include items '", paste(setdiff(needed, names(featureMap)), collapse = ", "), "'")
-  }
-  avail <- listAttributes(object@biomart)[, 1]
-  ambig <- names(featureMap)[listLen(featureMap) > 1]
-  for (i in ambig) {
-    mt <- match(featureMap[[i]], avail)
-    if (!all(is.na(mt))) {
-      featureMap[[i]] <- featureMap[[i]][min(which(!is.na(mt)))]
-    } else {
-      featureMap[[i]] <- NA
+    if (!is.null(chromosome_name)) {
+        chromosome_name <- gsub("^chr", "", chromosome_name)
     }
-  }
-  featureMap <- unlist(featureMap)
-  ## Deal with the filters
-  filterValues <- as.list(object@filter)
-  start <- object@start
-  end <- object@end
-  for (i in c("start", "end", "chromosome_name")) {
-    if (!is.null(get(i)) && length(get(i)) > 0) {
-      filterValues[[i]] <- get(i)
+    ## The map between Biomart DB fields and annotation features. The individual values can be vectors for cases where there is
+    ## ambiguity between different marts. This will be dynamically evaluated against available filters.
+    origFeatureMap <- .getBMFeatureMap()
+    featureMap <- modifyList(origFeatureMap, as.list(.dpOrDefault(object, ".__featureMap", list())))
+    needed <- c(
+        "gene_id", "transcript_id", "exon_id", "start", "end", "rank", "strand", "symbol", "feature",
+        "chromosome", "u5s", "u5e", "u3s", "u3e", "cdsl", "phase"
+    )
+    if (!all(needed %in% names(featureMap))) {
+        stop("'featureMap' needs to include items '", paste(setdiff(needed, names(featureMap)), collapse = ", "), "'")
     }
-  }
-  ens <- getBM(as.vector(featureMap),
-    filters = names(filterValues),
-    values = filterValues, bmHeader = FALSE,
-    mart = object@biomart, uniqueRows = TRUE
-  )
-  colnames(ens) <- names(featureMap)
-  if (staged && nrow(ens) > 0) {
-    filterValues <- list(start = min(ens$start), end = max(ens$end), chromosome_name = ens[1, "chromosome"])
+    avail <- listAttributes(object@biomart)[, 1]
+    ambig <- names(featureMap)[listLen(featureMap) > 1]
+    for (i in ambig) {
+        mt <- match(featureMap[[i]], avail)
+        if (!all(is.na(mt))) {
+            featureMap[[i]] <- featureMap[[i]][min(which(!is.na(mt)))]
+        } else {
+            featureMap[[i]] <- NA
+        }
+    }
+    featureMap <- unlist(featureMap)
+    ## Deal with the filters
+    filterValues <- as.list(object@filter)
+    start <- object@start
+    end <- object@end
+    for (i in c("start", "end", "chromosome_name")) {
+        if (!is.null(get(i)) && length(get(i)) > 0) {
+            filterValues[[i]] <- get(i)
+        }
+    }
     ens <- getBM(as.vector(featureMap),
-      filters = names(filterValues),
-      values = filterValues, bmHeader = FALSE,
-      mart = object@biomart, uniqueRows = TRUE
+        filters = names(filterValues),
+        values = filterValues, bmHeader = FALSE,
+        mart = object@biomart, uniqueRows = TRUE
     )
     colnames(ens) <- names(featureMap)
-  }
-  ## Only those transcripts that have a CDS length will be considered protein_coding
-  ens$feature <- ifelse(is.na(ens$cdsl) & ens$feature == "protein_coding", "non_coding", ens$feature)
-  ## We may have to split exons if they contain UTRs
-  hasUtr <- !is.na(ens$u5s) | !is.na(ens$u3s)
-  ensUtr <- ens[hasUtr, , drop = FALSE]
-  ensUtr$ffeature <- ifelse(is.na(ensUtr$u5s), "utr3", "utr5")
-  ensUtr$us <- ifelse(ensUtr$ffeature == "utr3", ensUtr$u3s, ensUtr$u5s)
-  ensUtr$ue <- ifelse(ensUtr$ffeature == "utr3", ensUtr$u3e, ensUtr$u5e)
-  ensUtr$u5e <- ensUtr$u5s <- ensUtr$u3e <- ensUtr$u3s <- NULL
-  allUtr <- ensUtr$us == ensUtr$start & ensUtr$ue == ensUtr$end
-  utrFinal <- ensUtr[allUtr, , drop = FALSE]
-  ensUtr <- ensUtr[!allUtr, , drop = FALSE]
-  ensUtrS <- split(ensUtr, ifelse(ensUtr$start == ensUtr$us, "left", "right"))
-  utrFinal <- rbind(utrFinal, do.call(rbind, lapply(names(ensUtrS), function(i) {
-    y <- ensUtrS[[i]]
-    if (nrow(y) == 0) {
-      return(NULL)
+    if (staged && nrow(ens) > 0) {
+        filterValues <- list(start = min(ens$start), end = max(ens$end), chromosome_name = ens[1, "chromosome"])
+        ens <- getBM(as.vector(featureMap),
+            filters = names(filterValues),
+            values = filterValues, bmHeader = FALSE,
+            mart = object@biomart, uniqueRows = TRUE
+        )
+        colnames(ens) <- names(featureMap)
     }
-    yy <- y[rep(seq_len(nrow(y)), each = 2), ]
-    sel <- seq(1, nrow(yy), by = 2)
-    yy[sel, "end"] <- if (i == "left") yy[sel, "ue"] else yy[sel, "us"] - 1
-    yy[sel, "ffeature"] <- yy[sel, ifelse(i == "left", "ffeature", "feature")]
-    yy[sel, "phase"] <- if (i == "left") -1 else 0
-    sel <- seq(2, nrow(yy), by = 2)
-    yy[sel, "start"] <- if (i == "left") yy[sel, "ue"] + 1 else yy[sel, "us"]
-    yy[sel, "ffeature"] <- yy[sel, ifelse(i == "left", "feature", "ffeature")]
-    yy[sel, "phase"] <- if (i == "left") yy[sel, "phase"] else -1
-    yy
-  })))
-  utrFinal$feature <- utrFinal$ffeature
-  keep <- c(
-    "gene_id", "transcript_id", "exon_id", "start",
-    "end", "rank", "strand", "symbol", "feature",
-    "chromosome", "phase"
-  )
-  ens <- rbind(ens[!hasUtr, keep, drop = FALSE], utrFinal[, keep])
-  ens$chromosome <- .chrName(ens$chromosome, force = TRUE)
-  range <- GRanges(
-    seqnames = ens$chromosome,
-    ranges = IRanges(start = ens$start, end = ens$end),
-    strand = ens$strand, feature = as.character(ens$feature),
-    gene = as.character(ens$gene_id), exon = as.character(ens$exon_id),
-    transcript = as.character(ens$transcript_id), symbol = as.character(ens$symbol),
-    rank = as.numeric(ens$rank), phase = as.integer(ens$phase)
-  )
-  suppressWarnings(genome(range) <- unname(genome(object)[1]))
-  range <- sort(range)
-  return(range)
+    ## Only those transcripts that have a CDS length will be considered protein_coding
+    ens$feature <- ifelse(is.na(ens$cdsl) & ens$feature == "protein_coding", "non_coding", ens$feature)
+    ## We may have to split exons if they contain UTRs
+    hasUtr <- !is.na(ens$u5s) | !is.na(ens$u3s)
+    ensUtr <- ens[hasUtr, , drop = FALSE]
+    ensUtr$ffeature <- ifelse(is.na(ensUtr$u5s), "utr3", "utr5")
+    ensUtr$us <- ifelse(ensUtr$ffeature == "utr3", ensUtr$u3s, ensUtr$u5s)
+    ensUtr$ue <- ifelse(ensUtr$ffeature == "utr3", ensUtr$u3e, ensUtr$u5e)
+    ensUtr$u5e <- ensUtr$u5s <- ensUtr$u3e <- ensUtr$u3s <- NULL
+    allUtr <- ensUtr$us == ensUtr$start & ensUtr$ue == ensUtr$end
+    utrFinal <- ensUtr[allUtr, , drop = FALSE]
+    ensUtr <- ensUtr[!allUtr, , drop = FALSE]
+    ensUtrS <- split(ensUtr, ifelse(ensUtr$start == ensUtr$us, "left", "right"))
+    utrFinal <- rbind(utrFinal, do.call(rbind, lapply(names(ensUtrS), function(i) {
+        y <- ensUtrS[[i]]
+        if (nrow(y) == 0) {
+            return(NULL)
+        }
+        yy <- y[rep(seq_len(nrow(y)), each = 2), ]
+        sel <- seq(1, nrow(yy), by = 2)
+        yy[sel, "end"] <- if (i == "left") yy[sel, "ue"] else yy[sel, "us"] - 1
+        yy[sel, "ffeature"] <- yy[sel, ifelse(i == "left", "ffeature", "feature")]
+        yy[sel, "phase"] <- if (i == "left") -1 else 0
+        sel <- seq(2, nrow(yy), by = 2)
+        yy[sel, "start"] <- if (i == "left") yy[sel, "ue"] + 1 else yy[sel, "us"]
+        yy[sel, "ffeature"] <- yy[sel, ifelse(i == "left", "feature", "ffeature")]
+        yy[sel, "phase"] <- if (i == "left") yy[sel, "phase"] else -1
+        yy
+    })))
+    utrFinal$feature <- utrFinal$ffeature
+    keep <- c(
+        "gene_id", "transcript_id", "exon_id", "start",
+        "end", "rank", "strand", "symbol", "feature",
+        "chromosome", "phase"
+    )
+    ens <- rbind(ens[!hasUtr, keep, drop = FALSE], utrFinal[, keep])
+    ens$chromosome <- .chrName(ens$chromosome, force = TRUE)
+    range <- GRanges(
+        seqnames = ens$chromosome,
+        ranges = IRanges(start = ens$start, end = ens$end),
+        strand = ens$strand, feature = as.character(ens$feature),
+        gene = as.character(ens$gene_id), exon = as.character(ens$exon_id),
+        transcript = as.character(ens$transcript_id), symbol = as.character(ens$symbol),
+        rank = as.numeric(ens$rank), phase = as.integer(ens$phase)
+    )
+    suppressWarnings(genome(range) <- unname(genome(object)[1]))
+    range <- sort(range)
+    return(range)
 }
 
 
 ## Create an MD5 hash for a BiomartGeneRegion track taking into account the Biomart details for caching
 .bmGuid <- function(bmtrack) {
-  digest(list(
-    genome = genome(bmtrack), host = bmtrack@biomart@host, mart = bmtrack@biomart@biomart, schema = bmtrack@biomart@vschema,
-    dataset = bmtrack@biomart@dataset, filters = bmtrack@filter
-  ))
+    digest(list(
+        genome = genome(bmtrack), host = bmtrack@biomart@host, mart = bmtrack@biomart@biomart, schema = bmtrack@biomart@vschema,
+        dataset = bmtrack@biomart@dataset, filters = bmtrack@filter
+    ))
 }
 
 
 ## Retrieving information from Biomart.
 setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start = NULL, end = NULL, biomart, filter = list(), range, genome = NULL, chromosome = NULL, strand = NULL,
                                                            featureMap = NULL, symbol = NULL, gene = NULL, transcript = NULL, entrez = NULL, ...) {
-  if ((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome)) {
-    return(.Object)
-  }
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "BiomartGeneRegionTrack")
-  verb <- list(...)$verbose
-  displayPars(.Object) <- list(!is.null(verb) && verb == TRUE)
-  ## preparing filters
-  strand <- .strandName(strand, extended = TRUE)
-  if (strand %in% 0:1) {
-    filter$strand <- c(1, -1)[strand + 1]
-  }
-  filterOrig <- filter
-  idFilters <- list(
-    symbol = c("external_gene_name", "external_gene_id", "hgnc_symbol", "wikigene_name", "dbass3_name"),
-    gene = "ensembl_gene_id",
-    transcript = "ensembl_transcript_id",
-    entrez = "entrezgene"
-  )
-  staged <- FALSE
-  for (i in names(idFilters)) {
-    if (!is.null(get(i))) {
-      mt <- match(idFilters[[i]], listFilters(biomart)[, 1])
-      sfilt <- listFilters(biomart)[mt[!is.na(mt)], 1]
-      if (length(sfilt) > 0) {
-        staged <- TRUE
-        filter[[sfilt[1]]] <- get(i)
-        if (!is.null(filter$strand)) {
-          warning(sprintf("Cannot combine %s filter with a strand filter. Strand filtering is ignored.", i))
-          filter$strand <- NULL
-        }
-        if (!is.null(start) || !is.null(end) || !is.null(chromosome)) {
-          warning(sprintf("Cannot combine %s filter with a range restriction. Ignoring start and end coordinates.", i))
-          start <- end <- chromosome <- NULL
-        }
-      } else {
-        stop(sprintf("Unable to automatically map the %s filter. Manually provide adequate filter list.", i))
-      }
+    if ((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome)) {
+        return(.Object)
     }
-  }
-  ## We can't have only one in start or end
-  if (!is.null(end) && is.null(start)) {
-    start <- 1
-  } else if (!is.null(start) && is.null(end)) {
-    end <- 10e8
-  }
-  ## filling slots
-  .Object@filter <- filter
-  .Object@biomart <- biomart
-  ## Extending start and end positions to capture genes on the edges. We also need both coordinates set, or none.
-  extend <- if (is.null(start) || is.null(end)) 10000 else max(10000, abs(diff(c(end, start))))
-  .Object@start <- if (!is.null(start)) max(1, start - extend) else NULL
-  .Object@end <- if (!is.null(end)) end + extend else NULL
-  displayPars(.Object) <- list(".__featureMap" = featureMap)
-  genome(.Object) <- ifelse(is.null(genome), "ANY", genome)
-  ## fetching data from Biomart
-  range <- if (!is.null(.Object@biomart) && (!is.null(.Object@start) || !is.null(.Object@end) || length(.Object@filter) != 0)) {
-    .cacheMartData(.Object, chromosome, staged)
-  } else {
-    tmp <- GRanges()
-    values(tmp) <- DataFrame(feature = "a", gene = "a", exon = "a", transcript = "a", symbol = "a", rank = 0, phase = as.integer(1))[0, ]
-    suppressWarnings(genome(tmp) <- unname(genome[1]))
-    displayPars(.Object) <- list(".__streamOnly" = TRUE)
-    tmp
-  }
-  .Object@filter <- filterOrig
-  if (length(range) == 0) {
-    .Object <- setPar(.Object, "size", 0, interactive = FALSE)
-  } else {
-    chromosome <- if (is.null(chromosome)) seqlevels(range)[1] else chromosome
-    rr <- range(range, ignore.strand = TRUE)
-    s <- start(rr[seqnames(rr) == chromosome])
-    e <- end(rr[seqnames(rr) == chromosome])
-    start <- min(s, start)
-    end <- max(e, end)
-  }
-  .Object <- callNextMethod(
-    .Object = .Object, range = range, start = start, end = end,
-    genome = genome, chromosome = chromosome, strand = strand, ...
-  )
-  ## We want to warn if searching was performed based on an identifier and now values have been returned
-  if ((!is.null(symbol) || !is.null(gene) || !is.null(transcript) || !is.null(entrez)) && length(range) == 0) {
-    warning("Search by identifier did not yield any values", call. = FALSE)
-  }
-  return(.Object)
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "BiomartGeneRegionTrack")
+    verb <- list(...)$verbose
+    displayPars(.Object) <- list(!is.null(verb) && verb == TRUE)
+    ## preparing filters
+    strand <- .strandName(strand, extended = TRUE)
+    if (strand %in% 0:1) {
+        filter$strand <- c(1, -1)[strand + 1]
+    }
+    filterOrig <- filter
+    idFilters <- list(
+        symbol = c("external_gene_name", "external_gene_id", "hgnc_symbol", "wikigene_name", "dbass3_name"),
+        gene = "ensembl_gene_id",
+        transcript = "ensembl_transcript_id",
+        entrez = "entrezgene"
+    )
+    staged <- FALSE
+    for (i in names(idFilters)) {
+        if (!is.null(get(i))) {
+            mt <- match(idFilters[[i]], listFilters(biomart)[, 1])
+            sfilt <- listFilters(biomart)[mt[!is.na(mt)], 1]
+            if (length(sfilt) > 0) {
+                staged <- TRUE
+                filter[[sfilt[1]]] <- get(i)
+                if (!is.null(filter$strand)) {
+                    warning(sprintf("Cannot combine %s filter with a strand filter. Strand filtering is ignored.", i))
+                    filter$strand <- NULL
+                }
+                if (!is.null(start) || !is.null(end) || !is.null(chromosome)) {
+                    warning(sprintf("Cannot combine %s filter with a range restriction. Ignoring start and end coordinates.", i))
+                    start <- end <- chromosome <- NULL
+                }
+            } else {
+                stop(sprintf("Unable to automatically map the %s filter. Manually provide adequate filter list.", i))
+            }
+        }
+    }
+    ## We can't have only one in start or end
+    if (!is.null(end) && is.null(start)) {
+        start <- 1
+    } else if (!is.null(start) && is.null(end)) {
+        end <- 10e8
+    }
+    ## filling slots
+    .Object@filter <- filter
+    .Object@biomart <- biomart
+    ## Extending start and end positions to capture genes on the edges. We also need both coordinates set, or none.
+    extend <- if (is.null(start) || is.null(end)) 10000 else max(10000, abs(diff(c(end, start))))
+    .Object@start <- if (!is.null(start)) max(1, start - extend) else NULL
+    .Object@end <- if (!is.null(end)) end + extend else NULL
+    displayPars(.Object) <- list(".__featureMap" = featureMap)
+    genome(.Object) <- ifelse(is.null(genome), "ANY", genome)
+    ## fetching data from Biomart
+    range <- if (!is.null(.Object@biomart) && (!is.null(.Object@start) || !is.null(.Object@end) || length(.Object@filter) != 0)) {
+        .cacheMartData(.Object, chromosome, staged)
+    } else {
+        tmp <- GRanges()
+        values(tmp) <- DataFrame(feature = "a", gene = "a", exon = "a", transcript = "a", symbol = "a", rank = 0, phase = as.integer(1))[0, ]
+        suppressWarnings(genome(tmp) <- unname(genome[1]))
+        displayPars(.Object) <- list(".__streamOnly" = TRUE)
+        tmp
+    }
+    .Object@filter <- filterOrig
+    if (length(range) == 0) {
+        .Object <- setPar(.Object, "size", 0, interactive = FALSE)
+    } else {
+        chromosome <- if (is.null(chromosome)) seqlevels(range)[1] else chromosome
+        rr <- range(range, ignore.strand = TRUE)
+        s <- start(rr[seqnames(rr) == chromosome])
+        e <- end(rr[seqnames(rr) == chromosome])
+        start <- min(s, start)
+        end <- max(e, end)
+    }
+    .Object <- callNextMethod(
+        .Object = .Object, range = range, start = start, end = end,
+        genome = genome, chromosome = chromosome, strand = strand, ...
+    )
+    ## We want to warn if searching was performed based on an identifier and now values have been returned
+    if ((!is.null(symbol) || !is.null(gene) || !is.null(transcript) || !is.null(entrez)) && length(range) == 0) {
+        warning("Search by identifier did not yield any values", call. = FALSE)
+    }
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -1318,30 +1318,30 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start = NULL
 BiomartGeneRegionTrack <- function(start = NULL, end = NULL, biomart, chromosome = NULL, strand, genome = NULL,
                                    stacking = "squish", filters = list(), featureMap = NULL, name = "BiomartGeneRegionTrack",
                                    symbol = NULL, gene = NULL, entrez = NULL, transcript = NULL, ...) {
-  ## Some default checking
-  .missingToNull(c("genome"))
-  if (missing(strand)) {
-    strand <- "*"
-  }
-  if ((!is.null(start) || !is.null(end)) && is.null(chromosome)) {
-    stop("Also need to specify a chromsome when initializing a BiomartGeneRegionTrack with start or end coordinates")
-  }
-  if (!is.null(chromosome)) {
-    chromosome <- .chrName(chromosome)[1]
-  }
-  if (missing(biomart)) {
-    if (is.null(genome)) {
-      stop("Need either a valid Mart connection object as 'biomart' argument or a UCSC genome identifier as the 'genome' argument.")
+    ## Some default checking
+    .missingToNull(c("genome"))
+    if (missing(strand)) {
+        strand <- "*"
     }
-    biomart <- .genome2Dataset(genome)
-  } else if (is.null(genome)) {
-    genome <- biomart@dataset
-  }
-  new("BiomartGeneRegionTrack",
-    start = start, end = end, chromosome = chromosome, strand = strand,
-    biomart = biomart, name = name, genome = genome, stacking = stacking, filter = filters, featureMap = featureMap,
-    symbol = symbol, gene = gene, transcript = transcript, entrez = entrez, ...
-  )
+    if ((!is.null(start) || !is.null(end)) && is.null(chromosome)) {
+        stop("Also need to specify a chromsome when initializing a BiomartGeneRegionTrack with start or end coordinates")
+    }
+    if (!is.null(chromosome)) {
+        chromosome <- .chrName(chromosome)[1]
+    }
+    if (missing(biomart)) {
+        if (is.null(genome)) {
+            stop("Need either a valid Mart connection object as 'biomart' argument or a UCSC genome identifier as the 'genome' argument.")
+        }
+        biomart <- .genome2Dataset(genome)
+    } else if (is.null(genome)) {
+        genome <- biomart@dataset
+    }
+    new("BiomartGeneRegionTrack",
+        start = start, end = end, chromosome = chromosome, strand = strand,
+        biomart = biomart, name = name, genome = genome, stacking = stacking, filter = filters, featureMap = featureMap,
+        symbol = symbol, gene = gene, transcript = transcript, entrez = entrez, ...
+    )
 }
 
 
@@ -1378,53 +1378,53 @@ BiomartGeneRegionTrack <- function(start = NULL, end = NULL, biomart, chromosome
 ##      if between 0 and 1 it is interpreted as a fraction of the region (otherwise absolute).
 
 setClass("GenomeAxisTrack",
-  contains = "GdObject",
-  representation = representation(range = "GRanges"),
-  prototype(
-    range = GRanges(),
-    name = "GenomeAxisTrack",
-    dp = DisplayPars(
-      add35 = FALSE,
-      add53 = FALSE,
-      background.title = "transparent",
-      cex.id = 0.7,
-      cex = 0.8,
-      col.border.title = "transparent",
-      lwd.border.title = 1,
-      col.id = "white",
-      col.range = "cornsilk4",
-      distFromAxis = 1,
-      exponent = NULL,
-      fill.range = "cornsilk3",
-      fontcolor = "#808080",
-      fontsize = 10,
-      labelPos = "alternating",
-      littleTicks = FALSE,
-      lwd = 2,
-      scale = NULL,
-      showId = FALSE,
-      showTitle = FALSE,
-      ticksAt = NULL,
-      size = NULL,
-      col = "darkgray"
+    contains = "GdObject",
+    representation = representation(range = "GRanges"),
+    prototype(
+        range = GRanges(),
+        name = "GenomeAxisTrack",
+        dp = DisplayPars(
+            add35 = FALSE,
+            add53 = FALSE,
+            background.title = "transparent",
+            cex.id = 0.7,
+            cex = 0.8,
+            col.border.title = "transparent",
+            lwd.border.title = 1,
+            col.id = "white",
+            col.range = "cornsilk4",
+            distFromAxis = 1,
+            exponent = NULL,
+            fill.range = "cornsilk3",
+            fontcolor = "#808080",
+            fontsize = 10,
+            labelPos = "alternating",
+            littleTicks = FALSE,
+            lwd = 2,
+            scale = NULL,
+            showId = FALSE,
+            showTitle = FALSE,
+            ticksAt = NULL,
+            size = NULL,
+            col = "darkgray"
+        )
     )
-  )
 )
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "GenomeAxisTrack")
-  if (missing(range) || is.null(range)) {
-    range <- GRanges()
-  }
-  if (is(range, "IRanges")) {
-    range <- GRanges(ranges = range, seqnames = "dummy", id = ids)
-  }
-  .Object@range <- range
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "GenomeAxisTrack")
+    if (missing(range) || is.null(range)) {
+        range <- GRanges()
+    }
+    if (is(range, "IRanges")) {
+        range <- GRanges(ranges = range, seqnames = "dummy", id = ids)
+    }
+    .Object@range <- range
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -1433,10 +1433,10 @@ setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...) {
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
 GenomeAxisTrack <- function(range = NULL, name = "Axis", id, ...) {
-  if (missing(id)) {
-    id <- names(range)
-  }
-  new("GenomeAxisTrack", name = name, range = range, id = id, ...)
+    if (missing(id)) {
+        id <- names(range)
+    }
+    new("GenomeAxisTrack", name = name, range = range, id = id, ...)
 }
 
 
@@ -1478,96 +1478,96 @@ GenomeAxisTrack <- function(range = NULL, name = "Axis", id, ...) {
 
 
 setClass("DataTrack",
-  contains = "NumericTrack",
-  representation = representation(data = "matrix", strand = "character"),
-  prototype = prototype(
-    columns = c("score"),
-    name = "DataTrack",
-    dp = DisplayPars(
-      aggregateGroups = FALSE,
-      aggregation = "mean",
-      missingAsZero = TRUE,
-      alpha.confint = 0.3,
-      amount = NULL,
-      baseline = NULL,
-      box.legend = FALSE,
-      box.ratio = 1,
-      box.width = NULL,
-      grid = FALSE,
-      cex.legend = 0.8,
-      cex.sampleNames = NULL,
-      cex = 0.7,
-      coef = 1.5,
-      col.baseline = NULL,
-      col.confint = NA,
-      col.boxplotFrame = .DEFAULT_SHADED_COL,
-      col.histogram = .DEFAULT_SHADED_COL,
-      col.horizon = NA,
-      col.mountain = NULL,
-      col.sampleNames = "white",
-      col = trellis.par.get("superpose.line")[["col"]],
-      collapse = FALSE,
-      degree = 1,
-      do.out = TRUE,
-      evaluation = 50,
-      factor = 0.5,
-      family = "symmetric",
-      fill.confint = NULL,
-      fill.histogram = NULL,
-      fill.horizon = c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
-      fill.mountain = c("#CCFFFF", "#FFCCFF"),
-      fontface.legend = NULL,
-      fontfamily.legend = NULL,
-      fontsize.legend = NULL,
-      fontcolor.legend = .DEFAULT_SHADED_COL,
-      gradient = brewer.pal(9, "Blues"),
-      groups = NULL,
-      horizon.origin = 0,
-      horizon.scale = NULL,
-      jitter.x = FALSE,
-      jitter.y = FALSE,
-      levels.fos = NULL,
-      legend = TRUE,
-      lineheight.legend = NULL,
-      lty.baseline = NULL,
-      lty.mountain = NULL,
-      lwd.baseline = NULL,
-      lwd.mountain = NULL,
-      min.distance = 0,
-      na.rm = FALSE,
-      ncolor = 100,
-      notch.frac = 0.5,
-      notch = FALSE,
-      pch = 20,
-      separator = 0,
-      showColorBar = TRUE,
-      showSampleNames = FALSE,
-      size = NULL,
-      span = 1 / 5,
-      stackedBars = TRUE,
-      stats = boxplot.stats,
-      transformation = NULL,
-      type = "p",
-      varwidth = FALSE,
-      window = NULL,
-      windowSize = NULL,
-      ylim = NULL,
-      yTicksAt = NULL
+    contains = "NumericTrack",
+    representation = representation(data = "matrix", strand = "character"),
+    prototype = prototype(
+        columns = c("score"),
+        name = "DataTrack",
+        dp = DisplayPars(
+            aggregateGroups = FALSE,
+            aggregation = "mean",
+            missingAsZero = TRUE,
+            alpha.confint = 0.3,
+            amount = NULL,
+            baseline = NULL,
+            box.legend = FALSE,
+            box.ratio = 1,
+            box.width = NULL,
+            grid = FALSE,
+            cex.legend = 0.8,
+            cex.sampleNames = NULL,
+            cex = 0.7,
+            coef = 1.5,
+            col.baseline = NULL,
+            col.confint = NA,
+            col.boxplotFrame = .DEFAULT_SHADED_COL,
+            col.histogram = .DEFAULT_SHADED_COL,
+            col.horizon = NA,
+            col.mountain = NULL,
+            col.sampleNames = "white",
+            col = trellis.par.get("superpose.line")[["col"]],
+            collapse = FALSE,
+            degree = 1,
+            do.out = TRUE,
+            evaluation = 50,
+            factor = 0.5,
+            family = "symmetric",
+            fill.confint = NULL,
+            fill.histogram = NULL,
+            fill.horizon = c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
+            fill.mountain = c("#CCFFFF", "#FFCCFF"),
+            fontface.legend = NULL,
+            fontfamily.legend = NULL,
+            fontsize.legend = NULL,
+            fontcolor.legend = .DEFAULT_SHADED_COL,
+            gradient = brewer.pal(9, "Blues"),
+            groups = NULL,
+            horizon.origin = 0,
+            horizon.scale = NULL,
+            jitter.x = FALSE,
+            jitter.y = FALSE,
+            levels.fos = NULL,
+            legend = TRUE,
+            lineheight.legend = NULL,
+            lty.baseline = NULL,
+            lty.mountain = NULL,
+            lwd.baseline = NULL,
+            lwd.mountain = NULL,
+            min.distance = 0,
+            na.rm = FALSE,
+            ncolor = 100,
+            notch.frac = 0.5,
+            notch = FALSE,
+            pch = 20,
+            separator = 0,
+            showColorBar = TRUE,
+            showSampleNames = FALSE,
+            size = NULL,
+            span = 1 / 5,
+            stackedBars = TRUE,
+            stats = boxplot.stats,
+            transformation = NULL,
+            type = "p",
+            varwidth = FALSE,
+            window = NULL,
+            windowSize = NULL,
+            ylim = NULL,
+            yTicksAt = NULL
+        )
     )
-  )
 )
 
 ## Only pass on the stuff to the GdObject initializer
 setMethod("initialize", "DataTrack", function(.Object, data = matrix(), strand, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "DataTrack")
-  .Object@data <- data
-  if (!missing(strand)) {
-    .Object@strand <- unique(strand)
-  }
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "DataTrack")
+    .Object@data <- data
+    if (!missing(strand)) {
+        .Object@strand <- unique(strand)
+    }
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 ## The file-based version of the DataTrack class. This will mainly provide a means to dispatch to
@@ -1578,10 +1578,10 @@ setClass("ReferenceDataTrack", contains = c("DataTrack", "ReferenceTrack"))
 ## multiple inheritance has some strange features with regards to method selection
 setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, reference, mapping = list(),
                                                        args = list(), defaults = list(), ...) {
-  .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
-    mapping = mapping, args = args, defaults = defaults)
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
+        mapping = mapping, args = args, defaults = defaults)
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -1599,70 +1599,70 @@ setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, referenc
 
 DataTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, data, chromosome, strand, genome,
                       name = "DataTrack", importFunction, stream = FALSE, ...) {
-  ## Build a GRanges object from the inputs
-  wasGR <- is(range, "GRanges") || is.character(range)
-  fromFile <- is.character(range)
-  isStream <- FALSE
-  .missingToNull(c("strand", "chromosome", "importFunction", "genome"))
-  args <- list(strand = strand, chromosome = chromosome, genome = genome)
-  defs <- list(strand = "*", chromosome = "chrNA")
-  range <- .buildRange(
-    range = range, start = start, end = end, width = width, args = args, defaults = defs,
-    asIRanges = FALSE, chromosome = chromosome, genome = NA, trackType = "DataTrack",
-    importFun = importFunction, stream = stream
-  )
-  if (is.list(range)) {
-    isStream <- TRUE
-    slist <- range
-    range <- GRanges()
-  }
-  ## Some default checking
-  if (length(unique(strand(range))) > 1) {
-    stop("The strand has to be unique for all ranges in a DataTrack object.")
-  }
-  if (!missing(data) && length(range) > 0) {
-    if (is.character(data)) {
-      if (!wasGR) {
-        stop("Columns indices for the data section are only allowed when 'range' is of class 'GRanges'")
-      }
-      mt <- is.na(match(data, colnames(values(range))))
-      if (any(mt)) {
-        warning("Unable to match data columns: ", paste(data[mt], collapse = ","))
-      }
-      data <- as.data.frame(values(range)[, data[!mt], drop = FALSE])
+    ## Build a GRanges object from the inputs
+    wasGR <- is(range, "GRanges") || is.character(range)
+    fromFile <- is.character(range)
+    isStream <- FALSE
+    .missingToNull(c("strand", "chromosome", "importFunction", "genome"))
+    args <- list(strand = strand, chromosome = chromosome, genome = genome)
+    defs <- list(strand = "*", chromosome = "chrNA")
+    range <- .buildRange(
+        range = range, start = start, end = end, width = width, args = args, defaults = defs,
+        asIRanges = FALSE, chromosome = chromosome, genome = NA, trackType = "DataTrack",
+        importFun = importFunction, stream = stream
+    )
+    if (is.list(range)) {
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
     }
-    if (is.null(dim(data))) {
-      dim(data) <- c(1, length(data))
+    ## Some default checking
+    if (length(unique(strand(range))) > 1) {
+        stop("The strand has to be unique for all ranges in a DataTrack object.")
     }
-    if (is.matrix(data)) {
-      data <- as.data.frame(t(data))
+    if (!missing(data) && length(range) > 0) {
+        if (is.character(data)) {
+            if (!wasGR) {
+                stop("Columns indices for the data section are only allowed when 'range' is of class 'GRanges'")
+            }
+            mt <- is.na(match(data, colnames(values(range))))
+            if (any(mt)) {
+                warning("Unable to match data columns: ", paste(data[mt], collapse = ","))
+            }
+            data <- as.data.frame(values(range)[, data[!mt], drop = FALSE])
+        }
+        if (is.null(dim(data))) {
+            dim(data) <- c(1, length(data))
+        }
+        if (is.matrix(data)) {
+            data <- as.data.frame(t(data))
+        }
+    } else {
+        data <- if (ncol(values(range))) as.data.frame(values(range)) else matrix(nrow = 0, ncol = 0)
     }
-  } else {
-    data <- if (ncol(values(range))) as.data.frame(values(range)) else matrix(nrow = 0, ncol = 0)
-  }
-  data <- .prepareDtData(data, len = length(range))
-  if (missing(chromosome) || is.null(chromosome)) {
-    chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-  }
-  genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
-  values(range) <- NULL
-  if (!isStream) {
-    return(new("DataTrack",
-      chromosome = chromosome, strand = as.character(strand(range)), range = range,
-      name = name, genome = genome, data = data, ...
-    ))
-  } else {
-    ## A bit hackish but for some functions we may want to know which track type we need but at the
-    ## same time we do not want to enforce this as an additional argument
-    e <- new.env()
-    e[["._trackType"]] <- "DataTrack"
-    environment(slist[["stream"]]) <- e
-    return(new("ReferenceDataTrack",
-      chromosome = chromosome, strand = as.character(strand(range)), range = range,
-      name = name, genome = genome, data = data, stream = slist[["stream"]], reference = slist[["reference"]],
-      mapping = slist[["mapping"]], args = args, defaults = defs, ...
-    ))
-  }
+    data <- .prepareDtData(data, len = length(range))
+    if (missing(chromosome) || is.null(chromosome)) {
+        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    }
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    values(range) <- NULL
+    if (!isStream) {
+        return(new("DataTrack",
+            chromosome = chromosome, strand = as.character(strand(range)), range = range,
+            name = name, genome = genome, data = data, ...
+        ))
+    } else {
+        ## A bit hackish but for some functions we may want to know which track type we need but at the
+        ## same time we do not want to enforce this as an additional argument
+        e <- new.env()
+        e[["._trackType"]] <- "DataTrack"
+        environment(slist[["stream"]]) <- e
+        return(new("ReferenceDataTrack",
+            chromosome = chromosome, strand = as.character(strand(range)), range = range,
+            name = name, genome = genome, data = data, stream = slist[["stream"]], reference = slist[["reference"]],
+            mapping = slist[["mapping"]], args = args, defaults = defs, ...
+        ))
+    }
 }
 
 
@@ -1683,85 +1683,85 @@ DataTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, data
 ##    o bevel: the amount of beveling at the ends of the ideogram. A number between 0 and 1.
 
 setClass("IdeogramTrack",
-  contains = "RangeTrack",
-  representation = representation(bandTable = "data.frame"),
-  prototype = prototype(
-    name = "IdeogramTrack",
-    bandTable = data.frame(),
-    dp = DisplayPars(
-      background.title = "transparent",
-      bevel = 0.45,
-      centromereShape = "triangle",
-      cex.bands = 0.7,
-      cex = 0.8,
-      col = "red",
-      col.border.title = "transparent",
-      lwd.border.title = 1,
-      fill = "#FFE3E6",
-      fontface = 1,
-      fontfamily = "sans",
-      fontcolor = .DEFAULT_SHADED_COL,
-      fontsize = 10,
-      outline = FALSE,
-      showBandId = FALSE,
-      lty = 1,
-      lwd = 1,
-      showId = TRUE,
-      showTitle = FALSE,
-      size = NULL
+    contains = "RangeTrack",
+    representation = representation(bandTable = "data.frame"),
+    prototype = prototype(
+        name = "IdeogramTrack",
+        bandTable = data.frame(),
+        dp = DisplayPars(
+            background.title = "transparent",
+            bevel = 0.45,
+            centromereShape = "triangle",
+            cex.bands = 0.7,
+            cex = 0.8,
+            col = "red",
+            col.border.title = "transparent",
+            lwd.border.title = 1,
+            fill = "#FFE3E6",
+            fontface = 1,
+            fontfamily = "sans",
+            fontcolor = .DEFAULT_SHADED_COL,
+            fontsize = 10,
+            outline = FALSE,
+            showBandId = FALSE,
+            lty = 1,
+            lwd = 1,
+            showId = TRUE,
+            showTitle = FALSE,
+            size = NULL
+        )
     )
-  )
 )
 
 ## Grab the chromosome band and length information from UCSC and fill the ranges slot.
 setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, bands, name, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "IdeogramTrack")
-  if (missing(bands)) {
-    bands <- NULL
-  }
-  if (is.null(bands) && (missing(genome) || missing(chromosome))) {
-    return(callNextMethod(.Object = .Object, range = GRanges(), genome = NULL, chromosome = NULL, ...))
-  }
-  if (is.null(bands)) {
-    sessionInfo <- .cacheGenomes(genome = genome)
-    .Object@bandTable <- sessionInfo$bands
-    bands <- sessionInfo$bands
-  } else {
-    .checkClass(bands, "data.frame")
-    cols <- c("chrom", "chromStart", "chromEnd", "name", "gieStain")
-    miss <- !cols %in% colnames(bands)
-    if (any(miss)) {
-      stop(sprintf(
-        "The following column%s missing from the bands table: %s",
-        ifelse(sum(miss) > 1, "s are", " is"), paste(cols[miss], collapse = ", ")
-      ))
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "IdeogramTrack")
+    if (missing(bands)) {
+        bands <- NULL
     }
-    .Object@bandTable <- bands
-  }
-  chromosome <- if (is.null(chromosome)) as.character(bands[1, "chrom"]) else .chrName(chromosome)[1]
-  bands <- bands[bands$chrom == chromosome, ]
-  if (nrow(bands) == 0) {
-    stop("Chromosome '", chromosome, "' does not exist on UCSC genome '", genome, "'")
-  }
-  if (is.null(name)) {
-    name <- .chrName(chromosome)[1]
-  }
-  bnames <- as.character(bands$name)
-  sel <- is.na(bnames)
-  if (any(sel)) {
-    bnames[sel] <- paste("band", seq_len(sum(sel)), sep = "_")
-  }
-  if (any(bnames == "")) {
-    bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
-  }
-  ranges <- GRanges(
-    seqnames = bnames, ranges = IRanges(start = bands$chromStart, end = bands$chromEnd),
-    name = bnames, type = as.character(bands$gieStain)
-  )
-  .Object <- callNextMethod(.Object = .Object, range = ranges, genome = genome, chromosome = chromosome, name = name, ...)
-  return(.Object)
+    if (is.null(bands) && (missing(genome) || missing(chromosome))) {
+        return(callNextMethod(.Object = .Object, range = GRanges(), genome = NULL, chromosome = NULL, ...))
+    }
+    if (is.null(bands)) {
+        sessionInfo <- .cacheGenomes(genome = genome)
+        .Object@bandTable <- sessionInfo$bands
+        bands <- sessionInfo$bands
+    } else {
+        .checkClass(bands, "data.frame")
+        cols <- c("chrom", "chromStart", "chromEnd", "name", "gieStain")
+        miss <- !cols %in% colnames(bands)
+        if (any(miss)) {
+            stop(sprintf(
+                "The following column%s missing from the bands table: %s",
+                ifelse(sum(miss) > 1, "s are", " is"), paste(cols[miss], collapse = ", ")
+            ))
+        }
+        .Object@bandTable <- bands
+    }
+    chromosome <- if (is.null(chromosome)) as.character(bands[1, "chrom"]) else .chrName(chromosome)[1]
+    bands <- bands[bands$chrom == chromosome, ]
+    if (nrow(bands) == 0) {
+        stop("Chromosome '", chromosome, "' does not exist on UCSC genome '", genome, "'")
+    }
+    if (is.null(name)) {
+        name <- .chrName(chromosome)[1]
+    }
+    bnames <- as.character(bands$name)
+    sel <- is.na(bnames)
+    if (any(sel)) {
+        bnames[sel] <- paste("band", seq_len(sum(sel)), sep = "_")
+    }
+    if (any(bnames == "")) {
+        bnames[bnames == ""] <- sprintf("band_%i", which(bnames == ""))
+    }
+    ranges <- GRanges(
+        seqnames = bnames, ranges = IRanges(start = bands$chromStart, end = bands$chromEnd),
+        name = bnames, type = as.character(bands$gieStain)
+    )
+    .Object <- callNextMethod(.Object = .Object, range = ranges, genome = genome, chromosome = chromosome, name = name, ...)
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -1770,8 +1770,8 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
 ## All additional items in ... are being treated as DisplayParameters
 ## (N)
 IdeogramTrack <- function(chromosome = NULL, genome, name = NULL, bands = NULL, ...) {
-  if (missing(genome)) stop("Need to specify genome for creating an IdeogramTrack")
-  new("IdeogramTrack", chromosome = chromosome, genome = genome, name = name, bands = bands, ...)
+    if (missing(genome)) stop("Need to specify genome for creating an IdeogramTrack")
+    new("IdeogramTrack", chromosome = chromosome, genome = genome, name = name, bands = bands, ...)
 }
 
 
@@ -1801,196 +1801,196 @@ IdeogramTrack <- function(chromosome = NULL, genome, name = NULL, bands = NULL, 
 .ensemblCache <- new.env()
 .martCache <- new.env()
 .doCache <- function(token, expression, env, callEnv = environment()) {
-  if (!token %in% base::ls(env)) {
-    res <- eval(expression, envir = callEnv)
-    assign(x = token, value = res, envir = env)
-    res
-  } else {
-    env[[token]]
-  }
+    if (!token %in% base::ls(env)) {
+        res <- eval(expression, envir = callEnv)
+        assign(x = token, value = res, envir = env)
+        res
+    } else {
+        env[[token]]
+    }
 }
 .cacheTracks <- function(genome, chromosome, track, env = .ucscCache) {
-  genomes <- .doCache("availableGenomes", expression(ucscGenomes()), env)
-  if (!genome %in% as.character(genomes[, "db"])) {
-    stop("'", genome, "' is not a valid UCSC genome.")
-  }
-  sessionToken <- paste("session", genome, sep = "_")
-  tracksToken <- paste("tracks", genome, sep = "_")
-  tablesToken <- paste("tables", track, genome, sep = "_")
-  cenv <- environment()
-  session <- .doCache(
-    sessionToken,
-    expression({
-      myUcscUrl <- getOption("Gviz.ucscUrl")
-      tmp <- if (is.null(myUcscUrl)) browserSession() else browserSession(url = myUcscUrl)
-      genome(tmp) <- genome
-      tmp
-    }), env, cenv
-  )
-  availTracks <- .doCache(tracksToken, expression(trackNames(ucscTableQuery(session))), env, cenv)
-  track <- match.arg(track, sort(c(availTracks, names(availTracks))))
-  if (!is.na(availTracks[track])) {
-    track <- availTracks[track]
-  }
-  availTables <- .doCache(tablesToken, expression({
-    query <- ucscTableQuery(session, track)
-    sort(tableNames(query))
-  }), env, cenv)
-  chrInfo <- seqlengths(session)
-  return(list(
-    session = session, availTracks = availTracks, availTables = availTables, track = track,
-    chrInfo = chrInfo
-  ))
-}
-.cacheGenomes <- function(genome = NULL, env = .ucscCache) {
-  availToken <- "availableGenomes"
-  genomesToken <- paste("genomeBands", genome, sep = "_")
-  genomes <- .doCache(availToken, expression(ucscGenomes()), env)
-  bands <- NULL
-  if (!is.null(genome)) {
-    cenv <- environment()
-    bands <- .doCache(genomesToken, expression({
-      if (!genome %in% as.character(genomes[, "db"])) {
+    genomes <- .doCache("availableGenomes", expression(ucscGenomes()), env)
+    if (!genome %in% as.character(genomes[, "db"])) {
         stop("'", genome, "' is not a valid UCSC genome.")
-      }
-      sessionToken <- paste("session", genome, sep = "_")
-      session <- .doCache(
+    }
+    sessionToken <- paste("session", genome, sep = "_")
+    tracksToken <- paste("tracks", genome, sep = "_")
+    tablesToken <- paste("tables", track, genome, sep = "_")
+    cenv <- environment()
+    session <- .doCache(
         sessionToken,
         expression({
-          myUcscUrl <- getOption("Gviz.ucscUrl")
-          tmp <- if (is.null(myUcscUrl)) browserSession() else browserSession(url = myUcscUrl)
-          genome(tmp) <- genome
-          tmp
+            myUcscUrl <- getOption("Gviz.ucscUrl")
+            tmp <- if (is.null(myUcscUrl)) browserSession() else browserSession(url = myUcscUrl)
+            genome(tmp) <- genome
+            tmp
         }), env, cenv
-      )
-      query <- tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error = function(e) {
-        warning(
-          "There doesn't seem to be any cytoband data available for genome '", genome,
-          "' at UCSC or the service is temporarily down. Trying to fetch the chromosome length data."
-        )
-        tryCatch(ucscTableQuery(session, table = "chromInfo"), error = function(e) {
-          stop(
-            "There doesn't seem to be any chromosome length data available for genome '", genome,
-            "' at UCSC or the service is temporarily down."
-          )
-        })
-      })
-      out <- getTable(query)
-      if (all(c("chrom", "size") %in% colnames(out))) {
-        out <- data.frame(chrom = out$chrom, chromStart = 0, chromEnd = out$size, name = "", gieStain = "gneg", stringsAsFactors = F)
-      }
-      out
+    )
+    availTracks <- .doCache(tracksToken, expression(trackNames(ucscTableQuery(session))), env, cenv)
+    track <- match.arg(track, sort(c(availTracks, names(availTracks))))
+    if (!is.na(availTracks[track])) {
+        track <- availTracks[track]
+    }
+    availTables <- .doCache(tablesToken, expression({
+        query <- ucscTableQuery(session, track)
+        sort(tableNames(query))
     }), env, cenv)
-  }
+    chrInfo <- seqlengths(session)
+    return(list(
+        session = session, availTracks = availTracks, availTables = availTables, track = track,
+        chrInfo = chrInfo
+    ))
+}
+.cacheGenomes <- function(genome = NULL, env = .ucscCache) {
+    availToken <- "availableGenomes"
+    genomesToken <- paste("genomeBands", genome, sep = "_")
+    genomes <- .doCache(availToken, expression(ucscGenomes()), env)
+    bands <- NULL
+    if (!is.null(genome)) {
+        cenv <- environment()
+        bands <- .doCache(genomesToken, expression({
+            if (!genome %in% as.character(genomes[, "db"])) {
+                stop("'", genome, "' is not a valid UCSC genome.")
+            }
+            sessionToken <- paste("session", genome, sep = "_")
+            session <- .doCache(
+                sessionToken,
+                expression({
+                    myUcscUrl <- getOption("Gviz.ucscUrl")
+                    tmp <- if (is.null(myUcscUrl)) browserSession() else browserSession(url = myUcscUrl)
+                    genome(tmp) <- genome
+                    tmp
+                }), env, cenv
+            )
+            query <- tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error = function(e) {
+                warning(
+                    "There doesn't seem to be any cytoband data available for genome '", genome,
+                    "' at UCSC or the service is temporarily down. Trying to fetch the chromosome length data."
+                )
+                tryCatch(ucscTableQuery(session, table = "chromInfo"), error = function(e) {
+                    stop(
+                        "There doesn't seem to be any chromosome length data available for genome '", genome,
+                        "' at UCSC or the service is temporarily down."
+                    )
+                })
+            })
+            out <- getTable(query)
+            if (all(c("chrom", "size") %in% colnames(out))) {
+                out <- data.frame(chrom = out$chrom, chromStart = 0, chromEnd = out$size, name = "", gieStain = "gneg", stringsAsFactors = F)
+            }
+            out
+        }), env, cenv)
+    }
 
-  return(list(availableGenomes = genomes, bands = bands))
+    return(list(availableGenomes = genomes, bands = bands))
 }
 .cacheMartData <- function(bmtrack, chromosome = NULL, staged = FALSE) {
-  uid <- .bmGuid(bmtrack)
-  req <- if (!is.null(bmtrack@start) && !is.null(bmtrack@end)) GRanges(seqnames = chromosome[1], IRanges(start = bmtrack@start, bmtrack@end)) else NULL
-  if (is.null(chromosome) || is.null(.martCache[[uid]])) {
-    data <- .fetchBMData(bmtrack, chromosome, staged)
-    if (!is.null(req)) {
-      .martCache[[uid]] <- list(data = data, ranges = req)
+    uid <- .bmGuid(bmtrack)
+    req <- if (!is.null(bmtrack@start) && !is.null(bmtrack@end)) GRanges(seqnames = chromosome[1], IRanges(start = bmtrack@start, bmtrack@end)) else NULL
+    if (is.null(chromosome) || is.null(.martCache[[uid]])) {
+        data <- .fetchBMData(bmtrack, chromosome, staged)
+        if (!is.null(req)) {
+            .martCache[[uid]] <- list(data = data, ranges = req)
+        } else {
+            req <- range(data)
+        }
+        if (length(data) && .dpOrDefault(bmtrack, "verbose", FALSE)) {
+            message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse = " and "))
+        }
     } else {
-      req <- range(data)
+        rr <- .martCache[[uid]][["ranges"]]
+        dd <- .martCache[[uid]][["data"]]
+        if (!is.null(req) && suppressWarnings(req %within% rr)) {
+            genes <- unique(subsetByOverlaps(dd, req)$gene)
+            data <- dd[seqnames(dd) == chromosome[1] & dd$gene %in% genes]
+            if (.dpOrDefault(bmtrack, "verbose", FALSE)) {
+                message(sprintf("Retrieved data from cache for region %s:%i-%i(%s)", chromosome, start(req), end(req), strand(req)))
+            }
+        } else {
+            data <- .fetchBMData(bmtrack, chromosome, staged)
+            if (is.null(req)) {
+                req <- range(data)
+            }
+            .martCache[[uid]][["data"]] <- suppressWarnings(c(.martCache[[uid]][["data"]], data[!(seqnames(data) == chromosome[1] & data$gene %in% dd$gene)]))
+            .martCache[[uid]][["ranges"]] <- suppressWarnings(union(rr, req))
+            if (length(req) && .dpOrDefault(bmtrack, "verbose", FALSE)) {
+                message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse = " and "))
+            }
+        }
     }
-    if (length(data) && .dpOrDefault(bmtrack, "verbose", FALSE)) {
-      message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse = " and "))
-    }
-  } else {
-    rr <- .martCache[[uid]][["ranges"]]
-    dd <- .martCache[[uid]][["data"]]
-    if (!is.null(req) && suppressWarnings(req %within% rr)) {
-      genes <- unique(subsetByOverlaps(dd, req)$gene)
-      data <- dd[seqnames(dd) == chromosome[1] & dd$gene %in% genes]
-      if (.dpOrDefault(bmtrack, "verbose", FALSE)) {
-        message(sprintf("Retrieved data from cache for region %s:%i-%i(%s)", chromosome, start(req), end(req), strand(req)))
-      }
-    } else {
-      data <- .fetchBMData(bmtrack, chromosome, staged)
-      if (is.null(req)) {
-        req <- range(data)
-      }
-      .martCache[[uid]][["data"]] <- suppressWarnings(c(.martCache[[uid]][["data"]], data[!(seqnames(data) == chromosome[1] & data$gene %in% dd$gene)]))
-      .martCache[[uid]][["ranges"]] <- suppressWarnings(union(rr, req))
-      if (length(req) && .dpOrDefault(bmtrack, "verbose", FALSE)) {
-        message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse = " and "))
-      }
-    }
-  }
-  return(data)
+    return(data)
 }
 
 ## empty the session cache
 clearSessionCache <- function() {
-  assignInNamespace(".ucscCache", new.env(), ns = "Gviz")
-  assignInNamespace(".ensemblCache", new.env(), ns = "Gviz")
-  assignInNamespace(".martCache", new.env(), ns = "Gviz")
+    assignInNamespace(".ucscCache", new.env(), ns = "Gviz")
+    assignInNamespace(".ensemblCache", new.env(), ns = "Gviz")
+    assignInNamespace(".martCache", new.env(), ns = "Gviz")
 }
 
 
 ## Constructor
 UcscTrack <- function(track, table = NULL, trackType = c(
-                        "AnnotationTrack", "GeneRegionTrack",
-                        "DataTrack", "GenomeAxisTrack"
+                          "AnnotationTrack", "GeneRegionTrack",
+                          "DataTrack", "GenomeAxisTrack"
                       ),
                       genome, chromosome, name = NULL, from, to, ...) {
-  trackType <- match.arg(trackType)
-  if (missing(genome) || !isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
-  if (missing(chromosome)) stop("Need to specify chromosome for creating a UcscTrack")
-  chromosome <- .chrName(chromosome)[1]
-  sessionInfo <- .cacheTracks(genome = genome, chromosome = chromosome, track = track, env = .ucscCache)
-  if (missing(from)) {
-    from <- 1
-  }
-  if (missing(to)) {
-    to <- sessionInfo$chrInfo[chromosome]
-  }
-  gr <- GRanges(ranges = IRanges(start = from, end = to), seqnames = chromosome)
-  suppressWarnings(genome(gr) <- unname(genome))[1]
-  query <- ucscTableQuery(sessionInfo$session, sessionInfo$track, gr)
-  if (!is.null(table)) {
-    table <- match.arg(table, sessionInfo$availTables)
-    tableName(query) <- table
-  }
-  if (is.null(name)) {
-    name <- if (is.null(table)) track else paste(sessionInfo$track, table)
-  }
-  tableDat <- if (trackType == "DataTrack") {
-    tmp <- try(track(query), silent = TRUE)
-    if (is(tmp, "try-error")) {
-      warning(tmp)
-      data.frame()
-    } else {
-      as.data.frame(tmp)
+    trackType <- match.arg(trackType)
+    if (missing(genome) || !isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
+    if (missing(chromosome)) stop("Need to specify chromosome for creating a UcscTrack")
+    chromosome <- .chrName(chromosome)[1]
+    sessionInfo <- .cacheTracks(genome = genome, chromosome = chromosome, track = track, env = .ucscCache)
+    if (missing(from)) {
+        from <- 1
     }
-  } else {
-    tmp <- try(getTable(query), silent = TRUE)
-    if (is(tmp, "try-error")) {
-      warning(tmp)
-      data.frame()
-    } else {
-      tmp
+    if (missing(to)) {
+        to <- sessionInfo$chrInfo[chromosome]
     }
-  }
-  if (is(tmp, "try-error") && nrow(tableDat) == 0) {
-    stop("Error fetching data from UCSC")
-  }
-  args <- lapply(list(...), function(x) {
-    if (is.character(x) && length(x) == 1) {
-      if (!x %in% colnames(tableDat)) x else tableDat[, x]
-    } else {
-      x
+    gr <- GRanges(ranges = IRanges(start = from, end = to), seqnames = chromosome)
+    suppressWarnings(genome(gr) <- unname(genome))[1]
+    query <- ucscTableQuery(sessionInfo$session, sessionInfo$track, gr)
+    if (!is.null(table)) {
+        table <- match.arg(table, sessionInfo$availTables)
+        tableName(query) <- table
     }
-  })
-  if (trackType == "GeneRegionTrack") {
-    args$start <- from
-    args$end <- to
-  }
-  args <- lapply(args, function(x) if (!length(x)) NULL else x)
-  trackObject <- do.call(trackType, args = c(list(chromosome = chromosome, genome = genome, name = name), args))
-  return(trackObject)
+    if (is.null(name)) {
+        name <- if (is.null(table)) track else paste(sessionInfo$track, table)
+    }
+    tableDat <- if (trackType == "DataTrack") {
+        tmp <- try(track(query), silent = TRUE)
+        if (is(tmp, "try-error")) {
+            warning(tmp)
+            data.frame()
+        } else {
+            as.data.frame(tmp)
+        }
+    } else {
+        tmp <- try(getTable(query), silent = TRUE)
+        if (is(tmp, "try-error")) {
+            warning(tmp)
+            data.frame()
+        } else {
+            tmp
+        }
+    }
+    if (is(tmp, "try-error") && nrow(tableDat) == 0) {
+        stop("Error fetching data from UCSC")
+    }
+    args <- lapply(list(...), function(x) {
+        if (is.character(x) && length(x) == 1) {
+            if (!x %in% colnames(tableDat)) x else tableDat[, x]
+        } else {
+            x
+        }
+    })
+    if (trackType == "GeneRegionTrack") {
+        args$start <- from
+        args$end <- to
+    }
+    args <- lapply(args, function(x) if (!length(x)) NULL else x)
+    trackObject <- do.call(trackType, args = c(list(chromosome = chromosome, genome = genome, name = name), args))
+    return(trackObject)
 }
 
 
@@ -2004,59 +2004,59 @@ UcscTrack <- function(track, table = NULL, trackType = c(
 ##    o detail: the amount of plotting details to show for the aligned reads, one in c("reads", "coverage")
 
 setClass("AlignedReadTrack",
-  representation = representation(
-    coverage = "list",
-    coverageOnly = "logical"
-  ),
-  contains = "StackedTrack",
-  prototype = prototype(
-    stacking = "squish",
-    name = "AlignedReadTrack",
-    coverageOnly = FALSE,
-    dp = DisplayPars(
-      detail = "coverage",
-      type = "histogram",
-      fill = "#0080ff",
-      size = NULL,
-      collapse = FALSE
+    representation = representation(
+        coverage = "list",
+        coverageOnly = "logical"
+    ),
+    contains = "StackedTrack",
+    prototype = prototype(
+        stacking = "squish",
+        name = "AlignedReadTrack",
+        coverageOnly = FALSE,
+        dp = DisplayPars(
+            detail = "coverage",
+            type = "histogram",
+            fill = "#0080ff",
+            size = NULL,
+            collapse = FALSE
+        )
     )
-  )
 )
 
 ## Recompute coverage on plus and minus strand and combined strands for AlignedRead tracks
 ## and update the respective slot to hold this information
 setMethod("setCoverage", signature("AlignedReadTrack"),
-  definition = function(GdObject) {
-    if (length(GdObject)) {
-      str <- factor(strand(GdObject), levels = c("+", "-"))
-      gdSplit <- as.list(split(range(GdObject), str))
-      covs <- lapply(gdSplit, coverage)
-      covs[["*"]] <- coverage(range(GdObject))
-      GdObject@coverage <- covs
+    definition = function(GdObject) {
+        if (length(GdObject)) {
+            str <- factor(strand(GdObject), levels = c("+", "-"))
+            gdSplit <- as.list(split(range(GdObject), str))
+            covs <- lapply(gdSplit, coverage)
+            covs[["*"]] <- coverage(range(GdObject))
+            GdObject@coverage <- covs
+        }
+        return(GdObject)
     }
-    return(GdObject)
-  }
 )
 
 ## Essentially we just update the display parameters here and precompute the coverage
 setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly = FALSE, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "AlignedReadTrack")
-  .Object <- callNextMethod(.Object, ...)
-  .Object <- setCoverage(.Object)
-  if (coverageOnly) {
-    ## from <- min(unlist(lapply(.Object@coverage, function(y) if(length(y)) min(start(y)))))
-    ## to <- max(unlist(lapply(.Object@coverage, function(y) if(length(y)) max(end(y)))))
-    from <- min(start(range(.Object)))
-    to <- max(end(range(.Object)))
-    .Object@range <- GRanges(
-      ranges = IRanges(start = from, end = to),
-      strand = names(.Object@coverage), seqnames = .Object@chromosome
-    )
-    .Object@coverageOnly <- coverageOnly
-  }
-  return(.Object)
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "AlignedReadTrack")
+    .Object <- callNextMethod(.Object, ...)
+    .Object <- setCoverage(.Object)
+    if (coverageOnly) {
+        ## from <- min(unlist(lapply(.Object@coverage, function(y) if(length(y)) min(start(y)))))
+        ## to <- max(unlist(lapply(.Object@coverage, function(y) if(length(y)) max(end(y)))))
+        from <- min(start(range(.Object)))
+        to <- max(end(range(.Object)))
+        .Object@range <- GRanges(
+            ranges = IRanges(start = from, end = to),
+            strand = names(.Object@coverage), seqnames = .Object@chromosome
+        )
+        .Object@coverageOnly <- coverageOnly
+    }
+    return(.Object)
 })
 
 ## Constructor. The following arguments are supported:
@@ -2077,27 +2077,27 @@ setMethod("initialize", "AlignedReadTrack", function(.Object, coverageOnly = FAL
 ## (N)
 AlignedReadTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, chromosome, strand, genome, stacking = "squish",
                              name = "AlignedReadTrack", coverageOnly = FALSE, ...) {
-  .Deprecated("AlignmentsTrack")
-  .missingToNull(c("strand", "chromosome", "genome"))
-  ## Build a GRanges object from the inputs
-  range <- .buildRange(
-    range = range, start = start, end = end, width = width,
-    args = list(strand = strand, genome = genome, chromosome = chromosome),
-    defaults = list(strand = "+", genome = NA, chromosome = "chrNA"), chromosome = chromosome,
-    trackType = "AlignedReadTrack"
-  )
-  str <- unique(as.character(GenomicRanges::strand(range)))
-  if ("*" %in% str) {
-    stop("Only '+' and '-' strand information is allowed for AlignedReadTrack objects.")
-  }
-  if (missing(chromosome) || is.null(chromosome)) {
-    chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-  }
-  ## And finally the object instantiation
-  return(new("AlignedReadTrack",
-    chromosome = chromosome, range = range, name = name, genome = genome(range)[1],
-    stacking = stacking, coverageOnly = coverageOnly, ...
-  ))
+    .Deprecated("AlignmentsTrack")
+    .missingToNull(c("strand", "chromosome", "genome"))
+    ## Build a GRanges object from the inputs
+    range <- .buildRange(
+        range = range, start = start, end = end, width = width,
+        args = list(strand = strand, genome = genome, chromosome = chromosome),
+        defaults = list(strand = "+", genome = NA, chromosome = "chrNA"), chromosome = chromosome,
+        trackType = "AlignedReadTrack"
+    )
+    str <- unique(as.character(GenomicRanges::strand(range)))
+    if ("*" %in% str) {
+        stop("Only '+' and '-' strand information is allowed for AlignedReadTrack objects.")
+    }
+    if (missing(chromosome) || is.null(chromosome)) {
+        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    }
+    ## And finally the object instantiation
+    return(new("AlignedReadTrack",
+        chromosome = chromosome, range = range, name = name, genome = genome(range)[1],
+        stacking = stacking, coverageOnly = coverageOnly, ...
+    ))
 }
 
 
@@ -2117,51 +2117,51 @@ AlignedReadTrack <- function(range = NULL, start = NULL, end = NULL, width = NUL
 ##    o foo: bar
 
 setClass("SequenceTrack",
-  representation = representation("VIRTUAL",
-    chromosome = "character",
-    genome = "character"
-  ),
-  contains = "GdObject",
-  prototype = prototype(
-    name = "Sequence",
-    dp = DisplayPars(
-      add53 = FALSE,
-      background.title = "transparent",
-      col = "darkgray",
-      complement = FALSE,
-      fontface = 2,
-      fontsize = 10,
-      lwd = 2,
-      min.width = 2,
-      noLetters = FALSE,
-      showTitle = FALSE,
-      size = NULL
+    representation = representation("VIRTUAL",
+        chromosome = "character",
+        genome = "character"
     ),
-    genome = as.character(NA),
-    chromosome = "chrNA"
-  )
+    contains = "GdObject",
+    prototype = prototype(
+        name = "Sequence",
+        dp = DisplayPars(
+            add53 = FALSE,
+            background.title = "transparent",
+            col = "darkgray",
+            complement = FALSE,
+            fontface = 2,
+            fontsize = 10,
+            lwd = 2,
+            min.width = 2,
+            noLetters = FALSE,
+            showTitle = FALSE,
+            size = NULL
+        ),
+        genome = as.character(NA),
+        chromosome = "chrNA"
+    )
 )
 
 ## Essentially we just update the display parameters here and set the chromosome and the genome
 setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "SequenceTrack")
-  if (!missing(chromosome) &&
-    !is.na(chromosome) &&
-    !is.null(chromosome)) {
-    if (!is.null(names(sequence))) {
-      .Object@chromosome <- .chrName(names(sequence)[1])[1]
-    } else {
-      .Object@chromosome <- .chrName(chromosome)[1]
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "SequenceTrack")
+    if (!missing(chromosome) &&
+        !is.na(chromosome) &&
+        !is.null(chromosome)) {
+        if (!is.null(names(sequence))) {
+            .Object@chromosome <- .chrName(names(sequence)[1])[1]
+        } else {
+            .Object@chromosome <- .chrName(chromosome)[1]
+        }
     }
-  }
-  if (missing(genome) || is.na(genome) || is.null(genome)) {
-    genome <- as.character(NA)
-  }
-  .Object@genome <- genome
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    if (missing(genome) || is.na(genome) || is.null(genome)) {
+        genome <- as.character(NA)
+    }
+    .Object@genome <- genome
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 ## We want the following behaviour in the constructor:
@@ -2171,108 +2171,108 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
 ##   c) sequence is BSgenome => build SequenceBSgenomeTrack where chromosome is seqnames(sequence)[1] or the supplied
 ##      chromosome if available, and genome is the supplied genome or the one extracted from the BSgenome object
 .SequenceTrack <- function(SeqTrackType, seqtype, sequence, chromosome, genome, name = "SequenceTrack", importFunction, stream = FALSE, ...) {
-  .missingToNull(c("chromosome", "genome", "sequence"))
-  if (is.null(sequence)) {
-    return(new(SeqTrackType, chromosome = chromosome, genome = genome, name = name, ...))
-  }
-  if (is(sequence, "BSgenome")) {
-    if (is.null(genome)) {
-      genome <- providerVersion(sequence)
+    .missingToNull(c("chromosome", "genome", "sequence"))
+    if (is.null(sequence)) {
+        return(new(SeqTrackType, chromosome = chromosome, genome = genome, name = name, ...))
     }
-    if (is.null(chromosome)) {
-      chromosome <- seqnames(sequence)[1]
-    }
-    obj <- new("SequenceBSgenomeTrack", sequence = sequence, chromosome = chromosome, genome = genome, name = name, ...)
-  } else if (is(sequence, "XStringSet")) {
-    if (seqtype(sequence) != seqtype) {
-      seqtype(sequence) <- seqtype
-    }
-    if (is.null(names(sequence))) {
-      stop("The sequences in the ", seqtype, "StringSet must be named")
-    }
-    if (any(duplicated(names(sequence)))) {
-      stop("The sequence names in the ", seqtype, "StringSet must be unique")
-    }
-    if (is.null(chromosome)) {
-      chromosome <- names(sequence)[1]
-    }
-    obj <- new(SeqTrackType, sequence = sequence, chromosome = chromosome, genome = genome, name = name, ...)
-  } else if (is.character(sequence)) {
-    sequence <- sequence[1]
-    if (!file.exists(sequence)) {
-      stop(sprintf("'%s' is not a valid file.", sequence))
-    }
-    ext <- .fileExtension(sequence)
-    obj <- if (missing(importFunction) && ext %in% c("fa", "fasta")) {
-      if (!file.exists(paste(sequence, "fai", sep = "."))) {
-        new("SequenceDNAStringSetTrack",
-          sequence = readDNAStringSet(sequence), chromosome = chromosome,
-          genome = genome, name = name, ...
-        )
-      } else {
-        new("ReferenceSequenceTrack",
-          chromosome = chromosome, genome = genome, name = name,
-          stream = .import.fasta, reference = path.expand(sequence), ...
-        )
-      }
-    } else if (missing(importFunction) && ext == "2bit") {
-      new("ReferenceSequenceTrack",
-        chromosome = chromosome, genome = genome, name = name,
-        stream = .import.2bit, reference = path.expand(sequence), ...
-      )
-    } else {
-      if (missing(importFunction)) {
-        stop(sprintf(
-          "No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
-          ext
-        ))
-      } else {
-        if (!stream) {
-          seq <- importFunction(file = sequence)
-          if (!is(seq, "DNAStringSet")) {
-            stop(
-              "The import function did not provide a valid DNAStringSet object. Unable to build track from file '",
-              sequence, "'"
-            )
-          }
-          new("SequenceDNAStringSetTrack",
-            sequence = importFunction(file = sequence), chromosome = chromosome,
-            genome = genome, name = name, ...
-          )
-        } else {
-          new("ReferenceSequenceTrack",
-            chromosome = chromosome, genome = genome, name = name,
-            stream = importFunction, reference = path.expand(sequence), ...
-          )
+    if (is(sequence, "BSgenome")) {
+        if (is.null(genome)) {
+            genome <- providerVersion(sequence)
         }
-      }
+        if (is.null(chromosome)) {
+            chromosome <- seqnames(sequence)[1]
+        }
+        obj <- new("SequenceBSgenomeTrack", sequence = sequence, chromosome = chromosome, genome = genome, name = name, ...)
+    } else if (is(sequence, "XStringSet")) {
+        if (seqtype(sequence) != seqtype) {
+            seqtype(sequence) <- seqtype
+        }
+        if (is.null(names(sequence))) {
+            stop("The sequences in the ", seqtype, "StringSet must be named")
+        }
+        if (any(duplicated(names(sequence)))) {
+            stop("The sequence names in the ", seqtype, "StringSet must be unique")
+        }
+        if (is.null(chromosome)) {
+            chromosome <- names(sequence)[1]
+        }
+        obj <- new(SeqTrackType, sequence = sequence, chromosome = chromosome, genome = genome, name = name, ...)
+    } else if (is.character(sequence)) {
+        sequence <- sequence[1]
+        if (!file.exists(sequence)) {
+            stop(sprintf("'%s' is not a valid file.", sequence))
+        }
+        ext <- .fileExtension(sequence)
+        obj <- if (missing(importFunction) && ext %in% c("fa", "fasta")) {
+            if (!file.exists(paste(sequence, "fai", sep = "."))) {
+                new("SequenceDNAStringSetTrack",
+                    sequence = readDNAStringSet(sequence), chromosome = chromosome,
+                    genome = genome, name = name, ...
+                )
+            } else {
+                new("ReferenceSequenceTrack",
+                    chromosome = chromosome, genome = genome, name = name,
+                    stream = .import.fasta, reference = path.expand(sequence), ...
+                )
+            }
+        } else if (missing(importFunction) && ext == "2bit") {
+            new("ReferenceSequenceTrack",
+                chromosome = chromosome, genome = genome, name = name,
+                stream = .import.2bit, reference = path.expand(sequence), ...
+            )
+        } else {
+            if (missing(importFunction)) {
+                stop(sprintf(
+                    "No predefined import function exists for files with extension '%s'. Please manually provide an import function.",
+                    ext
+                ))
+            } else {
+                if (!stream) {
+                    seq <- importFunction(file = sequence)
+                    if (!is(seq, "DNAStringSet")) {
+                        stop(
+                            "The import function did not provide a valid DNAStringSet object. Unable to build track from file '",
+                            sequence, "'"
+                        )
+                    }
+                    new("SequenceDNAStringSetTrack",
+                        sequence = importFunction(file = sequence), chromosome = chromosome,
+                        genome = genome, name = name, ...
+                    )
+                } else {
+                    new("ReferenceSequenceTrack",
+                        chromosome = chromosome, genome = genome, name = name,
+                        stream = importFunction, reference = path.expand(sequence), ...
+                    )
+                }
+            }
+        }
+    } else {
+        stop("Argument sequence must be of class 'BSgenome', 'XStringSet' or 'character'")
     }
-  } else {
-    stop("Argument sequence must be of class 'BSgenome', 'XStringSet' or 'character'")
-  }
-  return(obj)
+    return(obj)
 }
 
 SequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack", importFunction, stream = FALSE, ...) {
-  .SequenceTrack(
-    "SequenceDNAStringSetTrack",
-    "DNA",
-    sequence,
-    chromosome,
-    genome,
-    ...
-  )
+    .SequenceTrack(
+        "SequenceDNAStringSetTrack",
+        "DNA",
+        sequence,
+        chromosome,
+        genome,
+        ...
+    )
 }
 
 RNASequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack", importFunction, stream = FALSE, ...) {
-  .SequenceTrack(
-    "SequenceRNAStringSetTrack",
-    "RNA",
-    sequence,
-    chromosome,
-    genome,
-    ...
-  )
+    .SequenceTrack(
+        "SequenceRNAStringSetTrack",
+        "RNA",
+        sequence,
+        chromosome,
+        genome,
+        ...
+    )
 }
 
 
@@ -2286,21 +2286,21 @@ RNASequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack
 ##    o sequence: a DNAStringSet object that contains all the sequence data
 
 setClass("SequenceDNAStringSetTrack",
-  representation = representation(sequence = "DNAStringSet"),
-  contains = "SequenceTrack",
-  prototype = prototype(
-    sequence = DNAStringSet(),
-    dp = DisplayPars(fontcolor = getBioColor("DNA_BASES_N"))
-  )
+    representation = representation(sequence = "DNAStringSet"),
+    contains = "SequenceTrack",
+    prototype = prototype(
+        sequence = DNAStringSet(),
+        dp = DisplayPars(fontcolor = getBioColor("DNA_BASES_N"))
+    )
 )
 
 setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
-  if (missing(sequence) || is.null(sequence)) {
-    sequence <- DNAStringSet()
-  }
-  .Object@sequence <- sequence
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    if (missing(sequence) || is.null(sequence)) {
+        sequence <- DNAStringSet()
+    }
+    .Object@sequence <- sequence
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -2311,21 +2311,21 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
 ##    o sequence: a RNAStringSet object that contains all the sequence data
 
 setClass("SequenceRNAStringSetTrack",
-  representation = representation(sequence = "RNAStringSet"),
-  contains = "SequenceTrack",
-  prototype = prototype(
-    sequence = RNAStringSet(),
-    dp = DisplayPars(fontcolor = getBioColor("RNA_BASES_N"))
-  )
+    representation = representation(sequence = "RNAStringSet"),
+    contains = "SequenceTrack",
+    prototype = prototype(
+        sequence = RNAStringSet(),
+        dp = DisplayPars(fontcolor = getBioColor("RNA_BASES_N"))
+    )
 )
 
 setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence, ...) {
-  if (missing(sequence) || is.null(sequence)) {
-    sequence <- RNAStringSet()
-  }
-  .Object@sequence <- sequence
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    if (missing(sequence) || is.null(sequence)) {
+        sequence <- RNAStringSet()
+    }
+    .Object@sequence <- sequence
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -2340,19 +2340,19 @@ setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence,
 ##       will only be filled once the individual sequences have been accessed for the first time
 
 setClass("SequenceBSgenomeTrack",
-  representation = representation(sequence = "BSgenomeOrNULL", pointerCache = "environment"),
-  contains = "SequenceTrack",
-  prototype = prototype(
-    sequence = NULL,
-    dp = DisplayPars(fontcolor = getBioColor("DNA_BASES_N"))
-  )
+    representation = representation(sequence = "BSgenomeOrNULL", pointerCache = "environment"),
+    contains = "SequenceTrack",
+    prototype = prototype(
+        sequence = NULL,
+        dp = DisplayPars(fontcolor = getBioColor("DNA_BASES_N"))
+    )
 )
 
 setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence = NULL, ...) {
-  .Object@sequence <- sequence
-  .Object@pointerCache <- new.env()
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object@sequence <- sequence
+    .Object@pointerCache <- new.env()
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -2368,9 +2368,9 @@ setClass("ReferenceSequenceTrack", contains = c("SequenceDNAStringSetTrack", "Re
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
 setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
-  .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream)
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream)
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
@@ -2382,86 +2382,86 @@ setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, refe
 
 setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 setClass("AlignmentsTrack",
-  representation = representation(
-    stackRanges = "GRanges",
-    sequences = "DNAStringSet",
-    referenceSequence = "SequenceTrackOrNULL"
-  ),
-  contains = "StackedTrack",
-  prototype = prototype(
-    stacking = "squish",
-    name = "AlignmentsTrack",
-    coverageOnly = FALSE,
-    stackRanges = GRanges(),
-    sequences = DNAStringSet(),
-    referenceSequence = NULL,
-    dp = DisplayPars(
-      alpha.reads = 0.5,
-      alpha.mismatch = 1,
-      cex = 0.7,
-      cex.mismatch = NULL,
-      col.coverage = NULL,
-      col.gap = .DEFAULT_SHADED_COL,
-      col.mates = .DEFAULT_BRIGHT_SHADED_COL,
-      col.deletion = "#000000",
-      col.insertion = "#984EA3",
-      col.mismatch = .DEFAULT_SHADED_COL,
-      col.reads = NULL,
-      col.sashimi = NULL,
-      col = .DEFAULT_SHADED_COL,
-      collapse = FALSE,
-      coverageHeight = 0.1,
-      fill.coverage = NULL,
-      fill.reads = NULL,
-      fill = "#BABABA",
-      fontface.mismatch = 2,
-      lty.coverage = NULL,
-      lty.gap = NULL,
-      lty.mates = NULL,
-      lty.deletion = NULL,
-      lty.insertion = NULL,
-      lty.mismatch = NULL,
-      lty.reads = NULL,
-      lty = 1,
-      lwd.coverage = NULL,
-      lwd.gap = NULL,
-      lwd.mates = NULL,
-      lwd.deletion = NULL,
-      lwd.insertion = NULL,
-      lwd.mismatch = NULL,
-      lwd.reads = NULL,
-      lwd.sashimiMax = 10,
-      lwd = 1,
-      max.height = 10,
-      min.height = 5,
-      minCoverageHeight = 50,
-      minSashimiHeight = 50,
-      noLetters = FALSE,
-      sashimiFilter = NULL,
-      sashimiFilterTolerance = 0L,
-      sashimiHeight = 0.1,
-      sashimiScore = 1,
-      sashimiStrand = "*",
-      showIndels = FALSE,
-      showMismatches = TRUE,
-      size = NULL,
-      transformation = NULL,
-      type = c("coverage", "pileup")
+    representation = representation(
+        stackRanges = "GRanges",
+        sequences = "DNAStringSet",
+        referenceSequence = "SequenceTrackOrNULL"
+    ),
+    contains = "StackedTrack",
+    prototype = prototype(
+        stacking = "squish",
+        name = "AlignmentsTrack",
+        coverageOnly = FALSE,
+        stackRanges = GRanges(),
+        sequences = DNAStringSet(),
+        referenceSequence = NULL,
+        dp = DisplayPars(
+            alpha.reads = 0.5,
+            alpha.mismatch = 1,
+            cex = 0.7,
+            cex.mismatch = NULL,
+            col.coverage = NULL,
+            col.gap = .DEFAULT_SHADED_COL,
+            col.mates = .DEFAULT_BRIGHT_SHADED_COL,
+            col.deletion = "#000000",
+            col.insertion = "#984EA3",
+            col.mismatch = .DEFAULT_SHADED_COL,
+            col.reads = NULL,
+            col.sashimi = NULL,
+            col = .DEFAULT_SHADED_COL,
+            collapse = FALSE,
+            coverageHeight = 0.1,
+            fill.coverage = NULL,
+            fill.reads = NULL,
+            fill = "#BABABA",
+            fontface.mismatch = 2,
+            lty.coverage = NULL,
+            lty.gap = NULL,
+            lty.mates = NULL,
+            lty.deletion = NULL,
+            lty.insertion = NULL,
+            lty.mismatch = NULL,
+            lty.reads = NULL,
+            lty = 1,
+            lwd.coverage = NULL,
+            lwd.gap = NULL,
+            lwd.mates = NULL,
+            lwd.deletion = NULL,
+            lwd.insertion = NULL,
+            lwd.mismatch = NULL,
+            lwd.reads = NULL,
+            lwd.sashimiMax = 10,
+            lwd = 1,
+            max.height = 10,
+            min.height = 5,
+            minCoverageHeight = 50,
+            minSashimiHeight = 50,
+            noLetters = FALSE,
+            sashimiFilter = NULL,
+            sashimiFilterTolerance = 0L,
+            sashimiHeight = 0.1,
+            sashimiScore = 1,
+            sashimiStrand = "*",
+            showIndels = FALSE,
+            showMismatches = TRUE,
+            size = NULL,
+            transformation = NULL,
+            type = c("coverage", "pileup")
+        )
     )
-  )
 )
 
 setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges = GRanges(), stacks = numeric(), sequences = DNAStringSet(),
                                                     referenceSequence = NULL, ...) {
-  ## the diplay parameter defaults
-  .makeParMapping()
-  .Object <- .updatePars(.Object, "AlignmentsTrack")
-  .Object@stackRanges <- stackRanges
-  .Object <- callNextMethod(.Object, ...)
-  .Object@stacks <- stacks
-  .Object@sequences <- sequences
-  .Object@referenceSequence <- referenceSequence
-  return(.Object)
+    ## the diplay parameter defaults
+    .makeParMapping()
+    .Object <- .updatePars(.Object, "AlignmentsTrack")
+    .Object@stackRanges <- stackRanges
+    .Object <- callNextMethod(.Object, ...)
+    .Object@stacks <- stacks
+    .Object@sequences <- sequences
+    .Object@referenceSequence <- referenceSequence
+    return(.Object)
 })
 
 
@@ -2474,11 +2474,11 @@ setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, re
                                                              args = list(), defaults = list(), stacks = numeric(),
                                                              stackRanges = GRanges(), sequences = DNAStringSet(),
                                                              referenceSequence = NULL, ...) {
-  .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
-    mapping = mapping, args = args, defaults = defaults)
-  .Object <- callNextMethod(.Object, ...)
-  .Object@referenceSequence <- referenceSequence
-  return(.Object)
+    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
+        mapping = mapping, args = args, defaults = defaults)
+    .Object <- callNextMethod(.Object, ...)
+    .Object@referenceSequence <- referenceSequence
+    return(.Object)
 })
 
 
@@ -2486,90 +2486,90 @@ setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, re
 AlignmentsTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, strand, chromosome, genome,
                             stacking = "squish", id, cigar, mapq, flag = scanBamFlag(isUnmappedQuery = FALSE), isize, groupid, status, md, seqs,
                             name = "AlignmentsTrack", isPaired = TRUE, importFunction, referenceSequence, ...) {
-  ## Some defaults
-  if (missing(importFunction)) {
-    importFunction <- .import.bam.alignments
-  }
-  covars <- .getCovars(range)
-  isStream <- FALSE
-  if (!is.character(range)) {
-    n <- max(c(length(start), length(end), length(width)), nrow(covars))
-    id <- .covDefault(id, covars[["id"]], paste("read", seq_len(n), sep = "_"))
-    cigar <- .covDefault(cigar, covars[["cigar"]], paste(if (is(range, "GRangesOrIRanges")) width(range) else width, "M", sep = ""))
-    mapq <- .covDefault(mapq, covars[["mapq"]], rep(as.integer(NA), n))
-    flag <- .covDefault(flag, covars[["flag"]], rep(as.integer(NA), n))
-    isize <- .covDefault(isize, covars[["isize"]], rep(as.integer(NA), n))
-    groupid <- .covDefault(groupid, covars[["groupid"]], seq_len(n))
-    md <- .covDefault(md, covars[["md"]], rep(as.character(NA), n))
-    status <- .covDefault(status, covars[["status"]], ifelse(groupid %in% groupid[duplicated(groupid)], "mated", "unmated"))
-  }
-  ## Build a GRanges object from the inputs
-  .missingToNull(c(
-    "strand", "chromosome", "importFunction", "genome", "id", "cigar", "mapq", "flag", "isize", "groupid", "status",
-    "md", "seqs", "referenceSequence"
-  ))
-  args <- list(
-    id = id, cigar = cigar, mapq = mapq, flag = flag, isize = isize, groupid = groupid, status = status, strand = strand, md = md,
-    chromosome = chromosome, genome = genome
-  )
-  defs <- list(
-    strand = "*", chromosome = "chrNA", genome = NA, id = as.character(NA), cigar = as.character(NA), mapq = as.integer(NA),
-    flag = as.integer(NA), isize = as.integer(NA), groupid = as.character(NA), status = as.character(NA), md = as.character(NA)
-  )
-  range <- .buildRange(
-    range = range, start = start, end = end, width = width,
-    args = args, defaults = defs, chromosome = chromosome, trackType = "AlignmentsTrack",
-    importFun = importFunction, stream = TRUE, autodetect = TRUE
-  )
-  ## This is going to be a list if we have to stream data from a file, otherwise we can compute some additional values
-  if (is.list(range)) {
-    isStream <- TRUE
-    slist <- range
-    range <- GRanges()
-    stackRanges <- GRanges()
-    stacks <- NULL
-    seqs <- DNAStringSet()
-  } else {
-    if (is.null(seqs)) {
-      seqs <- DNAStringSet(vapply(width(range), function(x) paste(rep("N", x), collapse = ""), character(1)))
+    ## Some defaults
+    if (missing(importFunction)) {
+        importFunction <- .import.bam.alignments
     }
-    addArgs <- list(...)
-    if ("showIndels" %in% names(addArgs)) {
-      showIndels <- addArgs$showIndels
+    covars <- .getCovars(range)
+    isStream <- FALSE
+    if (!is.character(range)) {
+        n <- max(c(length(start), length(end), length(width)), nrow(covars))
+        id <- .covDefault(id, covars[["id"]], paste("read", seq_len(n), sep = "_"))
+        cigar <- .covDefault(cigar, covars[["cigar"]], paste(if (is(range, "GRangesOrIRanges")) width(range) else width, "M", sep = ""))
+        mapq <- .covDefault(mapq, covars[["mapq"]], rep(as.integer(NA), n))
+        flag <- .covDefault(flag, covars[["flag"]], rep(as.integer(NA), n))
+        isize <- .covDefault(isize, covars[["isize"]], rep(as.integer(NA), n))
+        groupid <- .covDefault(groupid, covars[["groupid"]], seq_len(n))
+        md <- .covDefault(md, covars[["md"]], rep(as.character(NA), n))
+        status <- .covDefault(status, covars[["status"]], ifelse(groupid %in% groupid[duplicated(groupid)], "mated", "unmated"))
+    }
+    ## Build a GRanges object from the inputs
+    .missingToNull(c(
+        "strand", "chromosome", "importFunction", "genome", "id", "cigar", "mapq", "flag", "isize", "groupid", "status",
+        "md", "seqs", "referenceSequence"
+    ))
+    args <- list(
+        id = id, cigar = cigar, mapq = mapq, flag = flag, isize = isize, groupid = groupid, status = status, strand = strand, md = md,
+        chromosome = chromosome, genome = genome
+    )
+    defs <- list(
+        strand = "*", chromosome = "chrNA", genome = NA, id = as.character(NA), cigar = as.character(NA), mapq = as.integer(NA),
+        flag = as.integer(NA), isize = as.integer(NA), groupid = as.character(NA), status = as.character(NA), md = as.character(NA)
+    )
+    range <- .buildRange(
+        range = range, start = start, end = end, width = width,
+        args = args, defaults = defs, chromosome = chromosome, trackType = "AlignmentsTrack",
+        importFun = importFunction, stream = TRUE, autodetect = TRUE
+    )
+    ## This is going to be a list if we have to stream data from a file, otherwise we can compute some additional values
+    if (is.list(range)) {
+        isStream <- TRUE
+        slist <- range
+        range <- GRanges()
+        stackRanges <- GRanges()
+        stacks <- NULL
+        seqs <- DNAStringSet()
     } else {
-      showIndels <- FALSE
+        if (is.null(seqs)) {
+            seqs <- DNAStringSet(vapply(width(range), function(x) paste(rep("N", x), collapse = ""), character(1)))
+        }
+        addArgs <- list(...)
+        if ("showIndels" %in% names(addArgs)) {
+            showIndels <- addArgs$showIndels
+        } else {
+            showIndels <- FALSE
+        }
+        tmp <- .computeAlignments(range, drop.D.ranges = showIndels)
+        range <- tmp$range
+        stackRanges <- tmp$stackRange
+        stacks <- tmp$stacks
     }
-    tmp <- .computeAlignments(range, drop.D.ranges = showIndels)
-    range <- tmp$range
-    stackRanges <- tmp$stackRange
-    stacks <- tmp$stacks
-  }
-  ## If no chromosome was explicitly asked for we just take the first one in the GRanges object
-  if (missing(chromosome) || is.null(chromosome)) {
-    chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-  }
-  ## And finally the object instantiation
-  genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
-  if (!isStream) {
-    return(new("AlignmentsTrack",
-      chromosome = chromosome[1], range = range, stacks = stacks,
-      name = name, genome = genome, stacking = stacking, stackRanges = stackRanges, sequences = seqs,
-      referenceSequence = referenceSequence, ...
-    ))
-  } else {
-    ## A bit hackish but for some functions we may want to know which track type we need but at the
-    ## same time we do not want to enforce this as an additional argument
-    e <- new.env()
-    e[["._trackType"]] <- "AlignmentsTrack"
-    e[["._isPaired"]] <- isPaired
-    e[["._flag"]] <- flag
-    environment(slist[["stream"]]) <- e
-    return(new("ReferenceAlignmentsTrack",
-      chromosome = chromosome[1], range = range, stackRanges = stackRanges,
-      name = name, genome = genome, stacking = stacking, stream = slist[["stream"]], reference = slist[["reference"]],
-      mapping = slist[["mapping"]], args = args, defaults = defs, stacks = stacks, referenceSequence = referenceSequence, ...
-    ))
-  }
+    ## If no chromosome was explicitly asked for we just take the first one in the GRanges object
+    if (missing(chromosome) || is.null(chromosome)) {
+        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    }
+    ## And finally the object instantiation
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    if (!isStream) {
+        return(new("AlignmentsTrack",
+            chromosome = chromosome[1], range = range, stacks = stacks,
+            name = name, genome = genome, stacking = stacking, stackRanges = stackRanges, sequences = seqs,
+            referenceSequence = referenceSequence, ...
+        ))
+    } else {
+        ## A bit hackish but for some functions we may want to know which track type we need but at the
+        ## same time we do not want to enforce this as an additional argument
+        e <- new.env()
+        e[["._trackType"]] <- "AlignmentsTrack"
+        e[["._isPaired"]] <- isPaired
+        e[["._flag"]] <- flag
+        environment(slist[["stream"]]) <- e
+        return(new("ReferenceAlignmentsTrack",
+            chromosome = chromosome[1], range = range, stackRanges = stackRanges,
+            name = name, genome = genome, stacking = stacking, stream = slist[["stream"]], reference = slist[["reference"]],
+            mapping = slist[["mapping"]], args = args, defaults = defs, stacks = stacks, referenceSequence = referenceSequence, ...
+        ))
+    }
 }
 
 
@@ -2579,61 +2579,61 @@ AlignmentsTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL
 ## HighlightTrack: A collection container for several track objects for which a particular area needs to be highlighted.
 
 setClass("HighlightTrack",
-  representation = representation(trackList = "list"),
-  contains = c("RangeTrack"),
-  prototype = prototype(dp = DisplayPars(
-    col = "red",
-    fill = "#FFE3E6",
-    inBackground = TRUE
-  ))
+    representation = representation(trackList = "list"),
+    contains = c("RangeTrack"),
+    prototype = prototype(dp = DisplayPars(
+        col = "red",
+        fill = "#FFE3E6",
+        inBackground = TRUE
+    ))
 )
 
 setMethod("initialize", "HighlightTrack", function(.Object, trackList, ...) {
-  .Object <- .updatePars(.Object, "HighlightTrack")
-  .Object@trackList <- trackList
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- .updatePars(.Object, "HighlightTrack")
+    .Object@trackList <- trackList
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end = NULL, width = NULL, chromosome, genome,
                            name = "HighlightTrack", ...) {
-  ## Some defaults
-  covars <- .getCovars(range)
-  n <- max(c(length(start), length(end), length(width)), nrow(covars))
-  ## Build a GRanges object from the inputs
-  .missingToNull(c("strand", "chromosome", "genome"))
-  args <- list(chromosome = chromosome, genome = genome)
-  defs <- list(strand = "*", density = 1, chromosome = "chrNA", genome = NA)
-  range <- .buildRange(
-    range = range, start = start, end = end, width = width,
-    args = args, defaults = defs, chromosome = chromosome, trackType = "HighlightTrack"
-  )
-  if (is.list(range)) {
-    range <- GRanges()
-  }
-  if (!is.list(trackList)) {
-    trackList <- list(trackList)
-  }
-  if (!all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))) {
-    stop("All elements in 'trackList' must inherit from 'GdObject'")
-  }
-  ## If no chromosome was explicitly asked for we just take the first one in the GRanges object
-  if (missing(chromosome) || is.null(chromosome)) {
-    chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
-  }
-  ## And finally the object instantiation
-  genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
-  return(new("HighlightTrack", trackList = trackList, chromosome = chromosome[1], range = range, name = name, genome = genome, ...))
+    ## Some defaults
+    covars <- .getCovars(range)
+    n <- max(c(length(start), length(end), length(width)), nrow(covars))
+    ## Build a GRanges object from the inputs
+    .missingToNull(c("strand", "chromosome", "genome"))
+    args <- list(chromosome = chromosome, genome = genome)
+    defs <- list(strand = "*", density = 1, chromosome = "chrNA", genome = NA)
+    range <- .buildRange(
+        range = range, start = start, end = end, width = width,
+        args = args, defaults = defs, chromosome = chromosome, trackType = "HighlightTrack"
+    )
+    if (is.list(range)) {
+        range <- GRanges()
+    }
+    if (!is.list(trackList)) {
+        trackList <- list(trackList)
+    }
+    if (!all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))) {
+        stop("All elements in 'trackList' must inherit from 'GdObject'")
+    }
+    ## If no chromosome was explicitly asked for we just take the first one in the GRanges object
+    if (missing(chromosome) || is.null(chromosome)) {
+        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+    }
+    ## And finally the object instantiation
+    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    return(new("HighlightTrack", trackList = trackList, chromosome = chromosome[1], range = range, name = name, genome = genome, ...))
 }
 setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x, recursive = FALSE, value) {
-  x <- setPar(x, value, interactive = FALSE)
-  if (recursive) {
-    x@trackList <- lapply(x@trackList, function(y) {
-      displayPars(y) <- value
-      return(y)
-    })
-  }
-  return(x)
+    x <- setPar(x, value, interactive = FALSE)
+    if (recursive) {
+        x@trackList <- lapply(x@trackList, function(y) {
+            displayPars(y) <- value
+            return(y)
+        })
+    }
+    return(x)
 })
 
 
@@ -2643,36 +2643,36 @@ setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x,
 ## OverlayTrack: A collection container for several track objects which will all be plotted on top of each other
 
 setClass("OverlayTrack",
-  representation = representation(trackList = "list"),
-  contains = c("GdObject"),
-  prototype = prototype(dp = DisplayPars())
+    representation = representation(trackList = "list"),
+    contains = c("GdObject"),
+    prototype = prototype(dp = DisplayPars())
 )
 
 setMethod("initialize", "OverlayTrack", function(.Object, trackList, ...) {
-  .Object <- .updatePars(.Object, "OverlayTrack")
-  .Object@trackList <- trackList
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- .updatePars(.Object, "OverlayTrack")
+    .Object@trackList <- trackList
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 OverlayTrack <- function(trackList = list(), name = "OverlayTrack", ...) {
-  if (!is.list(trackList)) {
-    trackList <- list(trackList)
-  }
-  if (!all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))) {
-    stop("All elements in 'trackList' must inherit from 'GdObject'")
-  }
-  return(new("OverlayTrack", trackList = trackList, name = name, ...))
+    if (!is.list(trackList)) {
+        trackList <- list(trackList)
+    }
+    if (!all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))) {
+        stop("All elements in 'trackList' must inherit from 'GdObject'")
+    }
+    return(new("OverlayTrack", trackList = trackList, name = name, ...))
 }
 setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, recursive = FALSE, value) {
-  x <- setPar(x, value, interactive = FALSE)
-  if (recursive) {
-    x@trackList <- lapply(x@trackList, function(y) {
-      displayPars(y) <- value
-      return(y)
-    })
-  }
-  return(x)
+    x <- setPar(x, value, interactive = FALSE)
+    if (recursive) {
+        x@trackList <- lapply(x@trackList, function(y) {
+            displayPars(y) <- value
+            return(y)
+        })
+    }
+    return(x)
 })
 
 
@@ -2682,23 +2682,23 @@ setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, r
 ## CustomTrack: A track class to allow for user-defined plotting functions
 
 setClass("CustomTrack",
-  contains = c("GdObject"),
-  representation = representation(
-    plottingFunction = "function",
-    variables = "list"
-  ),
-  prototype = prototype(dp = DisplayPars())
+    contains = c("GdObject"),
+    representation = representation(
+        plottingFunction = "function",
+        variables = "list"
+    ),
+    prototype = prototype(dp = DisplayPars())
 )
 
 setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, variables, ...) {
-  .Object <- .updatePars(.Object, "CustomTrack")
-  .Object@plottingFunction <- plottingFunction
-  .Object@variables <- variables
-  .Object <- callNextMethod(.Object, ...)
-  return(.Object)
+    .Object <- .updatePars(.Object, "CustomTrack")
+    .Object@plottingFunction <- plottingFunction
+    .Object@variables <- variables
+    .Object <- callNextMethod(.Object, ...)
+    return(.Object)
 })
 
 
 CustomTrack <- function(plottingFunction = function(GdObject, prepare = FALSE, ...) {}, variables = list(), name = "CustomTrack", ...) {
-  return(new("CustomTrack", plottingFunction = plottingFunction, variables = variables, name = name, ...))
+    return(new("CustomTrack", plottingFunction = plottingFunction, variables = variables, name = name, ...))
 }

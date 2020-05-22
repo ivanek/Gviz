@@ -10,5 +10,6 @@
 ^\.travis\.yml$
 ^\.codecov\.yml$
 ^Dockerfile$
+^LICENSE$
 ^Rplots\.pdf$
 ^vignettes\/Gviz-logo\.pdf$
