@@ -936,8 +936,8 @@ setMethod(
         if (is(GdObject, "GeneRegionTrack")) {
             ctrans <- .dpOrDefault(GdObject, "collapseTranscripts", FALSE)
             if (is.logical(ctrans) && ctrans) {
-                  ctrans <- "gene"
-              }
+                ctrans <- "gene"
+            }
             switch(ctrans,
                 "gene" = {
                     newVals <- unlist(endoapply(split(values(r), paste(gene(GdObject), strand(GdObject))), head, 1))
@@ -1039,8 +1039,8 @@ setMethod(
 ## window approach when 'window' == -1
 setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject, diff = .pxResolution(coord = "x"), xrange) {
     if (!length(GdObject)) {
-          return(GdObject)
-      }
+        return(GdObject)
+    }
     ## first the data transformation if needed
     values(GdObject) <- score(GdObject)
     collapse <- .dpOrDefault(GdObject, "collapse", FALSE)
@@ -1051,26 +1051,26 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
     windowSize <- .dpOrDefault(GdObject, "windowSize")
     missingAsZero <- .dpOrDefault(GdObject, "missingAsZero", TRUE)
     if (!is.null(window) || collapse) {
-          GdObject <- GdObject[, order(range(GdObject))]
-      }
+        GdObject <- GdObject[, order(range(GdObject))]
+    }
     r <- ranges(GdObject)
     drange <- c(floor(xrange[1]), ceiling(xrange[2]))
     if (!is.null(window)) {
         rr <- if (is(r, "GRanges")) ranges(r) else r
         fw <- FALSE
         if (window == "auto") {
-              window <- min(
-                  ncol(values(GdObject)), 1000,
-                  ceiling(width(range(rr)) / (min.width * diff))
-              )
-          }
+            window <- min(
+                ncol(values(GdObject)), 1000,
+                ceiling(width(range(rr)) / (min.width * diff))
+            )
+        }
         if (window == "fixed") {
             fw <- TRUE
             window <- 100
         }
         if (!is.numeric(window) || length(window) != 1L) {
-              stop("gpar 'window' must be a numeric scalar")
-          }
+            stop("gpar 'window' must be a numeric scalar")
+        }
         window <- as.integer(window)
         sc <- values(GdObject)
         agFun <- .aggregator(GdObject)
@@ -1080,11 +1080,11 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             r <- if (is(r, "GRanges")) GRanges(seqnames = seqnames(r)[1], ranges = rtmp) else rtmp
         } else if (window < 1) {
             if (is.null(windowSize)) {
-                  windowSize <- (max(GdObject) - min(GdObject)) / 100
-              }
+                windowSize <- (max(GdObject) - min(GdObject)) / 100
+            }
             if (windowSize %% 2 != 1) {
-                  windowSize <- windowSize + 1
-              }
+                windowSize <- windowSize + 1
+            }
             if (missingAsZero) {
                 rm <- vector("integer", width(range(range(GdObject))))
             } else {
@@ -1107,8 +1107,8 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             sc <- newDat
         } else {
             if (!is.null(window) && window > diff(drange)) {
-                  window <- diff(drange)
-              }
+                window <- diff(drange)
+            }
             if (!fw || is.null(windowSize)) {
                 windowSize <- diff(drange) %/% window
             } else {
@@ -1120,11 +1120,11 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
                 width = windowSize
             )
             if (remain > 0) {
-                  ir <- c(
-                      IRanges(start = drange[1], width = ceiling(remain)), ir,
-                      IRanges(start = drange[2] - ceiling(remain), width = ceiling(remain))
-                  )
-              }
+                ir <- c(
+                    IRanges(start = drange[1], width = ceiling(remain)), ir,
+                    IRanges(start = drange[2] - ceiling(remain), width = ceiling(remain))
+                )
+            }
             ol <- as.matrix(findOverlaps(ir, rr))
             scn <- lapply(split(ol[, 2], ol[, 1]), function(i) agFun(sc[, i, drop = FALSE]))
             scn <- do.call(cbind, scn)
@@ -1147,8 +1147,8 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
     groups <- .dpOrDefault(GdObject, "groups")
     if (!is.null(groups) && .dpOrDefault(GdObject, "aggregateGroups", FALSE)) {
         if (!is.factor(groups)) {
-              groups <- factor(groups)
-          }
+            groups <- factor(groups)
+        }
         agFun <- .aggregator(GdObject)
         dat <- values(GdObject)
         rownames(dat) <- groups
@@ -1184,8 +1184,8 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             vsplit <- split(t(as.data.frame(sc, stringsAsFactors = FALSE)), cut(seq_len(length(r)), startInd, iclude.lowest = TRUE, right = FALSE))
             agFun <- .dpOrDefault(GdObject, "aggregation", "mean")
             if (is.list(agFun)) {
-                  agFun <- agFun[[1]]
-              }
+                agFun <- agFun[[1]]
+            }
             newScore <- if (is.character(agFun)) {
                 switch(agFun, "mean" = lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
                     "sum" = lapply(vsplit, function(x) rowSums(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
@@ -1846,8 +1846,8 @@ setMethod("drawGrid", signature(GdObject = "AlignedReadTrack"), function(GdObjec
             ylim <- c(0, if (y.max == 0) 1 else y.max)
             trans <- .dpOrDefault(GdObject, "transformation")[[1]]
             if (!is.null(trans)) {
-                  ylim <- c(0, trans(ylim[2]))
-              }
+                ylim <- c(0, trans(ylim[2]))
+            }
         }
         for (s in c("+", "-")) {
             pushViewport(viewport(height = 0.5, y = ifelse(s == "-", 0, 0.5), just = c("center", "bottom")))
@@ -2026,8 +2026,8 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
     }, FUN.VALUE = character(1L))
     yloc <- vapply(split((stacks - bins) + 1, gp), function(x) unique(x), FUN.VALUE = numeric(1L)) + 0.5
     color <- if (length(grep("__desatCol", values(GdObject)$feature[1]))) {
-          .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)
-      } else {
+        .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)
+    } else {
         vapply(split(.getBiotypeColor(GdObject), gp), head, 1, FUN.VALUE = character(1L))
     }
     bars <- data.frame(
@@ -2094,12 +2094,12 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
 setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
     if ((is.logical(debug) && debug) || debug == "prepare") {
-          browser()
-      }
+        browser()
+    }
     imageMap(GdObject) <- NULL
     if (!length(GdObject)) {
-          return(invisible(GdObject))
-      }
+        return(invisible(GdObject))
+    }
     ## In prepare mode we need to make sure that the stacking information is updated from the optional display parameter (by calling
     ## the StackedTrack drawGD method) and also perform the collapsing of track items which could potentially lead to re-stacking.
     if (prepare) {
@@ -2113,8 +2113,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         return(invisible(GdObject))
     }
     if ((is.logical(debug) && debug) || debug == "draw") {
-          browser()
-      }
+        browser()
+    }
     ## If there are too many stacks for the available device resolution we cast an error, otherwise we set the viewport
     bins <- stacks(GdObject)
     stacks <- max(bins)
@@ -2125,8 +2125,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     res <- .pxResolution(coord = "x")
     curVp <- vpLocation()
     if (curVp$size["height"] / stacks < .dpOrDefault(GdObject, "min.height", 3)) {
-          stop("Too many stacks to draw. Either increase the device size or limit the drawing to a smaller region.")
-      }
+        stop("Too many stacks to draw. Either increase the device size or limit the drawing to a smaller region.")
+    }
     ## We adjust the color saturation to indicate overplotting if necessary
     if (.dpOrDefault(GdObject, "showOverplotting", FALSE)) {
         dens <- as.numeric(values(GdObject)$density)
@@ -2154,8 +2154,8 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     col.line <- .dpOrDefault(GdObject, "col.line")[1]
     border <- .dpOrDefault(GdObject, "col")[1]
     if (is.null(border)) {
-          border <- ifelse(is(GdObject, "GeneRegionTrack"), NA, "transparent")
-      }
+        border <- ifelse(is(GdObject, "GeneRegionTrack"), NA, "transparent")
+    }
     lwd <- .dpOrDefault(GdObject, "lwd", 2)
     lty <- .dpOrDefault(GdObject, "lty", 1)
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
@@ -2193,14 +2193,14 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
         ## Plotting of the (arrow)bar
         if (nrow(bar) > 0) {
-              .arrowBar(bar$sx1, bar$sx2,
-                  y = bar$y, bar$strand, box[, seq_len(4), drop = FALSE],
-                  W = .dpOrDefault(GdObject, "arrowFeatherWidth", 3), D = .dpOrDefault(GdObject, "arrowFeatherDistance", 20),
-                  col = if (is.null(col.line)) bar$col else rep(col.line, length(bar$col)), lwd = lwd, lty = lty,
-                  alpha = alpha, barOnly = (!"smallArrow" %in% .dpOrDefault(GdObject, "shape", "box") || stacking(GdObject) == "dense"),
-                  diff = res, min.height = .dpOrDefault(GdObject, "min.height", 3)
-              )
-          }
+            .arrowBar(bar$sx1, bar$sx2,
+                y = bar$y, bar$strand, box[, seq_len(4), drop = FALSE],
+                W = .dpOrDefault(GdObject, "arrowFeatherWidth", 3), D = .dpOrDefault(GdObject, "arrowFeatherDistance", 20),
+                col = if (is.null(col.line)) bar$col else rep(col.line, length(bar$col)), lwd = lwd, lty = lty,
+                alpha = alpha, barOnly = (!"smallArrow" %in% .dpOrDefault(GdObject, "shape", "box") || stacking(GdObject) == "dense"),
+                diff = res, min.height = .dpOrDefault(GdObject, "min.height", 3)
+            )
+        }
         ## Plotting of the boxes
         box$col <- if (is.na(border)) box$fill else border
         if ("box" %in% shape || ("smallArrow" %in% shape && !("arrow" %in% shape || "ellipse" %in% shape))) {
@@ -2228,11 +2228,11 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
         ## Plotting of the item labels
         if (.dpOrDefault(GdObject, "showFeatureId", FALSE)) {
-              grid.text(box$text, box$textX, box$textY,
-                  rot = rotation, gp = .fontGp(GdObject, subtype = "item"),
-                  default.units = "native", just = c("center", "center")
-              )
-          }
+            grid.text(box$text, box$textX, box$textY,
+                rot = rotation, gp = .fontGp(GdObject, subtype = "item"),
+                default.units = "native", just = c("center", "center")
+            )
+        }
         ## Plotting of the group labels
         if (drawLabel) {
             grid.text(bartext$txt, bartext$x, bartext$y,
@@ -2730,8 +2730,8 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     exponent <- if (is.null(.dpOrDefault(GdObject, "exponent"))) {
         exp <- 0
         while (all(tck[tck > 0] / 10^exp >= 1)) {
-              exp <- exp + 3
-          }
+            exp <- exp + 3
+        }
         exp - 3
     } else {
         max(0, .dpOrDefault(GdObject, "exponent"))
@@ -3077,8 +3077,8 @@ setMethod(
     function(GdObject, minBase, maxBase, prepare = FALSE, ...) {
         debug <- .dpOrDefault(GdObject, "debug", FALSE)
         if ((is.logical(debug) && debug) || debug == "prepare") {
-              browser()
-          }
+            browser()
+        }
         adf <- .buildArgsDf(GdObject)
         args <- .dpOrDefault(GdObject, "detailsFunArgs", fromPrototype = TRUE)
         groupDetails <- .dpOrDefault(GdObject, "groupDetails", FALSE)
@@ -3104,16 +3104,16 @@ setMethod(
             })
             select <- do.call(rbind, select)
             if (any(select[, "warn"])) {
-                  warning("The result of function 'selectFun' has to be a single logical value. Forcing the value to 'TRUE'")
-              }
+                warning("The result of function 'selectFun' has to be a single logical value. Forcing the value to 'TRUE'")
+            }
             select <- select[, "res"]
             popViewport(1)
             displayPars(GdObject) <- list(".__select" = select)
             return(invisible(GdObject))
         }
         if ((is.logical(debug) && debug) || debug == "draw") {
-              browser()
-          }
+            browser()
+        }
         n <- length(GdObject)
         col <- rep(.dpOrDefault(GdObject, "detailsConnector.col", fromPrototype = TRUE), n)[seq_len(n)]
         lty <- rep(.dpOrDefault(GdObject, "detailsConnector.lty", fromPrototype = TRUE), n)[seq_len(n)]
@@ -3178,8 +3178,8 @@ setMethod(
                 j <- j + 1
             }
             if (hasError) {
-                  warning("There have been errors in the detail plotting function:\n", paste(pres, collapse = "\n"))
-              }
+                warning("There have been errors in the detail plotting function:\n", paste(pres, collapse = "\n"))
+            }
             popViewport(1)
             ## plot AnnotationTrack and connectors to details
             xscale <- if (!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
@@ -3222,8 +3222,8 @@ setMethod(
 setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
     if ((is.logical(debug) && debug) || debug == "prepare") {
-          browser()
-      }
+        browser()
+    }
     imageMap(GdObject) <- NULL
     type <- .dpOrDefault(GdObject, "type", "p")
     type <- match.arg(type, .PLOT_TYPES, several.ok = TRUE)
@@ -3231,11 +3231,11 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     vals <- values(GdObject)
     groups <- .dpOrDefault(GdObject, "groups")
     if (!is.null(groups) && length(groups) != nrow(vals)) {
-          stop("'groups' must be a vector of similar length as the number of rows in the data matrix (", nrow(vals), ")")
-      }
+        stop("'groups' must be a vector of similar length as the number of rows in the data matrix (", nrow(vals), ")")
+    }
     if (!is.null(groups) && !is.factor(groups)) {
-          groups <- factor(groups)
-      }
+        groups <- factor(groups)
+    }
     stacked <- .dpOrDefault(GdObject, "stackedBars", FALSE)
     ## The general "col" parameter should be the default for all relevant colors except when there are groups.
     pcols <- .getPlottingFeatures(GdObject)
@@ -3243,8 +3243,8 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     ## values to draw the axis.
     if (prepare) {
         if (subset) {
-              GdObject <- subset(GdObject, from = minBase, to = maxBase)
-          }
+            GdObject <- subset(GdObject, from = minBase, to = maxBase)
+        }
         xscale <- if (!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
         pushViewport(viewport(xscale = xscale, yscale = c(0, 1), clip = TRUE))
         diff <- .pxResolution(coord = "x")
@@ -3273,17 +3273,17 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                         tmp <- NULL
                         if (!all(is.na(sel))) {
                             if (any(sel)) {
-                                  tmp <- c(min(x[sel]), sum(x[sel]))
-                              }
+                                tmp <- c(min(x[sel]), sum(x[sel]))
+                            }
                             if (any(!sel)) {
-                                  tmp <- c(max(x[!sel]), tmp, sum(x[!sel]))
-                              }
+                                tmp <- c(max(x[!sel]), tmp, sum(x[!sel]))
+                            }
                         }
                         tmp
                     }))))
                     if (length(type) > 1) {
-                          ylim <- range(c(ylim, vals))
-                      }
+                        ylim <- range(c(ylim, vals))
+                    }
                     displayPars(GdObject) <- list(ylim = ylim)
                 }
             } else {
@@ -3291,8 +3291,8 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     valsA <- agFun(t(vals))
                     ylim <- if (!length(valsA)) c(-1, 1) else c(min(c(0, valsA), na.rm = TRUE), max(valsA, na.rm = TRUE))
                     if (length(type) > 1) {
-                          ylim <- range(c(ylim, vals), na.rm = TRUE)
-                      }
+                        ylim <- range(c(ylim, vals), na.rm = TRUE)
+                    }
                     displayPars(GdObject) <- list(ylim = ylim)
                 }
             }
@@ -3300,18 +3300,18 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         ## If we want a legend we have to figure out how much vertical space is needed
         grps <- .dpOrDefault(GdObject, "groups")
         if (!is.factor(grps)) {
-              grps <- factor(grps)
-          }
+            grps <- factor(grps)
+        }
         if (is.null(grps) || nlevels(grps) == 1 || length(setdiff(type, c("gradient", "mountain", "grid", "horizon"))) == 0) {
-              displayPars(GdObject) <- list(legend = FALSE)
-          }
+            displayPars(GdObject) <- list(legend = FALSE)
+        }
         if (as.logical(as.logical(.dpOrDefault(GdObject, "legend", FALSE))) && nlevels(grps) > 1) {
             pushViewport(viewport(width = unit(1, "npc") - unit(0.2, "inches"), gp = .fontGp(GdObject, "legend")))
             grps <- levels(grps)
             legInfo <- .legendInfo()[type, , drop = FALSE]
             for (i in colnames(legInfo)) {
-                  legInfo[, i] <- any(legInfo[, i]) && !any(duplicated(pcols[[i]][seq_along(grps)]))
-              }
+                legInfo[, i] <- any(legInfo[, i]) && !any(duplicated(pcols[[i]][seq_along(grps)]))
+            }
             legFactors <- sort(names(which(apply(legInfo, 2, any))))
             boxSize <- if (length(setdiff(legFactors, c("col", "cex"))) == 0) 0.1 else 0.3
             spacing <- 0.1
@@ -3334,14 +3334,14 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         return(invisible(GdObject))
     }
     if ((is.logical(debug) && debug) || debug == "draw") {
-          browser()
-      }
+        browser()
+    }
     ## We only proceed if there is something to draw within the ranges, but still may have to add the grid and the legend.
     ## Legend drawing causes another viewport for all the other graphics to be opened and will be called after all other
     ## drawing has finished, hence we call it in on.exit
     if (subset) {
-          GdObject <- subset(GdObject, from = minBase, to = maxBase)
-      }
+        GdObject <- subset(GdObject, from = minBase, to = maxBase)
+    }
     alpha <- .dpOrDefault(GdObject, "alpha", 1)
     ## The optional legend is plotted below the data
     grpLevels <- .dpOrDefault(GdObject, ".__groupLevels")
@@ -3373,40 +3373,40 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     )
                 } else {
                     if (any(c("pch", "col.symbol") %in% legFactors)) {
-                          panel.points(unit(boxSize / 2, "inches"), 0.5, pch = pcols$pch[grpLev], cex = pcols$cex[grpLev], col = pcols$col.symbol[grpLev])
-                      }
+                        panel.points(unit(boxSize / 2, "inches"), 0.5, pch = pcols$pch[grpLev], cex = pcols$cex[grpLev], col = pcols$col.symbol[grpLev])
+                    }
                     if (any(c("lwd", "lty", "col.lines") %in% legFactors)) {
-                          ## panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[grpLev], lwd=pcols$lwd[grpLev], lty=pcols$lty[grpLev])
-                          grid.lines(unit(c(0, boxSize), "inches"), c(0.5, 0.5), gp = gpar(col = pcols$col.line[grpLev], lwd = pcols$lwd[grpLev], lty = pcols$lty[grpLev]))
-                      }
+                        ## panel.lines(unit(c(0,boxSize), "inches"), c(0.5, 0.5), col=pcols$col.line[grpLev], lwd=pcols$lwd[grpLev], lty=pcols$lty[grpLev])
+                        grid.lines(unit(c(0, boxSize), "inches"), c(0.5, 0.5), gp = gpar(col = pcols$col.line[grpLev], lwd = pcols$lwd[grpLev], lty = pcols$lty[grpLev]))
+                    }
                 }
                 grid.text(x = unit(boxSize + spacing, "inches"), y = 0.5, just = c(0, 0.5), label = grpLevels[i])
                 popViewport(1)
             }
             if (.dpOrDefault(GdObject, "box.legend", FALSE)) {
-                  grid.rect(width = (1 / dims[2]) * length(grpLevels), x = 0, just = "left", gp = gpar(fill = NA))
-              }
+                grid.rect(width = (1 / dims[2]) * length(grpLevels), x = 0, just = "left", gp = gpar(fill = NA))
+            }
             popViewport(2)
         })
     }
     if (!length(GdObject)) {
         if ("g" %in% type) {
-              panel.grid(
-                  h = .dpOrDefault(GdObject, "h", -1), v = .dpOrDefault(GdObject, "v", -1),
-                  col = .dpOrDefault(GdObject, "col.grid", "#e6e6e6"), lty = .dpOrDefault(GdObject, "lty.grid", 1),
-                  lwd = .dpOrDefault(GdObject, "lwd.grid", 1), alpha = alpha
-              )
-          }
+            panel.grid(
+                h = .dpOrDefault(GdObject, "h", -1), v = .dpOrDefault(GdObject, "v", -1),
+                col = .dpOrDefault(GdObject, "col.grid", "#e6e6e6"), lty = .dpOrDefault(GdObject, "lty.grid", 1),
+                lwd = .dpOrDefault(GdObject, "lwd.grid", 1), alpha = alpha
+            )
+        }
         return(invisible(GdObject))
     }
     vals <- values(GdObject)
     ylim <- suppressWarnings(.dpOrDefault(GdObject, "ylim", range(vals, na.rm = TRUE, finite = TRUE)))
     if (diff(ylim) == 0) {
-          ylim <- ylim + c(-1, 1)
-      }
+        ylim <- ylim + c(-1, 1)
+    }
     if (all(is.infinite(ylim))) {
-          ylim <- c(0, 1)
-      }
+        ylim <- c(0, 1)
+    }
     ylimExt <- extendrange(r = ylim, f = 0.05)
     xscale <- if (!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
     pushViewport(viewport(xscale = xscale, yscale = ylimExt, clip = TRUE))
@@ -3454,8 +3454,8 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             baseline = mbaseline
         )
         if (!is.na(mbaseline)) {
-              panel.abline(h = mbaseline, col = col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
-          }
+            panel.abline(h = mbaseline, col = col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
+        }
     }
     ## The special type 'polygon' has to be handled separately
     if ("polygon" %in% type) {
@@ -3471,8 +3471,8 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             baseline = mbaseline
         )
         if (!is.na(mbaseline)) {
-              panel.abline(h = mbaseline, col = col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
-          }
+            panel.abline(h = mbaseline, col = col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
+        }
     }
     ## Also the type 'boxplot' is handled up front
     if ("boxplot" %in% type) {
@@ -3552,13 +3552,13 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 diff <- .pxResolution(coord = "x", pcols$lwd[1] + 1)
                 tooNarrow <- width(GdObject) < diff
                 if (!all(tooNarrow)) {
-                      grid.rect(start(GdObject)[!tooNarrow], curMinPos[!tooNarrow],
-                          width = width(GdObject)[!tooNarrow],
-                          height = (curMaxPos - curMinPos)[!tooNarrow],
-                          gp = gpar(fill = "transparent", col = pcols$col.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha),
-                          default.units = "native", just = c("left", "bottom")
-                      )
-                  }
+                    grid.rect(start(GdObject)[!tooNarrow], curMinPos[!tooNarrow],
+                        width = width(GdObject)[!tooNarrow],
+                        height = (curMaxPos - curMinPos)[!tooNarrow],
+                        gp = gpar(fill = "transparent", col = pcols$col.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha),
+                        default.units = "native", just = c("left", "bottom")
+                    )
+                }
             } else {
                 spacer <- .pxResolution(min.width = 1, coord = "x")
                 yOff <- .pxResolution(min.width = 1, coord = "y")
@@ -3809,8 +3809,8 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     }
     do.call("panel.xyplot", plot_args)
     if (!any(c("mountain", "polygon") %in% type) && !is.null(baseline) && !is.na(baseline)) {
-          panel.abline(h = baseline, col = pcols$col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
-      }
+        panel.abline(h = baseline, col = pcols$col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
+    }
     popViewport(1)
 
     return(invisible(GdObject))
@@ -4184,23 +4184,23 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
 setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
     if ((is.logical(debug) && debug) || debug == "prepare") {
-          browser()
-      }
+        browser()
+    }
     imageMap(GdObject) <- NULL
     detail <- match.arg(.dpOrDefault(GdObject, "detail", "coverage"), c("reads", "coverage"))
     ## Nothing to do in prepare mode if detail is not 'reads', so we can quit right away, else we need to set the stacking info
     if (prepare) {
         if (detail == "read") {
             if (subset) {
-                  GdObject <- subset(GdObject, from = minBase, to = maxBase)
-              }
+                GdObject <- subset(GdObject, from = minBase, to = maxBase)
+            }
             ## GdObject <- setStacks(GdObject)
         }
         return(invisible(GdObject))
     }
     if ((is.logical(debug) && debug) || debug == "draw") {
-          browser()
-      }
+        browser()
+    }
     ## In plotting mode we either show all the reads (time-consuming), or the coverage only
     rad <- 0.015
     xx <- -0.01
@@ -4208,8 +4208,8 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
     diff <- .pxResolution(coord = "x")
     radv <- rad / if (loc["width"] < loc["height"]) c(1, loc[2] / loc[1]) else c(loc[1] / loc[2], 1)
     if (subset) {
-          GdObject <- subset(GdObject, from = minBase, to = maxBase)
-      }
+        GdObject <- subset(GdObject, from = minBase, to = maxBase)
+    }
     ## If type is 'coverage' all we need to do is compute a coverage vector, create dummy DataTracks and pass everything on
     if (detail == "coverage") {
         if (!any(unlist(lapply(GdObject@coverage, function(y) runValue(y) != 0)))) {
@@ -4225,15 +4225,15 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
             ## We want to distinguish between strands, so an extra spitting step is needed for this to work
             val <- c(0, max(unlist(lapply(c("+", "-"), function(x) {
                 if (length(coverage(GdObject, strand = x))) {
-                      max(coverage(GdObject, strand = x))
-                  } else {
+                    max(coverage(GdObject, strand = x))
+                } else {
                     NULL
                 }
             }))))
             trans <- .dpOrDefault(GdObject, "transformation")[[1]]
             if (!is.null(trans)) {
-                  val[2] <- trans(val[2])
-              }
+                val[2] <- trans(val[2])
+            }
             ylim <- .dpOrDefault(GdObject, "ylim", val)
             for (s in c("+", "-"))
             {
@@ -4246,8 +4246,8 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
                         name = names(GdObject), genome = genome(GdObject), chromosome = chromosome(GdObject)
                     )
                 } else {
-                      DataTrack(name = names(GdObject), genome = genome(GdObject), chromosome = chromosome(GdObject))
-                  }
+                    DataTrack(name = names(GdObject), genome = genome(GdObject), chromosome = chromosome(GdObject))
+                }
                 displayPars(dtr) <- displayPars(GdObject, hideInternal = FALSE)
                 displayPars(dtr) <- list(ylim = if (s == "+") ylim else rev(ylim))
                 drawGD(dtr, minBase, maxBase, prepare = prepare, ...)
@@ -4297,8 +4297,8 @@ setMethod("drawGD", signature("AlignedReadTrack"), function(GdObject, minBase, m
                         max(space / 2, ratios["+"] - ratios["-"] - space / 2)
                     )
                 } else {
-                      c(max(space / 2, ratios["-"] - space), max(space / 2, ratios["+"] - ratios["-"] - space / 2))
-                  }
+                    c(max(space / 2, ratios["-"] - space), max(space / 2, ratios["+"] - ratios["-"] - space / 2))
+                }
                 names(y) <- names(h) <- names(ratios)
                 pushViewport(viewport(height = 0.95, just = "center", yscale = c(0, max(ratios))))
                 for (s in c("+", "-"))
@@ -4787,8 +4787,8 @@ setMethod(
     function(range, start, end, width, asIRanges = FALSE, ...) {
         ## The inputs coordinates are all empty
         if (!length(start) && !length(end)) {
-              return(if (asIRanges) IRanges() else GRanges())
-          }
+            return(if (asIRanges) IRanges() else GRanges())
+        }
         delim <- ","
         coords <- c("start", "end", "width")
         lengths <- vapply(coords, function(x) length(get(x)), FUN.VALUE = numeric(1L))
@@ -4806,10 +4806,10 @@ setMethod(
         }
         len <- max(lengths)
         if (!all(unlist(lapply(items, function(x) length(x) == 1 && x == 0)))) {
-              by <- rowMax(do.call(cbind, lapply(items, function(x) {
-                    if (length(x) == 1) rep(x, len) else if (length(x)) x else rep(0, len)
-                })))
-          }
+            by <- rowMax(do.call(cbind, lapply(items, function(x) {
+                if (length(x) == 1) rep(x, len) else if (length(x)) x else rep(0, len)
+            })))
+        }
         return(.buildRange(start = start, end = end, width = width, asIRanges = asIRanges, by = by, len = len, ...))
     }
 )
@@ -4897,8 +4897,8 @@ setMethod(
         ## Not quite sure how whether existing chromosome information in a GRanges object should generally have precedence over the
         ## chromosome constructor, but probably that should be the case
         if ("chromosome" %in% colnames(range)) {
-              args$chromosome <- NULL
-          }
+            args$chromosome <- NULL
+        }
         missing <- setdiff(union(setdiff(mandArgs, c(colnames(range))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1L))))), "genome")
         range <- .fillWithDefaults(range, defaults[missing], args[missing], len = nrow(range))
         range$chromosome <- .chrName(as.character(range$chromosome))
@@ -4908,8 +4908,8 @@ setMethod(
             "ranges", "seqlevels", "seqlengths", "isCircular", "element"
         ))]
         if (trackType != "DataTrack") {
-              mcols(grange) <- mcols(grange)[, intersect(names(defaults), colnames(mcols(grange)))]
-          }
+            mcols(grange) <- mcols(grange)[, intersect(names(defaults), colnames(mcols(grange)))]
+        }
         suppressWarnings(genome(grange) <- unname(if (is.null(args[["genome"]])) defaults[["genome"]] else as.character(args[["genome"]])[[1]]))
         return(grange)
     }
@@ -4921,8 +4921,8 @@ setMethod(
     ".buildRange", signature("GRanges"),
     function(range, asIRanges = FALSE, args = list(), defaults = list(), trackType = NULL, ...) {
         if (asIRanges) {
-              return(ranges(range))
-          }
+            return(ranges(range))
+        }
         if (length(range)) {
             mandArgs <- names(defaults)
             ## Not quite sure how whether existing chromosome information in a GRanges object should generally have precedence over the
@@ -4945,8 +4945,8 @@ setMethod(
                     )
                 )
                 if (length(unique(gen)) != 1) {
-                      warning("Tracks can only be defined for a single genome. Forcing all reads to belong to genome '", gen[1], "'")
-                  }
+                    warning("Tracks can only be defined for a single genome. Forcing all reads to belong to genome '", gen[1], "'")
+                }
                 defaults[["genome"]] <- as.character(gen)[1]
             }
             mcols(range) <- newVars[, setdiff(colnames(newVars), c(
@@ -4955,8 +4955,8 @@ setMethod(
             )), drop = FALSE]
         }
         if (trackType != "DataTrack") {
-              mcols(range) <- mcols(range)[, intersect(names(defaults), colnames(mcols(range)))]
-          }
+            mcols(range) <- mcols(range)[, intersect(names(defaults), colnames(mcols(range)))]
+        }
         ## The genome information may or may not be encoded in the GRanges object at this time but we want it in there for sure
         genome <- if (!is.null(args[["genome"]])) args[["genome"]] else .getGenomeFromGRange(range, defaults[["genome"]])
         suppressWarnings(genome(range) <- unname(genome))[1]
