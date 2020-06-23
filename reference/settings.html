@@ -1170,7 +1170,10 @@ The genome track plots in this package are all highly customizable by
           interpreted as pixels.</p></dd>         <dt></dt><dd><p><code>sashimiScore=1</code>: Integer scalar. The minimum
           number of reads supporting the junction.</p></dd>         <dt></dt><dd><p><code>sashimiStrand="*"</code>: Integer scalar. Only reads
           which have the specified strand are considered to count the
-          junctions.</p></dd>         <dt></dt><dd><p><code>showIndels=FALSE</code>: Logical scalar. Consider
+          junctions.</p></dd>         <dt></dt><dd><p><code>sashimiTransformation=NULL</code>: Function. Applied
+          to the junction score vector prior to plotting. The function
+          should accept exactly one input argument and its return value
+          needs to be a numeric vector of identical length as the input data.</p></dd>         <dt></dt><dd><p><code>showIndels=FALSE</code>: Logical scalar. Consider
           insertions and deletions in coverage and pile-up. Default is
           <code>FALSE</code>. If set to <code>TRUE</code> the deletions defined in
           CIGAR string are not considered in coverage plot. The deletions
