@@ -792,6 +792,7 @@ details <- list(
                                   sashimiHeight="Integer scalar. The height of the sashimi part of the track. Can either be a value between 0 and 1 in which case it is taken as a relative height, or a positive value greater 1 in which case it is interpreted as pixels.",
                                   sashimiScore="Integer scalar. The minimum number of reads supporting the junction.",
                                   sashimiStrand="Integer scalar. Only reads which have the specified strand are considered to count the junctions.",
+                                  sashimiTransformation="Function. Applied to the junction score vector prior to plotting. The function should accept exactly one input argument and its return value needs to be a numeric vector of identical length as the input data.",
                                   size="Numeric scalar. The size of the track. Defaults to automatic sizing.",
                                   transformation= "Function. Applied to the coverage vector prior to plotting. The function should accept exactly one input argument and its return value needs to be a numeric Rle of identical length as the input data.",
                                   type="Character vactor. The type of information to plot. For \\code{coverage} a coverage plot, potentially augmented by base mismatch information, for \\code{sashimi} a sashimi plot, showing the juctions, and for \\code{pileup} the pileups of the individual reads. These three can be combined."
@@ -834,7 +835,7 @@ updateDocumentation <- function(outdir="~/Rpacks/Gviz/man")
 ## central definition list.
 ## When you are happy with the results, run
 ##       updateRdFile(<className>, <documentationDir>)
-##       updateSettingsFile(<documentationDir>)
+##       ~/Rpacks/Gviz(<documentationDir>)
 ##       updateLinks(<documentationDir>)
 ##
 ## To update all classes, run

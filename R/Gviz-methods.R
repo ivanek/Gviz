@@ -2372,13 +2372,15 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
                       stop(sprintf("\"mcols\" of \"sashimiJunctions\" object must contain column named \"%s\",\n which matches the specified (%s) \"sashimiStrand\"!", sashMcolName, sashStrand))
                   }
             }
+            sashTransform <- .dpOrDefault(GdObject, c("sashimiTransformation", "transformation"))
             sash <- .convert.summarizedJunctions.to.sashimi.junctions(
                 juns = sash,
                 score = sashScore,
                 lwd.max = sashLwdMax,
                 strand = sashStrand,
                 filter = sashFilter,
-                filterTolerance = sashFilterTolerance
+                filterTolerance = sashFilterTolerance,
+                trans = sashTransform
             )
             displayPars(GdObject) <- list(
                 ".__sashimi" = sash,

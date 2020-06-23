@@ -140,4 +140,3 @@ plotTracks(alTrack, from=afrom, to=ato, chromosome="chr12")
 
 
 \keyword{classes}
-

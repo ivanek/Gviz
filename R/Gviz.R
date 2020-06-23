@@ -3009,7 +3009,7 @@ availableDefaultMapping <- function(file, trackType) {
     juns
 }
 
-.convert.summarizedJunctions.to.sashimi.junctions <- function(juns, score = 1L, lwd.max = 10, strand = "*", filter = NULL, filterTolerance = 0L) {
+.convert.summarizedJunctions.to.sashimi.junctions <- function(juns, score = 1L, lwd.max = 10, strand = "*", filter = NULL, filterTolerance = 0L, trans = NULL) {
     ## filter junctions
     if (!is.null(filter)) {
         ## if filterTolerance is > 0 than pass it as maxgap parameter in findOverlaps
@@ -3049,6 +3049,23 @@ availableDefaultMapping <- function(file, trackType) {
         ov <- findOverlaps(juns, reduce(juns, min.gapwidth = 0L))
         ov <- split(queryHits(ov), subjectHits(ov))
         juns$y <- as.integer(unlist(lapply(ov, order)))
+        ## apply data transformation if one is set up
+        if (is.list(trans)) {
+          trans <- trans[[1]]
+        }
+        if (!is.null(trans)) {
+          if (!is.function(trans) || length(formals(trans)) != 1L) {
+            stop("Display parameter 'transformation' must be a function with a single argument")
+          }
+          test <- trans(juns$score)
+          if (!is(test, "numeric") || length(test) != length(juns$score)) {
+            stop(
+              "The function in display parameter 'transformation' results in invalid output.\n",
+              "It has to return a numeric matrix with the same dimensions as the input data."
+            )
+          }
+          juns$score <- test
+        }
         ## scale the score to lwd.max
         juns$scaled <- (lwd.max - 1) / pmax((max(juns$score) - min(c(1, juns$score))), 1) * (juns$score - max(juns$score)) + lwd.max
         ## create list

@@ -2156,6 +2156,11 @@ getScheme(name=getOption("Gviz.scheme"))
           which have the specified strand are considered to count the
           junctions.} 
 
+        \item{}{\code{sashimiTransformation=NULL}: Function. Applied
+          to the junction score vector prior to plotting. The function
+          should accept exactly one input argument and its return value
+          needs to be a numeric vector of identical length as the input data.} 
+
         \item{}{\code{showIndels=FALSE}: Logical scalar. Consider
           insertions and deletions in coverage and pile-up. Default is
           \code{FALSE}. If set to \code{TRUE} the deletions defined in
