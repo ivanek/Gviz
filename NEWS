@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.33.1
+-------------------------
+NEW FEATURES
+
+    o score in sashimi plots can be transformed using function specified either in 
+      sashimiTransformation or transfromation (latter applied also to coverage)
+      
+BUG FIXES
+    o none 
+
 CHANGES IN VERSION 1.32.0
 -------------------------
 NEW FEATURES

@@ -160,7 +160,12 @@ test_that("conversion of junction to list for plotting works", {
     ## negative filterTolerance
     expect_warning(.convert.summarizedJunctions.to.sashimi.junctions(juns, filter=filt, filterTolerance=-1),
                    "can't be negative, taking absolute value of it")
+    ## transfromation
+    expect_identical(.convert.summarizedJunctions.to.sashimi.junctions(juns, trans=list(function(x) {x})), out)
+    expect_error(.convert.summarizedJunctions.to.sashimi.junctions(juns, trans=1),"must be a function with a single argument")
+    expect_error(.convert.summarizedJunctions.to.sashimi.junctions(juns, trans=function(x) {x[-1]}),"invalid output")
 })
+
 
 ## test_that("only first warning works", {
 ##   warn_once({
