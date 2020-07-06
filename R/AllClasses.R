@@ -2177,7 +2177,7 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
     }
     if (is(sequence, "BSgenome")) {
         if (is.null(genome)) {
-            genome <- providerVersion(sequence)
+            genome <- .providerVersion(sequence)
         }
         if (is.null(chromosome)) {
             chromosome <- seqnames(sequence)[1]

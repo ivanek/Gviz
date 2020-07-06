@@ -3090,3 +3090,16 @@ availableDefaultMapping <- function(file, trackType) {
     }
     return(juns)
 }
+
+
+# temporary fix for providerVersion
+.providerVersion <- function(sequence) {
+  genome <- try(providerVersion(sequence), silent=TRUE)
+  if (is(genome, "try-error")) {
+    genome <- metadata(sequence)$genome
+  }
+  if (is.null(genome)) {
+    genome <- NA
+  }
+  return(genome)
+}

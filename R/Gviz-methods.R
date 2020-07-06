@@ -5496,20 +5496,19 @@ setMethod(
         cat(.sequenceTrackInfo(object),
             sprintf(
                 paste("Parent BSgenome object:\n",
-                    "| organism: %s (%s)\n",
+                    "| organism: %s\n",
                     "| provider: %s\n",
                     "| provider version: %s\n",
                     "| release date: %s\n",
-                    "| release name: %s\n",
+                    #"| release name: %s\n",
                     "| package name: %s\n",
                     sep = ""
                 ),
                 organism(object@sequence),
-                object@sequence@organism,
                 provider(object@sequence),
-                providerVersion(object@sequence),
+                .providerVersion(object@sequence),
                 releaseDate(object@sequence),
-                releaseName(object@sequence),
+                #releaseName(object@sequence),
                 object@sequence@pkgname
             ),
             sep = ""
