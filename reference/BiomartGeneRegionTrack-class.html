@@ -75,7 +75,7 @@ A class to hold gene model data for a genomic region fetched
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.33.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.35.0</span>
       </span>
     </div>
 
@@ -126,10 +126,10 @@ A class to hold gene model data for a genomic region fetched
   dynamically from EBI's Biomart Ensembl data source.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>BiomartGeneRegionTrack</span>(<span class='no'>start</span>, <span class='no'>end</span>, <span class='no'>biomart</span>, <span class='no'>chromosome</span>, <span class='no'>strand</span>, <span class='no'>genome</span>,
-  <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>, <span class='kw'>filters</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>featureMap</span><span class='kw'>=</span><span class='kw'>NULL</span>,
-  <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"BiomartGeneRegionTrack"</span>, <span class='kw'>symbol</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>gene</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>entrez</span><span class='kw'>=</span><span class='kw'>NULL</span>,
-  <span class='kw'>transcript</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>BiomartGeneRegionTrack</span><span class='op'>(</span><span class='va'>start</span>, <span class='va'>end</span>, <span class='va'>biomart</span>, <span class='va'>chromosome</span>, <span class='va'>strand</span>, <span class='va'>genome</span>,
+  stacking<span class='op'>=</span><span class='st'>"squish"</span>, filters<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, featureMap<span class='op'>=</span><span class='cn'>NULL</span>,
+  name<span class='op'>=</span><span class='st'>"BiomartGeneRegionTrack"</span>, symbol<span class='op'>=</span><span class='cn'>NULL</span>, gene<span class='op'>=</span><span class='cn'>NULL</span>, entrez<span class='op'>=</span><span class='cn'>NULL</span>,
+  transcript<span class='op'>=</span><span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,7 +154,7 @@ A class to hold gene model data for a genomic region fetched
     <tr>
       <th>strand</th>
       <td><p>Character scalar, the strand for which to fetch gene
-    information from Biomart. One in <code>+</code>, <code>-</code>, or <code>+-</code>.</p></td>
+    information from Biomart. One in <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code>, <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code>, or <code>+-</code>.</p></td>
     </tr>
     <tr>
       <th>chromosome</th>
@@ -241,7 +241,7 @@ A class to hold gene model data for a genomic region fetched
   <code>BiomartGeneRegionTrack</code>.</p>
     <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p></p><dl'>
+    <p></p><dl>
     <dt><code>biomart</code>:</dt><dd><p>Object of class <code>"MartOrNULL"</code>, the
       connection to the Ensembl Biomart webservice.</p></dd>
 
@@ -302,7 +302,7 @@ A class to hold gene model data for a genomic region fetched
 
 <p>In the following code chunks, <code>obj</code> is considered to be an
   object of class <code>BiomartGeneRegionTrack</code>.</p>
-<p></p><dl'>
+<p></p><dl>
 
     <em>Internal methods:</em>
 
@@ -313,83 +313,83 @@ A class to hold gene model data for a genomic region fetched
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
 
      <dt>group</dt><dd><p><code>signature(gdObject="BiomartGeneRegionTrack")</code>: extract
-      the group membership for all track items.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
+      the group membership for all track items.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>group&lt;-</dt><dd><p><code>signature(gdObject="BiomartGeneRegionTrack",
       value="character")</code>: replace the grouping information for track
       items. The replacement value must be a factor of appropriate
-      length or another vector that can be coerced into such.      <em>Usage:</em>      <code>group&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>group(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      length or another vector that can be coerced into such.      <em>Usage:</em>      <code>group&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>group(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
 
     <dt>identifier</dt><dd><p><code>signature(gdObject="BiomartGeneRegionTrack")</code>:
       return track item identifiers. Depending on the setting of the
       optional argument <code>lowest</code>, these are either the group
-      identifiers or the individual item identifiers.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>identifier(GdObject, lowest=FALSE)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>lowest</code>: return the lowest-level identifier, i.e.,
+      identifiers or the individual item identifiers.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>identifier(GdObject, lowest=FALSE)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>lowest</code>: return the lowest-level identifier, i.e.,
     the item IDs, or the higher level group IDs which do not have to
-    be unqiue.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>identifier(obj, lowest=FALSE)</a></code></p></dd></dl></p></dd>
+    be unqiue.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>identifier(obj, lowest=FALSE)</a></code></p></dd></dl></p></dd>
 
     <dt>identifier&lt;-</dt><dd><p><code>signature(gdObject="BiomartGeneRegionTrack",
     value="character")</code>: Set the track item identifiers. The
       replacement value has to be a character vector of appropriate
       length. This always replaces the group-level identifiers, so
-      essentially it is similar to <code>groups&lt;-</code>.      <em>Usage:</em>      <code>identifier&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>identifier(obj) &lt;- c("foo", "bar")</code></p></dd></dl></p></dd>
+      essentially it is similar to <code>groups&lt;-</code>.      <em>Usage:</em>      <code>identifier&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>identifier(obj) &lt;- c("foo", "bar")</code></p></dd></dl></p></dd>
 
     <dt>exon</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: Extract
-      the exon identifiers for all exons in the gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>exon(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>exon(obj)</a></code></p></dd></dl></p></dd>
+      the exon identifiers for all exons in the gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>exon(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>exon(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>exon&lt;-</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack",
       value="character")</code>: replace the exon identifiers for all exons in
       the gene model.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
-      such.      <em>Usage:</em>      <code>exon&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>exon(obj) &lt;- paste("Exon", 1:5)</code></p></dd></dl></p></dd>
+      such.      <em>Usage:</em>      <code>exon&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>exon(obj) &lt;- paste("Exon", 1:5)</code></p></dd></dl></p></dd>
 
     <dt>gene</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: Extract
-      the gene identifiers for all gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>gene(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>gene(obj)</a></code></p></dd></dl></p></dd>
+      the gene identifiers for all gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>gene(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>gene(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>gene&lt;-</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack",
     value="character")</code>: replace the gene identifiers for all gene
       models.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
-      such.      <em>Usage:</em>      <code>gene&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>gene(obj) &lt;- paste("Gene", LETTERS[1:5])</code></p></dd></dl></p></dd>
+      such.      <em>Usage:</em>      <code>gene&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>gene(obj) &lt;- paste("Gene", LETTERS[1:5])</code></p></dd></dl></p></dd>
 
     <dt>symbol</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: Extract
-      the human-readble gene symbol for all gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>symbol(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>symbol(obj)</a></code></p></dd></dl></p></dd>
+      the human-readble gene symbol for all gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>symbol(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>symbol(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>symbol&lt;-</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack",
     value="character")</code>: replace the human-readable gene symbol for
       all gene models.  The replacement value must be a character of
       appropriate length or another vector that can be coerced into
-      such.      <em>Usage:</em>      <code>gene&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>symbol(obj) &lt;- letters[1:5]</code></p></dd></dl></p></dd>
+      such.      <em>Usage:</em>      <code>gene&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>symbol(obj) &lt;- letters[1:5]</code></p></dd></dl></p></dd>
 
     <dt>transcript</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>:
       Extract the transcript identifiers for all transcripts in the
-      gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>transcript(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>transcript(obj)</a></code></p></dd></dl></p></dd>
+      gene models.      <em>Usage:</em>      <code><a href='GeneRegionTrack-class.html'>transcript(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>transcript(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>transcript&lt;-</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack",
     value="character")</code>: replace the transcript identifiers for
       all transcripts in the gene model.  The replacement value must
       be a character of appropriate length or another vector that
-      can be coerced into such.      <em>Usage:</em>      <code>transcript&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>transcript(obj) &lt;- paste("Exon", 1:5)</code></p></dd></dl></p></dd>
+      can be coerced into such.      <em>Usage:</em>      <code>transcript&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>transcript(obj) &lt;- paste("Exon", 1:5)</code></p></dd></dl></p></dd>
   
 </dl>
 
 <p><em>Internal methods:</em></p>
-<p></p><dl'>
+<p></p><dl>
 
     <dt>coerce</dt><dd><p><code>signature(from="BiomartGeneRegionTrack",
     to="UCSCData")</code>: coerce to a <code>UCSCData</code> object for export to
-      the UCSC genome browser.       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "UCSCData")</code></p></dd></dl></p></dd>
+      the UCSC genome browser.       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "UCSCData")</code></p></dd></dl></p></dd>
 
     <dt>collapseTrack</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>:
       preprocess the track before plotting. This will collapse
       overlapping track items based on the available resolution and
       increase the width and height of all track objects to a minimum
       value to avoid rendering issues. See <code><a href='collapsing.html'>collapsing</a></code> for
-      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
+      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
       everything below that will be inflated to a width of
-      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
+      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
 
     <dt>show</dt><dd><p><code>signature(object="BiomartGeneRegionTrack")</code>: show a
       human-readable summary of the object</p></dd>
@@ -404,152 +404,152 @@ A class to hold gene model data for a genomic region fetched
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
+    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
       plot.</p></dd>    <dt></dt><dd><p><code>prepare</code>: run method in preparation or in
       production mode.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object to the visible region
-    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
+    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
         subset=FALSE)</code></p></dd></dl></p></dd>
 
-    <dt>drawGrid</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, draw grid
+    <dt>drawGrid</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, draw grid
       within a certain coordinates range. This needs to be supplied
       for the plotting function to know the current genomic
-      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::drawGrid(obj, from=10, to=100)</code></p></dd></dl></p></dd>
+      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::drawGrid(obj, from=10, to=100)</code></p></dd></dl></p></dd>
 
     <dt>setStacks</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>:
       recompute the stacks based on the available space and on the
-      object's track items and stacking settings.      <em>Usage:</em>      <code>setStacks(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, compute
+      object's track items and stacking settings.      <em>Usage:</em>      <code>setStacks(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, compute
       stacking within a certain coordinates range. This needs to be
       supplied for the plotting function to know the current genomic
-      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::setStacks(obj, from=1, to=100)</code></p></dd></dl></p></dd>
+      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::setStacks(obj, from=1, to=100)</code></p></dd></dl></p></dd>
 
     <dt>stacking</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: return
-      the current stacking type.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacking(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>stacking(obj)</a></code></p></dd></dl></p></dd>
+      the current stacking type.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacking(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>stacking(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>stacking&lt;-</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack",
       value="character")</code>: set the object's stacking type to one in
-      <code><a href='https://rdrr.io/r/base/c.html'>c(hide, dense, squish, pack,full)</a></code>.      <em>Usage:</em>      <code>stacking&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>stacking(obj) &lt;- "squish" </code></p></dd></dl></p></dd>
+      <code><a href='https://rdrr.io/r/base/c.html'>c(hide, dense, squish, pack,full)</a></code>.      <em>Usage:</em>      <code>stacking&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>stacking(obj) &lt;- "squish" </code></p></dd></dl></p></dd>
 
     <dt>stacks</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: return
-      the stack indices for each track item.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacks(GdObject)</a></code>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::stacks(obj)</code></p></dd></dl></p></dd>
+      the stack indices for each track item.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacks(GdObject)</a></code>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::stacks(obj)</code></p></dd></dl></p></dd>
 
     <dt>[</dt><dd><p><code>signature(x="BiomartGeneRegionTrack", i="ANY", j="ANY",
     drop="ANY")</code>: subset the items in the <code>BiomartGeneRegionTrack</code>
       object. This is essentially similar to subsetting of the
       <code>GRanges</code> object in the <code>range</code>
       slot. For most applications, the <code>subset</code> method may be
-      more appropriate.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices, <code>j</code> is
-      ignored.</p></dd>    <dt></dt><dd><p><code>drop</code>: argument is ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
+      more appropriate.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices, <code>j</code> is
+      ignored.</p></dd>    <dt></dt><dd><p><code>drop</code>: argument is ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
 
 
     <dt>chromosome</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>:
-      return the chromosome for which the track is defined.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
+      return the chromosome for which the track is defined.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>chromosome&lt;-</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>:
       replace the value of the track's chromosome. This has to be a
       valid UCSC chromosome identifier or an integer or character
-      scalar that can be reasonably coerced into one.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
+      scalar that can be reasonably coerced into one.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
 
     <dt>start, end, width</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: the
       start or end coordinates of the track items, or their width in
-      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
+      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
 
     <dt>start&lt;-, end&lt;-, width&lt;-</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>:
       replace the start or end coordinates of the track items, or their
-      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
+      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
 
     <dt>position</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: the
       arithmetic mean of the track item's coordionates, i.e.,
-      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
+      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>feature</dt><dd><p><code>signature(GdObject="BiomartGeneRegionTrack")</code>: return the
       grouping information for track items. For certain sub-classes,
       groups may be indicated by different color schemes when
-      plotting. See <code><a href='grouping.html'>grouping</a></code> for details.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
+      plotting. See <code><a href='grouping.html'>grouping</a></code> for details.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>feature&lt;-</dt><dd><p><code>signature(gdObject="BiomartGeneRegionTrack",
       value="character")</code>: set the grouping information for track
       items. This has to be a factor vector (or another type of vector
       that can be coerced into one) of the same length as the number of
       items in the <code>BiomartGeneRegionTrack</code>. See <code><a href='grouping.html'>grouping</a></code>
-      for details.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      for details.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
 
-    <dt>genome</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
+    <dt>genome</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
 
     <dt>genome&lt;-</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
-      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
+      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the number
-      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>range</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the genomic
       coordinates for the track as an object of class
-      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
+      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>ranges</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the genomic
       coordinates for the track along with all additional annotation
-      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
+      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
 
     <dt>split</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: split a
       <code>BiomartGeneRegionTrack</code> object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
       operation is a list of objects of the same class as the input
-      object, all inheriting from class <code>BiomartGeneRegionTrack</code>.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
+      object, all inheriting from class <code>BiomartGeneRegionTrack</code>.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
 
     <dt>strand</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
-      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
+      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand&lt;-</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: replace the
       strand information for the track items. The replacement value
-      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
+      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
 
     <dt>values</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return all
       additional annotation information except for the genomic coordinates
-      for the track items as a data.frame.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
+      for the track items as a data.frame.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
 
     <dt>coerce</dt><dd><p><code>signature(from="BiomartGeneRegionTrack",
     to="data.frame")</code>: coerce the <code>GRanges</code>
-    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
+    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
 
     <dt>subset</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: subset a
-      <code>BiomartGeneRegionTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
+      <code>BiomartGeneRegionTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
       to.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the object after subsetting. Usually
-      not necessary.</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
+      not necessary.</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars</dt><dd><p><code>signature(x="BiomartGeneRegionTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
 
 
     <dt>displayPars</dt><dd><p><code>signature(x="BiomartGeneRegionTrack",
       name="missing")</code>: list the value of all available display
       parameters. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="BiomartGeneRegionTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="BiomartGeneRegionTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="BiomartGeneRegionTrack",
       value="list")</code>: set display parameters using the values of the
       named list in <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details
-      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="BiomartGeneRegionTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>BiomartGeneRegionTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="BiomartGeneRegionTrack", value="list")</code>: set
       display parameters by the values of the named list in
@@ -557,19 +557,19 @@ A class to hold gene model data for a genomic region fetched
       <code>BiomartGeneRegionTrack</code> class are pass-by-reference, so no
       re-assignmnet to the symbol <code>obj</code> is necessary. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
 
     <dt>names</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names&lt;-</dt><dd><p><code>signature(x="BiomartGeneRegionTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="BiomartGeneRegionTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="BiomartGeneRegionTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -583,7 +583,7 @@ A class to hold gene model data for a genomic region fetched
   of them have already been set by one of the optional sub-class
   initializers, which always get precedence over these global defaults.
   See <code><a href='settings.html'>settings</a></code> for details on setting graphical parameters
-  for tracks.</p><dl'>
+  for tracks.</p><dl>
 
     <dt></dt><dd><p><code>C_segment="burlywood4"</code>: Character or integer scalar.
       Fill color for annotation objects of type 'C_segment'.</p></dd> 
@@ -671,9 +671,9 @@ A class to hold gene model data for a genomic region fetched
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>BiomartGeneRegionTrack</code> objects.</p>
-<p></p><dl'>
+<p></p><dl>
 
-    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></code>:       <dl'>        <dt></dt><dd><p><code>arrowHeadMaxWidth=20</code>: Numeric scalar. The maximum
+    <dt></dt><dd><p><code><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></code>:       <dl>        <dt></dt><dd><p><code>arrowHeadMaxWidth=20</code>: Numeric scalar. The maximum
           width of the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>         <dt></dt><dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of
           the arrow head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>         <dt></dt><dd><p><code>col=NULL</code>: Character or integer scalar. The border
           color for all track items. Defaults to using the same color
@@ -714,7 +714,7 @@ A class to hold gene model data for a genomic region fetched
           or <code>feature</code>. Defaults to <code>symbol</code>. Only works if
           <code>showId</code> is not <code>FALSE</code>.</p></dd> </dl></p></dd> 
 
-    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>AnnotationTrack</a></code>:       <dl'>        <dt></dt><dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor
+    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>AnnotationTrack</a></code>:       <dl>        <dt></dt><dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor
           for item identifiers.</p></dd>         <dt></dt><dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion
           factor for the group-level annotation.</p></dd>         <dt></dt><dd><p><code>col.line="darkgray"</code>: Character scalar. The color
           used for connecting lines between grouped items. Defaults to
@@ -762,7 +762,7 @@ A class to hold gene model data for a genomic region fetched
           the track. Can be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code>
           function.</p></dd> </dl></p></dd> 
 
-    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>StackedTrack</a></code>:       <dl'>        <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
+    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>StackedTrack</a></code>:       <dl>        <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
           stack and vice versa.</p></dd>         <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
@@ -774,7 +774,7 @@ A class to hold gene model data for a genomic region fetched
           and thus one quarter of the available space each is used for
           spacing above and below the glyph. Defaults to 0.75.</p></dd> </dl></p></dd> 
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -810,7 +810,7 @@ A class to hold gene model data for a genomic region fetched
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
           in <code><a href='DataTrack-class.html'>DataTrack</a></code>s and when display parameter
@@ -833,7 +833,7 @@ A class to hold gene model data for a genomic region fetched
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
   
@@ -845,6 +845,9 @@ A class to hold gene model data for a genomic region fetched
     
 
 <p>EBI Biomart webservice at <a href='http://www.biomart.org'>http://www.biomart.org</a>.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Florian Hahne</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -863,7 +866,7 @@ A class to hold gene model data for a genomic region fetched
 <p><code><a href='DataTrack-class.html'>DataTrack</a></code></p>
 <p><code>getBM</code></p>
 <p><code><a href='grouping.html'>grouping</a></code></p>
-<p><code>panel.grid</code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code></p>
 <p><code><a href='plotTracks.html'>plotTracks</a></code></p>
 <p><code><a href='settings.html'>settings</a></code></p>
 <p><code>useMart</code></p></div>
@@ -872,34 +875,39 @@ A class to hold gene model data for a genomic region fetched
     <pre class="examples"><div class='input'>
 <span class='co'># \dontshow{</span>
 <span class='co'>## Load some sample data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>bmTrack</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
 <span class='co'># }</span>
 
 <span class='co'>## Construct the object</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>bmTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>BiomartGeneRegionTrack</span>(<span class='kw'>start</span><span class='kw'>=</span><span class='fl'>26682683</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='fl'>26711643</span>,
-<span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>7</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"mm9"</span>)
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>bmTrack</span> <span class='op'>&lt;-</span> <span class='fu'>BiomartGeneRegionTrack</span><span class='op'>(</span>start<span class='op'>=</span><span class='fl'>26682683</span>, end<span class='op'>=</span><span class='fl'>26711643</span>,
+chromosome<span class='op'>=</span><span class='fl'>7</span>, genome<span class='op'>=</span><span class='st'>"mm9"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'># \dontshow{</span>
 <span class='co'>## For some annoying reason the postscript device does not know about</span>
 <span class='co'>## the sans font</span>
-<span class='kw'>if</span>(!<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())
-{
-<span class='no'>font</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/ps.options.html'>ps.options</a></span>()$<span class='no'>family</span>
-<span class='fu'><a href='DisplayPars-class.html'>displayPars</a></span>(<span class='no'>bmTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>fontfamily</span><span class='kw'>=</span><span class='no'>font</span>, <span class='kw'>fontfamily.title</span><span class='kw'>=</span><span class='no'>font</span>)
-}
+<span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>{</span>
+<span class='va'>font</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/ps.options.html'>ps.options</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>family</span>
+<span class='fu'><a href='DisplayPars-class.html'>displayPars</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>fontfamily<span class='op'>=</span><span class='va'>font</span>, fontfamily.title<span class='op'>=</span><span class='va'>font</span><span class='op'>)</span>
+<span class='op'>}</span>
 <span class='co'># }</span>
 
 <span class='co'>## Plotting</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>bmTrack</span>)</div><div class='img'><img src='BiomartGeneRegionTrack-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='BiomartGeneRegionTrack-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Track names</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; [1] "BiomartGeneRegionTrack"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>bmTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>bmTrack</span>)</div><div class='img'><img src='BiomartGeneRegionTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "BiomartGeneRegionTrack"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='BiomartGeneRegionTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Subsetting and splitting</span>
-<span class='no'>subTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>bmTrack</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='fl'>26700000</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='fl'>26705000</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>subTrack</span>)</div><div class='output co'>#&gt; [1] 21</div><div class='input'><span class='no'>subTrack</span> <span class='kw'>&lt;-</span> <span class='no'>bmTrack</span>[<span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span>(<span class='no'>bmTrack</span>)<span class='kw'>==</span><span class='st'>"ENSMUST00000144140"</span>]
-<span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span>(<span class='no'>bmTrack</span>, <span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span>(<span class='no'>bmTrack</span>))</div><div class='output co'>#&gt; $ENSMUST00000005477
+<span class='va'>subTrack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>bmTrack</span>, from<span class='op'>=</span><span class='fl'>26700000</span>, to<span class='op'>=</span><span class='fl'>26705000</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 21</div><div class='input'><span class='va'>subTrack</span> <span class='op'>&lt;-</span> <span class='va'>bmTrack</span><span class='op'>[</span><span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span><span class='op'>==</span><span class='st'>"ENSMUST00000144140"</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>bmTrack</span>, <span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $ENSMUST00000005477
 #&gt; GeneRegionTrack 'foo'
 #&gt; | genome: mm9
 #&gt; | active chromosome: chr7
@@ -918,24 +926,32 @@ A class to hold gene model data for a genomic region fetched
 #&gt; | annotation features: 2
 #&gt; </div><div class='input'>
 <span class='co'>## Accessors</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] 26682639 26696257 26696573 26698884 26699767 26700411 26701953 26702307
+<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] 26682639 26696257 26696573 26698884 26699767 26700411 26701953 26702307
 #&gt;  [9] 26711087 26682695 26696257 26696573 26698884 26699767 26700411 26701953
-#&gt; [17] 26702307 26710392 26711087 26701785 26702307</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/start.html'>end</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] 26682874 26696419 26696722 26699044 26699943 26700552 26702140 26702448
+#&gt; [17] 26702307 26710392 26711087 26701785 26702307</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/start.html'>end</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] 26682874 26696419 26696722 26699044 26699943 26700552 26702140 26702448
 #&gt;  [9] 26711643 26682874 26696419 26696722 26699044 26699943 26700552 26702140
-#&gt; [17] 26702448 26710418 26711578 26702140 26702449</div><div class='input'><span class='fu'>width</span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] 236 163 150 161 177 142 188 142 557 180 163 150 161 177 142 188 142  27 492
-#&gt; [20] 356 143</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>position</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] 26682756 26696338 26696648 26698964 26699855 26700482 26702046 26702378
+#&gt; [17] 26702448 26710418 26711578 26702140 26702449</div><div class='input'><span class='fu'>width</span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] 236 163 150 161 177 142 188 142 557 180 163 150 161 177 142 188 142  27 492
+#&gt; [20] 356 143</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>position</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] 26682756 26696338 26696648 26698964 26699855 26700482 26702046 26702378
 #&gt;  [9] 26711365 26682784 26696338 26696648 26698964 26699855 26700482 26702046
-#&gt; [17] 26702378 26710405 26711332 26701962 26702378</div><div class='input'><span class='fu'>width</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'>width</span>(<span class='no'>subTrack</span>)+<span class='fl'>100</span>
+#&gt; [17] 26702378 26710405 26711332 26701962 26702378</div><div class='input'><span class='fu'>width</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>width</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>100</span>
 
-<span class='fu'>strand</span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+"
-#&gt; [20] "+" "+"</div><div class='input'><span class='fu'>strand</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"-"</span>
+<span class='fu'>strand</span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+"
+#&gt; [20] "+" "+"</div><div class='input'><span class='fu'>strand</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"-"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;   chr7 
-#&gt; "chr7" </div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"chrX"</span>
+<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   chr7 
+#&gt; "chr7" </div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"chrX"</span>
 
-<span class='fu'>genome</span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; [1] "mm9"</div><div class='input'><span class='fu'>genome</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"hg19"</span>
+<span class='fu'>genome</span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "mm9"</div><div class='input'><span class='fu'>genome</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"hg19"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>range</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; IRanges object with 21 ranges and 0 metadata columns:
+<span class='fu'><a href='RangeTrack-class.html'>range</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; IRanges object with 21 ranges and 0 metadata columns:
 #&gt;            start       end     width
 #&gt;        &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
 #&gt;    [1]  26682639  26682874       236
@@ -948,7 +964,8 @@ A class to hold gene model data for a genomic region fetched
 #&gt;   [18]  26710392  26710418        27
 #&gt;   [19]  26711087  26711578       492
 #&gt;   [20]  26701785  26702140       356
-#&gt;   [21]  26702307  26702449       143</div><div class='input'><span class='fu'>ranges</span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; GRanges object with 21 ranges and 6 metadata columns:
+#&gt;   [21]  26702307  26702449       143</div><div class='input'><span class='fu'>ranges</span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; GRanges object with 21 ranges and 6 metadata columns:
 #&gt;        seqnames            ranges strand |        feature               gene
 #&gt;           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |    &lt;character&gt;        &lt;character&gt;
 #&gt;    [1]     chr7 26682639-26682874      + | protein_coding ENSMUSG00000030483
@@ -978,53 +995,62 @@ A class to hold gene model data for a genomic region fetched
 #&gt;   -------
 #&gt;   seqinfo: 1 sequence from an unspecified genome; no seqlengths</div><div class='input'>
 <span class='co'>## Annotation</span>
-<span class='fu'><a href='AnnotationTrack-class.html'>identifier</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"
+<span class='fu'><a href='AnnotationTrack-class.html'>identifier</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"
 #&gt;  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"
-#&gt; [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</div><div class='input'><span class='fu'><a href='AnnotationTrack-class.html'>identifier</a></span>(<span class='no'>bmTrack</span>, <span class='st'>"lowest"</span>)</div><div class='output co'>#&gt;  [1] "ENSMUSE00000742021" "ENSMUSE00000449901" "ENSMUSE00000199425"
+#&gt; [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</div><div class='input'><span class='fu'><a href='AnnotationTrack-class.html'>identifier</a></span><span class='op'>(</span><span class='va'>bmTrack</span>, <span class='st'>"lowest"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "ENSMUSE00000742021" "ENSMUSE00000449901" "ENSMUSE00000199425"
 #&gt;  [4] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"
 #&gt;  [7] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000498616"
 #&gt; [10] "ENSMUSE00000489385" "ENSMUSE00000449901" "ENSMUSE00000199425"
 #&gt; [13] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"
 #&gt; [16] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000496705"
-#&gt; [19] "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299"</div><div class='input'><span class='fu'><a href='AnnotationTrack-class.html'>identifier</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
+#&gt; [19] "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299"</div><div class='input'><span class='fu'><a href='AnnotationTrack-class.html'>identifier</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>feature</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "protein_coding" "protein_coding" "protein_coding" "protein_coding"
+<span class='fu'><a href='RangeTrack-class.html'>feature</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "protein_coding" "protein_coding" "protein_coding" "protein_coding"
 #&gt;  [5] "protein_coding" "protein_coding" "protein_coding" "protein_coding"
 #&gt;  [9] "protein_coding" "protein_coding" "protein_coding" "protein_coding"
 #&gt; [13] "protein_coding" "protein_coding" "protein_coding" "protein_coding"
 #&gt; [17] "protein_coding" "protein_coding" "protein_coding" "protein_coding"
-#&gt; [21] "protein_coding"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>feature</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
+#&gt; [21] "protein_coding"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>feature</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
 
-<span class='fu'><a href='GeneRegionTrack-class.html'>exon</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "ENSMUSE00000742021" "ENSMUSE00000449901" "ENSMUSE00000199425"
+<span class='fu'><a href='GeneRegionTrack-class.html'>exon</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "ENSMUSE00000742021" "ENSMUSE00000449901" "ENSMUSE00000199425"
 #&gt;  [4] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"
 #&gt;  [7] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000498616"
 #&gt; [10] "ENSMUSE00000489385" "ENSMUSE00000449901" "ENSMUSE00000199425"
 #&gt; [13] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"
 #&gt; [16] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000496705"
-#&gt; [19] "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>exon</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]
+#&gt; [19] "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>exon</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>
 
-<span class='fu'><a href='GeneRegionTrack-class.html'>gene</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
+<span class='fu'><a href='GeneRegionTrack-class.html'>gene</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
 #&gt;  [4] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
 #&gt;  [7] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
 #&gt; [10] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
 #&gt; [13] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
 #&gt; [16] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"
-#&gt; [19] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>gene</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
+#&gt; [19] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>gene</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span>
 
-<span class='fu'><a href='GeneRegionTrack-class.html'>symbol</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"
+<span class='fu'><a href='GeneRegionTrack-class.html'>symbol</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"
 #&gt;  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"
-#&gt; [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>symbol</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
+#&gt; [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>symbol</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
 
-<span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
+<span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
 #&gt;  [4] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
 #&gt;  [7] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
 #&gt; [10] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"
 #&gt; [13] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"
 #&gt; [16] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"
-#&gt; [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"foo"</span>, <span class='st'>"bar"</span>)
-<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"chr7"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>subTrack</span>)</div><div class='img'><img src='BiomartGeneRegionTrack-class-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>values</span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;           feature               gene               exon         transcript
+#&gt; [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140"</div><div class='input'><span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"foo"</span>, <span class='st'>"bar"</span><span class='op'>)</span>
+<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"chr7"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='BiomartGeneRegionTrack-class-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>values</span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;           feature               gene               exon         transcript
 #&gt; 1  protein_coding ENSMUSG00000030483 ENSMUSE00000742021 ENSMUST00000072438
 #&gt; 2  protein_coding ENSMUSG00000030483 ENSMUSE00000449901 ENSMUST00000072438
 #&gt; 3  protein_coding ENSMUSG00000030483 ENSMUSE00000199425 ENSMUST00000072438
@@ -1069,19 +1095,25 @@ A class to hold gene model data for a genomic region fetched
 #&gt; 20 Cyp2b10    1
 #&gt; 21 Cyp2b10    2</div><div class='input'>
 <span class='co'>## Grouping</span>
-<span class='fu'><a href='AnnotationTrack-class.html'>group</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;  [1] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
+<span class='fu'><a href='AnnotationTrack-class.html'>group</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
 #&gt;  [4] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
 #&gt;  [7] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"
 #&gt; [10] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"
 #&gt; [13] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"
 #&gt; [16] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"
-#&gt; [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140"</div><div class='input'><span class='fu'><a href='AnnotationTrack-class.html'>group</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"Group 1"</span>
-<span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span>(<span class='no'>subTrack</span>)</div><div class='output co'>#&gt; [1] "Group 1" "Group 1"</div><div class='input'><span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>subTrack</span>)</div><div class='img'><img src='BiomartGeneRegionTrack-class-4.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140"</div><div class='input'><span class='fu'><a href='AnnotationTrack-class.html'>group</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Group 1"</span>
+<span class='fu'><a href='GeneRegionTrack-class.html'>transcript</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "Group 1" "Group 1"</div><div class='input'><span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='BiomartGeneRegionTrack-class-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Stacking</span>
-<span class='fu'><a href='StackedTrack-class.html'>stacking</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; [1] "squish"</div><div class='input'><span class='fu'><a href='StackedTrack-class.html'>stacking</a></span>(<span class='no'>bmTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"dense"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>bmTrack</span>)</div><div class='img'><img src='BiomartGeneRegionTrack-class-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='StackedTrack-class.html'>stacking</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "squish"</div><div class='input'><span class='fu'><a href='StackedTrack-class.html'>stacking</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"dense"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='BiomartGeneRegionTrack-class-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## coercion</span>
-<span class='fu'>as</span>(<span class='no'>bmTrack</span>, <span class='st'>"data.frame"</span>)</div><div class='output co'>#&gt;    X.seqnames  X.start    X.end X.width X.strand      X.feature
+<span class='fu'>as</span><span class='op'>(</span><span class='va'>bmTrack</span>, <span class='st'>"data.frame"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    X.seqnames  X.start    X.end X.width X.strand      X.feature
 #&gt; 1        chr7 26682639 26682874     236        + protein_coding
 #&gt; 2        chr7 26696257 26696419     163        + protein_coding
 #&gt; 3        chr7 26696573 26696722     150        + protein_coding
@@ -1168,7 +1200,8 @@ A class to hold gene model data for a genomic region fetched
 #&gt; 18 Cyp2b10    9
 #&gt; 19 Cyp2b10   10
 #&gt; 20 Cyp2b10    1
-#&gt; 21 Cyp2b10    2</div><div class='input'><span class='fu'>as</span>(<span class='no'>bmTrack</span>, <span class='st'>"UCSCData"</span>)</div><div class='output co'>#&gt; UCSC track 'foo'
+#&gt; 21 Cyp2b10    2</div><div class='input'><span class='fu'>as</span><span class='op'>(</span><span class='va'>bmTrack</span>, <span class='st'>"UCSCData"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; UCSC track 'foo'
 #&gt; UCSCData object with 3 ranges and 6 metadata columns:
 #&gt;       seqnames            ranges strand |                 id        name
 #&gt;          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |        &lt;character&gt; &lt;character&gt;
@@ -1183,28 +1216,33 @@ A class to hold gene model data for a genomic region fetched
 #&gt;   -------
 #&gt;   seqinfo: 1 sequence from an unspecified genome; no seqlengths</div><div class='input'>
 <span class='co'>## HTML image map</span>
-<span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='no'>bmTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>bmTrack</span>)$<span class='no'>foo</span></div><div class='img'><img src='BiomartGeneRegionTrack-class-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt;                             x1   y1        x2    y2
-#&gt; ENSMUSE00000742021    38.11788 67.5  41.78433 436.5
-#&gt; ENSMUSE00000449901   250.58527 67.5 253.11279 436.5
-#&gt; ENSMUSE00000199425   255.51549 67.5 257.84018 436.5
-#&gt; ENSMUSE00000511070   291.57161 67.5 294.06792 436.5
-#&gt; ENSMUSE00000514929   305.34813 67.5 308.09407 436.5
-#&gt; ENSMUSE00000199423   315.39579 67.5 317.59566 436.5
-#&gt; ENSMUSE00000535814   339.45400 67.5 342.37157 436.5
-#&gt; ENSMUSE00000507557   344.97709 67.5 347.17697 436.5
-#&gt; ENSMUSE00000498616   481.96224 67.5 490.63693 436.5
-#&gt; ENSMUSE00000489385    38.99158 67.5  41.78433 436.5
-#&gt; ENSMUSE00000449901.1 250.58527 67.5 253.11279 436.5
-#&gt; ENSMUSE00000199425.1 255.51549 67.5 257.84018 436.5
-#&gt; ENSMUSE00000511070.1 291.57161 67.5 294.06792 436.5
-#&gt; ENSMUSE00000514929.1 305.34813 67.5 308.09407 436.5
-#&gt; ENSMUSE00000199423.1 315.39579 67.5 317.59566 436.5
-#&gt; ENSMUSE00000535814.1 339.45400 67.5 342.37157 436.5
-#&gt; ENSMUSE00000507557.1 344.97709 67.5 347.17697 436.5
-#&gt; ENSMUSE00000496705   470.82245 67.5 471.82097 436.5
-#&gt; ENSMUSE00000750625   481.96224 67.5 489.62280 436.5
-#&gt; ENSMUSE00000736922   336.83287 67.5 342.37157 436.5
-#&gt; ENSMUSE00000748299   344.97709 67.5 347.19257 436.5</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>bmTrack</span>)</div><div class='output co'>#&gt; $fill
+<span class='fu'><a href='GdObject-class.html'>coords</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>bmTrack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span><span class='op'>$</span><span class='va'>foo</span>
+</div><div class='img'><img src='BiomartGeneRegionTrack-class-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='GdObject-class.html'>coords</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                             x1   y1        x2    y2
+#&gt; ENSMUSE00000742021    38.32764 64.5  41.79997 415.5
+#&gt; ENSMUSE00000449901   239.54551 64.5 241.93921 415.5
+#&gt; ENSMUSE00000199425   244.21469 64.5 246.41630 415.5
+#&gt; ENSMUSE00000511070   278.36174 64.5 280.72588 415.5
+#&gt; ENSMUSE00000514929   291.40884 64.5 294.00939 415.5
+#&gt; ENSMUSE00000199423   300.92450 64.5 303.00790 415.5
+#&gt; ENSMUSE00000535814   323.70890 64.5 326.47199 415.5
+#&gt; ENSMUSE00000507557   328.93956 64.5 331.02296 415.5
+#&gt; ENSMUSE00000498616   458.67175 64.5 466.88714 415.5
+#&gt; ENSMUSE00000489385    39.15509 64.5  41.79997 415.5
+#&gt; ENSMUSE00000449901.1 239.54551 64.5 241.93921 415.5
+#&gt; ENSMUSE00000199425.1 244.21469 64.5 246.41630 415.5
+#&gt; ENSMUSE00000511070.1 278.36174 64.5 280.72588 415.5
+#&gt; ENSMUSE00000514929.1 291.40884 64.5 294.00939 415.5
+#&gt; ENSMUSE00000199423.1 300.92450 64.5 303.00790 415.5
+#&gt; ENSMUSE00000535814.1 323.70890 64.5 326.47199 415.5
+#&gt; ENSMUSE00000507557.1 328.93956 64.5 331.02296 415.5
+#&gt; ENSMUSE00000496705   448.09222 64.5 449.08221 415.5
+#&gt; ENSMUSE00000750625   458.67175 64.5 465.92671 415.5
+#&gt; ENSMUSE00000736922   321.22656 64.5 326.47199 415.5
+#&gt; ENSMUSE00000748299   328.93956 64.5 331.03774 415.5</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span><span class='op'>(</span><span class='va'>bmTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $fill
 #&gt;   ENSMUSE00000742021   ENSMUSE00000449901   ENSMUSE00000199425 
 #&gt;              "gold4"              "gold4"              "gold4" 
 #&gt;   ENSMUSE00000511070   ENSMUSE00000514929   ENSMUSE00000199423 
@@ -1264,7 +1302,7 @@ A class to hold gene model data for a genomic region fetched
 #&gt; ENSMUSE00000511070.1 ENSMUSE00000514929.1 ENSMUSE00000199423.1 
 #&gt;           "26698884"           "26699767"           "26700411" 
 #&gt; ENSMUSE00000535814.1 ENSMUSE00000507557.1   ENSMUSE00000496705 
-#&gt;           "26701953"           "26702307"           "26710373" 
+#&gt;           "26701953"           "26702307"           "26710371" 
 #&gt;   ENSMUSE00000750625   ENSMUSE00000736922   ENSMUSE00000748299 
 #&gt;           "26711087"           "26701785"           "26702307" 
 #&gt; 
@@ -1280,7 +1318,7 @@ A class to hold gene model data for a genomic region fetched
 #&gt; ENSMUSE00000511070.1 ENSMUSE00000514929.1 ENSMUSE00000199423.1 
 #&gt;           "26699044"           "26699943"           "26700552" 
 #&gt; ENSMUSE00000535814.1 ENSMUSE00000507557.1   ENSMUSE00000496705 
-#&gt;           "26702140"           "26702448"           "26710437" 
+#&gt;           "26702140"           "26702448"           "26710438" 
 #&gt;   ENSMUSE00000750625   ENSMUSE00000736922   ENSMUSE00000748299 
 #&gt;           "26711578"           "26702140"           "26702449" 
 #&gt; 
@@ -1449,7 +1487,7 @@ A class to hold gene model data for a genomic region fetched
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -77,7 +77,7 @@ A class to store numeric data values along genomic
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.33.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.35.0</span>
       </span>
     </div>
 
@@ -130,8 +130,8 @@ A class to store numeric data values along genomic
   single observation across samples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>DataTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>start</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>width</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='no'>data</span>, <span class='no'>chromosome</span>, <span class='no'>strand</span>, <span class='no'>genome</span>,
-<span class='kw'>name</span><span class='kw'>=</span><span class='st'>"DataTrack"</span>, <span class='no'>importFunction</span>, <span class='kw'>stream</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>DataTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='cn'>NULL</span>, start<span class='op'>=</span><span class='cn'>NULL</span>, end<span class='op'>=</span><span class='cn'>NULL</span>, width<span class='op'>=</span><span class='cn'>NULL</span>, <span class='va'>data</span>, <span class='va'>chromosome</span>, <span class='va'>strand</span>, <span class='va'>genome</span>,
+name<span class='op'>=</span><span class='st'>"DataTrack"</span>, <span class='va'>importFunction</span>, stream<span class='op'>=</span><span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,7 +145,7 @@ A class to store numeric data values along genomic
     to create the object has to be provided as individual function
     arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
-<p></p><dl'>
+<p></p><dl>
 
       <dt></dt><dd><p>A <code>GRanges</code> object: essentially all the necessary
     information to create a <code>DataTrack</code> can be contained in a
@@ -324,7 +324,7 @@ A class to store numeric data values along genomic
 
     
 
-<p></p><dl'>
+<p></p><dl>
 
     <dt><code>data</code>:</dt><dd><p>Object of class <code>"matrix"</code>, containing the
       data values to be plotted. Individual rows of the matrix
@@ -376,72 +376,72 @@ A class to store numeric data values along genomic
 <p>In the following code chunks, <code>obj</code> is considered to be an
   object of class <code>DataTrack</code>.</p>
 <p><b><em>Exported in the name space:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
 
     <dt>[</dt><dd><p><code>signature(x="DataTrack")</code>: subsetting of the
       object, either to a subet of coordinates, or to a subset of
-      samples.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices for coordinates
-      (<code>i</code>) or samples (<code>j</code>).</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>obj[1:3,]</code></p></dd>    <dt></dt><dd><p><code>obj[,2:4]</code></p></dd></dl></p></dd>
+      samples.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices for coordinates
+      (<code>i</code>) or samples (<code>j</code>).</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>obj[1:3,]</code></p></dd>    <dt></dt><dd><p><code>obj[,2:4]</code></p></dd></dl></p></dd>
 
     <dt>values</dt><dd><p><code>signature(x="DataTrack")</code>: return the raw data
       values of the object, i.e., the data matrix in the <code>data</code>
-      slot.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
+      slot.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
 
      <dt>values&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>: replace the data
-      matrix in the <code>data</code> slot.      <em>Usage:</em>      <code>values&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj) &lt;- matrix(1:10, ncol=2)</code></p></dd></dl></p></dd>
+      matrix in the <code>data</code> slot.      <em>Usage:</em>      <code>values&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj) &lt;- matrix(1:10, ncol=2)</code></p></dd></dl></p></dd>
 
     <dt>score</dt><dd><p><code>signature(x="DataTrack")</code>: return processed data
       values of the object exactly like they would be plotted to the
       device (modulo any potential aggregration or collapsing), i.e.,
-      the raw data with optional transformations applied.      <em>Usage:</em>      <code>score(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: restrict to data
+      the raw data with optional transformations applied.      <em>Usage:</em>      <code>score(x, from=NULL, to=NULL, sort=FALSE, transformation=TRUE)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: restrict to data
       within a certain coordinates range.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the return values by
       coordinates. This is usually not necessary since the data
       should already be ordererd, however this is not formaly
       checked anywhere and some operations strictly depend on
       ordered data.</p></dd>    <dt></dt><dd><p><code>transformation</code>: apply a data transformation
       in case one is defined as the <code>transformation</code> display
-      parameter.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>score(obj)</code></p></dd>    <dt></dt><dd><p><code>score(obj, from=100, to=10000)</code></p></dd>    <dt></dt><dd><p><code>score(obj, sort=TRUE, transformation=FALSE)</code></p></dd></dl></p></dd>
+      parameter.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>score(obj)</code></p></dd>    <dt></dt><dd><p><code>score(obj, from=100, to=10000)</code></p></dd>    <dt></dt><dd><p><code>score(obj, sort=TRUE, transformation=FALSE)</code></p></dd></dl></p></dd>
 
     <dt>split</dt><dd><p><code>signature(x="DataTrack")</code>: split a
       <code>DataTrack</code> object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
-      operation is a list of <code>DataTrack</code> objects.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
+      operation is a list of <code>DataTrack</code> objects.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
 
     <dt>range, ranges</dt><dd><p><code>signature(x="DataTrack")</code>: return the genomic
       coordinates for the track as an object of class
-      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>       <code>ranges(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
+      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>       <code>ranges(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand</dt><dd><p><code>signature(x="DataTrack")</code>: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
-      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
+      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
 
     <dt>strand&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>: replace the
       strand information for the track items. The replacement value
-      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
+      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
 
     <dt>feature</dt><dd><p><code>signature(GdObject="DataTrack")</code>: returns NULL
       since there is no grouping information for the ranges in a
-      <code>DataTrack</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
+      <code>DataTrack</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>feature&lt;-</dt><dd><p><code>signature(gdObject="DataTrack",
       value="character")</code>: this return the unaltered input object since
       there  is no grouping information for the ranges in a
-      <code>DataTrack</code>.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      <code>DataTrack</code>.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
   
 </dl>
 
 <p><b><em>Internal methods:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
 
     <dt>collapseTrack</dt><dd><p><code>signature(gdObject="DataTrack")</code>:
       preprocess the track before plotting. This will collapse
       overlapping track items based on the available resolution and
       increase the width and height of all track objects to a minimum
       value to avoid rendering issues. See <code><a href='collapsing.html'>collapsing</a></code> for
-      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
+      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
       everything below that will be inflated to a width of
-      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
+      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
 
     <dt>drawGD</dt><dd><p><code>signature(GdObject="DataTrack")</code>: plot the
       object to a graphics device. The return value of this method is
@@ -453,15 +453,15 @@ A class to store numeric data values along genomic
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
+    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
       plot.</p></dd>    <dt></dt><dd><p><code>prepare</code>: run method in preparation or in
       production mode.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object to the visible region
-    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
+    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
         subset=FALSE)</code></p></dd></dl></p></dd>
 
     <dt>drawAxis</dt><dd><p><code>signature(GdObject="DataTrack")</code>: add a y-axis
-      to the title panel of a track.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(GdObject, from, to, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute axis range from the data
-      within a certain coordinates range only.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
+      to the title panel of a track.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawAxis(GdObject, from, to, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: compute axis range from the data
+      within a certain coordinates range only.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::drawAxis(obj)</code></p></dd></dl></p></dd>
 
     <dt>initialize</dt><dd><p><code>signature(.Object="DataTrack")</code>:
       initialize the object</p></dd>
@@ -473,16 +473,16 @@ A class to store numeric data values along genomic
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
 
     <dt>drawGrid</dt><dd><p><code>signature(GdObject="DataTrack")</code>:
-      superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to, ...)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, restrict to
-      coordinate range before computing the grid lines.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
+      superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to, ...)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, restrict to
+      coordinate range before computing the grid lines.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGrid(obj)</code></p></dd></dl></p></dd>
 
     <dt>chromosome</dt><dd><p><code>signature(GdObject="DataTrack")</code>: return the
       currently active chromosome for which the track is defined. For
       consistancy with other Bioconductor packages, the
-      <code>isActiveSeq</code> alias is also provided.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
+      <code>isActiveSeq</code> alias is also provided.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>chromosome&lt;-</dt><dd><p><code>signature(GdObject="DataTrack")</code>: replace
       the value of the track's active chromosome. This has to be a valid
@@ -490,71 +490,71 @@ A class to store numeric data values along genomic
       can be reasonably coerced into one, unless
       <code><a href='https://rdrr.io/r/base/options.html'>options(ucscChromosomeNames=FALSE)</a></code>. For consistancy with
       other Bioconductor packages, the <code>isActiveSeq&lt;-</code> alias is
-      also provided.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
+      also provided.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
 
     <dt>start, end, width</dt><dd><p><code>signature(x="DataTrack")</code>: the
       start or end coordinates of the track items, or their width in
-      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
+      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
 
     <dt>start&lt;-, end&lt;-, width&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>:
       replace the start or end coordinates of the track items, or their
-      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
+      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
 
     <dt>position</dt><dd><p><code>signature(GdObject="DataTrack")</code>: the
       arithmetic mean of the track item's coordionates, i.e.,
-      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
+      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
 
-    <dt>genome</dt><dd><p><code>signature(x="DataTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
+    <dt>genome</dt><dd><p><code>signature(x="DataTrack")</code>: return the track's genome.      <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
 
     <dt>genome&lt;-</dt><dd><p><code>signature(x="DataTrack")</code>: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
-      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
+      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="DataTrack")</code>: return the number
-      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>coerce</dt><dd><p><code>signature(from="DataTrack",
     to="data.frame")</code>: coerce the <code><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></code>
-    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
+    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
 
     <dt>subset</dt><dd><p><code>signature(x="DataTrack")</code>: subset a
-      <code>NumericTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, drop=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
+      <code>NumericTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, drop=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
       to.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the object after subsetting. Usually
       not necessary.</p></dd>    <dt></dt><dd><p><code>drop</code>: drop unused regions on the other,
-      non-active chromosomes.w</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
+      non-active chromosomes.w</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars</dt><dd><p><code>signature(x="DataTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
 
 
     <dt>displayPars</dt><dd><p><code>signature(x="DataTrack",
       name="missing")</code>: list the value of all available display
       parameters. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="DataTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="DataTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="DataTrack",
       value="list")</code>: set display parameters using the values of the
       named list in <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details
-      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="DataTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>DataTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="DataTrack", value="list")</code>: set
       display parameters by the values of the named list in
@@ -562,24 +562,24 @@ A class to store numeric data values along genomic
       <code>DataTrack</code> class are pass-by-reference, so no
       re-assignmnet to the symbol <code>obj</code> is necessary. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
 
     <dt>group</dt><dd><p><code>signature(GdObject="DataTrack")</code>: return
       grouping information for the individual items in the track. Unless
       overwritten in one of the sub-classes, this usualy returns
-      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
+      <code>NULL</code>.      <em>Usage:</em>      <code><a href='AnnotationTrack-class.html'>group(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='AnnotationTrack-class.html'>group(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names</dt><dd><p><code>signature(x="DataTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names&lt;-</dt><dd><p><code>signature(x="DataTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="DataTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="DataTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -591,7 +591,7 @@ A class to store numeric data values along genomic
   <code>DataTrack</code> upon instantiation, unless one or more of them have
   already been set by one of the optional sub-class initializers, which
   always get precedence over these global defaults. See <code><a href='settings.html'>settings</a></code>
-  for details on setting graphical parameters for tracks.</p><dl'>
+  for details on setting graphical parameters for tracks.</p><dl>
 
     <dt></dt><dd><p><code>aggregateGroups=FALSE</code>: Logical scalar. Aggregate
       the values within a sample group using the aggregation funnction
@@ -610,7 +610,7 @@ A class to store numeric data values along genomic
       for the confidence intervalls in confint-type plots.</p></dd> 
 
     <dt></dt><dd><p><code>amount=NULL</code>: Numeric scalar. Amount of jittering in
-      xy-type plots. See <code>panel.xyplot</code> for details.</p></dd> 
+      xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>baseline=NULL</code>: Numeric scalar. Y-axis position of
       an optional baseline. This parameter has a special meaning for
@@ -621,10 +621,10 @@ A class to store numeric data values along genomic
       a legend.</p></dd> 
 
     <dt></dt><dd><p><code>box.ratio=1</code>: Numeric scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>box.width=NULL</code>: Numeric scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>cex=0.7</code>: Numeric scalar. The default pixel size for
       plotting symbols.</p></dd> 
@@ -637,7 +637,7 @@ A class to store numeric data values along genomic
       to an automatic setting.</p></dd> 
 
     <dt></dt><dd><p><code>coef=1.5</code>: Numeric scalar. Parameter controlling the
-      boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000",
       "orange", "#00ff00", "brown")</code>: Character or integer vector. The
@@ -674,22 +674,22 @@ A class to store numeric data values along genomic
 
     <dt></dt><dd><p><code>degree=1</code>: Numeric scalar. Parameter controlling the
       loess calculation for smooth and mountain-type plots. See
-      <code>panel.loess</code> for details.</p></dd> 
+      <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>do.out=TRUE</code>: Logical scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>evaluation=50</code>: Numeric scalar. Parameter controlling
       the loess calculation for smooth and mountain-type plots. See
-      <code>panel.loess</code> for details.</p></dd> 
+      <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>factor=0.5</code>: Numeric scalar. Factor to control amount
-      of jittering in xy-type plots. See <code>panel.xyplot</code>
+      of jittering in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code>
       for details.</p></dd> 
 
     <dt></dt><dd><p><code>family="symmetric"</code>: Character scalar. Parameter
       controlling the loess calculation for smooth and mountain-type
-      plots. See <code>panel.loess</code> for details.</p></dd> 
+      plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>fill.confint=NULL</code>: Character vector. Fill colors
       for the confidence intervals for confint-type plots.</p></dd> 
@@ -746,11 +746,11 @@ A class to store numeric data values along genomic
       data range. See <code>horizonplot</code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>jitter.x=FALSE</code>: Logical scalar. Toggle on jittering
-      on the x axis in xy-type plots. See <code>panel.xyplot</code>
+      on the x axis in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code>
       for details.</p></dd> 
 
     <dt></dt><dd><p><code>jitter.y=FALSE</code>: Logical scalar. Toggle off jittering
-      on the y axis in xy-type plots. See <code>panel.xyplot</code>
+      on the y axis in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code>
       for details.</p></dd> 
 
     <dt></dt><dd><p><code>legend=TRUE</code>: Boolean triggering the addition of a
@@ -758,7 +758,7 @@ A class to store numeric data values along genomic
       if at least two groups are present.</p></dd> 
 
     <dt></dt><dd><p><code>levels.fos=NULL</code>: Numeric scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>lineheight.legend=NULL</code>: Numeric scalar. The line
       height for the legend text.</p></dd> 
@@ -794,10 +794,10 @@ A class to store numeric data values along genomic
       for the 'gradient' plotting type</p></dd> 
 
     <dt></dt><dd><p><code>notch=FALSE</code>: Logical scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>notch.frac=0.5</code>: Numeric scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>pch=20</code>: Integer scalar. The type of glyph used for
       plotting symbols.</p></dd> 
@@ -818,14 +818,14 @@ A class to store numeric data values along genomic
 
     <dt></dt><dd><p><code>span=0.2</code>: Numeric scalar. Parameter controlling the
       loess calculation for smooth and mountain-type plots. See
-      <code>panel.loess</code> for details.</p></dd> 
+      <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>stackedBars=TRUE</code>: Logical scalar. When there are
       several data groups, draw the histogram-type plots as stacked
       barplots or grouped side by side.</p></dd> 
 
     <dt></dt><dd><p><code>stats=function</code>: Function. Parameter controlling the
-      boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>transformation=NULL</code>: Function. Applied to the data
       matrix prior to plotting or when calling the <code>score</code> method.
@@ -843,7 +843,7 @@ A class to store numeric data values along genomic
       information on the individual plotting types.</p></dd> 
 
     <dt></dt><dd><p><code>varwidth=FALSE</code>: Logical scalar. Parameter controlling
-      the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd> 
+      the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd> 
 
     <dt></dt><dd><p><code>window=NULL</code>: Numeric or character scalar. Aggregate
       the rows values of the data matrix to <code>window</code> equally sized
@@ -870,9 +870,9 @@ A class to store numeric data values along genomic
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>DataTrack</code> objects.</p>
-<p></p><dl'>
+<p></p><dl>
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -908,7 +908,7 @@ A class to store numeric data values along genomic
           scalar. The font family for the title panels.</p></dd>         <dt></dt><dd><p><code>fontsize=12</code>: Numeric scalar. The font size for
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>lty="solid"</code>: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
@@ -943,7 +943,7 @@ A class to store numeric data values along genomic
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
   
@@ -957,7 +957,7 @@ A class to store numeric data values along genomic
 <p>Depending on the setting of the <code>type</code> display parameter, the
   data can be plotted in various different forms as well as combinations
   thereof. Supported plotting types are:</p>
-<p></p><dl'>
+<p></p><dl>
 
     <dt></dt><dd><p><code>p</code>: simple xy-plot.</p></dd>
 
@@ -986,7 +986,7 @@ A class to store numeric data values along genomic
     <dt></dt><dd><p><code>smooth</code>: add a loess fit to the plot. The following
       display parameters can be used to control the loess calculation:
       <code>span, degree, family, evaluation</code>. See
-      <code>panel.loess</code> for details.</p></dd>
+      <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd>
 
     <dt></dt><dd><p><code>histogram</code>: plot data as a histogram, where the width
       of the histogram bars reflects the width of the genomic ranges in
@@ -996,7 +996,7 @@ A class to store numeric data values along genomic
       relative to a baseline, as defined by the <code>baseline</code> display
       parameter. The following display parameters can be used to control
       the smoothing: <code>span, degree, family, evaluation</code>. See
-      <code>panel.loess</code> for details. The layout of the plot can
+      <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details. The layout of the plot can
       be further customized via the following display parameters:
       <code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
 
@@ -1012,7 +1012,7 @@ A class to store numeric data values along genomic
       plots. The layout of the plot can be further customized via the
       following display parameters: <code>box.ratio, box.width, varwidt,
       notch, notch.frac, levels.fos, stats, coef, do.out</code>. See
-      <code>panel.bwplot</code> for details.</p></dd>
+      <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd>
 
 
     <dt></dt><dd><p><code>gradient</code>: collapse the data across samples and plot this
@@ -1066,6 +1066,9 @@ A class to store numeric data values along genomic
   mean values for each sample. Note that the predefined options can be
   much faster because they are optimized to work on large numeric
   tables.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Florian Hahne</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -1081,10 +1084,10 @@ A class to store numeric data values along genomic
 <p><code><a href='collapsing.html'>collapsing</a></code></p>
 <p><code><a href='grouping.html'>grouping</a></code></p>
 <p><code>horizonplot</code></p>
-<p><code>panel.bwplot</code></p>
-<p><code>panel.grid</code></p>
-<p><code>panel.loess</code></p>
-<p><code>panel.xyplot</code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code></p>
 <p><code><a href='plotTracks.html'>plotTracks</a></code></p>
 <p><code><a href='settings.html'>settings</a></code></p></div>
 
@@ -1093,61 +1096,69 @@ A class to store numeric data values along genomic
 <span class='co'>## Object construction:</span>
 
 <span class='co'>## An empty object</span>
-<span class='fu'>DataTrack</span>()</div><div class='output co'>#&gt; DataTrack 'DataTrack'
+<span class='fu'>DataTrack</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DataTrack 'DataTrack'
 #&gt; | genome: NA
 #&gt; | active chromosome: chrNA
 #&gt; | positions: 0
 #&gt; | samples:0
 #&gt; | strand: NA </div><div class='input'>
 <span class='co'>## from individual arguments</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>400</span>), <span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>4</span>)
-<span class='no'>dtTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>DataTrack</span>(<span class='kw'>start</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>,<span class='fl'>1000</span>, <span class='kw'>len</span><span class='kw'>=</span><span class='fl'>100</span>), <span class='kw'>width</span><span class='kw'>=</span><span class='fl'>10</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>,
-<span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"mm9"</span>, <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"random data"</span>)
+<span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>400</span><span class='op'>)</span>, nrow<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span>
+<span class='va'>dtTrack</span> <span class='op'>&lt;-</span> <span class='fu'>DataTrack</span><span class='op'>(</span>start<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1000</span>, len<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>, width<span class='op'>=</span><span class='fl'>10</span>, data<span class='op'>=</span><span class='va'>dat</span>,
+chromosome<span class='op'>=</span><span class='fl'>1</span>, genome<span class='op'>=</span><span class='st'>"mm9"</span>, name<span class='op'>=</span><span class='st'>"random data"</span><span class='op'>)</span>
 
 <span class='co'>## from GRanges</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>GenomicRanges</span>)
-<span class='no'>gr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span>(<span class='kw'>seqnames</span><span class='kw'>=</span><span class='st'>"chr1"</span>, <span class='kw'>ranges</span><span class='kw'>=</span><span class='fu'>IRanges</span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1</span>,<span class='fl'>1000</span>, <span class='kw'>len</span><span class='kw'>=</span><span class='fl'>100</span>),
-<span class='kw'>width</span><span class='kw'>=</span><span class='fl'>10</span>))
-<span class='fu'>values</span>(<span class='no'>gr</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>dat</span>)
-<span class='no'>dtTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>DataTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='no'>gr</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"mm9"</span>, <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"random data"</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/GenomicRanges'>GenomicRanges</a></span><span class='op'>)</span>
+<span class='va'>gr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html'>GRanges</a></span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr1"</span>, ranges<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1000</span>, len<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>,
+width<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>values</span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>dat</span><span class='op'>)</span>
+<span class='va'>dtTrack</span> <span class='op'>&lt;-</span> <span class='fu'>DataTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='va'>gr</span>, genome<span class='op'>=</span><span class='st'>"mm9"</span>, name<span class='op'>=</span><span class='st'>"random data"</span><span class='op'>)</span>
 
 <span class='co'>## from IRanges</span>
-<span class='no'>dtTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>DataTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='fu'>ranges</span>(<span class='no'>gr</span>), <span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"mm9"</span>,
-<span class='kw'>name</span><span class='kw'>=</span><span class='st'>"random data"</span>, <span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>1</span>)
+<span class='va'>dtTrack</span> <span class='op'>&lt;-</span> <span class='fu'>DataTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='fu'>ranges</span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span>, data<span class='op'>=</span><span class='va'>dat</span>, genome<span class='op'>=</span><span class='st'>"mm9"</span>,
+name<span class='op'>=</span><span class='st'>"random data"</span>, chromosome<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
 
 <span class='co'>## from a data.frame</span>
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='no'>gr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>df</span>)[<span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='st'>"chromosome"</span>
-<span class='no'>dtTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>DataTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='no'>df</span>,  <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"mm9"</span>, <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"random data"</span>)
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"chromosome"</span>
+<span class='va'>dtTrack</span> <span class='op'>&lt;-</span> <span class='fu'>DataTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='va'>df</span>,  genome<span class='op'>=</span><span class='st'>"mm9"</span>, name<span class='op'>=</span><span class='st'>"random data"</span><span class='op'>)</span>
 
 <span class='co'># \dontshow{</span>
 <span class='co'>## For some annoying reason the postscript device does not know about</span>
 <span class='co'>## the sans font</span>
-<span class='kw'>if</span>(!<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())
-{
-<span class='no'>font</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/ps.options.html'>ps.options</a></span>()$<span class='no'>family</span>
-<span class='fu'><a href='DisplayPars-class.html'>displayPars</a></span>(<span class='no'>dtTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>fontfamily</span><span class='kw'>=</span><span class='no'>font</span>, <span class='kw'>fontfamily.title</span><span class='kw'>=</span><span class='no'>font</span>)
-}
+<span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>{</span>
+<span class='va'>font</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/ps.options.html'>ps.options</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>family</span>
+<span class='fu'><a href='DisplayPars-class.html'>displayPars</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>fontfamily<span class='op'>=</span><span class='va'>font</span>, fontfamily.title<span class='op'>=</span><span class='va'>font</span><span class='op'>)</span>
+<span class='op'>}</span>
 <span class='co'># }</span>
 
 <span class='co'>## Plotting</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>dtTrack</span>)</div><div class='img'><img src='DataTrack-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='DataTrack-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Track names</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt; [1] "random data"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>dtTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>dtTrack</span>)</div><div class='img'><img src='DataTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "random data"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='DataTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Subsetting and splitting</span>
-<span class='no'>subTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>dtTrack</span>, <span class='kw'>from</span><span class='kw'>=</span><span class='fl'>100</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='fl'>300</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>subTrack</span>)</div><div class='output co'>#&gt; [1] 19</div><div class='input'><span class='no'>subTrack</span>[<span class='fl'>1</span>:<span class='fl'>2</span>,]</div><div class='output co'>#&gt; DataTrack 'foo'
+<span class='va'>subTrack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>dtTrack</span>, from<span class='op'>=</span><span class='fl'>100</span>, to<span class='op'>=</span><span class='fl'>300</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 19</div><div class='input'><span class='va'>subTrack</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>,<span class='op'>]</span>
+</div><div class='output co'>#&gt; DataTrack 'foo'
 #&gt; | genome: mm9
 #&gt; | active chromosome: chr1
 #&gt; | positions: 19
 #&gt; | samples:2
-#&gt; | strand: * </div><div class='input'><span class='no'>subTrack</span>[,<span class='fl'>1</span>:<span class='fl'>2</span>]</div><div class='output co'>#&gt; DataTrack 'foo'
+#&gt; | strand: * </div><div class='input'><span class='va'>subTrack</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; DataTrack 'foo'
 #&gt; | genome: mm9
 #&gt; | active chromosome: chr1
 #&gt; | positions: 2
 #&gt; | samples:4
-#&gt; | strand: * </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span>(<span class='no'>dtTrack</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>50</span>))</div><div class='output co'>#&gt; $`1`
+#&gt; | strand: * </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>dtTrack</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, each<span class='op'>=</span><span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $`1`
 #&gt; DataTrack 'foo'
 #&gt; | genome: mm9
 #&gt; | active chromosome: chr1
@@ -1164,22 +1175,26 @@ A class to store numeric data values along genomic
 #&gt; | strand: * 
 #&gt; </div><div class='input'>
 <span class='co'>## Accessors</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;   [1]    1   11   21   31   41   51   61   71   81   91  101  112  122  132  142
+<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   [1]    1   11   21   31   41   51   61   71   81   91  101  112  122  132  142
 #&gt;  [16]  152  162  172  182  192  202  212  223  233  243  253  263  273  283  293
 #&gt;  [31]  303  313  323  334  344  354  364  374  384  394  404  414  424  434  445
 #&gt;  [46]  455  465  475  485  495  505  515  525  535  545  556  566  576  586  596
 #&gt;  [61]  606  616  626  636  646  656  667  677  687  697  707  717  727  737  747
 #&gt;  [76]  757  767  778  788  798  808  818  828  838  848  858  868  878  889  899
-#&gt;  [91]  909  919  929  939  949  959  969  979  989 1000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/start.html'>end</a></span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;   [1]   10   20   30   40   50   60   70   80   90  100  110  121  131  141  151
+#&gt;  [91]  909  919  929  939  949  959  969  979  989 1000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/start.html'>end</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   [1]   10   20   30   40   50   60   70   80   90  100  110  121  131  141  151
 #&gt;  [16]  161  171  181  191  201  211  221  232  242  252  262  272  282  292  302
 #&gt;  [31]  312  322  332  343  353  363  373  383  393  403  413  423  433  443  454
 #&gt;  [46]  464  474  484  494  504  514  524  534  544  554  565  575  585  595  605
 #&gt;  [61]  615  625  635  645  655  665  676  686  696  706  716  726  736  746  756
 #&gt;  [76]  766  776  787  797  807  817  827  837  847  857  867  877  887  898  908
-#&gt;  [91]  918  928  938  948  958  968  978  988  998 1009</div><div class='input'><span class='fu'>width</span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;   [1] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
+#&gt;  [91]  918  928  938  948  958  968  978  988  998 1009</div><div class='input'><span class='fu'>width</span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   [1] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
 #&gt;  [26] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
 #&gt;  [51] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
-#&gt;  [76] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>position</a></span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;   [1]    5.5   15.5   25.5   35.5   45.5   55.5   65.5   75.5   85.5   95.5
+#&gt;  [76] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>position</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   [1]    5.5   15.5   25.5   35.5   45.5   55.5   65.5   75.5   85.5   95.5
 #&gt;  [11]  105.5  116.5  126.5  136.5  146.5  156.5  166.5  176.5  186.5  196.5
 #&gt;  [21]  206.5  216.5  227.5  237.5  247.5  257.5  267.5  277.5  287.5  297.5
 #&gt;  [31]  307.5  317.5  327.5  338.5  348.5  358.5  368.5  378.5  388.5  398.5
@@ -1188,16 +1203,20 @@ A class to store numeric data values along genomic
 #&gt;  [61]  610.5  620.5  630.5  640.5  650.5  660.5  671.5  681.5  691.5  701.5
 #&gt;  [71]  711.5  721.5  731.5  741.5  751.5  761.5  771.5  782.5  792.5  802.5
 #&gt;  [81]  812.5  822.5  832.5  842.5  852.5  862.5  872.5  882.5  893.5  903.5
-#&gt;  [91]  913.5  923.5  933.5  943.5  953.5  963.5  973.5  983.5  993.5 1004.5</div><div class='input'><span class='fu'>width</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'>width</span>(<span class='no'>subTrack</span>)-<span class='fl'>5</span>
+#&gt;  [91]  913.5  923.5  933.5  943.5  953.5  963.5  973.5  983.5  993.5 1004.5</div><div class='input'><span class='fu'>width</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>width</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span><span class='op'>-</span><span class='fl'>5</span>
 
-<span class='fu'>strand</span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt; [1] "*"</div><div class='input'><span class='fu'>strand</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"-"</span>
+<span class='fu'>strand</span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "*"</div><div class='input'><span class='fu'>strand</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"-"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt; [1] "chr1"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"chrX"</span>
+<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "chr1"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"chrX"</span>
 
-<span class='fu'>genome</span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;  chr1 
-#&gt; "mm9" </div><div class='input'><span class='fu'>genome</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"mm9"</span>
+<span class='fu'>genome</span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  chr1 
+#&gt; "mm9" </div><div class='input'><span class='fu'>genome</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"mm9"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>range</a></span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt; IRanges object with 100 ranges and 0 metadata columns:
+<span class='fu'><a href='RangeTrack-class.html'>range</a></span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; IRanges object with 100 ranges and 0 metadata columns:
 #&gt;             start       end     width
 #&gt;         &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
 #&gt;     [1]         1        10        10
@@ -1210,7 +1229,8 @@ A class to store numeric data values along genomic
 #&gt;    [97]       969       978        10
 #&gt;    [98]       979       988        10
 #&gt;    [99]       989       998        10
-#&gt;   [100]      1000      1009        10</div><div class='input'><span class='fu'>ranges</span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt; GRanges object with 100 ranges and 0 metadata columns:
+#&gt;   [100]      1000      1009        10</div><div class='input'><span class='fu'>ranges</span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; GRanges object with 100 ranges and 0 metadata columns:
 #&gt;         seqnames    ranges strand
 #&gt;            &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
 #&gt;     [1]     chr1      1-10      *
@@ -1227,7 +1247,8 @@ A class to store numeric data values along genomic
 #&gt;   -------
 #&gt;   seqinfo: 1 sequence from mm9 genome; no seqlengths</div><div class='input'>
 <span class='co'>## Data</span>
-<span class='fu'>values</span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;          [,1]      [,2]      [,3]      [,4]      [,5]       [,6]      [,7]
+<span class='fu'>values</span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;          [,1]      [,2]      [,3]      [,4]      [,5]       [,6]      [,7]
 #&gt; V1 0.57358702 0.6223585 0.9672963 0.5130287 0.6620476 0.93234592 0.3387958
 #&gt; V2 0.18869879 0.4159132 0.2159033 0.7749373 0.9077198 0.19993327 0.2756013
 #&gt; V3 0.75826533 0.7765109 0.8670089 0.1325433 0.3444916 0.05401831 0.6634905
@@ -1301,7 +1322,8 @@ A class to store numeric data values along genomic
 #&gt; V1 0.5058416 0.1099460
 #&gt; V2 0.8223393 0.8714368
 #&gt; V3 0.1797052 0.5144198
-#&gt; V4 0.8646465 0.2856988</div><div class='input'><span class='fu'>score</span>(<span class='no'>dtTrack</span>)</div><div class='output co'>#&gt;          [,1]      [,2]      [,3]      [,4]      [,5]       [,6]      [,7]
+#&gt; V4 0.8646465 0.2856988</div><div class='input'><span class='fu'>score</span><span class='op'>(</span><span class='va'>dtTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;          [,1]      [,2]      [,3]      [,4]      [,5]       [,6]      [,7]
 #&gt; V1 0.57358702 0.6223585 0.9672963 0.5130287 0.6620476 0.93234592 0.3387958
 #&gt; V2 0.18869879 0.4159132 0.2159033 0.7749373 0.9077198 0.19993327 0.2756013
 #&gt; V3 0.75826533 0.7765109 0.8670089 0.1325433 0.3444916 0.05401831 0.6634905
@@ -1377,7 +1399,8 @@ A class to store numeric data values along genomic
 #&gt; V3 0.1797052 0.5144198
 #&gt; V4 0.8646465 0.2856988</div><div class='input'>
 <span class='co'>## coercion</span>
-<span class='fu'>as</span>(<span class='no'>dtTrack</span>, <span class='st'>"data.frame"</span>)</div><div class='output co'>#&gt;     chromosome start  end width strand           V1           V2           V3
+<span class='fu'>as</span><span class='op'>(</span><span class='va'>dtTrack</span>, <span class='st'>"data.frame"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     chromosome start  end width strand           V1           V2           V3
 #&gt; 1         chr1     1   10    10      * 0.5735870199 0.1886987926 0.7582653339
 #&gt; 2         chr1    11   20    10      * 0.6223585266 0.4159132016 0.7765108705
 #&gt; 3         chr1    21   30    10      * 0.9672963202 0.2159032512 0.8670089110
@@ -1595,7 +1618,7 @@ A class to store numeric data values along genomic
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

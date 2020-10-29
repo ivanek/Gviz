@@ -75,7 +75,7 @@ A fully customizable track object to be populated via a user-defined
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.33.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.35.0</span>
       </span>
     </div>
 
@@ -126,8 +126,8 @@ A fully customizable track object to be populated via a user-defined
   plotting function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CustomTrack</span>(<span class='kw'>plottingFunction</span><span class='kw'>=</span><span class='kw'>function</span>(<span class='no'>GdObject</span>, <span class='no'>prepare</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='no'>...</span>){},
-            <span class='kw'>variables</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"CustomTrack"</span>,  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>CustomTrack</span><span class='op'>(</span>plottingFunction<span class='op'>=</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>GdObject</span>, <span class='va'>prepare</span><span class='op'>=</span><span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span><span class='op'>{</span><span class='op'>}</span>, 
+            variables<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, name<span class='op'>=</span><span class='st'>"CustomTrack"</span>,  <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,7 +186,7 @@ A fully customizable track object to be populated via a user-defined
 
     
 
-<p></p><dl'>
+<p></p><dl>
 
     <dt><code>plottingFunction</code>:</dt><dd><p>Object of class <code>"function"</code>, holding the
       user-defined plotting function.</p></dd>
@@ -220,7 +220,7 @@ A fully customizable track object to be populated via a user-defined
   of class <code>CustomTrack</code>.</p>
 
 <p><b><em>Internal methods:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
 
 
     <dt>initialize</dt><dd><p><code>signature(.Object="CustomTrack")</code>:
@@ -230,40 +230,40 @@ A fully customizable track object to be populated via a user-defined
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
 
     <dt>displayPars</dt><dd><p><code>signature(x="CustomTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
 
 
     <dt>displayPars</dt><dd><p><code>signature(x="CustomTrack",
       name="missing")</code>: list the value of all available display
       parameters. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="CustomTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
 
     <dt>getPar</dt><dd><p><code>signature(x="CustomTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="CustomTrack",
       value="list")</code>: set display parameters using the values of the
       named list in <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details
-      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="CustomTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>CustomTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
 
     <dt>setPar</dt><dd><p><code>signature(x="CustomTrack", value="list")</code>: set
       display parameters by the values of the named list in
@@ -271,20 +271,20 @@ A fully customizable track object to be populated via a user-defined
       <code>CustomTrack</code> class are pass-by-reference, so no
       re-assignmnet to the symbol <code>obj</code> is necessary. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
 
 
     <dt>names</dt><dd><p><code>signature(x="CustomTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>names&lt;-</dt><dd><p><code>signature(x="CustomTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="CustomTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="CustomTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -295,9 +295,9 @@ A fully customizable track object to be populated via a user-defined
 <p>All display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>CustomTrack</code> objects.</p>
-<p></p><dl'>
+<p></p><dl>
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:      <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:      <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>        <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>        <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
           scalar. The background color for the title panels.</p></dd>     <dt></dt><dd><p><code>col.border.title="transparent"</code>: Integer or character
@@ -336,7 +336,7 @@ A fully customizable track object to be populated via a user-defined
           all text.</p></dd>        <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>        <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>        <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>        <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text.</p></dd>        <dt></dt><dd><p><code>lty="solid"</code>: Numeric scalar. Default line type
           setting for all plotting elements, unless there is a more
@@ -367,13 +367,16 @@ A fully customizable track object to be populated via a user-defined
           completely hide it.</p></dd>        <dt></dt><dd><p><code>size=1</code>: Numeric scalar. The relative size of
           the track. Can be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code>
           function.</p></dd>        <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd></dl></p></dd>
 
   
 </dl>
 
 
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Florian Hahne</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -383,7 +386,7 @@ A fully customizable track object to be populated via a user-defined
 <p><code><a href='ImageMap-class.html'>ImageMap</a></code></p>
 <p><code><a href='collapsing.html'>collapsing</a></code></p>
 <p><code><a href='DataTrack-class.html'>DataTrack</a></code></p>
-<p><code>panel.grid</code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code></p>
 <p><code><a href='plotTracks.html'>plotTracks</a></code></p>
 <p><code><a href='settings.html'>settings</a></code></p></div>
 
@@ -392,7 +395,8 @@ A fully customizable track object to be populated via a user-defined
 <span class='co'>## Object construction:</span>
 
 <span class='co'>## An empty object</span>
-<span class='fu'>CustomTrack</span>()</div><div class='output co'>#&gt; CustomTrack 'CustomTrack'</div></pre>
+<span class='fu'>CustomTrack</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; CustomTrack 'CustomTrack'</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -408,7 +412,7 @@ A fully customizable track object to be populated via a user-defined
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

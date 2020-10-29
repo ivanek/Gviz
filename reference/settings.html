@@ -77,7 +77,7 @@ The genome track plots in this package are all highly customizable by
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.33.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.35.0</span>
       </span>
     </div>
 
@@ -130,9 +130,9 @@ The genome track plots in this package are all highly customizable by
   track classes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>addScheme</span>(<span class='no'>scheme</span>, <span class='no'>name</span>)
+    <pre class="usage"><span class='fu'>addScheme</span><span class='op'>(</span><span class='va'>scheme</span>, <span class='va'>name</span><span class='op'>)</span>
 
-<span class='fu'>getScheme</span>(<span class='kw'>name</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"Gviz.scheme"</span>))</pre>
+<span class='fu'>getScheme</span><span class='op'>(</span>name<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"Gviz.scheme"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,9 +232,9 @@ The genome track plots in this package are all highly customizable by
 
      
 
-<p></p><dl'>
+<p></p><dl>
 
-    <dt>GenomeAxisTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>add35=FALSE</code>: Logical scalar. Add 3' to 5'
+    <dt>GenomeAxisTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>add35=FALSE</code>: Logical scalar. Add 3' to 5'
           direction indicators.</p></dd>         <dt></dt><dd><p><code>add53=FALSE</code>: Logical scalar. Add 5' to 3'
           direction indicators.</p></dd>         <dt></dt><dd><p><code>background.title="transparent"</code>: Character scalar.
           The background color for the title panel. Defaults to omit
@@ -267,7 +267,7 @@ The genome track plots in this package are all highly customizable by
           the track. Can be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code>
           function. Defaults to the ideal size based on the other track
           settings.</p></dd>         <dt></dt><dd><p><code>col="darkgray"</code>: Character scalar. The color for
-          the axis lines and tickmarks.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          the axis lines and tickmarks.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
@@ -302,7 +302,7 @@ The genome track plots in this package are all highly customizable by
           exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
@@ -329,10 +329,10 @@ The genome track plots in this package are all highly customizable by
           unless a more specific definiton exists.</p></dd>         <dt></dt><dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
           implemented).</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>DataTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>aggregateGroups=FALSE</code>: Logical scalar. Aggregate
+    <dt>DataTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>aggregateGroups=FALSE</code>: Logical scalar. Aggregate
           the values within a sample group using the aggregation
           funnction specified in the <code>aggregation</code> parameter.</p></dd>         <dt></dt><dd><p><code>aggregation="mean"</code>: Function or character scalar.
           Used to aggregate values in windows or for collapsing
@@ -347,20 +347,20 @@ The genome track plots in this package are all highly customizable by
           positions with zeros, which is default. <code>FALSE</code> fills
           empty positions with <code>NA</code>.</p></dd>         <dt></dt><dd><p><code>alpha.confint=0.3</code>: Numeric scalar. The transparency
           for the confidence intervalls in confint-type plots.</p></dd>         <dt></dt><dd><p><code>amount=NULL</code>: Numeric scalar. Amount of jittering
-          in xy-type plots. See <code>panel.xyplot</code> for details.</p></dd>         <dt></dt><dd><p><code>baseline=NULL</code>: Numeric scalar. Y-axis position
+          in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code> for details.</p></dd>         <dt></dt><dd><p><code>baseline=NULL</code>: Numeric scalar. Y-axis position
           of an optional baseline. This parameter has a special meaning
           for mountain-type and polygon-type plots, see the 'Details'
           section in <code><a href='DataTrack-class.html'>DataTrack</a></code> for more information.</p></dd>         <dt></dt><dd><p><code>box.legend=FALSE</code>: Logical scalar. Draw a box
           around a legend.</p></dd>         <dt></dt><dd><p><code>box.ratio=1</code>: Numeric scalar. Parameter controlling
-          the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd>         <dt></dt><dd><p><code>box.width=NULL</code>: Numeric scalar. Parameter
-          controlling the boxplot appearance. See <code>panel.bwplot</code>
+          the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd>         <dt></dt><dd><p><code>box.width=NULL</code>: Numeric scalar. Parameter
+          controlling the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Logical vector. Draw a line grid
           under the track content.</p></dd>         <dt></dt><dd><p><code>cex.legend=0.8</code>: Numeric scalar. The size factor
           for the legend text.</p></dd>         <dt></dt><dd><p><code>cex.sampleNames=NULL</code>: Numeric scalar. The size
           factor for the sample names text in heatmap or horizon plots.
           Defaults to an automatic setting.</p></dd>         <dt></dt><dd><p><code>cex=0.7</code>: Numeric scalar. The default pixel size
           for plotting symbols.</p></dd>         <dt></dt><dd><p><code>coef=1.5</code>: Numeric scalar. Parameter controlling
-          the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd>         <dt></dt><dd><p><code>col.baseline=NULL</code>: Character scalar. Color for
+          the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd>         <dt></dt><dd><p><code>col.baseline=NULL</code>: Character scalar. Color for
           the optional baseline, defaults to the setting of <code>col</code>.</p></dd>         <dt></dt><dd><p><code>col.confint=NA</code>: Character vector. Border colors
           for the confidence intervals for confint-type plots.</p></dd>         <dt></dt><dd><p><code>col.boxplotFrame="#808080"</code>: Character scalar.
           Line color of the frame around grouped boxplots.</p></dd>         <dt></dt><dd><p><code>col.histogram="#808080"</code>: Character scalar. Line
@@ -377,14 +377,14 @@ The genome track plots in this package are all highly customizable by
           vector is usually regarded.</p></dd>         <dt></dt><dd><p><code>collapse=FALSE</code>: Logical scalar. Collapse
           overlapping ranges and aggregate the underlying data.</p></dd>         <dt></dt><dd><p><code>degree=1</code>: Numeric scalar. Parameter controlling
           the loess calculation for smooth and mountain-type plots.
-          See <code>panel.loess</code> for details.</p></dd>         <dt></dt><dd><p><code>do.out=TRUE</code>: Logical scalar. Parameter controlling
-          the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd>         <dt></dt><dd><p><code>evaluation=50</code>: Numeric scalar. Parameter
+          See <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd>         <dt></dt><dd><p><code>do.out=TRUE</code>: Logical scalar. Parameter controlling
+          the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd>         <dt></dt><dd><p><code>evaluation=50</code>: Numeric scalar. Parameter
           controlling the loess calculation for smooth and mountain-type
-          plots. See <code>panel.loess</code> for details.</p></dd>         <dt></dt><dd><p><code>factor=0.5</code>: Numeric scalar. Factor to control
-          amount of jittering in xy-type plots. See <code>panel.xyplot</code>
+          plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd>         <dt></dt><dd><p><code>factor=0.5</code>: Numeric scalar. Factor to control
+          amount of jittering in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>family="symmetric"</code>: Character scalar. Parameter
           controlling the loess calculation for smooth and mountain-type
-          plots. See <code>panel.loess</code> for details.</p></dd>         <dt></dt><dd><p><code>fill.confint=NULL</code>: Character vector. Fill colors
+          plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd>         <dt></dt><dd><p><code>fill.confint=NULL</code>: Character vector. Fill colors
           for the confidence intervals for confint-type plots.</p></dd>         <dt></dt><dd><p><code>fill.histogram=NULL</code>: Character scalar. Fill
           color in histogram-type plots, defaults to the setting of
           <code>fill</code>.</p></dd>         <dt></dt><dd><p><code>fill.horizon=c("#B41414", "#E03231", "#F7A99C",
@@ -414,11 +414,11 @@ The genome track plots in this package are all highly customizable by
           <code>horizonplot</code> for details.</p></dd>         <dt></dt><dd><p><code>horizon.scale=NULL</code>: The scale for each of the
           segments in the <code>horizon</code>-type plot. Defaults to 1/3 of
           the absolute data range. See <code>horizonplot</code> for details.</p></dd>         <dt></dt><dd><p><code>jitter.x=FALSE</code>: Logical scalar. Toggle on
-          jittering on the x axis in xy-type plots. See <code>panel.xyplot</code>
+          jittering on the x axis in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>jitter.y=FALSE</code>: Logical scalar. Toggle off
-          jittering on the y axis in xy-type plots. See <code>panel.xyplot</code>
+          jittering on the y axis in xy-type plots. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>levels.fos=NULL</code>: Numeric scalar. Parameter
-          controlling the boxplot appearance. See <code>panel.bwplot</code>
+          controlling the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>legend=TRUE</code>: Boolean triggering the addition of
           a legend to the track to indicate groups. This only has an
           effect if at least two groups are present.</p></dd>         <dt></dt><dd><p><code>lineheight.legend=NULL</code>: Numeric scalar. The line
@@ -433,9 +433,9 @@ The genome track plots in this package are all highly customizable by
           distance in pixel below which to collapse ranges.</p></dd>         <dt></dt><dd><p><code>na.rm=FALSE</code>: Boolean controlling whether to
           discard all NA values when plotting or to keep empty spaces for NAs</p></dd>         <dt></dt><dd><p><code>ncolor=100</code>: Integer scalar. The number of colors
           for the 'gradient' plotting type</p></dd>         <dt></dt><dd><p><code>notch.frac=0.5</code>: Numeric scalar. Parameter
-          controlling the boxplot appearance. See <code>panel.bwplot</code>
+          controlling the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>notch=FALSE</code>: Logical scalar. Parameter controlling
-          the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd>         <dt></dt><dd><p><code>pch=20</code>: Integer scalar. The type of glyph used
+          the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd>         <dt></dt><dd><p><code>pch=20</code>: Integer scalar. The type of glyph used
           for plotting symbols.</p></dd>         <dt></dt><dd><p><code>separator=0</code>: Numeric scalar. Number of pixels
           used to separate individual samples in heatmap- and horizon-type
           plots.</p></dd>         <dt></dt><dd><p><code>showColorBar=TRUE</code>: Boolean. Indicate the data
@@ -445,10 +445,10 @@ The genome track plots in this package are all highly customizable by
           function. By default the size will be set automatically based
           on the selected plotting type.</p></dd>         <dt></dt><dd><p><code>span=0.2</code>: Numeric scalar. Parameter controlling
           the loess calculation for smooth and mountain-type plots.
-          See <code>panel.loess</code> for details.</p></dd>         <dt></dt><dd><p><code>stackedBars=TRUE</code>: Logical scalar. When there
+          See <code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code> for details.</p></dd>         <dt></dt><dd><p><code>stackedBars=TRUE</code>: Logical scalar. When there
           are several data groups, draw the histogram-type plots as
           stacked barplots or grouped side by side.</p></dd>         <dt></dt><dd><p><code>stats=X[[i]]</code>: Function. Parameter controlling
-          the boxplot appearance. See <code>panel.bwplot</code> for details.</p></dd>         <dt></dt><dd><p><code>transformation=NULL</code>: Function. Applied to the
+          the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code> for details.</p></dd>         <dt></dt><dd><p><code>transformation=NULL</code>: Function. Applied to the
           data matrix prior to plotting or when calling the <code>score</code>
           method. The function should accept exactly one input argument
           and its return value needs to be a numeric vector which can
@@ -461,7 +461,7 @@ The genome track plots in this package are all highly customizable by
           <code>heatmap</code>, <code>horizon</code>. See 'Details' section in
           <code><a href='DataTrack-class.html'>DataTrack</a></code> for more information on the
           individual plotting types.</p></dd>         <dt></dt><dd><p><code>varwidth=FALSE</code>: Logical scalar. Parameter
-          controlling the boxplot appearance. See <code>panel.bwplot</code>
+          controlling the boxplot appearance. See <code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>window=NULL</code>: Numeric or character scalar.
           Aggregate the rows values of the data matrix to <code>window</code>
           equally sized slices on the data range using the method
@@ -474,7 +474,7 @@ The genome track plots in this package are all highly customizable by
           the running window when the value of <code>window</code> is negative.</p></dd>         <dt></dt><dd><p><code>ylim=NULL</code>: Numeric vector of length 2. The range
           of the y-axis scale.</p></dd>         <dt></dt><dd><p><code>yTicksAt=NULL</code>: Numeric vector. The points at
           which y-axis tick-marks are to be drawn. By default, when
-          <code>NULL</code>, tickmark locations are computed.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          <code>NULL</code>, tickmark locations are computed.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
@@ -510,7 +510,7 @@ The genome track plots in this package are all highly customizable by
           exists.</p></dd>         <dt></dt><dd><p><code>fontsize=12</code>: Numeric scalar. The font size for
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
@@ -545,10 +545,10 @@ The genome track plots in this package are all highly customizable by
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>IdeogramTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>background.title="transparent"</code>: Character scalar.
+    <dt>IdeogramTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>background.title="transparent"</code>: Character scalar.
           The background color for the title panel. Defaults to omit
           the background.</p></dd>         <dt></dt><dd><p><code>bevel=0.45</code>: Numeric scalar, between 0 and 1.
           The level of smoothness for the two ends of the ideogram.</p></dd>         <dt></dt><dd><p><code>centromereShape="triangle"</code>: Character scalar.
@@ -574,7 +574,7 @@ The genome track plots in this package are all highly customizable by
           chromosome name next to the ideogram.</p></dd>         <dt></dt><dd><p><code>showTitle=FALSE</code>: Logical scalar. Plot a title
           panel. Defaults to omit the title panel.</p></dd>         <dt></dt><dd><p><code>size=NULL</code>: Numeric scalar. The relative size of
           the track. Defaults to automatic size setting. Can also be
-          overridden in the <code><a href='plotTracks.html'>plotTracks</a></code> function.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          overridden in the <code><a href='plotTracks.html'>plotTracks</a></code> function.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
@@ -604,7 +604,7 @@ The genome track plots in this package are all highly customizable by
           scalar. The font family for the title panels.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
@@ -629,10 +629,10 @@ The genome track plots in this package are all highly customizable by
           unless a more specific definiton exists.</p></dd>         <dt></dt><dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to
           plot a y axis (only applies to track types where axes are
           implemented).</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>AnnotationTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>arrowHeadWidth=30</code>: Numeric scalar. The width of
+    <dt>AnnotationTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>arrowHeadWidth=30</code>: Numeric scalar. The width of
           the arrow head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>         <dt></dt><dd><p><code>arrowHeadMaxWidth=40</code>: Numeric scalar. The maximum
           width of the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>         <dt></dt><dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion
           factor for the group-level annotation.</p></dd>         <dt></dt><dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor
@@ -684,7 +684,7 @@ The genome track plots in this package are all highly customizable by
           color gradient to show the amount of overplotting for collapsed
           items. This implies that <code>collapse==TRUE</code></p></dd>         <dt></dt><dd><p><code>size=1</code>: Numeric scalar. The relative size of
           the track. Can be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code>
-          function.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
+          function.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
           Controls the vertical size and spacing between stacked
           elements. The number defines the proportion of the total
           available space for the stack that is used to draw the glyphs.
@@ -694,7 +694,7 @@ The genome track plots in this package are all highly customizable by
           spacing above and below the glyph. Defaults to 0.75.</p></dd>         <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
-          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
@@ -730,7 +730,7 @@ The genome track plots in this package are all highly customizable by
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
           in <code><a href='DataTrack-class.html'>DataTrack</a></code>s and when display parameter
@@ -755,10 +755,10 @@ The genome track plots in this package are all highly customizable by
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>GeneRegionTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of
+    <dt>GeneRegionTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of
           the arrow head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>         <dt></dt><dd><p><code>arrowHeadMaxWidth=20</code>: Numeric scalar. The maximum
           width of the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>         <dt></dt><dd><p><code>col=NULL</code>: Character or integer scalar. The border
           color for all track items. Defaults to using the same color
@@ -773,7 +773,7 @@ The genome track plots in this package are all highly customizable by
           only the longest or shortest transcript model is retained.
           For <code>meta</code>, a meta-transcript containing the union of
           all exons is formed (essentially identical to the operation
-          <code>reduce(geneModel)</code>).</p></dd>         <dt></dt><dd><p><code>exonAnnotation=NULL</code>: Character scalar. Add
+          <code><a href='https://rdrr.io/pkg/GenomicRanges/man/inter-range-methods.html'>reduce(geneModel)</a></code>).</p></dd>         <dt></dt><dd><p><code>exonAnnotation=NULL</code>: Character scalar. Add
           annotation information to the individual exon models. This
           can be a value in <code>symbol</code>, <code>gene</code>, <code>transcript</code>,
           <code>exon</code> or <code>feature</code>. Defaults to <code>exon</code>. Only
@@ -796,7 +796,7 @@ The genome track plots in this package are all highly customizable by
           Add annotation information as transcript labels. This can be
           a value in <code>symbol</code>, <code>gene</code>, <code>transcript</code>,
           <code>exon</code> or <code>feature</code>. Defaults to <code>symbol</code>.
-          Only works if <code>showId</code> is not <code>FALSE</code>.</p></dd> </dl>       <b><em>Inherited from class AnnotationTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion
+          Only works if <code>showId</code> is not <code>FALSE</code>.</p></dd> </dl>       <b><em>Inherited from class AnnotationTrack:</em></b>       <dl>        <dt></dt><dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion
           factor for the group-level annotation.</p></dd>         <dt></dt><dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor
           for item identifiers.</p></dd>         <dt></dt><dd><p><code>col.line="darkgray"</code>: Character scalar. The color
           used for connecting lines between grouped items. Defaults to
@@ -840,7 +840,7 @@ The genome track plots in this package are all highly customizable by
           color gradient to show the amount of overplotting for collapsed
           items. This implies that <code>collapse==TRUE</code></p></dd>         <dt></dt><dd><p><code>size=1</code>: Numeric scalar. The relative size of
           the track. Can be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code>
-          function.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
+          function.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
           Controls the vertical size and spacing between stacked
           elements. The number defines the proportion of the total
           available space for the stack that is used to draw the glyphs.
@@ -850,7 +850,7 @@ The genome track plots in this package are all highly customizable by
           spacing above and below the glyph. Defaults to 0.75.</p></dd>         <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
-          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
@@ -886,7 +886,7 @@ The genome track plots in this package are all highly customizable by
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
           in <code><a href='DataTrack-class.html'>DataTrack</a></code>s and when display parameter
@@ -909,10 +909,10 @@ The genome track plots in this package are all highly customizable by
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>BiomartGeneRegionTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>C_segment="burlywood4"</code>: Character or integer
+    <dt>BiomartGeneRegionTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>C_segment="burlywood4"</code>: Character or integer
           scalar. Fill color for annotation objects of type 'C_segment'.</p></dd>         <dt></dt><dd><p><code>D_segment="lightblue"</code>: Character or integer
           scalar. Fill color for annotation objects of type 'C_segment'.</p></dd>         <dt></dt><dd><p><code>J_segment="dodgerblue2"</code>: Character or integer
           scalar. Fill color for annotation objects of type 'C_segment'.</p></dd>         <dt></dt><dd><p><code>Mt_rRNA="yellow"</code>: Character or integer scalar.
@@ -947,7 +947,7 @@ The genome track plots in this package are all highly customizable by
           'tRNA_pseudogene'.</p></dd>         <dt></dt><dd><p><code>utr3="#FFD58A"</code>: Character or integer scalar.
           Fill color for annotation objects of type 'utr3'.</p></dd>         <dt></dt><dd><p><code>utr5="#FFD58A"</code>: Character or integer scalar.
           Fill color for annotation objects of type 'utr5'.</p></dd>         <dt></dt><dd><p><code>verbose=FALSE</code>: Logical scalar. Report data
-          loading events from Bioamart or retrieval from cache.</p></dd> </dl>       <b><em>Inherited from class GeneRegionTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of
+          loading events from Bioamart or retrieval from cache.</p></dd> </dl>       <b><em>Inherited from class GeneRegionTrack:</em></b>       <dl>        <dt></dt><dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of
           the arrow head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>         <dt></dt><dd><p><code>arrowHeadMaxWidth=20</code>: Numeric scalar. The maximum
           width of the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>         <dt></dt><dd><p><code>col=NULL</code>: Character or integer scalar. The border
           color for all track items. Defaults to using the same color
@@ -962,7 +962,7 @@ The genome track plots in this package are all highly customizable by
           only the longest or shortest transcript model is retained.
           For <code>meta</code>, a meta-transcript containing the union of
           all exons is formed (essentially identical to the operation
-          <code>reduce(geneModel)</code>).</p></dd>         <dt></dt><dd><p><code>exonAnnotation=NULL</code>: Character scalar. Add
+          <code><a href='https://rdrr.io/pkg/GenomicRanges/man/inter-range-methods.html'>reduce(geneModel)</a></code>).</p></dd>         <dt></dt><dd><p><code>exonAnnotation=NULL</code>: Character scalar. Add
           annotation information to the individual exon models. This
           can be a value in <code>symbol</code>, <code>gene</code>, <code>transcript</code>,
           <code>exon</code> or <code>feature</code>. Defaults to <code>exon</code>. Only
@@ -985,7 +985,7 @@ The genome track plots in this package are all highly customizable by
           Add annotation information as transcript labels. This can be
           a value in <code>symbol</code>, <code>gene</code>, <code>transcript</code>,
           <code>exon</code> or <code>feature</code>. Defaults to <code>symbol</code>.
-          Only works if <code>showId</code> is not <code>FALSE</code>.</p></dd> </dl>       <b><em>Inherited from class AnnotationTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion
+          Only works if <code>showId</code> is not <code>FALSE</code>.</p></dd> </dl>       <b><em>Inherited from class AnnotationTrack:</em></b>       <dl>        <dt></dt><dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion
           factor for the group-level annotation.</p></dd>         <dt></dt><dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor
           for item identifiers.</p></dd>         <dt></dt><dd><p><code>col.line="darkgray"</code>: Character scalar. The color
           used for connecting lines between grouped items. Defaults to
@@ -1029,7 +1029,7 @@ The genome track plots in this package are all highly customizable by
           color gradient to show the amount of overplotting for collapsed
           items. This implies that <code>collapse==TRUE</code></p></dd>         <dt></dt><dd><p><code>size=1</code>: Numeric scalar. The relative size of
           the track. Can be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code>
-          function.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
+          function.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
           Controls the vertical size and spacing between stacked
           elements. The number defines the proportion of the total
           available space for the stack that is used to draw the glyphs.
@@ -1039,7 +1039,7 @@ The genome track plots in this package are all highly customizable by
           spacing above and below the glyph. Defaults to 0.75.</p></dd>         <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
-          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
@@ -1075,7 +1075,7 @@ The genome track plots in this package are all highly customizable by
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
           in <code><a href='DataTrack-class.html'>DataTrack</a></code>s and when display parameter
@@ -1098,10 +1098,10 @@ The genome track plots in this package are all highly customizable by
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>AlignmentsTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>alpha.reads=0.5</code>: Numeric scalar between 0 and
+    <dt>AlignmentsTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>alpha.reads=0.5</code>: Numeric scalar between 0 and
           1. The transparency of the individual read icons. Can be used
           to indicate overlapping regions in read pairs. Only on
           supported devices.</p></dd>         <dt></dt><dd><p><code>alpha.mismatch=1</code>: Numeric scalar between 0 and
@@ -1191,7 +1191,7 @@ The genome track plots in this package are all highly customizable by
           plot, potentially augmented by base mismatch information,
           for <code>sashimi</code> a sashimi plot, showing the juctions, and
           for <code>pileup</code> the pileups of the individual reads. These
-          three can be combined.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
+          three can be combined.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
           Controls the vertical size and spacing between stacked
           elements. The number defines the proportion of the total
           available space for the stack that is used to draw the glyphs.
@@ -1201,7 +1201,7 @@ The genome track plots in this package are all highly customizable by
           spacing above and below the glyph. Defaults to 0.75.</p></dd>         <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
-          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
@@ -1236,7 +1236,7 @@ The genome track plots in this package are all highly customizable by
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
@@ -1266,10 +1266,10 @@ The genome track plots in this package are all highly customizable by
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
-    <dt>AlignedReadTrack</dt><dd><p>:       <dl'>        <dt></dt><dd><p><code>detail="coverage"</code>: the amount of detail to plot
+    <dt>AlignedReadTrack</dt><dd><p>:       <dl>        <dt></dt><dd><p><code>detail="coverage"</code>: the amount of detail to plot
           the data. Either <code>coverage</code> to show the coverage only,
           or <code>reads</code> to show individual reads. For large data sets
           the latter can be very inefficient. Please note that <code>reads</code>
@@ -1283,7 +1283,7 @@ The genome track plots in this package are all highly customizable by
           indicator.</p></dd>         <dt></dt><dd><p><code>size=NULL</code>: the relative size of the track.
           Defaults to size selection based on the underlying data. Can
           be overridden in the <code><a href='plotTracks.html'>plotTracks</a></code> function.</p></dd>         <dt></dt><dd><p><code>collapse=FALSE</code>: collapse overlapping ranges and
-          aggregate the underlying data.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl'>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
+          aggregate the underlying data.</p></dd> </dl>       <b><em>Inherited from class StackedTrack:</em></b>       <dl>        <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
           Controls the vertical size and spacing between stacked
           elements. The number defines the proportion of the total
           available space for the stack that is used to draw the glyphs.
@@ -1293,7 +1293,7 @@ The genome track plots in this package are all highly customizable by
           spacing above and below the glyph. Defaults to 0.75.</p></dd>         <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
-          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+          stack and vice versa.</p></dd> </dl>       <b><em>Inherited from class GdObject:</em></b>       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
           character scalar. The background color of the content panel.</p></dd>         <dt></dt><dd><p><code>background.title="lightgray"</code>: Integer or character
@@ -1332,7 +1332,7 @@ The genome track plots in this package are all highly customizable by
           all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the
           track when plotting.</p></dd>         <dt></dt><dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting
           of a grid.</p></dd>         <dt></dt><dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the
-          number of horizontal grid lines, see <code>panel.grid</code>
+          number of horizontal grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd>         <dt></dt><dd><p><code>lineheight=1</code>: Numeric scalar. The font line
           height for all text, unless a more specific definition exists.</p></dd>         <dt></dt><dd><p><code>lty.grid="solid"</code>: Integer or character scalar.
           Default line type for grid lines, both when <code>type=="g"</code>
@@ -1369,13 +1369,16 @@ The genome track plots in this package are all highly customizable by
           The same holds true for axes. Note that the the title panel
           background color could be set to transparent in order to
           completely hide it.</p></dd>         <dt></dt><dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the
-          number of vertical grid lines, see <code>panel.grid</code>
+          number of vertical grid lines, see <code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code>
           for details.</p></dd> </dl></p></dd> 
 
   
 </dl> 
 
 
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Florian Hahne</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -1389,28 +1392,31 @@ The genome track plots in this package are all highly customizable by
 <p><code><a href='DisplayPars-class.html'>displayPars</a></code></p>
 <p><code><a href='grouping.html'>grouping</a></code></p>
 <p><code>horizonplot</code></p>
-<p><code>panel.bwplot</code></p>
-<p><code>panel.grid</code></p>
-<p><code>panel.loess</code></p>
-<p><code>panel.xyplot</code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.bwplot.html'>panel.bwplot</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.functions.html'>panel.grid</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.loess.html'>panel.loess</a></code></p>
+<p><code><a href='https://rdrr.io/pkg/lattice/man/panel.xyplot.html'>panel.xyplot</a></code></p>
 <p><code><a href='plotTracks.html'>plotTracks</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Which scheme is used?</span>
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"Gviz.scheme"</span>)</div><div class='output co'>#&gt; [1] "default"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"Gviz.scheme"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "default"</div><div class='input'>
 <span class='co'>## Change default settings for GeneRegionTrack</span>
-<span class='no'>scheme</span> <span class='kw'>&lt;-</span> <span class='fu'>getScheme</span>()
-<span class='no'>scheme</span>$<span class='no'>GeneRegionTrack</span>$<span class='no'>fill</span> <span class='kw'>&lt;-</span> <span class='st'>"salmon"</span>
-<span class='no'>scheme</span>$<span class='no'>GeneRegionTrack</span>$<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='no'>scheme</span>$<span class='no'>GeneRegionTrack</span>$<span class='no'>transcriptAnnotation</span> <span class='kw'>&lt;-</span> <span class='st'>"transcript"</span>
+<span class='va'>scheme</span> <span class='op'>&lt;-</span> <span class='fu'>getScheme</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>scheme</span><span class='op'>$</span><span class='va'>GeneRegionTrack</span><span class='op'>$</span><span class='va'>fill</span> <span class='op'>&lt;-</span> <span class='st'>"salmon"</span>
+<span class='va'>scheme</span><span class='op'>$</span><span class='va'>GeneRegionTrack</span><span class='op'>$</span><span class='va'>col</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
+<span class='va'>scheme</span><span class='op'>$</span><span class='va'>GeneRegionTrack</span><span class='op'>$</span><span class='va'>transcriptAnnotation</span> <span class='op'>&lt;-</span> <span class='st'>"transcript"</span>
 
 <span class='co'>## replace default scheme with myScheme</span>
-<span class='fu'>addScheme</span>(<span class='no'>scheme</span>, <span class='st'>"myScheme"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(<span class='kw'>Gviz.scheme</span><span class='kw'>=</span><span class='st'>"myScheme"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"Gviz.scheme"</span>)</div><div class='output co'>#&gt; [1] "myScheme"</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>geneModels</span>)
-<span class='no'>grtrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></span>(<span class='no'>geneModels</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"hg19"</span>, <span class='kw'>chromosome</span><span class='kw'>=</span><span class='st'>"chr7"</span>, <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"Gene Model"</span>)
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>grtrack</span>)</div><div class='img'><img src='settings-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>addScheme</span><span class='op'>(</span><span class='va'>scheme</span>, <span class='st'>"myScheme"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>Gviz.scheme<span class='op'>=</span><span class='st'>"myScheme"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"Gviz.scheme"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "myScheme"</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>geneModels</span><span class='op'>)</span>
+<span class='va'>grtrack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='GeneRegionTrack-class.html'>GeneRegionTrack</a></span><span class='op'>(</span><span class='va'>geneModels</span>, genome<span class='op'>=</span><span class='st'>"hg19"</span>, chromosome<span class='op'>=</span><span class='st'>"chr7"</span>, name<span class='op'>=</span><span class='st'>"Gene Model"</span><span class='op'>)</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>grtrack</span><span class='op'>)</span>
+</div><div class='img'><img src='settings-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -1427,7 +1433,7 @@ The genome track plots in this package are all highly customizable by
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

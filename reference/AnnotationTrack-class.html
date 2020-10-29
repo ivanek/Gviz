@@ -77,7 +77,7 @@ A fairly generic track object for arbitrary genomic range annotations,
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.33.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.35.0</span>
       </span>
     </div>
 
@@ -130,10 +130,10 @@ A fairly generic track object for arbitrary genomic range annotations,
   add user-defined custom information for each range.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AnnotationTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>start</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>width</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='no'>feature</span>,
-                <span class='no'>group</span>, <span class='no'>id</span>, <span class='no'>strand</span>, <span class='no'>chromosome</span>, <span class='no'>genome</span>,
-                <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>, <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"AnnotationTrack"</span>, <span class='no'>fun</span>,
-                <span class='no'>selectFun</span>, <span class='no'>importFunction</span>, <span class='kw'>stream</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>AnnotationTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='cn'>NULL</span>, start<span class='op'>=</span><span class='cn'>NULL</span>, end<span class='op'>=</span><span class='cn'>NULL</span>, width<span class='op'>=</span><span class='cn'>NULL</span>, <span class='va'>feature</span>,
+                <span class='va'>group</span>, <span class='va'>id</span>, <span class='va'>strand</span>, <span class='va'>chromosome</span>, <span class='va'>genome</span>,
+                stacking<span class='op'>=</span><span class='st'>"squish"</span>, name<span class='op'>=</span><span class='st'>"AnnotationTrack"</span>, <span class='va'>fun</span>,
+                <span class='va'>selectFun</span>, <span class='va'>importFunction</span>, stream<span class='op'>=</span><span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,7 +147,7 @@ A fairly generic track object for arbitrary genomic range annotations,
     to create the object has to be provided as individual function
     arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
-<p></p><dl'>
+<p></p><dl>
 
       <dt></dt><dd><p>A <code>GRanges</code> object: the genomic ranges for the
     <code>Annotation</code> track as well as the optional additional
@@ -233,8 +233,8 @@ A fairly generic track object for arbitrary genomic range annotations,
     <tr>
       <th>strand</th>
       <td><p>Character vector, the strand information for the
-    individual track items. It may be provided in the form <code>+</code> for
-    the Watson strand, <code>-</code> for the Crick strand or <code>*</code> for
+    individual track items. It may be provided in the form <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> for
+    the Watson strand, <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code> for the Crick strand or <code><a href='https://rdrr.io/r/base/Arithmetic.html'>*</a></code> for
     either one of the two. Needs to be of equal length as the provided
     genomic coordinates, or of length 1. Please note that grouped items
     need to be on the same strand, and erroneous entries will result in
@@ -435,7 +435,7 @@ A fairly generic track object for arbitrary genomic range annotations,
 
     
   
-<p></p><dl'>
+<p></p><dl>
   
     <dt><code>stacking</code>:</dt><dd><p>Object of class <code>"character"</code>,
       inherited from class <code><a href='StackedTrack-class.html'>StackedTrack</a></code></p></dd>
@@ -491,46 +491,46 @@ A fairly generic track object for arbitrary genomic range annotations,
 <p>In the following code chunks, <code>obj</code> is considered to be an object
   of class <code>AnnotationTrack</code> or <code>DetailsAnnotationTrack</code>.</p>  
 <p><b><em>Exported in the name space:</em></b></p>  
-<p></p><dl'>
+<p></p><dl>
     
     <dt>group</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: extract
-      the group membership for all track items.      <em>Usage:</em>      <code>group(GdObject)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>group(obj)</code></p></dd></dl></p></dd>
+      the group membership for all track items.      <em>Usage:</em>      <code>group(GdObject)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>group(obj)</code></p></dd></dl></p></dd>
         
     <dt>group&lt;-</dt><dd><p><code>signature(GdObject="AnnotationTrack",
       value="character")</code>: replace the grouping information for track
       items. The replacement value must be a factor of appropriate
-      length or another vector that can be coerced into such.      <em>Usage:</em>      <code>group&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>group(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      length or another vector that can be coerced into such.      <em>Usage:</em>      <code>group&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>group(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
         
     <dt>identifier</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>:
       return track item identifiers. Depending on the setting of the
       optional argument <code>lowest</code>, these are either the group
-      identifiers or the individual item identifiers.      <em>Usage:</em>      <code>identifier(GdObject, lowest=FALSE)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>lowest</code>: return the lowest-level identifier, i.e.,
+      identifiers or the individual item identifiers.      <em>Usage:</em>      <code>identifier(GdObject, lowest=FALSE)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>lowest</code>: return the lowest-level identifier, i.e.,
     the item IDs, or the higher level group IDs which do not have to
-    be unqiue.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>identifier(obj)</code></p></dd>    <dt></dt><dd><p><code>identifier(obj, lowest=TRUE)</code></p></dd></dl></p></dd>
+    be unqiue.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>identifier(obj)</code></p></dd>    <dt></dt><dd><p><code>identifier(obj, lowest=TRUE)</code></p></dd></dl></p></dd>
         
     <dt>identifier&lt;-</dt><dd><p><code>signature(GdObject="AnnotationTrack",
     value="character")</code>: Set the track item identifiers. The
       replacement value has to be a character vector of appropriate
       length. This always replaces the group-level identifiers, so
-      essentially it is similar to <code>groups&lt;-</code>.      <em>Usage:</em>      <code>identifier&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>identifier(obj) &lt;- c("foo", "bar")</code></p></dd></dl></p></dd>
+      essentially it is similar to <code>groups&lt;-</code>.      <em>Usage:</em>      <code>identifier&lt;-(GdObject, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>identifier(obj) &lt;- c("foo", "bar")</code></p></dd></dl></p></dd>
   
 </dl>
 
 <p><b><em>Internal methods:</em></b></p>  
-<p></p><dl'>
+<p></p><dl>
     
     <dt>coerce</dt><dd><p><code>signature(from="AnnotationTrack",
     to="UCSCData")</code>: coerce to a <code>UCSCData</code> object for export to
-      the UCSC genome browser.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "UCSCData")</code></p></dd></dl></p></dd>
+      the UCSC genome browser.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "UCSCData")</code></p></dd></dl></p></dd>
 
     <dt>collapseTrack</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>:
       preprocess the track before plotting. This will collapse
       overlapping track items based on the available resolution and
       increase the width and height of all track objects to a minimum
       value to avoid rendering issues. See <code><a href='collapsing.html'>collapsing</a></code> for
-      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
+      details.      <em>Usage:</em>      <code>collapseTrack(GdObject, diff=.pxResolution(coord="x"))</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>diff</code>: the minimum pixel width to display,
       everything below that will be inflated to a width of
-      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
+      <code>diff</code>.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::collapseTrack(obj)</code></p></dd></dl></p></dd>
 
     <dt>drawGD</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: plot the
       object to a graphics device. The return value of this method is
@@ -542,23 +542,23 @@ A fairly generic track object for arbitrary genomic range annotations,
       graphical output is created. Since subsetting of the object can be
       potentially costly, this can be switched off in case subsetting
       has already been performed before or is not necessary.      <em>Usage:</em>      <code><a href='GdObject-class.html'>drawGD(GdObject, minBase, maxBase, prepare=FALSE,
-    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
+    subset=TRUE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>minBase</code>, <code>maxBase</code>: the coordinate range to
       plot.</p></dd>    <dt></dt><dd><p><code>prepare</code>: run method in preparation or in
       production mode.</p></dd>    <dt></dt><dd><p><code>subset</code>: subset the object to the visible region
-    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
+    or skip the potentially expensive subsetting operation.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>Gviz:::drawGD(obj)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, minBase=1, maxBase=100)</code></p></dd>    <dt></dt><dd><p><code>Gviz:::drawGD(obj, prepare=TRUE,
         subset=FALSE)</code></p></dd></dl></p></dd>
 
-    <dt>drawGrid</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, draw grid
+    <dt>drawGrid</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: superpose a grid on top of a track.      <em>Usage:</em>      <code>drawGrid(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, draw grid
       within a certain coordinates range. This needs to be supplied
       for the plotting function to know the current genomic
-      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::drawGrid(obj, from=10, to=100)</code></p></dd></dl></p></dd>
+      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::drawGrid(obj, from=10, to=100)</code></p></dd></dl></p></dd>
 
     <dt>setStacks</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>:
       recompute the stacks based on the available space and on the
-      object's track items and stacking settings.      <em>Usage:</em>      <code>setStacks(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, compute
+      object's track items and stacking settings.      <em>Usage:</em>      <code>setStacks(GdObject, from, to)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: integer scalars, compute
       stacking within a certain coordinates range. This needs to be
       supplied for the plotting function to know the current genomic
-      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::setStacks(obj, from=1, to=100)</code></p></dd></dl></p></dd>
+      coordinates.</p></dd></dl>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::setStacks(obj, from=1, to=100)</code></p></dd></dl></p></dd>
     
     <dt>initialize</dt><dd><p><code>signature(.Object="AnnotationTrack")</code>:
       initialize the object</p></dd>
@@ -570,31 +570,31 @@ A fairly generic track object for arbitrary genomic range annotations,
 </dl>
 
 <p><b><em>Inherited methods:</em></b></p>
-<p></p><dl'>
+<p></p><dl>
       
     <dt>stacking</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: return
-      the current stacking type.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacking(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>stacking(obj)</a></code></p></dd></dl></p></dd>
+      the current stacking type.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacking(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>stacking(obj)</a></code></p></dd></dl></p></dd>
         
     <dt>stacking&lt;-</dt><dd><p><code>signature(GdObject="AnnotationTrack",
       value="character")</code>: set the object's stacking type to one in
-      <code><a href='https://rdrr.io/r/base/c.html'>c(hide, dense, squish, pack,full)</a></code>.      <em>Usage:</em>      <code>stacking&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>stacking(obj) &lt;- "squish" </code></p></dd></dl></p></dd>
+      <code><a href='https://rdrr.io/r/base/c.html'>c(hide, dense, squish, pack,full)</a></code>.      <em>Usage:</em>      <code>stacking&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>stacking(obj) &lt;- "squish" </code></p></dd></dl></p></dd>
 
     <dt>stacks</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: return
-      the stack indices for each track item.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacks(GdObject)</a></code>      <em>Examples:</em>      <dl'>          <dt></dt><dd><p><code>Gviz:::stacks(obj)</code></p></dd></dl></p></dd>
+      the stack indices for each track item.      <em>Usage:</em>      <code><a href='StackedTrack-class.html'>stacks(GdObject)</a></code>      <em>Examples:</em>      <dl>          <dt></dt><dd><p><code>Gviz:::stacks(obj)</code></p></dd></dl></p></dd>
     
     <dt>[</dt><dd><p><code>signature(x="AnnotationTrack", i="ANY", j="ANY",
     drop="ANY")</code>: subset the items in the <code>AnnotationTrack</code>
       object. This is essentially similar to subsetting of the
       <code>GRanges</code> object in the <code>range</code>
       slot. For most applications, the <code>subset</code> method may be
-      more appropriate.      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices, <code>j</code> is
-      ignored.</p></dd>    <dt></dt><dd><p><code>drop</code>: argument is ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
+      more appropriate.      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>i</code>, <code>j</code>: subsetting indices, <code>j</code> is
+      ignored.</p></dd>    <dt></dt><dd><p><code>drop</code>: argument is ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>obj[1:5]</code></p></dd></dl></p></dd>
       
       
     <dt>chromosome</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>:
        return the currently active chromosome for which the track is
        defined. For consistancy with other Bioconductor packages, the
-       <code>isActiveSeq</code> alias is also provided.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
+       <code>isActiveSeq</code> alias is also provided.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>chromosome(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>chromosome(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>chromosome&lt;-</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>:
        replace the value of the track's active chromosome. This has to
@@ -602,109 +602,109 @@ A fairly generic track object for arbitrary genomic range annotations,
        scalar that can be reasonably coerced into one, unless
        <code><a href='https://rdrr.io/r/base/options.html'>options(ucscChromosomeNames=FALSE)</a></code>. For consistancy with
        other Bioconductor packages, the <code>isActiveSeq&lt;-</code> alias is
-       also provided.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
+       also provided.      <em>Usage:</em>      <code>chromosome&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>chromosome(obj) &lt;- "chr12"</code></p></dd></dl></p></dd>
     
     <dt>start, end, width</dt><dd><p><code>signature(x="AnnotationTrack")</code>: the
       start or end coordinates of the track items, or their width in
-      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
+      genomic coordinates.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/stats/start.html'>start(x)</a></code>      <code><a href='https://rdrr.io/r/stats/start.html'>end(x)</a></code>      <code>width(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>start(obj)</a></code></p></dd>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/stats/start.html'>end(obj)</a></code></p></dd>    <dt></dt><dd><p><code>width(obj)</code></p></dd></dl></p></dd>
 
     <dt>start&lt;-, end&lt;-, width&lt;-</dt><dd><p><code>signature(x="AnnotationTrack")</code>:
       replace the start or end coordinates of the track items, or their
-      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl'>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
+      width.      <em>Usage:</em>      <code>start&lt;-(x, value)</code>      <code>end&lt;-(x, value)</code>      <code>width&lt;-(x, value)</code>      <em>Additional Arguments:</em>    <dl>      <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>start(obj) &lt;- 1:10</code></p></dd>    <dt></dt><dd><p><code>end(obj) &lt;- 20:30</code></p></dd>    <dt></dt><dd><p><code>width(obj) &lt;- 1</code></p></dd></dl></p></dd>
     
     <dt>position</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: the
       arithmetic mean of the track item's coordionates, i.e.,
-      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
+      <code>(end(obj)-start(obj))/2</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>position(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>position(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>feature</dt><dd><p><code>signature(GdObject="AnnotationTrack")</code>: return the
       grouping information for track items. For certain sub-classes,
       groups may be indicated by different color schemes when
-      plotting. See <code><a href='grouping.html'>grouping</a></code> for details.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
+      plotting. See <code><a href='grouping.html'>grouping</a></code> for details.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>feature(GdObject)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>feature(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>feature&lt;-</dt><dd><p><code>signature(gdObject="AnnotationTrack",
       value="character")</code>: set the grouping information for track
       items. This has to be a factor vector (or another type of vector
       that can be coerced into one) of the same length as the number of
       items in the <code>AnnotationTrack</code>. See <code><a href='grouping.html'>grouping</a></code>
-      for details.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
+      for details.      <em>Usage:</em>      <code>feature&lt;-(GdObject, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>feature(obj) &lt;- c("a", "a", "b", "c", "a")</code></p></dd></dl></p></dd>
     
-    <dt>genome</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the track's genome.       <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
+    <dt>genome</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the track's genome.       <em>Usage:</em>      <code>genome(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj)</code></p></dd></dl></p></dd>
 
     <dt>genome&lt;-</dt><dd><p><code>signature(x="AnnotationTrack")</code>: set the track's
       genome. Usually this has to be a valid UCSC identifier, however
-      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
+      this is not formally enforced here.      <em>Usage:</em>      <code>genome&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>genome(obj) &lt;- "mm9"</code></p></dd></dl></p></dd>
 
     <dt>length</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the number
-      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
+      of items in the track.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/length.html'>length(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/length.html'>length(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>range</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the genomic
       coordinates for the track as an object of class
-      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
+      <code>IRanges</code>.      <em>Usage:</em>      <code><a href='RangeTrack-class.html'>range(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='RangeTrack-class.html'>range(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>ranges</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the genomic
       coordinates for the track along with all additional annotation
-      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
+      information as an object of class <code>GRanges</code>.      <em>Usage:</em>      <code>ranges(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>ranges(obj)</code></p></dd></dl></p></dd>
     
     <dt>split</dt><dd><p><code>signature(x="AnnotationTrack")</code>: split a
       <code>AnnotationTrack</code> object by an appropriate factor vector (or
       another vector that can be coerced into one). The output of this
       operation is a list of objects of the same class as the input
-      object, all inheriting from class <code>AnnotationTrack</code>.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
+      object, all inheriting from class <code>AnnotationTrack</code>.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/split.html'>split(x, f, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>f</code>: the splitting factor.</p></dd>    <dt></dt><dd><p><code>...</code>: all further arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/split.html'>split(obj, c("a", "a", "b", "c", "a"))</a></code></p></dd></dl></p></dd>
     
     <dt>strand</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return a vector of
       strand specifiers for all track items, in the form '+' for the
       Watson strand, '-' for the Crick strand or '*' for either of the
-      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
+      two.      <em>Usage:</em>      <code>strand(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj)</code></p></dd></dl></p></dd>
     
     <dt>strand&lt;-</dt><dd><p><code>signature(x="AnnotationTrack")</code>: replace the
       strand information for the track items. The replacement value
-      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
+      needs to be an appropriate scalar or vector of strand values.      <em>Usage:</em>      <code>strand&lt;-(x, value)</code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>value</code>: replacement value.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>strand(obj) &lt;- "+"</code></p></dd></dl></p></dd>
     
     <dt>values</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return all
       additional annotation information except for the genomic coordinates
-      for the track items as a data.frame.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
+      for the track items as a data.frame.      <em>Usage:</em>      <code>values(x)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>values(obj)</code></p></dd></dl></p></dd>
     
     <dt>coerce</dt><dd><p><code>signature(from="AnnotationTrack",
     to="data.frame")</code>: coerce the <code>GRanges</code>
-    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
+    object in the <code>range</code> slot into a regular data.frame.       <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>as(obj, "data.frame")</code></p></dd></dl></p></dd>
 
     <dt>subset</dt><dd><p><code>signature(x="AnnotationTrack")</code>: subset a
-      <code>AnnotationTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
+      <code>AnnotationTrack</code> by coordinates and sort if necessary.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/subset.html'>subset(x, from, to, sort=FALSE, ...)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>from</code>, <code>to</code>: the coordinates range to subset
       to.</p></dd>    <dt></dt><dd><p><code>sort</code>: sort the object after subsetting. Usually
-      not necessary.</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
+      not necessary.</p></dd>    <dt></dt><dd><p><code>...</code>: additional arguments are ignored.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/subset.html'>subset(obj, from=10, to=20, sort=TRUE)</a></code></p></dd></dl></p></dd>
     
     <dt>displayPars</dt><dd><p><code>signature(x="AnnotationTrack",
       name="character")</code>: list the value of the display parameter
       <code>name</code>. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>displayPars(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj, "col")</a></code></p></dd></dl></p></dd>
       
     
     <dt>displayPars</dt><dd><p><code>signature(x="AnnotationTrack",
       name="missing")</code>: list the value of all available display
       parameters. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>displayPars(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>getPar</dt><dd><p><code>signature(x="AnnotationTrack", name="character")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
+      customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>getPar(x, name)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj, "col")</a></code></p></dd></dl></p></dd>
     
     <dt>getPar</dt><dd><p><code>signature(x="AnnotationTrack", name="missing")</code>:
       alias for the <code>displayPars</code> method. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>getPar(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>displayPars&lt;-</dt><dd><p><code>signature(x="AnnotationTrack",
       value="list")</code>: set display parameters using the values of the
       named list in <code>value</code>. See <code><a href='settings.html'>settings</a></code> for details
-      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
+      on display parameters and customization.      <em>Usage:</em>      <code>displayPars&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>displayPars(obj) &lt;- list(col="red", lwd=2)</code></p></dd></dl></p></dd>
     
     <dt>setPar</dt><dd><p><code>signature(x="AnnotationTrack", value="character")</code>:
       set the single display parameter <code>name</code> to <code>value</code>. Note
       that display parameters in the <code>AnnotationTrack</code> class are
       pass-by-reference, so no re-assignmnet to the symbol <code>obj</code> is
       necessary. See <code><a href='settings.html'>settings</a></code> for details on display
-      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl'>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
+      parameters and customization.      <em>Usage:</em>      <code><a href='DisplayPars-class.html'>setPar(x, name, value)</a></code>      <em>Additional Arguments:</em>      <dl>    <dt></dt><dd><p><code>name</code>: the name of the display parameter to set.</p></dd></dl>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, "col", "red")</a></code></p></dd></dl></p></dd>
     
     <dt>setPar</dt><dd><p><code>signature(x="AnnotationTrack", value="list")</code>: set
       display parameters by the values of the named list in
@@ -712,19 +712,19 @@ A fairly generic track object for arbitrary genomic range annotations,
       <code>AnnotationTrack</code> class are pass-by-reference, so no
       re-assignmnet to the symbol <code>obj</code> is necessary. See
       <code><a href='settings.html'>settings</a></code> for details on display parameters and
-      customization.      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
+      customization.      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='DisplayPars-class.html'>setPar(obj, list(col="red", lwd=2))</a></code></p></dd></dl></p></dd>
     
     <dt>names</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the value of
-      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
+      the <code>name</code> slot.      <em>Usage:</em>      <code><a href='https://rdrr.io/r/base/names.html'>names(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='https://rdrr.io/r/base/names.html'>names(obj)</a></code></p></dd></dl></p></dd>
     
     <dt>names&lt;-</dt><dd><p><code>signature(x="AnnotationTrack", value="character")</code>:
-      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
+      set the value of the <code>name</code> slot.      <em>Usage:</em>      <code>names&lt;-(x, value)</code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code>names(obj) &lt;- "foo"</code></p></dd></dl></p></dd>
 
     <dt>coords</dt><dd><p><code>signature(ImageMap="AnnotationTrack")</code>: return the
-      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
+      coordinates from the internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>coords(ImageMap)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>coords(obj)</a></code></p></dd></dl></p></dd>
 
     <dt>tags</dt><dd><p><code>signature(x="AnnotationTrack")</code>: return the tags from the
-      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl'>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
+      internal image map.      <em>Usage:</em>      <code><a href='GdObject-class.html'>tags(x)</a></code>      <em>Examples:</em>      <dl>    <dt></dt><dd><p><code><a href='GdObject-class.html'>tags(obj)</a></code></p></dd></dl></p></dd>
   
 </dl>
 
@@ -737,7 +737,7 @@ A fairly generic track object for arbitrary genomic range annotations,
   have already been set by one of the optional sub-class initializers,
   which always get precedence over these global defaults. See
   <code><a href='settings.html'>settings</a></code> for details on setting graphical parameters
-  for tracks.</p><dl'>
+  for tracks.</p><dl>
 
     <dt></dt><dd><p><code>arrowHeadMaxWidth=40</code>: Numeric scalar. The maximum
       width of the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd> 
@@ -854,7 +854,7 @@ A fairly generic track object for arbitrary genomic range annotations,
 </dl> 
 
 <p><code>DetailsAnnotationTrack</code> adds the following additional display
-  parameters:</p><dl'>
+  parameters:</p><dl>
 
     <dt></dt><dd><p><code>details.minWidth=100</code>: Numeric scalar. The minium
       width in pixels for a details panel, if less space is available
@@ -915,9 +915,9 @@ A fairly generic track object for arbitrary genomic range annotations,
 <p>Additional display parameters are being inherited from the respective
   parent classes. Note that not all of them may have an effect on the
   plotting of <code>AnnotationTrack</code> objects.</p>
-<p></p><dl'>
+<p></p><dl>
 
-    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>StackedTrack</a></code>:       <dl'>        <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
+    <dt></dt><dd><p><code><a href='StackedTrack-class.html'>StackedTrack</a></code>:       <dl>        <dt></dt><dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse
           the y-ordering of stacked items. I.e., features that are
           plotted on the bottom-most stacks will be moved to the top-most
           stack and vice versa.</p></dd>         <dt></dt><dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.
@@ -929,7 +929,7 @@ A fairly generic track object for arbitrary genomic range annotations,
           and thus one quarter of the available space each is used for
           spacing above and below the glyph. Defaults to 0.75.</p></dd> </dl></p></dd> 
 
-    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl'>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
+    <dt></dt><dd><p><code><a href='GdObject-class.html'>GdObject</a></code>:       <dl>        <dt></dt><dd><p><code>alpha=1</code>: Numeric scalar. The transparency for
           all track items.</p></dd>         <dt></dt><dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency
           for the title panel.</p></dd>         <dt></dt><dd><p><code>background.legend="transparent"</code>: Integer or
           character scalar. The background color for the legend.</p></dd>         <dt></dt><dd><p><code>background.panel="transparent"</code>: Integer or
@@ -997,6 +997,9 @@ A fairly generic track object for arbitrary genomic range annotations,
 </dl> 
 
 
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Florian Hahne, Arne Mueller</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -1018,62 +1021,70 @@ A fairly generic track object for arbitrary genomic range annotations,
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## An empty object</span>
-<span class='fu'>AnnotationTrack</span>()</div><div class='output co'>#&gt; AnnotationTrack 'AnnotationTrack'
+<span class='fu'>AnnotationTrack</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; AnnotationTrack 'AnnotationTrack'
 #&gt; | genome: NA
 #&gt; | active chromosome: chrNA
 #&gt; | annotation features: 0</div><div class='input'>
 <span class='co'>## Construct from individual arguments</span>
-<span class='no'>st</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2000000</span>, <span class='fl'>2070000</span>, <span class='fl'>2100000</span>, <span class='fl'>2160000</span>)
-<span class='no'>ed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2050000</span>, <span class='fl'>2130000</span>, <span class='fl'>2150000</span>, <span class='fl'>2170000</span>)
-<span class='no'>str</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"-"</span>, <span class='st'>"-"</span>)
-<span class='no'>gr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Group1"</span>,<span class='st'>"Group2"</span>,<span class='st'>"Group1"</span>, <span class='st'>"Group3"</span>)
+<span class='va'>st</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2000000</span>, <span class='fl'>2070000</span>, <span class='fl'>2100000</span>, <span class='fl'>2160000</span><span class='op'>)</span>
+<span class='va'>ed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2050000</span>, <span class='fl'>2130000</span>, <span class='fl'>2150000</span>, <span class='fl'>2170000</span><span class='op'>)</span>
+<span class='va'>str</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"-"</span>, <span class='st'>"+"</span>, <span class='st'>"-"</span>, <span class='st'>"-"</span><span class='op'>)</span>
+<span class='va'>gr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group1"</span>,<span class='st'>"Group2"</span>,<span class='st'>"Group1"</span>, <span class='st'>"Group3"</span><span class='op'>)</span>
 
-<span class='no'>annTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>AnnotationTrack</span>(<span class='kw'>start</span><span class='kw'>=</span><span class='no'>st</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='no'>ed</span>, <span class='kw'>strand</span><span class='kw'>=</span><span class='no'>str</span>, <span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>7</span>,
-                            <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"hg19"</span>, <span class='kw'>feature</span><span class='kw'>=</span><span class='st'>"test"</span>, <span class='kw'>group</span><span class='kw'>=</span><span class='no'>gr</span>,
-                            <span class='kw'>id</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"annTrack item"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>),
-                            <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"generic annotation"</span>, <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>)
+<span class='va'>annTrack</span> <span class='op'>&lt;-</span> <span class='fu'>AnnotationTrack</span><span class='op'>(</span>start<span class='op'>=</span><span class='va'>st</span>, end<span class='op'>=</span><span class='va'>ed</span>, strand<span class='op'>=</span><span class='va'>str</span>, chromosome<span class='op'>=</span><span class='fl'>7</span>, 
+                            genome<span class='op'>=</span><span class='st'>"hg19"</span>, feature<span class='op'>=</span><span class='st'>"test"</span>, group<span class='op'>=</span><span class='va'>gr</span>, 
+                            id<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"annTrack item"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>, 
+                            name<span class='op'>=</span><span class='st'>"generic annotation"</span>, stacking<span class='op'>=</span><span class='st'>"squish"</span><span class='op'>)</span>
 
 <span class='co'>## Or from a data.frame</span>
-<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>start</span><span class='kw'>=</span><span class='no'>st</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='no'>ed</span>, <span class='kw'>strand</span><span class='kw'>=</span><span class='no'>str</span>, <span class='kw'>id</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"annTrack item"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>),
-                 <span class='kw'>feature</span><span class='kw'>=</span><span class='st'>"test"</span>, <span class='kw'>group</span><span class='kw'>=</span><span class='no'>gr</span>)
-<span class='no'>annTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>AnnotationTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='no'>df</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"hg19"</span>, <span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>7</span>,
-                            <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"generic annotation"</span>, <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>)
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>start<span class='op'>=</span><span class='va'>st</span>, end<span class='op'>=</span><span class='va'>ed</span>, strand<span class='op'>=</span><span class='va'>str</span>, id<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"annTrack item"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>, 
+                 feature<span class='op'>=</span><span class='st'>"test"</span>, group<span class='op'>=</span><span class='va'>gr</span><span class='op'>)</span>
+<span class='va'>annTrack</span> <span class='op'>&lt;-</span> <span class='fu'>AnnotationTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='va'>df</span>, genome<span class='op'>=</span><span class='st'>"hg19"</span>, chromosome<span class='op'>=</span><span class='fl'>7</span>, 
+                            name<span class='op'>=</span><span class='st'>"generic annotation"</span>, stacking<span class='op'>=</span><span class='st'>"squish"</span><span class='op'>)</span>
 
 <span class='co'>## Or from a GRanges object</span>
-<span class='no'>gr</span> <span class='kw'>&lt;-</span> <span class='fu'>GRanges</span>(<span class='kw'>seqnames</span><span class='kw'>=</span><span class='st'>"chr7"</span>, <span class='kw'>range</span><span class='kw'>=</span><span class='fu'>IRanges</span>(<span class='kw'>start</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>start</span>, <span class='kw'>end</span><span class='kw'>=</span><span class='no'>df</span>$<span class='no'>end</span>),
-              <span class='kw'>strand</span><span class='kw'>=</span><span class='no'>str</span>)
-<span class='fu'>genome</span>(<span class='no'>gr</span>) <span class='kw'>&lt;-</span> <span class='st'>"hg19"</span>
-<span class='fu'>mcols</span>(<span class='no'>gr</span>) <span class='kw'>&lt;-</span> <span class='no'>df</span>[,-(<span class='fl'>1</span>:<span class='fl'>3</span>)]
-<span class='no'>annTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>AnnotationTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='no'>gr</span>, <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"generic annotation"</span>,
-                            <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>)
+<span class='va'>gr</span> <span class='op'>&lt;-</span> <span class='fu'>GRanges</span><span class='op'>(</span>seqnames<span class='op'>=</span><span class='st'>"chr7"</span>, range<span class='op'>=</span><span class='fu'>IRanges</span><span class='op'>(</span>start<span class='op'>=</span><span class='va'>df</span><span class='op'>$</span><span class='va'>start</span>, end<span class='op'>=</span><span class='va'>df</span><span class='op'>$</span><span class='va'>end</span><span class='op'>)</span>, 
+              strand<span class='op'>=</span><span class='va'>str</span><span class='op'>)</span>
+<span class='fu'>genome</span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"hg19"</span>
+<span class='fu'>mcols</span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>df</span><span class='op'>[</span>,<span class='op'>-</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>]</span>
+<span class='va'>annTrack</span> <span class='op'>&lt;-</span> <span class='fu'>AnnotationTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='va'>gr</span>, name<span class='op'>=</span><span class='st'>"generic annotation"</span>, 
+                            stacking<span class='op'>=</span><span class='st'>"squish"</span><span class='op'>)</span>
 
 <span class='co'>## Finally from a GRangesList</span>
-<span class='no'>grl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span>(<span class='no'>gr</span>, <span class='fu'>values</span>(<span class='no'>gr</span>)$<span class='no'>group</span>)
-<span class='fu'>AnnotationTrack</span>(<span class='no'>grl</span>)</div><div class='output co'>#&gt; AnnotationTrack 'AnnotationTrack'
+<span class='va'>grl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>gr</span>, <span class='fu'>values</span><span class='op'>(</span><span class='va'>gr</span><span class='op'>)</span><span class='op'>$</span><span class='va'>group</span><span class='op'>)</span>
+<span class='fu'>AnnotationTrack</span><span class='op'>(</span><span class='va'>grl</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; AnnotationTrack 'AnnotationTrack'
 #&gt; | genome: hg19
 #&gt; | active chromosome: chr7
 #&gt; | annotation features: 4</div><div class='input'>
 <span class='co'># \dontshow{</span>
 <span class='co'>## For some annoying reason the postscript device does not know about</span>
 <span class='co'>## the sans font</span>
-<span class='kw'>if</span>(!<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())
-{
-<span class='no'>font</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/ps.options.html'>ps.options</a></span>()$<span class='no'>family</span>
-<span class='fu'><a href='DisplayPars-class.html'>displayPars</a></span>(<span class='no'>annTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>fontfamily</span><span class='kw'>=</span><span class='no'>font</span>, <span class='kw'>fontfamily.title</span><span class='kw'>=</span><span class='no'>font</span>)
-}
+<span class='kw'>if</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>{</span>
+<span class='va'>font</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/ps.options.html'>ps.options</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>family</span>
+<span class='fu'><a href='DisplayPars-class.html'>displayPars</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>fontfamily<span class='op'>=</span><span class='va'>font</span>, fontfamily.title<span class='op'>=</span><span class='va'>font</span><span class='op'>)</span>
+<span class='op'>}</span>
 <span class='co'># }</span>
 
 <span class='co'>## Plotting</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>annTrack</span>)</div><div class='img'><img src='AnnotationTrack-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='AnnotationTrack-class-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Track names</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "generic annotation"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>annTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>annTrack</span>)</div><div class='img'><img src='AnnotationTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "generic annotation"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='AnnotationTrack-class-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Subsetting and splitting</span>
-<span class='no'>subTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span>(<span class='no'>annTrack</span>, <span class='kw'>to</span><span class='kw'>=</span><span class='fl'>2155000</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>subTrack</span>)</div><div class='output co'>#&gt; [1] 3</div><div class='input'><span class='no'>subTrack</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]</div><div class='output co'>#&gt; AnnotationTrack 'foo'
+<span class='va'>subTrack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>annTrack</span>, to<span class='op'>=</span><span class='fl'>2155000</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 3</div><div class='input'><span class='va'>subTrack</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; AnnotationTrack 'foo'
 #&gt; | genome: hg19
 #&gt; | active chromosome: chr7
-#&gt; | annotation features: 2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span>(<span class='no'>annTrack</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span>))</div><div class='output co'>#&gt; $`1`
+#&gt; | annotation features: 2</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/split.html'>split</a></span><span class='op'>(</span><span class='va'>annTrack</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $`1`
 #&gt; AnnotationTrack 'foo'
 #&gt; | genome: hg19
 #&gt; | active chromosome: chr7
@@ -1086,22 +1097,31 @@ A fairly generic track object for arbitrary genomic range annotations,
 #&gt; | annotation features: 2
 #&gt; </div><div class='input'>
 <span class='co'>## Accessors</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] 2000000 2070000 2100000 2160000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/start.html'>end</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] 2050000 2130000 2150000 2170000</div><div class='input'><span class='fu'>width</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] 50001 60001 50001 10001</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>position</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] 2025000 2100000 2125000 2165000</div><div class='input'><span class='fu'>width</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='fu'>width</span>(<span class='no'>subTrack</span>)+<span class='fl'>1000</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2000000 2070000 2100000 2160000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/start.html'>end</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2050000 2130000 2150000 2170000</div><div class='input'><span class='fu'>width</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 50001 60001 50001 10001</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>position</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2025000 2100000 2125000 2165000</div><div class='input'><span class='fu'>width</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>width</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span><span class='op'>+</span><span class='fl'>1000</span>
 
-<span class='fu'>strand</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "-" "+" "-" "-"</div><div class='input'><span class='fu'>strand</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"-"</span>
+<span class='fu'>strand</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "-" "+" "-" "-"</div><div class='input'><span class='fu'>strand</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"-"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "chr7"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"chrX"</span>
+<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "chr7"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"chrX"</span>
 
-<span class='fu'>genome</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt;   chr7 
-#&gt; "hg19" </div><div class='input'><span class='fu'>genome</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"mm9"</span>
+<span class='fu'>genome</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   chr7 
+#&gt; "hg19" </div><div class='input'><span class='fu'>genome</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"mm9"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>range</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; IRanges object with 4 ranges and 0 metadata columns:
+<span class='fu'><a href='RangeTrack-class.html'>range</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; IRanges object with 4 ranges and 0 metadata columns:
 #&gt;           start       end     width
 #&gt;       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
 #&gt;   [1]   2000000   2050000     50001
 #&gt;   [2]   2070000   2130000     60001
 #&gt;   [3]   2100000   2150000     50001
-#&gt;   [4]   2160000   2170000     10001</div><div class='input'><span class='fu'>ranges</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; GRanges object with 4 ranges and 4 metadata columns:
+#&gt;   [4]   2160000   2170000     10001</div><div class='input'><span class='fu'>ranges</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; GRanges object with 4 ranges and 4 metadata columns:
 #&gt;       seqnames          ranges strand |     feature       group              id
 #&gt;          &lt;Rle&gt;       &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;character&gt;     &lt;character&gt;
 #&gt;   [1]     chr7 2000000-2050000      - |        test      Group1 annTrack item 1
@@ -1117,24 +1137,33 @@ A fairly generic track object for arbitrary genomic range annotations,
 #&gt;   -------
 #&gt;   seqinfo: 1 sequence from hg19 genome; no seqlengths</div><div class='input'>
 <span class='co'>## Annotation</span>
-<span class='fu'>identifier</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "Group1" "Group2" "Group1" "Group3"</div><div class='input'><span class='fu'>identifier</span>(<span class='no'>annTrack</span>, <span class='st'>"lowest"</span>)</div><div class='output co'>#&gt; [1] "annTrack item 1" "annTrack item 2" "annTrack item 3" "annTrack item 4"</div><div class='input'><span class='fu'>identifier</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"bar"</span>
+<span class='fu'>identifier</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "Group1" "Group2" "Group1" "Group3"</div><div class='input'><span class='fu'>identifier</span><span class='op'>(</span><span class='va'>annTrack</span>, <span class='st'>"lowest"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "annTrack item 1" "annTrack item 2" "annTrack item 3" "annTrack item 4"</div><div class='input'><span class='fu'>identifier</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"bar"</span>
 
-<span class='fu'><a href='RangeTrack-class.html'>feature</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "test" "test" "test" "test"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>feature</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"foo"</span>
+<span class='fu'><a href='RangeTrack-class.html'>feature</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "test" "test" "test" "test"</div><div class='input'><span class='fu'><a href='RangeTrack-class.html'>feature</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"foo"</span>
 
-<span class='fu'>values</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt;   feature  group              id density
+<span class='fu'>values</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   feature  group              id density
 #&gt; 1    test Group1 annTrack item 1       1
 #&gt; 2    test Group2 annTrack item 2       1
 #&gt; 3    test Group1 annTrack item 3       1
 #&gt; 4    test Group3 annTrack item 4       1</div><div class='input'>
 <span class='co'>## Grouping</span>
-<span class='fu'>group</span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "Group1" "Group2" "Group1" "Group3"</div><div class='input'><span class='fu'>group</span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"Group 1"</span>
-<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span>(<span class='no'>subTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"chr7"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>subTrack</span>)</div><div class='img'><img src='AnnotationTrack-class-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>group</span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "Group1" "Group2" "Group1" "Group3"</div><div class='input'><span class='fu'>group</span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"Group 1"</span>
+<span class='fu'><a href='RangeTrack-class.html'>chromosome</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"chr7"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>subTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='AnnotationTrack-class-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## Stacking</span>
-<span class='fu'><a href='StackedTrack-class.html'>stacking</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; [1] "squish"</div><div class='input'><span class='fu'><a href='StackedTrack-class.html'>stacking</a></span>(<span class='no'>annTrack</span>) <span class='kw'>&lt;-</span> <span class='st'>"dense"</span>
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>annTrack</span>)</div><div class='img'><img src='AnnotationTrack-class-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='StackedTrack-class.html'>stacking</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "squish"</div><div class='input'><span class='fu'><a href='StackedTrack-class.html'>stacking</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='st'>"dense"</span>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='AnnotationTrack-class-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## coercion</span>
-<span class='fu'>as</span>(<span class='no'>annTrack</span>, <span class='st'>"data.frame"</span>)</div><div class='output co'>#&gt;   X.seqnames X.start   X.end X.width X.strand X.feature X.group            X.id
+<span class='fu'>as</span><span class='op'>(</span><span class='va'>annTrack</span>, <span class='st'>"data.frame"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   X.seqnames X.start   X.end X.width X.strand X.feature X.group            X.id
 #&gt; 1       chr7 2000000 2050000   50001        -      test  Group1 annTrack item 1
 #&gt; 2       chr7 2070000 2130000   60001        +      test  Group2 annTrack item 2
 #&gt; 3       chr7 2100000 2150000   50001        -      test  Group1 annTrack item 3
@@ -1143,7 +1172,8 @@ A fairly generic track object for arbitrary genomic range annotations,
 #&gt; 1         1    test Group1 annTrack item 1       1
 #&gt; 2         1    test Group2 annTrack item 2       1
 #&gt; 3         1    test Group1 annTrack item 3       1
-#&gt; 4         1    test Group3 annTrack item 4       1</div><div class='input'><span class='fu'>as</span>(<span class='no'>annTrack</span>, <span class='st'>"UCSCData"</span>)</div><div class='output co'>#&gt; UCSC track 'foo'
+#&gt; 4         1    test Group3 annTrack item 4       1</div><div class='input'><span class='fu'>as</span><span class='op'>(</span><span class='va'>annTrack</span>, <span class='st'>"UCSCData"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; UCSC track 'foo'
 #&gt; UCSCData object with 4 ranges and 3 metadata columns:
 #&gt;       seqnames          ranges strand |              id            name
 #&gt;          &lt;Rle&gt;       &lt;IRanges&gt;  &lt;Rle&gt; |     &lt;character&gt;     &lt;character&gt;
@@ -1160,11 +1190,16 @@ A fairly generic track object for arbitrary genomic range annotations,
 #&gt;   -------
 #&gt;   seqinfo: 1 sequence from an unspecified genome; no seqlengths</div><div class='input'>
 <span class='co'>## HTML image map</span>
-<span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='no'>annTrack</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>annTrack</span>)$<span class='no'>foo</span></div><div class='img'><img src='AnnotationTrack-class-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='GdObject-class.html'>coords</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt;                        x1   y1       x2    y2
-#&gt; annTrack item 1  38.10304 67.5 171.2010 436.5
-#&gt; annTrack item 3 304.29899 67.5 437.3970 436.5
-#&gt; annTrack item 2 224.44021 67.5 384.1578 436.5
-#&gt; annTrack item 4 464.01657 67.5 490.6362 436.5</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span>(<span class='no'>annTrack</span>)</div><div class='output co'>#&gt; $fill
+<span class='fu'><a href='GdObject-class.html'>coords</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='va'>annTrack</span> <span class='op'>&lt;-</span> <span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span><span class='op'>$</span><span class='va'>foo</span>
+</div><div class='img'><img src='AnnotationTrack-class-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='GdObject-class.html'>coords</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                        x1   y1       x2    y2
+#&gt; annTrack item 1  38.31359 64.5 164.3644 415.5
+#&gt; annTrack item 3 290.41525 64.5 416.4661 415.5
+#&gt; annTrack item 2 214.78475 64.5 366.0457 415.5
+#&gt; annTrack item 4 441.67625 64.5 466.8864 415.5</div><div class='input'><span class='fu'><a href='GdObject-class.html'>tags</a></span><span class='op'>(</span><span class='va'>annTrack</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $fill
 #&gt; annTrack item 1 annTrack item 3 annTrack item 2 annTrack item 4 
 #&gt;     "lightblue"     "lightblue"     "lightblue"     "lightblue" 
 #&gt; 
@@ -1216,14 +1251,14 @@ A fairly generic track object for arbitrary genomic range annotations,
 #&gt; [1] "Group1" "Group1" "Group2" "Group3"
 #&gt; </div><div class='input'>
 <span class='co'>## DetailsAnnotationTrack</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lattice</span>) <span class='co'># need to use grid grapics</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://lattice.r-forge.r-project.org/'>lattice</a></span><span class='op'>)</span> <span class='co'># need to use grid grapics</span>
 
 <span class='co'>## generate two random distributions per row (probe/feature)</span>
 <span class='co'>## the difference between the distributions increases from probe 1 to 4</span>
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span>(<span class='fl'>400</span>, <span class='fl'>1</span>)), <span class='kw'>ncol</span><span class='kw'>=</span><span class='fl'>100</span>)
-<span class='no'>m</span>[,<span class='fl'>51</span>:<span class='fl'>100</span>] <span class='kw'>&lt;-</span> <span class='no'>m</span>[,<span class='fl'>51</span>:<span class='fl'>100</span>] + <span class='fl'>0</span>:<span class='fl'>3</span>
+<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>400</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>, ncol<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
+<span class='va'>m</span><span class='op'>[</span>,<span class='fl'>51</span><span class='op'>:</span><span class='fl'>100</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>m</span><span class='op'>[</span>,<span class='fl'>51</span><span class='op'>:</span><span class='fl'>100</span><span class='op'>]</span> <span class='op'>+</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>3</span>
 <span class='co'>## rownames must be accessible by AnnotationTrack element identifier</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>m</span>) <span class='kw'>&lt;-</span> <span class='fu'>identifier</span>(<span class='no'>annTrack</span>, <span class='st'>"lowest"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>m</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'>identifier</span><span class='op'>(</span><span class='va'>annTrack</span>, <span class='st'>"lowest"</span><span class='op'>)</span>
 
 <span class='co'>## create a lattice density plot for the values (signals) of the two groups</span>
 <span class='co'>## as the chart must be placed into a pre-set grid view port we have to use</span>
@@ -1233,25 +1268,27 @@ A fairly generic track object for arbitrary genomic range annotations,
 <span class='co'>## Note, in this example 'm' will be found in the environment the 'details'</span>
 <span class='co'>## function is defined in. To avoid overwriting 'm' you should use a closure</span>
 <span class='co'>## or environment to access 'm'. </span>
-<span class='no'>details</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>identifier</span>, <span class='no'>...</span>) {
-    <span class='no'>d</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>signal</span><span class='kw'>=</span><span class='no'>m</span>[<span class='no'>identifier</span>,], <span class='kw'>group</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"grp1"</span>,<span class='st'>"grp2"</span>), <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>50</span>))
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/lattice/man/histogram.html'>densityplot</a></span>(~<span class='no'>signal</span>, <span class='kw'>group</span><span class='kw'>=</span><span class='no'>group</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>d</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='no'>identifier</span>,
-    <span class='kw'>scales</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>draw</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>x</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>draw</span><span class='kw'>=</span><span class='fl'>TRUE</span>)), <span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>""</span>, <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>""</span>,
-    ), <span class='kw'>newpage</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>prefix</span><span class='kw'>=</span><span class='st'>"plot"</span>)
-}
+<span class='va'>details</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>identifier</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='va'>d</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>signal<span class='op'>=</span><span class='va'>m</span><span class='op'>[</span><span class='va'>identifier</span>,<span class='op'>]</span>, group<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grp1"</span>,<span class='st'>"grp2"</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/histogram.html'>densityplot</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>signal</span>, group<span class='op'>=</span><span class='va'>group</span>, data<span class='op'>=</span><span class='va'>d</span>, main<span class='op'>=</span><span class='va'>identifier</span>,
+    scales<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>draw<span class='op'>=</span><span class='cn'>FALSE</span>, x<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>draw<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>, ylab<span class='op'>=</span><span class='st'>""</span>, xlab<span class='op'>=</span><span class='st'>""</span>,
+    <span class='op'>)</span>, newpage<span class='op'>=</span><span class='cn'>FALSE</span>, prefix<span class='op'>=</span><span class='st'>"plot"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='no'>deTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>AnnotationTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='no'>gr</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"hg19"</span>, <span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>7</span>,
-   <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"generic annotation with details per entry"</span>, <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>,
-   <span class='kw'>fun</span><span class='kw'>=</span><span class='no'>details</span>, <span class='kw'>details.ratio</span><span class='kw'>=</span><span class='fl'>1</span>)
+<span class='va'>deTrack</span> <span class='op'>&lt;-</span> <span class='fu'>AnnotationTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='va'>gr</span>, genome<span class='op'>=</span><span class='st'>"hg19"</span>, chromosome<span class='op'>=</span><span class='fl'>7</span>,
+   name<span class='op'>=</span><span class='st'>"generic annotation with details per entry"</span>, stacking<span class='op'>=</span><span class='st'>"squish"</span>,
+   fun<span class='op'>=</span><span class='va'>details</span>, details.ratio<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>deTrack</span>)</div><div class='img'><img src='AnnotationTrack-class-6.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
-<span class='no'>deTrack</span> <span class='kw'>&lt;-</span> <span class='fu'>AnnotationTrack</span>(<span class='kw'>range</span><span class='kw'>=</span><span class='no'>gr</span>, <span class='kw'>genome</span><span class='kw'>=</span><span class='st'>"hg19"</span>, <span class='kw'>chromosome</span><span class='kw'>=</span><span class='fl'>7</span>,
-   <span class='kw'>name</span><span class='kw'>=</span><span class='st'>"generic annotation with details per entry"</span>,
-   <span class='kw'>stacking</span><span class='kw'>=</span><span class='st'>"squish"</span>,<span class='kw'>fun</span><span class='kw'>=</span><span class='no'>details</span>,
-    <span class='kw'>details.ratio</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>selectFun</span><span class='kw'>=</span><span class='kw'>function</span>(<span class='no'>...</span>){<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>), <span class='fl'>1</span>)})
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>deTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='AnnotationTrack-class-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span>
+<span class='va'>deTrack</span> <span class='op'>&lt;-</span> <span class='fu'>AnnotationTrack</span><span class='op'>(</span>range<span class='op'>=</span><span class='va'>gr</span>, genome<span class='op'>=</span><span class='st'>"hg19"</span>, chromosome<span class='op'>=</span><span class='fl'>7</span>,
+   name<span class='op'>=</span><span class='st'>"generic annotation with details per entry"</span>,
+   stacking<span class='op'>=</span><span class='st'>"squish"</span>,fun<span class='op'>=</span><span class='va'>details</span>,
+    details.ratio<span class='op'>=</span><span class='fl'>1</span>, selectFun<span class='op'>=</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>}</span><span class='op'>)</span>
 
-<span class='fu'><a href='plotTracks.html'>plotTracks</a></span>(<span class='no'>deTrack</span>)</div><div class='img'><img src='AnnotationTrack-class-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='plotTracks.html'>plotTracks</a></span><span class='op'>(</span><span class='va'>deTrack</span><span class='op'>)</span>
+</div><div class='img'><img src='AnnotationTrack-class-7.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -1268,7 +1305,7 @@ A fairly generic track object for arbitrary genomic range annotations,
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
