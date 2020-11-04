@@ -9,7 +9,9 @@
 [![How long since the package was first in a released Bioconductor version](https://bioconductor.org/shields/years-in-bioc/Gviz.svg)](https://bioconductor.org/packages/Gviz) 
 [![Bioconductor-devel Downloads](https://bioconductor.org/shields/downloads/devel/Gviz.svg)](https://bioconductor.org/packages/stats/bioc/Gviz/)
 [![Support site activity in last 6 months: agged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts](https://bioconductor.org/shields/posts/Gviz.svg)](https://support.bioconductor.org/t/gviz/)
-[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+[![License:
+Artistic-2.0](https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg)](https://opensource.org/licenses/Artistic-2.0)
+[![GitHub issues](https://img.shields.io/github/issues/ivanek/Gviz)](https://github.com/ivanek/Gviz/issues)
 <!-- badges: end -->
 
 &nbsp;
