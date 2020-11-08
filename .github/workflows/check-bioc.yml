@@ -236,6 +236,7 @@ jobs:
               dir('check', 'tar.gz$', full.names = TRUE),
               `quit-with-status` = TRUE,
               `no-check-R-ver` = TRUE,
+              `no-check-pkg-size` = TRUE,
               `no-check-bioc-help` = TRUE
           )
         shell: Rscript {0}
@@ -254,7 +255,7 @@ jobs:
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: |
           git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.name "GitHub Actions"
           Rscript -e "pkgdown::deploy_to_branch(new_process = FALSE)"
         shell: bash {0}
         ## Note that you need to run pkgdown::deploy_to_branch(new_process = FALSE)
