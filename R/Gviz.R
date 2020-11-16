@@ -983,7 +983,7 @@
     blist.conf <- if (notch) {
         t(vapply(blist, "[[", "conf", FUN.VALUE = numeric(2L)))
     } else {
-        t(blist.stats[, c(2, 4), drop = FALSE])
+        blist.stats[, c(2, 4), drop = FALSE]
     }
     ybnd <- cbind(
         blist.stats[, 3], blist.conf[, 2], blist.stats[, 4], blist.stats[, 4], blist.conf[, 2],
@@ -3094,10 +3094,7 @@ availableDefaultMapping <- function(file, trackType) {
 
 # temporary fix for providerVersion
 .providerVersion <- function(sequence) {
-  genome <- try(providerVersion(sequence), silent=TRUE)
-  if (is(genome, "try-error")) {
-    genome <- metadata(sequence)$genome
-  }
+  genome <- metadata(sequence)$genome
   if (is.null(genome)) {
     genome <- NA
   }
