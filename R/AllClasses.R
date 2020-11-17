@@ -1217,7 +1217,7 @@ setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start = NULL
     if ((missing(range) || is.null(range)) && is.null(genome) && is.null(chromosome)) {
         return(.Object)
     }
-    ## the diplay parameter defaults
+    ## the display parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "BiomartGeneRegionTrack")
     verb <- list(...)$verbose
