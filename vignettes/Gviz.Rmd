@@ -106,7 +106,10 @@ hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfil
                          !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
 options(timeout=oto)
 
-## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
+## ## clear BiomaRt cache
+## biomaRt::biomartCacheClear()
+
+## ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && 
 ##   !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 ```
@@ -942,22 +945,21 @@ set is plotted for the horizon type for the sake of clarity.]
 ```{r typeGroupedPlots, fig.width=7.5, fig.height=6, echo=FALSE, results='hide'}
 pushViewport(viewport(layout=grid.layout(nrow=9, ncol=1)))
 i <- 1
-for(t in c("a", "s", "confint", "smooth", "histogram", "boxplot", "heatmap", "horizon")) {
-    pushViewport(viewport(layout.pos.col=((i-1)%%1)+1, layout.pos.row=((i-1)%/%1)+1))
-    if(t != "horizon") {
-        names(dTrack) <- t
-        plotTracks(dTrack, type=t, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
-    } else {
-        plotTracks(dtHoriz[c(1,8),], type="horizon", add=TRUE, cex.title=0.8, margin=0.5, showAxis=FALSE, horizon.origin=0.3,
-                   groups=1:2)
-    }
-    i <- i+1
-    popViewport(1)
+for(t in c("a", "s", "confint", "smooth", "histogram", "boxplot", "heatmap", "horizon", "hor. type")) {
+  pushViewport(viewport(layout.pos.col=((i-1)%%1)+1, layout.pos.row=((i-1)%/%1)+1))
+  names(dTrack) <- t
+  if(!t %in% c("horizon", "hor. type")) {
+    plotTracks(dTrack, type=t, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
+  } else if (t == "horizon") {
+    plotTracks(dtHoriz[c(1,8),], type="horizon", add=TRUE, cex.title=0.8, margin=0.5, showAxis=FALSE, horizon.origin=0.3,
+               groups=1:2)
+  } else {
+    plotTracks(dTrack, type="histogram", stackedBars=FALSE, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
+  }
+  i <- i+1
+  popViewport(1)
 }
-pushViewport(viewport(layout.pos.col=((i-1)%%1)+1, layout.pos.row=((i-1)%/%1)+1))
-names(dTrack) <- "hor. hist."
-plotTracks(dTrack, type="histogram", stackedBars=FALSE, add=TRUE, cex.title=0.8, groups=rep(1:2, each=3), margin=0.5)
-popViewport(2)
+popViewport(1)
 names(dTrack) <- "uniform"
 ```
 
