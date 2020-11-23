@@ -113,8 +113,7 @@ export(".chrName",
        "getScheme",
        "plotTracks")
 
-exportClasses("AlignedReadTrack",
-              "AlignmentsTrack",
+exportClasses("AlignmentsTrack",
               "AnnotationTrack",
               "DetailsAnnotationTrack",
               "BiomartGeneRegionTrack",

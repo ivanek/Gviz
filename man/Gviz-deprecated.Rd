@@ -14,6 +14,3 @@
   \itemize{
   }
 }
-
-\seealso{
-}

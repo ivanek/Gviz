@@ -161,19 +161,6 @@
 ##    o x: an object inheriting from class GdObject
 ## Value: the relative vertical space needed for the track
 .verticalSpace <- function(x, totalSpace) {
-    if (is(x, "AlignedReadTrack")) {
-        size <- if (is.null(displayPars(x, "size"))) {
-            type <- match.arg(.dpOrDefault(x, "detail", "coverage"), c("reads", "coverage"))
-            if (type == "read") {
-                  if (stacking(x) %in% c("sqish", "full")) 5 else 1
-              } else {
-                7
-            }
-        } else {
-            displayPars(x, "size")
-        }
-        return(size)
-    }
     if (is(x, "DataTrack") && is.null(displayPars(x, "size"))) {
         type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok = TRUE)
         size <- if (length(type) == 1L) {
@@ -287,8 +274,7 @@
     }
     atrack <- vapply(objects, function(x) {
         is(x, "NumericTrack") ||
-            (is(x, "AlignmentsTrack") && "coverage" %in% match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok = TRUE)) ||
-            (is(x, "AlignedReadTrack") && .dpOrDefault(x, "detail", "coverage") == "coverage")
+            (is(x, "AlignmentsTrack") && "coverage" %in% match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok = TRUE))
     }, FUN.VALUE = logical(1L))
     isOnlyHoriz <- vapply(objects, function(x) {
         res <- FALSE
@@ -388,10 +374,10 @@
         if (any(needAxis)) {
             cex.axis <- structure(vapply(trackList, .dpOrDefault, "cex.axis", 0.6, FUN.VALUE = numeric(1L)), names = nn)
             axTicks <- unlist(lapply(trackList, function(GdObject) {
-                if (!is(GdObject, "NumericTrack") && !is(GdObject, "AlignedReadTrack") && !is(GdObject, "AlignmentsTrack")) {
+                if (!is(GdObject, "NumericTrack") && !is(GdObject, "AlignmentsTrack")) {
                     return(NULL)
                 }
-                yvals <- if (is(GdObject, "AlignedReadTrack")) runValue(coverage(GdObject, strand = "*")) else values(GdObject)
+                yvals <- values(GdObject)
                 ylim <- .dpOrDefault(GdObject, "ylim", if (!is.null(yvals) && length(yvals)) {
                     range(yvals, na.rm = TRUE, finite = TRUE)
                 } else {
@@ -2213,7 +2199,7 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 .makeParMapping <- function() {
     classes <- c(
         "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack", "AlignedReadTrack"
+        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack"
     )
     defs <- try(lapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list")), silent = TRUE)
     if (!is(defs, "try-error") && is.null(.parMappings)) {
@@ -2230,7 +2216,7 @@ availableDisplayPars <- function(class) {
       }
     class <- match.arg(class, c(
         "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack",
+        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", 
         "AlignmentsTrack", "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNAStringSetTrack", "SequenceRNAStringSetTrack"
     ))
     parents <- names(getClassDef(class)@contains)
