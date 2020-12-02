@@ -166,7 +166,10 @@ jobs:
           remotes::install_github("ropensci/bibtex")
           remotes::install_github("ropensci/RefManageR")
           remotes::install_github("cboettig/knitcitations")
-
+          
+          ## install additionall RCurl
+          remotes::install_cran("RCurl")
+          
           ## Pass #1 at installing dependencies
           message(paste('****', Sys.time(), 'pass number 1 at installing dependencies: local dependencies ****'))
           remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE)
