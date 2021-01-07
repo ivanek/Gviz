@@ -1863,7 +1863,7 @@ IdeogramTrack <- function(chromosome = NULL, genome, name = NULL, bands = NULL, 
                     tmp
                 }), env, cenv
             )
-            query <- tryCatch(ucscTableQuery(session, "cytoBandIdeo"), error = function(e) {
+            query <- tryCatch(ucscTableQuery(session, table = "cytoBandIdeo"), error = function(e) {
                 warning(
                     "There doesn't seem to be any cytoband data available for genome '", genome,
                     "' at UCSC or the service is temporarily down. Trying to fetch the chromosome length data."
