@@ -10,7 +10,8 @@ Authors@R: c(person("Florian", "Hahne", role="aut"),
 	 person("Lance", "Parsons", role="aut", email="lparsons@princeton.edu"),
 	 person("Shraddha", "Pai", role="aut", email="shraddha.pai@utoronto.ca"),
 	 person("Thomas", "McCarthy", role="ctb"),
-	 person("Felix", "Ernst", role="ctb"))
+	 person("Felix", "Ernst", role="ctb"),
+	 person("Mike", "Smith", role="ctb"))
 Description: Genomic data analyses requires integrated visualization
     of known genomic information and new experimental data.  Gviz uses
     the biomaRt and the rtracklayer packages to perform live
