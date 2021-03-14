@@ -1072,7 +1072,10 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
                     newDat,
                     do.call(rbind, lapply(2:nrow(sc), function(x) {
                         rm[ind] <- rep(sc[x, ], width(GdObject))
-                        suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE)))[seqSel]
+                        runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
+                        seqSel <- findRun(as.integer(position(GdObject)) - min(GdObject) + 1, runwin)
+                        runValue(runwin)[seqSel]
+                        # suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE)))[seqSel]
                     }))
                 )
             }
