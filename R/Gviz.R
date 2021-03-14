@@ -983,7 +983,7 @@
     blist.conf <- if (notch) {
         t(vapply(blist, "[[", "conf", FUN.VALUE = numeric(2L)))
     } else {
-        t(blist.stats[, c(2, 4), drop = FALSE])
+        blist.stats[, c(2, 4), drop = FALSE]
     }
     ybnd <- cbind(
         blist.stats[, 3], blist.conf[, 2], blist.stats[, 4], blist.stats[, 4], blist.conf[, 2],
