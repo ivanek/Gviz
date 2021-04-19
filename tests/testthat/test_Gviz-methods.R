@@ -120,8 +120,8 @@ test_that("subseq works", {
     expect_identical(as.character(subseq(seqTrack.dna, start=1, end=10)), as.character(DNAString("TAAAGGGACT")))
 
 
-    expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1")), "at least two out of ")
-    expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1), "at least two out of ")
+    expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1")), "Two out of the three in")
+    expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1), "Two out of the three in")
     expect_warning(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=10, width=10)), "All ")
     expect_error(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=NA, end=NA, width=10)), "Two ")
     expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, width=10)), as.character(DNAString("CTANGAGACG")))

@@ -199,10 +199,13 @@ setMethod("subseq", "SequenceTrack", function(x, start = NA, end = NA, width = N
 })
 
 setMethod("subseq", "ReferenceSequenceTrack", function(x, start = NA, end = NA, width = NA) {
+    if (sum(c(is.na(start[1]),is.na(end[1]),is.na(width[1]))) >= 2) {
+      stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
+    }
     if (!is.na(start[1] + end[1] + width[1])) {
         warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
         width <- NA
-    }
+    } 
     ## We want start and end to be set if width is provided
     if (!is.na(width[1])) {
         if (is.na(start) && is.na(end)) {
