@@ -51,6 +51,7 @@ Imports:
     utils
 Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
+    xml2,
     BiocStyle,
     knitr,
     rmarkdown,
