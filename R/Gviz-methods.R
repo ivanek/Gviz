@@ -2605,8 +2605,8 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
     tck <- tckText
     exponent <- if (is.null(.dpOrDefault(GdObject, "exponent"))) {
         exp <- 0
-        while (all(tck[tck > 0] / 10^exp >= 1)) {
-            exp <- exp + 3
+        while (all(abs(tck)[abs(tck) > 0] / 10^exp >= 1)) {
+          exp <- exp + 3
         }
         exp - 3
     } else {
