@@ -2624,7 +2624,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
         tckText <- round(tckText, count + 1)
     }
     return(switch(as.character(exponent),
-        "0" = sprintf("%i", as.integer(tckText)),
+        "0" = sprintf("%s bp", tckText),
         "3" = sprintf("%s kb", tckText),
         "6" = sprintf("%s mb", tckText),
         "9" = sprintf("%s gb", tckText),
