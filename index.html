@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,18 +39,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.37.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.39.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/Gviz.html">Get started</a>
 </li>
@@ -58,7 +54,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ivanek/Gviz/">
+  <a href="https://github.com/ivanek/Gviz/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -77,14 +73,15 @@
   <div class="contents col-md-9">
 
 <p><img src="articles/Gviz-logo.png" align="right" alt="" width="120"></p>
-<div id="gviz---plotting-data-and-annotation-information-along-genomic-coordinates" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#gviz---plotting-data-and-annotation-information-along-genomic-coordinates" class="anchor"></a><em>Gviz</em> - Plotting data and annotation information along genomic coordinates</h1></div>
-<div id="software-status" class="section level2">
-<h2 class="hasAnchor">
-<a href="#software-status" class="anchor"></a>Software status</h2>
+<div class="section level1">
+<div class="page-header"><h1 id="gviz---plotting-data-and-annotation-information-along-genomic-coordinates">
+<em>Gviz</em> - Plotting data and annotation information along genomic coordinates<a class="anchor" aria-label="anchor" href="#gviz---plotting-data-and-annotation-information-along-genomic-coordinates"></a>
+</h1></div>
+<div class="section level2">
+<h2 id="software-status">Software status<a class="anchor" aria-label="anchor" href="#software-status"></a>
+</h2>
 <!-- badges: start -->
-<p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active - The project has reached a stable, usable state and is being actively developed."></a> <a href="https://bioconductor.org/packages/Gviz"><img src="https://bioconductor.org/shields/years-in-bioc/Gviz.svg" alt="How long since the package was first in a released Bioconductor version"></a> <a href="https://bioconductor.org/packages/stats/bioc/Gviz/"><img src="https://bioconductor.org/shields/downloads/devel/Gviz.svg" alt="Bioconductor-devel Downloads"></a> <a href="https://support.bioconductor.org/t/gviz/"><img src="https://bioconductor.org/shields/posts/Gviz.svg" alt="Support site activity in last 6 months: agged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts"></a> <a href="https://opensource.org/licenses/Artistic-2.0"><img src="https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg" alt="License: Artistic-2.0"></a> <a href="https://github.com/ivanek/Gviz/issues"><img src="https://img.shields.io/github/issues/ivanek/Gviz" alt="GitHub issues"></a> <!-- badges: end --></p>
+
 <p> </p>
 <table class="table">
 <colgroup>
@@ -94,46 +91,46 @@
 </colgroup>
 <thead><tr class="header">
 <th align="left"></th>
-<th align="right">Bioc (<a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html">release</a>)</th>
-<th align="right">Bioc (<a href="https://bioconductor.org/packages/devel/bioc/html/Gviz.html">devel</a>)</th>
+<th align="right">Bioc (<a href="https://bioconductor.org/packages/release/bioc/html/Gviz.html" class="external-link">release</a>)</th>
+<th align="right">Bioc (<a href="https://bioconductor.org/packages/devel/bioc/html/Gviz.html" class="external-link">devel</a>)</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">OS</td>
-<td align="right"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz/"><img src="https://bioconductor.org/shields/availability/release/Gviz.svg" alt="Platforms"></a></td>
-<td align="right"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz/"><img src="https://bioconductor.org/shields/availability/devel/Gviz.svg" alt="Platforms"></a></td>
+<td align="right"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz/" class="external-link"><img src="https://bioconductor.org/shields/availability/release/Gviz.svg" alt="Platforms"></a></td>
+<td align="right"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz/" class="external-link"><img src="https://bioconductor.org/shields/availability/devel/Gviz.svg" alt="Platforms"></a></td>
 </tr>
 <tr class="even">
 <td align="left">Bioc Last Update</td>
-<td align="right"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz/"><img src="https://bioconductor.org/shields/lastcommit/release/bioc/Gviz.svg" alt="Bioconductor-release Last Commit"></a></td>
-<td align="right"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz/"><img src="https://bioconductor.org/shields/lastcommit/devel/bioc/Gviz.svg" alt="Bioconductor-devel Last Commit"></a></td>
+<td align="right"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz/" class="external-link"><img src="https://bioconductor.org/shields/lastcommit/release/bioc/Gviz.svg" alt="Bioconductor-release Last Commit"></a></td>
+<td align="right"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz/" class="external-link"><img src="https://bioconductor.org/shields/lastcommit/devel/bioc/Gviz.svg" alt="Bioconductor-devel Last Commit"></a></td>
 </tr>
 <tr class="odd">
 <td align="left">Bioc Status</td>
-<td align="right"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz"><img src="https://bioconductor.org/shields/build/release/bioc/Gviz.svg" alt="Bioconductor-release Build Status"></a></td>
-<td align="right"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz"><img src="https://bioconductor.org/shields/build/devel/bioc/Gviz.svg" alt="Bioconductor-devel Build Status"></a></td>
+<td align="right"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/Gviz" class="external-link"><img src="https://bioconductor.org/shields/build/release/bioc/Gviz.svg" alt="Bioconductor-release Build Status"></a></td>
+<td align="right"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/Gviz" class="external-link"><img src="https://bioconductor.org/shields/build/devel/bioc/Gviz.svg" alt="Bioconductor-devel Build Status"></a></td>
 </tr>
 <tr class="even">
 <td align="left">GitHub Last Commit</td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/tree/RELEASE_3_13"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/RELEASE_3_13" alt="GitHub last commit (Bioconductor-release)"></a></td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/tree/master/"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/master" alt="GitHub last commit (Bioconductor-devel)"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/tree/RELEASE_3_14" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/RELEASE_3_14" alt="GitHub last commit (Bioconductor-release)"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/tree/master/" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/master" alt="GitHub last commit (Bioconductor-devel)"></a></td>
 </tr>
 <tr class="odd">
 <td align="left">GitHub Actions</td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/actions"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=RELEASE_3_13" alt="R build status"></a></td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/actions"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=master" alt="R build status"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=RELEASE_3_14" alt="R build status"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=master" alt="R build status"></a></td>
 </tr>
 <tr class="even">
 <td align="left">Coverage</td>
-<td align="right"><a href="https://codecov.io/gh/ivanek/Gviz/branch/RELEASE_3_13"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=RELEASE_3_13" alt="Codecov.io (Bioconductor-release)"></a></td>
-<td align="right"><a href="https://codecov.io/github/ivanek/Gviz"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master" alt="Codecov.io (Bioconductor-devel)"></a></td>
+<td align="right"><a href="https://codecov.io/gh/ivanek/Gviz/branch/RELEASE_3_14" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=RELEASE_3_14" alt="Codecov.io (Bioconductor-release)"></a></td>
+<td align="right"><a href="https://codecov.io/github/ivanek/Gviz" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master" alt="Codecov.io (Bioconductor-devel)"></a></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="authors" class="section level2">
-<h2 class="hasAnchor">
-<a href="#authors" class="anchor"></a>Authors</h2>
+<div class="section level2">
+<h2 id="authors">Authors<a class="anchor" aria-label="anchor" href="#authors"></a>
+</h2>
 <ul>
 <li>Florian Hahne</li>
 <li>Steffen Durinck</li>
@@ -145,47 +142,49 @@
 <li>Shraddha Pai</li>
 </ul>
 </div>
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
-<p><img src="articles/Gviz-example.png" alt="Gviz UCSC like screenshot"></p>
-<p>Genomic data analyses requires integrated visualization of known genomic information and new experimental data. Gviz uses the <a href="https://bioconductor.org/packages/biomaRt/">biomaRt</a> and the <a href="https://bioconductor.org/packages/rtracklayer/">rtracklayer</a> packages to perform live annotation queries to <a href="https://www.ensembl.org/">Ensembl</a> and <a href="https://genome.ucsc.edu">UCSC</a> and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.</p>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<div class="figure">
+<img src="articles/Gviz-example.png" alt=""><p class="caption">Gviz UCSC like screenshot</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div id="release-version" class="section level4">
-<h4 class="hasAnchor">
-<a href="#release-version" class="anchor"></a>Release version</h4>
-<pre><code>if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("Gviz", version = "release")</code></pre>
+<p>Genomic data analyses requires integrated visualization of known genomic information and new experimental data. Gviz uses the <a href="https://bioconductor.org/packages/biomaRt/" class="external-link">biomaRt</a> and the <a href="https://bioconductor.org/packages/rtracklayer/" class="external-link">rtracklayer</a> packages to perform live annotation queries to <a href="https://www.ensembl.org/" class="external-link">Ensembl</a> and <a href="https://genome.ucsc.edu" class="external-link">UCSC</a> and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.</p>
 </div>
-<div id="developmental-version" class="section level4">
-<h4 class="hasAnchor">
-<a href="#developmental-version" class="anchor"></a>Developmental version</h4>
-<pre><code>if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-BiocManager::install("Gviz", version = "devel")</code></pre>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level4">
+<h4 id="release-version">Release version<a class="anchor" aria-label="anchor" href="#release-version"></a>
+</h4>
+<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Gviz"</span>, version <span class="op">=</span> <span class="st">"release"</span><span class="op">)</span></code></pre>
 </div>
-<div id="github" class="section level4">
-<h4 class="hasAnchor">
-<a href="#github" class="anchor"></a>Github</h4>
-<pre><code>if (!requireNamespace("remotes", quietly = TRUE))
-    install.packages("remotes")
-remotes::install_github("ivanek/Gviz")</code></pre>
+<div class="section level4">
+<h4 id="developmental-version">Developmental version<a class="anchor" aria-label="anchor" href="#developmental-version"></a>
+</h4>
+<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Gviz"</span>, version <span class="op">=</span> <span class="st">"devel"</span><span class="op">)</span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="github">Github<a class="anchor" aria-label="anchor" href="#github"></a>
+</h4>
+<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ivanek/Gviz"</span><span class="op">)</span></code></pre>
 </div>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
-<p>For detailed instructions check the package vignette (<a href="https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html">release</a> or <a href="https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html">developmental</a> version). Or check the <a href="https://ivanek.github.io/Gviz/">GitHub.io page</a>.</p>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
+<p>For detailed instructions check the package vignette (<a href="https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html" class="external-link">release</a> or <a href="https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html" class="external-link">developmental</a> version). Or check the <a href="https://ivanek.github.io/Gviz/" class="external-link">GitHub.io page</a>.</p>
 </div>
-<div id="citation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citation" class="anchor"></a>Citation</h2>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
 <ul>
-<li>Hahne F, Ivanek R (2016). “Statistical Genomics: Methods and Protocols.” In Mathé E, Davis S (eds.), chapter Visualizing Genomic Data Using Gviz and Bioconductor, 335–351. Springer New York, New York, NY. ISBN 978-1-4939-3578-9, doi: <a href="https://dx.doi.org/10.1007/978-1-4939-3578-9_16">10.1007/978-1-4939-3578-9_16</a>.</li>
+<li>Hahne F, Ivanek R (2016). “Statistical Genomics: Methods and Protocols.” In Mathé E, Davis S (eds.), chapter Visualizing Genomic Data Using Gviz and Bioconductor, 335–351. Springer New York, New York, NY. ISBN 978-1-4939-3578-9, doi: <a href="https://dx.doi.org/10.1007/978-1-4939-3578-9_16" class="external-link">10.1007/978-1-4939-3578-9_16</a>.</li>
 </ul>
 </div>
 </div>
@@ -194,40 +193,53 @@ remotes::install_github("ivanek/Gviz")</code></pre>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/Gviz">https://​www.bioconductor.org/​packages/​Gviz</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/ivanek/Gviz/">https://​github.com/​ivanek/​Gviz/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ivanek/Gviz/issues">https://​github.com/​ivanek/​Gviz/​issues</a>
-</li>
+<li><a href="https://www.bioconductor.org/packages/Gviz" class="external-link">View on Bioconductor</a></li>
+<li><a href="https://github.com/ivanek/Gviz/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ivanek/Gviz/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a></li>
+<li><a href="https://www.r-project.org/Licenses/Artistic-2.0" class="external-link">Artistic-2.0</a></li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing Gviz</a></li>
+<li><a href="authors.html#citation">Citing Gviz</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Florian Hahne <br><small class="roles"> Author </small>  </li>
 <li>Steffen Durinck <br><small class="roles"> Author </small>  </li>
-<li>Robert Ivanek <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-8403-056X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Robert Ivanek <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-8403-056X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Arne Mueller <br><small class="roles"> Author </small>  </li>
 <li>Steve Lianoglou <br><small class="roles"> Author </small>  </li>
 <li>Ge Tan <br><small class="roles"> Author </small>  </li>
 <li>Lance Parsons <br><small class="roles"> Author </small>  </li>
 <li>Shraddha Pai <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://www.repostatus.org/#active" class="external-link"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active - The project has reached a stable, usable state and is being actively developed."></a></li>
+<li><a href="https://bioconductor.org/packages/Gviz" class="external-link"><img src="https://bioconductor.org/shields/years-in-bioc/Gviz.svg" alt="How long since the package was first in a released Bioconductor version"></a></li>
+<li><a href="https://bioconductor.org/packages/stats/bioc/Gviz/" class="external-link"><img src="https://bioconductor.org/shields/downloads/devel/Gviz.svg" alt="Bioconductor-devel Downloads"></a></li>
+<li><a href="https://support.bioconductor.org/t/gviz/" class="external-link"><img src="https://bioconductor.org/shields/posts/Gviz.svg" alt="Support site activity in last 6 months: agged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts"></a></li>
+<li><a href="https://opensource.org/licenses/Artistic-2.0" class="external-link"><img src="https://img.shields.io/badge/License-Artistic%202.0-0298c3.svg" alt="License: Artistic-2.0"></a></li>
+<li><a href="https://github.com/ivanek/Gviz/issues" class="external-link"><img src="https://img.shields.io/github/issues/ivanek/Gviz" alt="GitHub issues"></a></li>
 </ul>
 </div>
 
@@ -236,11 +248,13 @@ remotes::install_github("ivanek/Gviz")</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou, Ge Tan, Lance Parsons, Shraddha Pai.</p>
+  <p></p>
+<p>Developed by Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou, Ge Tan, Lance Parsons, Shraddha Pai.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -248,6 +262,8 @@ remotes::install_github("ivanek/Gviz")</code></pre>
 
   
 
+
+  
 
   </body>
 </html>
