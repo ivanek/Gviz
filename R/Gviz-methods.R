@@ -2412,7 +2412,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
         sh <- max(0, min(h, .dpOrDefault(GdObject, "stackHeight", 0.75))) / 2
         boxOnly <- res > 10
         if (boxOnly) {
-            x <- c(start(readInfo), rep(end(readInfo), 2), start(readInfo))
+            x <- c(start(readInfo), rep(end(readInfo)+1, 2), start(readInfo))
             y <- c(rep(readInfo$stack + sh, 2), rep(readInfo$stack - sh, 2))
             id <- rep(readInfo$uid, 4)
         } else {
@@ -2426,20 +2426,20 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             readInfo$arrow[match(names(arrowMap), readInfo$uid)] <- arrowMap
             ## The parts that don't need arrow heads
             sel <- is.na(readInfo$arrow) | readInfo$arrow == "*"
-            x <- c(start(readInfo)[sel], rep(end(readInfo)[sel], 2), start(readInfo)[sel])
+            x <- c(start(readInfo)[sel], rep(end(readInfo)[sel]+1, 2), start(readInfo)[sel])
             y <- c(rep(readInfo$stack[sel] + sh, 2), rep(readInfo$stack[sel] - sh, 2))
             id <- rep(readInfo$uid[sel], 4)
             ## The arrow heads facing right
             w <- Gviz:::.pxResolution(coord = "x", 5)
             sel <- readInfo$arrow == "+"
-            ah <- pmax(start(readInfo)[sel], end(readInfo)[sel] - w)
-            x <- c(x, start(readInfo)[sel], ah, end(readInfo)[sel], ah, start(readInfo)[sel])
+            ah <- pmax(start(readInfo)[sel], end(readInfo)[sel]+1 - w)
+            x <- c(x, start(readInfo)[sel], ah, end(readInfo)[sel]+1, ah, start(readInfo)[sel])
             y <- c(y, rep(readInfo$stack[sel] + sh, 2), readInfo$stack[sel], rep(readInfo$stack[sel] - sh, 2))
             id <- c(id, rep(readInfo$uid[sel], 5))
             ## The arrow heads facing left
             sel <- readInfo$arrow == "-"
             ah <- pmin(end(readInfo)[sel], start(readInfo)[sel] + w)
-            x <- c(x, start(readInfo)[sel], ah, rep(end(readInfo)[sel], 2), ah)
+            x <- c(x, start(readInfo)[sel], ah, rep(end(readInfo)[sel]+1, 2), ah)
             y <- c(y, readInfo$stack[sel], rep(readInfo$stack[sel] + sh, 2), rep(readInfo$stack[sel] - sh, 2))
             id <- c(id, rep(readInfo$uid[sel], 5))
         }
@@ -2463,7 +2463,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             mateGaps <- mateGaps[start(rmap) <= start(mateGaps) & end(rmap) >= end(mateGaps)]
             gy <- readInfo$stack[match(as.character(seqnames(mateGaps)), readInfo$entityId)]
             lineCoords <- data.frame(
-                x1 = start(mateGaps) - 1, y1 = gy, x2 = end(mateGaps) + 1, y2 = gy,
+                x1 = start(mateGaps), y1 = gy, x2 = end(mateGaps) + 1, y2 = gy,
                 col = .dpOrDefault(GdObject, c("col.gap", "col"), .DEFAULT_SHADED_COL),
                 lwd = .dpOrDefault(GdObject, c("lwd.gap", "lwd"), 1),
                 lty = .dpOrDefault(GdObject, c("lty.gap", "lty"), 1),
@@ -2505,7 +2505,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             gy <- readInfo$stack[match(names(delGaps), readInfo$entityId)]
             if (length(delGaps)) {
                 delCoords <- data.frame(
-                    x1 = start(delGaps) - 1, y1 = gy, x2 = end(delGaps) + 1, y2 = gy,
+                    x1 = start(delGaps)+1, y1 = gy, x2 = end(delGaps) + 1, y2 = gy,
                     col = .dpOrDefault(GdObject, c("col.deletion", "col"), .DEFAULT_BRIGHT_SHADED_COL),
                     lwd = .dpOrDefault(GdObject, c("lwd.deletion", "lwd"), 1),
                     lty = .dpOrDefault(GdObject, c("lty.deletion", "lty"), 1),
