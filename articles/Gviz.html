@@ -1610,7 +1610,7 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 <p>NOTE: <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> tries hard to automatically set up the necessary connection to the Biomart service to retrieve the relevant data. Sometimes however it can be advantageous to fully control the Biomart connector, for instance when trying to retrieve data from an archived Ensembl version (by default, <em><a href="https://bioconductor.org/packages/3.15/biomaRt" class="external-link">biomaRt</a></em> will always link to the most recent version). To that end, the <code>biomart</code> parameter can be used to supply a <code>biomaRt</code> object. Please note that a data set has to be selected in that object. In the example code below, the older version of human genome assembly (hg19) and matching Biomart version are used.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">biomaRt</span><span class="op">)</span>
-<span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useMart.html" class="external-link">useMart</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
+<span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
               biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, 
               dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span>
 <span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, 
@@ -1628,7 +1628,7 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 <p><img src="Gviz_files/figure-html/BiomartGeneRegionTrackHeight-1.png"><!-- --></p>
 <p>The <code>filter</code> argument to the <code>BiomartGeneRegionTrack</code> constructor can be used to pass on arbitrary additional filters to the Biomart query. We could for instance limit the returned gene models to RefSeq models only. Please see the documentation in the <em><a href="https://bioconductor.org/packages/3.15/biomaRt" class="external-link">biomaRt</a></em> package for details.</p>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useMart.html" class="external-link">useMart</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
+<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
               biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, 
               dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span>
 <span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, 
@@ -1640,7 +1640,7 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 <p><img src="Gviz_files/figure-html/BiomartGeneRegionTrackFilterDo-1.png"><!-- --></p>
 <p>Sometimes it can be more convenient to get a model for a particular gene rather than defining a genomic range. One could use the filter mechanisms as described before for this purpose, however the <code>BiomartGeneRegionTrack</code> implements a more generic way. By providing the gene symbol as the <code>symbol</code> argument, the track will be initialized around the locus for this gene, if it can be found. Alternatively, one can provide the Ensembl transcript or gene id via the <code>transcript</code> or <code>gene</code> arguments, or an Entrez id via the <code>entrez</code> argument. In all of these cases the constructor will also fetch models for other genes that overlap the same region. If that is not desired one needs to provide an explicit Biomart filter.</p>
 <div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useMart.html" class="external-link">useMart</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
+<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
               biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>,
               dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span>
 <span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, name <span class="op">=</span> <span class="st">"ENSEMBL"</span>, 
@@ -2920,7 +2920,7 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">##  [45] ensembldb_2.19.6            restfulr_0.0.13            </span>
 <span class="co">##  [47] XML_3.99-0.8                zlibbioc_1.41.0            </span>
 <span class="co">##  [49] scales_1.1.1                VariantAnnotation_1.41.3   </span>
-<span class="co">##  [51] ProtGenerics_1.27.1         ragg_1.2.1                 </span>
+<span class="co">##  [51] ProtGenerics_1.27.2         ragg_1.2.1                 </span>
 <span class="co">##  [53] hms_1.1.1                   MatrixGenerics_1.7.0       </span>
 <span class="co">##  [55] parallel_4.2.0              SummarizedExperiment_1.25.3</span>
 <span class="co">##  [57] AnnotationFilter_1.19.0     RColorBrewer_1.1-2         </span>
