@@ -86,7 +86,6 @@ importFrom(utils, "modifyList", "type.convert")
 
 export(".chrName",
        ".doCache",
-       "AlignedReadTrack",
        "AlignmentsTrack",
        "AnnotationTrack",
        "DetailsAnnotationTrack",

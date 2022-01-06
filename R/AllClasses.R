@@ -1994,13 +1994,6 @@ UcscTrack <- function(track, table = NULL, trackType = c(
 }
 
 
-
-## AlignedReadTrack ----------------------------------------------------------------------------------------------------
-AlignedReadTrack <- function() {
-    .Defunct("AlignmentsTrack")
-}
-
-
 ## SequenceTrack -------------------------------------------------------------------------------------------------------
 ##
 ## SequenceTrack: A generic track to visualize nucleotide sequences. This class is virtual.

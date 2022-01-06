@@ -319,7 +319,7 @@ allDisplayParsDoc <- function(details) {
     require(Gviz)
     text <- indent(c("\\section{Display Parameters}{", "\\describe{"), level=0:1)
     for(cl in c("GenomeAxisTrack", "DataTrack", "IdeogramTrack",
-         "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack", "AlignedReadTrack"))
+         "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack"))
     {
         parents <- names(getClassDef(cl)@contains)
         pars <- sapply(c(cl, parents), function(x) as.list(getClassDef(x)@prototype@dp), simplify=FALSE)
@@ -703,16 +703,6 @@ details <- list(
                                          "verbose"="Logical scalar. Report data loading events from Bioamart or retrieval from cache."
                                          ),
 
-                AlignedReadTrack=c(
-
-                                   collapse="collapse overlapping ranges and aggregate the underlying data.",
-                                   detail="the amount of detail to plot the data. Either \\code{coverage} to show the coverage only, or \\code{reads} to show individual reads. For large data sets the latter can be very inefficient. Please note that \\code{reads} is only available when the object has been created with option \\code{coverageOnly=FALSE}.",
-                                   fill="the fill color for the coverage indicator.",
-                                   size="the relative size of the track. Defaults to size selection based on the underlying data. Can be overridden in the \\code{\\link{plotTracks}} function.",
-                                   type="the plot type, one or several in \\code{c(\"p\",\"l\", \"b\", \"a\", \"s\", \"g\", \"r\", \"S\", \"smooth\", \"histogram\", \"mountain\", \"polygon\", \"h\", \"boxplot\", \"gradient\", \"heatmap\", \"horizon\")}. See the 'Details' section in \\code{\\linkS4class{DataTrack}} for more information on the individual plotting types."
-
-                                   ),
-
                 SequenceTrack=c(
 
                                 add53="Logical scalar. Add a direction indicator.",
@@ -815,7 +805,7 @@ updateDocumentation <- function(outdir="~/Rpacks/Gviz/man")
     library(AnnotationDbi)
     ##source(file.path(dirname(outdir), "inst/scripts/sourcePackage.R"))
     dps <- sapply(c("GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-                    "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignedReadTrack", "AlignmentsTrack"),
+                    "AnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack"),
                   updateRdFile, outdir)
     settings <- updateSettingsFile(outdir)
     links <- updateLinks(outdir)
