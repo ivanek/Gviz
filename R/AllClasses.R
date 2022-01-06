@@ -1877,7 +1877,7 @@ IdeogramTrack <- function(chromosome = NULL, genome, name = NULL, bands = NULL, 
             })
             out <- getTable(query)
             if (all(c("chrom", "size") %in% colnames(out))) {
-                out <- data.frame(chrom = out$chrom, chromStart = 0, chromEnd = out$size, name = "", gieStain = "gneg", stringsAsFactors = F)
+                out <- data.frame(chrom = out$chrom, chromStart = 0, chromEnd = out$size, name = "", gieStain = "gneg", stringsAsFactors = FALSE)
             }
             out
         }), env, cenv)

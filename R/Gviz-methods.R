@@ -2102,6 +2102,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
         ## Plotting of the item labels
         if (.dpOrDefault(GdObject, "showFeatureId", FALSE)) {
+            #grid.text(str2expression(box$text), box$textX, box$textY,
             grid.text(box$text, box$textX, box$textY,
                 rot = rotation, gp = .fontGp(GdObject, subtype = "item"),
                 default.units = "native", just = c("center", "center")
@@ -2377,13 +2378,13 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             )
             ## print the number of reads together with the connecting lines (currently no scaling/resolution)
             if (sashNumbers) {
-                grid.rect(sash$x[c(F, T, F)], -sash$y[c(F, T, F)],
+                grid.rect(sash$x[c(FALSE, TRUE, FALSE)], -sash$y[c(FALSE, TRUE, FALSE)],
                     width = convertUnit(stringWidth(sash$score) * 1.5, "inches"),
                     height = convertUnit(stringHeight(sash$score) * 1.5, "inches"),
                     default.units = "native", gp = gpar(col = gp$col, fill = gp$fill)
                 )
                 grid.text(
-                    label = sash$score, sash$x[c(F, T, F)], -sash$y[c(F, T, F)],
+                    label = sash$score, sash$x[c(FALSE, TRUE, FALSE)], -sash$y[c(FALSE, TRUE, FALSE)],
                     default.units = "native", gp = gpar(col = gp$col)
                 )
             }

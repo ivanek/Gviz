@@ -20,7 +20,7 @@ Description: Genomic data analyses requires integrated visualization
     package. This results in genomic information plotted together with
     your data.
 Depends:
-    R (>= 4.0),
+    R (>= 4.2),
     methods,
     S4Vectors (>= 0.9.25),
     IRanges (>= 1.99.18),
