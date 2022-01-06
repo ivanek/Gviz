@@ -1796,7 +1796,7 @@ be selected in that object. In the example code below, the older version of huma
 
 ```{r BiomartGeneRegionTrackShow, eval=FALSE}
 library(biomaRt)
-bm <- useMart(host = "grch37.ensembl.org", 
+bm <- useEnsembl(host = "grch37.ensembl.org", 
               biomart = "ENSEMBL_MART_ENSEMBL", 
               dataset = "hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1807,7 +1807,7 @@ plotTracks(biomTrack)
 ```{r BiomartGeneRegionTrackDo, echo=FALSE, results='hide', fig.width=7.5, fig.height=1.25}
 library(biomaRt)
 if(hasBiomartConnection) {
-  bm <- useMart(host = "grch37.ensembl.org", 
+  bm <- useEnsembl(host = "grch37.ensembl.org", 
                 biomart = "ENSEMBL_MART_ENSEMBL", 
                 dataset = "hsapiens_gene_ensembl")
   biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1851,7 +1851,7 @@ see the documentation in the `r Biocpkg("biomaRt")` package for details.
 
 
 ```{r BiomartGeneRegionTrackFilterShow, eval=FALSE}
-bm <- useMart(host = "grch37.ensembl.org", 
+bm <- useEnsembl(host = "grch37.ensembl.org", 
               biomart = "ENSEMBL_MART_ENSEMBL", 
               dataset = "hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1863,7 +1863,7 @@ plotTracks(biomTrack, col.line = NULL, col = NULL, stackHeight = 0.3)
 ```
 ```{r BiomartGeneRegionTrackFilterDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection) {
-  bm <- useMart(host = "grch37.ensembl.org",
+  bm <- useEnsembl(host = "grch37.ensembl.org",
                 biomart = "ENSEMBL_MART_ENSEMBL",
                 dataset = "hsapiens_gene_ensembl")
   biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1892,7 +1892,7 @@ region. If that is not desired one needs to provide an explicit
 Biomart filter.
 
 ```{r BiomartGeneRegionTrackSymbolShow, eval=FALSE}
-bm <- useMart(host = "grch37.ensembl.org", 
+bm <- useEnsembl(host = "grch37.ensembl.org", 
               biomart = "ENSEMBL_MART_ENSEMBL",
               dataset = "hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome = "hg19", name = "ENSEMBL", 
@@ -1901,7 +1901,7 @@ plotTracks(biomTrack, transcriptAnnotation = "symbol")
 ```
 ```{r BiomartGeneRegionTrackSymbolDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection) {
-  bm <- useMart(host = "grch37.ensembl.org", 
+  bm <- useEnsembl(host = "grch37.ensembl.org", 
                 biomart = "ENSEMBL_MART_ENSEMBL", 
                 dataset = "hsapiens_gene_ensembl")
   biomTrack <- BiomartGeneRegionTrack(genome = "hg19", name = "ENSEMBL", 
@@ -1934,7 +1934,7 @@ which is necessary because Ensembl used to call the gene symbol field
 
 ```{r BiomartGeneRegionTrackCustom, fig.width=7.5, fig.height=1.25, eval=FALSE, echo=F}
 library(biomaRt)
-bm <- useMart(host="dec2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
+bm <- useEnsembl(host="dec2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
               dataset="hsapiens_gene_ensembl")
 fm <- Gviz:::.getBMFeatureMap()
 fm[["symbol"]] <- "external_gene_id"

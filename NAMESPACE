@@ -44,7 +44,7 @@ importFrom(Biostrings, DNAStringSet, RNAStringSet, BStringSet, DNAString, RNAStr
 
 importFrom(BSgenome, bsapply)
 
-importFrom(biomaRt, getBM, useMart, listDatasets, listAttributes, listFilters)
+importFrom(biomaRt, getBM, useEnsembl, useMart, listDatasets, listAttributes, listFilters)
 
 importFrom(Rsamtools, scanBamFlag, scanBamHeader, scanBam, ScanBamParam, scanFaIndex, scanFa, BamFile, scanBamWhat, bamWhich)
 
