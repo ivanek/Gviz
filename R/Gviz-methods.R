@@ -982,32 +982,67 @@ setMethod(
 .aggregator <- function(GdObject) {
     agFun <- .dpOrDefault(GdObject, "aggregation", "mean")
     if (is.list(agFun)) {
-          agFun <- agFun[[1]]
-      }
+        agFun <- agFun[[1]]
+    }
     fun <- if (is.character(agFun)) {
         switch(agFun,
-            "mean" = rowMeans,
-            "sum" = rowSums,
-            "median" = rowMedians,
-            "extreme" = function(x) apply(x, 1, .extreme),
-            "min" = rowMin,
-            "max" = rowMax,
-            rowMeans
+               "mean" = rowMeans,
+               "sum" = rowSums,
+               "median" = rowMedians,
+               "extreme" = function(x) apply(x, 1, .extreme),
+               "min" = rowMin,
+               "max" = rowMax,
+               rowMeans
         )
     } else {
         if (is.function(agFun)) {
             function(x) apply(x, 1, agFun)
         } else {
             stop(
-                "display parameter 'aggregation' has to be a function or a character",
-                "scalar in c('mean', 'median', 'sum', 'extreme')"
-            )
+                "display parameter 'aggregation' has to be a function or a character ",
+                "scalar in c('mean', 'median', 'sum', 'min', 'max')")
         }
     }
     return(fun)
 }
 
-
+.runaggregator <- function(GdObject) {
+    agFun <- .dpOrDefault(GdObject, "aggregation", "mean")
+    if (is.list(agFun)) {
+        agFun <- agFun[[1]]
+    }
+    fun <- if (is.character(agFun)) {
+        switch(agFun,
+               "mean" = runmean,
+               "sum" = runsum,
+               "median" = runmed2 <-  function(x, k, na.rm=FALSE, ...) { 
+                   na.action <- if (na.rm) { "na.omit" } else { "+Big_alternate" }
+                       runmed(x=as.numeric(x), k=k, na.action=na.action) 
+                   },
+               "min" = runqmin <- function(x, k, i=1, ...) { runq(x=x, k=k, i=i, ...) },
+               "max" = runqmax <- function(x, k, i=k, ...) { runq(x=x, k=k, i=i, ...) },
+               runmean
+        )
+    } else {
+        if (is.function(agFun)) {
+            function(x, k, na.rm=FALSE, endrule="constant") {
+                ans <- vapply(0:(length(x)-k), function(offset) agFun(x[1:k + offset], na.rm=na.rm), FUN.VALUE = numeric(1))
+                ans <- Rle(ans)
+                if (endrule == "constant") {
+                    j <- (k + 1L)%/%2L
+                    runLength(ans)[1L] <- runLength(ans)[1L] + (j - 1L)
+                    runLength(ans)[nrun(ans)] <- runLength(ans)[nrun(ans)] + (j - 1L)
+                }
+                ans
+            }
+        } else {
+            stop(
+                "display parameter 'aggregation' has to be a function or a character ",
+                "scalar in c('mean', 'median', 'sum', 'min', 'max')")
+        }
+    }
+    return(fun)
+}
 
 ## For DataTracks we want to collapse data values using the aggregation function provided by calling .aggregator().
 ## In addition values can be aggregated over fixed window slices when gpar 'window' is not NULL, and using a sliding
@@ -1067,7 +1102,8 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             }
             ind <- unlist(mapply(function(x, y) x:y, start(GdObject), end(GdObject))) - min(GdObject) + 1
             rm[ind] <- rep(sc[1, ], width(GdObject))
-            runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
+            runAgFun <- .runaggregator(GdObject)
+            runwin <- suppressWarnings(runAgFun(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
             seqSel <- findRun(as.integer(position(GdObject)) - min(GdObject) + 1, runwin)
             newDat <- matrix(runValue(runwin)[seqSel], nrow = 1)
             if (nrow(sc) > 1) {
@@ -1075,7 +1111,7 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
                     newDat,
                     do.call(rbind, lapply(2:nrow(sc), function(x) {
                         rm[ind] <- rep(sc[x, ], width(GdObject))
-                        runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
+                        runwin <- suppressWarnings(runAgFun(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
                         seqSel <- findRun(as.integer(position(GdObject)) - min(GdObject) + 1, runwin)
                         runValue(runwin)[seqSel]
                         # suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE)))[seqSel]
@@ -1264,7 +1300,7 @@ setMethod("subset", signature(x = "OverlayTrack"), function(x, ...) {
     return(x)
 })
 
-## For DataTracks we cut exactly, and also reduce to the current chromosome unless told explicitely not to
+## For DataTracks we cut exactly, and also reduce to the current chromosome unless told explicitly not to
 setMethod("subset", signature(x = "DataTrack"), function(x, from = NULL, to = NULL, sort = FALSE, drop = TRUE, use.defaults = TRUE, ...) {
     ## Subset to a single chromosome first
     if (drop) {
