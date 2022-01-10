@@ -821,7 +821,7 @@ updateDocumentation <- function(outdir="~/Rpacks/Gviz/man")
 ## run
 ##       compareDtContent(<className>, <documentationDir>, details)
 ## and check the results. This should show you what is different between the current man page file and the central definitions
-## It will also find things that may have been added/edited manually in the man page file, and might need backporting into the
+## It will also find things that may have been added/edited manually in the man page file, and might need back-porting into the
 ## central definition list.
 ## When you are happy with the results, run
 ##       updateRdFile(<className>, <documentationDir>)

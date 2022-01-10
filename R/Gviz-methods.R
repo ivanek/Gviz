@@ -35,7 +35,7 @@ setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames
 setMethod("seqlevels", "RangeTrack", function(x) unique(seqnames(x)))
 setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence) > 0])
 setMethod("seqlevels", "SequenceRNAStringSetTrack", function(x) seqnames(x)[width(x@sequence) > 0])
-setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify = T)) > 0]) # maybe seqnames only to speed-up
+setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify = TRUE)) > 0]) # maybe seqnames only, to speed-up
 setMethod("seqinfo", "RangeTrack", function(x) table(seqnames(x)))
 
 ## Min and max ranges
@@ -205,7 +205,7 @@ setMethod("subseq", "ReferenceSequenceTrack", function(x, start = NA, end = NA, 
     if (!is.na(start[1] + end[1] + width[1])) {
         warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
         width <- NA
-    } 
+    }
     ## We want start and end to be set if width is provided
     if (!is.na(width[1])) {
         if (is.na(start) && is.na(end)) {
@@ -1015,9 +1015,9 @@ setMethod(
         switch(agFun,
                "mean" = runmean,
                "sum" = runsum,
-               "median" = runmed2 <-  function(x, k, na.rm=FALSE, ...) { 
+               "median" = runmed2 <-  function(x, k, na.rm=FALSE, ...) {
                    na.action <- if (na.rm) { "na.omit" } else { "+Big_alternate" }
-                       runmed(x=as.numeric(x), k=k, na.action=na.action) 
+                       runmed(x=as.numeric(x), k=k, na.action=na.action)
                    },
                "min" = runqmin <- function(x, k, i=1, ...) { runq(x=x, k=k, i=i, ...) },
                "max" = runqmax <- function(x, k, i=k, ...) { runq(x=x, k=k, i=i, ...) },
@@ -1026,7 +1026,7 @@ setMethod(
     } else {
         if (is.function(agFun)) {
             function(x, k, na.rm=FALSE, endrule="constant") {
-                ans <- vapply(0:(length(x)-k), function(offset) agFun(x[1:k + offset], na.rm=na.rm), FUN.VALUE = numeric(1))
+                ans <- vapply(0:(length(x)-k), function(offset) agFun(x[seq_len(k) + offset], na.rm=na.rm), FUN.VALUE = numeric(1))
                 ans <- Rle(ans)
                 if (endrule == "constant") {
                     j <- (k + 1L)%/%2L
@@ -2752,11 +2752,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     if (!is.null(scaleLen)) {
         len <- (maxBase - minBase + 1)
         if (scaleLen > len) {
-            warning(paste("scale (", scaleLen,
-                ") cannot be larger than plotted region",
-                len, " - setting to ~5%\n",
-                sep = ""
-            ))
+            warning(sprintf("scale (%d) cannot be larger than plotted region %d - setting to ~5%\n", scaleLen, len))
             scaleLen <- 0.05
         }
         xoff <- len * 0.03 + minBase
@@ -3624,21 +3620,21 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             na_idx <- which(is.na(upper))
             ## case 1. there are no error bars to plot at all
             if (length(na_idx) == length(upper)) {
-                if (debugMode) cat("\t Case 1: all empty. returning\n")
+                if (debugMode) message("\t Case 1: all empty. returning")
                 return(TRUE)
                 ## case 2. no missing points
             } else if (length(na_idx) < 1) {
-                if (debugMode) cat("\t Case 2: one continuous polygon\n")
+                if (debugMode) message("\t Case 2: one continuous polygon")
                 panel.polygon(c(x, rev(x)), c(upper, rev(lower)),
                     border = col, col = fill, alpha = alpha, ...
                 )
                 ## case 3. have complete data with some or no missing points
             } else {
                 curr_start <- min(which(!is.na(upper)))
-                if (debugMode) cat(sprintf("\t Case 3: %i of %i NA\n", length(na_idx), length(upper)))
+                if (debugMode) message(sprintf("\t Case 3: %i of %i NA", length(na_idx), length(upper)))
                 curr_na_pos <- 1
                 while (curr_na_pos <= length(na_idx)) {
-                    if (debugMode) cat(sprintf("\t\tcurr_na_pos = %i, na_idx length= %i\n", curr_na_pos, length(na_idx)))
+                    if (debugMode) message(sprintf("\t\tcurr_na_pos = %i, na_idx length= %i", curr_na_pos, length(na_idx)))
                     ## complete the current poly
                     idx <- curr_start:(na_idx[curr_na_pos] - 1)
                     panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx], rev(lower[idx])),
@@ -3646,7 +3642,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     )
                     ## contiguous empty spots - skip
                     while ((na_idx[curr_na_pos + 1] == na_idx[curr_na_pos] + 1) && (curr_na_pos < length(na_idx))) {
-                        if (debugMode) cat(sprintf("\t\ttight-loop:curr_na_pos = %i\n", curr_na_pos))
+                        if (debugMode) message(sprintf("\t\ttight-loop:curr_na_pos = %i", curr_na_pos))
                         curr_na_pos <- curr_na_pos + 1
                     }
                     ## at this point, either we've finished NA spots or the next one is far away.
@@ -3656,7 +3652,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
                 ## there is one last polygon at the end of the view range
                 if (na_idx[length(na_idx)] < length(upper)) {
-                    if (debugMode) cat("\tWrapping last polygon\n")
+                    if (debugMode) message("\tWrapping last polygon")
                     idx <- curr_start:length(upper)
                     panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx], rev(lower[idx])),
                         col = fill, border = col, alpha = alpha, ...
@@ -3699,7 +3695,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             names(fill) <- NULL
             for (j in seq_along(by)) {
                 g <- names(by)[j]
-                if (debugMode) print(g)
+                if (debugMode) message(g)
                 df <- data.frame(
                     x = position(GdObject), y = mu[[j]],
                     low = mu[[j]] - confint[[j]], high = mu[[j]] + confint[[j]],
@@ -4781,8 +4777,8 @@ setMethod("show", signature(object = "OverlayTrack"), function(object) {
 
 ## A helper function to plot general information about a ReferenceTrack
 .referenceTrackInfo <- function(object, type) {
-    cat(sprintf(
-        "%s '%s'\n| genome: %s\n| active chromosome: %s\n| referenced file: %s\n",
+    message(sprintf(
+        "%s '%s'\n| genome: %s\n| active chromosome: %s\n| referenced file: %s",
         type,
         names(object),
         genome(object),
@@ -4790,7 +4786,7 @@ setMethod("show", signature(object = "OverlayTrack"), function(object) {
         object@reference
     ))
     if (length(object@mapping) && type != "ReferenceDataTrack") {
-          cat(sprintf("| mapping: %s\n", paste(names(object@mapping), as.character(object@mapping), sep = "=", collapse = ", ")))
+          message(sprintf("| mapping: %s\n", paste(names(object@mapping), as.character(object@mapping), sep = "=", collapse = ", ")))
       }
 }
 

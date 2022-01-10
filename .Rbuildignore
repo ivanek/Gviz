@@ -6,6 +6,7 @@
 ^\.Rproj\.user$
 ^\.Rbuildignore$
 ^\.gitignore$
+^\.git$
 ^\.github$
 ^\.travis\.yml$
 ^\.codecov\.yml$

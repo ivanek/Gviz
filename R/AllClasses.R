@@ -660,16 +660,14 @@ setMethod("initialize", "AnnotationTrack", function(.Object, ...) {
     if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
         return(.Object)
     }
-    ## the diplay parameter defaults
+    ## the display parameter defaults
     .makeParMapping()
     .Object <- .updatePars(.Object, "AnnotationTrack")
     range <- list(...)$range
     if (!is.null(range) && length(.Object)) {
         if (!all(.Object@columns %in% colnames(values(range)))) {
-            stop(paste(
-                "Problem initializing AnnotationTrack need the following columns:",
-                paste(.Object@columns, collpase = ", ")
-            ), "\n")
+            stop("Problem initializing AnnotationTrack, need the following columns:",
+                toString(.Object@columns, collapse = ", "))
         }
         grp <- if (is(.Object, "GeneRegionTrack")) values(range)$transcript else values(range)$group
         if (any(vapply(split(as.character(strand(range)), grp), function(x) length(unique(x)), numeric(1)) != 1)) {
