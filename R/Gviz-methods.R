@@ -35,7 +35,7 @@ setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames
 setMethod("seqlevels", "RangeTrack", function(x) unique(seqnames(x)))
 setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence) > 0])
 setMethod("seqlevels", "SequenceRNAStringSetTrack", function(x) seqnames(x)[width(x@sequence) > 0])
-setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify = T)) > 0]) # maybe seqnames only to speed-up
+setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[bsapply(new("BSParams", X = x@sequence, FUN = length, simplify = TRUE)) > 0]) # maybe seqnames only, to speed-up
 setMethod("seqinfo", "RangeTrack", function(x) table(seqnames(x)))
 
 ## Min and max ranges
@@ -205,7 +205,7 @@ setMethod("subseq", "ReferenceSequenceTrack", function(x, start = NA, end = NA, 
     if (!is.na(start[1] + end[1] + width[1])) {
         warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
         width <- NA
-    } 
+    }
     ## We want start and end to be set if width is provided
     if (!is.na(width[1])) {
         if (is.na(start) && is.na(end)) {
@@ -982,32 +982,67 @@ setMethod(
 .aggregator <- function(GdObject) {
     agFun <- .dpOrDefault(GdObject, "aggregation", "mean")
     if (is.list(agFun)) {
-          agFun <- agFun[[1]]
-      }
+        agFun <- agFun[[1]]
+    }
     fun <- if (is.character(agFun)) {
         switch(agFun,
-            "mean" = rowMeans,
-            "sum" = rowSums,
-            "median" = rowMedians,
-            "extreme" = function(x) apply(x, 1, .extreme),
-            "min" = rowMin,
-            "max" = rowMax,
-            rowMeans
+               "mean" = rowMeans,
+               "sum" = rowSums,
+               "median" = rowMedians,
+               "extreme" = function(x) apply(x, 1, .extreme),
+               "min" = rowMin,
+               "max" = rowMax,
+               rowMeans
         )
     } else {
         if (is.function(agFun)) {
             function(x) apply(x, 1, agFun)
         } else {
             stop(
-                "display parameter 'aggregation' has to be a function or a character",
-                "scalar in c('mean', 'median', 'sum', 'extreme')"
-            )
+                "display parameter 'aggregation' has to be a function or a character ",
+                "scalar in c('mean', 'median', 'sum', 'min', 'max')")
         }
     }
     return(fun)
 }
 
-
+.runaggregator <- function(GdObject) {
+    agFun <- .dpOrDefault(GdObject, "aggregation", "mean")
+    if (is.list(agFun)) {
+        agFun <- agFun[[1]]
+    }
+    fun <- if (is.character(agFun)) {
+        switch(agFun,
+               "mean" = runmean,
+               "sum" = runsum,
+               "median" = runmed2 <-  function(x, k, na.rm=FALSE, ...) {
+                   na.action <- if (na.rm) { "na.omit" } else { "+Big_alternate" }
+                       runmed(x=as.numeric(x), k=k, na.action=na.action)
+                   },
+               "min" = runqmin <- function(x, k, i=1, ...) { runq(x=x, k=k, i=i, ...) },
+               "max" = runqmax <- function(x, k, i=k, ...) { runq(x=x, k=k, i=i, ...) },
+               runmean
+        )
+    } else {
+        if (is.function(agFun)) {
+            function(x, k, na.rm=FALSE, endrule="constant") {
+                ans <- vapply(0:(length(x)-k), function(offset) agFun(x[seq_len(k) + offset], na.rm=na.rm), FUN.VALUE = numeric(1))
+                ans <- Rle(ans)
+                if (endrule == "constant") {
+                    j <- (k + 1L)%/%2L
+                    runLength(ans)[1L] <- runLength(ans)[1L] + (j - 1L)
+                    runLength(ans)[nrun(ans)] <- runLength(ans)[nrun(ans)] + (j - 1L)
+                }
+                ans
+            }
+        } else {
+            stop(
+                "display parameter 'aggregation' has to be a function or a character ",
+                "scalar in c('mean', 'median', 'sum', 'min', 'max')")
+        }
+    }
+    return(fun)
+}
 
 ## For DataTracks we want to collapse data values using the aggregation function provided by calling .aggregator().
 ## In addition values can be aggregated over fixed window slices when gpar 'window' is not NULL, and using a sliding
@@ -1067,7 +1102,8 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             }
             ind <- unlist(mapply(function(x, y) x:y, start(GdObject), end(GdObject))) - min(GdObject) + 1
             rm[ind] <- rep(sc[1, ], width(GdObject))
-            runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
+            runAgFun <- .runaggregator(GdObject)
+            runwin <- suppressWarnings(runAgFun(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
             seqSel <- findRun(as.integer(position(GdObject)) - min(GdObject) + 1, runwin)
             newDat <- matrix(runValue(runwin)[seqSel], nrow = 1)
             if (nrow(sc) > 1) {
@@ -1075,7 +1111,7 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
                     newDat,
                     do.call(rbind, lapply(2:nrow(sc), function(x) {
                         rm[ind] <- rep(sc[x, ], width(GdObject))
-                        runwin <- suppressWarnings(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
+                        runwin <- suppressWarnings(runAgFun(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE))
                         seqSel <- findRun(as.integer(position(GdObject)) - min(GdObject) + 1, runwin)
                         runValue(runwin)[seqSel]
                         # suppressWarnings(runValue(runmean(Rle(as.numeric(rm)), k = windowSize, endrule = "constant", na.rm = TRUE)))[seqSel]
@@ -1264,7 +1300,7 @@ setMethod("subset", signature(x = "OverlayTrack"), function(x, ...) {
     return(x)
 })
 
-## For DataTracks we cut exactly, and also reduce to the current chromosome unless told explicitely not to
+## For DataTracks we cut exactly, and also reduce to the current chromosome unless told explicitly not to
 setMethod("subset", signature(x = "DataTrack"), function(x, from = NULL, to = NULL, sort = FALSE, drop = TRUE, use.defaults = TRUE, ...) {
     ## Subset to a single chromosome first
     if (drop) {
@@ -2102,6 +2138,7 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
         }
         ## Plotting of the item labels
         if (.dpOrDefault(GdObject, "showFeatureId", FALSE)) {
+            #grid.text(str2expression(box$text), box$textX, box$textY,
             grid.text(box$text, box$textX, box$textY,
                 rot = rotation, gp = .fontGp(GdObject, subtype = "item"),
                 default.units = "native", just = c("center", "center")
@@ -2377,13 +2414,13 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             )
             ## print the number of reads together with the connecting lines (currently no scaling/resolution)
             if (sashNumbers) {
-                grid.rect(sash$x[c(F, T, F)], -sash$y[c(F, T, F)],
+                grid.rect(sash$x[c(FALSE, TRUE, FALSE)], -sash$y[c(FALSE, TRUE, FALSE)],
                     width = convertUnit(stringWidth(sash$score) * 1.5, "inches"),
                     height = convertUnit(stringHeight(sash$score) * 1.5, "inches"),
                     default.units = "native", gp = gpar(col = gp$col, fill = gp$fill)
                 )
                 grid.text(
-                    label = sash$score, sash$x[c(F, T, F)], -sash$y[c(F, T, F)],
+                    label = sash$score, sash$x[c(FALSE, TRUE, FALSE)], -sash$y[c(FALSE, TRUE, FALSE)],
                     default.units = "native", gp = gpar(col = gp$col)
                 )
             }
@@ -2715,11 +2752,7 @@ setMethod("drawGD", signature("GenomeAxisTrack"), function(GdObject, minBase, ma
     if (!is.null(scaleLen)) {
         len <- (maxBase - minBase + 1)
         if (scaleLen > len) {
-            warning(paste("scale (", scaleLen,
-                ") cannot be larger than plotted region",
-                len, " - setting to ~5%\n",
-                sep = ""
-            ))
+            warning(sprintf("scale (%d) cannot be larger than plotted region %d - setting to ~5%\n", scaleLen, len))
             scaleLen <- 0.05
         }
         xoff <- len * 0.03 + minBase
@@ -3587,21 +3620,21 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             na_idx <- which(is.na(upper))
             ## case 1. there are no error bars to plot at all
             if (length(na_idx) == length(upper)) {
-                if (debugMode) cat("\t Case 1: all empty. returning\n")
+                if (debugMode) message("\t Case 1: all empty. returning")
                 return(TRUE)
                 ## case 2. no missing points
             } else if (length(na_idx) < 1) {
-                if (debugMode) cat("\t Case 2: one continuous polygon\n")
+                if (debugMode) message("\t Case 2: one continuous polygon")
                 panel.polygon(c(x, rev(x)), c(upper, rev(lower)),
                     border = col, col = fill, alpha = alpha, ...
                 )
                 ## case 3. have complete data with some or no missing points
             } else {
                 curr_start <- min(which(!is.na(upper)))
-                if (debugMode) cat(sprintf("\t Case 3: %i of %i NA\n", length(na_idx), length(upper)))
+                if (debugMode) message(sprintf("\t Case 3: %i of %i NA", length(na_idx), length(upper)))
                 curr_na_pos <- 1
                 while (curr_na_pos <= length(na_idx)) {
-                    if (debugMode) cat(sprintf("\t\tcurr_na_pos = %i, na_idx length= %i\n", curr_na_pos, length(na_idx)))
+                    if (debugMode) message(sprintf("\t\tcurr_na_pos = %i, na_idx length= %i", curr_na_pos, length(na_idx)))
                     ## complete the current poly
                     idx <- curr_start:(na_idx[curr_na_pos] - 1)
                     panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx], rev(lower[idx])),
@@ -3609,7 +3642,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     )
                     ## contiguous empty spots - skip
                     while ((na_idx[curr_na_pos + 1] == na_idx[curr_na_pos] + 1) && (curr_na_pos < length(na_idx))) {
-                        if (debugMode) cat(sprintf("\t\ttight-loop:curr_na_pos = %i\n", curr_na_pos))
+                        if (debugMode) message(sprintf("\t\ttight-loop:curr_na_pos = %i", curr_na_pos))
                         curr_na_pos <- curr_na_pos + 1
                     }
                     ## at this point, either we've finished NA spots or the next one is far away.
@@ -3619,7 +3652,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
                 ## there is one last polygon at the end of the view range
                 if (na_idx[length(na_idx)] < length(upper)) {
-                    if (debugMode) cat("\tWrapping last polygon\n")
+                    if (debugMode) message("\tWrapping last polygon")
                     idx <- curr_start:length(upper)
                     panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx], rev(lower[idx])),
                         col = fill, border = col, alpha = alpha, ...
@@ -3662,7 +3695,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             names(fill) <- NULL
             for (j in seq_along(by)) {
                 g <- names(by)[j]
-                if (debugMode) print(g)
+                if (debugMode) message(g)
                 df <- data.frame(
                     x = position(GdObject), y = mu[[j]],
                     low = mu[[j]] - confint[[j]], high = mu[[j]] + confint[[j]],
@@ -4744,8 +4777,8 @@ setMethod("show", signature(object = "OverlayTrack"), function(object) {
 
 ## A helper function to plot general information about a ReferenceTrack
 .referenceTrackInfo <- function(object, type) {
-    cat(sprintf(
-        "%s '%s'\n| genome: %s\n| active chromosome: %s\n| referenced file: %s\n",
+    message(sprintf(
+        "%s '%s'\n| genome: %s\n| active chromosome: %s\n| referenced file: %s",
         type,
         names(object),
         genome(object),
@@ -4753,7 +4786,7 @@ setMethod("show", signature(object = "OverlayTrack"), function(object) {
         object@reference
     ))
     if (length(object@mapping) && type != "ReferenceDataTrack") {
-          cat(sprintf("| mapping: %s\n", paste(names(object@mapping), as.character(object@mapping), sep = "=", collapse = ", ")))
+          message(sprintf("| mapping: %s\n", paste(names(object@mapping), as.character(object@mapping), sep = "=", collapse = ", ")))
       }
 }
 
