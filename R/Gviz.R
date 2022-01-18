@@ -55,11 +55,11 @@
 
 ## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified
 ## chromosome name as understood by UCSC. Accepted inputs are:
-##    - a single integer or a character coercable to one or integer-character combinations
+##    - a single integer or a character coercible to one or integer-character combinations
 ##    - a character, starting with 'chr' (case insensitive)
 ## Arguments:
 ##    o x: a character string to be converted to a valid UCSC chromosome name
-##    o force: a logical flag, force prepending of 'chr' if missing
+##    o force: a logical flag, force pre-pending of 'chr' if missing
 ## Value: the UCSC character name
 .chrName <- function(x, force = FALSE) {
     if (!getOption("ucscChromosomeNames") || length(x) == 0) {
@@ -86,10 +86,9 @@
             head <- TRUE
         }
         if (!head) {
-            stop(sprintf(paste(
-                "Invalid chromosome identifier '%s'\nPlease consider setting options(ucscChromosomeNames=FALSE)",
-                "to allow for arbitrary chromosome identifiers."
-            ), y))
+            stop(sprintf("Invalid chromosome identifier '%s'\n", y),
+                 "Please consider setting options(ucscChromosomeNames=FALSE) ",
+                 "to allow for arbitrary chromosome identifiers.")
         }
         substring(y, 1, 3) <- tolower(substring(y, 1, 3))
         y
@@ -113,7 +112,7 @@
 ## unimplemented types...
 ## Arguments:
 ##    o GdObject: an object inheriting from class GdObject
-## Value: a logical skalar indicating whether stacking is needed or not
+## Value: a logical scalar indicating whether stacking is needed or not
 .needsStacking <- function(GdObject) stacking(GdObject) %in% c("squish", "pack", "full")
 
 
@@ -1430,42 +1429,29 @@ addScheme <- function(scheme, name) {
 .getBiomart <- function(genome) {
     map <- .ucsc2Ensembl(genome)
     if (map$date == "head") {
-        bm <- useMart("ensembl", dataset = map$dataset)
+        bm <- useEnsembl(biomart="ensembl", dataset = map$dataset)
         ds <- listDatasets(bm)
         mt <- ds[match(map$dataset, ds$dataset), "version"]
         if (is.na(mt)) {
-            stop(sprintf(paste(
-                "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-                "\nPlease manually provide biomaRt object"
-            ), genome, map$dataset))
+            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+                         genome, map$dataset), "\nPlease manually provide biomaRt object")
         }
         if (mt != map$value) {
-            stop(sprintf(
-                paste(
-                    "Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s',",
-                    "but its current version is '%s'.\nPlease manually provide biomaRt object"
-                ),
-                genome, map$value, mt
-            ))
+            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s', ",
+                         genome, map$value, mt), "but its current version is '%s'.\nPlease manually provide biomaRt object.")
         }
     } else {
-        bm <- useMart(host = sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))), biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset)
+        bm <- useEnsembl(biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset, host = sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))))
         ds <- listDatasets(bm)
         mt <- ds[match(map$dataset, ds$dataset), "version"]
         if (is.na(mt)) {
-            stop(sprintf(paste(
-                "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-                "\nPlease manually provide biomaRt object"
-            ), genome, map$dataset))
+            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+                         genome, map$dataset), "\nPlease manually provide biomaRt object")
         }
         if (mt != map$value) {
-            stop(sprintf(
-                paste(
-                    "Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
-                    "but its version is '%s'.\nPlease manually provide biomaRt object"
-                ),
-                genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt
-            ))
+            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
+                         genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt),
+                 "but its version is '%s'.\nPlease manually provide biomaRt object")
         }
     }
     return(bm)
@@ -2216,7 +2202,7 @@ availableDisplayPars <- function(class) {
       }
     class <- match.arg(class, c(
         "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", 
+        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack",
         "AlignmentsTrack", "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNAStringSetTrack", "SequenceRNAStringSetTrack"
     ))
     parents <- names(getClassDef(class)@contains)
@@ -2372,10 +2358,8 @@ availableDisplayPars <- function(class) {
         dat
     })
     if (is(res, "try-error")) {
-        warning(sprintf(paste(
-            "File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
-            "Results may not be what you expected!"
-        ), file))
+        warning(sprintf("File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
+                        file), "\nResults may not be what you expected!")
         res <- dat
     }
     return(res)
@@ -2804,13 +2788,8 @@ availableDefaultMapping <- function(file, trackType) {
         vm[[inputType]] <- setNames(list(list(".stream" = stream)), trackType)
     } else {
         if (is.null(vm[[inputType]]) || is.null(vm[[inputType]][[trackType]])) {
-            warning(sprintf(
-                paste(
-                    "There are no default mappings from %s files to %s. Please provide a manual mapping",
-                    "in the track constructor if you haven't already done so."
-                ),
-                inputType, trackType
-            ))
+            warning(sprintf("There are no default mappings from %s files to %s. Please provide a manual mapping",
+                            inputType, trackType), " in the track constructor if you haven't already done so.")
             vm[[inputType]] <- setNames(list(list(".stream" = stream)), trackType)
         }
     }
