@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.39.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.39.4</span>
       </span>
     </div>
 
@@ -85,14 +85,14 @@
     
     
 <p><strong>Last edited</strong>: 19 May 2020</p>
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h1>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>In order to make sense of genomic data one often aims to plot such data in a genome browser, along with a variety of genomic annotation features, such as gene or transcript models, CpG island, repeat regions, and so on. These features may either be extracted from public data bases like ENSEMBL or UCSC, or they may be generated or curated in-house. Many of the currently available genome browsers do a reasonable job in displaying genome annotation data, and there are options to connect to some of them from within <code>R</code> (e.g., using the <em><a href="https://bioconductor.org/packages/3.15/rtracklayer" class="external-link">rtracklayer</a></em> package). However, none of these solutions offer the flexibility of the full <code>R</code> graphics system to display large numeric data in a multitude of different ways. The <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package <span class="citation">(Hahne and Ivanek 2016)</span> aims to close this gap by providing a structured visualization framework to plot any type of data along genomic coordinates. It is loosely based on the <em><a href="https://bioconductor.org/packages/3.15/GenomeGraphs" class="external-link">GenomeGraphs</a></em> package by Steffen Durinck and James Bullard, however the complete class hierarchy as well as all the plotting methods have been restructured in order to increase performance and flexibility. All plotting is done using the grid graphics system, and several specialized annotation classes allow to integrate publicly available genomic annotation data from sources like <a href="https://genome.ucsc.edu/" class="external-link">UCSC</a> or <a href="https://www.ensembl.org/" class="external-link">ENSEMBL</a>.</p>
 </div>
-<div class="section level1">
-<h1 id="basic-features">Basic Features<a class="anchor" aria-label="anchor" href="#basic-features"></a>
-</h1>
+<div class="section level2">
+<h2 id="basic-features">Basic Features<a class="anchor" aria-label="anchor" href="#basic-features"></a>
+</h2>
 <p>The fundamental concept behind the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package is similar to the approach taken by most genome browsers, in that individual types of genomic features or data are represented by separate tracks. Within the package, each track constitutes a single object inheriting from class <code>GdObject</code>, and there are constructor functions as well as a broad range of methods to interact with and to plot these tracks. When combining multiple objects, the individual tracks will always share the same genomic coordinate system, thus taking the burden of aligning the plot elements from the user.</p>
 <p>It is worth mentioning that, at a given time, tracks in the sense of the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package are only defined for a single chromosome on a specific genome, at least for the duration of a given plotting operation. You will later see that a track may still contain information for multiple chromosomes, however most of this is hidden except for the currently active chromosome, and the user will have to explicitly switch the chromosome to access the inactive parts. While the package in principle imposes no fixed structure on the chromosome or on the genome names, it makes sense to stick to a standardized naming paradigm, in particular when fetching additional annotation information from online resources. By default this is enforced by a global option <code>ucscChromosomeNames</code>, which is set during package loading and which causes the package to check all supplied chromosome names for validity in the sense of the UCSC definition (chromosomes have to start with the <code>chr</code> string). You may decide to turn this feature off by calling <code>options(ucscChromosomeNames=FALSE)</code>. For the remainder of this vignette however, we will make use of the UCSC genome and chromosome identifiers, e.g., the <code>chr7</code> chromosome on the mouse <code>mm9</code> genome.</p>
 <p>The different track classes will be described in more detail in the @ref(track-classes) section further below. For now, let’s just take a look at a typical <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> session to get an idea of what this is all about. We begin our presentation of the available functionality by loading the package:</p>
@@ -183,12 +183,12 @@
 <p>As we can see, the data values in the numeric vector are indeed matched to the genomic coordinates of the <code>DataTrack</code> object. Such a visualization can be particularly helpful when displaying for instance the coverage of NGS reads along a chromosome, or to show the measurement values of mapped probes from a micro array experiment.</p>
 <p>This concludes our first introduction into the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package. The remainder of this vignette will deal in much more depth with the different concepts and the various track classes and plotting options.</p>
 </div>
-<div class="section level1">
-<h1 id="plotting-parameters">Plotting parameters<a class="anchor" aria-label="anchor" href="#plotting-parameters"></a>
-</h1>
 <div class="section level2">
-<h2 id="setting-parameters">Setting parameters<a class="anchor" aria-label="anchor" href="#setting-parameters"></a>
+<h2 id="plotting-parameters">Plotting parameters<a class="anchor" aria-label="anchor" href="#plotting-parameters"></a>
 </h2>
+<div class="section level3">
+<h3 id="setting-parameters">Setting parameters<a class="anchor" aria-label="anchor" href="#setting-parameters"></a>
+</h3>
 <p>Although not implicitly mentioned before, we have already made use of the plotting parameter facilities in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package, or, as we will call them from now on, the ‘display parameters.’ Display parameters are properties of individual track objects (i.e., of any object inheriting from the base <code>GdObject</code> class). They can either be set during object instantiation as additional arguments to the constructor functions or, for existing track objects, using the <code>displayPars</code> replacement method. In the former case, all named arguments that can not be matched to any of the constructor’s formal arguments are considered to be display parameters, regardless of their type or whether they are defined for a particular track class or not. The following code example rebuilds our <code>GeneRegionTrack</code> object with a bunch of display parameters and demonstrates the use of the <code>displayPars</code> accessor and replacement methods.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">grtrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">geneModels</span>, genome <span class="op">=</span> <span class="va">gen</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, 
@@ -261,9 +261,9 @@
 <span class="co">## v (inherited from class 'GdObject'): -1</span></code></pre></div>
 <p>As we can see, display parameters can be inherited from parent classes. For the regular user this is not important at all, however it nicely exemplifies the structure of the class hierarchy in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package.</p>
 </div>
-<div class="section level2">
-<h2 id="schemes">Schemes<a class="anchor" aria-label="anchor" href="#schemes"></a>
-</h2>
+<div class="section level3">
+<h3 id="schemes">Schemes<a class="anchor" aria-label="anchor" href="#schemes"></a>
+</h3>
 <p>Users might find themselves changing the same parameters over and over again, and it would make sense to register these modifications in a central location once and for all. To this end the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package supports display parameter schemes. A scheme is essentially just a bunch of nested named lists, where the names on the first level of nesting should correspond to track class names, and the names on the second level to the display parameters to set. The currently active scheme can be changed by setting the global option <code>Gviz.scheme</code>, and a new scheme can be registered by using the <code>addScheme</code> function, providing both the list and the name for the new scheme. The <code>getScheme</code> function is useful to get the current scheme as a list structure, for instance to use as a skeleton for your own custom scheme.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"Gviz.scheme"</span><span class="op">)</span>
@@ -290,9 +290,9 @@
                        transcriptAnnotation <span class="op">=</span> <span class="st">"transcript"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Please note that because display parameters are stored with the track objects, a scheme change only has an effect on those objects that are created after the change has taken place.</p>
 </div>
-<div class="section level2">
-<h2 id="plotting-direction">Plotting direction<a class="anchor" aria-label="anchor" href="#plotting-direction"></a>
-</h2>
+<div class="section level3">
+<h3 id="plotting-direction">Plotting direction<a class="anchor" aria-label="anchor" href="#plotting-direction"></a>
+</h3>
 <p>By default all tracks will be plotted in a 5’ -&gt; 3’ direction. It sometimes can be useful to actually show the data relative to the opposite strand. To this end one can use the <code>reverseStrand</code> display parameter, which does just what its name suggests. Since the combination of forward and reverse stranded tracks on a single plot does not make too much sense, one should usually set this as a global display parameter in the <code>plotTracks</code> function. The function will however cast a warning if a mixture of forward and reverse strand tracks has been passed in for plotting.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">itrack</span>, <span class="va">gtrack</span>, <span class="va">atrack</span>, <span class="va">grtrack</span><span class="op">)</span>, reverseStrand <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -300,13 +300,13 @@
 <p>As you can see, the fact that the data has been plotted on the reverse strand is also reflected in the <code>GenomeAxis</code> track.</p>
 </div>
 </div>
-<div class="section level1">
-<h1 id="track-classes">Track classes<a class="anchor" aria-label="anchor" href="#track-classes"></a>
-</h1>
-<p>In this section we will highlight all of the available annotation track classes in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package. For the complete reference of all the nuts and bolts, including all the available methods, please see the respective class man pages. We will try to keep this vignette up to date, but in cases of discrepancies between here and the man pages you should assume the latter to be correct.</p>
 <div class="section level2">
-<h2 id="genomeaxistrack">GenomeAxisTrack<a class="anchor" aria-label="anchor" href="#genomeaxistrack"></a>
+<h2 id="track-classes">Track classes<a class="anchor" aria-label="anchor" href="#track-classes"></a>
 </h2>
+<p>In this section we will highlight all of the available annotation track classes in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package. For the complete reference of all the nuts and bolts, including all the available methods, please see the respective class man pages. We will try to keep this vignette up to date, but in cases of discrepancies between here and the man pages you should assume the latter to be correct.</p>
+<div class="section level3">
+<h3 id="genomeaxistrack">GenomeAxisTrack<a class="anchor" aria-label="anchor" href="#genomeaxistrack"></a>
+</h3>
 <p><code>GenomeAxisTrack</code> objects can be used to add some reference to the currently displayed genomic location to a <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> plot. In their most basic form they are really just a horizontal axis with genomic coordinate tick-marks. Using the <code>GenomeAxisTrack</code> constructor function is the recommended way to instantiate objects from the class. There is no need to know in advance about a particular genomic location when constructing the object. Instead, the displayed coordinates will be determined from the context, e.g., from the <code>from</code> and <code>to</code> arguments of the <code>plotTracks</code> function, or, when plotted together with other track objects, from their genomic locations.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">axisTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span><span class="op">)</span>
@@ -323,9 +323,9 @@
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">axisTrack</span>, from <span class="op">=</span> <span class="fl">1e6</span>, to <span class="op">=</span> <span class="fl">9e6</span>, showId <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/GenomeAxisTrackClass2a-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="display-parameters-for-genomeaxistrack-objects">Display parameters for GenomeAxisTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-genomeaxistrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-genomeaxistrack-objects">Display parameters for GenomeAxisTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-genomeaxistrack-objects"></a>
+</h4>
 <p>There are a whole bunch of display parameters to alter the appearance of <code>GenomeAxisTrack</code> plots. For instance, one could add directional indicators to the axis using the <code>add53</code> and <code>add35</code> parameters.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">axisTrack</span>, from <span class="op">=</span> <span class="fl">1e6</span>, to <span class="op">=</span> <span class="fl">9e6</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, add35 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
@@ -447,9 +447,9 @@
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="ideogramtrack">IdeogramTrack<a class="anchor" aria-label="anchor" href="#ideogramtrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="ideogramtrack">IdeogramTrack<a class="anchor" aria-label="anchor" href="#ideogramtrack"></a>
+</h3>
 <p>While a genomic axis provides helpful points of reference to a plot, it is sometimes important to show the currently displayed region in the broader context of the whole chromosome. Are we looking at distal regions, or somewhere close to the centromere? And how much of the complete chromosome is covered in our plot. To that end the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package defines the <code>IdeogramTrack</code> class, which is an idealized representation of a single chromosome. When plotted, these track objects will always show the whole chromosome, regardless of the selected genomic region. However, the displayed coordinates are indicated by a box that sits on the ideogram image. The chromosomal data necessary to draw the ideogram is not part of the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package itself, instead it is downloaded from an online source (UCSC). Thus it is important to use both chromosome and genome names that are recognizable in the UCSC data base when dealing with <code>IdeogramTrack</code> objects. You might want to consult the <a href="http://genome.ucsc.edu/" class="external-link">UCSC webpage</a> or use the <code>ucscGenomes</code> function in the <code>rtracklayer</code> package for a listing of available genomes.</p>
 <p>Assuming the chromosome data are available online, a simple call to the <code>IdeogramTrack</code> constructor function including the desired genome and chromosome name are enough to instantiate the object. Since the connection to UCSC can be slow, the package tries to cache data that has already been downloaded for the duration of the <code>R</code> session. If needed, the user can manually clear the cache by calling the <code>clearSessionCache</code> function. Of course it is also possible to construct <code>IdeogramTrack</code> objects from local data. Please see the class’ man page for details.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
@@ -470,9 +470,9 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">ideoTrack</span>, from <span class="op">=</span> <span class="fl">85e6</span>, to <span class="op">=</span> <span class="fl">129e6</span>, showId <span class="op">=</span> <span class="cn">FALSE</span>,
            centromereShape <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/IdeogramTrackClass4-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="display-parameters-for-ideogramtrack-objects">Display parameters for IdeogramTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-ideogramtrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-ideogramtrack-objects">Display parameters for IdeogramTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-ideogramtrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>IdeogramTrack</code> class by typing in <code><a href="../reference/IdeogramTrack-class.html">?IdeogramTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -556,9 +556,9 @@
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="datatrack">DataTrack<a class="anchor" aria-label="anchor" href="#datatrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="datatrack">DataTrack<a class="anchor" aria-label="anchor" href="#datatrack"></a>
+</h3>
 <p>Probably the most powerful of all the track classes in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package are <code>DataTracks</code>. Essentially they constitute run-length encoded numeric vectors or matrices, meaning that one or several numeric values are associated to a particular genomic coordinate range. These ranges may even be overlapping, for instance when looking at results from a running window operation. There can be multiple samples in a single data set, in which case the ranges are associated to the columns of a numeric matrix rather than a numeric vector, and the plotting method provides tools to incorporate sample group information. Thus the starting point for creating <code>DataTrack</code> objects will always be a set of ranges, either in the form of an <code>IRanges</code> or <code>GRanges</code> object, or individually as start and end coordinates or widths. The second ingredient is a numeric vector of the same length as the number of ranges, or a numeric matrix with the same number of columns. Those may even already be part of the input <code>GRanges</code> object as <code>elemenMetadata</code> values. For a complete description of all the possible inputs please see the class’ online documentation. We can pass all this information to the <code>DataTrack</code> constructor function to instantiate an object. We will load our sample data from an <code>GRanges</code> object that comes as part of the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">twoGroups</span><span class="op">)</span>
@@ -663,9 +663,9 @@
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dTrack</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"heatmap"</span><span class="op">)</span>, showSampleNames <span class="op">=</span> <span class="cn">TRUE</span>, 
            cex.sampleNames <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/sampNames-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="data-grouping">Data Grouping<a class="anchor" aria-label="anchor" href="#data-grouping"></a>
-</h3>
+<div class="section level4">
+<h4 id="data-grouping">Data Grouping<a class="anchor" aria-label="anchor" href="#data-grouping"></a>
+</h4>
 <p>An additional layer of flexibility is added by making use of <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em>’s grouping functionality. The individual samples (i.e., rows in the data matrix) can be grouped together using a factor variable, and, if reasonable, this grouping is reflected in the layout of the respective track types. For instance our example data could be derived from two different sample groups with three replicates each, and we could easily integrate this information into our plot.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dTrack</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"treated"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,
@@ -686,9 +686,9 @@
            showSampleNames <span class="op">=</span> <span class="cn">TRUE</span>, cex.sampleNames <span class="op">=</span> <span class="fl">0.6</span>, separator <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/horizLegend-1.png"><!-- --></p>
 </div>
-<div class="section level3">
-<h3 id="building-datatrack-objects-from-files">Building DataTrack objects from files<a class="anchor" aria-label="anchor" href="#building-datatrack-objects-from-files"></a>
-</h3>
+<div class="section level4">
+<h4 id="building-datatrack-objects-from-files">Building DataTrack objects from files<a class="anchor" aria-label="anchor" href="#building-datatrack-objects-from-files"></a>
+</h4>
 <p>A number of standard file types exist that all store numeric data along genomic coordinates. We have tried to make such files accessible in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package by providing additional options to the <code>DataTrack</code> constructor function. In the previous examples the <code>range</code> argument was a <code>GRanges</code> object. Instead, we can also pass in the path to a file on disk by means of a character scalar. The <code>DataTrack</code> class supports the most common file types like <code>wig</code>, <code>bigWig</code> or <code>bedGraph</code>, but also knows how to deal with <code>bam</code> files. You may have realized that some of these files are indexed, and we have taken the approach to stream the data from indexed files on the fly when it is needed for plotting.</p>
 <p>However let’s first start with the simple example of a <code>bedGraph</code> file. These files support a single data sample, and thus are equivalent to a <code>GRanges</code> object with a single numeric metadata column. <code>bedGraph</code> files are not indexed, so we have to load the whole file content when instantiating the object.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
@@ -720,10 +720,6 @@
 <span class="co">## attr(,"package")</span>
 <span class="co">## [1] "Gviz"</span>
 <span class="va">dTrack4</span>
-<span class="co">## ReferenceDataTrack 'Coverage'</span>
-<span class="co">## | genome: hg19</span>
-<span class="co">## | active chromosome: chr1</span>
-<span class="co">## | referenced file: /__w/_temp/Library/Gviz/extdata/test.bam</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dTrack4</span>, from <span class="op">=</span> <span class="fl">189990000</span>, to <span class="op">=</span> <span class="fl">190000000</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/filedt3-1.png"><!-- --></p>
 <p>As seen in the previous code chunk, the <code>dTrack4</code> object is now of class <code>ReferenceDataTrack</code>. For the user this distinction is not particularly relevant with the exception that the <code>length</code> method for this class almost always returns <code>0</code> because the content of the object is only realized during the plotting operation. Obviously, streaming from the disk comes with a price in that file access is much slower than accessing RAM, however the file indexing allows for fairly rapid data retrieval, and other processes during the plotting operation tend to be much more costly, anyways. It is worth mentioning however that each plotting operation will cause reading off the file, and there are currently no caching mechanisms in place to avoid that. Nevertheless, plotting a larger chunk of the <code>bam</code> file still finishes in a reasonable time.</p>
@@ -737,15 +733,11 @@
 <span class="op">}</span>
 <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, type <span class="op">=</span> <span class="st">"l"</span>,
           name <span class="op">=</span> <span class="st">"Coverage"</span>, window <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, chromosome <span class="op">=</span> <span class="st">"chr1"</span>,
-          importFunction <span class="op">=</span> <span class="va">myImportFun</span>, stream <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">## ReferenceDataTrack 'Coverage'</span>
-<span class="co">## | genome: hg19</span>
-<span class="co">## | active chromosome: chr1</span>
-<span class="co">## | referenced file: /__w/_temp/Library/Gviz/extdata/test.bam</span></code></pre></div>
+          importFunction <span class="op">=</span> <span class="va">myImportFun</span>, stream <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="data-transformations">Data transformations<a class="anchor" aria-label="anchor" href="#data-transformations"></a>
-</h3>
+<div class="section level4">
+<h4 id="data-transformations">Data transformations<a class="anchor" aria-label="anchor" href="#data-transformations"></a>
+</h4>
 <p>The <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package offers quite some flexibility to transform data on the fly. This involves both rescaling operations (each data point is transformed on the track’s y-axis by a transformation function) as well as summarization and smoothing operations (the values for several genomic locations are summarized into one derived value on the track’s x-axis). To illustrate this let’s create a significantly bigger <code>DataTrack</code> than the one we used before, containing purely synthetic data for only a single sample.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">pi</span>, <span class="fl">10</span><span class="op">*</span><span class="va">pi</span>, len<span class="op">=</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span>
@@ -780,9 +772,9 @@
            type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span>, aggregateGroups <span class="op">=</span> <span class="cn">TRUE</span>, aggregation <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/groupingAv2-1.png"><!-- --></p>
 </div>
-<div class="section level3">
-<h3 id="display-parameters-for-datatrack-objects">Display parameters for DataTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-datatrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-datatrack-objects">Display parameters for DataTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-datatrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>DataTrack</code> class by typing in <code><a href="../reference/DataTrack-class.html">?DataTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -1070,9 +1062,9 @@
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="annotationtrack">AnnotationTrack<a class="anchor" aria-label="anchor" href="#annotationtrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="annotationtrack">AnnotationTrack<a class="anchor" aria-label="anchor" href="#annotationtrack"></a>
+</h3>
 <p><code>AnnotationTrack</code> objects are the multi-purpose tracks in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package. Essentially they consist of one or several genomic ranges that can be grouped into composite annotation elements if needed. In principle this would be enough to represent everything from CpG islands to complex gene models, however for the latter the package defines the specialized <code>GeneRegionTrack</code> class, which will be highlighted in a separate section. Most of the features discussed here will also apply to <code>GeneRegionTrack</code> objects, though. As a matter of fact, the <code>GeneRegionTrack</code> class inherits directly from class <code>AnnotationTrack</code>.</p>
 <p><code>AnnotationTrack</code> objects are easily instantiated using the constructor function of the same name. The necessary building blocks are the range coordinates, a chromosome and a genome identifier. Again we try to be flexible in the way this information can be passed to the function, either in the form of separate function arguments, as <code>IRanges</code>, <code>GRanges</code> or <code>data.frame</code> objects. Optionally, we can pass in the strand information for the annotation features and some useful identifiers. A somewhat special case is to build the object from a <code>GRangesList</code> object, which will automatically preserve the element grouping information contained in the list structure. For the full details on the constructor function and the accepted arguments see <code><a href="../reference/AnnotationTrack-class.html">?AnnotationTrack</a></code>. Let’s take a look at a very simple track:</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
@@ -1148,9 +1140,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"denseAnnTrack"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">denseAnnTrack</span>, showOverplotting <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/overplotting-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="collapsing">Collapsing<a class="anchor" aria-label="anchor" href="#collapsing"></a>
-</h3>
+<div class="section level4">
+<h4 id="collapsing">Collapsing<a class="anchor" aria-label="anchor" href="#collapsing"></a>
+</h4>
 <p>All track types that inherit from class <code>AnnotationTrack</code> support the collapsing of overlapping track items, either because they have initially been defined as overlapping coordinates, or because the current device resolution does not allow to sufficiently separate them. For instance, two elements of a feature group may be separated by 100 base pairs on the genomic scale, however when plotted to the screen, those 100 base pairs translate to a distance of less than one pixel. In this case we can no longer show the items as two separate entities. One solution to this problem would be to allow for arbitrary overplotting, in which case the last one of the overlapping items that is drawn on the device wins. This is not optimal in many ways, and it also poses a significant burden on the graphical engine because a lot of stuff has to be drawn which no one will ever see.</p>
 <p>To this end the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package provides an infrastructure to reasonably collapse overlapping items, thereby adjusting the information content that can be shown to the available device resolution. By default this feature is turned on, and the user does not have to worry too much about it. However, one should be aware of the consequences this may have on a given visualization. If you absolutely do not want collapsing to take place, you may completely turn it off by setting the display parameter <code>collapse</code> to <code>FALSE</code>. Please note that by doing this the <code>showOverplotting</code> parameter will also stop working. If you opt in, there is some considerable amount of detailed control to fine tune the collapsing to your needs.</p>
 <p>Let’s start with a small example track for which element collapsing has been turned off and no adjustments to the ranges have been made. We plot both the item identifiers and the group identifiers to exemplify what is going on.</p>
@@ -1176,9 +1168,9 @@
            mergeGroups <span class="op">=</span> <span class="cn">TRUE</span>, extend.left <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/collapse5f-1.png"><!-- --></p>
 </div>
-<div class="section level3">
-<h3 id="building-annotationtrack-objects-from-files">Building AnnotationTrack objects from files<a class="anchor" aria-label="anchor" href="#building-annotationtrack-objects-from-files"></a>
-</h3>
+<div class="section level4">
+<h4 id="building-annotationtrack-objects-from-files">Building AnnotationTrack objects from files<a class="anchor" aria-label="anchor" href="#building-annotationtrack-objects-from-files"></a>
+</h4>
 <p>Just like we showed before for <code>DataTrack</code> objects it is possible to stream the data for an <code>AnnotationTrack</code> object off the file system. We will again use the <code>bam</code> file as an example. This time the default import function reads the coordinates of all the sequence alignments from the file and even knows how to deal with grouped elements.</p>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">aTrack2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, 
@@ -1188,11 +1180,6 @@
 <span class="co">## attr(,"package")</span>
 <span class="co">## [1] "Gviz"</span>
 <span class="va">aTrack2</span>
-<span class="co">## ReferenceAnnotationTrack 'Reads'</span>
-<span class="co">## | genome: hg19</span>
-<span class="co">## | active chromosome: chr1</span>
-<span class="co">## | referenced file: /__w/_temp/Library/Gviz/extdata/test.bam</span>
-<span class="co">## | mapping: id=id, group=group</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">aTrack2</span>, from <span class="op">=</span> <span class="fl">189995000</span>, to <span class="op">=</span> <span class="fl">190000000</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/fileat1-1.png"><!-- --></p>
 <p>Since <code>AnnotationTrack</code> objects are somewhat more complicated than <code>DataTrack</code> objects, the constructor provides another level of flexibility when reading the data from a file. More specifically, the user has the ability to map the provided metadata columns of the <code>GRanges</code> object that is returned by the import function to the respective columns in the final <code>AnnotationTrack</code> object. If no explicit mapping is provided, the package will try to find a default mapping based on the input file type and the desired track type. The current mapping of a track is displayed by its <code>show</code> method as can be seen above. The mechanism for changing this default mapping is quite straight forward: if the values in the relevant constructor arguments (in this case <code>group</code>, <code>id</code> and <code>feature</code>) are character scalars, the metadata columns of the <code>GRanges</code> object that is returned by the import function are mapped against their values. For instance we can map the <code>id</code> column to the <code>group</code> attribute and thus suppress the grouping of sequence alignments that originate from the same sequencing read.</p>
@@ -1201,11 +1188,6 @@
                            name <span class="op">=</span> <span class="st">"Reads"</span>, chromosome <span class="op">=</span> <span class="st">"chr1"</span>, 
                            group <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span>
 <span class="va">aTrack3</span>
-<span class="co">## ReferenceAnnotationTrack 'Reads'</span>
-<span class="co">## | genome: hg19</span>
-<span class="co">## | active chromosome: chr1</span>
-<span class="co">## | referenced file: /__w/_temp/Library/Gviz/extdata/test.bam</span>
-<span class="co">## | mapping: id=id, group=id</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">aTrack3</span>, from <span class="op">=</span> <span class="fl">189995000</span>, to <span class="op">=</span> <span class="fl">190000000</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/fileat2-1.png"><!-- --></p>
 <p>Please note that if no metadata column can be mapped to the constructor arguments their values are assumed to be normal character scalars and they will be recycled accordingly to fill the track’s slots. One can ask for the package’s default mappings by using the <code>availableDefaultMapping</code> function.</p>
@@ -1221,9 +1203,9 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dTrack4</span>, <span class="va">aTrack2</span><span class="op">)</span>, from <span class="op">=</span> <span class="fl">189990000</span>, to <span class="op">=</span> <span class="fl">190000000</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/fileat4-1.png"><!-- --></p>
 </div>
-<div class="section level3">
-<h3 id="display-parameters-for-annotationtrack-objects">Display parameters for AnnotationTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-annotationtrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-annotationtrack-objects">Display parameters for AnnotationTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-annotationtrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>AnnotationTrack</code> class by typing in <code><a href="../reference/AnnotationTrack-class.html">?AnnotationTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -1356,9 +1338,9 @@
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="generegiontrack">GeneRegionTrack<a class="anchor" aria-label="anchor" href="#generegiontrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="generegiontrack">GeneRegionTrack<a class="anchor" aria-label="anchor" href="#generegiontrack"></a>
+</h3>
 <p><code>GeneRegionTrack</code> objects are in principle very similar to <code>AnnotationTrack</code> objects. The only difference is that they are a little more gene/transcript centric, both in terms of plotting layout and user interaction, and that they may define a global start and end position (a feature which is not particularly relevant for the normal user). The constructor function of the same name is a convenient tool to instantiate the object from a variety of different sources. In a nutshell, we need to pass start and end positions (or the width) of each annotation feature in the track and also supply the exon, transcript and gene identifiers for each item which will be used to create the transcript groupings. A somewhat special case is to build a <code>GeneRegionTrack</code> object directly from one of the popular <code>TxDb</code> objects, an option that is treated in more detail below. For more information about all the available options see the class’s manual page (<code><a href="../reference/GeneRegionTrack-class.html">?GeneRegionTrack</a></code>).</p>
 <p>There are a number of accessor methods that make it easy to query and replace for instance exon, transcript or gene assignments. There is also some support for gene aliases or gene symbols which are often times more useful than cryptic data base gene identifiers. The following code that re-uses the <code>GeneRegionTrack</code> object from the first section exemplifies some of these features.</p>
 <div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
@@ -1397,9 +1379,9 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span>, collapseTranscripts <span class="op">=</span> <span class="st">"meta"</span>, shape <span class="op">=</span> <span class="st">"arrow"</span>, 
            transcriptAnnotation <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/generegtrack3h-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="building-generegiontrack-objects-from-txdbs">Building GeneRegionTrack objects from TxDbs<a class="anchor" aria-label="anchor" href="#building-generegiontrack-objects-from-txdbs"></a>
-</h3>
+<div class="section level4">
+<h4 id="building-generegiontrack-objects-from-txdbs">Building GeneRegionTrack objects from TxDbs<a class="anchor" aria-label="anchor" href="#building-generegiontrack-objects-from-txdbs"></a>
+</h4>
 <p>The <em><a href="https://bioconductor.org/packages/3.15/GenomicFeatures" class="external-link">GenomicFeatures</a></em> packages provides an elegant framework to download gene model information from online sources and to store it locally in a SQLite data base. Because these so called <code>TxDb</code> objects have become the de-facto standard for genome annotation information in Bioconductor we tried to make it as simple as possible to convert them into <code>GeneRegionTracks</code>. Essentially one only has to call the constructor function with the <code>TxDb</code> object as a single argument. We exemplify this on a small sample data set that comes with the <em><a href="https://bioconductor.org/packages/3.15/GenomicFeatures" class="external-link">GenomicFeatures</a></em> package.</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicFeatures" class="external-link">GenomicFeatures</a></span><span class="op">)</span>
@@ -1442,9 +1424,9 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 
 -->
 </div>
-<div class="section level3">
-<h3 id="building-generegiontrack-objects-from-ensdbs">Building GeneRegionTrack objects from EnsDbs<a class="anchor" aria-label="anchor" href="#building-generegiontrack-objects-from-ensdbs"></a>
-</h3>
+<div class="section level4">
+<h4 id="building-generegiontrack-objects-from-ensdbs">Building GeneRegionTrack objects from EnsDbs<a class="anchor" aria-label="anchor" href="#building-generegiontrack-objects-from-ensdbs"></a>
+</h4>
 <p>The <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> is able to build <code>GeneRegionTrack</code> from <code>EnsDb</code> objects. They are similar to <code>TxDb</code> objects however their content is based on Ensembl Genome Browser. The <em><a href="https://bioconductor.org/packages/3.15/ensembldb" class="external-link">ensembldb</a></em> package provides a complete framework to download gene model information from Ensembl Genome Browser and to store it locally in a SQLite database as well. For commonly used organisms and recent Ensembl versions, those databases are available directly in the <em><a href="https://bioconductor.org/packages/3.15/AnnotationHub" class="external-link">AnnotationHub</a></em>. The <em><a href="https://bioconductor.org/packages/3.15/ensembldb" class="external-link">ensembldb</a></em> package itself provides <code>getGeneRegionTrackForGviz</code> function to build the <code>GeneRegionTrack</code> object from the <code>EnsDb</code> objects.</p>
 <p>In recent versions of <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package, the <code>GeneRegionTrack</code>can be also build by calling the constructor function with the <code>EnsDb</code> object as a single argument. We exemplify this using the database provided by <em><a href="https://bioconductor.org/packages/3.15/EnsDb.Hsapiens.v75" class="external-link">EnsDb.Hsapiens.v75</a></em> package.</p>
 <p>It is important to mention that naming convention for chromosomes is different between UCSC and Ensembl genome browsers. The <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> uses by default the convention from UCSC and therefore it is important to either: - set the chromosome names of <code>EnsDb</code> to UCSC style by calling <code>seqlevelsStyle(edb) &lt;- "UCSC"</code> - or set <code>Gviz</code> to accept non-UCSC style chromosome names by calling <code>options(ucscChromosomeNames = FALSE)</code></p>
@@ -1460,9 +1442,9 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">eTrack</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="display-parameters-for-generegiontrack-objects">Display parameters for GeneRegionTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-generegiontrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-generegiontrack-objects">Display parameters for GeneRegionTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-generegiontrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>GeneRegionTrack</code> class by typing in <code><a href="../reference/GeneRegionTrack-class.html">?GeneRegionTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -1603,9 +1585,9 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="biomartgeneregiontrack">BiomartGeneRegionTrack<a class="anchor" aria-label="anchor" href="#biomartgeneregiontrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="biomartgeneregiontrack">BiomartGeneRegionTrack<a class="anchor" aria-label="anchor" href="#biomartgeneregiontrack"></a>
+</h3>
 <p>As seen before it can be very useful to quickly download gene annotation information from an online repository rather than having to construct it each time from scratch. To this end, the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package also defines the <code>BiomartGeneRegionTrack</code> class, which directly extends <code>GeneRegionTrack</code> but provides a direct interface to the ENSEMBL Biomart service (yet another interface to the UCSC data base content is highlighted in one of the next sections). Rather than providing all the bits and pieces for the full gene model, we just enter a genome, chromosome and a start and end position on this chromosome, and the constructor function <code>BiomartGeneRegionTrack</code> will automatically contact ENSEMBL, fetch the necessary information and build the gene model on the fly. Please note that you will need an internet connection for this to work, and that contacting Biomart can take a significant amount of time depending on usage and network traffic. Hence the results are almost never going to be returned instantaneously.</p>
 <p>NOTE: <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> tries hard to automatically set up the necessary connection to the Biomart service to retrieve the relevant data. Sometimes however it can be advantageous to fully control the Biomart connector, for instance when trying to retrieve data from an archived Ensembl version (by default, <em><a href="https://bioconductor.org/packages/3.15/biomaRt" class="external-link">biomaRt</a></em> will always link to the most recent version). To that end, the <code>biomart</code> parameter can be used to supply a <code>biomaRt</code> object. Please note that a data set has to be selected in that object. In the example code below, the older version of human genome assembly (hg19) and matching Biomart version are used.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
@@ -1669,9 +1651,9 @@ which is necessary because Ensembl used to call the gene symbol field
 
 
 -->
-<div class="section level3">
-<h3 id="display-parameters-for-biomartgeneregiontrack-objects">Display parameters for BiomartGeneRegionTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-biomartgeneregiontrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-biomartgeneregiontrack-objects">Display parameters for BiomartGeneRegionTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-biomartgeneregiontrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table above in the previous <code>GeneRegionTrack</code> section or the man page of the <code>BiomartGeneRegionTrack</code> class by typing in <code><a href="../reference/BiomartGeneRegionTrack-class.html">?BiomartGeneRegionTrack</a></code> on the <code>R</code> command line.</p>
 <p>As mentioned above, one additional benefit when fetching the data through Biomart is that we also receive some information about the annotation feature types, which is automatically used for the color coding of the track. The following table shows the available feature types.</p>
 <table class="table">
@@ -1820,9 +1802,9 @@ which is necessary because Ensembl used to call the gene symbol field
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="detailsannotationtrack">DetailsAnnotationTrack<a class="anchor" aria-label="anchor" href="#detailsannotationtrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="detailsannotationtrack">DetailsAnnotationTrack<a class="anchor" aria-label="anchor" href="#detailsannotationtrack"></a>
+</h3>
 <p>It is sometimes desirable to add more detailed information to particular ranges in an <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> plot for which the notion of genomic coordinates no longer makes sense. For instance, the ranges in an <code>AnnotationTrack</code> may represent probe locations on a genome, and for each of these probes a number of measurements from multiple samples and from different sample groups are available. To this end, the <code>DetailsAnnotationTrack</code> provides a flexible interface to further annotate genomic regions with arbitrary additional information. This is archived by splitting the <code>AnnotationTrack</code> plotting region into two horizontal sections: the lower section containing the range data in genomic coordinates, and the upper one containing the additional data for each of the displayed ranges in vertically tiled panels of equal size. The connection between a range item and its details panel is indicated by connecting lines.</p>
 <p>The content of the individual details panels has to be filled in by a user-defined plotting function that uses grid (or lattice) plotting commands. This function has to accept a number of mandatory parameters, notably the start, end, strand, chromosome and identifier information for the genomic range, as well as an integer counter indicating the index of the currently plotted details tile. This information can be used to fetch arbitrary details, e.g. from a list, and environment or even from a <code>GRanges</code> object which will then be processed and visualized within the plotting function. This may sound rather abstract, and for more details please refer to the class’ help page. For now we just want to demonstrate the functionality in a simple little example. We begin by defining a <code>GRanges</code> object containing 4 genomic locations. In our example those are considered to be probe locations from a methylation array.</p>
 <div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
@@ -1885,9 +1867,9 @@ which is necessary because Ensembl used to call the gene symbol field
                             groupAnnotation <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">deTrack2</span>, extend.left <span class="op">=</span> <span class="fl">90000</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/DetailsAnnotationTrack7f-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="display-parameters-for-detailsannotationtrack-objects">Display parameters for DetailsAnnotationTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-detailsannotationtrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-detailsannotationtrack-objects">Display parameters for DetailsAnnotationTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-detailsannotationtrack-objects"></a>
+</h4>
 <p>In addition to the display parameters for the <code>AnnotationTrack</code> class, some additional parameters can be used to control the look and feel of the details sections. For a complete listing of all the available display parameters please see the tables below and the one above in the <code>AnnotationTrack</code> section or the man page of the <code>DetailsAnnotationTrack</code> class by typing in <code><a href="../reference/AnnotationTrack-class.html">?DetailsAnnotationTrack</a></code> on the <code>R</code> command line.</p>
 <div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">deTrack</span>, details.size <span class="op">=</span> <span class="fl">0.75</span>, detailsConnector.pch <span class="op">=</span> <span class="cn">NA</span>, 
@@ -1966,9 +1948,9 @@ which is necessary because Ensembl used to call the gene symbol field
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="sequencetrack">SequenceTrack<a class="anchor" aria-label="anchor" href="#sequencetrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="sequencetrack">SequenceTrack<a class="anchor" aria-label="anchor" href="#sequencetrack"></a>
+</h3>
 <p>So far we have displayed all kinds of ranges on a genome, but never really looked at the underlying genomic sequence. To that end, the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package defines the <code>SequenceTrack</code> class which can hold genomic sequence information derived from either a <code>DNAStringSet</code> object of, even more convenient, from one of the <code>BSgenome</code> packages. There is not formal checking of the track’s genome, so it is up to the user to provide reasonable inputs to the class’ constructor. As with all the other track types, the constructor has the same name as the class. In this example we build a <code>SequenceTrack</code> from the human hg19 UCSC genome.</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span>
@@ -2018,9 +2000,9 @@ which is necessary because Ensembl used to call the gene symbol field
 <div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, chromosome <span class="op">=</span> <span class="fl">1</span>, from <span class="op">=</span> <span class="fl">20000</span>, to <span class="op">=</span> <span class="fl">20100</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/SequenceTrack8-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="display-parameters-for-sequencetrack-objects">Display parameters for SequenceTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-sequencetrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-sequencetrack-objects">Display parameters for SequenceTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-sequencetrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>SequenceTrack</code> class by typing in <code><a href="../reference/SequenceTrack-class.html">?SequenceTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -2088,9 +2070,9 @@ which is necessary because Ensembl used to call the gene symbol field
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="alignmentstrack">AlignmentsTrack<a class="anchor" aria-label="anchor" href="#alignmentstrack"></a>
-</h2>
+<div class="section level3">
+<h3 id="alignmentstrack">AlignmentsTrack<a class="anchor" aria-label="anchor" href="#alignmentstrack"></a>
+</h3>
 <p>Plots of aligned sequences, typically from next generation sequencing experiments can be quite helpful, for instance when visually inspecting the validity of a called SNP. Those alignments are usually stored in <code>BAM</code> files. As shown in some of the previous section we can deal with these files in a fairly crude way by coupling them to either an <code>AnnotationTrack</code> or a <code>DataTrack</code>. The utility of the generated plots however is fairly limited, and we want in particular support for gapped and paired alignments, and show differences of the individual read sequences to a reference.</p>
 <p>The <code>AlignmentsTrack</code> class is designed to help in exactly these tasks. In its typical manifestation it is also a member of the <code>ReferenceTrack</code> class, enabling memory efficient streaming directly off a file. Even though this file does not necessarily have to be a <code>BAM</code> file, the automatic import will only work for those. For all other file representations of alignments a user will have to provide their own import function, and this topic is further discussed in the class’ documentation. For this demonstration let’s use a small <code>BAM</code> file for which paired NGS reads have been mapped to an extract of the human hg19 genome. The data originate from an RNASeq experiment, and the alignments have been performed using the <code>STAR</code> aligner allowing for gaps. We also download some gene annotation data for that region from Biomart.</p>
 <p>Again, creating the <code>AlignmentsTrack</code> object is as simple as calling the constructor function of the same name. We set the <code>isPaired</code> argument to <code>TRUE</code> in order to tell the constructor that it should expect paired reads. Please note that <code>TRUE</code> is the default value for this parameter and usually things will still work even if the reads do not originate from a paired end library. In other words, the default setting could be used as a poor-man’s auto-detection, however it make more sense to supply the argument explicitly if you know what type of data to expect.</p>
@@ -2195,9 +2177,9 @@ which is necessary because Ensembl used to call the gene symbol field
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="va">indelTrack1</span>, <span class="va">indelTrack2</span><span class="op">)</span>, 
            chromosome <span class="op">=</span> <span class="st">"chr2"</span>, from <span class="op">=</span> <span class="fl">126442000</span>, to <span class="op">=</span> <span class="fl">126453000</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/alignmentstrack_11-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="display-parameters-for-alignmentstrack-objects">Display parameters for AlignmentsTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-alignmentstrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-alignmentstrack-objects">Display parameters for AlignmentsTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-alignmentstrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>AlignmentsTrack</code> class by typing in <code><a href="../reference/AlignmentsTrack-class.html">?AlignmentsTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -2418,9 +2400,9 @@ which is necessary because Ensembl used to call the gene symbol field
 </div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="creating-tracks-from-ucsc-data">Creating tracks from UCSC data<a class="anchor" aria-label="anchor" href="#creating-tracks-from-ucsc-data"></a>
-</h1>
+<div class="section level2">
+<h2 id="creating-tracks-from-ucsc-data">Creating tracks from UCSC data<a class="anchor" aria-label="anchor" href="#creating-tracks-from-ucsc-data"></a>
+</h2>
 <p>The UCSC data bases contain a multitude of genome annotation data for dozens of different organisms. Some of those data are very simple annotations like CpG island locations or SNP locations. Others are more complicated gene models, or even numeric annotations like conservation information. In order to provide a unified interface to all this information, the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package defines a meta-constructor function <code>UcscTrack</code>. The idea here is that we can express all of the available UCSC data in one of the package’s track types. We use the functionality provided in the <em><a href="https://bioconductor.org/packages/3.15/rtracklayer" class="external-link">rtracklayer</a></em> package to connect to UCSC and to download the relevant information. As a little illustrative example, let’s reproduce a view from the famous UCSC genome browser using the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package. As a final result we want to show something similar to Figure @ref(fig:UCSC1).</p>
 <div class="figure">
 <img src="ucsc1.png" alt="A screen shot of a UCSC genome browser view around the FMR1 locus on the mouse chromosome." width="1387"><p class="caption">
@@ -2509,12 +2491,12 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
            from <span class="op">=</span> <span class="va">from</span>, to <span class="op">=</span> <span class="va">to</span>, showTitle <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/ucscTrack6-1.png"><!-- --></p>
 </div>
-<div class="section level1">
-<h1 id="track-highlighting-and-overlays">Track highlighting and overlays<a class="anchor" aria-label="anchor" href="#track-highlighting-and-overlays"></a>
-</h1>
 <div class="section level2">
-<h2 id="highlighting">Highlighting<a class="anchor" aria-label="anchor" href="#highlighting"></a>
+<h2 id="track-highlighting-and-overlays">Track highlighting and overlays<a class="anchor" aria-label="anchor" href="#track-highlighting-and-overlays"></a>
 </h2>
+<div class="section level3">
+<h3 id="highlighting">Highlighting<a class="anchor" aria-label="anchor" href="#highlighting"></a>
+</h3>
 <p>Some features of a typical genome browser plot are not specific for just a single track, but instead span multiple tracks. One prominent example are highlighting regions. Assume you want to draw the attention on the plot to a particular genomic stretch where the visual clues across several or maybe even all tracks indicate a particular interesting behavior. Because the individual tracks in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package are all represented by individual objects, there is no straight forward way to define such a region. Here is where the <code>HighlightingTrack</code> class comes into play. Objects from this class are essentially just containers for one or several of the previously described track objects, together with a very simple range definition that is to be superimposed over the individual tracks once they have been rendered. Going back to our final example from the second chapter we could highlight two areas on the plot on the <code>AnnotationTrack</code>, the <code>GeneRegionTrack</code> and the <code>DataTrack</code> using the <code>HighlightTrack</code> constructor in the following call:</p>
 <div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ht</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/HighlightTrack-class.html">HighlightTrack</a></span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">atrack</span>, <span class="va">grtrack</span>, <span class="va">dtrack</span><span class="op">)</span>,
@@ -2531,9 +2513,9 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
                       width <span class="op">=</span> <span class="fl">7000</span>, chromosome <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ht1</span>, <span class="va">grtrack</span>, <span class="va">ht2</span><span class="op">)</span>, from <span class="op">=</span> <span class="va">lim</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, to <span class="op">=</span> <span class="va">lim</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/HighlightTrack2-1.png"><!-- --></p>
-<div class="section level3">
-<h3 id="display-parameters-for-highlighttrack-objects">Display parameters for HighlightTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-highlighttrack-objects"></a>
-</h3>
+<div class="section level4">
+<h4 id="display-parameters-for-highlighttrack-objects">Display parameters for HighlightTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-highlighttrack-objects"></a>
+</h4>
 <p>For a complete listing of all the available display parameters please see the table below or the man page of the <code>HighlightTrack</code> class by typing in <code><a href="../reference/HighlightTrack-class.html">?HighlightTrack</a></code> on the <code>R</code> command line.</p>
 <table class="table">
 <colgroup>
@@ -2561,9 +2543,9 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 </table>
 </div>
 </div>
-<div class="section level2">
-<h2 id="overlays">Overlays<a class="anchor" aria-label="anchor" href="#overlays"></a>
-</h2>
+<div class="section level3">
+<h3 id="overlays">Overlays<a class="anchor" aria-label="anchor" href="#overlays"></a>
+</h3>
 <p>For certain applications it can make sense to overlay multiple tracks on the same area of the plot. For instance when dealing with multiple data sets that do not necessarily share the same genomic coordinates for their data points the design of the <code>DataTrack</code> class is not optimal. To contrast these two data sets an overlay of two separate <code>DataTrack</code> objects however can be quite powerful.The <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package allows for such overlay operations by means of the <code>OverlayTrack</code> class. Similar to the <code>HighlightTrack</code> class from the previous section this is merely a container for an arbitrary number of other <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> track objects. For the purpose of an instructive example we will generate a second <code>DataTrack</code> object and combine it with the existing one from the second chapter.</p>
 <div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, max <span class="op">=</span> <span class="fl">22</span><span class="op">)</span>
@@ -2589,9 +2571,9 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <p><img src="Gviz_files/figure-html/OverlayTrack2-1.png"><!-- --></p>
 </div>
 </div>
-<div class="section level1">
-<h1 id="composite-plots-for-multiple-chromosomes">Composite plots for multiple chromosomes<a class="anchor" aria-label="anchor" href="#composite-plots-for-multiple-chromosomes"></a>
-</h1>
+<div class="section level2">
+<h2 id="composite-plots-for-multiple-chromosomes">Composite plots for multiple chromosomes<a class="anchor" aria-label="anchor" href="#composite-plots-for-multiple-chromosomes"></a>
+</h2>
 <p>As mentioned in the introduction section, a set of <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> tracks has to share the same chromosome when plotted, i.e., only a single chromosome can be active during a given plotting operation. Consequently, we can not directly create plots for multiple chromosomes in a single call to the <code>plotTracks</code> function. However, since the underlying graphical infrastructure of the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package uses grid graphics, we can build our own composite plot using multiple consecutive <code>plotTracks</code> calls. All we need to take care of is an adequate layout structure to plot into, and we also need to tell <code>plotTracks</code> not to clear the graphics device before plotting, which can be achieved by setting the function’s <code>add</code> argument to <code>FALSE</code>. For details on how to create a layout structure in the grid graphics system, please see the help page at <code>?grid.layout)</code>.</p>
 <p>We start by creating an <code>AnnotationTrack</code> objects and a <code>DataTrack</code> object which both contain data for several chromosomes.</p>
 <div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
@@ -2637,9 +2619,9 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
   scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>draw <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="cn">NULL</span>, ylab <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/multPlot4-1.png"><!-- --></p>
 </div>
-<div class="section level1">
-<h1 id="bioconductor-integration">Bioconductor integration and file support<a class="anchor" aria-label="anchor" href="#bioconductor-integration"></a>
-</h1>
+<div class="section level2">
+<h2 id="bioconductor-integration">Bioconductor integration and file support<a class="anchor" aria-label="anchor" href="#bioconductor-integration"></a>
+</h2>
 <p>This short section is supposed to give a very brief overview over the different track classes in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package and how those can be constructed from the typical Bioconductor classes that deal with genomic data. The list is by no means complete, and a closer look at a track class’ documentation should provide all the possible options.</p>
 <table class="table">
 <colgroup>
@@ -2858,13 +2840,13 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 </tbody>
 </table>
 </div>
-<div class="section level1">
-<h1 id="sessioninfo">SessionInfo<a class="anchor" aria-label="anchor" href="#sessioninfo"></a>
-</h1>
+<div class="section level2">
+<h2 id="sessioninfo">SessionInfo<a class="anchor" aria-label="anchor" href="#sessioninfo"></a>
+</h2>
 <p>The following is the session info that generated this vignette:</p>
 <div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## R Under development (unstable) (2022-01-07 r81454)</span>
+<span class="co">## R Under development (unstable) (2022-01-14 r81484)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -2884,26 +2866,26 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">## [8] methods   base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">##  [1] lattice_0.20-45                   biomaRt_2.51.1                   </span>
+<span class="co">##  [1] lattice_0.20-45                   biomaRt_2.51.2                   </span>
 <span class="co">##  [3] GenomicFeatures_1.47.5            AnnotationDbi_1.57.1             </span>
 <span class="co">##  [5] Biobase_2.55.0                    BSgenome.Hsapiens.UCSC.hg19_1.4.3</span>
 <span class="co">##  [7] BSgenome_1.63.3                   rtracklayer_1.55.3               </span>
 <span class="co">##  [9] Biostrings_2.63.1                 XVector_0.35.0                   </span>
-<span class="co">## [11] Gviz_1.39.3                       GenomicRanges_1.47.5             </span>
+<span class="co">## [11] Gviz_1.39.4                       GenomicRanges_1.47.6             </span>
 <span class="co">## [13] GenomeInfoDb_1.31.1               IRanges_2.29.1                   </span>
-<span class="co">## [15] S4Vectors_0.33.9                  BiocGenerics_0.41.2              </span>
+<span class="co">## [15] S4Vectors_0.33.10                 BiocGenerics_0.41.2              </span>
 <span class="co">## [17] knitr_1.37                        BiocStyle_2.23.1                 </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##   [1] colorspace_2.0-2            rjson_0.2.20               </span>
+<span class="co">##   [1] colorspace_2.0-2            rjson_0.2.21               </span>
 <span class="co">##   [3] ellipsis_0.3.2              rprojroot_2.0.2            </span>
 <span class="co">##   [5] htmlTable_2.4.0             biovizBase_1.43.1          </span>
 <span class="co">##   [7] base64enc_0.1-3             fs_1.5.2                   </span>
 <span class="co">##   [9] dichromat_2.0-0             rstudioapi_0.13            </span>
-<span class="co">##  [11] bit64_4.0.5                 fansi_0.5.0                </span>
+<span class="co">##  [11] bit64_4.0.5                 fansi_1.0.2                </span>
 <span class="co">##  [13] xml2_1.3.3                  splines_4.2.0              </span>
 <span class="co">##  [15] cachem_1.0.6                Formula_1.2-4              </span>
-<span class="co">##  [17] jsonlite_1.7.2              Rsamtools_2.11.0           </span>
+<span class="co">##  [17] jsonlite_1.7.3              Rsamtools_2.11.0           </span>
 <span class="co">##  [19] cluster_2.1.2               dbplyr_2.1.1               </span>
 <span class="co">##  [21] png_0.1-7                   BiocManager_1.30.16        </span>
 <span class="co">##  [23] compiler_4.2.0              httr_1.4.2                 </span>
@@ -2913,11 +2895,11 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">##  [31] prettyunits_1.1.1           tools_4.2.0                </span>
 <span class="co">##  [33] gtable_0.3.0                glue_1.6.0                 </span>
 <span class="co">##  [35] GenomeInfoDbData_1.2.7      dplyr_1.0.7                </span>
-<span class="co">##  [37] rappdirs_0.3.3              Rcpp_1.0.7                 </span>
-<span class="co">##  [39] jquerylib_0.1.4             pkgdown_2.0.1              </span>
+<span class="co">##  [37] rappdirs_0.3.3              Rcpp_1.0.8                 </span>
+<span class="co">##  [39] jquerylib_0.1.4             pkgdown_2.0.2              </span>
 <span class="co">##  [41] vctrs_0.3.8                 xfun_0.29                  </span>
 <span class="co">##  [43] stringr_1.4.0               lifecycle_1.0.1            </span>
-<span class="co">##  [45] ensembldb_2.19.6            restfulr_0.0.13            </span>
+<span class="co">##  [45] ensembldb_2.19.7            restfulr_0.0.13            </span>
 <span class="co">##  [47] XML_3.99-0.8                zlibbioc_1.41.0            </span>
 <span class="co">##  [49] scales_1.1.1                VariantAnnotation_1.41.3   </span>
 <span class="co">##  [51] ProtGenerics_1.27.2         ragg_1.2.1                 </span>
@@ -2931,7 +2913,7 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">##  [67] stringi_1.7.6               RSQLite_2.2.9              </span>
 <span class="co">##  [69] highr_0.9                   BiocIO_1.5.0               </span>
 <span class="co">##  [71] desc_1.4.0                  checkmate_2.0.0            </span>
-<span class="co">##  [73] filelock_1.0.2              BiocParallel_1.29.10       </span>
+<span class="co">##  [73] filelock_1.0.2              BiocParallel_1.29.12       </span>
 <span class="co">##  [75] rlang_0.4.12                pkgconfig_2.0.3            </span>
 <span class="co">##  [77] systemfonts_1.0.3           matrixStats_0.61.0         </span>
 <span class="co">##  [79] bitops_1.0-7                evaluate_0.14              </span>
@@ -2941,10 +2923,10 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">##  [87] bookdown_0.24               R6_2.5.1                   </span>
 <span class="co">##  [89] generics_0.1.1              Hmisc_4.6-0                </span>
 <span class="co">##  [91] DelayedArray_0.21.2         DBI_1.1.2                  </span>
-<span class="co">##  [93] pillar_1.6.4                foreign_0.8-81             </span>
+<span class="co">##  [93] pillar_1.6.4                foreign_0.8-82             </span>
 <span class="co">##  [95] withr_2.4.3                 survival_3.2-13            </span>
 <span class="co">##  [97] KEGGREST_1.35.0             RCurl_1.98-1.5             </span>
-<span class="co">##  [99] nnet_7.3-16                 tibble_3.1.6               </span>
+<span class="co">##  [99] nnet_7.3-17                 tibble_3.1.6               </span>
 <span class="co">## [101] crayon_1.4.2                utf8_1.2.2                 </span>
 <span class="co">## [103] BiocFileCache_2.3.3         rmarkdown_2.11             </span>
 <span class="co">## [105] jpeg_0.1-9                  progress_1.2.2             </span>
@@ -2952,9 +2934,9 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">## [109] digest_0.6.29               textshaping_0.3.6          </span>
 <span class="co">## [111] munsell_0.5.0               bslib_0.3.1</span></code></pre></div>
 </div>
-<div class="section level1 unnumbered">
-<h1 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Hahne2016" class="csl-entry">
 Hahne, Florian, and Robert Ivanek. 2016. <span>“Statistical Genomics: Methods and Protocols.”</span> In, edited by Ewy Mathé and Sean Davis, 335–51. New York, NY: Springer New York. <a href="https://doi.org/10.1007/978-1-4939-3578-9_16" class="external-link">https://doi.org/10.1007/978-1-4939-3578-9_16</a>.
@@ -2990,7 +2972,7 @@ Katz, Yarden, Eric T. Wang, Jacob Silterra, Schraga Schwartz, Bang Wong, Helga T
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
