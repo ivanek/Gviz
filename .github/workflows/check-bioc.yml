@@ -38,7 +38,7 @@ env:
   run_covr: 'true'
   run_pkgdown: 'true'
   has_RUnit: 'false'
-  cache-version: 'cache-v1'
+  cache-version: 'cache-v2'
 
 jobs:
   build-check:
@@ -173,7 +173,7 @@ jobs:
           ## Pass #2 at installing dependencies
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = TRUE, upgrade = TRUE)
-          
+
           ## For running the checks
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
