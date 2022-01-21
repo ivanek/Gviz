@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.39.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.39.5</span>
       </span>
     </div>
 
@@ -244,21 +244,25 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DisplayPars-class.html">availableDisplayPars</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">dp</span><span class="op">)</span>
+<span class="co">## $showTitle</span>
+<span class="co">## [1] TRUE</span>
 <span class="co">## </span>
-<span class="co">## The following display parameters are available for 'GeneRegionTrack' objects:</span>
-<span class="co">## (see ? GeneRegionTrack for details on their usage)</span>
+<span class="co">## $size</span>
+<span class="co">## [1] 1</span>
 <span class="co">## </span>
-<span class="co">## showAxis (inherited from class 'GdObject'): TRUE </span>
-<span class="co">## showExonId: NULL</span>
-<span class="co">## showFeatureId (inherited from class 'AnnotationTrack'): FALSE </span>
-<span class="co">## showId (inherited from class 'AnnotationTrack'): FALSE </span>
-<span class="co">## showOverplotting (inherited from class 'AnnotationTrack'): FALSE </span>
-<span class="co">## showTitle (inherited from class 'GdObject'): TRUE </span>
-<span class="co">## size (inherited from class 'GdObject'): 1 </span>
-<span class="co">## stackHeight (inherited from class 'StackedTrack'): 0.75 </span>
-<span class="co">## thinBoxFeature: utr ncRNA utr3 utr5 3UTR 5UTR miRNA lincRNA three_prime_UTR five_prime_UTR </span>
-<span class="co">## transcriptAnnotation: NULL</span>
-<span class="co">## v (inherited from class 'GdObject'): -1</span></code></pre></div>
+<span class="co">## $stackHeight</span>
+<span class="co">## [1] 0.75</span>
+<span class="co">## </span>
+<span class="co">## $thinBoxFeature</span>
+<span class="co">##  [1] "utr"             "ncRNA"           "utr3"            "utr5"           </span>
+<span class="co">##  [5] "3UTR"            "5UTR"            "miRNA"           "lincRNA"        </span>
+<span class="co">##  [9] "three_prime_UTR" "five_prime_UTR" </span>
+<span class="co">## </span>
+<span class="co">## $transcriptAnnotation</span>
+<span class="co">## NULL</span>
+<span class="co">## </span>
+<span class="co">## $v</span>
+<span class="co">## [1] -1</span></code></pre></div>
 <p>As we can see, display parameters can be inherited from parent classes. For the regular user this is not important at all, however it nicely exemplifies the structure of the class hierarchy in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package.</p>
 </div>
 <div class="section level3">
@@ -1121,9 +1125,9 @@
 <p><img src="Gviz_files/figure-html/stacking2-1.png"><!-- --></p>
 <p>In addition to annotation groups there is also the notion of a feature type in the <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> package. Feature types are simply different types of annotation regions (e.g., mRNA transcripts, miRNAs, rRNAs, etc.) that are indicated by different colors. There is no limit on the number of different features, however each element in a grouped annotation item needs to be of the same feature type. We can query and set features using the <code>feature</code> and <code>feature&lt;-</code> methods.</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/RangeTrack-class.html">feature</a></span><span class="op">(</span><span class="va">aTrack.stacked</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">aTrack.stacked</span><span class="op">)</span>
 <span class="co">## [1] "unknown" "unknown" "unknown" "unknown" "unknown" "unknown"</span>
-<span class="fu"><a href="../reference/RangeTrack-class.html">feature</a></span><span class="op">(</span><span class="va">aTrack.stacked</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span>, <span class="st">"bar"</span>, <span class="st">"bar"</span>, <span class="st">"no"</span>, <span class="st">"no"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">aTrack.stacked</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span>, <span class="st">"bar"</span>, <span class="st">"bar"</span>, <span class="st">"no"</span>, <span class="st">"no"</span><span class="op">)</span></code></pre></div>
 <p>Features types can also be shown as either the group or the item annotation on the plot.</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">aTrack.stacked</span>, featureAnnotation <span class="op">=</span> <span class="st">"feature"</span>, 
@@ -1347,10 +1351,10 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">geneModels</span><span class="op">)</span>
 <span class="va">grtrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">geneModels</span>, genome <span class="op">=</span> <span class="va">gen</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, 
                            name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GeneRegionTrack-class.html">gene</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GeneRegionTrack-class.html">transcript</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GeneRegionTrack-class.html">exon</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GeneRegionTrack-class.html">symbol</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/generegtrackf-1.png"><!-- --></p>
 <p>Both exon- and transcript-centric annotation can be added to the plot using the <code>transcriptAnnotation</code> and <code>exonAnnotation</code> display parameters.</p>
@@ -1413,7 +1417,7 @@
                         start <span class="op">=</span> <span class="fl">35000000</span>,  end <span class="op">=</span> <span class="fl">40000000</span><span class="op">)</span></code></pre></div>
 <p>A nice bonus when building <code>GeneRegionTracks</code> from <code>TxDb</code> objects is that we get additional information about coding and non-coding regions of the transcripts, i.e., coordinates of the 5’ and 3’ UTRs and of the CDS regions. The class’ plotting method can use this information to distinguish between coding and non-coding regions based on the shape of the feature. All coding regions are plotted just as we have seen in the previous examples, whereas the non-coding regions are drawn as slightly thinner boxes. The distinction between coding and non-coding is made on the basis of the object’s <code>feature</code> values in combination with a special display parameter <code>thinBoxFeature</code> that enumerates all feature types that are to be treated as non-coding. Obviously this feature is available to all <code>GeneRegionTracks</code>, not only the ones that were build from <code>TxDb</code> objects. However, the coding information has to be added manually and the default value of the <code>thinBoxFeature</code> parameter may not be sufficient to cover all possible cases. It is up to the user to come up with a complete list of non-coding feature types depending on the source of the data.</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/RangeTrack-class.html">feature</a></span><span class="op">(</span><span class="va">txTr</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">txTr</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">txTr</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/generegtrack4f-1.png"><!-- --></p>
 <!--
@@ -1592,7 +1596,7 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 <p>NOTE: <em><a href="https://bioconductor.org/packages/3.15/Gviz" class="external-link">Gviz</a></em> tries hard to automatically set up the necessary connection to the Biomart service to retrieve the relevant data. Sometimes however it can be advantageous to fully control the Biomart connector, for instance when trying to retrieve data from an archived Ensembl version (by default, <em><a href="https://bioconductor.org/packages/3.15/biomaRt" class="external-link">biomaRt</a></em> will always link to the most recent version). To that end, the <code>biomart</code> parameter can be used to supply a <code>biomaRt</code> object. Please note that a data set has to be selected in that object. In the example code below, the older version of human genome assembly (hg19) and matching Biomart version are used.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">biomaRt</span><span class="op">)</span>
-<span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
+<span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"https://grch37.ensembl.org"</span>, 
               biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, 
               dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span>
 <span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, 
@@ -1610,7 +1614,7 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 <p><img src="Gviz_files/figure-html/BiomartGeneRegionTrackHeight-1.png"><!-- --></p>
 <p>The <code>filter</code> argument to the <code>BiomartGeneRegionTrack</code> constructor can be used to pass on arbitrary additional filters to the Biomart query. We could for instance limit the returned gene models to RefSeq models only. Please see the documentation in the <em><a href="https://bioconductor.org/packages/3.15/biomaRt" class="external-link">biomaRt</a></em> package for details.</p>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
+<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"https://grch37.ensembl.org"</span>, 
               biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, 
               dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span>
 <span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, 
@@ -1622,7 +1626,7 @@ them using the *[AnnotationDbi](https://bioconductor.org/packages/3.15/Annotatio
 <p><img src="Gviz_files/figure-html/BiomartGeneRegionTrackFilterDo-1.png"><!-- --></p>
 <p>Sometimes it can be more convenient to get a model for a particular gene rather than defining a genomic range. One could use the filter mechanisms as described before for this purpose, however the <code>BiomartGeneRegionTrack</code> implements a more generic way. By providing the gene symbol as the <code>symbol</code> argument, the track will be initialized around the locus for this gene, if it can be found. Alternatively, one can provide the Ensembl transcript or gene id via the <code>transcript</code> or <code>gene</code> arguments, or an Entrez id via the <code>entrez</code> argument. In all of these cases the constructor will also fetch models for other genes that overlap the same region. If that is not desired one needs to provide an explicit Biomart filter.</p>
 <div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"grch37.ensembl.org"</span>, 
+<code class="sourceCode R"><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomaRt/man/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"https://grch37.ensembl.org"</span>, 
               biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>,
               dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span>
 <span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, name <span class="op">=</span> <span class="st">"ENSEMBL"</span>, 
@@ -1843,7 +1847,7 @@ which is necessary because Ensembl used to call the gene symbol field
 <p>Another use case for the <code>DetailsAnnotationTrack</code> class is to deal with the problem of very different feature sizes within a single track. For instance, we may be looking at a rather large genomic region containing one big transcript with many widely spaced exons and a bunch of smaller, more compact transcripts. In this case it would be helpful to provide a zoomed in version of those smaller transcripts. In order to achieve this we can make use of the class’ <code>groupDetails</code> display parameter, which applies the detail plotting function over each range group rather than over individual range items. First we define a function that selects those groups with a plotted size smaller than 10 pixels. We make use of the unexported function <code>.pxResolution</code> here to come up with the mapping between pixel coordinates and genomic coordinates.</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">selFun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">identifier</span>, <span class="va">start</span>, <span class="va">end</span>, <span class="va">track</span>, <span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">gcount</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/AnnotationTrack-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span><span class="op">)</span>
+    <span class="va">gcount</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span><span class="op">)</span>
     <span class="co">## This computes the width of 2 pixels in genomic coordinates</span>
     <span class="va">pxRange</span> <span class="op">&lt;-</span> <span class="fu">Gviz</span><span class="fu">:::</span><span class="fu">.pxResolution</span><span class="op">(</span>min.width <span class="op">=</span> <span class="fl">20</span>, coord <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span>
     <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="op">(</span><span class="va">end</span> <span class="op">-</span> <span class="va">start</span><span class="op">)</span> <span class="op">&lt;</span> <span class="va">pxRange</span> <span class="op">&amp;&amp;</span> <span class="va">gcount</span><span class="op">[</span><span class="va">identifier</span><span class="op">]</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
@@ -1852,7 +1856,7 @@ which is necessary because Ensembl used to call the gene symbol field
 <div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">detFun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">identifier</span>, <span class="va">GdObject.original</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span>
   <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">0.2</span>, cex <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>, 
-        <span class="va">GdObject.original</span><span class="op">[</span><span class="fu"><a href="../reference/AnnotationTrack-class.html">group</a></span><span class="op">(</span><span class="va">GdObject.original</span><span class="op">)</span> <span class="op">==</span> <span class="va">identifier</span><span class="op">]</span><span class="op">)</span>,
+        <span class="va">GdObject.original</span><span class="op">[</span><span class="fu"><a href="../reference/GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject.original</span><span class="op">)</span> <span class="op">==</span> <span class="va">identifier</span><span class="op">]</span><span class="op">)</span>,
         add <span class="op">=</span> <span class="cn">TRUE</span>, showTitle <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>Finally, we load some sample data, turn it into a <code>DetailsAnnotationTrack</code> object and plot it.</p>
@@ -2556,7 +2560,7 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="fu"><a href="../reference/DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">dtrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="st">"sample 1"</span>, 
               levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample 1"</span>, <span class="st">"sample 2"</span><span class="op">)</span><span class="op">)</span>, legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">ot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/OverlayTrack-class.html">OverlayTrack</a></span><span class="op">(</span>trackList<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dtrack2</span>, <span class="va">dtrack</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ylims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/extendrange.html" class="external-link">extendrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/RangeTrack-class.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">dtrack</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">dtrack2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ylims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/extendrange.html" class="external-link">extendrange</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/inter-range-methods.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">dtrack</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">dtrack2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">itrack</span>, <span class="va">gtrack</span>, <span class="va">ot</span><span class="op">)</span>, from <span class="op">=</span> <span class="va">lim</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, to <span class="op">=</span> <span class="va">lim</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, 
            ylim <span class="op">=</span> <span class="va">ylims</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"smooth"</span>, <span class="st">"p"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="Gviz_files/figure-html/OverlayTrack-1.png"><!-- --></p>
@@ -2594,7 +2598,7 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <p>Now we also want a genome axis and an <code>IdeogramTrack</code> object to indicate the genomic context.</p>
 <div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mgTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">50</span>, labelPos <span class="op">=</span> <span class="st">"below"</span>, exponent <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="fu"><a href="../reference/RangeTrack-class.html">chromosome</a></span><span class="op">(</span><span class="va">itrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr1"</span></code></pre></div>
+<span class="fu"><a href="../reference/GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">itrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr1"</span></code></pre></div>
 <p>Finally, we build a layout in which the plots for each chromosome are placed in a rectangular grid and repeatedly call <code>plotTracks</code> for each chromosome.</p>
 <div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ncols</span> <span class="op">&lt;-</span> <span class="fl">2</span>
@@ -2846,7 +2850,7 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <p>The following is the session info that generated this vignette:</p>
 <div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">## R Under development (unstable) (2022-01-14 r81484)</span>
+<span class="co">## R Under development (unstable) (2022-01-20 r81529)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -2867,12 +2871,12 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
 <span class="co">##  [1] lattice_0.20-45                   biomaRt_2.51.2                   </span>
-<span class="co">##  [3] GenomicFeatures_1.47.5            AnnotationDbi_1.57.1             </span>
+<span class="co">##  [3] GenomicFeatures_1.47.7            AnnotationDbi_1.57.1             </span>
 <span class="co">##  [5] Biobase_2.55.0                    BSgenome.Hsapiens.UCSC.hg19_1.4.3</span>
 <span class="co">##  [7] BSgenome_1.63.3                   rtracklayer_1.55.3               </span>
 <span class="co">##  [9] Biostrings_2.63.1                 XVector_0.35.0                   </span>
-<span class="co">## [11] Gviz_1.39.4                       GenomicRanges_1.47.6             </span>
-<span class="co">## [13] GenomeInfoDb_1.31.1               IRanges_2.29.1                   </span>
+<span class="co">## [11] Gviz_1.39.5                       GenomicRanges_1.47.6             </span>
+<span class="co">## [13] GenomeInfoDb_1.31.2               IRanges_2.29.1                   </span>
 <span class="co">## [15] S4Vectors_0.33.10                 BiocGenerics_0.41.2              </span>
 <span class="co">## [17] knitr_1.37                        BiocStyle_2.23.1                 </span>
 <span class="co">## </span>
@@ -2928,7 +2932,7 @@ A screen shot of a UCSC table browser view on the UCSC Known Genes track.
 <span class="co">##  [97] KEGGREST_1.35.0             RCurl_1.98-1.5             </span>
 <span class="co">##  [99] nnet_7.3-17                 tibble_3.1.6               </span>
 <span class="co">## [101] crayon_1.4.2                utf8_1.2.2                 </span>
-<span class="co">## [103] BiocFileCache_2.3.3         rmarkdown_2.11             </span>
+<span class="co">## [103] BiocFileCache_2.3.4         rmarkdown_2.11             </span>
 <span class="co">## [105] jpeg_0.1-9                  progress_1.2.2             </span>
 <span class="co">## [107] data.table_1.14.2           blob_1.2.2                 </span>
 <span class="co">## [109] digest_0.6.29               textshaping_0.3.6          </span>
