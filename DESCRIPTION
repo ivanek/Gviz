@@ -1,24 +1,30 @@
 Package: Gviz
 Title: Plotting data and annotation information along genomic coordinates
-Version: 1.39.4
+Version: 1.39.5
 Authors@R: c(person("Florian", "Hahne", role="aut"),
 	 person("Steffen", "Durinck", role="aut"),
-	 person("Robert", "Ivanek", role=c("aut", "cre"), email="robert.ivanek@unibas.ch", comment=c(ORCID="0000-0002-8403-056X")),
+	 person("Robert", "Ivanek", role=c("aut", "cre"), 
+	        email="robert.ivanek@unibas.ch", 
+	        comment=c(ORCID="0000-0002-8403-056X")),
 	 person("Arne", "Mueller", role="aut"),
 	 person("Steve", "Lianoglou", role="aut"),
-	 person("Ge", "Tan", role="aut", email="ge.tan09@imperial.ac.uk"),
-	 person("Lance", "Parsons", role="aut", email="lparsons@princeton.edu"),
-	 person("Shraddha", "Pai", role="aut", email="shraddha.pai@utoronto.ca"),
+	 person("Ge", "Tan", role="aut"),
+	 person("Lance", "Parsons", role="aut"),
+	 person("Shraddha", "Pai", role="aut"),
 	 person("Thomas", "McCarthy", role="ctb"),
 	 person("Felix", "Ernst", role="ctb"),
 	 person("Mike", "Smith", role="ctb"))
-Description: Genomic data analyses requires integrated visualization
-    of known genomic information and new experimental data.  Gviz uses
+Description: Genomic data analyses requires integrated visualization 
+    of known genomic information and new experimental data. Gviz uses
     the biomaRt and the rtracklayer packages to perform live
     annotation queries to Ensembl and UCSC and translates this to
     e.g. gene/transcript structures in viewports of the grid graphics
     package. This results in genomic information plotted together with
     your data.
+LazyLoad: yes
+Encoding: UTF-8
+RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.2),
     methods,
@@ -56,11 +62,37 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-Collate: Gviz.R AllGenerics.R AllClasses.R Gviz-methods.R
 biocViews: Visualization, Microarray, Sequencing
 URL: https://github.com/ivanek/Gviz
 BugReports: https://github.com/ivanek/Gviz/issues
 VignetteBuilder: knitr
 License: Artistic-2.0
-LazyLoad: yes
-Encoding: UTF-8
+Collate: 
+    'utils.R'
+    'ImageMap-class.R'
+    'DisplayPars-class.R'
+    'GdObject-class.R'
+    'ReferenceTrack-class.R'
+    'SequenceTrack-class.R'
+    'RangeTrack-class.R'
+    'StackedTrack-class.R'
+    'NumericTrack-class.R'
+    'DataTrack-class.R'
+    'AlignmentsTrack-class.R'
+    'AnnotationTrack-class.R'
+    'GeneRegionTrack-class.R'
+    'BiomartGeneRegionTrack-class.R'
+    'CustomTrack-class.R'
+    'GenomeAxisTrack-class.R'
+    'Gviz-defunct.R'
+    'Gviz-deprecated.R'
+    'HighlightTrack-class.R'
+    'IdeogramTrack-class.R'
+    'OverlayTrack-class.R'
+    'UcscTrack.R'
+    'collapsing.R'
+    'datasets.R'
+    'exportTracks.R'
+    'grouping.R'
+    'plotTracks.R'
+    'settings.R'

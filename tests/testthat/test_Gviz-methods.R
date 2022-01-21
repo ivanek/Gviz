@@ -1,7 +1,6 @@
 ## Gviz methods
 
 test_that("General accessors work", {
-
     expect_identical(ranges(dataTrack), granges(gr))
     expect_identical(range(dataTrack), ir)
 
@@ -83,51 +82,52 @@ test_that("General replacement methods work", {
 })
 
 test_that("values accessors and replacement methods work", {
-    expect_identical(values(annoTrack), data.frame(feature = "unknown", group = "1",
-                                                   id = "unknown", density = 1, stringsAsFactors=FALSE))
-    expect_identical(values(axisTrack), data.frame(score = 1, stringsAsFactors=FALSE))
+    expect_identical(values(annoTrack), data.frame(
+        feature = "unknown", group = "1",
+        id = "unknown", density = 1, stringsAsFactors = FALSE
+    ))
+    expect_identical(values(axisTrack), data.frame(score = 1, stringsAsFactors = FALSE))
     expect_identical(values(dataTrack), as.matrix(c(score = 1)))
     expect_identical(values(DataTrack()), matrix(logical(), 0, 0))
     expect_identical(values(alnTrack), NULL)
 
-    values(dataTrack) <- matrix(3, dimnames=list("score", NULL))
+    values(dataTrack) <- matrix(3, dimnames = list("score", NULL))
     expect_identical(values(dataTrack), as.matrix(c(score = 3)))
     values(dataTrack) <- 3
     expect_identical(values(dataTrack), as.matrix(c(3)))
-    expect_error(values(dataTrack) <- matrix("3", dimnames=list("score", NULL)), "Not numeric or dimensions of replacement value do not match.")
-    expect_error(values(dataTrack) <- c(3,3), "Not numeric or invalid length of replacement vector.")
-
+    expect_error(values(dataTrack) <- matrix("3", dimnames = list("score", NULL)), "Not numeric or dimensions of replacement value do not match.")
+    expect_error(values(dataTrack) <- c(3, 3), "Not numeric or invalid length of replacement vector.")
 })
 
 test_that("subseq works", {
-    expect_error(subseq(SequenceTrack(), start=NA, end=NA, width=3), "Two out of the three in")
-    expect_error(subseq(SequenceTrack(), start=10, end=1), "'end' has to be bigger than 'start'")
-    expect_error(subseq(seqTrack.dna, start=10, end=1), "'end' has to be bigger than 'start'")
-    expect_error(subseq(SequenceTrack(), start=1, end=10e6+2), "Sequence is too big")
-    expect_error(subseq(seqTrack.bs, start=1, end=10e6+2), "Sequence is too big")
-    expect_warning(subseq(seqTrack.dna, start=1, end=10, width=10), "are provided, ignoring")
-    expect_identical(as.character(subseq(SequenceTrack(), start=1, end=10)), as.character(DNAString("----------")))
-    expect_identical(as.character(subseq(seqTrack.dna, start=1, end=10)), as.character(DNAString("ATTTCCCTGA")))
-    expect_identical(as.character(subseq(seqTrack.dna, start=1, width=10)), as.character(DNAString("ATTTCCCTGA")))
-    expect_identical(as.character(subseq(seqTrack.dna, end=10, width=10)), as.character(DNAString("ATTTCCCTGA")))
-    expect_identical(as.character(subseq(seqTrack.dna, start=91, end=110)), as.character(DNAString("ACGTCTTCCA----------")))
-    expect_identical(as.character(subseq(seqTrack.bs, start=1, width=10)), as.character(DNAString("NNNNNNNNNN")))
-    expect_identical(as.character(subseq(seqTrack.dna, start=1)), as.character(dna.sq[[1]]))
-    expect_identical(as.character(subseq(SequenceTrack(), start=1)), as.character(DNAString("-")))
-    expect_identical(as.character(subseq(seqTrack.dna, end=1)), as.character(DNAString("A")))
-    expect_identical(as.character(subseq(SequenceTrack(), end=1)), as.character(DNAString("-")))
+    expect_error(subseq(SequenceTrack(), start = NA, end = NA, width = 3), "Two out of the three in")
+    expect_error(subseq(SequenceTrack(), start = 10, end = 1), "'end' has to be bigger than 'start'")
+    expect_error(subseq(seqTrack.dna, start = 10, end = 1), "'end' has to be bigger than 'start'")
+    expect_error(subseq(SequenceTrack(), start = 1, end = 10e6 + 2), "Sequence is too big")
+    expect_error(subseq(seqTrack.bs, start = 1, end = 10e6 + 2), "Sequence is too big")
+    expect_warning(subseq(seqTrack.dna, start = 1, end = 10, width = 10), "are provided, ignoring")
+    expect_identical(as.character(subseq(SequenceTrack(), start = 1, end = 10)), as.character(DNAString("----------")))
+    expect_identical(as.character(subseq(seqTrack.dna, start = 1, end = 10)), as.character(DNAString("ATTTCCCTGA")))
+    expect_identical(as.character(subseq(seqTrack.dna, start = 1, width = 10)), as.character(DNAString("ATTTCCCTGA")))
+    expect_identical(as.character(subseq(seqTrack.dna, end = 10, width = 10)), as.character(DNAString("ATTTCCCTGA")))
+    expect_identical(as.character(subseq(seqTrack.dna, start = 91, end = 110)), as.character(DNAString("ACGTCTTCCA----------")))
+    expect_identical(as.character(subseq(seqTrack.bs, start = 1, width = 10)), as.character(DNAString("NNNNNNNNNN")))
+    expect_identical(as.character(subseq(seqTrack.dna, start = 1)), as.character(dna.sq[[1]]))
+    expect_identical(as.character(subseq(SequenceTrack(), start = 1)), as.character(DNAString("-")))
+    expect_identical(as.character(subseq(seqTrack.dna, end = 1)), as.character(DNAString("A")))
+    expect_identical(as.character(subseq(SequenceTrack(), end = 1)), as.character(DNAString("-")))
     displayPars(seqTrack.dna)$complement <- TRUE
-    expect_identical(as.character(subseq(seqTrack.dna, start=1, end=10)), as.character(DNAString("TAAAGGGACT")))
+    expect_identical(as.character(subseq(seqTrack.dna, start = 1, end = 10)), as.character(DNAString("TAAAGGGACT")))
 
 
-    expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1")), "Two out of the three in")
-    expect_error(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1), "Two out of the three in")
-    expect_warning(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=10, width=10)), "All ")
-    expect_error(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=NA, end=NA, width=10)), "Two ")
-    expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, width=10)), as.character(DNAString("CTANGAGACG")))
-    expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), end=10, width=10)), as.character(DNAString("CTANGAGACG")))
+    expect_error(subseq(SequenceTrack(fastafile, chromosome = "chr1")), "Two out of the three in")
+    expect_error(subseq(SequenceTrack(fastafile, chromosome = "chr1"), start = 1), "Two out of the three in")
+    expect_warning(as.character(subseq(SequenceTrack(fastafile, chromosome = "chr1"), start = 1, end = 10, width = 10)), "All ")
+    expect_error(as.character(subseq(SequenceTrack(fastafile, chromosome = "chr1"), start = NA, end = NA, width = 10)), "Two ")
+    expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome = "chr1"), start = 1, width = 10)), as.character(DNAString("CTANGAGACG")))
+    expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome = "chr1"), end = 10, width = 10)), as.character(DNAString("CTANGAGACG")))
     ## expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=NA, width=10)), as.character(DNAString("CTANGAGACG")))
-    expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome="chr1"), start=1, end=10)), as.character(DNAString("CTANGAGACG")))
+    expect_identical(as.character(subseq(SequenceTrack(fastafile, chromosome = "chr1"), start = 1, end = 10)), as.character(DNAString("CTANGAGACG")))
 })
 
 test_that("chromosome accessors and replacement methods work", {
@@ -160,7 +160,6 @@ test_that("chromosome accessors and replacement methods work", {
     expect_identical(chromosome(alnTrack), "chrNA")
     chromosome(alnTrack) <- "chr1"
     expect_identical(chromosome(alnTrack), "chr1")
-
 })
 
 
@@ -194,7 +193,7 @@ test_that("strand accessors and replacement methods work", {
 
     expect_identical(strand(axisTrack), "*")
 
-    annoTrack <- AnnotationTrack(c(gr,gr2))
+    annoTrack <- AnnotationTrack(c(gr, gr2))
     expect_identical(strand(annoTrack), rep("*", 2))
     strand(annoTrack) <- rep("+", 2)
     expect_identical(strand(annoTrack), rep("+", 2))
@@ -202,32 +201,32 @@ test_that("strand accessors and replacement methods work", {
 })
 
 test_that("subsetting with [ works", {
-    expect_identical(annoTrack[1]@range, GRanges("chr1", IRanges(1,5), feature="unknown", group="1", id="unknown", density=1))
+    expect_identical(annoTrack[1]@range, GRanges("chr1", IRanges(1, 5), feature = "unknown", group = "1", id = "unknown", density = 1))
     expect_error(annoTrack[2], "subscript contains out-of-bounds")
 
-    expect_identical(axisTrack[1]@range, GRanges("chr1", IRanges(1,5), score=1))
+    expect_identical(axisTrack[1]@range, GRanges("chr1", IRanges(1, 5), score = 1))
     expect_error(dataTrack[2], "subscript out of bounds")
 
     expect_identical(ideoTrack[1], ideoTrack)
 
-    expect_identical(dataTrack[1,,]@range, GRanges("chr1", IRanges(1,5)))
+    expect_identical(dataTrack[1, , ]@range, GRanges("chr1", IRanges(1, 5)))
     expect_error(dataTrack[2], "subscript out of bounds")
-    expect_identical(dataTrack[,1,]@data, matrix(1, nrow=1, dimnames=list("score", NULL)))
-    expect_error(dataTrack[,2,]@data, "subscript contains out-of-bounds indices")
+    expect_identical(dataTrack[, 1, ]@data, matrix(1, nrow = 1, dimnames = list("score", NULL)))
+    expect_error(dataTrack[, 2, ]@data, "subscript contains out-of-bounds indices")
 })
 
 test_that("splitting works", {
     aTrack <- AnnotationTrack(c(gr, gr2))
-    expect_identical(names(split(aTrack, f=c("a", "b"))), c("a", "b"))
-    expect_identical(split(aTrack, f=c("a", "b"))[[1]]@range, aTrack@range[1])
-    expect_identical(split(aTrack, f=c("a", "b"))[[2]]@range, aTrack@range[2])
+    expect_identical(names(split(aTrack, f = c("a", "b"))), c("a", "b"))
+    expect_identical(split(aTrack, f = c("a", "b"))[[1]]@range, aTrack@range[1])
+    expect_identical(split(aTrack, f = c("a", "b"))[[2]]@range, aTrack@range[2])
 
     dTrack <- DataTrack(c(gr, gr2))
-    expect_identical(names(split(dTrack, f=c("a", "b"))), c("a", "b"))
-    expect_identical(split(dTrack, f=c("a", "b"))[[1]]@range, dTrack@range[1])
-    expect_identical(split(dTrack, f=c("a", "b"))[[1]]@data, dTrack@data[,1, drop=FALSE])
-    expect_identical(split(dTrack, f=c("a", "b"))[[2]]@range, dTrack@range[2])
-    expect_identical(split(dTrack, f=c("a", "b"))[[2]]@data, dTrack@data[,2, drop=FALSE])
+    expect_identical(names(split(dTrack, f = c("a", "b"))), c("a", "b"))
+    expect_identical(split(dTrack, f = c("a", "b"))[[1]]@range, dTrack@range[1])
+    expect_identical(split(dTrack, f = c("a", "b"))[[1]]@data, dTrack@data[, 1, drop = FALSE])
+    expect_identical(split(dTrack, f = c("a", "b"))[[2]]@range, dTrack@range[2])
+    expect_identical(split(dTrack, f = c("a", "b"))[[2]]@data, dTrack@data[, 2, drop = FALSE])
 })
 
 test_that("names accessors and replacement methods work", {
@@ -270,12 +269,12 @@ test_that("group and identifier accessors and replacement methods work", {
     expect_identical(group(dataTrack), NULL)
 
     expect_identical(identifier(geneTrack), as.character(geneModels$symbol))
-    expect_identical(identifier(geneTrack, type=NULL), as.character(geneModels$symbol))
+    expect_identical(identifier(geneTrack, type = NULL), as.character(geneModels$symbol))
     identifier(geneTrack) <- paste0(as.character(geneModels$symbol), ".1")
     expect_identical(identifier(geneTrack), paste0(as.character(geneModels$symbol), ".1"))
 
     expect_identical(identifier(annoTrack), "1")
-    expect_identical(identifier(annoTrack, type=NULL), "1")
+    expect_identical(identifier(annoTrack, type = NULL), "1")
     identifier(annoTrack) <- "1.1"
     expect_identical(identifier(annoTrack), "1.1")
 })
@@ -294,32 +293,33 @@ test_that("stacking works", {
 
 test_that("position calculation works", {
     expect_identical(position(annoTrack), 3)
-    expect_identical(position(annoTrack, from=1, to=5), 3)
-    expect_identical(position(annoTrack, from=10, to=15), numeric())
+    expect_identical(position(annoTrack, from = 1, to = 5), 3)
+    expect_identical(position(annoTrack, from = 10, to = 15), numeric())
 })
 
 
 test_that("imageMap and coords work", {
     expect_identical(imageMap(annoTrack), NULL)
     im <- new("ImageMap",
-              coords=matrix(1, ncol=4, nrow=1, dimnames=list("first")),
-              tags=list(first=1))
+        coords = matrix(1, ncol = 4, nrow = 1, dimnames = list("first")),
+        tags = list(first = 1)
+    )
     imageMap(annoTrack) <- im
     expect_identical(imageMap(annoTrack), im)
 
     expect_identical(coords(NULL), NULL)
-    expect_identical(coords(im), matrix(1, ncol=4, nrow=1, dimnames=list("first")))
-    expect_identical(coords(annoTrack), matrix(1, ncol=4, nrow=1, dimnames=list("first")))
+    expect_identical(coords(im), matrix(1, ncol = 4, nrow = 1, dimnames = list("first")))
+    expect_identical(coords(annoTrack), matrix(1, ncol = 4, nrow = 1, dimnames = list("first")))
 
     expect_identical(tags(NULL), NULL)
-    expect_identical(tags(im), list(first=1))
-    expect_identical(tags(annoTrack), list(first=1))
+    expect_identical(tags(im), list(first = 1))
+    expect_identical(tags(annoTrack), list(first = 1))
 })
 
 test_that("consolidating of tracks works", {
-    expect_identical(chromosome(consolidateTrack(annoTrack, chromosome="chr2", alpha=TRUE)), "chr2")
-    expect_identical(getPar(consolidateTrack(annoTrack, chromosome="chr2", alpha=TRUE), ".__hasAlphaSupport"), TRUE)
-    expect_identical(getPar(consolidateTrack(annoTrack, chromosome="chr2", alpha=FALSE, size=2), "size"), 2)
+    expect_identical(chromosome(consolidateTrack(annoTrack, chromosome = "chr2", alpha = TRUE)), "chr2")
+    expect_identical(getPar(consolidateTrack(annoTrack, chromosome = "chr2", alpha = TRUE), ".__hasAlphaSupport"), TRUE)
+    expect_identical(getPar(consolidateTrack(annoTrack, chromosome = "chr2", alpha = FALSE, size = 2), "size"), 2)
 })
 
 

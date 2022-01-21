@@ -14,3 +14,5 @@
 ^LICENSE$
 ^Rplots\.pdf$
 ^vignettes\/Gviz-logo\.pdf$
+^man-roxygen$
+^ensMappings.txt$

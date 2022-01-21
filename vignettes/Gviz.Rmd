@@ -762,7 +762,7 @@ plotTracks(ideoTrack, from = 85e6, to = 129e6)
 if(hasUcscConnection) {
   ideoTrack <- IdeogramTrack(genome = "hg19", chromosome = "chrX")
 } else{
-  data(itrack)
+  data(ideoTrack)
 }
 plotTracks(ideoTrack, from = 85e6, to = 129e6)
 ```
@@ -1796,7 +1796,7 @@ be selected in that object. In the example code below, the older version of huma
 
 ```{r BiomartGeneRegionTrackShow, eval=FALSE}
 library(biomaRt)
-bm <- useEnsembl(host = "grch37.ensembl.org", 
+bm <- useEnsembl(host = "https://grch37.ensembl.org", 
               biomart = "ENSEMBL_MART_ENSEMBL", 
               dataset = "hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1807,7 +1807,7 @@ plotTracks(biomTrack)
 ```{r BiomartGeneRegionTrackDo, echo=FALSE, results='hide', fig.width=7.5, fig.height=1.25}
 library(biomaRt)
 if(hasBiomartConnection) {
-  bm <- useEnsembl(host = "grch37.ensembl.org", 
+  bm <- useEnsembl(host = "https://grch37.ensembl.org", 
                 biomart = "ENSEMBL_MART_ENSEMBL", 
                 dataset = "hsapiens_gene_ensembl")
   biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1851,7 +1851,7 @@ see the documentation in the `r Biocpkg("biomaRt")` package for details.
 
 
 ```{r BiomartGeneRegionTrackFilterShow, eval=FALSE}
-bm <- useEnsembl(host = "grch37.ensembl.org", 
+bm <- useEnsembl(host = "https://grch37.ensembl.org", 
               biomart = "ENSEMBL_MART_ENSEMBL", 
               dataset = "hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1863,7 +1863,7 @@ plotTracks(biomTrack, col.line = NULL, col = NULL, stackHeight = 0.3)
 ```
 ```{r BiomartGeneRegionTrackFilterDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection) {
-  bm <- useEnsembl(host = "grch37.ensembl.org",
+  bm <- useEnsembl(host = "https://grch37.ensembl.org",
                 biomart = "ENSEMBL_MART_ENSEMBL",
                 dataset = "hsapiens_gene_ensembl")
   biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
@@ -1892,7 +1892,7 @@ region. If that is not desired one needs to provide an explicit
 Biomart filter.
 
 ```{r BiomartGeneRegionTrackSymbolShow, eval=FALSE}
-bm <- useEnsembl(host = "grch37.ensembl.org", 
+bm <- useEnsembl(host = "https://grch37.ensembl.org", 
               biomart = "ENSEMBL_MART_ENSEMBL",
               dataset = "hsapiens_gene_ensembl")
 biomTrack <- BiomartGeneRegionTrack(genome = "hg19", name = "ENSEMBL", 
@@ -1901,7 +1901,7 @@ plotTracks(biomTrack, transcriptAnnotation = "symbol")
 ```
 ```{r BiomartGeneRegionTrackSymbolDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection) {
-  bm <- useEnsembl(host = "grch37.ensembl.org", 
+  bm <- useEnsembl(host = "https://grch37.ensembl.org", 
                 biomart = "ENSEMBL_MART_ENSEMBL", 
                 dataset = "hsapiens_gene_ensembl")
   biomTrack <- BiomartGeneRegionTrack(genome = "hg19", name = "ENSEMBL", 

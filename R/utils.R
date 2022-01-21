@@ -1,4 +1,4 @@
-## package constants -----------------------------------------------------------
+## package constants ---------------------------------------------------------
 ## A bunch of package constants
 
 .DEFAULT_FILL_COL <- "lightgray"
@@ -23,9 +23,40 @@
     "#B41414", "#E03231", "#F7A99C",
     "#9FC8DC", "#468CC8", "#0165B3"
 )
+### Imports ------------------------------------------------------------------
+#' @import methods
+#' @import BiocGenerics
+#' @import S4Vectors
+#' @import IRanges
+#' @import XVector
+#' @import GenomeInfoDb
+#' @import GenomicRanges
+#' @import grid
 
+#' @importFrom lattice current.panel.limits panel.abline panel.grid panel.lines panel.points panel.polygon panel.segments panel.xyplot panel.text trellis.par.get
+#' @importFrom RColorBrewer brewer.pal
 
-## functions -------------------------------------------------------------------
+#' @importMethodsFrom AnnotationDbi colnames get ls mget tail
+
+## #' @importFrom utils browseURL
+## #' @importFrom latticeExtra panel.xyarea
+
+### Class unions -------------------------------------------------------------
+
+## Some useful class unions to allow for NULL values in certain slots
+setClassUnion("DfOrNULL", c("data.frame", "NULL"))
+#' @importClassesFrom biomaRt Mart
+setClassUnion("MartOrNULL", c("Mart", "NULL"))
+setClassUnion("FactorOrCharacterOrNULL", c("factor", "character", "NULL"))
+setClassUnion("NumericOrNULL", c("numeric", "NULL"))
+setClassUnion("ListOrEnv", c("list", "environment"))
+setClassUnion("GRangesOrIRanges", c("GRanges", "IRanges"))
+setClassUnion("NULLOrMissing", c("NULL", "missing"))
+#' @importClassesFrom BSgenome BSgenome MaskedBSgenome
+setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
+
+### Functions ----------------------------------------------------------------
+
 ## Check the class and structure of an object
 .checkClass <- function(x, class, length = NULL, verbose = FALSE, mandatory = TRUE) {
     if (mandatory && missing(x)) {
@@ -51,8 +82,6 @@
     }
 }
 
-
-
 ## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified
 ## chromosome name as understood by UCSC. Accepted inputs are:
 ##    - a single integer or a character coercible to one or integer-character combinations
@@ -61,6 +90,8 @@
 ##    o x: a character string to be converted to a valid UCSC chromosome name
 ##    o force: a logical flag, force pre-pending of 'chr' if missing
 ## Value: the UCSC character name
+
+#' @export
 .chrName <- function(x, force = FALSE) {
     if (!getOption("ucscChromosomeNames") || length(x) == 0) {
         return(as.character(x))
@@ -86,9 +117,11 @@
             head <- TRUE
         }
         if (!head) {
-            stop(sprintf("Invalid chromosome identifier '%s'\n", y),
-                 "Please consider setting options(ucscChromosomeNames=FALSE) ",
-                 "to allow for arbitrary chromosome identifiers.")
+            stop(
+                sprintf("Invalid chromosome identifier '%s'\n", y),
+                "Please consider setting options(ucscChromosomeNames=FALSE) ",
+                "to allow for arbitrary chromosome identifiers."
+            )
         }
         substring(y, 1, 3) <- tolower(substring(y, 1, 3))
         y
@@ -115,12 +148,12 @@
 ## Value: a logical scalar indicating whether stacking is needed or not
 .needsStacking <- function(GdObject) stacking(GdObject) %in% c("squish", "pack", "full")
 
-
-
 ## Get the coordinates for an HTML image map from the annotationTrack plot.
 ## Arguments:
 ##     o coordinates: a numeric matrix of annotation region coordinates (the bounding box if not rectangular)
 ## Value: valid HTML image map coordinates based on the current device dimensions
+
+#' @importFrom graphics par
 .getImageMap <- function(coordinates) {
     devSize <- devRes() * par("din")
     loc <- vpLocation()
@@ -173,19 +206,19 @@
         nv <- displayPars(x, "neededVerticalSpace")
         size <- displayPars(x, "size")
         if (is.null(size)) {
-              if (!is.null(nv)) {
-                  size <- nv
-                  attr(size, "absolute") <- TRUE
-              } else {
-                  size <- 1
-              }
-          }
+            if (!is.null(nv)) {
+                size <- nv
+                attr(size, "absolute") <- TRUE
+            } else {
+                size <- 1
+            }
+        }
         return(size)
     }
     size <- .dpOrDefault(x, "size", 1)
     if (is(x, "StackedTrack")) {
-          size <- max(size, min(floor(vpLocation()$size["height"] / 10), size * max(stacks(x))))
-      }
+        size <- max(size, min(floor(vpLocation()$size["height"] / 10), size * max(stacks(x))))
+    }
     return(size)
 }
 
@@ -206,8 +239,8 @@
             val <- .parMappings[[GdObject@name]][par]
             val <- val[!vapply(val, is.null, logical(1))]
             if (length(val) == 0) {
-                  val <- NULL
-              }
+                val <- NULL
+            }
         } else {
             val <- default
         }
@@ -237,8 +270,8 @@
         name <- name[-1]
     }
     if (is.null(val)) {
-          val <- .dpOrDefault(GdObject, par[1], default)
-      }
+        val <- .dpOrDefault(GdObject, par[1], default)
+    }
     return(val)
 }
 
@@ -246,8 +279,8 @@
 ## Return the font settings for a GdObject
 .fontGp <- function(GdObject, subtype = NULL, ...) {
     if (is(GdObject, "OverlayTrack")) {
-          GdObject <- GdObject@trackList[[1]]
-      }
+        GdObject <- GdObject@trackList[[1]]
+    }
     gp <- list(
         fontsize = as.vector(.dpOrDefaultFont(GdObject, "fontsize", subtype, 12))[1],
         fontface = as.vector(.dpOrDefaultFont(GdObject, "fontface", subtype, 1))[1],
@@ -315,6 +348,8 @@
 ##    o title.width: the updated available title width
 ##    o spacing: the amount of spacing between tracks
 ##    o nwrap: the final (wrapped) title text
+
+#' @importFrom grDevices extendrange
 .setupTextSize <- function(trackList, sizes, title.width, panelOnly = FALSE, spacing = 5) {
     curVp <- vpLocation()
     trackList <- lapply(trackList, function(x) if (is(x, "OverlayTrack")) x@trackList[[1]] else x)
@@ -655,19 +690,19 @@
     if ("transcript" %in% colnames(box)) {
         box <- .handleComposite(box, "box")
         if (nrow(box$box)) {
-              grid.rect(box$box$cx2, box$box$cy1,
-                  width = box$box$cx2 - box$box$cx1, height = box$box$cy2 - box$box$cy1,
-                  gp = gpar(col = as.character(box$box$col), fill = as.character(box$box$fill), lwd = lwd, lty = lty, alpha = alpha),
-                  default.units = "native", just = c("right", "bottom")
-              )
-          }
+            grid.rect(box$box$cx2, box$box$cy1,
+                width = box$box$cx2 - box$box$cx1, height = box$box$cy2 - box$box$cy1,
+                gp = gpar(col = as.character(box$box$col), fill = as.character(box$box$fill), lwd = lwd, lty = lty, alpha = alpha),
+                default.units = "native", just = c("right", "bottom")
+            )
+        }
         if (nrow(box$pols)) {
-              grid.polygon(
-                  x = box$pols$x, y = box$pols$y, id = factor(box$pols$id),
-                  gp = gpar(col = as.character(box$polpars$col), fill = as.character(box$polpars$fill), lwd = lwd, lty = lty, alpha = alpha),
-                  default.units = "native"
-              )
-          }
+            grid.polygon(
+                x = box$pols$x, y = box$pols$y, id = factor(box$pols$id),
+                gp = gpar(col = as.character(box$polpars$col), fill = as.character(box$polpars$fill), lwd = lwd, lty = lty, alpha = alpha),
+                default.units = "native"
+            )
+        }
     } else {
         grid.rect(box$cx2, box$cy1,
             width = box$cx2 - box$cx1, height = box$cy2 - box$cy1,
@@ -729,8 +764,8 @@
             }
         }
         if (!is.null(fx1) && length(fx1)) {
-              grid.segments(fx1, fy1, fx2, fy2, default.units = "native", gp = gpar(col = scol, lwd = lwd, lty = lty, alpha = alpha))
-          }
+            grid.segments(fx1, fy1, fx2, fy2, default.units = "native", gp = gpar(col = scol, lwd = lwd, lty = lty, alpha = alpha))
+        }
     }
     bars <- data.frame(x1 = xx1, x2 = xx2, y = y, col = col, stringsAsFactors = FALSE)
     cutBars <- data.frame()
@@ -746,16 +781,16 @@
             IRanges()
         }
         if (length(ct)) {
-              cutBars <- rbind(cutBars, data.frame(x1 = start(ct), x2 = end(ct), y = b$y, col = b$col, stringsAsFactors = FALSE))
-          }
+            cutBars <- rbind(cutBars, data.frame(x1 = start(ct), x2 = end(ct), y = b$y, col = b$col, stringsAsFactors = FALSE))
+        }
     }
     ## fix bug when no introns are present
     if (nrow(cutBars)) {
-          grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y,
-              default.units = "native",
-              gp = gpar(col = cutBars$col, lwd = lwd, lty = lty, alpha = alpha, lineend = "square")
-          )
-      }
+        grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y,
+            default.units = "native",
+            gp = gpar(col = cutBars$col, lwd = lwd, lty = lty, alpha = alpha, lineend = "square")
+        )
+    }
     ## grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
 }
 
@@ -787,8 +822,8 @@
     lz <- log((rx[2] - rx[1]) / 3, 10)
     fl <- floor(lz)
     if (lz - fl > log(5, 10)) {
-          fl <- fl + log(5, 10)
-      }
+        fl <- fl + log(5, 10)
+    }
     tw <- round(10^fl)
     i0 <- ceiling(rx[1] / tw)
     i1 <- floor(rx[2] / tw)
@@ -807,6 +842,8 @@
 ##    o baseline: the y value of the horizontal baseline
 ##    o alpha: the transparancy
 ## Value: the function is called for its side-effect of drawing on the graphics device
+
+#' @importFrom stats loess.smooth
 .panel.mountain <- function(x, y, span = 2 / 3, degree = 1, family = c("symmetric", "gaussian"), evaluation = 50,
                             lwd = plot.line$lwd, lty = plot.line$lty, col, col.line = plot.line$col,
                             baseline, fill, alpha = 1, ...) {
@@ -815,14 +852,14 @@
     fill <- rep(fill, 2)
     ok <- is.finite(x) & is.finite(y)
     if (sum(ok) < 1) {
-          return()
-      }
+        return()
+    }
     if (!missing(col)) {
         if (missing(col.line)) {
-              col.line <- col
-          }
+            col.line <- col
+        }
     }
-    plot.line <- trellis.par.get("plot.line")
+    plot.line <- lattice::trellis.par.get("plot.line")
     smooth <- loess.smooth(x[ok], y[ok],
         span = span, family = family,
         degree = degree, evaluation = evaluation
@@ -830,10 +867,10 @@
     tmp <- as.integer(smooth$y < baseline)
     changePoint <- NULL
     for (i in seq_along(tmp)) {
-          if (i > 1 && tmp[i] != tmp[i - 1]) {
-                changePoint <- c(changePoint, i)
-            }
-      }
+        if (i > 1 && tmp[i] != tmp[i - 1]) {
+            changePoint <- c(changePoint, i)
+        }
+    }
     m <- (smooth$y[changePoint] - smooth$y[changePoint - 1]) / (smooth$x[changePoint] - smooth$x[changePoint - 1])
     xCross <- ((baseline - smooth$y[changePoint - 1]) / m) + smooth$x[changePoint - 1]
     newX <- newY <- NULL
@@ -885,23 +922,23 @@
     fill <- rep(fill, 2)
     ok <- is.finite(x) & is.finite(y)
     if (sum(ok) < 1) {
-          return()
-      }
+        return()
+    }
     if (!missing(col)) {
         if (missing(col.line)) {
-              col.line <- col
-          }
+            col.line <- col
+        }
     }
     x <- x[ok]
     y <- y[ok]
-    plot.line <- trellis.par.get("plot.line")
+    plot.line <- lattice::trellis.par.get("plot.line")
     changePoint <- NULL
     tmp <- as.integer(y < baseline)
     for (i in seq_along(tmp)) {
-          if (i > 1 && tmp[i] != tmp[i - 1]) {
-                changePoint <- c(changePoint, i)
-            }
-      }
+        if (i > 1 && tmp[i] != tmp[i - 1]) {
+            changePoint <- c(changePoint, i)
+        }
+    }
     m <- (y[changePoint] - y[changePoint - 1]) / (x[changePoint] - x[changePoint - 1])
     xCross <- ((baseline - y[changePoint - 1]) / m) + x[changePoint - 1]
     newX <- newY <- NULL
@@ -939,6 +976,8 @@
 ## A lattice-style panel function to draw box and whisker plots with groups
 ## Arguments: see ? panel.bwplot for details
 ## Value: the function is called for its side-effect of drawing on the graphics device
+
+#' @importFrom grDevices boxplot.stats
 .panel.bwplot <- function(x, y, box.ratio = 1, box.width = box.ratio / (1 + box.ratio), lwd, lty, fontsize,
                           pch, col, alpha, cex, font, fontfamily, fontface, fill, varwidth = FALSE, notch = FALSE,
                           notch.frac = 0.5, ..., levels.fos = sort(unique(x)),
@@ -1008,8 +1047,7 @@
             lwd = lwd, lty = lty,
             col = col, alpha = alpha
         )
-    }
-    else {
+    } else {
         panel.points(
             x = levels.fos, y = blist.stats[, 3],
             pch = pch, col = col, alpha = alpha, cex = cex,
@@ -1047,8 +1085,8 @@
     scheme <- if (is.null(sid)) list() else .schemes[[sid]]
     schemePars <- if (is.null(scheme) || is.null(scheme[[class]])) list() else scheme[[class]]
     if (!is.list(schemePars)) {
-          stop(sprintf("Corrupted parameter definition for class '%s' in scheme '%s'", class, sid))
-      }
+        stop(sprintf("Corrupted parameter definition for class '%s' in scheme '%s'", class, sid))
+    }
     defaults[names(schemePars)] <- schemePars
     missing <- setdiff(names(defaults), names(current))
     if (is.null(getPar(x, ".__appliedScheme")) && length(schemePars)) {
@@ -1060,13 +1098,15 @@
     return(x)
 }
 
-
+### Schemes ------------------------------------------------------------------
 
 ## The scheme settings registry. This is essentially just a nested list of display parameters, and the values in this list
 ## will be used to initialize the objects. Please note that a display parameter still needs to be defined in the class
-## definition for this to work, and that all parameters that are not set explicitely in the scheme will be taken from
+## definition for this to work, and that all parameters that are not set explicitly in the scheme will be taken from
 ## the defaults in that class definition. Scheme parameters still override everything else, and even parameters that are
 ## not defined for the class will be added from the scheme settings.
+
+#' @importFrom grDevices boxplot.stats
 .schemes <- new.env()
 .schemes[["default"]] <- list(
     GdObject = list(
@@ -1112,13 +1152,10 @@
         size = 1,
         v = -1
     ),
-
     StackedTrack = list(
         stackHeight = 0.75,
         reverseStacking = FALSE
     ),
-
-
     AnnotationTrack = list(
         arrowHeadWidth = 30,
         arrowHeadMaxWidth = 40,
@@ -1144,7 +1181,6 @@
         showOverplotting = FALSE,
         size = 1
     ),
-
     DetailsAnnotationTrack = list(
         details.minWidth = 100,
         details.ratio = Inf,
@@ -1161,7 +1197,6 @@
         detailsFunArgs = list(),
         groupDetails = FALSE
     ),
-
     GeneRegionTrack = list(
         arrowHeadWidth = 10,
         arrowHeadMaxWidth = 20,
@@ -1175,7 +1210,6 @@
         thinBoxFeature = .THIN_BOX_FEATURES,
         transcriptAnnotation = NULL
     ),
-
     BiomartGeneRegionTrack = list(
         C_segment = "burlywood4",
         D_segment = "lightblue",
@@ -1203,7 +1237,6 @@
         utr3 = "orange",
         utr5 = "orange"
     ),
-
     GenomeAxisTrack = list(
         add35 = FALSE,
         add53 = FALSE,
@@ -1226,7 +1259,6 @@
         size = NULL,
         col = "darkgray"
     ),
-
     DataTrack = list(
         aggregateGroups = FALSE,
         aggregation = "mean",
@@ -1245,7 +1277,7 @@
         col.horizon = NA,
         col.mountain = NULL,
         col.sampleNames = "white",
-        col = trellis.par.get("superpose.line")[["col"]],
+        col = lattice::trellis.par.get("superpose.line")[["col"]],
         collapse = FALSE,
         degree = 1,
         do.out = TRUE,
@@ -1256,7 +1288,7 @@
         fill.horizon = c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
         fill.mountain = c("#CCFFFF", "#FFCCFF"),
         fontcolor.legend = .DEFAULT_SHADED_COL,
-        gradient = brewer.pal(9, "Blues"),
+        gradient = RColorBrewer::brewer.pal(9, "Blues"),
         groups = NULL,
         horizon.origin = 0,
         horizon.scale = NULL,
@@ -1288,7 +1320,6 @@
         ylim = NULL,
         yTicksAt = NULL
     ),
-
     IdeogramTrack = list(
         background.title = "transparent",
         bevel = 0.45,
@@ -1303,7 +1334,6 @@
         showTitle = FALSE,
         size = NULL
     ),
-
     SequenceTrack = list(
         add53 = FALSE,
         background.title = "transparent",
@@ -1319,7 +1349,6 @@
         showTitle = FALSE,
         size = NULL
     ),
-
     HighlightTrack = list(
         col = "red",
         fill = "#FFE3E6"
@@ -1330,6 +1359,8 @@
     AnnotationTrack = list(col = "transparent")
 )
 
+### Scheme Functions ---------------------------------------------------------
+
 ## A helper function to be called upon package load that tries to find a stored Gviz scheme in the working directory
 .collectSchemes <- function() {
     try(
@@ -1337,8 +1368,8 @@
             if (".GvizSchemes" %in% base::ls(globalenv(), all.names = TRUE)) {
                 schemes <- get(".GvizSchemes", globalenv())
                 if (is.list(schemes) && !is.null(names(schemes))) {
-                      lapply(names(schemes), function(x) addScheme(schemes[[x]], x))
-                  }
+                    lapply(names(schemes), function(x) addScheme(schemes[[x]], x))
+                }
             }
         },
         silent = TRUE
@@ -1349,8 +1380,8 @@
 ## Helper function to select fontfaces
 .chooseFace <- function(fontface = NULL, font = 1) {
     if (is.null(fontface)) {
-          font
-      } else {
+        font
+    } else {
         fontface
     }
 }
@@ -1360,14 +1391,15 @@
 ## Arguments:
 ##    o name: the name of the scheme to get. Defaults to the current one.
 ## Value: A list containing the scheme
+#' @export
 getScheme <- function(name = getOption("Gviz.scheme")) {
     s <- NULL
     if (!is.null(name)) {
-          s <- .schemes[[name]]
-      }
+        s <- .schemes[[name]]
+    }
     if (is.null(s)) {
-          s <- list()
-      }
+        s <- list()
+    }
     return(s)
 }
 
@@ -1375,11 +1407,12 @@ getScheme <- function(name = getOption("Gviz.scheme")) {
 ## Arguments:
 ##    o scheme: the scheme to add
 ##    o name: the name of the scheme to add
+#' @export
 addScheme <- function(scheme, name) {
     .schemes[[name]] <- scheme
 }
 
-
+### Helper Functions ---------------------------------------------------------
 
 
 ## Helper function to compute native coordinate equivalent to 1 pixel and resize all ranges in a GRanges object accordingly
@@ -1429,29 +1462,39 @@ addScheme <- function(scheme, name) {
 .getBiomart <- function(genome) {
     map <- .ucsc2Ensembl(genome)
     if (map$date == "head") {
-        bm <- useEnsembl(biomart="ensembl", dataset = map$dataset)
+        bm <- useEnsembl(biomart = "ensembl", dataset = map$dataset)
         ds <- listDatasets(bm)
         mt <- ds[match(map$dataset, ds$dataset), "version"]
         if (is.na(mt)) {
-            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-                         genome, map$dataset), "\nPlease manually provide biomaRt object")
+            stop(sprintf(
+                "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+                genome, map$dataset
+            ), "\nPlease manually provide biomaRt object")
         }
         if (mt != map$value) {
-            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s', ",
-                         genome, map$value, mt), "but its current version is '%s'.\nPlease manually provide biomaRt object.")
+            stop(sprintf(
+                "Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s', ",
+                genome, map$value, mt
+            ), "but its current version is '%s'.\nPlease manually provide biomaRt object.")
         }
     } else {
         bm <- useEnsembl(biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset, host = sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))))
         ds <- listDatasets(bm)
         mt <- ds[match(map$dataset, ds$dataset), "version"]
         if (is.na(mt)) {
-            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-                         genome, map$dataset), "\nPlease manually provide biomaRt object")
+            stop(sprintf(
+                "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+                genome, map$dataset
+            ), "\nPlease manually provide biomaRt object")
         }
         if (mt != map$value) {
-            stop(sprintf("Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
-                         genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt),
-                 "but its version is '%s'.\nPlease manually provide biomaRt object")
+            stop(
+                sprintf(
+                    "Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
+                    genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt
+                ),
+                "but its version is '%s'.\nPlease manually provide biomaRt object"
+            )
         }
     }
     return(bm)
@@ -1477,6 +1520,8 @@ addScheme <- function(scheme, name) {
 
 ## Return the plotting range for a GdObject, either from the contained ranges or from overrides.
 ## This function is vectorized and should also work for lists of GdObjects.
+
+#' @importMethodsFrom BSgenome seqnames
 .defaultRange <- function(GdObject, from = NULL, to = NULL, extend.left = 0, extend.right = 0, factor = 0.01, annotation = FALSE) {
     if (!is.list(GdObject)) {
         GdObject <- list(GdObject)
@@ -1579,7 +1624,7 @@ addScheme <- function(scheme, name) {
         } else {
             nms <- levels(groups)
         }
-        col <- .dpOrDefault(GdObject, "col", trellis.par.get("superpose.line")$col)
+        col <- .dpOrDefault(GdObject, "col", lattice::trellis.par.get("superpose.line")$col)
         col <- rep(col, nlevels(groups))[seq_along(levels(groups))]
         col.line <- rep(.dpOrDefault(GdObject, "col.line", col), nlevels(groups))[seq_along(levels(groups))]
         col.symbol <- rep(.dpOrDefault(GdObject, "col.symbol", col), nlevels(groups))[seq_along(levels(groups))]
@@ -1622,316 +1667,14 @@ addScheme <- function(scheme, name) {
 ## track classes
 .recChromosome <- function(GdObject) {
     chroms <- if (is(GdObject, "HighlightTrack") || is(GdObject, "OverlayTrack")) {
-          unlist(lapply(GdObject@trackList, .recChromosome))
-      } else {
+        unlist(lapply(GdObject@trackList, .recChromosome))
+    } else {
         chromosome(GdObject)
     }
     return(unique(chroms))
 }
 
 
-## Plot a list of GdObjects as individual tracks similar to the display on the UCSC genome browser
-## Arguments:
-##    o trackList: a list of GdObjects
-##    o from, to: the plotting range, will be figured out automatically from the tracks if missing
-##    o sized: a vector of relative vertical sizes, or NULL to auto-detect
-##    o panel.only: don't draw track titles, useful to embed in a lattice-like function, this also implies add=TRUE
-##    o extend.right, extend.left: extend the coordinates in 'from' and 'too'
-##    o title.width: the expansion factor for the width of the title track
-## Value: the function is called for its side-effect of drawing on the graphics device
-plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, panel.only = FALSE, extend.right = 0,
-                       extend.left = 0, title.width = NULL, add = FALSE, main, cex.main = 2, fontface.main = 2,
-                       col.main = "black", margin = 6, chromosome = NULL, innerMargin = 3) {
-    ## If we have to open a new device for this but do not run through the whole function because of errors we want to
-    ## clean up in the end
-    done <- FALSE
-    cdev <- dev.cur()
-    on.exit(if (cdev == 1 && !done) dev.off())
-    ## We only need a new plot for regular calls to the function. Both add==TRUE and panel.only=TRUE will add to an existing grid plot
-    if (!panel.only && !add) {
-        grid.newpage()
-    }
-    if (!is.list(trackList)) {
-        trackList <- list(trackList)
-    }
-    ## All arguments in ... are considered to be additional display parameters and need to be attached to each item in the track list
-    dps <- list(...)
-    trackList <- lapply(trackList, function(x) {
-        displayPars(x, recursive = TRUE) <- dps
-        return(x)
-    })
-
-    ## OverlayTracks and HighlightTracks can be discarded if they are empty
-    trackList <- trackList[!vapply(trackList, function(x) (is(x, "HighlightTrack") || is(x, "OverlayTrack")) && length(x) < 1, FUN.VALUE = logical(1L))]
-    isHt <- which(vapply(trackList, is, "HighlightTrack", FUN.VALUE = logical(1L)))
-    isOt <- which(vapply(trackList, is, "OverlayTrack", FUN.VALUE = logical(1L)))
-    ## A mix between forward and reverse strand tracks should trigger an alarm
-    strds <- unique(.whichStrand(trackList))
-    if (!is.null(strds) && length(strds) > 1) {
-        warning("Plotting a mixture of forward strand and reverse strand tracks.\n Are you sure this is correct?")
-    }
-    ## We first run very general housekeeping tasks on the tracks for which we don't really need to know anything about device
-    ## size, resolution or plotting ranges.
-    ## Chromosomes should all be the same for all tracks, if not we will force them to be set to the first one that can be detected.
-    ## If plotting ranges are supplied we can speed up a lot of the downstream operations by subsetting first.
-    ## We may want to use alpha blending on those devices that support it, but also fall back to non-transparent colors without causing
-    ## warnings.
-    hasAlpha <- .supportsAlpha()
-    chrms <- unique(unlist(lapply(trackList, .recChromosome)))
-    if (is.null(chromosome)) {
-        chrms <- if (!is.null(chrms)) chrms[gsub("^chr", "", chrms) != "NA"] else chrms
-        chromosome <- head(chrms, 1)
-        if (length(chromosome) == 0) {
-            chromosome <- "chrNA"
-        }
-        if (!is.null(chrms) && length(unique(chrms)) != 1) {
-            warning("The track chromosomes in 'trackList' differ. Setting all tracks to chromosome '", chromosome, "'", sep = "")
-        }
-    }
-    if (!is.null(from) || !(is.null(to))) {
-        trackList <- lapply(trackList, function(x) {
-            chromosome(x) <- chromosome
-            subset(x, from = from, to = to, chromosome = chromosome, sort = FALSE, stacks = FALSE, use.defaults = FALSE)
-        })
-    }
-    trackList <- lapply(trackList, consolidateTrack,
-        chromosome = chromosome, any(.needsAxis(trackList)), any(.needsTitle(trackList)),
-        title.width, alpha = hasAlpha, ...
-    )
-
-    ## Now we figure out the plotting ranges. If no ranges are given as function arguments we take the absolute min/max of all tracks.
-    ranges <- .defaultRange(trackList, from = from, to = to, extend.left = extend.left, extend.right = extend.right, annotation = TRUE)
-    ## Now we can subset all the objects in the list to the current boundaries and compute the initial stacking
-    trackList <- lapply(trackList, subset, from = ranges["from"], to = ranges["to"], chromosome = chromosome)
-    trackList <- lapply(trackList, setStacks, recomputeRanges = FALSE)
-    ## Highlight tracks are just a way to add a common highlighting region to several tracks, but other than that we can treat the containing
-    ## tracks a normal track objects, and thus unlist them. We only want to record their indexes in the expanded list for later.
-    htList <- list()
-    expandedTrackList <- if (length(isHt)) {
-        j <- 1
-        tlTemp <- list()
-        for (i in seq_along(trackList)) {
-            if (!i %in% isHt) {
-                tlTemp <- c(tlTemp, trackList[[i]])
-                j <- j + 1
-            } else {
-                tlTemp <- c(tlTemp, trackList[[i]]@trackList)
-                htList[[as.character(i)]] <- list(
-                    indexes = j:(j + length(trackList[[i]]@trackList) - 1),
-                    track = trackList[[i]]
-                )
-                j <- j + length(trackList[[i]]@trackList)
-            }
-        }
-        tlTemp
-    } else {
-        trackList
-    }
-    ## If there is a AlignmentsTrack and also a SequenceTrack we can tell the former to use the latter, unless already provided
-    isAt <- vapply(expandedTrackList, is, "AlignmentsTrack", FUN.VALUE = logical(1L))
-    isSt <- vapply(expandedTrackList, is, "SequenceTrack", FUN.VALUE = logical(1L))
-    for (ai in which(isAt)) {
-        if (is.null(expandedTrackList[[ai]]@referenceSequence) && any(isSt)) {
-            expandedTrackList[[ai]]@referenceSequence <- expandedTrackList[[min(which(isSt))]]
-        }
-    }
-    ## We need to reverse the list to get a top to bottom plotting order
-    expandedTrackList <- rev(expandedTrackList)
-    map <- vector(mode = "list", length = length(expandedTrackList))
-    titleCoords <- NULL
-    names(map) <- rev(vapply(expandedTrackList, names, FUN.VALUE = character(1L)))
-    ## Open a fresh page and set up the bounding box, unless add==TRUE
-    if (!panel.only) {
-        ## We want a margin pixel border
-        ## for backward compatibility, if margin has length of 2,
-        ## the first one will be used as a horizontal, second as a vertical margin
-        if (length(margin) == 2) {
-            margin <- rev(margin)
-        }
-        ## we switched to same settings as in par
-        ## c(bottom, left, top, right)
-        margin <- rep(as.numeric(margin), length.out = 4)
-        vpWidth <- vpLocation()$size["width"]
-        vpHeight <- vpLocation()$size["height"]
-        vpBound <- viewport(
-            x = margin[2L] / vpWidth, y = margin[1L] / vpHeight,
-            width = (vpWidth - sum(margin[c(2, 4)])) / vpWidth,
-            height = (vpHeight - sum(margin[c(1, 3)])) / vpHeight,
-            just = c("left", "bottom")
-        )
-        pushViewport(vpBound)
-        ## If there is a header we have to make some room for it here
-        if (!missing(main) && main != "") {
-            vpHeader <- viewport(width = 1, height = 0.1, y = 1, just = c("center", "top"))
-            pushViewport(vpHeader)
-            grid.text(main, gp = gpar(col = col.main, cex = cex.main, fontface = fontface.main))
-            popViewport(1)
-            vpMain <- viewport(width = 1, height = 0.9, y = 0.9, just = c("center", "top"))
-        } else {
-            vpMain <- viewport(width = 1, height = 1)
-        }
-        pushViewport(vpMain)
-        ## A first guestimate of the vertical space that's needed
-        spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width, spacing = innerMargin)
-    } else {
-        vpBound <- viewport()
-        pushViewport(vpBound)
-        spaceSetup <- .setupTextSize(expandedTrackList, sizes, spacing = innerMargin)
-    }
-    ## First iteration to set up all the dimensions by calling the drawGD methods in prepare mode, i.e.,
-    ## argument prepare=TRUE. Nothing is drawn at this point, and this only exists to circumvent the
-    ## chicken and egg problem of not knowing how much space we need until we draw, but also not knowing
-    ## where to draw until we know the space needed.
-    for (i in rev(seq_along(expandedTrackList)))
-    {
-        fontSettings <- .fontGp(expandedTrackList[[i]], cex = NULL)
-        vpTrack <- viewport(
-            x = 0, y = sum(spaceSetup$spaceNeeded[seq_len(i)]), just = c(0, 1), width = 1, height = spaceSetup$spaceNeeded[i],
-            gp = fontSettings
-        )
-        pushViewport(vpTrack)
-        vpContent <- if (!panel.only) {
-            viewport(
-                x = spaceSetup$title.width + spaceSetup$spacing,
-                width = 1 - spaceSetup$title.width - spaceSetup$spacing * 2, just = 0
-            )
-        } else {
-            viewport(width = 1)
-        }
-        pushViewport(vpContent)
-        expandedTrackList[[i]] <- drawGD(expandedTrackList[[i]], minBase = ranges["from"], maxBase = ranges["to"], prepare = TRUE, subset = FALSE)
-        popViewport(2)
-    }
-    ## Now lets recalculate the space and draw for real
-    spaceSetup <- .setupTextSize(expandedTrackList, sizes, title.width, spacing = innerMargin)
-    ## First the highlight box backgrounds
-    htBoxes <- data.frame(stringsAsFactors = FALSE)
-    for (hlite in htList) {
-        if (length(ranges(hlite$track))) {
-            inds <- setdiff(sort(length(expandedTrackList) - hlite$index + 1), which(vapply(expandedTrackList, is, "IdeogramTrack", FUN.VALUE = logical(1L))))
-            y <- reduce(IRanges(start = inds, width = 1))
-            yy <- ifelse(start(y) == 1, 0, sum(spaceSetup$spaceNeeded[seq_len(start(y)) - 1])) # check
-            ht <- sum(spaceSetup$spaceNeeded[start(y):end(y)])
-            htBoxes <- rbind(htBoxes, data.frame(
-                y = yy, height = ht, x = start(hlite$track), width = width(hlite$track),
-                col = .dpOrDefault(hlite$track, "col", "orange"),
-                fill = .dpOrDefault(hlite$track, "fill", "red"),
-                lwd = .dpOrDefault(hlite$track, "lwd", 1),
-                lty = .dpOrDefault(hlite$track, "lty", 1),
-                alpha = .dpOrDefault(hlite$track, "alpha", 1),
-                inBackground = .dpOrDefault(hlite$track, "inBackground", TRUE),
-                stringsAsFactors = FALSE
-            ))
-        }
-    }
-    .drawHtBoxes <- function(htBoxes, background = TRUE) {
-        htBoxes <- htBoxes[htBoxes$inBackground == background, , drop = FALSE]
-        rscales <- if (strds[1] == "reverse") c(from = ranges["to"], to = ranges["from"]) else ranges
-        if (nrow(htBoxes)) {
-            vpContent <- if (!panel.only) {
-                viewport(
-                    x = spaceSetup$title.width + spaceSetup$spacing, xscale = rscales,
-                    width = 1 - spaceSetup$title.width - spaceSetup$spacing * 2, just = 0
-                )
-            } else {
-                viewport(width = 1, xscale = rscales)
-            }
-            pushViewport(vpContent)
-            grid.rect(
-                x = htBoxes$x, just = c(0, 1), width = htBoxes$width, y = htBoxes$y + htBoxes$height, height = htBoxes$height,
-                gp = gpar(col = htBoxes$col, fill = htBoxes$fill, lwd = htBoxes$lwd, lty = htBoxes$lty, alpha = unique(htBoxes$alpha)), default.units = "native"
-            )
-            popViewport(1)
-        }
-    }
-    if (nrow(htBoxes)) {
-        .drawHtBoxes(htBoxes)
-    }
-    ## Now the track content
-    for (i in rev(seq_along(expandedTrackList)))
-    {
-        vpTrack <- viewport(x = 0, y = sum(spaceSetup$spaceNeeded[seq_len(i)]), just = c(0, 1), width = 1, height = spaceSetup$spaceNeeded[i])
-        pushViewport(vpTrack)
-        fill <- .dpOrDefault(expandedTrackList[[i]], "background.title", .DEFAULT_SHADED_COL)
-        thisTrack <- if (is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
-        if (!panel.only) {
-            fontSettings <- .fontGp(expandedTrackList[[i]], subtype = "title", cex = NULL)
-            vpTitle <- viewport(x = 0, width = spaceSetup$title.width, just = 0, gp = fontSettings)
-            pushViewport(vpTitle)
-            lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
-            col.border.title <- .dpOrDefault(thisTrack, "col.border.title", "transparent")
-            grid.rect(gp = gpar(fill = fill, col = col.border.title, lwd = lwd.border.title))
-            needAxis <- .needsAxis(thisTrack)
-            drawAxis(thisTrack, ranges["from"], ranges["to"], subset = FALSE)
-            tit <- spaceSetup$nwrap[i]
-            ## FIXME: Do we want something smarted for the image map coordinates?
-            titleCoords <- rbind(titleCoords, cbind(.getImageMap(cbind(0, 0, 1, 1)),
-                title = names(expandedTrackList[[i]])
-            ))
-            if (.dpOrDefault(thisTrack, "showTitle", TRUE) && !is.null(tit) && tit != "") {
-                x <- if (needAxis) 0.075 else 0.4
-                just <- if (needAxis) c("center", "top") else "center"
-                ## FIXME: We need to deal with this when calculating the space for the title bar
-                rot <- .dpOrDefault(thisTrack, "rotation.title", 90)
-                gp <- .fontGp(thisTrack, "title", cex = spaceSetup$cex[i])
-                suppressWarnings(grid.text(tit, unit(x, "npc"), rot = rot, gp = gp, just = just))
-            }
-            popViewport(1)
-        }
-        ## Draw the panel background, grid lines if necessary and the panel content
-        vpBackground <- if (!panel.only) {
-            viewport(
-                x = spaceSetup$title.width,
-                width = 1 - spaceSetup$title.width, just = 0
-            )
-        } else {
-            viewport(width = 1)
-        }
-        pushViewport(vpBackground)
-        grid.rect(gp = gpar(col = "transparent", fill = .dpOrDefault(thisTrack, "background.panel", "transparent")))
-        drawGrid(thisTrack, ranges["from"], ranges["to"])
-        popViewport(1)
-        fontSettings <- .fontGp(expandedTrackList[[i]], cex = NULL)
-        vpContentOuter <- if (!panel.only) {
-            viewport(
-                x = spaceSetup$title.width, width = 1 - spaceSetup$title.width,
-                just = 0, gp = fontSettings, clip = TRUE
-            )
-        } else {
-            viewport(width = 1, gp = fontSettings, clip = TRUE)
-        }
-        pushViewport(vpContentOuter)
-        vpContent <- if (!panel.only) {
-            viewport(x = spaceSetup$spacing, width = 1 - (spaceSetup$spacing * 2), just = 0, gp = fontSettings)
-        } else {
-            viewport(width = 1, gp = fontSettings)
-        }
-        pushViewport(vpContent)
-        tmp <- drawGD(expandedTrackList[[i]], minBase = ranges["from"], maxBase = ranges["to"], subset = FALSE)
-        if (!is.null(tmp)) {
-            map[[(length(map) + 1) - i]] <- tmp
-        }
-        popViewport(2)
-        if (.dpOrDefault(thisTrack, "frame", FALSE)) {
-            grid.rect(gp = gpar(col = .dpOrDefault(thisTrack, "col.frame", .DEFAULT_SHADED_COL), fill = "transparent"))
-        }
-        popViewport(1)
-    }
-    if (nrow(htBoxes)) {
-        .drawHtBoxes(htBoxes, FALSE)
-    }
-    popViewport(if (panel.only) 1 else 2)
-    tc <- as.character(titleCoords[, 5])
-    tc[which(tc == "" | is.na(tc) | is.null(tc))] <- "NA"
-    names(tc) <- tc
-    if (!is.null(titleCoords)) {
-        tcoord <- as.matrix(titleCoords[, seq(1, 4)])
-        rownames(tcoord) <- names(tc)
-        map$titles <- ImageMap(coords = tcoord, tags = list(title = tc))
-    }
-    done <- TRUE
-    return(invisible(map))
-}
 
 
 
@@ -1939,165 +1682,16 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
 .getGenomeFromGRange <- function(range, default = NULL) {
     gn <- genome(range)
     if (length(unique(gn)) > 1) {
-          warning("Only a single genome is supported for this object. Ignoring additional genome information")
-      }
+        warning("Only a single genome is supported for this object. Ignoring additional genome information")
+    }
     if (length(gn) == 0 || all(is.na(gn))) {
         if (is.null(default)) {
-              stop("A genome must be supplied when creating this object.")
-          }
+            stop("A genome must be supplied when creating this object.")
+        }
         return(default[1])
     }
     return(gn[1])
 }
-
-
-
-
-
-
-
-
-
-
-## Write all tracks in a list of tracks into
-## a single BED file.
-exportTracks <- function(tracks, range, chromosome, file) {
-    if (missing(file)) {
-          file <- "customTracks.bed"
-      }
-    con <- file(file, open = "wt")
-    writeLines(
-        sprintf("browser position %s:%i-%i", chromosome, range[1], range[2]),
-        con
-    )
-    writeLines("browser hide all", con)
-    for (t in seq_along(tracks))
-    {
-        track <- tracks[[t]]
-        if (length(track) > 0 && (is(track, "AnnotationTrack") || is(track, "GeneRegion"))) {
-            track <- as(track, "UCSCData")
-            writeLines(as(track@trackLine, "character"), con)
-            ## nextMet <- selectMethod("export.bed", c("RangedData", "characterORconnection"))
-            ## nextMet(as(track, "GRanhes"), con)
-            .expBed(as(track, "GRanges"), con)
-        }
-    }
-    close(con)
-}
-
-## This funcion is broken in the rtracklayer package
-.expBed <- function(object, con, variant = c("base", "bedGraph", "bed15"), color, append) {
-    variant <- match.arg(variant)
-    name <- strand <- thickStart <- thickEnd <- color <- NULL
-    blockCount <- blockSizes <- blockStarts <- NULL
-    df <- data.frame(as.character(seqnames(object)), start(object) - 1, end(object))
-    score <- score(object)
-    if (!is.null(score)) {
-        if (!is.numeric(score) || any(is.na(score))) {
-            stop("Scores must be non-NA numeric values")
-        }
-    }
-    if (variant == "bedGraph") {
-        if (is.null(score)) {
-            score <- 0
-        }
-        df$score <- score
-    }
-    else {
-        blockSizes <- object$blockSizes
-        blockStarts <- object$blockStarts
-        if (variant == "bed15" && is.null(blockSizes)) {
-            blockStarts <- blockSizes <- ""
-        }
-        if (!is.null(blockSizes) || !is.null(blockStarts)) {
-            if (is.null(blockSizes)) {
-                stop("'blockStarts' specified without 'blockSizes'")
-            }
-            if (is.null(blockStarts)) {
-                stop("'blockSizes' specified without 'blockStarts'")
-            }
-            lastBlock <- function(x) sub(".*,", "", x)
-            lastSize <- lastBlock(blockSizes)
-            lastStart <- lastBlock(blockStarts)
-            if (any(df[[2]] + as.integer(lastSize) + as.integer(lastStart) != df[[3]]) ||
-                any(sub(",.*", "", blockStarts) != 0)) {
-                stop("blocks must span entire feature")
-            }
-            blockCount <- vapply(strsplit(blockSizes, ","), length, FUN.VALUE = numeric(1L))
-        }
-        if (is.null(color)) {
-            color <- object$itemRgb
-        }
-        if (is.null(color) && !is.null(blockCount)) {
-            color <- "0"
-        } else if (!is.null(color)) {
-            nacol <- is.na(color)
-            colmat <- col2rgb(color)
-            color <- paste(colmat[1, ], colmat[2, ], colmat[3, ], sep = ",")
-            color[nacol] <- "0"
-        }
-        thickStart <- object$thickStart
-        thickEnd <- object$thickEnd
-        if (is.null(thickStart) && !is.null(color)) {
-            thickStart <- start(object)
-            thickEnd <- end(object)
-        }
-        strand <- object$strand
-        if (!is.null(thickStart) && is.null(strand)) {
-            strand <- rep(NA, length(object))
-        }
-        if (!is.null(strand) && is.null(score)) {
-            score <- 0
-        }
-        name <- object$name
-        if (is.null(name)) {
-            name <- rownames(object)
-        }
-        if (!is.null(score) && is.null(name)) {
-            name <- rep(NA, length(object))
-        }
-        df$name <- name
-        df$score <- score
-        df$strand <- strand
-        df$thickStart <- thickStart
-        df$thickEnd <- thickEnd
-        df$itemRgb <- color
-        df$blockCount <- blockCount
-        df$blockSizes <- blockSizes
-        df$blockStarts <- blockStarts
-        if (variant == "bed15") {
-            df$expCount <- object$expCount
-            df$expIds <- object$expIds
-            df$expScores <- object$expScores
-        }
-    }
-    scipen <- getOption("scipen")
-    options(scipen = 100)
-    on.exit(options(scipen = scipen))
-    write.table(df, con,
-        sep = "\t", col.names = FALSE, row.names = FALSE,
-        quote = FALSE, na = ".", append = append
-    )
-}
-
-
-
-
-
-## ## Construct a URL to UCSC showing the custom tracks
-## ucscUrl <- function(chr, range, spec, gen, open=TRUE)
-## {
-##     hgid <- system(sprintf("%s %s %s", system.file("lib/testUCSC.pl", package="Gviz"),
-##                            "customTracks.bed", spec, gen), intern=TRUE, ignore.stderr=TRUE)
-##
-##     url <- sprintf(paste("http://genome.ucsc.edu/cgi-bin/hgTracks?hgsid=%s&Submit=go+to+genome+browser",
-##                          "&position=%s%%3A%i-%i", sep=""), hgid, chr, range[1], range[2])
-##     if(open)
-##         browseURL(url)
-##     return(url)
-## }
-
-
 
 
 .updateObj <- function(object) {
@@ -2105,14 +1699,14 @@ exportTracks <- function(tracks, range, chromosome, file) {
     availSlotNames <- names(availSlots)
     definedSlotNames <- slotNames(object)
     if (length(availSlotNames) == length(definedSlotNames) && all(sort(availSlotNames) == sort(definedSlotNames))) {
-          return(object)
-      }
+        return(object)
+    }
     commonSlots <- intersect(definedSlotNames, availSlotNames)
     missingSlots <- setdiff(definedSlotNames, availSlotNames)
     newObject <- new(class(object))
     for (s in commonSlots) {
-          slot(newObject, s) <- availSlots[[s]]
-      }
+        slot(newObject, s) <- availSlots[[s]]
+    }
     return(newObject)
 }
 
@@ -2172,16 +1766,18 @@ devRes <- function() {
 devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     f <- (((ncol + 1) * 0.1 + ncol + 1) / ((nrow + 1) * 0.1 + nrow + 1))
     if ((missing(width) & missing(height) || !missing(width) & !missing(height))) {
-          stop("Need either argument 'width' or argument 'height'")
-      }
+        stop("Need either argument 'width' or argument 'height'")
+    }
     if (missing(height)) {
-          return(list(width = width, height = width / f, pwidth = width * res, pheight = width / f * res))
-      } else {
-          return(list(width = height * f, height, pwidth = height * f * res, pheight = height * res))
-      }
+        return(list(width = width, height = width / f, pwidth = width * res, pheight = width / f * res))
+    } else {
+        return(list(width = height * f, height, pwidth = height * f * res, pheight = height * res))
+    }
 }
 
 ## Record the display parameters for each class once
+
+#' @importFrom utils assignInNamespace
 .makeParMapping <- function() {
     classes <- c(
         "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
@@ -2195,28 +1791,7 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 }
 .parMappings <- NULL
 
-## Show available display parameters for a class and their defaults
-availableDisplayPars <- function(class) {
-    if (!is.character(class)) {
-          class <- class(class)
-      }
-    class <- match.arg(class, c(
-        "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack",
-        "AlignmentsTrack", "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNAStringSetTrack", "SequenceRNAStringSetTrack"
-    ))
-    parents <- names(getClassDef(class)@contains)
-    .makeParMapping()
-    pars <- .parMappings[c(parents, class)]
-    finalPars <- inherited <- list()
-    for (p in names(pars)) {
-        finalPars[names(pars[[p]])] <- pars[[p]]
-        inherited[names(pars[[p]])] <- p
-    }
-    finalPars <- finalPars[order(names(finalPars))]
-    inherited <- inherited[order(names(inherited))]
-    return(new("InferredDisplayPars", name = class, inheritance = unlist(inherited), finalPars))
-}
+
 
 ## Compute ellipse outline coordinates for bounding boxes
 .box2Ellipse <- function(box, np = 50) {
@@ -2233,7 +1808,7 @@ availableDisplayPars <- function(class) {
     return(data.frame(x1 = xt, y1 = yt, id = rep(seq_len(nrow(box)), each = np)))
 }
 
-## We store some preset in the options on package load
+## We store some presets in the options on package load
 .onLoad <- function(...) {
     .collectSchemes()
     options("ucscChromosomeNames" = TRUE, "Gviz.scheme" = "default", "Gviz.ucscUrl" = NULL)
@@ -2246,8 +1821,8 @@ availableDisplayPars <- function(class) {
     for (i in symbol) {
         mis <- try(do.call(missing, args = list(i), envir = env), silent = TRUE)
         if (!is(mis, "try-error") && mis) {
-              assign(i, NULL, env)
-          }
+            assign(i, NULL, env)
+        }
     }
 }
 
@@ -2273,6 +1848,8 @@ availableDisplayPars <- function(class) {
 
 ## Prepare a data.frame or matrix containing the data for a DataTrack object. This involves trying to coerce
 ## and dropping non-numeric columns with a warning
+
+#' @importFrom utils type.convert
 .prepareDtData <- function(data, len = 0) {
     if (ncol(data) && nrow(data)) {
         for (i in seq_along(data)) {
@@ -2302,7 +1879,7 @@ availableDisplayPars <- function(class) {
     return(data)
 }
 
-
+### Import functions ---------------------------------------------------------
 
 ## An import function for gff3 files that tries to resolve the parent-child relationship
 ## between genes, transcripts and exons
@@ -2344,28 +1921,32 @@ availableDisplayPars <- function(class) {
             }
         }
         if (all(is.na(mcols(dat)[["ID"]]))) {
-              mcols(dat)[["ID"]] <- paste("item", seq_along(dat), sep = "_")
-          }
+            mcols(dat)[["ID"]] <- paste("item", seq_along(dat), sep = "_")
+        }
         if (!"exon_id" %in% colnames(mcols(dat))) {
-              mcols(dat)[["exon_id"]] <- mcols(dat)[["ID"]]
-          }
+            mcols(dat)[["exon_id"]] <- mcols(dat)[["ID"]]
+        }
         if (!is.null(mcols(dat)[["gene_name"]]) && all(is.na(mcols(dat)[["gene_name"]]))) {
-              mcols(dat)[["gene_name"]] <- NULL
-          }
+            mcols(dat)[["gene_name"]] <- NULL
+        }
         if (all(is.na(mcols(dat)[["transcript_name"]]))) {
-              mcols(dat)[["transcript_name"]] <- NULL
-          }
+            mcols(dat)[["transcript_name"]] <- NULL
+        }
         dat
     })
     if (is(res, "try-error")) {
-        warning(sprintf("File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
-                        file), "\nResults may not be what you expected!")
+        warning(sprintf(
+            "File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
+            file
+        ), "\nResults may not be what you expected!")
         res <- dat
     }
     return(res)
 }
 
 ## An import function for bigWig files that knowns how to deal with missing seqnames
+
+#' @importFrom rtracklayer BigWigFile
 .import.bw <- function(file, selection) {
     bwf <- BigWigFile(path.expand(file))
     if (missing(selection)) {
@@ -2386,11 +1967,11 @@ availableDisplayPars <- function(class) {
 .import.bam <- function(file, selection) {
     if (!file.exists(paste(file, "bai", sep = ".")) &&
         !file.exists(paste(paste(head(strsplit("xxx.bam", ".", fixed = TRUE)[[1]], -1), collapse = "."), "bai", sep = "."))) {
-          stop(
-              "Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
-              "library(Rsamtools)\n\tindexBam(\"", file, "\")"
-          )
-      }
+        stop(
+            "Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
+            "library(Rsamtools)\n\tindexBam(\"", file, "\")"
+        )
+    }
     sinfo <- scanBamHeader(file)[[1]]
     if (parent.env(environment())[["._trackType"]] == "DataTrack") {
         res <- if (!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)) {
@@ -2423,6 +2004,10 @@ availableDisplayPars <- function(class) {
     return(res)
 }
 
+#' @importClassesFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString
+#' @importFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString reverseComplement readDNAStringSet DNA_ALPHABET stackStrings
+#' @importFrom Rsamtools scanBamFlag scanBamHeader scanBam ScanBamParam scanFaIndex scanFa BamFile scanBamWhat bamWhich
+#' @importFrom GenomicAlignments sequenceLayer
 .import.bam.alignments <- function(file, selection) {
     indNames <- c(sub("\\.bam$", ".bai", file), paste(file, "bai", sep = "."))
     index <- NULL
@@ -2433,19 +2018,19 @@ availableDisplayPars <- function(class) {
         }
     }
     if (is.null(index)) {
-          stop(
-              "Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
-              "library(Rsamtools)\n\tindexBam(\"", file, "\")"
-          )
-      }
+        stop(
+            "Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
+            "library(Rsamtools)\n\tindexBam(\"", file, "\")"
+        )
+    }
     pairedEnd <- parent.env(environment())[["._isPaired"]]
     if (is.null(pairedEnd)) {
-          pairedEnd <- TRUE
-      }
+        pairedEnd <- TRUE
+    }
     flag <- parent.env(environment())[["._flag"]]
     if (is.null(flag)) {
-          flag <- scanBamFlag(isUnmappedQuery = FALSE)
-      }
+        flag <- scanBamFlag(isUnmappedQuery = FALSE)
+    }
     bf <- BamFile(file, index = index, asMates = pairedEnd)
     param <- ScanBamParam(which = selection, what = scanBamWhat(), tag = "MD", flag = flag)
     reads <- if (as.character(seqnames(selection)[1]) %in% names(scanBamHeader(bf)$targets)) scanBam(bf, param = param)[[1]] else list()
@@ -2482,6 +2067,7 @@ availableDisplayPars <- function(class) {
 
 
 ## An import function for fasta file that supports streaming if an index is present
+#' @importFrom rtracklayer FastaFile
 .import.fasta <- function(file, selection, strict = TRUE) {
     ffile <- FastaFile(file)
     if (!file.exists(paste(file, "fai", sep = "."))) {
@@ -2504,6 +2090,7 @@ availableDisplayPars <- function(class) {
 
 
 ## An import function for the indexed 2bit format
+#' @importFrom rtracklayer TwoBitFile
 .import.2bit <- function(file, selection) {
     tbf <- TwoBitFile(file)
     if (!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(tbf))) {
@@ -2545,16 +2132,30 @@ availableDisplayPars <- function(class) {
 ## Get the file extension for a file, taking into account potential gzipping
 .fileExtension <- function(file) {
     if (!grepl("\\.", file)) {
-          stop("Unable to identify extension for file '", file, "'")
-      }
+        stop("Unable to identify extension for file '", file, "'")
+    }
     ext <- sub(".*\\.", "", sub("\\.gz$|\\.gzip$", "", basename(file)))
     if (ext == "") {
-          stop("Unable to identify extension for file '", file, "'")
-      }
+        stop("Unable to identify extension for file '", file, "'")
+    }
     return(tolower(ext))
 }
 
-
+#' @describeIn ReferenceTrack-class Function to find out whether the package
+#' defines a mapping scheme between one of the many supported input file types
+#' and the metadata columns of the tracks's `GRanges` objects.
+#'
+#' @param file A `character` scalar with a file name or just a file extension.
+#' @param trackType A `character` scalar with one of the available track types
+#' in the package.
+#' @param stream stream
+#' @param reference reference
+#' @param mapping mapping
+#' @param args ars
+#' @param defaults defaults
+#' @param .Object .Object
+#'
+#' @export
 availableDefaultMapping <- function(file, trackType) {
     .checkClass(file, "character", 1)
     .checkClass(trackType, "character", 1)
@@ -2581,6 +2182,7 @@ availableDefaultMapping <- function(file, trackType) {
 
 
 ## A helper function to process alignment information from a GRanges object
+#' @importFrom GenomicAlignments extractAlignmentRangesOnReference
 .computeAlignments <- function(range, drop.D.ranges = FALSE) {
     res <- list(range = range, stackRanges = GRanges(), stacks = numeric())
     if (length(range)) {
@@ -2605,14 +2207,15 @@ availableDefaultMapping <- function(file, trackType) {
 }
 
 ## Check whether the current device supports alpha channel transparency
+#' @importFrom grDevices dev.cur dev.off
 .supportsAlpha <- function() {
     d <- dev.cur()
     oldwarn <- getOption("warn")
     on.exit({
         options(warn = oldwarn)
         if (d == 1) {
-              dev.off()
-          }
+            dev.off()
+        }
     })
     options(warn = 2)
     ok <- !is(try(
@@ -2633,8 +2236,8 @@ availableDefaultMapping <- function(file, trackType) {
     wh <- if (is.null(postfix)) "alpha" else c(paste("alpha", postfix, sep = "."), "alpha")
     alpha <- .dpOrDefault(GdObject, wh, 1)
     if (alpha != 1 && !support) {
-          alpha <- 1
-      }
+        alpha <- 1
+    }
     return(alpha)
 }
 
@@ -2649,6 +2252,8 @@ availableDefaultMapping <- function(file, trackType) {
 
 
 ## Compute mismatches for AlignmentsTracks based on the read sequences and a reference sequence
+#' @importFrom matrixStats colMaxs
+#' @importMethodsFrom Biostrings consensusMatrix consensusString
 .findMismatches <- function(GdObject) {
     rgo <- .dpOrDefault(GdObject, ".__plottingRange")
     mmPos <- mmSamp <- mmSeq <- mmStack <- NULL
@@ -2690,6 +2295,8 @@ availableDefaultMapping <- function(file, trackType) {
 
 ## Return the default mappings between the metadata columns of an imported GRanges object and those
 ## of the track's GRanges object.
+
+#' @importFrom stats setNames
 .defaultVarMap <- function(inputType, trackType, stream, fromUser = FALSE, justMap = FALSE) {
     vm <- list(
         gtf = list(GeneRegionTrack = list(
@@ -2782,14 +2389,16 @@ availableDefaultMapping <- function(file, trackType) {
         )
     )
     if (justMap) {
-          return(vm[[inputType]][[trackType]])
-      }
+        return(vm[[inputType]][[trackType]])
+    }
     if (fromUser) {
         vm[[inputType]] <- setNames(list(list(".stream" = stream)), trackType)
     } else {
         if (is.null(vm[[inputType]]) || is.null(vm[[inputType]][[trackType]])) {
-            warning(sprintf("There are no default mappings from %s files to %s. Please provide a manual mapping",
-                            inputType, trackType), " in the track constructor if you haven't already done so.")
+            warning(sprintf(
+                "There are no default mappings from %s files to %s. Please provide a manual mapping",
+                inputType, trackType
+            ), " in the track constructor if you haven't already done so.")
             vm[[inputType]] <- setNames(list(list(".stream" = stream)), trackType)
         }
     }
@@ -2809,8 +2418,8 @@ availableDefaultMapping <- function(file, trackType) {
         mt <- match(paste(defMap[[i]], "orig", sep = "__.__"), colnames(mcols(data)))
         mt <- mt[!is.na(mt)][1]
         if (!is.na(mt)) {
-              mcols(data)[[i]] <- mcols(data)[, mt]
-          }
+            mcols(data)[[i]] <- mcols(data)[, mt]
+        }
     }
     mcols(data) <- mcols(data)[, !grepl("__.__", colnames(mcols(data))), drop = FALSE]
     return(list(data = data, args = args, defMap = defMap))
@@ -2835,6 +2444,9 @@ availableDefaultMapping <- function(file, trackType) {
         }
         if (length(GdObject) > 0) {
             gp <- group(GdObject)
+            if (!is.factor(gp)) {
+                gp <- factor(gp, levels=unique(gp))
+            }
             needsGrp <- any(duplicated(gp))
             finalRanges <- if (needsGrp) {
                 groups <- split(range(GdObject), gp)
@@ -2946,28 +2558,32 @@ availableDefaultMapping <- function(file, trackType) {
 ## Create list for drawing sashimi-like plots
 ## using summarizeJunctions on GAlignments
 ## plotting is done via grid.xspline (requires x, y, id, score)
+##
+## id=range$id,
+## entityId=range$entityId,
+## md=range$md,
+## readStrand=range$readStrand,
+## mapq=range$mapq,
+## flag=range$flag,
+## isize=range$isize,
+## groupid=range$groupid,
+## status=range$status,
+## uid=range$uid,
+## stack=range$stack,
+
+#' @importFrom GenomicAlignments GAlignments
 .ranges2ga <- function(range) {
     range <- sort(range)
     range <- range[!duplicated(range$entityId)]
     ga <- GAlignments(
         seqnames = seqnames(range), pos = start(range), cigar = range$cigar,
         strand = if (is.null(range$readStrand)) strand(range) else range$readStrand,
-        ## id=range$id,
-        ## entityId=range$entityId,
-        ## md=range$md,
-        ## readStrand=range$readStrand,
-        ## mapq=range$mapq,
-        ## flag=range$flag,
-        ## isize=range$isize,
-        ## groupid=range$groupid,
-        ## status=range$status,
-        ## uid=range$uid,
-        ## stack=range$stack,
         seqlengths = seqlengths(range)
     )
     ga
 }
 
+#' @importFrom GenomicAlignments summarizeJunctions
 .create.summarizedJunctions.for.sashimi.junctions <- function(range) {
     ga <- .ranges2ga(range)
     juns <- summarizeJunctions(ga)
@@ -3016,20 +2632,20 @@ availableDefaultMapping <- function(file, trackType) {
         juns$y <- as.integer(unlist(lapply(ov, order)))
         ## apply data transformation if one is set up
         if (is.list(trans)) {
-          trans <- trans[[1]]
+            trans <- trans[[1]]
         }
         if (!is.null(trans)) {
-          if (!is.function(trans) || length(formals(trans)) != 1L) {
-            stop("Display parameter 'transformation' must be a function with a single argument")
-          }
-          test <- trans(juns$score)
-          if (!is(test, "numeric") || length(test) != length(juns$score)) {
-            stop(
-              "The function in display parameter 'transformation' results in invalid output.\n",
-              "It has to return a numeric matrix with the same dimensions as the input data."
-            )
-          }
-          juns$score <- test
+            if (!is.function(trans) || length(formals(trans)) != 1L) {
+                stop("Display parameter 'transformation' must be a function with a single argument")
+            }
+            test <- trans(juns$score)
+            if (!is(test, "numeric") || length(test) != length(juns$score)) {
+                stop(
+                    "The function in display parameter 'transformation' results in invalid output.\n",
+                    "It has to return a numeric matrix with the same dimensions as the input data."
+                )
+            }
+            juns$score <- test
         }
         ## scale the score to lwd.max
         juns$scaled <- (lwd.max - 1) / pmax((max(juns$score) - min(c(1, juns$score))), 1) * (juns$score - max(juns$score)) + lwd.max
@@ -3058,10 +2674,11 @@ availableDefaultMapping <- function(file, trackType) {
 
 
 # temporary fix for providerVersion
+#' @importMethodsFrom BSgenome providerVersion
 .providerVersion <- function(sequence) {
-  genome <- metadata(sequence)$genome
-  if (is.null(genome)) {
-    genome <- NA
-  }
-  return(genome)
+    genome <- metadata(sequence)$genome
+    if (is.null(genome)) {
+        genome <- NA
+    }
+    return(genome)
 }
