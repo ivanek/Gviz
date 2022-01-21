@@ -2835,6 +2835,9 @@ availableDefaultMapping <- function(file, trackType) {
         }
         if (length(GdObject) > 0) {
             gp <- group(GdObject)
+            if (!is.factor(gp)) {
+                gp <- factor(gp, levels=unique(gp))
+            }
             needsGrp <- any(duplicated(gp))
             finalRanges <- if (needsGrp) {
                 groups <- split(range(GdObject), gp)

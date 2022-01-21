@@ -13,3 +13,4 @@
 ^LICENSE$
 ^Rplots\.pdf$
 ^vignettes\/Gviz-logo\.pdf$
+^ensMappings.txt$

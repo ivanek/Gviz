@@ -602,6 +602,9 @@ setMethod("setStacks", "AnnotationTrack", function(GdObject, recomputeRanges = T
         bins <- rep(1, length(GdObject))
     } else {
         gp <- group(GdObject)
+        if (!is.factor(gp)) {
+            gp <- factor(gp, levels=unique(gp))
+        }
         needsGrp <- any(duplicated(gp))
         lranges <- .dpOrDefault(GdObject, ".__groupRanges")
         gpt <- if (needsGrp) table(gp) else rep(1, length(GdObject))
@@ -1919,6 +1922,9 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
     stacks <- max(bins)
     res <- .pxResolution(coord = "x")
     gp <- group(GdObject)
+    if (!is.factor(gp)) {
+        gp <- factor(gp, levels=unique(gp))
+    }
     grpSplit <- split(range(GdObject), gp)
     grpRanges <- unlist(range(grpSplit))
     needBar <- vapply(grpSplit, length, FUN.VALUE = numeric(1L)) > 1 & width(grpRanges) > res
