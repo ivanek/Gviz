@@ -16,3 +16,5 @@
 ^vignettes\/Gviz-logo\.pdf$
 ^man-roxygen$
 ^ensMappings.txt$
+^CITATION.cff$
+^CITATION.bib$
