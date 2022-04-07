@@ -961,7 +961,6 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             vals <- values(GdObject)
             groups <- rep(groups, ncol(vals))
             ylim <- .dpOrDefault(GdObject, "ylim")
-            agFun <- .aggregator(GdObject)
             if (!is.null(groups) && nlevels(groups) > 1) {
                 valsS <- if (ncol(vals)) {
                     do.call(cbind, lapply(
