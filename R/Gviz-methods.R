@@ -3171,12 +3171,11 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             vals <- values(GdObject)
             groups <- rep(groups, ncol(vals))
             ylim <- .dpOrDefault(GdObject, "ylim")
-            agFun <- .aggregator(GdObject)
             if (!is.null(groups) && nlevels(groups) > 1) {
                 valsS <- if (ncol(vals)) {
                     do.call(cbind, lapply(
                         split(vals, groups),
-                        function(x) agFun(t(matrix(x, ncol = ncol(vals))))
+                        function(x) t(matrix(x, ncol = ncol(vals)))
                     ))
                 } else {
                     matrix(nrow = nlevels(groups), ncol = 0, dimnames = list(levels(groups)))
@@ -3204,7 +3203,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
             } else {
                 if (is.null(ylim)) {
-                    valsA <- agFun(t(vals))
+                    valsA <- t(vals)
                     ylim <- if (!length(valsA)) c(-1, 1) else c(min(c(0, valsA), na.rm = TRUE), max(valsA, na.rm = TRUE))
                     if (length(type) > 1) {
                         ylim <- range(c(ylim, vals), na.rm = TRUE)
@@ -3505,8 +3504,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
             }
         } else {
-            agFun <- .aggregator(GdObject)
-            valsS <- agFun(t(vals))
+            valsS <- t(vals)
             grid.rect(start(GdObject), yy,
                 width = width(GdObject), height = valsS - yy,
                 gp = gpar(col = pcols$col.histogram, fill = pcols$fill.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
