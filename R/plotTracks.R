@@ -381,14 +381,26 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
         .drawHtBoxes(htBoxes)
     }
     ## Now the track content
-    for (i in rev(seq_along(expandedTrackList)))
-    {
+    for (i in rev(seq_along(expandedTrackList))) {
         vpTrack <- viewport(x = 0, y = sum(spaceSetup$spaceNeeded[seq_len(i)]), just = c(0, 1), width = 1, height = spaceSetup$spaceNeeded[i])
         pushViewport(vpTrack)
         fill <- .dpOrDefault(expandedTrackList[[i]], "background.title", .DEFAULT_SHADED_COL)
-        thisTrack <- if (is(expandedTrackList[[i]], "OverlayTrack")) expandedTrackList[[i]]@trackList[[1]] else expandedTrackList[[i]]
+        thisTrack <- if (is(expandedTrackList[[i]], "OverlayTrack")) {
+            tmpThisTrack <- expandedTrackList[[i]]@trackList
+             while (any(vapply(tmpThisTrack, is, "OverlayTrack", FUN.VALUE = logical(1L)))) {
+                 tmpThisTrack <- rapply(tmpThisTrack, function(x) if (is(x, "OverlayTrack")) x@trackList else x)
+             }
+            tmpSpaceSetup <- .setupTextSize(list(tmpThisTrack[[1]]), sizes, title.width, spacing = innerMargin)
+            spaceSetup$nwrap[i] <- tmpSpaceSetup$nwrap[1]
+            if (spaceSetup$title.width < tmpSpaceSetup$title.width) {
+                spaceSetup$title.width <- tmpSpaceSetup$title.width
+            }
+            tmpThisTrack[[1]]
+        } else {
+            expandedTrackList[[i]]
+        }
         if (!panel.only) {
-            fontSettings <- .fontGp(expandedTrackList[[i]], subtype = "title", cex = NULL)
+            fontSettings <- .fontGp(thisTrack, subtype = "title", cex = NULL)
             vpTitle <- viewport(x = 0, width = spaceSetup$title.width, just = 0, gp = fontSettings)
             pushViewport(vpTitle)
             lwd.border.title <- .dpOrDefault(thisTrack, "lwd.title", 1)
@@ -399,7 +411,7 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
             tit <- spaceSetup$nwrap[i]
             ## FIXME: Do we want something smarted for the image map coordinates?
             titleCoords <- rbind(titleCoords, cbind(.getImageMap(cbind(0, 0, 1, 1)),
-                title = names(expandedTrackList[[i]])
+                title = names(thisTrack)
             ))
             if (.dpOrDefault(thisTrack, "showTitle", TRUE) && !is.null(tit) && tit != "") {
                 x <- if (needAxis) 0.075 else 0.4
