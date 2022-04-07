@@ -556,8 +556,9 @@ setReplaceMethod("feature", signature("DataTrack", "character"), function(GdObje
         )
     } else {
         if (is.function(agFun)) {
+            # na.rm currently not implemented...
             function(x, k, na.rm = FALSE, endrule = "constant") {
-                ans <- vapply(0:(length(x) - k), function(offset) agFun(x[seq_len(k) + offset], na.rm = na.rm), FUN.VALUE = numeric(1))
+                ans <- vapply(0:(length(x) - k), function(offset) agFun(x[seq_len(k) + offset]), FUN.VALUE = numeric(1))
                 ans <- Rle(ans)
                 if (endrule == "constant") {
                     j <- (k + 1L) %/% 2L
@@ -965,7 +966,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 valsS <- if (ncol(vals)) {
                     do.call(cbind, lapply(
                         split(vals, groups),
-                        function(x) agFun(t(matrix(x, ncol = ncol(vals))))
+                        function(x) t(matrix(x, ncol = ncol(vals)))
                     ))
                 } else {
                     matrix(nrow = nlevels(groups), ncol = 0, dimnames = list(levels(groups)))
@@ -993,7 +994,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
             } else {
                 if (is.null(ylim)) {
-                    valsA <- agFun(t(vals))
+                     valsA <- t(vals)
                     ylim <- if (!length(valsA)) c(-1, 1) else c(min(c(0, valsA), na.rm = TRUE), max(valsA, na.rm = TRUE))
                     if (length(type) > 1) {
                         ylim <- range(c(ylim, vals), na.rm = TRUE)
@@ -1294,8 +1295,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
             }
         } else {
-            agFun <- .aggregator(GdObject)
-            valsS <- agFun(t(vals))
+            valsS <- t(vals)
             grid.rect(start(GdObject), yy,
                 width = width(GdObject), height = valsS - yy,
                 gp = gpar(col = pcols$col.histogram, fill = pcols$fill.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
