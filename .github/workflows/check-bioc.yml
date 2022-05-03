@@ -51,9 +51,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-latest, r: '4.2', bioc: '3.15', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - { os: macOS-latest, r: '4.2', bioc: '3.15'}
-          - { os: windows-latest, r: '4.2', bioc: '3.15'}
+          - { os: ubuntu-latest, r: '4.2', bioc: '3.16', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - { os: macOS-latest, r: '4.2', bioc: '3.16'}
+          - { os: windows-latest, r: '4.2', bioc: '3.16'}
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
@@ -249,6 +249,9 @@ jobs:
       - name: Install package
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
         run: R CMD INSTALL .
+
+      - name: work around permission issue (since Apr 2022)
+        run: git config --global --add safe.directory /__w/Gviz/Gviz
 
       - name: Deploy package
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true' && runner.os == 'Linux'
