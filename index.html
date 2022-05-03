@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.39.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.0</span>
       </span>
     </div>
 
@@ -75,8 +75,7 @@
 <p><img src="articles/Gviz-logo.png" align="right" alt="" width="120"></p>
 <div class="section level1">
 <div class="page-header"><h1 id="gviz---plotting-data-and-annotation-information-along-genomic-coordinates">
-<em>Gviz</em> - Plotting data and annotation information along
-genomic coordinates<a class="anchor" aria-label="anchor" href="#gviz---plotting-data-and-annotation-information-along-genomic-coordinates"></a>
+<em>Gviz</em> - Plotting data and annotation information along genomic coordinates<a class="anchor" aria-label="anchor" href="#gviz---plotting-data-and-annotation-information-along-genomic-coordinates"></a>
 </h1></div>
 <div class="section level2">
 <h2 id="software-status">Software status<a class="anchor" aria-label="anchor" href="#software-status"></a>
@@ -113,17 +112,17 @@ genomic coordinates<a class="anchor" aria-label="anchor" href="#gviz---plotting-
 </tr>
 <tr class="even">
 <td align="left">GitHub Last Commit</td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/tree/RELEASE_3_14" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/RELEASE_3_14" alt="GitHub last commit (Bioconductor-release)"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/tree/RELEASE_3_15" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/RELEASE_3_15" alt="GitHub last commit (Bioconductor-release)"></a></td>
 <td align="right"><a href="https://github.com/ivanek/Gviz/tree/master/" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/master" alt="GitHub last commit (Bioconductor-devel)"></a></td>
 </tr>
 <tr class="odd">
 <td align="left">GitHub Actions</td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=RELEASE_3_14" alt="R build status"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=RELEASE_3_15" alt="R build status"></a></td>
 <td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=master" alt="R build status"></a></td>
 </tr>
 <tr class="even">
 <td align="left">Coverage</td>
-<td align="right"><a href="https://codecov.io/gh/ivanek/Gviz/branch/RELEASE_3_14" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=RELEASE_3_14" alt="Codecov.io (Bioconductor-release)"></a></td>
+<td align="right"><a href="https://codecov.io/gh/ivanek/Gviz/branch/RELEASE_3_15" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=RELEASE_3_15" alt="Codecov.io (Bioconductor-release)"></a></td>
 <td align="right"><a href="https://codecov.io/github/ivanek/Gviz" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master" alt="Codecov.io (Bioconductor-devel)"></a></td>
 </tr>
 </tbody>
@@ -149,12 +148,7 @@ genomic coordinates<a class="anchor" aria-label="anchor" href="#gviz---plotting-
 <div class="figure">
 <img src="articles/Gviz-example.png" alt=""><p class="caption">Gviz UCSC like screenshot</p>
 </div>
-<p>Genomic data analyses requires integrated visualization of known
-genomic information and new experimental data. Gviz uses the <a href="https://bioconductor.org/packages/biomaRt/" class="external-link">biomaRt</a> and the <a href="https://bioconductor.org/packages/rtracklayer/" class="external-link">rtracklayer</a>
-packages to perform live annotation queries to <a href="https://www.ensembl.org/" class="external-link">Ensembl</a> and <a href="https://genome.ucsc.edu" class="external-link">UCSC</a> and translates this to
-e.g. gene/transcript structures in viewports of the grid graphics
-package. This results in genomic information plotted together with your
-data.</p>
+<p>Genomic data analyses requires integrated visualization of known genomic information and new experimental data. Gviz uses the <a href="https://bioconductor.org/packages/biomaRt/" class="external-link">biomaRt</a> and the <a href="https://bioconductor.org/packages/rtracklayer/" class="external-link">rtracklayer</a> packages to perform live annotation queries to <a href="https://www.ensembl.org/" class="external-link">Ensembl</a> and <a href="https://genome.ucsc.edu" class="external-link">UCSC</a> and translates this to e.g. gene/transcript structures in viewports of the grid graphics package. This results in genomic information plotted together with your data.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -184,18 +178,13 @@ data.</p>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
-<p>For detailed instructions check the package vignette (<a href="https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html" class="external-link">release</a>
-or <a href="https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html" class="external-link">developmental</a>
-version). Or check the <a href="https://ivanek.github.io/Gviz/" class="external-link">GitHub.io page</a>.</p>
+<p>For detailed instructions check the package vignette (<a href="https://bioconductor.org/packages/release/bioc/vignettes/Gviz/inst/doc/Gviz.html" class="external-link">release</a> or <a href="https://bioconductor.org/packages/devel/bioc/vignettes/Gviz/inst/doc/Gviz.html" class="external-link">developmental</a> version). Or check the <a href="https://ivanek.github.io/Gviz/" class="external-link">GitHub.io page</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <ul>
-<li>Hahne F, Ivanek R (2016). “Statistical Genomics: Methods and
-Protocols.” In Mathé E, Davis S (eds.), chapter Visualizing Genomic Data
-Using Gviz and Bioconductor, 335–351. Springer New York, New York, NY.
-ISBN 978-1-4939-3578-9, doi: <a href="https://dx.doi.org/10.1007/978-1-4939-3578-9_16" class="external-link">10.1007/978-1-4939-3578-9_16</a>.</li>
+<li>Hahne F, Ivanek R (2016). “Statistical Genomics: Methods and Protocols.” In Mathé E, Davis S (eds.), chapter Visualizing Genomic Data Using Gviz and Bioconductor, 335–351. Springer New York, New York, NY. ISBN 978-1-4939-3578-9, doi: <a href="https://dx.doi.org/10.1007/978-1-4939-3578-9_16" class="external-link">10.1007/978-1-4939-3578-9_16</a>.</li>
 </ul>
 </div>
 </div>
@@ -260,14 +249,12 @@ ISBN 978-1-4939-3578-9, doi: <a href="https://dx.doi.org/10.1007/978-1-4939-3578
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Florian Hahne, Steffen Durinck, Robert Ivanek, Arne
-Mueller, Steve Lianoglou, Ge Tan, Lance Parsons, Shraddha Pai.</p>
+<p>Developed by Florian Hahne, Steffen Durinck, Robert Ivanek, Arne Mueller, Steve Lianoglou, Ge Tan, Lance Parsons, Shraddha Pai.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
