@@ -390,7 +390,7 @@ plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, pan
              while (any(vapply(tmpThisTrack, is, "OverlayTrack", FUN.VALUE = logical(1L)))) {
                  tmpThisTrack <- rapply(tmpThisTrack, function(x) if (is(x, "OverlayTrack")) x@trackList else x)
              }
-            tmpSpaceSetup <- .setupTextSize(list(tmpThisTrack[[1]]), sizes, title.width, spacing = innerMargin)
+            tmpSpaceSetup <- .setupTextSize(list(tmpThisTrack[[1]]), sizes[1], title.width, spacing = innerMargin)
             spaceSetup$nwrap[i] <- tmpSpaceSetup$nwrap[1]
             if (spaceSetup$title.width < tmpSpaceSetup$title.width) {
                 spaceSetup$title.width <- tmpSpaceSetup$title.width
