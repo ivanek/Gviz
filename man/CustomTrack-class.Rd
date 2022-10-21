@@ -12,7 +12,8 @@
 \S4method{initialize}{CustomTrack}(.Object, plottingFunction, variables, ...)
 
 CustomTrack(
-  plottingFunction = function(GdObject, prepare = FALSE, ...) { },
+  plottingFunction = function(GdObject, prepare = FALSE, ...) {
+ },
   variables = list(),
   name = "CustomTrack",
   ...

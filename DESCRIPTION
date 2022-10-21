@@ -23,7 +23,7 @@ Description: Genomic data analyses requires integrated visualization
     your data.
 LazyLoad: yes
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.2),
