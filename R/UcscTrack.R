@@ -315,7 +315,7 @@ UcscTrack <- function(track, table = NULL,
     }
     args <- lapply(list(...), function(x) {
         if (is.character(x) && length(x) == 1) {
-            if (!x %in% colnames(tableDat)) x else tableDat[, x]
+            if (!x %in% colnames(tableDat)) x else unlist(tableDat[, x])
         } else {
             x
         }
