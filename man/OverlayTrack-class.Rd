@@ -63,35 +63,35 @@ and axis, for all the other tracks only the panel content is plotted.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,OverlayTrack-method}: Initialize.
+\item \code{initialize(OverlayTrack)}: Initialize.
 
-\item \code{OverlayTrack}: Constructor function for \code{OverlayTrack-class}.
+\item \code{OverlayTrack()}: Constructor function for \code{OverlayTrack-class}.
 
-\item \code{displayPars<-,OverlayTrack,list-method}: set display parameters using the values of
+\item \code{displayPars(x = OverlayTrack) <- value}: set display parameters using the values of
 the named list in value. See \code{\link{settings}} for details on
 display parameters and customization.
 
-\item \code{length,OverlayTrack-method}: return the number of subtracks.
+\item \code{length(OverlayTrack)}: return the number of subtracks.
 
-\item \code{chromosome,OverlayTrack-method}: return the chromosome for which the track
+\item \code{chromosome(OverlayTrack)}: return the chromosome for which the track
 is defined.
 
-\item \code{chromosome<-,OverlayTrack-method}: replace the value of the track's chromosome.
+\item \code{chromosome(OverlayTrack) <- value}: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{setStacks,OverlayTrack-method}: recompute the stacks based on the available
+\item \code{setStacks(OverlayTrack)}: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 This really just calls the setStacks methods for the contained
 tracks and only exists for dispatching reasons.
 
-\item \code{consolidateTrack,OverlayTrack-method}: #' For a \code{OverlayTrack} apply the method on
+\item \code{consolidateTrack(OverlayTrack)}: #' For a \code{OverlayTrack} apply the method on
 each of the subtracks in the \code{trackList} slot
 
-\item \code{subset,OverlayTrack-method}: plot subset all the contained tracks in an
+\item \code{subset(OverlayTrack)}: plot subset all the contained tracks in an
 \code{OverlayTrack} by coordinates and sort if necessary.
 
-\item \code{drawGD,OverlayTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(OverlayTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -101,9 +101,9 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,OverlayTrack-method}: Show method.
-}}
+\item \code{show(OverlayTrack)}: Show method.
 
+}}
 \section{Objects from the Class}{
 
 

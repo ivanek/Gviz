@@ -110,47 +110,47 @@ the \code{availableDisplayPars} function.
 }
 \section{Functions}{
 \itemize{
-\item \code{DisplayPars}: Constructor function.
+\item \code{DisplayPars()}: Constructor function.
 
-\item \code{getPar}: Generics for \code{getPar}.
+\item \code{getPar()}: Generics for \code{getPar}.
 
-\item \code{getPar,DisplayPars,character-method}: Alias for the \code{displayPars} method.
+\item \code{getPar(x = DisplayPars, name = character)}: Alias for the \code{displayPars} method.
 
-\item \code{getPar,DisplayPars,missing-method}: Alias for the \code{displayPars} method.
+\item \code{getPar(x = DisplayPars, name = missing)}: Alias for the \code{displayPars} method.
 
-\item \code{displayPars}: Generics for \code{displayPars}.
+\item \code{displayPars()}: Generics for \code{displayPars}.
 
-\item \code{displayPars,DisplayPars,missing-method}: Returns all available display parameters.
+\item \code{displayPars(x = DisplayPars, name = missing)}: Returns all available display parameters.
 
-\item \code{displayPars,DisplayPars,character-method}: Returns the value of a subset of display parameters, as identified by \code{name}.
+\item \code{displayPars(x = DisplayPars, name = character)}: Returns the value of a subset of display parameters, as identified by \code{name}.
 
-\item \code{as.list,DisplayPars-method}: Converts \code{DisplayPars} to \code{list}.
+\item \code{as.list(DisplayPars)}: Converts \code{DisplayPars} to \code{list}.
 
-\item \code{setPar}: Generics for \code{SetPar}.
+\item \code{setPar()}: Generics for \code{SetPar}.
 
 SetPar generic function
 
-\item \code{setPar,DisplayPars,list-method}: Sets display parameters by the values of the
+\item \code{setPar(x = DisplayPars, value = list)}: Sets display parameters by the values of the
 named \code{list} in value. Note that display parameters in the \code{DisplayPars-class}
 are pass-by-reference, so no re-assignment to the symbol \code{obj} is necessary.
 
-\item \code{setPar,DisplayPars,character-method}: set the single display parameter name to value.
+\item \code{setPar(x = DisplayPars, value = character)}: set the single display parameter name to value.
 Note that display parameters in the DisplayPars class are pass-by-reference,
 so no re-assignment to the symbol \code{obj} is necessary.
 
-\item \code{displayPars<-}: Generics for \verb{displayPars<-}.
+\item \code{displayPars(x, recursive = FALSE) <- value}: Generics for \verb{displayPars<-}.
 
-\item \code{displayPars<-,DisplayPars,list-method}: Replaces or adds display parameters as provided by the named \code{list} items.
+\item \code{displayPars(x = DisplayPars) <- value}: Replaces or adds display parameters as provided by the named \code{list} items.
 
-\item \code{show,DisplayPars-method}: Show method.
+\item \code{show(DisplayPars)}: Show method.
 
-\item \code{as.list,InferredDisplayPars-method}: Return \code{InferredDisplayPars} as a \code{list}.
+\item \code{as.list(InferredDisplayPars)}: Return \code{InferredDisplayPars} as a \code{list}.
 
-\item \code{show,InferredDisplayPars-method}: Show method.
+\item \code{show(InferredDisplayPars)}: Show method.
 
-\item \code{availableDisplayPars}: Get default display parameters.
+\item \code{availableDisplayPars()}: Get default display parameters.
+
 }}
-
 \section{Slots}{
 
 \describe{

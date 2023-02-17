@@ -131,15 +131,15 @@ sources, mapping the available query data back to the internal object slots.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,BiomartGeneRegionTrack-method}: Initialize.
+\item \code{initialize(BiomartGeneRegionTrack)}: Initialize.
 
-\item \code{BiomartGeneRegionTrack}: Constructor function for
+\item \code{BiomartGeneRegionTrack()}: Constructor function for
 \code{BiomartGeneRegionTrack-class}.
 
-\item \code{subset,BiomartGeneRegionTrack-method}: subset a \code{BiomartGeneRegionTrack}
+\item \code{subset(BiomartGeneRegionTrack)}: subset a \code{BiomartGeneRegionTrack}
 by coordinates and sort if necessary.
-}}
 
+}}
 \section{Objects from the class}{
 
 

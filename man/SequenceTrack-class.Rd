@@ -122,16 +122,16 @@ The different input options for \code{sequence} are:
 
 \describe{
 
-\item{}{An object of class \code{\linkS4class{DNAStringSet}}. The individual
+\item{An object of class \code{\linkS4class{DNAStringSet}}.}{ The individual
 \code{\linkS4class{DNAString}}s are considered to be the different
 chromosome sequences.}
 
-\item{}{An object of class \code{\linkS4class{BSgenome}}. The \code{Gviz}
+\item{An object of class \code{\linkS4class{BSgenome}}.}{ The \code{Gviz}
 package tries to follow the \code{BSgenome} philosophy in that the
 respective chromosome sequences are only realized once they are first
 accessed.}
 
-\item{}{A \code{character} scalar: in this case the value of the
+\item{A \code{character} scalar:}{ in this case the value of the
 \code{sequence} argument is considered to be a file path to an annotation
 file on disk. A range of file types are supported by the \code{Gviz} package
 as identified by the file extension. See the \code{importFunction}
@@ -207,67 +207,67 @@ are of no particular relevance to the user.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,SequenceTrack-method}: Initialize.
+\item \code{initialize(SequenceTrack)}: Initialize.
 
-\item \code{SequenceTrack}: Constructor
+\item \code{SequenceTrack()}: Constructor
 
-\item \code{RNASequenceTrack}: Constructor
+\item \code{RNASequenceTrack()}: Constructor
 
 \item \code{SequenceDNAStringSetTrack-class}: The \code{DNAStringSet}-based version of the \code{SequenceTrack-class}.
 
-\item \code{initialize,SequenceDNAStringSetTrack-method}: Initialize.
+\item \code{initialize(SequenceDNAStringSetTrack)}: Initialize.
 
 \item \code{SequenceRNAStringSetTrack-class}: The \code{RNAStringSet}-based version of the \code{SequenceTrack-class}.
 
-\item \code{initialize,SequenceRNAStringSetTrack-method}: Initialize \code{RNAStringSet}-based version of the \code{SequenceTrack-class}.
+\item \code{initialize(SequenceRNAStringSetTrack)}: Initialize \code{RNAStringSet}-based version of the \code{SequenceTrack-class}.
 
 \item \code{SequenceBSgenomeTrack-class}: The \code{BSgenome}-based version of the \code{SequenceTrack-class}.
 
-\item \code{initialize,SequenceBSgenomeTrack-method}: Initialize.
+\item \code{initialize(SequenceBSgenomeTrack)}: Initialize.
 
 \item \code{ReferenceSequenceTrack-class}: The file-based version of the \code{SequenceTrack-class}.
 
-\item \code{initialize,ReferenceSequenceTrack-method}: Initialize.
+\item \code{initialize(ReferenceSequenceTrack)}: Initialize.
 
-\item \code{seqnames,SequenceTrack-method}: return the names (i.e., the chromosome)
+\item \code{seqnames(SequenceTrack)}: return the names (i.e., the chromosome)
 of the sequences contained in the object.
 
-\item \code{seqnames,SequenceBSgenomeTrack-method}: return the names (i.e., the chromosome)
+\item \code{seqnames(SequenceBSgenomeTrack)}: return the names (i.e., the chromosome)
 of the sequences contained in the object.
 
-\item \code{seqlevels,SequenceTrack-method}: return the names (i.e., the chromosome)
+\item \code{seqlevels(SequenceTrack)}: return the names (i.e., the chromosome)
 of the sequences contained in the object. Only those with length > 0.
 
-\item \code{seqlevels,SequenceBSgenomeTrack-method}: return the names (i.e., the chromosome)
+\item \code{seqlevels(SequenceBSgenomeTrack)}: return the names (i.e., the chromosome)
 of the sequences contained in the object. Only those with length > 0.
 
-\item \code{start,SequenceTrack-method}: return the start coordinates of the track
+\item \code{start(SequenceTrack)}: return the start coordinates of the track
 items.
 
-\item \code{end,SequenceTrack-method}: return the end coordinates of the track
+\item \code{end(SequenceTrack)}: return the end coordinates of the track
 items.
 
-\item \code{width,SequenceTrack-method}: return the with of the track items in
+\item \code{width(SequenceTrack)}: return the with of the track items in
 genomic coordinates.
 
-\item \code{length,SequenceTrack-method}: return the length of the sequence for
+\item \code{length(SequenceTrack)}: return the length of the sequence for
 active chromosome.
 
-\item \code{chromosome,SequenceTrack-method}: return the chromosome for which the track
+\item \code{chromosome(SequenceTrack)}: return the chromosome for which the track
 is defined.
 
-\item \code{chromosome<-,SequenceTrack-method}: replace the value of the track's chromosome.
+\item \code{chromosome(SequenceTrack) <- value}: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{genome,SequenceTrack-method}: Set the track's genome.
+\item \code{genome(SequenceTrack)}: Set the track's genome.
 Usually this has to be a valid UCSC identifier, however this is not
 formally enforced here.
 
-\item \code{consolidateTrack,SequenceTrack-method}: Consolidate/
+\item \code{consolidateTrack(SequenceTrack)}: Consolidate/
 Determine whether there is \code{chromosome} settings or not, and add this information.
 
-\item \code{drawGD,SequenceTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(SequenceTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -277,15 +277,15 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,SequenceBSgenomeTrack-method}: Show method.
+\item \code{show(SequenceBSgenomeTrack)}: Show method.
 
-\item \code{show,SequenceDNAStringSetTrack-method}: Show method.
+\item \code{show(SequenceDNAStringSetTrack)}: Show method.
 
-\item \code{show,SequenceRNAStringSetTrack-method}: Show method.
+\item \code{show(SequenceRNAStringSetTrack)}: Show method.
 
-\item \code{show,ReferenceSequenceTrack-method}: Show method.
+\item \code{show(ReferenceSequenceTrack)}: Show method.
+
 }}
-
 \section{Objects from the class}{
 
 

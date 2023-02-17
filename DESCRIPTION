@@ -1,6 +1,6 @@
 Package: Gviz
 Title: Plotting data and annotation information along genomic coordinates
-Version: 1.42.0
+Version: 1.42.1
 Authors@R: c(person("Florian", "Hahne", role="aut"),
 	 person("Steffen", "Durinck", role="aut"),
 	 person("Robert", "Ivanek", role=c("aut", "cre"), 
@@ -23,7 +23,7 @@ Description: Genomic data analyses requires integrated visualization
     your data.
 LazyLoad: yes
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3.9001 
 Roxygen: list(markdown = TRUE)
 Depends:
     R (>= 4.2),

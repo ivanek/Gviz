@@ -23,16 +23,16 @@ NULL
 #'
 #' \describe{
 #'
-#' \item{}{An object of class \code{\linkS4class{DNAStringSet}}. The individual
+#' \item{An object of class \code{\linkS4class{DNAStringSet}}.}{ The individual
 #' \code{\linkS4class{DNAString}}s are considered to be the different
 #' chromosome sequences.}
 #'
-#' \item{}{An object of class \code{\linkS4class{BSgenome}}. The \code{Gviz}
+#' \item{An object of class \code{\linkS4class{BSgenome}}.}{ The \code{Gviz}
 #' package tries to follow the \code{BSgenome} philosophy in that the
 #' respective chromosome sequences are only realized once they are first
 #' accessed.}
 #'
-#' \item{}{A \code{character} scalar: in this case the value of the
+#' \item{A \code{character} scalar:}{ in this case the value of the
 #' \code{sequence} argument is considered to be a file path to an annotation
 #' file on disk. A range of file types are supported by the \code{Gviz} package
 #' as identified by the file extension. See the \code{importFunction}

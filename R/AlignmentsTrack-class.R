@@ -27,12 +27,12 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #'
 #' \describe{
 #'
-#' \item{}{A \code{character} string: the path to a \code{BAM} file containing
+#' \item{A \code{character} string:}{ the path to a \code{BAM} file containing
 #' the read alignments. To be precise, this will result in the instantiation of
 #' a \code{ReferenceAlignmentsTrack} object, but for the user this
 #' implementation detail should be of no concern.}
 #'
-#' \item{}{A \code{GRanges} object: the genomic ranges of the individual reads
+#' \item{A \code{GRanges} object:}{ the genomic ranges of the individual reads
 #' as well as the optional additional metadata columns \code{id}, \code{cigar},
 #' \code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status},
 #' \code{md} and \code{seqs} (see description of the individual function
@@ -40,7 +40,7 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #' object without further arguments, e.g. \code{AlignmentsTrack(range=obj)} is
 #' equivalent to calling the coerce method \code{as(obj, "AlignmentsTrack")}.}
 #'
-#' \item{}{An \code{\linkS4class{IRanges}} object: almost identical to the
+#' \item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
 #' \code{GRanges} case, except that the chromosome and strand information as
 #' well as all additional metadata has to be provided in the separate
 #' \code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id}
@@ -49,7 +49,7 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #' explicitely the more or less reasonable default values \code{chromosome=NA}
 #' and \code{strand="*"} are used. }
 #'
-#' \item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+#' \item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 #' at least the two mandatory columns \code{start} and \code{end} with the
 #' range coordinates. It may also contain a \code{chromosome} and a
 #' \code{strand} column with the chromosome and strand information for each

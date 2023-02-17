@@ -58,15 +58,15 @@ The different input options for \code{range} are:
 
 \describe{
 
-\item{}{A \code{GRanges} object: the genomic ranges for the highlighting
+\item{A \code{GRanges} object:}{ the genomic ranges for the highlighting
 regions.}
 
-\item{}{An \code{\linkS4class{IRanges}} object: almost identical to the
+\item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
 \code{GRanges} case, except that the chromosome information has to be
 provided in the separate \code{chromosome} argument, because it can not be
 directly encoded in an \code{IRanges} object.}
 
-\item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+\item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 at least the two mandatory columns \code{start} and \code{end} with the
 range coordinates. It may also contain a \code{chromosome} column with the
 chromosome information for each range. If missing, this information will be
@@ -134,35 +134,35 @@ to the \code{plotTracks} function as individual objects.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,HighlightTrack-method}: Initialize.
+\item \code{initialize(HighlightTrack)}: Initialize.
 
-\item \code{HighlightTrack}: Constructor function for
+\item \code{HighlightTrack()}: Constructor function for
 \code{HighlightTrack-class}.
 
-\item \code{displayPars<-,HighlightTrack,list-method}: set display parameters using the values of
+\item \code{displayPars(x = HighlightTrack) <- value}: set display parameters using the values of
 the named list in value. See \code{\link{settings}} for details on display
 parameters and customization.
 
-\item \code{length,HighlightTrack-method}: return the number of subtracks.
+\item \code{length(HighlightTrack)}: return the number of subtracks.
 
-\item \code{chromosome<-,HighlightTrack-method}: replace the value of the track's chromosome.
+\item \code{chromosome(HighlightTrack) <- value}: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{setStacks,HighlightTrack-method}: Rrecompute the stacks based on the available
+\item \code{setStacks(HighlightTrack)}: Rrecompute the stacks based on the available
 space and on the object's track items and stacking settings.
 This really just calls the \code{setStacks} methods for the contained tracks and
 only exists for dispatching reasons.
 
-\item \code{consolidateTrack,HighlightTrack-method}: Consolidate
+\item \code{consolidateTrack(HighlightTrack)}: Consolidate
 For a \code{HighlightTrack} apply the method on each of the subtracks in
 the \code{trackList} slot
 
-\item \code{subset,HighlightTrack-method}: subset all the contained tracks in an HighlightTrack by coordinates and sort if necessary.
+\item \code{subset(HighlightTrack)}: subset all the contained tracks in an HighlightTrack by coordinates and sort if necessary.
 
-\item \code{show,HighlightTrack-method}: Show method.
+\item \code{show(HighlightTrack)}: Show method.
+
 }}
-
 \section{Objects from the Class}{
 
 

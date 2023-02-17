@@ -128,12 +128,12 @@ The different input options for \code{range} are:
 
 \describe{
 
-\item{}{A \code{character} string: the path to a \code{BAM} file containing
+\item{A \code{character} string:}{ the path to a \code{BAM} file containing
 the read alignments. To be precise, this will result in the instantiation of
 a \code{ReferenceAlignmentsTrack} object, but for the user this
 implementation detail should be of no concern.}
 
-\item{}{A \code{GRanges} object: the genomic ranges of the individual reads
+\item{A \code{GRanges} object:}{ the genomic ranges of the individual reads
 as well as the optional additional metadata columns \code{id}, \code{cigar},
 \code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status},
 \code{md} and \code{seqs} (see description of the individual function
@@ -141,7 +141,7 @@ parameters below for details). Calling the constructor on a \code{GRanges}
 object without further arguments, e.g. \code{AlignmentsTrack(range=obj)} is
 equivalent to calling the coerce method \code{as(obj, "AlignmentsTrack")}.}
 
-\item{}{An \code{\linkS4class{IRanges}} object: almost identical to the
+\item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
 \code{GRanges} case, except that the chromosome and strand information as
 well as all additional metadata has to be provided in the separate
 \code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id}
@@ -150,7 +150,7 @@ object. Note that none of those inputs are mandatory, and if not provided
 explicitely the more or less reasonable default values \code{chromosome=NA}
 and \code{strand="*"} are used. }
 
-\item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+\item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 at least the two mandatory columns \code{start} and \code{end} with the
 range coordinates. It may also contain a \code{chromosome} and a
 \code{strand} column with the chromosome and strand information for each
@@ -288,36 +288,36 @@ experiments.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,AlignmentsTrack-method}: Initialize.
+\item \code{initialize(AlignmentsTrack)}: Initialize.
 
 \item \code{ReferenceAlignmentsTrack-class}: The file-based version of the \code{AlignmentsTrack-class}.
 
-\item \code{initialize,ReferenceAlignmentsTrack-method}: Initialize.
+\item \code{initialize(ReferenceAlignmentsTrack)}: Initialize.
 
-\item \code{AlignmentsTrack}: Constructor for \code{AlignmentsTrack-class}.
+\item \code{AlignmentsTrack()}: Constructor for \code{AlignmentsTrack-class}.
 
-\item \code{values,AlignmentsTrack-method}: Return all additional annotation
+\item \code{values(AlignmentsTrack)}: Return all additional annotation
 information except for the genomic coordinates for the track items as
 a \code{data.frame}.
 
-\item \code{chromosome<-,AlignmentsTrack-method}: replace the value of the track's chromosome.
+\item \code{chromosome(AlignmentsTrack) <- value}: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{stacks,AlignmentsTrack-method}: return the stack indices for each track item.
+\item \code{stacks(AlignmentsTrack)}: return the stack indices for each track item.
 
-\item \code{setStacks,AlignmentsTrack-method}: recompute the stacks based on the available
+\item \code{setStacks(AlignmentsTrack)}: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 
-\item \code{subset,AlignmentsTrack-method}: Subset a \code{AlignmentsTrack} by coordinates
+\item \code{subset(AlignmentsTrack)}: Subset a \code{AlignmentsTrack} by coordinates
 and sort if necessary.
 
-\item \code{subset,ReferenceAlignmentsTrack-method}: Subset a \code{ReferenceAlignmentsTrack} by coordinates
+\item \code{subset(ReferenceAlignmentsTrack)}: Subset a \code{ReferenceAlignmentsTrack} by coordinates
 and sort if necessary.
 
-\item \code{drawAxis,AlignmentsTrack-method}: add a y-axis to the title panel of a track.
+\item \code{drawAxis(AlignmentsTrack)}: add a y-axis to the title panel of a track.
 
-\item \code{drawGD,AlignmentsTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(AlignmentsTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -327,11 +327,11 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,AlignmentsTrack-method}: Show method.
+\item \code{show(AlignmentsTrack)}: Show method.
 
-\item \code{show,ReferenceAlignmentsTrack-method}: Show method.
+\item \code{show(ReferenceAlignmentsTrack)}: Show method.
+
 }}
-
 \section{Objects from the Class}{
 
 

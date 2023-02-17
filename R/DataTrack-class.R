@@ -17,64 +17,64 @@ NULL
 #'
 #' \describe{
 #'
-#' \item{}{\code{p}: simple xy-plot.}
+#' \item{\code{p}:}{ simple xy-plot.}
 #'
-#' \item{}{\code{l}: lines plot. In the case of multiple samples this plotting
+#' \item{\code{l}:}{ lines plot. In the case of multiple samples this plotting
 #' type is not overly usefull since the points in the data matrix are connected
 #' in column-wise order. Type \code{a} might be more appropriate in these
 #' situations.}
 #'
-#' \item{}{\code{b}: combination of xy-plot and lines plot.}
+#' \item{\code{b}:}{ combination of xy-plot and lines plot.}
 #'
-#' \item{}{\code{a}: lines plot of the column-wise average values.}
+#' \item{\code{a}:}{ lines plot of the column-wise average values.}
 #'
-#' \item{}{\code{s}: sort and connect data points along the x-axis}
+#' \item{\code{s}:}{ sort and connect data points along the x-axis}
 #'
-#' \item{}{\code{S}: sort and connect data points along the y-axis}
+#' \item{\code{S}:}{ sort and connect data points along the y-axis}
 #'
-#' \item{}{\code{g}: add grid lines. To ensure a consitant look and feel across
+#' \item{\code{g}:}{ add grid lines. To ensure a consitant look and feel across
 #' multiple tracks, grid lines should preferentially be added by using the
 #' \code{grid} display parameter.}
 #'
-#' \item{}{\code{r}: add a regression line to the plot.}
+#' \item{\code{r}:}{ add a regression line to the plot.}
 #'
-#' \item{}{\code{h}: histogram-like vertical lines centered in the middle of
+#' \item{\code{h}:}{ histogram-like vertical lines centered in the middle of
 #' the coordinate ranges.}
 #'
-#' \item{}{\code{smooth}: add a loess fit to the plot. The following display
+#' \item{\code{smooth}:}{ add a loess fit to the plot. The following display
 #' parameters can be used to control the loess calculation: \code{span, degree,
 #' family, evaluation}. See \code{\link{panel.loess}} for details.}
 #'
-#' \item{}{\code{histogram}: plot data as a histogram, where the width of the
+#' \item{\code{histogram}:}{ plot data as a histogram, where the width of the
 #' histogram bars reflects the width of the genomic ranges in the \code{range}
 #' slot.}
 #'
-#' \item{}{\code{mountain}: plot a smoothed version of the data relative to a
+#' \item{\code{mountain}:}{ plot a smoothed version of the data relative to a
 #' baseline, as defined by the \code{baseline} display parameter. The following
 #' display parameters can be used to control the smoothing: \code{span, degree,
 #' family, evaluation}. See \code{\link{panel.loess}} for details. The layout
 #' of the plot can be further customized via the following display parameters:
 #' \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 #'
-#' \item{}{\code{polygon}: plot data as a polygon (similar to
+#' \item{\code{polygon}:}{ plot data as a polygon (similar to
 #' \code{mountain}-type but without smoothing). Data are plotted relative to a
 #' baseline, as defined by the \code{baseline} display parameter. The layout of
 #' the plot can be further customized via the following display parameters:
 #' \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 #'
-#' \item{}{\code{boxplot}: plot the data as box-and-whisker plots. The layout
+#' \item{\code{boxplot}:}{ plot the data as box-and-whisker plots. The layout
 #' of the plot can be further customized via the following display parameters:
 #' \code{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
 #' coef, do.out}. See \code{\link{panel.bwplot}} for details.}
 #'
-#' \item{}{\code{gradient}: collapse the data across samples and plot this
+#' \item{\code{gradient}:}{ collapse the data across samples and plot this
 #' average value as a color-coded gradient. Essenitally this is similar to the
 #' heatmap-type plot of a single sample. The layout of the plot can be further
 #' customized via the display parameters \code{ncolor} and \code{gradient}
 #' which control the number of gradient colors as well as the gradient base
 #' colors, respectively.}
 #'
-#' \item{}{\code{heatmap}: plot the color-coded values for all samples in the
+#' \item{\code{heatmap}:}{ plot the color-coded values for all samples in the
 #' form of a heatmap. The data for individual samples can be visually separated
 #' by setting the \code{separator} display parameter. It's value is taken as
 #' the amount of spacing in pixels in between two heatmap rows. The layout of
@@ -82,7 +82,7 @@ NULL
 #' and \code{gradient} which control the number of gradient colors as well as
 #' the gradient base colors, respectively.}
 #'
-#' \item{}{\code{horizon}: plot continuous data by cutting the y range into
+#' \item{\code{horizon}:}{ plot continuous data by cutting the y range into
 #' segments and overplotting them with color representing the magnitude and
 #' direction of deviation. This is particularly useful when comparing multiple
 #' samples, in which case the horizon strips are stacked. See
@@ -937,7 +937,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     vals <- values(GdObject)
     groups <- .dpOrDefault(GdObject, "groups")
     if (!is.null(groups) && length(groups) != nrow(vals)) {
-        stop("'groups' must be a vector of similar length as the number of rows in the data matrix (", nrow(vals), ")")
+        stop("'groups' must be a vector of the same length as the number of rows in the data matrix (", nrow(vals), ")")
     }
     if (!is.null(groups) && !is.factor(groups)) {
         groups <- factor(groups)

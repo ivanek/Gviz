@@ -53,13 +53,13 @@ file types and the metadata columns of the tracks' \code{GRanges} objects.
 }
 \section{Functions}{
 \itemize{
-\item \code{availableDefaultMapping}: Function to find out whether the package
+\item \code{availableDefaultMapping()}: Function to find out whether the package
 defines a mapping scheme between one of the many supported input file types
 and the metadata columns of the tracks's \code{GRanges} objects.
 
-\item \code{initialize,ReferenceTrack-method}: Initialize.
-}}
+\item \code{initialize(ReferenceTrack)}: Initialize.
 
+}}
 \section{Slots}{
 
 \describe{

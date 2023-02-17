@@ -10,7 +10,7 @@
 #'
 #' \describe{
 #'
-#' \item{}{A \code{GRanges} object: essentially all the necessary information
+#' \item{A \code{GRanges} object:}{ essentially all the necessary information
 #' to create a \code{DataTrack} can be contained in a single \code{GRanges}
 #' object. The track's coordinates are taken from the \code{start}, \code{end}
 #' and \code{seqnames} slots, the genome information from the genome slot, and
@@ -26,13 +26,13 @@
 #' always take precedence over anything defined in the \code{range} argument.
 #' See below for details.}
 #'
-#' \item{}{An \code{\linkS4class{IRanges}} object: this is very similar to the
+#' \item{An \code{\linkS4class{IRanges}} object:}{ this is very similar to the
 #' above case, except that the numeric data part now always has to be provided
 #' in the separate \code{data} argument. Also the chromosome information must
 #' be provided in the \code{chromosome} argument, because neither of the two
 #' can be directly encoded in an \code{IRange} object.}
 #'
-#' \item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+#' \item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 #' at least the two mandatory columns \code{start} and \code{end} with the
 #' range coordinates. It may also contain a \code{chromosome} column with the
 #' chromosome information for each range. If missing it will be drawn from the
@@ -40,7 +40,7 @@
 #' interpreted as data columns, unless the \code{data} argument is explicitely
 #' provided.}
 #'
-#' \item{}{A \code{character} scalar: in this case the value of the
+#' \item{A \code{character} scalar:}{ in this case the value of the
 #' \code{range} argument is considered to be a file path to an annotation file
 #' on disk. A range of file types are supported by the \code{Gviz} package as
 #' identified by the file extension. See the \code{importFunction}

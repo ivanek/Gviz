@@ -1620,10 +1620,8 @@ addScheme <- function(scheme, name) {
     } else { ## Otherwise colors are being mapped to group factors
         if (!is.factor(groups)) {
             groups <- factor(groups)
-            nms <- unique(groups)
-        } else {
-            nms <- levels(groups)
         }
+        nms <- levels(groups)
         col <- .dpOrDefault(GdObject, "col", lattice::trellis.par.get("superpose.line")$col)
         col <- rep(col, nlevels(groups))[seq_along(levels(groups))]
         col.line <- rep(.dpOrDefault(GdObject, "col.line", col), nlevels(groups))[seq_along(levels(groups))]

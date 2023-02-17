@@ -126,7 +126,7 @@ The different input options for \code{range} are:
 
 \describe{
 
-\item{}{A \code{GRanges} object: essentially all the necessary information
+\item{A \code{GRanges} object:}{ essentially all the necessary information
 to create a \code{DataTrack} can be contained in a single \code{GRanges}
 object. The track's coordinates are taken from the \code{start}, \code{end}
 and \code{seqnames} slots, the genome information from the genome slot, and
@@ -142,13 +142,13 @@ dimensions of the data matrix. If \code{data} is not \code{NULL}, this will
 always take precedence over anything defined in the \code{range} argument.
 See below for details.}
 
-\item{}{An \code{\linkS4class{IRanges}} object: this is very similar to the
+\item{An \code{\linkS4class{IRanges}} object:}{ this is very similar to the
 above case, except that the numeric data part now always has to be provided
 in the separate \code{data} argument. Also the chromosome information must
 be provided in the \code{chromosome} argument, because neither of the two
 can be directly encoded in an \code{IRange} object.}
 
-\item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+\item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 at least the two mandatory columns \code{start} and \code{end} with the
 range coordinates. It may also contain a \code{chromosome} column with the
 chromosome information for each range. If missing it will be drawn from the
@@ -156,7 +156,7 @@ separate \code{chromosome} argument. All additional numeric columns will be
 interpreted as data columns, unless the \code{data} argument is explicitely
 provided.}
 
-\item{}{A \code{character} scalar: in this case the value of the
+\item{A \code{character} scalar:}{ in this case the value of the
 \code{range} argument is considered to be a file path to an annotation file
 on disk. A range of file types are supported by the \code{Gviz} package as
 identified by the file extension. See the \code{importFunction}
@@ -247,64 +247,64 @@ Supported plotting types are:
 
 \describe{
 
-\item{}{\code{p}: simple xy-plot.}
+\item{\code{p}:}{ simple xy-plot.}
 
-\item{}{\code{l}: lines plot. In the case of multiple samples this plotting
+\item{\code{l}:}{ lines plot. In the case of multiple samples this plotting
 type is not overly usefull since the points in the data matrix are connected
 in column-wise order. Type \code{a} might be more appropriate in these
 situations.}
 
-\item{}{\code{b}: combination of xy-plot and lines plot.}
+\item{\code{b}:}{ combination of xy-plot and lines plot.}
 
-\item{}{\code{a}: lines plot of the column-wise average values.}
+\item{\code{a}:}{ lines plot of the column-wise average values.}
 
-\item{}{\code{s}: sort and connect data points along the x-axis}
+\item{\code{s}:}{ sort and connect data points along the x-axis}
 
-\item{}{\code{S}: sort and connect data points along the y-axis}
+\item{\code{S}:}{ sort and connect data points along the y-axis}
 
-\item{}{\code{g}: add grid lines. To ensure a consitant look and feel across
+\item{\code{g}:}{ add grid lines. To ensure a consitant look and feel across
 multiple tracks, grid lines should preferentially be added by using the
 \code{grid} display parameter.}
 
-\item{}{\code{r}: add a regression line to the plot.}
+\item{\code{r}:}{ add a regression line to the plot.}
 
-\item{}{\code{h}: histogram-like vertical lines centered in the middle of
+\item{\code{h}:}{ histogram-like vertical lines centered in the middle of
 the coordinate ranges.}
 
-\item{}{\code{smooth}: add a loess fit to the plot. The following display
+\item{\code{smooth}:}{ add a loess fit to the plot. The following display
 parameters can be used to control the loess calculation: \code{span, degree,
 family, evaluation}. See \code{\link{panel.loess}} for details.}
 
-\item{}{\code{histogram}: plot data as a histogram, where the width of the
+\item{\code{histogram}:}{ plot data as a histogram, where the width of the
 histogram bars reflects the width of the genomic ranges in the \code{range}
 slot.}
 
-\item{}{\code{mountain}: plot a smoothed version of the data relative to a
+\item{\code{mountain}:}{ plot a smoothed version of the data relative to a
 baseline, as defined by the \code{baseline} display parameter. The following
 display parameters can be used to control the smoothing: \code{span, degree,
 family, evaluation}. See \code{\link{panel.loess}} for details. The layout
 of the plot can be further customized via the following display parameters:
 \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 
-\item{}{\code{polygon}: plot data as a polygon (similar to
+\item{\code{polygon}:}{ plot data as a polygon (similar to
 \code{mountain}-type but without smoothing). Data are plotted relative to a
 baseline, as defined by the \code{baseline} display parameter. The layout of
 the plot can be further customized via the following display parameters:
 \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 
-\item{}{\code{boxplot}: plot the data as box-and-whisker plots. The layout
+\item{\code{boxplot}:}{ plot the data as box-and-whisker plots. The layout
 of the plot can be further customized via the following display parameters:
 \code{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
 coef, do.out}. See \code{\link{panel.bwplot}} for details.}
 
-\item{}{\code{gradient}: collapse the data across samples and plot this
+\item{\code{gradient}:}{ collapse the data across samples and plot this
 average value as a color-coded gradient. Essenitally this is similar to the
 heatmap-type plot of a single sample. The layout of the plot can be further
 customized via the display parameters \code{ncolor} and \code{gradient}
 which control the number of gradient colors as well as the gradient base
 colors, respectively.}
 
-\item{}{\code{heatmap}: plot the color-coded values for all samples in the
+\item{\code{heatmap}:}{ plot the color-coded values for all samples in the
 form of a heatmap. The data for individual samples can be visually separated
 by setting the \code{separator} display parameter. It's value is taken as
 the amount of spacing in pixels in between two heatmap rows. The layout of
@@ -312,7 +312,7 @@ the plot can be further customized via the display parameters \code{ncolor}
 and \code{gradient} which control the number of gradient colors as well as
 the gradient base colors, respectively.}
 
-\item{}{\code{horizon}: plot continuous data by cutting the y range into
+\item{\code{horizon}:}{ plot continuous data by cutting the y range into
 segments and overplotting them with color representing the magnitude and
 direction of deviation. This is particularly useful when comparing multiple
 samples, in which case the horizon strips are stacked. See
@@ -347,54 +347,54 @@ optimized to work on large numeric tables.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,DataTrack-method}: Initialize.
+\item \code{initialize(DataTrack)}: Initialize.
 
 \item \code{ReferenceDataTrack-class}: The file-based version of the \code{DataTrack-class}.
 
-\item \code{initialize,ReferenceDataTrack-method}: Initialize.
+\item \code{initialize(ReferenceDataTrack)}: Initialize.
 
-\item \code{DataTrack}: Constructor function for \code{DataTrack-class}
+\item \code{DataTrack()}: Constructor function for \code{DataTrack-class}
 
-\item \code{values,DataTrack-method}: return the raw data values of the object, i.e.,
+\item \code{values(DataTrack)}: return the raw data values of the object, i.e.,
 the data matrix in the \code{data} slot.
 
-\item \code{values<-,DataTrack-method}: Replace the data matrix in the \code{data} slot.
+\item \code{values(DataTrack) <- value}: Replace the data matrix in the \code{data} slot.
 
-\item \code{strand,DataTrack-method}: return a vector of strand specifiers for all
+\item \code{strand(DataTrack)}: return a vector of strand specifiers for all
 track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.
 
-\item \code{strand<-,DataTrack,ANY-method}: replace the strand information for the track items.
+\item \code{strand(x = DataTrack) <- value}: replace the strand information for the track items.
 The replacement value needs to be an appropriate scalar or vector of strand values.
 
-\item \code{split,DataTrack,ANY-method}: Split a \code{DataTrack} object by an appropriate
+\item \code{split(x = DataTrack, f = ANY)}: Split a \code{DataTrack} object by an appropriate
 factor vector (or another vector that can be coerced into one).
 The output of this operation is a list of \code{DataTrack} objects.
 
-\item \code{feature,DataTrack-method}: returns NULL since there is no grouping
+\item \code{feature(DataTrack)}: returns NULL since there is no grouping
 information for the ranges in a \code{DataTrack}.
 
-\item \code{feature<-,DataTrack,character-method}: this return the unaltered input object since
+\item \code{feature(GdObject = DataTrack) <- value}: this return the unaltered input object since
 there is no grouping information for the ranges in a \code{DataTrack}.
 
-\item \code{collapseTrack,DataTrack-method}: preprocess the track before plotting.
+\item \code{collapseTrack(DataTrack)}: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{[,DataTrack,ANY,ANY,ANY-method}: subset the items in the \code{DataTrack} object.
+\item \code{x[i}: subset the items in the \code{DataTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 \code{range} slot. For most applications, the subset method may be more appropriate.
 
-\item \code{subset,DataTrack-method}: Subset a \code{DataTrack} by coordinates
+\item \code{subset(DataTrack)}: Subset a \code{DataTrack} by coordinates
 and sort if necessary.
 
-\item \code{subset,ReferenceDataTrack-method}: Subset a \code{ReferenceDataTrack} by coordinates
+\item \code{subset(ReferenceDataTrack)}: Subset a \code{ReferenceDataTrack} by coordinates
 and sort if necessary.
 
-\item \code{drawAxis,DataTrack-method}: add a y-axis to the title panel of a track.
+\item \code{drawAxis(DataTrack)}: add a y-axis to the title panel of a track.
 
-\item \code{drawGD,DataTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(DataTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -404,11 +404,11 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,DataTrack-method}: Show method.
+\item \code{show(DataTrack)}: Show method.
 
-\item \code{show,ReferenceDataTrack-method}: Show method.
+\item \code{show(ReferenceDataTrack)}: Show method.
+
 }}
-
 \section{Objects from the class}{
 
 

@@ -59,7 +59,7 @@ NULL
 #'
 #' \describe{
 #'
-#' \item{}{A \code{TxDb} object: all the necessary gene model information
+#' \item{A \code{TxDb} object:}{ all the necessary gene model information
 #' including exon locations, transcript groupings and associated gene ids are
 #' contained in \code{TxDb} objects, and the coercion between the two is almost
 #' completely automated. If desired, the data to be fetched from the
@@ -70,7 +70,7 @@ NULL
 #' coding region information that is part of the original \code{TxDb} object is
 #' retained in the \code{GeneRegionTrack}.}
 #'
-#' \item{}{A \code{GRanges} object: the genomic ranges for the
+#' \item{A \code{GRanges} object:}{ the genomic ranges for the
 #' \code{GeneRegion} track as well as the optional additional metadata columns
 #' \code{feature}, \code{transcript}, \code{gene}, \code{exon} and
 #' \code{symbol} (see description of the individual function parameters below
@@ -78,7 +78,7 @@ NULL
 #' further arguments, e.g.  \code{GeneRegionTrack(range=obj)} is equivalent to
 #' calling the coerce method \code{as(obj, "GeneRegionTrack")}.}
 #'
-#' \item{}{A \code{GRangesList} object: this is very similar to the previous
+#' \item{A \code{GRangesList} object:}{ this is very similar to the previous
 #' case, except that the grouping information that is part of the list
 #' structure is preserved in the \code{GeneRegionTrack}. I.e., all the elements
 #' within one list item receive the same group id. For consistancy, there is
@@ -88,7 +88,7 @@ NULL
 #' data slots, the object will not be particularly useful, because all the
 #' identifiers will be set to a common default value.}
 #'
-#' \item{}{An \code{\linkS4class{IRanges}} object: almost identical to the
+#' \item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
 #' \code{GRanges} case, except that the chromosome and strand information as
 #' well as all additional data has to be provided in the separate
 #' \code{chromosome}, \code{strand}, \code{feature}, \code{transcript},
@@ -99,7 +99,7 @@ NULL
 #' providing information about the gene-to-transcript relationship or the
 #' human-readble symbols renders a lot of the class' functionality useles.}
 #'
-#' \item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+#' \item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 #' at least the two mandatory columns \code{start} and \code{end} with the
 #' range coordinates. It may also contain a \code{chromosome} and a
 #' \code{strand} column with the chromosome and strand information for each
@@ -109,7 +109,7 @@ NULL
 #' \code{symbol} data can be provided as columns in the \code{data.frame}. The
 #' above comments about potential default values also apply here.}
 #'
-#' \item{}{A \code{character} scalar: in this case the value of the
+#' \item{A \code{character} scalar:}{ in this case the value of the
 #' \code{range} argument is considered to be a file path to an annotation file
 #' on disk. A range of file types are supported by the \code{Gviz} package as
 #' identified by the file extension. See the \code{importFunction}
