@@ -310,137 +310,137 @@ accordingly. See the documentation of the \code{GeneRegionTrack} and
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,GdObject-method}: Initialize the object. This involves setting up a
+\item \code{initialize(GdObject)}: Initialize the object. This involves setting up a
 new environment for the display parameters and filling it up with the current
 settings. All arguments that have not been clobbered up by one of the
 sub-class initializers are considered to be additional display parameters
 and are also added to the environment. See \code{settings} for details on setting
 graphical parameters for tracks.
 
-\item \code{setPar,GdObject,character-method}: set the single display parameter name to value.
+\item \code{setPar(x = GdObject, value = character)}: set the single display parameter name to value.
 Note that display parameters in the \code{GdObject-class} are pass-by-reference,
 so no re-assignment to the symbol \code{obj} is necessary. See settings for
 details on display parameters and customization.
 
-\item \code{setPar,GdObject,list-method}: set display parameters by the values of the named
+\item \code{setPar(x = GdObject, value = list)}: set display parameters by the values of the named
 list in value. Note that display parameters in the \code{GdObject-class} are
 pass-by-reference, so no re-assignment to the symbol \code{obj} is necessary.
 See settings for details on display parameters and customization.
 
-\item \code{displayPars<-,GdObject,list-method}: set display parameters using the values of the
+\item \code{displayPars(x = GdObject) <- value}: set display parameters using the values of the
 named list in \code{value}. See \code{settings} for details on display parameters
 and customization.
 
-\item \code{getPar,GdObject,character-method}: alias for the \code{displayPars} method.
+\item \code{getPar(x = GdObject, name = character)}: alias for the \code{displayPars} method.
 See \code{settings} for details on display parameters and customization.
 
-\item \code{getPar,GdObject,missing-method}: alias for the \code{displayPars} method.
+\item \code{getPar(x = GdObject, name = missing)}: alias for the \code{displayPars} method.
 See \code{settings} for details on display parameters and customization.
 
-\item \code{displayPars,GdObject,character-method}: list the value of the display parameter name.
+\item \code{displayPars(x = GdObject, name = character)}: list the value of the display parameter name.
 See \code{settings} for details on display parameters and customization.
 
-\item \code{displayPars,GdObject,missing-method}: list the value of all available display parameters.
+\item \code{displayPars(x = GdObject, name = missing)}: list the value of all available display parameters.
 See \code{settings} for details on display parameters and customization.
 
-\item \code{coords,GdObject-method}: return the coordinates from the internal image map.
+\item \code{coords(GdObject)}: return the coordinates from the internal image map.
 
-\item \code{tags,GdObject-method}: return the tags from the internal image map.
+\item \code{tags(GdObject)}: return the tags from the internal image map.
 
-\item \code{subset,GdObject-method}: subset a \code{GdObject} by coordinates.
+\item \code{subset(GdObject)}: subset a \code{GdObject} by coordinates.
 Most of the respective sub-classes inheriting from \code{GdObject} overwrite this
 method, the default is to return the unaltered input object.
 
-\item \code{names,GdObject-method}: return the value of the \code{name} slot.
+\item \code{names(GdObject)}: return the value of the \code{name} slot.
 
-\item \code{names<-,GdObject,character-method}: set the value of the \code{name} slot.
+\item \code{names(x = GdObject) <- value}: set the value of the \code{name} slot.
 
-\item \code{group}: Generics for \code{group}.
+\item \code{group()}: Generics for \code{group}.
 
-\item \code{group<-}: Generics for \verb{group<-}.
+\item \code{group(GdObject) <- value}: Generics for \verb{group<-}.
 
-\item \code{group,GdObject-method}: return grouping information for the individual
+\item \code{group(GdObject)}: return grouping information for the individual
 items in the track. Unless overwritten in one of the sub-classes,
 this usually returns \code{NULL}.
 
-\item \code{imageMap}: Generics for \code{imageMap}.
+\item \code{imageMap()}: Generics for \code{imageMap}.
 
-\item \code{imageMap,GdObject-method}: Extract the content of the \code{imageMap} slot.
+\item \code{imageMap(GdObject)}: Extract the content of the \code{imageMap} slot.
 
-\item \code{imageMap<-}: Generics for \verb{imageMap<-}.
+\item \code{imageMap(GdObject) <- value}: Generics for \verb{imageMap<-}.
 
-\item \code{imageMap<-,GdObject,ImageMapOrNULL-method}: Replace the content of the \code{imageMap} slot.
+\item \code{imageMap(GdObject = GdObject) <- value}: Replace the content of the \code{imageMap} slot.
 
-\item \code{drawAxis}: Generics for \code{drawAxis}.
+\item \code{drawAxis()}: Generics for \code{drawAxis}.
 
-\item \code{drawAxis,GdObject-method}: add a y-axis to the title panel of a track if
+\item \code{drawAxis(GdObject)}: add a y-axis to the title panel of a track if
 necessary. Unless overwritten in one of the sub-classes this usually
 does not plot anything and returns \code{NULL}.
 
-\item \code{drawGrid}: Generics for \code{drawGrid}.
+\item \code{drawGrid()}: Generics for \code{drawGrid}.
 
-\item \code{drawGD}: Generics for \code{drawGD}.
+\item \code{drawGD()}: Generics for \code{drawGD}.
 
-\item \code{gene}: Generics for \code{gene}.
+\item \code{gene()}: Generics for \code{gene}.
 
-\item \code{gene<-}: Generics for \verb{gene<-}.
+\item \code{gene(GdObject) <- value}: Generics for \verb{gene<-}.
 
-\item \code{symbol}: Generics for \code{symbol}.
+\item \code{symbol()}: Generics for \code{symbol}.
 
-\item \code{symbol<-}: Generics for \verb{symbol<-}.
+\item \code{symbol(GdObject) <- value}: Generics for \verb{symbol<-}.
 
-\item \code{transcript}: Generics for \code{transcript}.
+\item \code{transcript()}: Generics for \code{transcript}.
 
-\item \code{transcript<-}: Generics for \verb{transcript<-}.
+\item \code{transcript(GdObject) <- value}: Generics for \verb{transcript<-}.
 
-\item \code{exon}: Generics for \code{exon}.
+\item \code{exon()}: Generics for \code{exon}.
 
-\item \code{exon<-}: Generics for \verb{exon<-}.
+\item \code{exon(GdObject) <- value}: Generics for \verb{exon<-}.
 
-\item \code{feature}: Generics for \code{feature}.
+\item \code{feature()}: Generics for \code{feature}.
 
-\item \code{feature<-}: Generics for \verb{feature<-}.
+\item \code{feature(GdObject) <- value}: Generics for \verb{feature<-}.
 
-\item \code{identifier}: Generics for \code{identifier}.
+\item \code{identifier()}: Generics for \code{identifier}.
 
-\item \code{identifier<-}: Generics for \verb{identifier<-}.
+\item \code{identifier(GdObject) <- value}: Generics for \verb{identifier<-}.
 
-\item \code{chromosome}: Generics for \code{chromosome}.
+\item \code{chromosome()}: Generics for \code{chromosome}.
 
-\item \code{chromosome,GdObject-method}: return the chromosome for which the track is defined.
+\item \code{chromosome(GdObject)}: return the chromosome for which the track is defined.
 
-\item \code{chromosome<-}: Generics for \code{chromosome}.
+\item \code{chromosome(GdObject) <- value}: Generics for \code{chromosome}.
 
-\item \code{chromosome<-,GdObject-method}: replace the value of the track's chromosome. This
+\item \code{chromosome(GdObject) <- value}: replace the value of the track's chromosome. This
 has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{position}: Generics for \code{position}.
+\item \code{position()}: Generics for \code{position}.
 
-\item \code{genome,GdObject-method}: return the track's genome.
+\item \code{genome(GdObject)}: return the track's genome.
 
-\item \code{genome<-,GdObject-method}: set the track's genome. Usually this has to be a
+\item \code{genome(GdObject) <- value}: set the track's genome. Usually this has to be a
 valid UCSC identifier, however this is not formally enforced here.
 
-\item \code{consolidateTrack}: Generics for \code{consolidateTrack}.
+\item \code{consolidateTrack()}: Generics for \code{consolidateTrack}.
 
-\item \code{consolidateTrack,GdObject-method}: Consolidate.
+\item \code{consolidateTrack(GdObject)}: Consolidate.
 Determine whether there is \code{alpha} settings or not, and add this information
 as the internal display parameter \code{.__hasAlphaSupport}.
 
-\item \code{stacking}: Generics for \code{stacking}.
+\item \code{stacking()}: Generics for \code{stacking}.
 
-\item \code{stacking<-}: Generics for \verb{stacking<-}.
+\item \code{stacking(GdObject) <- value}: Generics for \verb{stacking<-}.
 
-\item \code{stacks}: Generics for \code{stacks}.
+\item \code{stacks()}: Generics for \code{stacks}.
 
-\item \code{setStacks}: Generics for ``.
+\item \code{setStacks()}: Generics for ``.
 
-\item \code{setStacks,GdObject-method}: set stacks.
+\item \code{setStacks(GdObject)}: set stacks.
 
-\item \code{setCoverage}: Generics for ``.
+\item \code{setCoverage()}: Generics for ``.
+
 }}
-
 \section{Slots}{
 
 \describe{

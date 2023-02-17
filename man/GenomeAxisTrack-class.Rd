@@ -107,55 +107,55 @@ are used.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,GenomeAxisTrack-method}: Intialize.
+\item \code{initialize(GenomeAxisTrack)}: Intialize.
 
-\item \code{GenomeAxisTrack}: Constructor
+\item \code{GenomeAxisTrack()}: Constructor
 
-\item \code{ranges,GenomeAxisTrack-method}: return the genomic coordinates for the
+\item \code{ranges(GenomeAxisTrack)}: return the genomic coordinates for the
 track along with all additional annotation information as an object of
 class \code{GRanges}.
 
-\item \code{range,GenomeAxisTrack-method}: return the genomic coordinates for the
+\item \code{range(GenomeAxisTrack)}: return the genomic coordinates for the
 track as an object of class \code{IRanges}.
 @export
 
-\item \code{start,GenomeAxisTrack-method}: return the start coordinates of the track
+\item \code{start(GenomeAxisTrack)}: return the start coordinates of the track
 items.
 
-\item \code{start<-,GenomeAxisTrack-method}: replace the start coordinates of the track
+\item \code{start(GenomeAxisTrack) <- value}: replace the start coordinates of the track
 items.
 
-\item \code{end,GenomeAxisTrack-method}: return the end coordinates of the track
+\item \code{end(GenomeAxisTrack)}: return the end coordinates of the track
 items.
 
-\item \code{end<-,GenomeAxisTrack-method}: replace the end coordinates of the track
+\item \code{end(GenomeAxisTrack) <- value}: replace the end coordinates of the track
 items.
 
-\item \code{width,GenomeAxisTrack-method}: return the with of the track items in
+\item \code{width(GenomeAxisTrack)}: return the with of the track items in
 genomic coordinates.
 
-\item \code{length,GenomeAxisTrack-method}: return the number of items stored in the ranges slot.
+\item \code{length(GenomeAxisTrack)}: return the number of items stored in the ranges slot.
 
-\item \code{values,GenomeAxisTrack-method}: return all additional annotation information
+\item \code{values(GenomeAxisTrack)}: return all additional annotation information
 except for the genomic coordinates for the track items.
 
-\item \code{strand,GenomeAxisTrack-method}: return a vector of strand specifiers for
+\item \code{strand(GenomeAxisTrack)}: return a vector of strand specifiers for
 all track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.
 
-\item \code{collapseTrack,GenomeAxisTrack-method}: preprocess the track before plotting.
+\item \code{collapseTrack(GenomeAxisTrack)}: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{[,GenomeAxisTrack,ANY,ANY,ANY-method}: subset the items in the \code{GenomeAxisTrack} object.
+\item \code{x[i}: subset the items in the \code{GenomeAxisTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 \code{range} slot. For most applications, the subset method may be more appropriate.
 
-\item \code{subset,GenomeAxisTrack-method}: plot subset all the contained tracks in an
+\item \code{subset(GenomeAxisTrack)}: plot subset all the contained tracks in an
 \code{GenomeAxisTrack} by coordinates and sort if necessary.
 
-\item \code{drawGD,GenomeAxisTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(GenomeAxisTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -165,9 +165,9 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,GenomeAxisTrack-method}: Show method.
-}}
+\item \code{show(GenomeAxisTrack)}: Show method.
 
+}}
 \examples{
 ## Construct object
 axTrack <- GenomeAxisTrack(

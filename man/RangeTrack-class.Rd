@@ -145,98 +145,98 @@ and the associated genome.)
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,RangeTrack-method}: Initialize.
+\item \code{initialize(RangeTrack)}: Initialize.
 
-\item \code{ranges,RangeTrack-method}: return the genomic coordinates for the track
+\item \code{ranges(RangeTrack)}: return the genomic coordinates for the track
 along with all additional annotation information as an object of
 class \code{GRanges.}
 
-\item \code{range,RangeTrack-method}: return the genomic coordinates for the
+\item \code{range(RangeTrack)}: return the genomic coordinates for the
 track as an object of class IRanges.
 
-\item \code{seqnames,RangeTrack-method}: return the track's seqnames.
+\item \code{seqnames(RangeTrack)}: return the track's seqnames.
 
-\item \code{seqlevels,RangeTrack-method}: return the track's seqlevels.
+\item \code{seqlevels(RangeTrack)}: return the track's seqlevels.
 
-\item \code{seqinfo,RangeTrack-method}: return the track's seqinfo.
+\item \code{seqinfo(RangeTrack)}: return the track's seqinfo.
 
-\item \code{genome,RangeTrack-method}: return the track's genome.
+\item \code{genome(RangeTrack)}: return the track's genome.
 
-\item \code{genome<-,RangeTrack-method}: set the track's genome. Usually this has to
+\item \code{genome(RangeTrack) <- value}: set the track's genome. Usually this has to
 be a valid UCSC identifier, however this is not formally enforced here.
 
-\item \code{chromosome,RangeTrack-method}: return the chromosome for which the track is defined.
+\item \code{chromosome(RangeTrack)}: return the chromosome for which the track is defined.
 
-\item \code{chromosome<-,RangeTrack-method}: replace the value of the track's chromosome.
+\item \code{chromosome(RangeTrack) <- value}: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{start,RangeTrack-method}: the start of the track items in genomic
+\item \code{start(RangeTrack)}: the start of the track items in genomic
 coordinates.
 
-\item \code{start<-,RangeTrack-method}: replace the start of the track items in
+\item \code{start(RangeTrack) <- value}: replace the start of the track items in
 genomic coordinates.
 
-\item \code{end,RangeTrack-method}: the end of the track items in genomic
+\item \code{end(RangeTrack)}: the end of the track items in genomic
 coordinates.
 
-\item \code{end<-,RangeTrack-method}: replace the end of the track items in
+\item \code{end(RangeTrack) <- value}: replace the end of the track items in
 genomic coordinates.
 
-\item \code{width,RangeTrack-method}: the width of the track items in genomic
+\item \code{width(RangeTrack)}: the width of the track items in genomic
 coordinates.
 
-\item \code{width<-,RangeTrack-method}: replace the width of the track items in genomic
+\item \code{width(RangeTrack) <- value}: replace the width of the track items in genomic
 coordinates.
 
-\item \code{min,RangeTrack-method}: return the start position for the leftmost range item.
+\item \code{min(RangeTrack)}: return the start position for the leftmost range item.
 
-\item \code{max,RangeTrack-method}: return the end position for the rightmost range item.
+\item \code{max(RangeTrack)}: return the end position for the rightmost range item.
 
-\item \code{length,RangeTrack-method}: return the number of items in the track.
+\item \code{length(RangeTrack)}: return the number of items in the track.
 
-\item \code{strand,RangeTrack-method}: return a vector of strand specifiers for all
+\item \code{strand(RangeTrack)}: return a vector of strand specifiers for all
 track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.
 
-\item \code{strand<-,RangeTrack,ANY-method}: replace the strand information for the track
+\item \code{strand(x = RangeTrack) <- value}: replace the strand information for the track
 items. The replacement value needs to be an appropriate scalar or vector
 of strand values.
 
-\item \code{position,RangeTrack-method}: the arithmetic mean of the track item's
+\item \code{position(RangeTrack)}: the arithmetic mean of the track item's
 coordionates, i.e., \code{(end(obj)-start(obj))/2}.
 
-\item \code{[,RangeTrack,ANY,ANY,ANY-method}: subset the items in the \code{RangeTrack} object.
+\item \code{x[i}: subset the items in the \code{RangeTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 \code{range} slot. For most applications, the subset method may be more appropriate.
 
-\item \code{subset,RangeTrack-method}: subset a \code{RangeTrack} by coordinates and
+\item \code{subset(RangeTrack)}: subset a \code{RangeTrack} by coordinates and
 sort if necessary.
 
-\item \code{split,RangeTrack,ANY-method}: split a \code{RangeTrack} object by an appropriate
+\item \code{split(x = RangeTrack, f = ANY)}: split a \code{RangeTrack} object by an appropriate
 factor vector (or another vector that can be coerced into one). The output
 of this operation is a list of objects of the same class as the input
 object, all inheriting from class \code{RangeTrack.}
 
-\item \code{values,RangeTrack-method}: return all additional annotation information
+\item \code{values(RangeTrack)}: return all additional annotation information
 except for the genomic coordinates for the track items as a \code{data.frame}.
 
-\item \code{feature,RangeTrack-method}: return the grouping information for track
+\item \code{feature(RangeTrack)}: return the grouping information for track
 items. For certain sub-classes, groups may be indicated by different colour
 schemes when plotting. See grouping or \code{AnnotationTrack} and
 \code{GeneRegionTrack} for details.
 @export
 
-\item \code{feature<-,RangeTrack,character-method}: set the grouping information for track items.
+\item \code{feature(GdObject = RangeTrack) <- value}: set the grouping information for track items.
 This has to be a factor vector (or another type of vector that can be
 coerced into one) of the same length as the number of items in the
 \code{RangeTrack.} See grouping or \code{AnnotationTrack} and \code{GeneRegionTrack} for
 details.
 @export
 
-\item \code{consolidateTrack,RangeTrack-method}: Consolidate.
-}}
+\item \code{consolidateTrack(RangeTrack)}: Consolidate.
 
+}}
 \section{Slots}{
 
 \describe{

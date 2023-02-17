@@ -69,28 +69,28 @@ when plotted.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,StackedTrack-method}: Initialize.
+\item \code{initialize(StackedTrack)}: Initialize.
 
-\item \code{stacking,StackedTrack-method}: return the current stacking type.
+\item \code{stacking(StackedTrack)}: return the current stacking type.
 
-\item \code{stacking<-,StackedTrack,character-method}: set the object's stacking type to one in
+\item \code{stacking(GdObject = StackedTrack) <- value}: set the object's stacking type to one in
 \code{c(hide, dense, squish, pack,full)}.
 
-\item \code{stacks,StackedTrack-method}: return the stack indices for each track item.
+\item \code{stacks(StackedTrack)}: return the stack indices for each track item.
 
-\item \code{setStacks,StackedTrack-method}: recompute the stacks based on the available
+\item \code{setStacks(StackedTrack)}: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 
-\item \code{consolidateTrack,StackedTrack-method}: Consolidate.
+\item \code{consolidateTrack(StackedTrack)}: Consolidate.
 a display parameter)
 
-\item \code{[,StackedTrack,ANY,ANY,ANY-method}: subset the items in the \code{StackedTrack} object.
+\item \code{x[i}: subset the items in the \code{StackedTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 range slot. For most applications, the subset method may be more appropriate.
 
-\item \code{subset,StackedTrack-method}: subset a \code{StackedTrack} by coordinates and sort if necessary.
+\item \code{subset(StackedTrack)}: subset a \code{StackedTrack} by coordinates and sort if necessary.
 
-\item \code{drawGD,StackedTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(StackedTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which
 the method can be called. Either in 'prepare' mode, in which case no
@@ -98,8 +98,8 @@ plotting is done but the stacking information is updated based on the
 available space, or in 'plotting' mode, in which case the actual graphical
 output is created. Note that the method for this particular subclass is
 usually called through inheritance and not particularly useful on its own.
-}}
 
+}}
 \section{Slots}{
 
 \describe{

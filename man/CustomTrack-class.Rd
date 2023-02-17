@@ -70,11 +70,11 @@ that all plotting operations need to utilize Grid graphics.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,CustomTrack-method}: Initialize.
+\item \code{initialize(CustomTrack)}: Initialize.
 
-\item \code{CustomTrack}: Objects can be created using the constructor function.
+\item \code{CustomTrack()}: Objects can be created using the constructor function.
 
-\item \code{drawGD,CustomTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(CustomTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -84,9 +84,9 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,CustomTrack-method}: Show method.
-}}
+\item \code{show(CustomTrack)}: Show method.
 
+}}
 \examples{
 ## Object construction:
 

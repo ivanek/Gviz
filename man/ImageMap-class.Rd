@@ -41,19 +41,19 @@ hence the constructor function \code{ImageMap} is not exported in the name space
 }
 \section{Functions}{
 \itemize{
-\item \code{coords}: Generics for \code{coords}.
+\item \code{coords()}: Generics for \code{coords}.
 
-\item \code{coords,NULL-method}: Returns the coordinates from the image map.
+\item \code{coords(`NULL`)}: Returns the coordinates from the image map.
 
-\item \code{coords,ImageMap-method}: Returns the coordinates from the image map.
+\item \code{coords(ImageMap)}: Returns the coordinates from the image map.
 
-\item \code{tags}: Generics for \code{tags}.
+\item \code{tags()}: Generics for \code{tags}.
 
-\item \code{tags,NULL-method}: Returns the tags from the image map
+\item \code{tags(`NULL`)}: Returns the tags from the image map
 
-\item \code{tags,ImageMap-method}: Returns the tags from the image map
+\item \code{tags(ImageMap)}: Returns the tags from the image map
+
 }}
-
 \section{Slots}{
 
 \describe{

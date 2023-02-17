@@ -28,11 +28,11 @@ contain numeric data. This class merely exists for dispatching purpose.
 }
 \section{Functions}{
 \itemize{
-\item \code{drawAxis,NumericTrack-method}: add a y-axis to the title panel of a track.
+\item \code{drawAxis(NumericTrack)}: add a y-axis to the title panel of a track.
 
-\item \code{drawGrid,NumericTrack-method}: superpose a grid on top of a track.
+\item \code{drawGrid(NumericTrack)}: superpose a grid on top of a track.
+
 }}
-
 \section{Slots}{
 
 \describe{

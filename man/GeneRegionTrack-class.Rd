@@ -132,7 +132,7 @@ The different input options for \code{range} are:
 
 \describe{
 
-\item{}{A \code{TxDb} object: all the necessary gene model information
+\item{A \code{TxDb} object:}{ all the necessary gene model information
 including exon locations, transcript groupings and associated gene ids are
 contained in \code{TxDb} objects, and the coercion between the two is almost
 completely automated. If desired, the data to be fetched from the
@@ -143,7 +143,7 @@ available. A nice added benefit of this input option is that the UTR and
 coding region information that is part of the original \code{TxDb} object is
 retained in the \code{GeneRegionTrack}.}
 
-\item{}{A \code{GRanges} object: the genomic ranges for the
+\item{A \code{GRanges} object:}{ the genomic ranges for the
 \code{GeneRegion} track as well as the optional additional metadata columns
 \code{feature}, \code{transcript}, \code{gene}, \code{exon} and
 \code{symbol} (see description of the individual function parameters below
@@ -151,7 +151,7 @@ for details). Calling the constructor on a \code{GRanges} object without
 further arguments, e.g.  \code{GeneRegionTrack(range=obj)} is equivalent to
 calling the coerce method \code{as(obj, "GeneRegionTrack")}.}
 
-\item{}{A \code{GRangesList} object: this is very similar to the previous
+\item{A \code{GRangesList} object:}{ this is very similar to the previous
 case, except that the grouping information that is part of the list
 structure is preserved in the \code{GeneRegionTrack}. I.e., all the elements
 within one list item receive the same group id. For consistancy, there is
@@ -161,7 +161,7 @@ gene ids, symbols, etc. is present in the individual \code{GRanges} meta
 data slots, the object will not be particularly useful, because all the
 identifiers will be set to a common default value.}
 
-\item{}{An \code{\linkS4class{IRanges}} object: almost identical to the
+\item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
 \code{GRanges} case, except that the chromosome and strand information as
 well as all additional data has to be provided in the separate
 \code{chromosome}, \code{strand}, \code{feature}, \code{transcript},
@@ -172,7 +172,7 @@ default values \code{chromosome=NA} and \code{strand=*} are used, but not
 providing information about the gene-to-transcript relationship or the
 human-readble symbols renders a lot of the class' functionality useles.}
 
-\item{}{A \code{data.frame} object: the \code{data.frame} needs to contain
+\item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
 at least the two mandatory columns \code{start} and \code{end} with the
 range coordinates. It may also contain a \code{chromosome} and a
 \code{strand} column with the chromosome and strand information for each
@@ -182,7 +182,7 @@ range. If missing, this information will be drawn from the constructor's
 \code{symbol} data can be provided as columns in the \code{data.frame}. The
 above comments about potential default values also apply here.}
 
-\item{}{A \code{character} scalar: in this case the value of the
+\item{A \code{character} scalar:}{ in this case the value of the
 \code{range} argument is considered to be a file path to an annotation file
 on disk. A range of file types are supported by the \code{Gviz} package as
 identified by the file extension. See the \code{importFunction}
@@ -344,64 +344,64 @@ are considered to be coding elements.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,GeneRegionTrack-method}: Initialize.
+\item \code{initialize(GeneRegionTrack)}: Initialize.
 
 \item \code{ReferenceGeneRegionTrack-class}: The file-based version of the \code{GeneRegionTrack-class}.
 
-\item \code{initialize,ReferenceGeneRegionTrack-method}: Initialize.
+\item \code{initialize(ReferenceGeneRegionTrack)}: Initialize.
 
-\item \code{GeneRegionTrack}: Constructor function for \code{GeneRegionTrack-class}.
+\item \code{GeneRegionTrack()}: Constructor function for \code{GeneRegionTrack-class}.
 
-\item \code{gene,GeneRegionTrack-method}: Extract the gene identifiers for all
+\item \code{gene(GeneRegionTrack)}: Extract the gene identifiers for all
 gene models.
 
-\item \code{gene<-,GeneRegionTrack,character-method}: Replace the gene identifiers for all
+\item \code{gene(GdObject = GeneRegionTrack) <- value}: Replace the gene identifiers for all
 gene models.
 The replacement value must be a character of appropriate length or another
 vector that can be coerced into such.
 
-\item \code{symbol,GeneRegionTrack-method}: Extract the human-readble gene symbol
+\item \code{symbol(GeneRegionTrack)}: Extract the human-readble gene symbol
 for all gene models.
 
-\item \code{symbol<-,GeneRegionTrack,character-method}: Replace the human-readable gene symbol
+\item \code{symbol(GdObject = GeneRegionTrack) <- value}: Replace the human-readable gene symbol
 for all gene models.
 The replacement value must be a character of appropriate length or another
 vector that can be coerced into such.
 
-\item \code{transcript,GeneRegionTrack-method}: Extract the transcript identifiers for all
+\item \code{transcript(GeneRegionTrack)}: Extract the transcript identifiers for all
 transcripts in the gene models.
 
-\item \code{transcript<-,GeneRegionTrack,character-method}: Replace the transcript identifiers for all
+\item \code{transcript(GdObject = GeneRegionTrack) <- value}: Replace the transcript identifiers for all
 transcripts in the gene model. The replacement value must be a character of
 appropriate length or another vector that can be coerced into such.
 
-\item \code{exon,GeneRegionTrack-method}: Extract the exon identifiers for all exons
+\item \code{exon(GeneRegionTrack)}: Extract the exon identifiers for all exons
 in the gene models.
 
-\item \code{exon<-,GeneRegionTrack,character-method}: replace the exon identifiers for all exons
+\item \code{exon(GdObject = GeneRegionTrack) <- value}: replace the exon identifiers for all exons
 in the gene model. The replacement value must be a character of appropriate
 length or another vector that can be coerced into such.
 
-\item \code{group,GeneRegionTrack-method}: extract the group membership for all track items.
+\item \code{group(GeneRegionTrack)}: extract the group membership for all track items.
 
-\item \code{group<-,GeneRegionTrack,character-method}: replace the grouping information for track items.
+\item \code{group(GdObject = GeneRegionTrack) <- value}: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.
 
-\item \code{identifier,GeneRegionTrack-method}: return track item identifiers.
+\item \code{identifier(GeneRegionTrack)}: return track item identifiers.
 Depending on the setting of the optional argument lowest, these are either
 the group identifiers or the individual item identifiers.
 export
 
-\item \code{identifier<-,GeneRegionTrack,character-method}: Set the track item identifiers.
+\item \code{identifier(GdObject = GeneRegionTrack) <- value}: Set the track item identifiers.
 The replacement value has to be a character vector of appropriate length.
 This always replaces the group-level identifiers, so essentially it is
 similar to \verb{groups<-}.
 
-\item \code{subset,ReferenceGeneRegionTrack-method}: Subset a GeneRegionTrack by coordinates
+\item \code{subset(ReferenceGeneRegionTrack)}: Subset a GeneRegionTrack by coordinates
 and sort if necessary.
 
-\item \code{drawGD,GeneRegionTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(GeneRegionTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -411,11 +411,11 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,GeneRegionTrack-method}: Show method.
+\item \code{show(GeneRegionTrack)}: Show method.
 
-\item \code{show,ReferenceGeneRegionTrack-method}: Show method.
+\item \code{show(ReferenceGeneRegionTrack)}: Show method.
+
 }}
-
 \section{Objects from the class}{
 
 

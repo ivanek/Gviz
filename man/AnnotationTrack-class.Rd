@@ -290,18 +290,18 @@ information for each range.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize,AnnotationTrack-method}: Show method.
+\item \code{initialize(AnnotationTrack)}: Show method.
 
 \item \code{ReferenceAnnotationTrack-class}: The file-based version of the \code{AnnotationTrack-class}.
 
-\item \code{initialize,ReferenceAnnotationTrack-method}: Initialize.
+\item \code{initialize(ReferenceAnnotationTrack)}: Initialize.
 
-\item \code{AnnotationTrack}: Constructor function for
+\item \code{AnnotationTrack()}: Constructor function for
 \code{AnnotationTrack-class}
 
 \item \code{DetailsAnnotationTrack-class}: directly extends \code{AnnotationTrack.}
 
-\item \code{DetailsAnnotationTrack}: Constructor function for
+\item \code{DetailsAnnotationTrack()}: Constructor function for
 \code{DetailsAnnotationTrack-class}
 
 The \code{DetailsAnnotationTrack} class directly extends \code{AnnotationTrack.}
@@ -338,44 +338,44 @@ names like \code{start}, \code{end} or \code{identifier} are reserved and can no
 in the \code{detailsFunArgs} list. For examples of plotting functions,
 see the 'Examples' section.
 
-\item \code{initialize,DetailsAnnotationTrack-method}: Initialize.
+\item \code{initialize(DetailsAnnotationTrack)}: Initialize.
 
-\item \code{group,AnnotationTrack-method}: extract the group membership for all track items.
+\item \code{group(AnnotationTrack)}: extract the group membership for all track items.
 
-\item \code{group<-,AnnotationTrack,character-method}: replace the grouping information for track items.
+\item \code{group(GdObject = AnnotationTrack) <- value}: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.
 
-\item \code{identifier,AnnotationTrack-method}: return track item identifiers.
+\item \code{identifier(AnnotationTrack)}: return track item identifiers.
 Depending on the setting of the optional argument lowest, these are either
 the group identifiers or the individual item identifiers.
 
-\item \code{identifier<-,AnnotationTrack,character-method}: Set the track item identifiers.
+\item \code{identifier(GdObject = AnnotationTrack) <- value}: Set the track item identifiers.
 The replacement value has to be a character vector of appropriate length.
 This always replaces the group-level identifiers, so essentially it is
 similar to \verb{groups<-}.
 
-\item \code{setStacks,AnnotationTrack-method}: Recompute the stacks based on the available
+\item \code{setStacks(AnnotationTrack)}: Recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 
-\item \code{consolidateTrack,AnnotationTrack-method}: Consolidate.
+\item \code{consolidateTrack(AnnotationTrack)}: Consolidate.
 Determine whether there is group label annotation or not, and add this
 information as the internal display parameter \code{.__hasAnno}. Precompute
 the grouped ranges together with optional labels in order to determine
 the correct plotting range later.
 
-\item \code{collapseTrack,AnnotationTrack-method}: preprocess the track before plotting.
+\item \code{collapseTrack(AnnotationTrack)}: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{subset,AnnotationTrack-method}: subset a \code{AnnotationTrack} by coordinates
+\item \code{subset(AnnotationTrack)}: subset a \code{AnnotationTrack} by coordinates
 and sort if necessary.
 
-\item \code{subset,ReferenceAnnotationTrack-method}: subset a \code{ReferenceAnnotationTrack} by
+\item \code{subset(ReferenceAnnotationTrack)}: subset a \code{ReferenceAnnotationTrack} by
 coordinates and sort if necessary.
 
-\item \code{drawGD,AnnotationTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(AnnotationTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -385,7 +385,7 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{drawGD,DetailsAnnotationTrack-method}: plot the object to a graphics device.
+\item \code{drawGD(DetailsAnnotationTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -395,11 +395,11 @@ Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.
 
-\item \code{show,AnnotationTrack-method}: Show method.
+\item \code{show(AnnotationTrack)}: Show method.
 
-\item \code{show,ReferenceAnnotationTrack-method}: Show method.
+\item \code{show(ReferenceAnnotationTrack)}: Show method.
+
 }}
-
 \section{Slots}{
 
 \describe{
