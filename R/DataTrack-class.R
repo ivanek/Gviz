@@ -937,7 +937,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
     vals <- values(GdObject)
     groups <- .dpOrDefault(GdObject, "groups")
     if (!is.null(groups) && length(groups) != nrow(vals)) {
-        stop("'groups' must be a vector of similar length as the number of rows in the data matrix (", nrow(vals), ")")
+        stop("'groups' must be a vector of the same length as the number of rows in the data matrix (", nrow(vals), ")")
     }
     if (!is.null(groups) && !is.factor(groups)) {
         groups <- factor(groups)
