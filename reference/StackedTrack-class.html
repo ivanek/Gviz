@@ -19,7 +19,7 @@ when plotted."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -89,52 +89,77 @@ drawGD(GdObject, ...)</code></pre></div>
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>stacking</dt>
 <dd><p>stacking</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>Value to be set.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>Numeric scalar, index to subset.</p></dd>
+
+
 <dt>j</dt>
 <dd><p>Numeric scalar, index to subset. Ignored.</p></dd>
+
+
 <dt>drop</dt>
 <dd><p><code>logical</code>, indicating if levels that do not occur should be dropped (if <code>f</code> is a factor).</p></dd>
+
+
 <dt>from, to</dt>
 <dd><p>Numeric scalar, giving the range of genomic coordinates to
 limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
+
+
 <dt>sort</dt>
 <dd><p><code>logical</code>.</p></dd>
+
+
 <dt>stacks</dt>
 <dd><p><code>logical</code>. Set if stacking should  be preserved.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A virtual Class: No objects may be created from it.</p>
+    
+
+<p>A virtual Class: No objects may be created from it.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,StackedTrack-method</code>: Initialize.</p></li>
-<li><p><code>stacking,StackedTrack-method</code>: return the current stacking type.</p></li>
-<li><p><code>stacking&lt;-,StackedTrack,character-method</code>: set the object's stacking type to one in
+<ul><li><p><code>initialize(StackedTrack)</code>: Initialize.</p></li>
+<li><p><code>stacking(StackedTrack)</code>: return the current stacking type.</p></li>
+<li><p><code>stacking(GdObject = StackedTrack) &lt;- value</code>: set the object's stacking type to one in
 <code>c(hide, dense, squish, pack,full)</code>.</p></li>
-<li><p><code>stacks,StackedTrack-method</code>: return the stack indices for each track item.</p></li>
-<li><p><code>setStacks,StackedTrack-method</code>: recompute the stacks based on the available
+<li><p><code>stacks(StackedTrack)</code>: return the stack indices for each track item.</p></li>
+<li><p><code>setStacks(StackedTrack)</code>: recompute the stacks based on the available
 space and on the object's track items and stacking settings.</p></li>
-<li><p><code>consolidateTrack,StackedTrack-method</code>: Consolidate.
+<li><p><code>consolidateTrack(StackedTrack)</code>: Consolidate.
 a display parameter)</p></li>
-<li><p><code>[,StackedTrack,ANY,ANY,ANY-method</code>: subset the items in the <code>StackedTrack</code> object.
+<li><p><code>x[i</code>: subset the items in the <code>StackedTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 range slot. For most applications, the subset method may be more appropriate.</p></li>
-<li><p><code>subset,StackedTrack-method</code>: subset a <code>StackedTrack</code> by coordinates and sort if necessary.</p></li>
-<li><p><code>drawGD,StackedTrack-method</code>: plot the object to a graphics device.
+<li><p><code>subset(StackedTrack)</code>: subset a <code>StackedTrack</code> by coordinates and sort if necessary.</p></li>
+<li><p><code>drawGD(StackedTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which
 the method can be called. Either in 'prepare' mode, in which case no
@@ -227,46 +252,46 @@ plotting space.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## This is a reference class therefore we show below</span></span>
-<span class="r-in"><span class="co">## an example from AnnotationTrack</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## An empty object</span></span>
-<span class="r-in"><span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## This is a reference class therefore we show below</span></span></span>
+<span class="r-in"><span><span class="co">## an example from AnnotationTrack</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## An empty object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AnnotationTrack 'AnnotationTrack'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chrNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Construct from individual arguments</span></span>
-<span class="r-in"><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">2070000</span>, <span class="fl">2100000</span>, <span class="fl">2160000</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2050000</span>, <span class="fl">2130000</span>, <span class="fl">2150000</span>, <span class="fl">2170000</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group1"</span>, <span class="st">"Group3"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span>
-<span class="r-in">    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span>
-<span class="r-in">    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"generic annotation"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Construct from individual arguments</span></span></span>
+<span class="r-in"><span><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">2070000</span>, <span class="fl">2100000</span>, <span class="fl">2160000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2050000</span>, <span class="fl">2130000</span>, <span class="fl">2150000</span>, <span class="fl">2170000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group1"</span>, <span class="st">"Group3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"generic annotation"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="StackedTrack-class-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Stacking</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Stacking</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "squish"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"dense"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"dense"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="StackedTrack-class-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -282,7 +307,7 @@ plotting space.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ the UCSC Genome Browser, except for all of the interactivity."><!-- mathjax --><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -59,25 +59,25 @@ the UCSC Genome Browser, except for all of the interactivity.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plotTracks</span><span class="op">(</span>
-  <span class="va">trackList</span>,
-  from <span class="op">=</span> <span class="cn">NULL</span>,
-  to <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>,
-  sizes <span class="op">=</span> <span class="cn">NULL</span>,
-  panel.only <span class="op">=</span> <span class="cn">FALSE</span>,
-  extend.right <span class="op">=</span> <span class="fl">0</span>,
-  extend.left <span class="op">=</span> <span class="fl">0</span>,
-  title.width <span class="op">=</span> <span class="cn">NULL</span>,
-  add <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">main</span>,
-  cex.main <span class="op">=</span> <span class="fl">2</span>,
-  fontface.main <span class="op">=</span> <span class="fl">2</span>,
-  col.main <span class="op">=</span> <span class="st">"black"</span>,
-  margin <span class="op">=</span> <span class="fl">6</span>,
-  chromosome <span class="op">=</span> <span class="cn">NULL</span>,
-  innerMargin <span class="op">=</span> <span class="fl">3</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotTracks</span><span class="op">(</span></span>
+<span>  <span class="va">trackList</span>,</span>
+<span>  from <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  to <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  sizes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  panel.only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  extend.right <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  extend.left <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  title.width <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">main</span>,</span>
+<span>  cex.main <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  fontface.main <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  col.main <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  margin <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  chromosome <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  innerMargin <span class="op">=</span> <span class="fl">3</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -88,56 +88,86 @@ class <code><a href="GdObject-class.html">GdObject</a></code>. The tracks will a
 same genomic coordinates, either as defined by the <code>from</code> and <code>to</code>
 arguments if supplied, or by the maximum range across all individual items
 in the list.</p></dd>
+
+
 <dt>from, to</dt>
 <dd><p>Character scalar, giving the range of genomic coordinates to
 draw the tracks in. Note that <code>to</code> cannot be larger than <code>from</code>.
 If <code>NULL</code>, the plotting ranges are derived from the individual tracks.
 See <code>extend.left</code> and <code>extend.right</code> below for the definition of
 the final plotting ranges.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments which are all interpreted as display
 parameters to tweak the appearance of the plot. These parameters are global,
 meaning that they will be used for all tracks in the list where they
 actually make sense, and they override the track-internal settings. See
 <a href="settings.html">settings</a> for details on display parameters.</p></dd>
+
+
 <dt>sizes</dt>
 <dd><p>A numeric vector of relative vertical sizes for the individual
 tracks of length equal to the number of tracks in <code>trackList</code>, or
 <code>NULL</code> to auto-detect the most appropriate vertical size proportions.</p></dd>
+
+
 <dt>panel.only</dt>
 <dd><p>Logical flag, causing the tracks to be plotted as
 lattice-like panel functions without resetting the plotting canvas and
 omitting the title pane. This allows to embed tracks into a trellis layout.
 Usually the function is called for a single track only when
 <code>panel.only==TRUE</code>.</p></dd>
+
+
 <dt>extend.right, extend.left</dt>
 <dd><p>Numeric scalar, extend the plotting range to
 the right or to the left by a fixed number of bases. The final plotting
 range is defined as <code>from-extend.left</code> to <code>to+extend.right</code>.</p></dd>
+
+
 <dt>title.width</dt>
 <dd><p>A expansion factor for the width of the title panels.
 This can be used to make more space, e.g. to accommodate for more detailed
 data axes. The default is to use as much space as needed to fit all the
 annotation text.</p></dd>
+
+
 <dt>add</dt>
 <dd><p>Logical flag, add the plot to an existing plotting canvas without
 re-initialising.</p></dd>
+
+
 <dt>main</dt>
 <dd><p>Character scalar, the plots main header.</p></dd>
+
+
 <dt>cex.main, fontface.main, col.main</dt>
 <dd><p>The fontface, color and expansion
 factor settings for the main header.</p></dd>
+
+
 <dt>margin</dt>
 <dd><p>The margin width to add to the plot in pixels.</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>Set the chromosome for all the tracks in the track list.</p></dd>
+
+
 <dt>innerMargin</dt>
 <dd><p>The inner margin width to add to the plot in pixels.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list of Gviz tracks, each one augmented by the computed image map
-coordinates in the <code>imageMap</code> slot, along with the additional <code>ImageMap</code>object <code>titles</code> containing information about the title panels.</p>
+    
+
+<p>A list of Gviz tracks, each one augmented by the computed image map
+coordinates in the <code>imageMap</code> slot, along with the additional <code>ImageMap</code></p>
+
+
+<p>object <code>titles</code> containing information about the title panels.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -169,92 +199,92 @@ of the plots in semi-interactive HTML pages. See
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Create some tracks to plot</span></span>
-<span class="r-in"><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">2070000</span>, <span class="fl">2100000</span>, <span class="fl">2160000</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2050000</span>, <span class="fl">2130000</span>, <span class="fl">2150000</span>, <span class="fl">2170000</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group1"</span>, <span class="st">"Group3"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span>
-<span class="r-in">    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span>
-<span class="r-in">    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"annotation track foo"</span>,</span>
-<span class="r-in">    stacking <span class="op">=</span> <span class="st">"squish"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ax</span> <span class="op">&lt;-</span> <span class="fu"><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">st</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">ed</span><span class="op">)</span>, len <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">18000</span>,</span>
-<span class="r-in">    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">40</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span>
-<span class="r-in">    type <span class="op">=</span> <span class="st">"histogram"</span>, name <span class="op">=</span> <span class="st">"data track bar"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">ax</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Now plot the tracks</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Create some tracks to plot</span></span></span>
+<span class="r-in"><span><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">2070000</span>, <span class="fl">2100000</span>, <span class="fl">2160000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2050000</span>, <span class="fl">2130000</span>, <span class="fl">2150000</span>, <span class="fl">2170000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group1"</span>, <span class="st">"Group3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"annotation track foo"</span>,</span></span>
+<span class="r-in"><span>    stacking <span class="op">=</span> <span class="st">"squish"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ax</span> <span class="op">&lt;-</span> <span class="fu"><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">st</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">ed</span><span class="op">)</span>, len <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">18000</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">40</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    type <span class="op">=</span> <span class="st">"histogram"</span>, name <span class="op">=</span> <span class="st">"data track bar"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">ax</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Now plot the tracks</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plot only a subrange</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>, from <span class="op">=</span> <span class="fl">2080000</span>, to <span class="op">=</span> <span class="fl">2156000</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plot only a subrange</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>, from <span class="op">=</span> <span class="fl">2080000</span>, to <span class="op">=</span> <span class="fl">2156000</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extend plotting ranges</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>, extend.left <span class="op">=</span> <span class="fl">200000</span>, extend.right <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extend plotting ranges</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>, extend.left <span class="op">=</span> <span class="fl">200000</span>, extend.right <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Add a header</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>,</span>
-<span class="r-in">    main <span class="op">=</span> <span class="st">"A GenomGraphs plot"</span>,</span>
-<span class="r-in">    col.main <span class="op">=</span> <span class="st">"darkgray"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Add a header</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    main <span class="op">=</span> <span class="st">"A GenomGraphs plot"</span>,</span></span>
+<span class="r-in"><span>    col.main <span class="op">=</span> <span class="st">"darkgray"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Change vertical size and title width</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>, sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Change vertical size and title width</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>, sizes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span><span class="op">)</span>, title.width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span><span class="op">)</span>, title.width <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Adding and lattice like plots</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="fl">1</span>, just <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plotTracks</span><span class="op">(</span><span class="va">annTrack</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">popViewport</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="fl">0</span>, just <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plotTracks</span><span class="op">(</span><span class="va">dt</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">popViewport</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Adding and lattice like plots</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html" class="external-link">grid.newpage</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="fl">1</span>, just <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotTracks</span><span class="op">(</span><span class="va">annTrack</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">popViewport</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="fl">0</span>, just <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plotTracks</span><span class="op">(</span><span class="va">dt</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">popViewport</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://lattice.r-forge.r-project.org/" class="external-link">lattice</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">myPanel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu">plotTracks</span><span class="op">(</span><span class="va">annTrack</span>,</span>
-<span class="r-in">        panel.only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">        from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, shape <span class="op">=</span> <span class="st">"box"</span></span>
-<span class="r-in">    <span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1900000</span>, <span class="fl">2250000</span>, len <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html" class="external-link">xyplot</a></span><span class="op">(</span><span class="va">b</span> <span class="op">~</span> <span class="va">a</span> <span class="op">|</span> <span class="va">c</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">a</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">    panel <span class="op">=</span> <span class="va">myPanel</span>,</span>
-<span class="r-in">    scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://lattice.r-forge.r-project.org/" class="external-link">lattice</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">myPanel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu">plotTracks</span><span class="op">(</span><span class="va">annTrack</span>,</span></span>
+<span class="r-in"><span>        panel.only <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>        from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, shape <span class="op">=</span> <span class="st">"box"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1900000</span>, <span class="fl">2250000</span>, len <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/xyplot.html" class="external-link">xyplot</a></span><span class="op">(</span><span class="va">b</span> <span class="op">~</span> <span class="va">a</span> <span class="op">|</span> <span class="va">c</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">a</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    panel <span class="op">=</span> <span class="va">myPanel</span>,</span></span>
+<span class="r-in"><span>    scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -269,7 +299,7 @@ of the plots in semi-interactive HTML pages. See
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ plotting function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -55,27 +55,30 @@ plotting function.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for CustomTrack</span>
-<span class="fu">initialize</span><span class="op">(</span><span class="va">.Object</span>, <span class="va">plottingFunction</span>, <span class="va">variables</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">CustomTrack</span><span class="op">(</span>
-  plottingFunction <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">prepare</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="op">}</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  name <span class="op">=</span> <span class="st">"CustomTrack"</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for CustomTrack</span>
-<span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for CustomTrack</span>
-<span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for CustomTrack</span></span>
+<span><span class="fu">initialize</span><span class="op">(</span><span class="va">.Object</span>, <span class="va">plottingFunction</span>, <span class="va">variables</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">CustomTrack</span><span class="op">(</span></span>
+<span>  plottingFunction <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">prepare</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span> <span class="op">}</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"CustomTrack"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for CustomTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for CustomTrack</span></span>
+<span><span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>plottingFunction</dt>
 <dd><p>A user-defined function to be executed once the
 track coordinates have been properly set up. The function needs to accept
@@ -83,29 +86,48 @@ two mandatory arguments: <code>GdObject</code>, the <code>CustomTrack</code> obj
 be plotted, and <code>prepare</code>, a logical flag indicating whether the
 function has been called in preparation mode or in drawing mode. It also
 needs to return the input <code>GdObject</code>, potentially with modifications.</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>A list of additional variables for the user-defined
 plotting function.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters. See <code>settings</code> and the "Display Parameters"
 section below for details.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
+
 <dt>minBase</dt>
 <dd><p>minBase</p></dd>
+
+
 <dt>maxBase</dt>
 <dd><p>maxBase</p></dd>
+
+
 <dt>prepare</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>object</dt>
 <dd><p>object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>CustomTrack</code>.</p>
     </div>
     <div id="details">
@@ -120,9 +142,9 @@ that all plotting operations need to utilize Grid graphics.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,CustomTrack-method</code>: Initialize.</p></li>
-<li><p><code>CustomTrack</code>: Objects can be created using the constructor function.</p></li>
-<li><p><code>drawGD,CustomTrack-method</code>: plot the object to a graphics device.
+<ul><li><p><code>initialize(CustomTrack)</code>: Initialize.</p></li>
+<li><p><code>CustomTrack()</code>: Objects can be created using the constructor function.</p></li>
+<li><p><code>drawGD(CustomTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -131,7 +153,7 @@ done but the object is preprocessed based on the available space, or in
 Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.</p></li>
-<li><p><code>show,CustomTrack-method</code>: Show method.</p></li>
+<li><p><code>show(CustomTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -156,10 +178,10 @@ is not necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Object construction:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## An empty object</span></span>
-<span class="r-in"><span class="fu">CustomTrack</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Object construction:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## An empty object</span></span></span>
+<span class="r-in"><span><span class="fu">CustomTrack</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CustomTrack 'CustomTrack'</span>
 </code></pre></div>
     </div>
@@ -175,7 +197,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

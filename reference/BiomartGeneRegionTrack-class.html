@@ -18,7 +18,7 @@ from EBI's Biomart Ensembl data source."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -55,71 +55,85 @@ from EBI's Biomart Ensembl data source.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for BiomartGeneRegionTrack</span>
-<span class="fu">initialize</span><span class="op">(</span>
-  <span class="va">.Object</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">biomart</span>,
-  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">range</span>,
-  genome <span class="op">=</span> <span class="cn">NULL</span>,
-  chromosome <span class="op">=</span> <span class="cn">NULL</span>,
-  strand <span class="op">=</span> <span class="cn">NULL</span>,
-  featureMap <span class="op">=</span> <span class="cn">NULL</span>,
-  symbol <span class="op">=</span> <span class="cn">NULL</span>,
-  gene <span class="op">=</span> <span class="cn">NULL</span>,
-  transcript <span class="op">=</span> <span class="cn">NULL</span>,
-  entrez <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">BiomartGeneRegionTrack</span><span class="op">(</span>
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">biomart</span>,
-  chromosome <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">strand</span>,
-  genome <span class="op">=</span> <span class="cn">NULL</span>,
-  stacking <span class="op">=</span> <span class="st">"squish"</span>,
-  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  featureMap <span class="op">=</span> <span class="cn">NULL</span>,
-  name <span class="op">=</span> <span class="st">"BiomartGeneRegionTrack"</span>,
-  symbol <span class="op">=</span> <span class="cn">NULL</span>,
-  gene <span class="op">=</span> <span class="cn">NULL</span>,
-  entrez <span class="op">=</span> <span class="cn">NULL</span>,
-  transcript <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for BiomartGeneRegionTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">chromosome</span>, use.defaults <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for BiomartGeneRegionTrack</span></span>
+<span><span class="fu">initialize</span><span class="op">(</span></span>
+<span>  <span class="va">.Object</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">biomart</span>,</span>
+<span>  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">range</span>,</span>
+<span>  genome <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  chromosome <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  strand <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  featureMap <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  symbol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  gene <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  transcript <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  entrez <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">BiomartGeneRegionTrack</span><span class="op">(</span></span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">biomart</span>,</span>
+<span>  chromosome <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">strand</span>,</span>
+<span>  genome <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  stacking <span class="op">=</span> <span class="st">"squish"</span>,</span>
+<span>  filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  featureMap <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"BiomartGeneRegionTrack"</span>,</span>
+<span>  symbol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  gene <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  entrez <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  transcript <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for BiomartGeneRegionTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">chromosome</span>, use.defaults <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>start</dt>
 <dd><p>An integer scalar with the genomic start coordinates for the
 gene model range.</p></dd>
+
+
 <dt>end</dt>
 <dd><p>An integer scalar with the genomic end coordinates for the gene
 model range.</p></dd>
+
+
 <dt>biomart</dt>
 <dd><p>An optional <code>Mart</code> object providing access
 to the EBI Biomart webservice. As default the appropriate Ensembl data
 source is selected based on the provided genome and chromosome.</p></dd>
+
+
 <dt>filter</dt>
 <dd><p>filter</p></dd>
+
+
 <dt>range</dt>
 <dd><p>range</p></dd>
+
+
 <dt>genome</dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
 checked at this point. If no mapping from genome to Biomart Ensembl data
 source is possible, the <code>biomart</code> argument needs to be provided by the
 user.</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier. Please note that at this stage
@@ -127,46 +141,69 @@ only syntactic checking takes place, i.e., the argument value needs to be a
 single integer, numeric character or a character of the form <code>chrx</code>,
 where <code>x</code> may be any possible string. The user has to make sure that
 the respective chromosome is indeed defined for the the track's genome.</p></dd>
+
+
 <dt>strand</dt>
 <dd><p>Character scalar, the strand for which to fetch gene
 information from Biomart. One in <code>+</code>, <code>-</code>, or <code>+-</code>.</p></dd>
+
+
 <dt>featureMap</dt>
 <dd><p>Named character vector or list to map between the fields
 in the Biomart data base and the features as they are used to construct the
 track. If multiple values are provided in a single list item, the package
 will use the first one that is defined in the selected Biomart.</p></dd>
+
+
 <dt>symbol, transcript, gene, entrez</dt>
 <dd><p>Character vector giving one or several
 gene symbols, Ensembl transcript identifiers, Ensembl gene identifiers, or
 ENTREZ gene identifiers, respectively. The genomic locus of their gene model
 will be fetch from Biomart instead of providing explicit start and end
 coordinates.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
 section below for details.</p></dd>
+
+
 <dt>stacking</dt>
 <dd><p>The stacking type for overlapping items of the track. One in
 <code>c(hide, dense, squish, pack,full)</code>. Currently, only hide (don't show
 the track items, squish (make best use of the available space) and dense (no
 stacking at all) are implemented.</p></dd>
+
+
 <dt>filters</dt>
 <dd><p>A list of additional filters to be applied in the Biomart
 query. See <code>getBM</code> for details.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name used in the title panel
 when plotting.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
+
 <dt>from, to</dt>
 <dd><p>from, to</p></dd>
+
+
 <dt>use.defaults</dt>
 <dd><p><code>logical</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>BiomartGeneRegionTrack</code>.</p>
     </div>
     <div id="details">
@@ -182,10 +219,10 @@ sources, mapping the available query data back to the internal object slots.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,BiomartGeneRegionTrack-method</code>: Initialize.</p></li>
-<li><p><code>BiomartGeneRegionTrack</code>: Constructor function for
+<ul><li><p><code>initialize(BiomartGeneRegionTrack)</code>: Initialize.</p></li>
+<li><p><code>BiomartGeneRegionTrack()</code>: Constructor function for
 <code>BiomartGeneRegionTrack-class</code>.</p></li>
-<li><p><code>subset,BiomartGeneRegionTrack-method</code>: subset a <code>BiomartGeneRegionTrack</code>
+<li><p><code>subset(BiomartGeneRegionTrack)</code>: subset a <code>BiomartGeneRegionTrack</code>
 by coordinates and sort if necessary.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
@@ -223,45 +260,45 @@ by coordinates and sort if necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## Load some sample data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Construct the object</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">bmTrack</span> <span class="op">&lt;-</span> <span class="fu">BiomartGeneRegionTrack</span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span>
-<span class="r-in">    chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## Load some sample data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Construct the object</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">bmTrack</span> <span class="op">&lt;-</span> <span class="fu">BiomartGeneRegionTrack</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span></span>
+<span class="r-in"><span>    chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Track names</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Track names</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "BiomartGeneRegionTrack"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subsetting and splitting</span></span>
-<span class="r-in"><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">bmTrack</span>, from <span class="op">=</span> <span class="fl">26700000</span>, to <span class="op">=</span> <span class="fl">26705000</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subsetting and splitting</span></span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">bmTrack</span>, from <span class="op">=</span> <span class="fl">26700000</span>, to <span class="op">=</span> <span class="fl">26705000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 21</span>
-<span class="r-in"><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="va">bmTrack</span><span class="op">[</span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">==</span> <span class="st">"ENSMUST00000144140"</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">bmTrack</span>, <span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="va">bmTrack</span><span class="op">[</span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">==</span> <span class="st">"ENSMUST00000144140"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">bmTrack</span>, <span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GeneRegionTrack 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: mm9</span>
@@ -280,40 +317,40 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Accessors</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Accessors</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 26682639 26696257 26696573 26698884 26699767 26700411 26701953 26702307</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 26711087 26682695 26696257 26696573 26698884 26699767 26700411 26701953</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 26702307 26710392 26711087 26701785 26702307</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 26682874 26696419 26696722 26699044 26699943 26700552 26702140 26702448</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 26711643 26682874 26696419 26696722 26699044 26699943 26700552 26702140</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 26702448 26710418 26711578 26702140 26702449</span>
-<span class="r-in"><span class="fu">width</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">width</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 236 163 150 161 177 142 188 142 557 180 163 150 161 177 142 188 142  27 492</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] 356 143</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 26682756 26696338 26696648 26698964 26699855 26700482 26702046 26702378</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 26711365 26682784 26696338 26696648 26698964 26699855 26700482 26702046</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 26702378 26710405 26711332 26701962 26702378</span>
-<span class="r-in"><span class="fu">width</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">width</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">+</span> <span class="fl">100</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">strand</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">width</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">width</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">+</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">strand</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] "+" "+"</span>
-<span class="r-in"><span class="fu">strand</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">strand</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   chr7 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "chr7" </span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">genome</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mm9"</span>
-<span class="r-in"><span class="fu">genome</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 21 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            start       end     width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;</span>
@@ -328,7 +365,7 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [19]  26711087  26711578       492</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [20]  26701785  26702140       356</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [21]  26702307  26702449       143</span>
-<span class="r-in"><span class="fu">ranges</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">ranges</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 21 ranges and 6 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        seqnames            ranges strand |        feature               gene</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |    &lt;character&gt;        &lt;character&gt;</span>
@@ -358,13 +395,13 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [21] ENSMUSE00000748299 ENSMUST00000144140     Cyp2b10         2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Annotation</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Annotation</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">bmTrack</span>, <span class="st">"lowest"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">bmTrack</span>, <span class="st">"lowest"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000449901" "ENSMUSE00000199425"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000498616"</span>
@@ -372,18 +409,18 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000496705"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21] "protein_coding"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000449901" "ENSMUSE00000199425"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000498616"</span>
@@ -391,9 +428,9 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSE00000511070" "ENSMUSE00000514929" "ENSMUSE00000199423"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSE00000535814" "ENSMUSE00000507557" "ENSMUSE00000496705"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
@@ -401,15 +438,15 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"</span>
@@ -417,12 +454,12 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr7"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr7"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">values</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">values</span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           feature               gene               exon         transcript</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  protein_coding ENSMUSG00000030483 ENSMUSE00000742021 ENSMUST00000072438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  protein_coding ENSMUSG00000030483 ENSMUSE00000449901 ENSMUST00000072438</span>
@@ -467,9 +504,9 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19 Cyp2b10   10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20 Cyp2b10    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21 Cyp2b10    2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Grouping</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Grouping</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000072438" "ENSMUST00000072438" "ENSMUST00000072438"</span>
@@ -477,21 +514,21 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Group 1" "Group 1"</span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Stacking</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Stacking</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "squish"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"dense"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"dense"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## coercion</span></span>
-<span class="r-in"><span class="fu">as</span><span class="op">(</span><span class="va">bmTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## coercion</span></span></span>
+<span class="r-in"><span><span class="fu">as</span><span class="op">(</span><span class="va">bmTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X.seqnames  X.start    X.end X.width X.strand      X.feature</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        chr7 26682639 26682874     236        + protein_coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        chr7 26696257 26696419     163        + protein_coding</span>
@@ -580,7 +617,7 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19 Cyp2b10   10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20 Cyp2b10    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21 Cyp2b10    2</span>
-<span class="r-in"><span class="fu">as</span><span class="op">(</span><span class="va">bmTrack</span>, <span class="st">"UCSCData"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">as</span><span class="op">(</span><span class="va">bmTrack</span>, <span class="st">"UCSCData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UCSC track 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UCSCData object with 3 ranges and 6 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       seqnames            ranges strand |                 id        name</span>
@@ -595,15 +632,15 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3]       gold4          2                356,143                  0,522</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## HTML image map</span></span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## HTML image map</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="va">bmTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span><span class="op">$</span><span class="va">foo</span></span>
+<span class="r-in"><span><span class="va">bmTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span><span class="op">$</span><span class="va">foo</span></span></span>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             x1   y1        x2    y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000742021    38.32764 64.5  41.79997 415.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000449901   239.54551 64.5 241.93921 415.5</span>
@@ -626,7 +663,7 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625   458.67175 64.5 465.92671 415.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000736922   321.22656 64.5 326.47199 415.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000748299   328.93956 64.5 331.03774 415.5</span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fill</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000449901   ENSMUSE00000199425 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              "gold4"              "gold4"              "gold4" </span>
@@ -870,7 +907,7 @@ by coordinates and sort if necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

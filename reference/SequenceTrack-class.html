@@ -20,7 +20,7 @@ are of no particular relevance to the user."><!-- mathjax --><script src="https:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -59,101 +59,105 @@ are of no particular relevance to the user.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">chromosome</span>, <span class="va">genome</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">SequenceTrack</span><span class="op">(</span>
-  <span class="va">sequence</span>,
-  <span class="va">chromosome</span>,
-  <span class="va">genome</span>,
-  name <span class="op">=</span> <span class="st">"SequenceTrack"</span>,
-  <span class="va">importFunction</span>,
-  stream <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">RNASequenceTrack</span><span class="op">(</span>
-  <span class="va">sequence</span>,
-  <span class="va">chromosome</span>,
-  <span class="va">genome</span>,
-  name <span class="op">=</span> <span class="st">"SequenceTrack"</span>,
-  <span class="va">importFunction</span>,
-  stream <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for SequenceDNAStringSetTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">sequence</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceRNAStringSetTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">sequence</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceBSgenomeTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, sequence <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ReferenceSequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">stream</span>, <span class="va">reference</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceBSgenomeTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlevels</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceBSgenomeTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlevels</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="GdObject-class.html">consolidateTrack</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceTrack</span>
-<span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceBSgenomeTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceDNAStringSetTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for SequenceRNAStringSetTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for ReferenceSequenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">chromosome</span>, <span class="va">genome</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">SequenceTrack</span><span class="op">(</span></span>
+<span>  <span class="va">sequence</span>,</span>
+<span>  <span class="va">chromosome</span>,</span>
+<span>  <span class="va">genome</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"SequenceTrack"</span>,</span>
+<span>  <span class="va">importFunction</span>,</span>
+<span>  stream <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">RNASequenceTrack</span><span class="op">(</span></span>
+<span>  <span class="va">sequence</span>,</span>
+<span>  <span class="va">chromosome</span>,</span>
+<span>  <span class="va">genome</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"SequenceTrack"</span>,</span>
+<span>  <span class="va">importFunction</span>,</span>
+<span>  stream <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceDNAStringSetTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">sequence</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceRNAStringSetTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">sequence</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceBSgenomeTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, sequence <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ReferenceSequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">stream</span>, <span class="va">reference</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceBSgenomeTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlevels</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceBSgenomeTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqlevels</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">consolidateTrack</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceBSgenomeTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceDNAStringSetTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for SequenceRNAStringSetTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ReferenceSequenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>the currently active chromosome which may have to be set
 for a <code>RangeTrack</code> or a <code>SequenceTrack</code> object
 parameters</p></dd>
+
+
 <dt>genome</dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
@@ -161,29 +165,33 @@ checked at this point. For a <code>SequenceBSgenomeTrack</code> object, the geno
 information is extracted from the input <code>BSgenome</code> package. For a
 <code>DNAStringSet</code> it has too be provided or the constructor will fall back
 to the default value of <code>NA</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
 section below for details.</p></dd>
+
+
 <dt>sequence</dt>
 <dd><p>A meta argument to handle the different input types, making the construction
 of a <code>SequenceTrack</code> as flexible as possible.</p>
 <p>The different input options for <code>sequence</code> are:</p>
-<dl><dt></dt>
-<dd><p>An object of class <code><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-class.html" class="external-link">DNAStringSet</a></code>. The individual
+<dl><dt>An object of class <code><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-class.html" class="external-link">DNAStringSet</a></code>.</dt>
+<dd><p>The individual
 <code><a href="https://rdrr.io/pkg/Biostrings/man/DNAString-class.html" class="external-link">DNAString</a></code>s are considered to be the different
 chromosome sequences.</p></dd>
 
 
-<dt></dt>
-<dd><p>An object of class <code><a href="https://rdrr.io/pkg/BSgenome/man/BSgenome-class.html" class="external-link">BSgenome</a></code>. The <code>Gviz</code>
+<dt>An object of class <code><a href="https://rdrr.io/pkg/BSgenome/man/BSgenome-class.html" class="external-link">BSgenome</a></code>.</dt>
+<dd><p>The <code>Gviz</code>
 package tries to follow the <code>BSgenome</code> philosophy in that the
 respective chromosome sequences are only realized once they are first
 accessed.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>character</code> scalar: in this case the value of the
+<dt>A <code>character</code> scalar:</dt>
+<dd><p>in this case the value of the
 <code>sequence</code> argument is considered to be a file path to an annotation
 file on disk. A range of file types are supported by the <code>Gviz</code> package
 as identified by the file extension. See the <code>importFunction</code>
@@ -191,9 +199,13 @@ documentation below for further details.</p></dd>
 
 
 </dl></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name used in the title panel
 when plotting.</p></dd>
+
+
 <dt>importFunction</dt>
 <dd><p>A user-defined function to be used to import the
 sequence data from a file. This only applies when the <code>sequence</code>
@@ -221,33 +233,54 @@ needs to accept a second mandatory argument <code>selection</code> which is a
 <code>GRanges</code> object containing the dimensions of the plotted genomic
 range. As before, the function has to return an appropriate
 <code>DNAStringSet</code> object.</p></dd>
+
+
 <dt>stream</dt>
 <dd><p>A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 <code>selection</code> argument when accessing the data on disk. This causes the
 constructor to return a <code>ReferenceSequenceTrack</code> object which will grab
 the necessary data on the fly during each plotting operation.</p></dd>
+
+
 <dt>reference</dt>
 <dd><p>Name of the file (for streatming).</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>the input track object</p></dd>
+
+
 <dt>value</dt>
 <dd><p>Value to be set.</p></dd>
+
+
 <dt>minBase</dt>
 <dd><p>Start of the sequence.</p></dd>
+
+
 <dt>maxBase</dt>
 <dd><p>End of the sequence.</p></dd>
+
+
 <dt>prepare</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>object</dt>
 <dd><p>object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>SequenceDNAStringSetTrack</code>, <code>SequenceBSgenomeTrack</code> ore
 <code>ReferenceSequenceTrack</code>, depending on the constructor arguments.
 Typically the user will not have to be troubled with this distinction and
@@ -256,44 +289,44 @@ can rely on the constructor to make the right choice.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,SequenceTrack-method</code>: Initialize.</p></li>
-<li><p><code>SequenceTrack</code>: Constructor</p></li>
-<li><p><code>RNASequenceTrack</code>: Constructor</p></li>
+<ul><li><p><code>initialize(SequenceTrack)</code>: Initialize.</p></li>
+<li><p><code>SequenceTrack()</code>: Constructor</p></li>
+<li><p><code>RNASequenceTrack()</code>: Constructor</p></li>
 <li><p><code>SequenceDNAStringSetTrack-class</code>: The <code>DNAStringSet</code>-based version of the <code>SequenceTrack-class</code>.</p></li>
-<li><p><code>initialize,SequenceDNAStringSetTrack-method</code>: Initialize.</p></li>
+<li><p><code>initialize(SequenceDNAStringSetTrack)</code>: Initialize.</p></li>
 <li><p><code>SequenceRNAStringSetTrack-class</code>: The <code>RNAStringSet</code>-based version of the <code>SequenceTrack-class</code>.</p></li>
-<li><p><code>initialize,SequenceRNAStringSetTrack-method</code>: Initialize <code>RNAStringSet</code>-based version of the <code>SequenceTrack-class</code>.</p></li>
+<li><p><code>initialize(SequenceRNAStringSetTrack)</code>: Initialize <code>RNAStringSet</code>-based version of the <code>SequenceTrack-class</code>.</p></li>
 <li><p><code>SequenceBSgenomeTrack-class</code>: The <code>BSgenome</code>-based version of the <code>SequenceTrack-class</code>.</p></li>
-<li><p><code>initialize,SequenceBSgenomeTrack-method</code>: Initialize.</p></li>
+<li><p><code>initialize(SequenceBSgenomeTrack)</code>: Initialize.</p></li>
 <li><p><code>ReferenceSequenceTrack-class</code>: The file-based version of the <code>SequenceTrack-class</code>.</p></li>
-<li><p><code>initialize,ReferenceSequenceTrack-method</code>: Initialize.</p></li>
-<li><p><code>seqnames,SequenceTrack-method</code>: return the names (i.e., the chromosome)
+<li><p><code>initialize(ReferenceSequenceTrack)</code>: Initialize.</p></li>
+<li><p><code>seqnames(SequenceTrack)</code>: return the names (i.e., the chromosome)
 of the sequences contained in the object.</p></li>
-<li><p><code>seqnames,SequenceBSgenomeTrack-method</code>: return the names (i.e., the chromosome)
+<li><p><code>seqnames(SequenceBSgenomeTrack)</code>: return the names (i.e., the chromosome)
 of the sequences contained in the object.</p></li>
-<li><p><code>seqlevels,SequenceTrack-method</code>: return the names (i.e., the chromosome)
+<li><p><code>seqlevels(SequenceTrack)</code>: return the names (i.e., the chromosome)
 of the sequences contained in the object. Only those with length &gt; 0.</p></li>
-<li><p><code>seqlevels,SequenceBSgenomeTrack-method</code>: return the names (i.e., the chromosome)
+<li><p><code>seqlevels(SequenceBSgenomeTrack)</code>: return the names (i.e., the chromosome)
 of the sequences contained in the object. Only those with length &gt; 0.</p></li>
-<li><p><code>start,SequenceTrack-method</code>: return the start coordinates of the track
+<li><p><code>start(SequenceTrack)</code>: return the start coordinates of the track
 items.</p></li>
-<li><p><code>end,SequenceTrack-method</code>: return the end coordinates of the track
+<li><p><code>end(SequenceTrack)</code>: return the end coordinates of the track
 items.</p></li>
-<li><p><code>width,SequenceTrack-method</code>: return the with of the track items in
+<li><p><code>width(SequenceTrack)</code>: return the with of the track items in
 genomic coordinates.</p></li>
-<li><p><code>length,SequenceTrack-method</code>: return the length of the sequence for
+<li><p><code>length(SequenceTrack)</code>: return the length of the sequence for
 active chromosome.</p></li>
-<li><p><code>chromosome,SequenceTrack-method</code>: return the chromosome for which the track
+<li><p><code>chromosome(SequenceTrack)</code>: return the chromosome for which the track
 is defined.</p></li>
-<li><p><code>chromosome&lt;-,SequenceTrack-method</code>: replace the value of the track's chromosome.
+<li><p><code>chromosome(SequenceTrack) &lt;- value</code>: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.</p></li>
-<li><p><code>genome,SequenceTrack-method</code>: Set the track's genome.
+<li><p><code>genome(SequenceTrack)</code>: Set the track's genome.
 Usually this has to be a valid UCSC identifier, however this is not
 formally enforced here.</p></li>
-<li><p><code>consolidateTrack,SequenceTrack-method</code>: Consolidate/
+<li><p><code>consolidateTrack(SequenceTrack)</code>: Consolidate/
 Determine whether there is <code>chromosome</code> settings or not, and add this information.</p></li>
-<li><p><code>drawGD,SequenceTrack-method</code>: plot the object to a graphics device.
+<li><p><code>drawGD(SequenceTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -302,10 +335,10 @@ done but the object is preprocessed based on the available space, or in
 Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.</p></li>
-<li><p><code>show,SequenceBSgenomeTrack-method</code>: Show method.</p></li>
-<li><p><code>show,SequenceDNAStringSetTrack-method</code>: Show method.</p></li>
-<li><p><code>show,SequenceRNAStringSetTrack-method</code>: Show method.</p></li>
-<li><p><code>show,ReferenceSequenceTrack-method</code>: Show method.</p></li>
+<li><p><code>show(SequenceBSgenomeTrack)</code>: Show method.</p></li>
+<li><p><code>show(SequenceDNAStringSetTrack)</code>: Show method.</p></li>
+<li><p><code>show(SequenceRNAStringSetTrack)</code>: Show method.</p></li>
+<li><p><code>show(ReferenceSequenceTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
     <h2>Objects from the class</h2>
@@ -337,34 +370,34 @@ is not necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## An empty object</span></span>
-<span class="r-in"><span class="fu">SequenceTrack</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## An empty object</span></span></span>
+<span class="r-in"><span><span class="fu">SequenceTrack</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sequence track 'SequenceTrack':</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | chromosomes: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chrNA (0 nucleotides)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Construct from DNAStringSet</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">letters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>, <span class="st">"N"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">999</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">seqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-class.html" class="external-link">DNAStringSet</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span>chr1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">100000</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span class="r-in">    collapse <span class="op">=</span> <span class="st">""</span></span>
-<span class="r-in"><span class="op">)</span>, chr2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">200000</span>, <span class="cn">TRUE</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">seqs</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sTrack</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Construct from DNAStringSet</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biostrings" class="external-link">Biostrings</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">letters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"T"</span>, <span class="st">"G"</span>, <span class="st">"N"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">999</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">seqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-class.html" class="external-link">DNAStringSet</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>chr1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">100000</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    collapse <span class="op">=</span> <span class="st">""</span></span></span>
+<span class="r-in"><span><span class="op">)</span>, chr2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">200000</span>, <span class="cn">TRUE</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">seqs</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sTrack</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sequence track 'SequenceTrack':</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | chromosomes: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr1 (100000 nucleotides)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call seqnames() to list all available chromosomes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call chromosome()&lt;- to change the active chromosome</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Construct from BSGenome object</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">sTrack</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Construct from BSGenome object</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">sTrack</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sequence track 'SequenceTrack':</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | chromosomes: 298</span>
@@ -377,67 +410,67 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | provider version: hg19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | release date: June 2013</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | package name: BSgenome.Hsapiens.UCSC.hg19</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Set active chromosome</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Set active chromosome</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr1"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr2"</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqnames</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr2"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">seqnames</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr1" "chr2" "chr3" "chr4" "chr5" "chr6"</span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="co">## Sequences</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="co">## Sequences</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## Boxes</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199800</span>, to <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Boxes</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199800</span>, to <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## Line</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Line</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">1</span>, to <span class="op">=</span> <span class="fl">200000</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## Force boxes</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, noLetters <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Force boxes</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, noLetters <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## Direction indicator</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Direction indicator</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## Sequence complement</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, complement <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Sequence complement</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, complement <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="co">## Colors</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, fontcolor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">    A <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">    C <span class="op">=</span> <span class="fl">1</span>, G <span class="op">=</span> <span class="fl">1</span>, T <span class="op">=</span> <span class="fl">1</span>, N <span class="op">=</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Colors</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, fontcolor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    A <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    C <span class="op">=</span> <span class="fl">1</span>, G <span class="op">=</span> <span class="fl">1</span>, T <span class="op">=</span> <span class="fl">1</span>, N <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Track names</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Track names</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "SequenceTrack"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Accessors</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Accessors</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hg19"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 243199373</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Sequence extraction</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/XVector/man/XVector-class.html" class="external-link">subseq</a></span><span class="op">(</span><span class="va">sTrack</span>, start <span class="op">=</span> <span class="fl">100000</span>, width <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Sequence extraction</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/XVector/man/XVector-class.html" class="external-link">subseq</a></span><span class="op">(</span><span class="va">sTrack</span>, start <span class="op">=</span> <span class="fl">100000</span>, width <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20-letter DNAString object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> seq: TGTCCAAATATGTCTGGTGA</span>
-<span class="r-in"><span class="co">## beyond the stored sequence range</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/XVector/man/XVector-class.html" class="external-link">subseq</a></span><span class="op">(</span><span class="va">sTrack</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## beyond the stored sequence range</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/XVector/man/XVector-class.html" class="external-link">subseq</a></span><span class="op">(</span><span class="va">sTrack</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20-letter DNAString object</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> seq: N-------------------</span>
 </code></pre></div>
@@ -454,7 +487,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

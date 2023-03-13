@@ -19,7 +19,7 @@ equal genomic coordinates for a single observation across samples."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -144,6 +144,8 @@ show(object)</code></pre></div>
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>data</dt>
 <dd><p>A numeric matrix of data points with the number of columns equal
 to the number of coordinates in <code>range</code>, or a numeric vector of
@@ -156,27 +158,35 @@ Alternatively, this can be a character vector of column names that point
 into the element metadata of the <code>range</code> object for subsetting.
 Naturally, this is only supported when the <code>range</code> argument is of class
 <code>GRanges</code>.</p></dd>
+
+
 <dt>strand</dt>
 <dd><p>Character vector, the strand information for the individual
 track items. Currently this has to be unique for the whole track and doesn't
 really have any visible consequences, but we might decide to make
 <code>DataTracks</code> strand-specific at a later stage.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters.</p></dd>
+
+
 <dt>stream</dt>
 <dd><p>A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 <code>selection</code> argument when accessing the data on disk. This causes the
 constructor to return a <code>ReferenceDataTrack</code> object which will grab the
 necessary data on the fly during each plotting operation.</p></dd>
+
+
 <dt>range</dt>
 <dd><p>An optional meta argument to handle the different input types.
 If the <code>range</code> argument is missing, all the relevant information to create
 the object has to be provided as individual function arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
-<dl><dt></dt>
-<dd><p>A <code>GRanges</code> object: essentially all the necessary information
+<dl><dt>A <code>GRanges</code> object:</dt>
+<dd><p>essentially all the necessary information
 to create a <code>DataTrack</code> can be contained in a single <code>GRanges</code>
 object. The track's coordinates are taken from the <code>start</code>, <code>end</code>
 and <code>seqnames</code> slots, the genome information from the genome slot, and
@@ -193,16 +203,16 @@ always take precedence over anything defined in the <code>range</code> argument.
 See below for details.</p></dd>
 
 
-<dt></dt>
-<dd><p>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object: this is very similar to the
+<dt>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object:</dt>
+<dd><p>this is very similar to the
 above case, except that the numeric data part now always has to be provided
 in the separate <code>data</code> argument. Also the chromosome information must
 be provided in the <code>chromosome</code> argument, because neither of the two
 can be directly encoded in an <code>IRange</code> object.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>data.frame</code> object: the <code>data.frame</code> needs to contain
+<dt>A <code>data.frame</code> object:</dt>
+<dd><p>the <code>data.frame</code> needs to contain
 at least the two mandatory columns <code>start</code> and <code>end</code> with the
 range coordinates. It may also contain a <code>chromosome</code> column with the
 chromosome information for each range. If missing it will be drawn from the
@@ -211,8 +221,8 @@ interpreted as data columns, unless the <code>data</code> argument is explicitel
 provided.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>character</code> scalar: in this case the value of the
+<dt>A <code>character</code> scalar:</dt>
+<dd><p>in this case the value of the
 <code>range</code> argument is considered to be a file path to an annotation file
 on disk. A range of file types are supported by the <code>Gviz</code> package as
 identified by the file extension. See the <code>importFunction</code>
@@ -221,6 +231,8 @@ documentation below for further details.</p></dd>
 
 
 </dl></dd>
+
+
 <dt>start, end, width</dt>
 <dd><p>Integer vectors, giving the start and the end end
 coordinates for the individual track items, or their width. Two of the three
@@ -228,6 +240,8 @@ need to be specified, and have to be of equal length or of length one, in
 which case the single value will be recycled accordingly. Otherwise, the
 usual R recycling rules for vectors do not apply and the function will cast
 an error.</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier if
@@ -243,15 +257,21 @@ in the <code>Gviz</code> package can only have a single active chromosome at a
 time (although internally the information for more than one chromosome may
 be present), and the user has to call the <code>chromosome&lt;-</code> replacement
 method in order to change to a different active chromosome.</p></dd>
+
+
 <dt>genome</dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
 checked at this point. If not provided here the constructor will try to
 extract this information from the provided input, and eventually will fall
 back to the default value of <code>NA</code>.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name used in the title panel
 when plotting.</p></dd>
+
+
 <dt>importFunction</dt>
 <dd><p>A user-defined function to be used to import the data
 from a file. This only applies when the <code>range</code> argument is a character
@@ -283,14 +303,21 @@ that in this case the import function needs to accept a second mandatory
 argument <code>selection</code> which is a <code>GRanges</code> object containing the
 dimensions of the plotted genomic range. As before, the function has to
 return an appropriate <code>GRanges</code> object.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>Value to be set.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>DataTrack</code> or <code>ReferenceDataTrack</code>.</p>
     </div>
     <div id="details">
@@ -298,62 +325,62 @@ return an appropriate <code>GRanges</code> object.</p></dd>
     <p>Depending on the setting of the <code>type</code> display parameter, the data can
 be plotted in various different forms as well as combinations thereof.
 Supported plotting types are:</p>
-<dl><dt></dt>
-<dd><p><code>p</code>: simple xy-plot.</p></dd>
+<dl><dt><code>p</code>:</dt>
+<dd><p>simple xy-plot.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>l</code>: lines plot. In the case of multiple samples this plotting
+<dt><code>l</code>:</dt>
+<dd><p>lines plot. In the case of multiple samples this plotting
 type is not overly usefull since the points in the data matrix are connected
 in column-wise order. Type <code>a</code> might be more appropriate in these
 situations.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>b</code>: combination of xy-plot and lines plot.</p></dd>
+<dt><code>b</code>:</dt>
+<dd><p>combination of xy-plot and lines plot.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>a</code>: lines plot of the column-wise average values.</p></dd>
+<dt><code>a</code>:</dt>
+<dd><p>lines plot of the column-wise average values.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>s</code>: sort and connect data points along the x-axis</p></dd>
+<dt><code>s</code>:</dt>
+<dd><p>sort and connect data points along the x-axis</p></dd>
 
 
-<dt></dt>
-<dd><p><code>S</code>: sort and connect data points along the y-axis</p></dd>
+<dt><code>S</code>:</dt>
+<dd><p>sort and connect data points along the y-axis</p></dd>
 
 
-<dt></dt>
-<dd><p><code>g</code>: add grid lines. To ensure a consitant look and feel across
+<dt><code>g</code>:</dt>
+<dd><p>add grid lines. To ensure a consitant look and feel across
 multiple tracks, grid lines should preferentially be added by using the
 <code>grid</code> display parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>r</code>: add a regression line to the plot.</p></dd>
+<dt><code>r</code>:</dt>
+<dd><p>add a regression line to the plot.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h</code>: histogram-like vertical lines centered in the middle of
+<dt><code>h</code>:</dt>
+<dd><p>histogram-like vertical lines centered in the middle of
 the coordinate ranges.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>smooth</code>: add a loess fit to the plot. The following display
+<dt><code>smooth</code>:</dt>
+<dd><p>add a loess fit to the plot. The following display
 parameters can be used to control the loess calculation: <code>span, degree,
 family, evaluation</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>histogram</code>: plot data as a histogram, where the width of the
+<dt><code>histogram</code>:</dt>
+<dd><p>plot data as a histogram, where the width of the
 histogram bars reflects the width of the genomic ranges in the <code>range</code>
 slot.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>mountain</code>: plot a smoothed version of the data relative to a
+<dt><code>mountain</code>:</dt>
+<dd><p>plot a smoothed version of the data relative to a
 baseline, as defined by the <code>baseline</code> display parameter. The following
 display parameters can be used to control the smoothing: <code>span, degree,
 family, evaluation</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details. The layout
@@ -361,23 +388,23 @@ of the plot can be further customized via the following display parameters:
 <code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>polygon</code>: plot data as a polygon (similar to
+<dt><code>polygon</code>:</dt>
+<dd><p>plot data as a polygon (similar to
 <code>mountain</code>-type but without smoothing). Data are plotted relative to a
 baseline, as defined by the <code>baseline</code> display parameter. The layout of
 the plot can be further customized via the following display parameters:
 <code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>boxplot</code>: plot the data as box-and-whisker plots. The layout
+<dt><code>boxplot</code>:</dt>
+<dd><p>plot the data as box-and-whisker plots. The layout
 of the plot can be further customized via the following display parameters:
 <code>box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
 coef, do.out</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>gradient</code>: collapse the data across samples and plot this
+<dt><code>gradient</code>:</dt>
+<dd><p>collapse the data across samples and plot this
 average value as a color-coded gradient. Essenitally this is similar to the
 heatmap-type plot of a single sample. The layout of the plot can be further
 customized via the display parameters <code>ncolor</code> and <code>gradient</code>
@@ -385,8 +412,8 @@ which control the number of gradient colors as well as the gradient base
 colors, respectively.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>heatmap</code>: plot the color-coded values for all samples in the
+<dt><code>heatmap</code>:</dt>
+<dd><p>plot the color-coded values for all samples in the
 form of a heatmap. The data for individual samples can be visually separated
 by setting the <code>separator</code> display parameter. It's value is taken as
 the amount of spacing in pixels in between two heatmap rows. The layout of
@@ -395,8 +422,8 @@ and <code>gradient</code> which control the number of gradient colors as well as
 the gradient base colors, respectively.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>horizon</code>: plot continuous data by cutting the y range into
+<dt><code>horizon</code>:</dt>
+<dd><p>plot continuous data by cutting the y range into
 segments and overplotting them with color representing the magnitude and
 direction of deviation. This is particularly useful when comparing multiple
 samples, in which case the horizon strips are stacked. See
@@ -430,38 +457,38 @@ optimized to work on large numeric tables.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,DataTrack-method</code>: Initialize.</p></li>
+<ul><li><p><code>initialize(DataTrack)</code>: Initialize.</p></li>
 <li><p><code>ReferenceDataTrack-class</code>: The file-based version of the <code>DataTrack-class</code>.</p></li>
-<li><p><code>initialize,ReferenceDataTrack-method</code>: Initialize.</p></li>
-<li><p><code>DataTrack</code>: Constructor function for <code>DataTrack-class</code></p></li>
-<li><p><code>values,DataTrack-method</code>: return the raw data values of the object, i.e.,
+<li><p><code>initialize(ReferenceDataTrack)</code>: Initialize.</p></li>
+<li><p><code>DataTrack()</code>: Constructor function for <code>DataTrack-class</code></p></li>
+<li><p><code>values(DataTrack)</code>: return the raw data values of the object, i.e.,
 the data matrix in the <code>data</code> slot.</p></li>
-<li><p><code>values&lt;-,DataTrack-method</code>: Replace the data matrix in the <code>data</code> slot.</p></li>
-<li><p><code>strand,DataTrack-method</code>: return a vector of strand specifiers for all
+<li><p><code>values(DataTrack) &lt;- value</code>: Replace the data matrix in the <code>data</code> slot.</p></li>
+<li><p><code>strand(DataTrack)</code>: return a vector of strand specifiers for all
 track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.</p></li>
-<li><p><code>strand&lt;-,DataTrack,ANY-method</code>: replace the strand information for the track items.
+<li><p><code>strand(x = DataTrack) &lt;- value</code>: replace the strand information for the track items.
 The replacement value needs to be an appropriate scalar or vector of strand values.</p></li>
-<li><p><code>split,DataTrack,ANY-method</code>: Split a <code>DataTrack</code> object by an appropriate
+<li><p><code>split(x = DataTrack, f = ANY)</code>: Split a <code>DataTrack</code> object by an appropriate
 factor vector (or another vector that can be coerced into one).
 The output of this operation is a list of <code>DataTrack</code> objects.</p></li>
-<li><p><code>feature,DataTrack-method</code>: returns NULL since there is no grouping
+<li><p><code>feature(DataTrack)</code>: returns NULL since there is no grouping
 information for the ranges in a <code>DataTrack</code>.</p></li>
-<li><p><code>feature&lt;-,DataTrack,character-method</code>: this return the unaltered input object since
+<li><p><code>feature(GdObject = DataTrack) &lt;- value</code>: this return the unaltered input object since
 there is no grouping information for the ranges in a <code>DataTrack</code>.</p></li>
-<li><p><code>collapseTrack,DataTrack-method</code>: preprocess the track before plotting.
+<li><p><code>collapseTrack(DataTrack)</code>: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>[,DataTrack,ANY,ANY,ANY-method</code>: subset the items in the <code>DataTrack</code> object.
+<li><p><code>x[i</code>: subset the items in the <code>DataTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 <code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
-<li><p><code>subset,DataTrack-method</code>: Subset a <code>DataTrack</code> by coordinates
+<li><p><code>subset(DataTrack)</code>: Subset a <code>DataTrack</code> by coordinates
 and sort if necessary.</p></li>
-<li><p><code>subset,ReferenceDataTrack-method</code>: Subset a <code>ReferenceDataTrack</code> by coordinates
+<li><p><code>subset(ReferenceDataTrack)</code>: Subset a <code>ReferenceDataTrack</code> by coordinates
 and sort if necessary.</p></li>
-<li><p><code>drawAxis,DataTrack-method</code>: add a y-axis to the title panel of a track.</p></li>
-<li><p><code>drawGD,DataTrack-method</code>: plot the object to a graphics device.
+<li><p><code>drawAxis(DataTrack)</code>: add a y-axis to the title panel of a track.</p></li>
+<li><p><code>drawGD(DataTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -470,8 +497,8 @@ done but the object is preprocessed based on the available space, or in
 Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.</p></li>
-<li><p><code>show,DataTrack-method</code>: Show method.</p></li>
-<li><p><code>show,ReferenceDataTrack-method</code>: Show method.</p></li>
+<li><p><code>show(DataTrack)</code>: Show method.</p></li>
+<li><p><code>show(ReferenceDataTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
     <h2>Objects from the class</h2>
@@ -503,81 +530,81 @@ is not necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Object construction:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## An empty object</span></span>
-<span class="r-in"><span class="fu">DataTrack</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Object construction:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## An empty object</span></span></span>
+<span class="r-in"><span><span class="fu">DataTrack</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataTrack 'DataTrack'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chrNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | positions: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | samples:0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | strand: NA </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## from individual arguments</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">400</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1000</span>, len <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">10</span>, data <span class="op">=</span> <span class="va">dat</span>,</span>
-<span class="r-in">    chromosome <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>, name <span class="op">=</span> <span class="st">"random data"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## from GRanges</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="st">"chr1"</span>, ranges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1000</span>, len <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
-<span class="r-in">    width <span class="op">=</span> <span class="fl">10</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span>range <span class="op">=</span> <span class="va">gr</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>, name <span class="op">=</span> <span class="st">"random data"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## from IRanges</span></span>
-<span class="r-in"><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span></span>
-<span class="r-in">    range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dat</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"random data"</span>, chromosome <span class="op">=</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## from a data.frame</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"chromosome"</span></span>
-<span class="r-in"><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span>range <span class="op">=</span> <span class="va">df</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>, name <span class="op">=</span> <span class="st">"random data"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## from individual arguments</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">400</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1000</span>, len <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">10</span>, data <span class="op">=</span> <span class="va">dat</span>,</span></span>
+<span class="r-in"><span>    chromosome <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>, name <span class="op">=</span> <span class="st">"random data"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## from GRanges</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">GenomicRanges</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="st">"chr1"</span>, ranges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1000</span>, len <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    width <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span>range <span class="op">=</span> <span class="va">gr</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>, name <span class="op">=</span> <span class="st">"random data"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## from IRanges</span></span></span>
+<span class="r-in"><span><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dat</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"random data"</span>, chromosome <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## from a data.frame</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">gr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"chromosome"</span></span></span>
+<span class="r-in"><span><span class="va">dtTrack</span> <span class="op">&lt;-</span> <span class="fu">DataTrack</span><span class="op">(</span>range <span class="op">=</span> <span class="va">df</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>, name <span class="op">=</span> <span class="st">"random data"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="DataTrack-class-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Track names</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Track names</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "random data"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="DataTrack-class-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subsetting and splitting</span></span>
-<span class="r-in"><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dtTrack</span>, from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subsetting and splitting</span></span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">dtTrack</span>, from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 19</span>
-<span class="r-in"><span class="va">subTrack</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="op">]</span></span>
+<span class="r-in"><span><span class="va">subTrack</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataTrack 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: mm9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | positions: 19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | samples:2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | strand: * </span>
-<span class="r-in"><span class="va">subTrack</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">subTrack</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataTrack 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: mm9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | positions: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | samples:4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | strand: * </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dtTrack</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">dtTrack</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataTrack 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: mm9</span>
@@ -594,9 +621,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | samples:4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | strand: * </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Accessors</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Accessors</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]    1   11   21   31   41   51   61   71   81   91  101  112  122  132  142</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [16]  152  162  172  182  192  202  212  223  233  243  253  263  273  283  293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  303  313  323  334  344  354  364  374  384  394  404  414  424  434  445</span>
@@ -604,7 +631,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [61]  606  616  626  636  646  656  667  677  687  697  707  717  727  737  747</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  757  767  778  788  798  808  818  828  838  848  858  868  878  889  899</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  909  919  929  939  949  959  969  979  989 1000</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]   10   20   30   40   50   60   70   80   90  100  110  121  131  141  151</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [16]  161  171  181  191  201  211  221  232  242  252  262  272  282  292  302</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [31]  312  322  332  343  353  363  373  383  393  403  413  423  433  443  454</span>
@@ -612,12 +639,12 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [61]  615  625  635  645  655  665  676  686  696  706  716  726  736  746  756</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [76]  766  776  787  797  807  817  827  837  847  857  867  877  887  898  908</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  918  928  938  948  958  968  978  988  998 1009</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [26] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [51] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [76] 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]    5.5   15.5   25.5   35.5   45.5   55.5   65.5   75.5   85.5   95.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [11]  105.5  116.5  126.5  136.5  146.5  156.5  166.5  176.5  186.5  196.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [21]  206.5  216.5  227.5  237.5  247.5  257.5  267.5  277.5  287.5  297.5</span>
@@ -628,22 +655,22 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [71]  711.5  721.5  731.5  741.5  751.5  761.5  771.5  782.5  792.5  802.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [81]  812.5  822.5  832.5  842.5  852.5  862.5  872.5  882.5  893.5  903.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [91]  913.5  923.5  933.5  943.5  953.5  963.5  973.5  983.5  993.5 1004.5</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">-</span> <span class="fl">5</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">-</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "*"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr1"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  chr1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "mm9" </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/inter-range-methods.html" class="external-link">range</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 100 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             start       end     width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;</span>
@@ -658,7 +685,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [98]       979       988        10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [99]       989       998        10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [100]      1000      1009        10</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 100 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         seqnames    ranges strand</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;</span>
@@ -675,9 +702,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [100]     chr1 1000-1009      *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from mm9 genome; no seqlengths</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]      [,3]      [,4]      [,5]       [,6]      [,7]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V1 0.57358702 0.6223585 0.9672963 0.5130287 0.6620476 0.93234592 0.3387958</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V2 0.18869879 0.4159132 0.2159033 0.7749373 0.9077198 0.19993327 0.2756013</span>
@@ -753,7 +780,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V2 0.8223393 0.8714368</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V3 0.1797052 0.5144198</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V4 0.8646465 0.2856988</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/score.html" class="external-link">score</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/score.html" class="external-link">score</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]      [,3]      [,4]      [,5]       [,6]      [,7]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V1 0.57358702 0.6223585 0.9672963 0.5130287 0.6620476 0.93234592 0.3387958</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V2 0.18869879 0.4159132 0.2159033 0.7749373 0.9077198 0.19993327 0.2756013</span>
@@ -829,9 +856,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V2 0.8223393 0.8714368</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V3 0.1797052 0.5144198</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V4 0.8646465 0.2856988</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## coercion</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">dtTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## coercion</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">dtTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     chromosome start  end width strand           V1           V2           V3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         chr1     1   10    10      * 0.5735870199 0.1886987926 0.7582653339</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         chr1    11   20    10      * 0.6223585266 0.4159132016 0.7765108705</span>
@@ -1048,7 +1075,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

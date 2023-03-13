@@ -21,7 +21,7 @@ called in order to assure that all necessary settings are present."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -61,160 +61,181 @@ called in order to assure that all necessary settings are present.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,character</span>
-<span class="fu"><a href="DisplayPars-class.html">setPar</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,list</span>
-<span class="fu"><a href="DisplayPars-class.html">setPar</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,list</span>
-<span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GdObject,character</span>
-<span class="fu"><a href="DisplayPars-class.html">getPar</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, asIs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,missing</span>
-<span class="fu"><a href="DisplayPars-class.html">getPar</a></span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,character</span>
-<span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,missing</span>
-<span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">ImageMap</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">ImageMap</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject,character</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GdObject,ImageMapOrNULL</span>
-<span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">drawAxis</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">drawAxis</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">drawGrid</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">drawGD</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">gene</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">gene</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">symbol</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">symbol</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">transcript</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">transcript</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">exon</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">exon</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">feature</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">feature</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">identifier</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">identifier</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">position</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">consolidateTrack</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">consolidateTrack</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">alpha</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">stacking</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">stacking</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="fu">stacks</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">setStacks</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GdObject</span>
-<span class="fu">setStacks</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">setCoverage</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,character</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">setPar</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,list</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">setPar</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,list</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,character</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">getPar</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, asIs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,missing</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">getPar</a></span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,character</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,missing</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">ImageMap</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">ImageMap</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,character</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject,ImageMapOrNULL</span></span>
+<span><span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">drawAxis</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">drawAxis</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">drawGrid</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">drawGD</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gene</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gene</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">symbol</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">symbol</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">transcript</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">transcript</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">exon</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">exon</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">feature</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">feature</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">identifier</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">identifier</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">chromosome</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">position</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">consolidateTrack</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">consolidateTrack</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">alpha</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">stacking</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">stacking</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="fu">stacks</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">setStacks</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GdObject</span></span>
+<span><span class="fu">setStacks</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">setCoverage</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>name</dt>
 <dd><p>Name of the retrieved parameter.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>Value to be set.</p></dd>
+
+
 <dt>interactive</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>recursive</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>asIs</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>hideInternal</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>ImageMap</dt>
 <dd><p>Object of <code>ImageMap-class</code>, containing optional information
 for an HTML image map.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A virtual class: No objects may be created from it.</p>
+    
+
+<p>A virtual class: No objects may be created from it.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -338,85 +359,85 @@ accordingly. See the documentation of the <code>GeneRegionTrack</code> and
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,GdObject-method</code>: Initialize the object. This involves setting up a
+<ul><li><p><code>initialize(GdObject)</code>: Initialize the object. This involves setting up a
 new environment for the display parameters and filling it up with the current
 settings. All arguments that have not been clobbered up by one of the
 sub-class initializers are considered to be additional display parameters
 and are also added to the environment. See <code>settings</code> for details on setting
 graphical parameters for tracks.</p></li>
-<li><p><code>setPar,GdObject,character-method</code>: set the single display parameter name to value.
+<li><p><code>setPar(x = GdObject, value = character)</code>: set the single display parameter name to value.
 Note that display parameters in the <code>GdObject-class</code> are pass-by-reference,
 so no re-assignment to the symbol <code>obj</code> is necessary. See settings for
 details on display parameters and customization.</p></li>
-<li><p><code>setPar,GdObject,list-method</code>: set display parameters by the values of the named
+<li><p><code>setPar(x = GdObject, value = list)</code>: set display parameters by the values of the named
 list in value. Note that display parameters in the <code>GdObject-class</code> are
 pass-by-reference, so no re-assignment to the symbol <code>obj</code> is necessary.
 See settings for details on display parameters and customization.</p></li>
-<li><p><code>displayPars&lt;-,GdObject,list-method</code>: set display parameters using the values of the
+<li><p><code>displayPars(x = GdObject) &lt;- value</code>: set display parameters using the values of the
 named list in <code>value</code>. See <code>settings</code> for details on display parameters
 and customization.</p></li>
-<li><p><code>getPar,GdObject,character-method</code>: alias for the <code>displayPars</code> method.
+<li><p><code>getPar(x = GdObject, name = character)</code>: alias for the <code>displayPars</code> method.
 See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>getPar,GdObject,missing-method</code>: alias for the <code>displayPars</code> method.
+<li><p><code>getPar(x = GdObject, name = missing)</code>: alias for the <code>displayPars</code> method.
 See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>displayPars,GdObject,character-method</code>: list the value of the display parameter name.
+<li><p><code>displayPars(x = GdObject, name = character)</code>: list the value of the display parameter name.
 See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>displayPars,GdObject,missing-method</code>: list the value of all available display parameters.
+<li><p><code>displayPars(x = GdObject, name = missing)</code>: list the value of all available display parameters.
 See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>coords,GdObject-method</code>: return the coordinates from the internal image map.</p></li>
-<li><p><code>tags,GdObject-method</code>: return the tags from the internal image map.</p></li>
-<li><p><code>subset,GdObject-method</code>: subset a <code>GdObject</code> by coordinates.
+<li><p><code>coords(GdObject)</code>: return the coordinates from the internal image map.</p></li>
+<li><p><code>tags(GdObject)</code>: return the tags from the internal image map.</p></li>
+<li><p><code>subset(GdObject)</code>: subset a <code>GdObject</code> by coordinates.
 Most of the respective sub-classes inheriting from <code>GdObject</code> overwrite this
 method, the default is to return the unaltered input object.</p></li>
-<li><p><code>names,GdObject-method</code>: return the value of the <code>name</code> slot.</p></li>
-<li><p><code>names&lt;-,GdObject,character-method</code>: set the value of the <code>name</code> slot.</p></li>
-<li><p><code>group</code>: Generics for <code>group</code>.</p></li>
-<li><p><code>group&lt;-</code>: Generics for <code>group&lt;-</code>.</p></li>
-<li><p><code>group,GdObject-method</code>: return grouping information for the individual
+<li><p><code>names(GdObject)</code>: return the value of the <code>name</code> slot.</p></li>
+<li><p><code>names(x = GdObject) &lt;- value</code>: set the value of the <code>name</code> slot.</p></li>
+<li><p><code>group()</code>: Generics for <code>group</code>.</p></li>
+<li><p><code>group(GdObject) &lt;- value</code>: Generics for <code>group&lt;-</code>.</p></li>
+<li><p><code>group(GdObject)</code>: return grouping information for the individual
 items in the track. Unless overwritten in one of the sub-classes,
 this usually returns <code>NULL</code>.</p></li>
-<li><p><code>imageMap</code>: Generics for <code>imageMap</code>.</p></li>
-<li><p><code>imageMap,GdObject-method</code>: Extract the content of the <code>imageMap</code> slot.</p></li>
-<li><p><code>imageMap&lt;-</code>: Generics for <code>imageMap&lt;-</code>.</p></li>
-<li><p><code>imageMap&lt;-,GdObject,ImageMapOrNULL-method</code>: Replace the content of the <code>imageMap</code> slot.</p></li>
-<li><p><code>drawAxis</code>: Generics for <code>drawAxis</code>.</p></li>
-<li><p><code>drawAxis,GdObject-method</code>: add a y-axis to the title panel of a track if
+<li><p><code>imageMap()</code>: Generics for <code>imageMap</code>.</p></li>
+<li><p><code>imageMap(GdObject)</code>: Extract the content of the <code>imageMap</code> slot.</p></li>
+<li><p><code>imageMap(GdObject) &lt;- value</code>: Generics for <code>imageMap&lt;-</code>.</p></li>
+<li><p><code>imageMap(GdObject = GdObject) &lt;- value</code>: Replace the content of the <code>imageMap</code> slot.</p></li>
+<li><p><code>drawAxis()</code>: Generics for <code>drawAxis</code>.</p></li>
+<li><p><code>drawAxis(GdObject)</code>: add a y-axis to the title panel of a track if
 necessary. Unless overwritten in one of the sub-classes this usually
 does not plot anything and returns <code>NULL</code>.</p></li>
-<li><p><code>drawGrid</code>: Generics for <code>drawGrid</code>.</p></li>
-<li><p><code>drawGD</code>: Generics for <code>drawGD</code>.</p></li>
-<li><p><code>gene</code>: Generics for <code>gene</code>.</p></li>
-<li><p><code>gene&lt;-</code>: Generics for <code>gene&lt;-</code>.</p></li>
-<li><p><code>symbol</code>: Generics for <code>symbol</code>.</p></li>
-<li><p><code>symbol&lt;-</code>: Generics for <code>symbol&lt;-</code>.</p></li>
-<li><p><code>transcript</code>: Generics for <code>transcript</code>.</p></li>
-<li><p><code>transcript&lt;-</code>: Generics for <code>transcript&lt;-</code>.</p></li>
-<li><p><code>exon</code>: Generics for <code>exon</code>.</p></li>
-<li><p><code>exon&lt;-</code>: Generics for <code>exon&lt;-</code>.</p></li>
-<li><p><code>feature</code>: Generics for <code>feature</code>.</p></li>
-<li><p><code>feature&lt;-</code>: Generics for <code>feature&lt;-</code>.</p></li>
-<li><p><code>identifier</code>: Generics for <code>identifier</code>.</p></li>
-<li><p><code>identifier&lt;-</code>: Generics for <code>identifier&lt;-</code>.</p></li>
-<li><p><code>chromosome</code>: Generics for <code>chromosome</code>.</p></li>
-<li><p><code>chromosome,GdObject-method</code>: return the chromosome for which the track is defined.</p></li>
-<li><p><code>chromosome&lt;-</code>: Generics for <code>chromosome</code>.</p></li>
-<li><p><code>chromosome&lt;-,GdObject-method</code>: replace the value of the track's chromosome. This
+<li><p><code>drawGrid()</code>: Generics for <code>drawGrid</code>.</p></li>
+<li><p><code>drawGD()</code>: Generics for <code>drawGD</code>.</p></li>
+<li><p><code>gene()</code>: Generics for <code>gene</code>.</p></li>
+<li><p><code>gene(GdObject) &lt;- value</code>: Generics for <code>gene&lt;-</code>.</p></li>
+<li><p><code>symbol()</code>: Generics for <code>symbol</code>.</p></li>
+<li><p><code>symbol(GdObject) &lt;- value</code>: Generics for <code>symbol&lt;-</code>.</p></li>
+<li><p><code>transcript()</code>: Generics for <code>transcript</code>.</p></li>
+<li><p><code>transcript(GdObject) &lt;- value</code>: Generics for <code>transcript&lt;-</code>.</p></li>
+<li><p><code>exon()</code>: Generics for <code>exon</code>.</p></li>
+<li><p><code>exon(GdObject) &lt;- value</code>: Generics for <code>exon&lt;-</code>.</p></li>
+<li><p><code>feature()</code>: Generics for <code>feature</code>.</p></li>
+<li><p><code>feature(GdObject) &lt;- value</code>: Generics for <code>feature&lt;-</code>.</p></li>
+<li><p><code>identifier()</code>: Generics for <code>identifier</code>.</p></li>
+<li><p><code>identifier(GdObject) &lt;- value</code>: Generics for <code>identifier&lt;-</code>.</p></li>
+<li><p><code>chromosome()</code>: Generics for <code>chromosome</code>.</p></li>
+<li><p><code>chromosome(GdObject)</code>: return the chromosome for which the track is defined.</p></li>
+<li><p><code>chromosome(GdObject) &lt;- value</code>: Generics for <code>chromosome</code>.</p></li>
+<li><p><code>chromosome(GdObject) &lt;- value</code>: replace the value of the track's chromosome. This
 has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.</p></li>
-<li><p><code>position</code>: Generics for <code>position</code>.</p></li>
-<li><p><code>genome,GdObject-method</code>: return the track's genome.</p></li>
-<li><p><code>genome&lt;-,GdObject-method</code>: set the track's genome. Usually this has to be a
+<li><p><code>position()</code>: Generics for <code>position</code>.</p></li>
+<li><p><code>genome(GdObject)</code>: return the track's genome.</p></li>
+<li><p><code>genome(GdObject) &lt;- value</code>: set the track's genome. Usually this has to be a
 valid UCSC identifier, however this is not formally enforced here.</p></li>
-<li><p><code>consolidateTrack</code>: Generics for <code>consolidateTrack</code>.</p></li>
-<li><p><code>consolidateTrack,GdObject-method</code>: Consolidate.
+<li><p><code>consolidateTrack()</code>: Generics for <code>consolidateTrack</code>.</p></li>
+<li><p><code>consolidateTrack(GdObject)</code>: Consolidate.
 Determine whether there is <code>alpha</code> settings or not, and add this information
 as the internal display parameter <code>.__hasAlphaSupport</code>.</p></li>
-<li><p><code>stacking</code>: Generics for <code>stacking</code>.</p></li>
-<li><p><code>stacking&lt;-</code>: Generics for <code>stacking&lt;-</code>.</p></li>
-<li><p><code>stacks</code>: Generics for <code>stacks</code>.</p></li>
-<li><p><code>setStacks</code>: Generics for ``.</p></li>
-<li><p><code>setStacks,GdObject-method</code>: set stacks.</p></li>
-<li><p><code>setCoverage</code>: Generics for ``.</p></li>
+<li><p><code>stacking()</code>: Generics for <code>stacking</code>.</p></li>
+<li><p><code>stacking(GdObject) &lt;- value</code>: Generics for <code>stacking&lt;-</code>.</p></li>
+<li><p><code>stacks()</code>: Generics for <code>stacks</code>.</p></li>
+<li><p><code>setStacks()</code>: Generics for ``.</p></li>
+<li><p><code>setStacks(GdObject)</code>: set stacks.</p></li>
+<li><p><code>setCoverage()</code>: Generics for ``.</p></li>
 </ul></div>
     <div id="slots">
     <h2>Slots</h2>
@@ -463,39 +484,39 @@ track is plotted to a device and is usually not set by the user.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## This is a reference class therefore we show below</span></span>
-<span class="r-in"><span class="co">## an example from AnnotationTrack:</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## An empty object</span></span>
-<span class="r-in"><span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## This is a reference class therefore we show below</span></span></span>
+<span class="r-in"><span><span class="co">## an example from AnnotationTrack:</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## An empty object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AnnotationTrack 'AnnotationTrack'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chrNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Construct from individual arguments</span></span>
-<span class="r-in"><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">2070000</span>, <span class="fl">2100000</span>, <span class="fl">2160000</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2050000</span>, <span class="fl">2130000</span>, <span class="fl">2150000</span>, <span class="fl">2170000</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group1"</span>, <span class="st">"Group3"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span>
-<span class="r-in">    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span>
-<span class="r-in">    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"generic annotation"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Construct from individual arguments</span></span></span>
+<span class="r-in"><span><span class="va">st</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">2070000</span>, <span class="fl">2100000</span>, <span class="fl">2160000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2050000</span>, <span class="fl">2130000</span>, <span class="fl">2150000</span>, <span class="fl">2170000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"-"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Group1"</span>, <span class="st">"Group2"</span>, <span class="st">"Group1"</span>, <span class="st">"Group3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"generic annotation"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GdObject-class-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -511,7 +532,7 @@ track is plotted to a device and is usually not set by the user.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ overlays of their content on the same region of the plot."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -55,37 +55,37 @@ overlays of their content on the same region of the plot.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">trackList</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">OverlayTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"OverlayTrack"</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack,list</span>
-<span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="GdObject-class.html">setStacks</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="GdObject-class.html">consolidateTrack</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for OverlayTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">trackList</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">OverlayTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"OverlayTrack"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack,list</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">setStacks</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">consolidateTrack</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for OverlayTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,15 +93,22 @@ overlays of their content on the same region of the plot.</p>
     <dl><dt>trackList</dt>
 <dd><p>A list of Gviz track objects that all have to inherit from
 class <code>GdObject</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All additional parameters are ignored.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name. This is not really used
 and only exists fro completeness.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>OverlayTrack</code>.</p>
     </div>
     <div id="details">
@@ -114,26 +121,26 @@ and axis, for all the other tracks only the panel content is plotted.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,OverlayTrack-method</code>: Initialize.</p></li>
-<li><p><code>OverlayTrack</code>: Constructor function for <code>OverlayTrack-class</code>.</p></li>
-<li><p><code>displayPars&lt;-,OverlayTrack,list-method</code>: set display parameters using the values of
+<ul><li><p><code>initialize(OverlayTrack)</code>: Initialize.</p></li>
+<li><p><code>OverlayTrack()</code>: Constructor function for <code>OverlayTrack-class</code>.</p></li>
+<li><p><code>displayPars(x = OverlayTrack) &lt;- value</code>: set display parameters using the values of
 the named list in value. See <code><a href="settings.html">settings</a></code> for details on
 display parameters and customization.</p></li>
-<li><p><code>length,OverlayTrack-method</code>: return the number of subtracks.</p></li>
-<li><p><code>chromosome,OverlayTrack-method</code>: return the chromosome for which the track
+<li><p><code>length(OverlayTrack)</code>: return the number of subtracks.</p></li>
+<li><p><code>chromosome(OverlayTrack)</code>: return the chromosome for which the track
 is defined.</p></li>
-<li><p><code>chromosome&lt;-,OverlayTrack-method</code>: replace the value of the track's chromosome.
+<li><p><code>chromosome(OverlayTrack) &lt;- value</code>: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.</p></li>
-<li><p><code>setStacks,OverlayTrack-method</code>: recompute the stacks based on the available
+<li><p><code>setStacks(OverlayTrack)</code>: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 This really just calls the setStacks methods for the contained
 tracks and only exists for dispatching reasons.</p></li>
-<li><p><code>consolidateTrack,OverlayTrack-method</code>: #' For a <code>OverlayTrack</code> apply the method on
+<li><p><code>consolidateTrack(OverlayTrack)</code>: #' For a <code>OverlayTrack</code> apply the method on
 each of the subtracks in the <code>trackList</code> slot</p></li>
-<li><p><code>subset,OverlayTrack-method</code>: plot subset all the contained tracks in an
+<li><p><code>subset(OverlayTrack)</code>: plot subset all the contained tracks in an
 <code>OverlayTrack</code> by coordinates and sort if necessary.</p></li>
-<li><p><code>drawGD,OverlayTrack-method</code>: plot the object to a graphics device.
+<li><p><code>drawGD(OverlayTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -142,7 +149,7 @@ done but the object is preprocessed based on the available space, or in
 Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.</p></li>
-<li><p><code>show,OverlayTrack-method</code>: Show method.</p></li>
+<li><p><code>show(OverlayTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
     <h2>Objects from the Class</h2>
@@ -174,14 +181,14 @@ is not necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Object construction:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, max <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dt1</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ot</span> <span class="op">&lt;-</span> <span class="fu">OverlayTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="va">dt2</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Object construction:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, max <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dt1</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dt2</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ot</span> <span class="op">&lt;-</span> <span class="fu">OverlayTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">dt1</span>, <span class="va">dt2</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -196,7 +203,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

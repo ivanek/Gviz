@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -116,26 +116,39 @@ show(object)</code></pre></div>
     <dl><dt>range</dt>
 <dd><p>Optional object of class <code>GRanges</code> or <code>IRanges</code> containing
 regions to be highlighted on the axis by coloured boxes.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters. See <code>settings</code> and the "Display Parameters"
 section below for details.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name used in the title panel
 when plotting.</p></dd>
+
+
 <dt>id</dt>
 <dd><p>A character vector of the same length as <code>range</code> containing
 identifiers for the ranges. If missing, the constructor will try to extract
 the ids from <code>names(range)</code>.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
-<code>GenomeAxisTrack</code>.
-Objects can be created using the constructor function <code>GenomeAxisTrack</code>.</p>
+    
+
+<p>The return value of the constructor function is a new object of class
+<code>GenomeAxisTrack</code>.</p>
+
+
+<p>Objects can be created using the constructor function <code>GenomeAxisTrack</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -155,40 +168,40 @@ are used.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,GenomeAxisTrack-method</code>: Intialize.</p></li>
-<li><p><code>GenomeAxisTrack</code>: Constructor</p></li>
-<li><p><code>ranges,GenomeAxisTrack-method</code>: return the genomic coordinates for the
+<ul><li><p><code>initialize(GenomeAxisTrack)</code>: Intialize.</p></li>
+<li><p><code>GenomeAxisTrack()</code>: Constructor</p></li>
+<li><p><code>ranges(GenomeAxisTrack)</code>: return the genomic coordinates for the
 track along with all additional annotation information as an object of
 class <code>GRanges</code>.</p></li>
-<li><p><code>range,GenomeAxisTrack-method</code>: return the genomic coordinates for the
+<li><p><code>range(GenomeAxisTrack)</code>: return the genomic coordinates for the
 track as an object of class <code>IRanges</code>.
 @export</p></li>
-<li><p><code>start,GenomeAxisTrack-method</code>: return the start coordinates of the track
+<li><p><code>start(GenomeAxisTrack)</code>: return the start coordinates of the track
 items.</p></li>
-<li><p><code>start&lt;-,GenomeAxisTrack-method</code>: replace the start coordinates of the track
+<li><p><code>start(GenomeAxisTrack) &lt;- value</code>: replace the start coordinates of the track
 items.</p></li>
-<li><p><code>end,GenomeAxisTrack-method</code>: return the end coordinates of the track
+<li><p><code>end(GenomeAxisTrack)</code>: return the end coordinates of the track
 items.</p></li>
-<li><p><code>end&lt;-,GenomeAxisTrack-method</code>: replace the end coordinates of the track
+<li><p><code>end(GenomeAxisTrack) &lt;- value</code>: replace the end coordinates of the track
 items.</p></li>
-<li><p><code>width,GenomeAxisTrack-method</code>: return the with of the track items in
+<li><p><code>width(GenomeAxisTrack)</code>: return the with of the track items in
 genomic coordinates.</p></li>
-<li><p><code>length,GenomeAxisTrack-method</code>: return the number of items stored in the ranges slot.</p></li>
-<li><p><code>values,GenomeAxisTrack-method</code>: return all additional annotation information
+<li><p><code>length(GenomeAxisTrack)</code>: return the number of items stored in the ranges slot.</p></li>
+<li><p><code>values(GenomeAxisTrack)</code>: return all additional annotation information
 except for the genomic coordinates for the track items.</p></li>
-<li><p><code>strand,GenomeAxisTrack-method</code>: return a vector of strand specifiers for
+<li><p><code>strand(GenomeAxisTrack)</code>: return a vector of strand specifiers for
 all track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.</p></li>
-<li><p><code>collapseTrack,GenomeAxisTrack-method</code>: preprocess the track before plotting.
+<li><p><code>collapseTrack(GenomeAxisTrack)</code>: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>[,GenomeAxisTrack,ANY,ANY,ANY-method</code>: subset the items in the <code>GenomeAxisTrack</code> object.
+<li><p><code>x[i</code>: subset the items in the <code>GenomeAxisTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 <code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
-<li><p><code>subset,GenomeAxisTrack-method</code>: plot subset all the contained tracks in an
+<li><p><code>subset(GenomeAxisTrack)</code>: plot subset all the contained tracks in an
 <code>GenomeAxisTrack</code> by coordinates and sort if necessary.</p></li>
-<li><p><code>drawGD,GenomeAxisTrack-method</code>: plot the object to a graphics device.
+<li><p><code>drawGD(GenomeAxisTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -197,7 +210,7 @@ done but the object is preprocessed based on the available space, or in
 Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.</p></li>
-<li><p><code>show,GenomeAxisTrack-method</code>: Show method.</p></li>
+<li><p><code>show(GenomeAxisTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -222,35 +235,35 @@ is not necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Construct object</span></span>
-<span class="r-in"><span class="va">axTrack</span> <span class="op">&lt;-</span> <span class="fu">GenomeAxisTrack</span><span class="op">(</span></span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"Axis"</span>,</span>
-<span class="r-in">    <span class="va">range</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">300</span>, <span class="fl">800</span><span class="op">)</span>, end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">axTrack</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">1100</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Construct object</span></span></span>
+<span class="r-in"><span><span class="va">axTrack</span> <span class="op">&lt;-</span> <span class="fu">GenomeAxisTrack</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"Axis"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">range</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/IRanges-constructor.html" class="external-link">IRanges</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">300</span>, <span class="fl">800</span><span class="op">)</span>, end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">axTrack</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">1100</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Track names</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Track names</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Axis"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subsetting and splitting</span></span>
-<span class="r-in"><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">axTrack</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subsetting and splitting</span></span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">axTrack</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"><span class="va">subTrack</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">subTrack</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Genome axis 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> There are annotated axis regions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 1 range and 0 metadata columns:</span>
@@ -259,7 +272,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]    dummy   100-150      *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">axTrack</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">axTrack</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Genome axis 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> There are annotated axis regions:</span>
@@ -281,26 +294,26 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Accessors</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Accessors</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100 300 800</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  150  400 1000</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  51 101 201</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "*" "*" "*"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/inter-range-methods.html" class="external-link">range</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 3 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           start       end     width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]       100       150        51</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2]       300       400       101</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3]       800      1000       201</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 3 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       seqnames    ranges strand</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;</span>
@@ -309,28 +322,28 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3]    dummy  800-1000      *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Annotation</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Annotation</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data frame with 0 columns and 3 rows</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Grouping</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Grouping</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## HTML image map</span></span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## HTML image map</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="va">axTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span><span class="op">$</span><span class="va">foo</span></span>
+<span class="r-in"><span><span class="va">axTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span><span class="op">$</span><span class="va">foo</span></span></span>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          x1    y1        x2    y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  13.51842 216.6  38.68304 263.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 114.17690 216.6 164.50614 263.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 365.82310 216.6 465.97828 263.4</span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $title</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "1" "2" "3" </span>
@@ -343,23 +356,23 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1     2     3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "150" "400" "999" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## adding an axis to another track</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span>
-<span class="r-in">    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span>
-<span class="r-in">    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>, symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"Cyp2b10"</span>, strand <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">strand</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## adding an axis to another track</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span></span>
+<span class="r-in"><span>    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span></span>
+<span class="r-in"><span>    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>, symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"Cyp2b10"</span>, strand <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">strand</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">0.5</span>, labelPos <span class="op">=</span> <span class="st">"below"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu">GenomeAxisTrack</span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">0.5</span>, labelPos <span class="op">=</span> <span class="st">"below"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-6.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -375,7 +388,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

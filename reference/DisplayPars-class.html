@@ -28,7 +28,7 @@ the availableDisplayPars function."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -75,50 +75,50 @@ the <code>availableDisplayPars</code> function.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">DisplayPars</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">getPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars,character</span>
-<span class="fu">getPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, asIs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars,missing</span>
-<span class="fu">getPar</span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars,missing</span>
-<span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars,character</span>
-<span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">setPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars,list</span>
-<span class="fu">setPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># S4 method for DisplayPars,character</span>
-<span class="fu">setPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for DisplayPars,list</span>
-<span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for DisplayPars</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for InferredDisplayPars</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for InferredDisplayPars</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="fu">availableDisplayPars</span><span class="op">(</span><span class="va">class</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DisplayPars</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">getPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,character</span></span>
+<span><span class="fu">getPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, asIs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,missing</span></span>
+<span><span class="fu">getPar</span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,missing</span></span>
+<span><span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, hideInternal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,character</span></span>
+<span><span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">setPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,list</span></span>
+<span><span class="fu">setPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,character</span></span>
+<span><span class="fu">setPar</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, <span class="va">value</span>, interactive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars,list</span></span>
+<span><span class="fu">displayPars</span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for DisplayPars</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for InferredDisplayPars</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for InferredDisplayPars</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">availableDisplayPars</span><span class="op">(</span><span class="va">class</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -126,22 +126,40 @@ the <code>availableDisplayPars</code> function.</p>
     <dl><dt>...</dt>
 <dd><p>All named arguments are stored in the object's environment as
 individual parameters, regardless of their type.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>object to set the displayPar value on</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Name of the retrieved parameter.</p></dd>
+
+
 <dt>asIs</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>hideInternal</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>value</dt>
 <dd><p>named value to be set</p></dd>
+
+
 <dt>interactive</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>recursive</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>object</dt>
 <dd><p>object</p></dd>
+
+
 <dt>class</dt>
 <dd><p>Either character scalar or object. Supported classes are:
 <code>GdObject</code>, <code>GenomeAxisTrack</code>, <code>RangeTrack</code>, <code>NumericTrack</code>, <code>DataTrack</code>,
@@ -149,39 +167,44 @@ individual parameters, regardless of their type.</p></dd>
 <code>GeneRegionTrack</code>, <code>BiomartGeneRegionTrack</code>, <code>AlignmentsTrack</code>,
 <code>SequenceTrack</code>, <code>SequenceBSgenomeTrack</code>, <code>SequenceDNAStringSetTrack</code>,
 <code>SequenceRNAStringSetTrack</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
-<code>DisplayPars</code>.
-<code>availableDisplayPars</code> returns a list of the default display
+    
+
+<p>The return value of the constructor function is a new object of class
+<code>DisplayPars</code>.</p>
+
+
+<p><code>availableDisplayPars</code> returns a list of the default display
 parameters.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>DisplayPars</code>: Constructor function.</p></li>
-<li><p><code>getPar</code>: Generics for <code>getPar</code>.</p></li>
-<li><p><code>getPar,DisplayPars,character-method</code>: Alias for the <code>displayPars</code> method.</p></li>
-<li><p><code>getPar,DisplayPars,missing-method</code>: Alias for the <code>displayPars</code> method.</p></li>
-<li><p><code>displayPars</code>: Generics for <code>displayPars</code>.</p></li>
-<li><p><code>displayPars,DisplayPars,missing-method</code>: Returns all available display parameters.</p></li>
-<li><p><code>displayPars,DisplayPars,character-method</code>: Returns the value of a subset of display parameters, as identified by <code>name</code>.</p></li>
-<li><p><code>as.list,DisplayPars-method</code>: Converts <code>DisplayPars</code> to <code>list</code>.</p></li>
-<li><p><code>setPar</code>: Generics for <code>SetPar</code>.</p>
+<ul><li><p><code>DisplayPars()</code>: Constructor function.</p></li>
+<li><p><code>getPar()</code>: Generics for <code>getPar</code>.</p></li>
+<li><p><code>getPar(x = DisplayPars, name = character)</code>: Alias for the <code>displayPars</code> method.</p></li>
+<li><p><code>getPar(x = DisplayPars, name = missing)</code>: Alias for the <code>displayPars</code> method.</p></li>
+<li><p><code>displayPars()</code>: Generics for <code>displayPars</code>.</p></li>
+<li><p><code>displayPars(x = DisplayPars, name = missing)</code>: Returns all available display parameters.</p></li>
+<li><p><code>displayPars(x = DisplayPars, name = character)</code>: Returns the value of a subset of display parameters, as identified by <code>name</code>.</p></li>
+<li><p><code>as.list(DisplayPars)</code>: Converts <code>DisplayPars</code> to <code>list</code>.</p></li>
+<li><p><code>setPar()</code>: Generics for <code>SetPar</code>.</p>
 <p>SetPar generic function</p></li>
-<li><p><code>setPar,DisplayPars,list-method</code>: Sets display parameters by the values of the
+<li><p><code>setPar(x = DisplayPars, value = list)</code>: Sets display parameters by the values of the
 named <code>list</code> in value. Note that display parameters in the <code>DisplayPars-class</code>
 are pass-by-reference, so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
-<li><p><code>setPar,DisplayPars,character-method</code>: set the single display parameter name to value.
+<li><p><code>setPar(x = DisplayPars, value = character)</code>: set the single display parameter name to value.
 Note that display parameters in the DisplayPars class are pass-by-reference,
 so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
-<li><p><code>displayPars&lt;-</code>: Generics for <code>displayPars&lt;-</code>.</p></li>
-<li><p><code>displayPars&lt;-,DisplayPars,list-method</code>: Replaces or adds display parameters as provided by the named <code>list</code> items.</p></li>
-<li><p><code>show,DisplayPars-method</code>: Show method.</p></li>
-<li><p><code>as.list,InferredDisplayPars-method</code>: Return <code>InferredDisplayPars</code> as a <code>list</code>.</p></li>
-<li><p><code>show,InferredDisplayPars-method</code>: Show method.</p></li>
-<li><p><code>availableDisplayPars</code>: Get default display parameters.</p></li>
+<li><p><code>displayPars(x, recursive = FALSE) &lt;- value</code>: Generics for <code>displayPars&lt;-</code>.</p></li>
+<li><p><code>displayPars(x = DisplayPars) &lt;- value</code>: Replaces or adds display parameters as provided by the named <code>list</code> items.</p></li>
+<li><p><code>show(DisplayPars)</code>: Show method.</p></li>
+<li><p><code>as.list(InferredDisplayPars)</code>: Return <code>InferredDisplayPars</code> as a <code>list</code>.</p></li>
+<li><p><code>show(InferredDisplayPars)</code>: Show method.</p></li>
+<li><p><code>availableDisplayPars()</code>: Get default display parameters.</p></li>
 </ul></div>
     <div id="slots">
     <h2>Slots</h2>
@@ -199,16 +222,16 @@ so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Construct object</span></span>
-<span class="r-in"><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu">DisplayPars</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, transformation <span class="op">=</span> <span class="va">log2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dp</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Construct object</span></span></span>
+<span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu">DisplayPars</span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, transformation <span class="op">=</span> <span class="va">log2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Display parameters:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> col = red </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lwd = 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> transformation = function (x)  .Primitive("log2")</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Query parameters</span></span>
-<span class="r-in"><span class="fu">displayPars</span><span class="op">(</span><span class="va">dp</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Query parameters</span></span></span>
+<span class="r-in"><span><span class="fu">displayPars</span><span class="op">(</span><span class="va">dp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $col</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "red"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -218,19 +241,19 @@ so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $transformation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x)  .Primitive("log2")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">displayPars</span><span class="op">(</span><span class="va">dp</span>, <span class="st">"col"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">displayPars</span><span class="op">(</span><span class="va">dp</span>, <span class="st">"col"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "red"</span>
-<span class="r-in"><span class="fu">getPar</span><span class="op">(</span><span class="va">dp</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col"</span>, <span class="st">"transformation"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">getPar</span><span class="op">(</span><span class="va">dp</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col"</span>, <span class="st">"transformation"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $col</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "red"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $transformation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x)  .Primitive("log2")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Modify parameters</span></span>
-<span class="r-in"><span class="fu">displayPars</span><span class="op">(</span><span class="va">dp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lty <span class="op">=</span> <span class="fl">1</span>, fontsize <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">setPar</span><span class="op">(</span><span class="va">dp</span>, <span class="st">"pch"</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Modify parameters</span></span></span>
+<span class="r-in"><span><span class="fu">displayPars</span><span class="op">(</span><span class="va">dp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lty <span class="op">=</span> <span class="fl">1</span>, fontsize <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">setPar</span><span class="op">(</span><span class="va">dp</span>, <span class="st">"pch"</span>, <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Note that the behaviour of the 'setPar' method has changed. You need to reassign the result to an object for the side effects to happen. Pass-by-reference semantic is no longer supported.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Display parameters:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> col = red </span>
@@ -239,15 +262,15 @@ so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lwd = 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> pch = 20 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> transformation = function (x)  .Primitive("log2")</span>
-<span class="r-in"><span class="va">dp</span></span>
+<span class="r-in"><span><span class="va">dp</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Display parameters:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> col = red </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> fontsize = 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lty = 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lwd = 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> transformation = function (x)  .Primitive("log2")</span>
-<span class="r-in"><span class="co">## Default parameters</span></span>
-<span class="r-in"><span class="fu">availableDisplayPars</span><span class="op">(</span><span class="st">"GenomeAxisTrack"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Default parameters</span></span></span>
+<span class="r-in"><span><span class="fu">availableDisplayPars</span><span class="op">(</span><span class="st">"GenomeAxisTrack"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> The following display parameters are available for 'GenomeAxisTrack' objects:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (see ? GenomeAxisTrack for details on their usage)</span>
@@ -324,7 +347,7 @@ so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -112,17 +112,17 @@
 </tr>
 <tr class="even">
 <td align="left">GitHub Last Commit</td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/tree/RELEASE_3_15" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/RELEASE_3_15" alt="GitHub last commit (Bioconductor-release)"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/tree/RELEASE_3_16" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/RELEASE_3_16" alt="GitHub last commit (Bioconductor-release)"></a></td>
 <td align="right"><a href="https://github.com/ivanek/Gviz/tree/master/" class="external-link"><img src="https://img.shields.io/github/last-commit/ivanek/Gviz/master" alt="GitHub last commit (Bioconductor-devel)"></a></td>
 </tr>
 <tr class="odd">
 <td align="left">GitHub Actions</td>
-<td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=RELEASE_3_15" alt="R build status"></a></td>
+<td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=RELEASE_3_16" alt="R build status"></a></td>
 <td align="right"><a href="https://github.com/ivanek/Gviz/actions" class="external-link"><img src="https://github.com/ivanek/Gviz/workflows/R-CMD-check-bioc/badge.svg?branch=master" alt="R build status"></a></td>
 </tr>
 <tr class="even">
 <td align="left">Coverage</td>
-<td align="right"><a href="https://codecov.io/gh/ivanek/Gviz/branch/RELEASE_3_15" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=RELEASE_3_15" alt="Codecov.io (Bioconductor-release)"></a></td>
+<td align="right"><a href="https://codecov.io/gh/ivanek/Gviz/branch/RELEASE_3_16" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=RELEASE_3_16" alt="Codecov.io (Bioconductor-release)"></a></td>
 <td align="right"><a href="https://codecov.io/github/ivanek/Gviz" class="external-link"><img src="https://codecov.io/github/ivanek/Gviz/coverage.svg?branch=master" alt="Codecov.io (Bioconductor-devel)"></a></td>
 </tr>
 </tbody>
@@ -156,23 +156,23 @@
 <div class="section level4">
 <h4 id="release-version">Release version<a class="anchor" aria-label="anchor" href="#release-version"></a>
 </h4>
-<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Gviz"</span>, version <span class="op">=</span> <span class="st">"release"</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Gviz"</span>, version <span class="op">=</span> <span class="st">"release"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="developmental-version">Developmental version<a class="anchor" aria-label="anchor" href="#developmental-version"></a>
 </h4>
-<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Gviz"</span>, version <span class="op">=</span> <span class="st">"devel"</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Gviz"</span>, version <span class="op">=</span> <span class="st">"devel"</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="github">Github<a class="anchor" aria-label="anchor" href="#github"></a>
 </h4>
-<pre><code><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ivanek/Gviz"</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ivanek/Gviz"</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -254,7 +254,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -53,98 +53,100 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">start</span>, <span class="va">end</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for ReferenceGeneRegionTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span>
-  <span class="va">.Object</span>,
-  <span class="va">stream</span>,
-  <span class="va">reference</span>,
-  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  defaults <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">GeneRegionTrack</span><span class="op">(</span>
-  range <span class="op">=</span> <span class="cn">NULL</span>,
-  rstarts <span class="op">=</span> <span class="cn">NULL</span>,
-  rends <span class="op">=</span> <span class="cn">NULL</span>,
-  rwidths <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">strand</span>,
-  <span class="va">feature</span>,
-  <span class="va">exon</span>,
-  <span class="va">transcript</span>,
-  <span class="va">gene</span>,
-  <span class="va">symbol</span>,
-  <span class="va">chromosome</span>,
-  <span class="va">genome</span>,
-  stacking <span class="op">=</span> <span class="st">"squish"</span>,
-  name <span class="op">=</span> <span class="st">"GeneRegionTrack"</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">importFunction</span>,
-  stream <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack,character</span>
-<span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack,character</span>
-<span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack,character</span>
-<span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack,character</span>
-<span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack,character</span>
-<span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span>
-  <span class="va">GdObject</span>,
-  type <span class="op">=</span> <span class="fu">.dpOrDefault</span><span class="op">(</span><span class="va">GdObject</span>, <span class="st">"transcriptAnnotation"</span>, <span class="st">"symbol"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack,character</span>
-<span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for ReferenceGeneRegionTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for GeneRegionTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span>
-
-<span class="co"># S4 method for ReferenceGeneRegionTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">start</span>, <span class="va">end</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ReferenceGeneRegionTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span></span>
+<span>  <span class="va">.Object</span>,</span>
+<span>  <span class="va">stream</span>,</span>
+<span>  <span class="va">reference</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  defaults <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GeneRegionTrack</span><span class="op">(</span></span>
+<span>  range <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rstarts <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rends <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rwidths <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">strand</span>,</span>
+<span>  <span class="va">feature</span>,</span>
+<span>  <span class="va">exon</span>,</span>
+<span>  <span class="va">transcript</span>,</span>
+<span>  <span class="va">gene</span>,</span>
+<span>  <span class="va">symbol</span>,</span>
+<span>  <span class="va">chromosome</span>,</span>
+<span>  <span class="va">genome</span>,</span>
+<span>  stacking <span class="op">=</span> <span class="st">"squish"</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"GeneRegionTrack"</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">importFunction</span>,</span>
+<span>  stream <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack,character</span></span>
+<span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack,character</span></span>
+<span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack,character</span></span>
+<span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack,character</span></span>
+<span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack,character</span></span>
+<span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span></span>
+<span>  <span class="va">GdObject</span>,</span>
+<span>  type <span class="op">=</span> <span class="fu">.dpOrDefault</span><span class="op">(</span><span class="va">GdObject</span>, <span class="st">"transcriptAnnotation"</span>, <span class="st">"symbol"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack,character</span></span>
+<span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for ReferenceGeneRegionTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for GeneRegionTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ReferenceGeneRegionTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>start, end</dt>
 <dd><p>An integer scalar with the genomic start or end coordinate
 for the gene model range. If those are missing, the default value will
@@ -154,31 +156,45 @@ building a <code>GeneRegionTrack</code> from a <code>TxDb</code> object, these a
 can be used to subset the desired annotation data by genomic coordinates.
 Please note this in that case the <code>chromosome</code> parameter must also be
 set.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
 section below for details.</p></dd>
+
+
 <dt>stream</dt>
 <dd><p>A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 <code>selection</code> argument when accessing the data on disk. This causes the
 constructor to return a <code>ReferenceGeneRegionTrack</code> object which will
 grab the necessary data on the fly during each plotting operation.</p></dd>
+
+
 <dt>reference</dt>
 <dd><p>reference file</p></dd>
+
+
 <dt>mapping</dt>
 <dd><p>mapping</p></dd>
+
+
 <dt>args</dt>
 <dd><p>args</p></dd>
+
+
 <dt>defaults</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>range</dt>
 <dd><p>An optional meta argument to handle the different input types. If the
 <code>range</code> argument is missing, all the relevant information to create the
 object has to be provided as individual function arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
-<dl><dt></dt>
-<dd><p>A <code>TxDb</code> object: all the necessary gene model information
+<dl><dt>A <code>TxDb</code> object:</dt>
+<dd><p>all the necessary gene model information
 including exon locations, transcript groupings and associated gene ids are
 contained in <code>TxDb</code> objects, and the coercion between the two is almost
 completely automated. If desired, the data to be fetched from the
@@ -190,8 +206,8 @@ coding region information that is part of the original <code>TxDb</code> object 
 retained in the <code>GeneRegionTrack</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>GRanges</code> object: the genomic ranges for the
+<dt>A <code>GRanges</code> object:</dt>
+<dd><p>the genomic ranges for the
 <code>GeneRegion</code> track as well as the optional additional metadata columns
 <code>feature</code>, <code>transcript</code>, <code>gene</code>, <code>exon</code> and
 <code>symbol</code> (see description of the individual function parameters below
@@ -200,8 +216,8 @@ further arguments, e.g.  <code>GeneRegionTrack(range=obj)</code> is equivalent t
 calling the coerce method <code>as(obj, "GeneRegionTrack")</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>GRangesList</code> object: this is very similar to the previous
+<dt>A <code>GRangesList</code> object:</dt>
+<dd><p>this is very similar to the previous
 case, except that the grouping information that is part of the list
 structure is preserved in the <code>GeneRegionTrack</code>. I.e., all the elements
 within one list item receive the same group id. For consistancy, there is
@@ -212,8 +228,8 @@ data slots, the object will not be particularly useful, because all the
 identifiers will be set to a common default value.</p></dd>
 
 
-<dt></dt>
-<dd><p>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object: almost identical to the
+<dt>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object:</dt>
+<dd><p>almost identical to the
 <code>GRanges</code> case, except that the chromosome and strand information as
 well as all additional data has to be provided in the separate
 <code>chromosome</code>, <code>strand</code>, <code>feature</code>, <code>transcript</code>,
@@ -225,8 +241,8 @@ providing information about the gene-to-transcript relationship or the
 human-readble symbols renders a lot of the class' functionality useles.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>data.frame</code> object: the <code>data.frame</code> needs to contain
+<dt>A <code>data.frame</code> object:</dt>
+<dd><p>the <code>data.frame</code> needs to contain
 at least the two mandatory columns <code>start</code> and <code>end</code> with the
 range coordinates. It may also contain a <code>chromosome</code> and a
 <code>strand</code> column with the chromosome and strand information for each
@@ -237,8 +253,8 @@ range. If missing, this information will be drawn from the constructor's
 above comments about potential default values also apply here.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>character</code> scalar: in this case the value of the
+<dt>A <code>character</code> scalar:</dt>
+<dd><p>in this case the value of the
 <code>range</code> argument is considered to be a file path to an annotation file
 on disk. A range of file types are supported by the <code>Gviz</code> package as
 identified by the file extension. See the <code>importFunction</code>
@@ -247,6 +263,8 @@ documentation below for further details.</p></dd>
 
 
 </dl></dd>
+
+
 <dt>rstarts</dt>
 <dd><p>An integer vector of the start coordinates for the actual
 gene model items, i.e., for the individual exons. The relationship between
@@ -258,20 +276,28 @@ Those lists will be exploded upon object instantiation and all other
 annotation arguments will be recycled accordingly to regenerate the
 exon/transcript/gene relationship structure. This implies the approriate
 number of items in all annotation and coordinates arguments.</p></dd>
+
+
 <dt>rends</dt>
 <dd><p>An integer vector of the end coordinates for the actual gene
 model items. Both <code>rstarts</code> and <code>rends</code> have to be of equal
 length.</p></dd>
+
+
 <dt>rwidths</dt>
 <dd><p>An integer vector of widths for the actual gene model items.
 This can be used instead of either <code>rstarts</code> or <code>rends</code> to specify
 the range coordinates.</p></dd>
+
+
 <dt>strand</dt>
 <dd><p>Character vector, the strand information for the individual
 track exons. It may be provided in the form <code>+</code> for the Watson strand,
 <code>-</code> for the Crick strand or <code>*</code> for either one of the two. Please
 note that all items within a single gene or transcript model need to be on
 the same strand, and erroneous entries will result in casting of an error.</p></dd>
+
+
 <dt>feature</dt>
 <dd><p>Factor (or other vector that can be coerced into one), giving
 the feature types for the individual track exons.  When plotting the track
@@ -282,22 +308,32 @@ Additionally, the feature type defines whether an element in the
 section as well as the section about the <code>thinBoxFeature</code> display
 parameter further below has more information on this. See also
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
+
+
 <dt>exon</dt>
 <dd><p>Character vector of exon identifiers. It's values will be used
 as the identifier tag when plotting to the device if the display parameter
 <code>showExonId=TRUE</code>.</p></dd>
+
+
 <dt>transcript</dt>
 <dd><p>Factor (or other vector that can be coerced into one),
 giving the transcript memberships for the individual track exons. All items
 with the same transcript identifier will be visually connected when plotting
 to the device.  See <code><a href="grouping.html">grouping</a></code> for details. Will be used as
 labels when <code>showId=TRUE</code>, and <code>geneSymbol=FALSE</code>.</p></dd>
+
+
 <dt>gene</dt>
 <dd><p>Factor (or other vector that can be coerced into one), giving
 the gene memberships for the individual track exons.</p></dd>
+
+
 <dt>symbol</dt>
 <dd><p>A factor with human-readable gene name aliases which will be
 used as labels when <code>showId=TRUE</code>, and <code>geneSymbol=TRUE</code>.</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier if
@@ -316,20 +352,28 @@ method in order to change to a different active chromosome. When creating a
 <code>GeneRegionTrack</code> from a <code>TxDb</code> object, the value of this
 parameter can be used to subset the data to fetch only transcripts from a
 single chromosome.</p></dd>
+
+
 <dt>genome</dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
 checked at this point. If not provided here the constructor will try to
 extract this information from the provided inputs, and eventually will fall
 back to the default value of <code>NA</code>.</p></dd>
+
+
 <dt>stacking</dt>
 <dd><p>The stacking type for overlapping items of the track. One in
 <code>c(hide, dense, squish, pack,full)</code>. Currently, only hide (don't show
 the track items, squish (make best use of the available space) and dense (no
 stacking at all) are implemented.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name used in the title panel
 when plotting.</p></dd>
+
+
 <dt>importFunction</dt>
 <dd><p>A user-defined function to be used to import the data
 from a file. This only applies when the <code>range</code> argument is a character
@@ -343,21 +387,34 @@ extension can not be mapped to any of the existing import function, an error
 is raised asking for a user-defined import function via this argument.
 Currently the following file types can be imported with the default
 functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</code>, <code>gtf</code>.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>Value to be set.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>type</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
+
 <dt>object</dt>
 <dd><p>object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>GeneRegionTrack</code>.</p>
     </div>
     <div id="details">
@@ -406,47 +463,47 @@ are considered to be coding elements.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,GeneRegionTrack-method</code>: Initialize.</p></li>
+<ul><li><p><code>initialize(GeneRegionTrack)</code>: Initialize.</p></li>
 <li><p><code>ReferenceGeneRegionTrack-class</code>: The file-based version of the <code>GeneRegionTrack-class</code>.</p></li>
-<li><p><code>initialize,ReferenceGeneRegionTrack-method</code>: Initialize.</p></li>
-<li><p><code>GeneRegionTrack</code>: Constructor function for <code>GeneRegionTrack-class</code>.</p></li>
-<li><p><code>gene,GeneRegionTrack-method</code>: Extract the gene identifiers for all
+<li><p><code>initialize(ReferenceGeneRegionTrack)</code>: Initialize.</p></li>
+<li><p><code>GeneRegionTrack()</code>: Constructor function for <code>GeneRegionTrack-class</code>.</p></li>
+<li><p><code>gene(GeneRegionTrack)</code>: Extract the gene identifiers for all
 gene models.</p></li>
-<li><p><code>gene&lt;-,GeneRegionTrack,character-method</code>: Replace the gene identifiers for all
+<li><p><code>gene(GdObject = GeneRegionTrack) &lt;- value</code>: Replace the gene identifiers for all
 gene models.
 The replacement value must be a character of appropriate length or another
 vector that can be coerced into such.</p></li>
-<li><p><code>symbol,GeneRegionTrack-method</code>: Extract the human-readble gene symbol
+<li><p><code>symbol(GeneRegionTrack)</code>: Extract the human-readble gene symbol
 for all gene models.</p></li>
-<li><p><code>symbol&lt;-,GeneRegionTrack,character-method</code>: Replace the human-readable gene symbol
+<li><p><code>symbol(GdObject = GeneRegionTrack) &lt;- value</code>: Replace the human-readable gene symbol
 for all gene models.
 The replacement value must be a character of appropriate length or another
 vector that can be coerced into such.</p></li>
-<li><p><code>transcript,GeneRegionTrack-method</code>: Extract the transcript identifiers for all
+<li><p><code>transcript(GeneRegionTrack)</code>: Extract the transcript identifiers for all
 transcripts in the gene models.</p></li>
-<li><p><code>transcript&lt;-,GeneRegionTrack,character-method</code>: Replace the transcript identifiers for all
+<li><p><code>transcript(GdObject = GeneRegionTrack) &lt;- value</code>: Replace the transcript identifiers for all
 transcripts in the gene model. The replacement value must be a character of
 appropriate length or another vector that can be coerced into such.</p></li>
-<li><p><code>exon,GeneRegionTrack-method</code>: Extract the exon identifiers for all exons
+<li><p><code>exon(GeneRegionTrack)</code>: Extract the exon identifiers for all exons
 in the gene models.</p></li>
-<li><p><code>exon&lt;-,GeneRegionTrack,character-method</code>: replace the exon identifiers for all exons
+<li><p><code>exon(GdObject = GeneRegionTrack) &lt;- value</code>: replace the exon identifiers for all exons
 in the gene model. The replacement value must be a character of appropriate
 length or another vector that can be coerced into such.</p></li>
-<li><p><code>group,GeneRegionTrack-method</code>: extract the group membership for all track items.</p></li>
-<li><p><code>group&lt;-,GeneRegionTrack,character-method</code>: replace the grouping information for track items.
+<li><p><code>group(GeneRegionTrack)</code>: extract the group membership for all track items.</p></li>
+<li><p><code>group(GdObject = GeneRegionTrack) &lt;- value</code>: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.</p></li>
-<li><p><code>identifier,GeneRegionTrack-method</code>: return track item identifiers.
+<li><p><code>identifier(GeneRegionTrack)</code>: return track item identifiers.
 Depending on the setting of the optional argument lowest, these are either
 the group identifiers or the individual item identifiers.
 export</p></li>
-<li><p><code>identifier&lt;-,GeneRegionTrack,character-method</code>: Set the track item identifiers.
+<li><p><code>identifier(GdObject = GeneRegionTrack) &lt;- value</code>: Set the track item identifiers.
 The replacement value has to be a character vector of appropriate length.
 This always replaces the group-level identifiers, so essentially it is
 similar to <code>groups&lt;-</code>.</p></li>
-<li><p><code>subset,ReferenceGeneRegionTrack-method</code>: Subset a GeneRegionTrack by coordinates
+<li><p><code>subset(ReferenceGeneRegionTrack)</code>: Subset a GeneRegionTrack by coordinates
 and sort if necessary.</p></li>
-<li><p><code>drawGD,GeneRegionTrack-method</code>: plot the object to a graphics device.
+<li><p><code>drawGD(GeneRegionTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -455,8 +512,8 @@ done but the object is preprocessed based on the available space, or in
 Since subsetting of the object can be potentially costly, this can be
 switched off in case subsetting has already been performed before or
 is not necessary.</p></li>
-<li><p><code>show,GeneRegionTrack-method</code>: Show method.</p></li>
-<li><p><code>show,ReferenceGeneRegionTrack-method</code>: Show method.</p></li>
+<li><p><code>show(GeneRegionTrack)</code>: Show method.</p></li>
+<li><p><code>show(ReferenceGeneRegionTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
     <h2>Objects from the class</h2>
@@ -489,39 +546,39 @@ is not necessary.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The empty object</span></span>
-<span class="r-in"><span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The empty object</span></span></span>
+<span class="r-in"><span><span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GeneRegionTrack 'GeneRegionTrack'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chrNA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 0</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Load some sample data</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Construct the object</span></span>
-<span class="r-in"><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu">GeneRegionTrack</span><span class="op">(</span></span>
-<span class="r-in">    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span>
-<span class="r-in">    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span>
-<span class="r-in">    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>, symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span>
-<span class="r-in">    feature <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">feature</span>, exon <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">exon</span>,</span>
-<span class="r-in">    name <span class="op">=</span> <span class="st">"Cyp2b10"</span>, strand <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">strand</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Directly from the data.frame</span></span>
-<span class="r-in"><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## From a TxDb object</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicFeatures" class="external-link">GenomicFeatures</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">samplefile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span>
-<span class="r-in">                              <span class="st">"hg19_knownGene_sample.sqlite"</span>,</span>
-<span class="r-in">                              package <span class="op">=</span> <span class="st">"GenomicFeatures"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">loadDb</a></span><span class="op">(</span><span class="va">samplefile</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="va">txdb</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="va">txdb</span>, chromosome <span class="op">=</span> <span class="st">"chr6"</span>, start <span class="op">=</span> <span class="fl">35000000</span>, end <span class="op">=</span> <span class="fl">40000000</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load some sample data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Construct the object</span></span></span>
+<span class="r-in"><span><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu">GeneRegionTrack</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span></span>
+<span class="r-in"><span>    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span></span>
+<span class="r-in"><span>    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>, symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span></span>
+<span class="r-in"><span>    feature <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">feature</span>, exon <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">exon</span>,</span></span>
+<span class="r-in"><span>    name <span class="op">=</span> <span class="st">"Cyp2b10"</span>, strand <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">strand</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Directly from the data.frame</span></span></span>
+<span class="r-in"><span><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## From a TxDb object</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/GenomicFeatures" class="external-link">GenomicFeatures</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">samplefile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,</span></span>
+<span class="r-in"><span>                              <span class="st">"hg19_knownGene_sample.sqlite"</span>,</span></span>
+<span class="r-in"><span>                              package <span class="op">=</span> <span class="st">"GenomicFeatures"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">loadDb</a></span><span class="op">(</span><span class="va">samplefile</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="va">txdb</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">GeneRegionTrack</span><span class="op">(</span><span class="va">txdb</span>, chromosome <span class="op">=</span> <span class="st">"chr6"</span>, start <span class="op">=</span> <span class="fl">35000000</span>, end <span class="op">=</span> <span class="fl">40000000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: GenomicFeatures</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: AnnotationDbi</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
@@ -534,32 +591,32 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 71</span>
-<span class="r-in"><span class="co"># \dontshow{</span></span>
-<span class="r-in"><span class="co">## For some annoying reason the postscript device does not know about</span></span>
-<span class="r-in"><span class="co">## the sans font</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span>
-<span class="r-in">    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># \dontshow{</span></span></span>
+<span class="r-in"><span><span class="co">## For some annoying reason the postscript device does not know about</span></span></span>
+<span class="r-in"><span><span class="co">## the sans font</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/ps.options.html" class="external-link">ps.options</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">family</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="va">font</span>, fontfamily.title <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Track names</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Track names</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GeneRegionTrack"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Subsetting and splitting</span></span>
-<span class="r-in"><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">grTrack</span>, from <span class="op">=</span> <span class="fl">26700000</span>, to <span class="op">=</span> <span class="fl">26705000</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Subsetting and splitting</span></span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">grTrack</span>, from <span class="op">=</span> <span class="fl">26700000</span>, to <span class="op">=</span> <span class="fl">26705000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="va">grTrack</span><span class="op">[</span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">==</span> <span class="st">"ENSMUST00000144140"</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="va">grTrack</span><span class="op">[</span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">==</span> <span class="st">"ENSMUST00000144140"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GeneRegionTrack 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
@@ -578,42 +635,42 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Accessors</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Accessors</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25897620 25897676 25897685 25897685 25911238 25911238 25911554 25911554</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25913865 25913865 25914748 25914748 25915392 25915392 25916766 25916934</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25916934 25917288 25917288 25917288 25925373 25926068 25926068 25926250</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] 25926250</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25897684 25897684 25897855 25897855 25911400 25911400 25911703 25911703</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25914025 25914025 25914924 25914924 25915533 25915533 25917121 25917121</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25917121 25917429 25917429 25917430 25925399 25926249 25926249 25926559</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] 25926624</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  65   9 171 171 163 163 150 150 161 161 177 177 142 142 356 188 188 142 142</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] 143  27 182 182 310 375</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25897652 25897680 25897770 25897770 25911319 25911319 25911628 25911628</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25913945 25913945 25914836 25914836 25915462 25915462 25916944 25917028</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25917028 25917358 25917358 25917359 25925386 25926158 25926158 25926404</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] 25926437</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">+</span> <span class="fl">100</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">+</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20] "+" "+" "+" "+" "+" "+"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr7"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/inter-range-methods.html" class="external-link">range</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 25 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            start       end     width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;</span>
@@ -628,7 +685,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [23]  25926068  25926249       182</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [24]  25926250  25926559       310</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [25]  25926250  25926624       375</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 25 ranges and 7 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        seqnames            ranges strand |        feature          id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |       &lt;factor&gt; &lt;character&gt;</span>
@@ -671,14 +728,14 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [25]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Annotation</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Annotation</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"lowest"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"lowest"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000489385" "ENSMUSE00000742021"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000489385" "ENSMUSE00000973560" "ENSMUSE00000973560"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSE00001043622" "ENSMUSE00001043622" "ENSMUSE00001013991"</span>
@@ -688,9 +745,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00001063063" "ENSMUSE00000748299" "ENSMUSE00000496705"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSE00000498616" "ENSMUSE00000750625" "ENSMUSE00000750625"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUSE00000498616"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "utr5"           "utr5"           "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
@@ -698,9 +755,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21] "protein_coding" "protein_coding" "protein_coding" "utr3"          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "utr3"          </span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000489385" "ENSMUSE00000742021"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000489385" "ENSMUSE00000973560" "ENSMUSE00000973560"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSE00001043622" "ENSMUSE00001043622" "ENSMUSE00001013991"</span>
@@ -710,9 +767,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00001063063" "ENSMUSE00000748299" "ENSMUSE00000496705"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSE00000498616" "ENSMUSE00000750625" "ENSMUSE00000750625"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUSE00000498616"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
@@ -722,16 +779,16 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUSG00000030483"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
@@ -741,12 +798,12 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUST00000072438"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr7"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr7"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           feature      id               exon         transcript</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1            utr5 unknown ENSMUSE00000742021 ENSMUST00000072438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            utr5 unknown ENSMUSE00000489385 ENSMUST00000005477</span>
@@ -799,9 +856,9 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25 ENSMUSG00000030483 Cyp2b10       1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Grouping</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Grouping</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
@@ -811,28 +868,28 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUST00000072438"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Group 1" "Group 1"</span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Collapsing transcripts</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span>,</span>
-<span class="r-in">    collapseTranscripts <span class="op">=</span> <span class="cn">TRUE</span>, showId <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">    extend.left <span class="op">=</span> <span class="fl">10000</span>, shape <span class="op">=</span> <span class="st">"arrow"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Collapsing transcripts</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span>,</span></span>
+<span class="r-in"><span>    collapseTranscripts <span class="op">=</span> <span class="cn">TRUE</span>, showId <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    extend.left <span class="op">=</span> <span class="fl">10000</span>, shape <span class="op">=</span> <span class="st">"arrow"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Stacking</span></span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Stacking</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "squish"</span>
-<span class="r-in"><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"dense"</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">stacking</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"dense"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-6.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## coercion</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## coercion</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X.seqnames  X.start    X.end X.width X.strand      X.feature    X.id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        chr7 25897620 25897684      65        +           utr5 unknown</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        chr7 25897676 25897684       9        +           utr5 unknown</span>
@@ -937,7 +994,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25 ENSMUSG00000030483 Cyp2b10       1</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"UCSCData"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"UCSCData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UCSC track 'foo'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UCSCData object with 3 ranges and 6 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       seqnames            ranges strand |                 id        name</span>
@@ -952,15 +1009,15 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3]     #FFD58A          2                356,143                  0,522</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## HTML image map</span></span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## HTML image map</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span><span class="op">$</span><span class="va">foo</span></span>
+<span class="r-in"><span><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span><span class="op">$</span><span class="va">foo</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-7.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             x1     y1        x2     y2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000973560   239.54551  64.50 241.93921 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001043622   244.21469  64.50 246.41630 415.50</span>
@@ -985,7 +1042,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000748299   328.93956  64.50 331.03774 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000742021    38.29809  64.50  41.79997 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000489385    38.71181  64.50  41.79997 415.50</span>
-<span class="r-in"><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fill</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "#FFD58A"            "#FFD58A"            "#FFD58A" </span>
@@ -1294,7 +1351,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

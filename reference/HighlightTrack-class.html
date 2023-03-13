@@ -18,7 +18,7 @@ the addition of a common highlighting area across tracks."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -55,71 +55,77 @@ the addition of a common highlighting area across tracks.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">trackList</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">HighlightTrack</span><span class="op">(</span>
-  trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  range <span class="op">=</span> <span class="cn">NULL</span>,
-  start <span class="op">=</span> <span class="cn">NULL</span>,
-  end <span class="op">=</span> <span class="cn">NULL</span>,
-  width <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">chromosome</span>,
-  <span class="va">genome</span>,
-  name <span class="op">=</span> <span class="st">"HighlightTrack"</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for HighlightTrack,list</span>
-<span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="GdObject-class.html">setStacks</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="GdObject-class.html">consolidateTrack</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for HighlightTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">trackList</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">HighlightTrack</span><span class="op">(</span></span>
+<span>  trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  range <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  width <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">chromosome</span>,</span>
+<span>  <span class="va">genome</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"HighlightTrack"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack,list</span></span>
+<span><span class="fu"><a href="DisplayPars-class.html">displayPars</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">setStacks</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">consolidateTrack</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for HighlightTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>trackList</dt>
 <dd><p>A list of Gviz track objects that all have to inherit from
 class <code>GdObject</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All additional parameters are ignored.</p></dd>
+
+
 <dt>range</dt>
 <dd><p>An optional meta argument to handle the different input types. If the
 <code>range</code> argument is missing, all the relevant information to create the
 object has to be provided as individual function arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
-<dl><dt></dt>
-<dd><p>A <code>GRanges</code> object: the genomic ranges for the highlighting
+<dl><dt>A <code>GRanges</code> object:</dt>
+<dd><p>the genomic ranges for the highlighting
 regions.</p></dd>
 
 
-<dt></dt>
-<dd><p>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object: almost identical to the
+<dt>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object:</dt>
+<dd><p>almost identical to the
 <code>GRanges</code> case, except that the chromosome information has to be
 provided in the separate <code>chromosome</code> argument, because it can not be
 directly encoded in an <code>IRanges</code> object.</p></dd>
 
 
-<dt></dt>
-<dd><p>A <code>data.frame</code> object: the <code>data.frame</code> needs to contain
+<dt>A <code>data.frame</code> object:</dt>
+<dd><p>the <code>data.frame</code> needs to contain
 at least the two mandatory columns <code>start</code> and <code>end</code> with the
 range coordinates. It may also contain a <code>chromosome</code> column with the
 chromosome information for each range. If missing, this information will be
@@ -128,14 +134,20 @@ drawn from the constructor's <code>chromosome</code> argument.</p></dd>
 
 
 </dl></dd>
+
+
 <dt>start, end</dt>
 <dd><p>An integer scalar with the genomic start or end coordinates
 for the highlighting range. Can also be supplied as part of the <code>range</code>
 argument.</p></dd>
+
+
 <dt>width</dt>
 <dd><p>An integer vector of widths for highlighting ranges. This can
 be used instead of either <code>start</code> or <code>end</code> to specify the range
 coordinates.</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier if
@@ -151,30 +163,47 @@ value <code>chrNA</code>. Please note that by definition all objects in the
 (although internally the information for more than one chromosome may be
 present), and the user has to call the <code>chromosome&lt;-</code> replacement
 method in order to change to a different active chromosome.</p></dd>
+
+
 <dt>genome</dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
 checked at this point. If not provided here the constructor will try to
 extract this information from the provided inputs, and eventually will fall
 back to the default value of <code>NA</code>.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character scalar of the track's name. This is not really used
 and only exists fro completeness.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
+
+
 <dt>recursive</dt>
 <dd><p><code>logical</code></p></dd>
+
+
 <dt>value</dt>
 <dd><p>Value to be set.</p></dd>
+
+
 <dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
+
 <dt>object</dt>
 <dd><p>object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value of the constructor function is a new object of class
+    
+
+<p>The return value of the constructor function is a new object of class
 <code>HighlightTrack</code>.</p>
     </div>
     <div id="details">
@@ -188,25 +217,25 @@ to the <code>plotTracks</code> function as individual objects.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>initialize,HighlightTrack-method</code>: Initialize.</p></li>
-<li><p><code>HighlightTrack</code>: Constructor function for
+<ul><li><p><code>initialize(HighlightTrack)</code>: Initialize.</p></li>
+<li><p><code>HighlightTrack()</code>: Constructor function for
 <code>HighlightTrack-class</code>.</p></li>
-<li><p><code>displayPars&lt;-,HighlightTrack,list-method</code>: set display parameters using the values of
+<li><p><code>displayPars(x = HighlightTrack) &lt;- value</code>: set display parameters using the values of
 the named list in value. See <code><a href="settings.html">settings</a></code> for details on display
 parameters and customization.</p></li>
-<li><p><code>length,HighlightTrack-method</code>: return the number of subtracks.</p></li>
-<li><p><code>chromosome&lt;-,HighlightTrack-method</code>: replace the value of the track's chromosome.
+<li><p><code>length(HighlightTrack)</code>: return the number of subtracks.</p></li>
+<li><p><code>chromosome(HighlightTrack) &lt;- value</code>: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.</p></li>
-<li><p><code>setStacks,HighlightTrack-method</code>: Rrecompute the stacks based on the available
+<li><p><code>setStacks(HighlightTrack)</code>: Rrecompute the stacks based on the available
 space and on the object's track items and stacking settings.
 This really just calls the <code>setStacks</code> methods for the contained tracks and
 only exists for dispatching reasons.</p></li>
-<li><p><code>consolidateTrack,HighlightTrack-method</code>: Consolidate
+<li><p><code>consolidateTrack(HighlightTrack)</code>: Consolidate
 For a <code>HighlightTrack</code> apply the method on each of the subtracks in
 the <code>trackList</code> slot</p></li>
-<li><p><code>subset,HighlightTrack-method</code>: subset all the contained tracks in an HighlightTrack by coordinates and sort if necessary.</p></li>
-<li><p><code>show,HighlightTrack-method</code>: Show method.</p></li>
+<li><p><code>subset(HighlightTrack)</code>: subset all the contained tracks in an HighlightTrack by coordinates and sort if necessary.</p></li>
+<li><p><code>show(HighlightTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
     <h2>Objects from the Class</h2>
@@ -238,13 +267,13 @@ the <code>trackList</code> slot</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Object construction:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, max <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gt</span> <span class="op">&lt;-</span> <span class="fu"><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ht</span> <span class="op">&lt;-</span> <span class="fu">HighlightTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">gt</span>, <span class="va">dt</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Object construction:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, max <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gt</span> <span class="op">&lt;-</span> <span class="fu"><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ht</span> <span class="op">&lt;-</span> <span class="fu">HighlightTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">gt</span>, <span class="va">dt</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -259,7 +288,7 @@ the <code>trackList</code> slot</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

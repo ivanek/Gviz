@@ -19,7 +19,7 @@ parameters and list all available settings for the different track classes."><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -63,12 +63,17 @@ parameters and list all available settings for the different track classes.</p>
 <dd><p>A named nested list of display parameters, where the first
 level of nesting represents Gviz track object classes, and the second level
 of nesting represents parameters.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>A character scalar with the scheme name.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The <code>getScheme</code> function returns current scheme as a list structure.</p>
+    
+
+<p>The <code>getScheme</code> function returns current scheme as a list structure.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -139,312 +144,313 @@ created after the change has taken place.</p>
     
 
 
-<dl><dt>GenomeAxisTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>add35=FALSE</code>: Logical scalar. Add 3' to 5' direction
+<dl><dt>GenomeAxisTrack:</dt>
+<dd>
+
+<dl><dt><code>add35=FALSE</code>:</dt>
+<dd><p>Logical scalar. Add 3' to 5' direction
 indicators.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>add53=FALSE</code>: Logical scalar. Add 5' to 3' direction
+<dt><code>add53=FALSE</code>:</dt>
+<dd><p>Logical scalar. Add 5' to 3' direction
 indicators.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.title="transparent"</code>: Character scalar.  The
+<dt><code>background.title="transparent"</code>:</dt>
+<dd><p>Character scalar.  The
 background color for the title panel. Defaults to omit the background.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.id=0.7</code>: Numeric scalar. The text size for the optional
+<dt><code>cex.id=0.7</code>:</dt>
+<dd><p>Numeric scalar. The text size for the optional
 range annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=0.8</code>: Numeric scalar. The overall font expansion factor
+<dt><code>cex=0.8</code>:</dt>
+<dd><p>Numeric scalar. The overall font expansion factor
 for the axis annotation text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="transparent"</code>: Integer or character scalar.
+<dt><code>col.border.title="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.id="white"</code>: Character scalar. The text color for the
+<dt><code>col.id="white"</code>:</dt>
+<dd><p>Character scalar. The text color for the
 optional range annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.range="cornsilk4"</code>: Character scalar. The border color for
+<dt><code>col.range="cornsilk4"</code>:</dt>
+<dd><p>Character scalar. The border color for
 highlighted regions on the axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>distFromAxis=1</code>: Numeric scalar. Control the distance of the
+<dt><code>distFromAxis=1</code>:</dt>
+<dd><p>Numeric scalar. Control the distance of the
 axis annotation from the tick marks.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>exponent=NULL</code>: Numeric scalar. The exponent for the axis
+<dt><code>exponent=NULL</code>:</dt>
+<dd><p>Numeric scalar. The exponent for the axis
 coordinates, e.g., 3 means mb, 6 means gb, etc. The default is to
 automatically determine the optimal exponent.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.range="cornsilk3"</code>: Character scalar. The fill color for
+<dt><code>fill.range="cornsilk3"</code>:</dt>
+<dd><p>Character scalar. The fill color for
 highlighted regions on the axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="#808080"</code>: Character scalar. The font color for the
+<dt><code>fontcolor="#808080"</code>:</dt>
+<dd><p>Character scalar. The font color for the
 axis annotation text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=10</code>: Numeric scalar. Font size for the axis
+<dt><code>fontsize=10</code>:</dt>
+<dd><p>Numeric scalar. Font size for the axis
 annotation text in points.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>labelPos="alternating"</code>: Character vector, one in
+<dt><code>labelPos="alternating"</code>:</dt>
+<dd><p>Character vector, one in
 "alternating", "revAlternating", "above" or "below". The vertical
 positioning of the axis labels. If <code>scale</code> is not <code>NULL</code>, the
 possible values are "above", "below" and "beside".</p></dd>
 
 
-<dt></dt>
-<dd><p><code>littleTicks=FALSE</code>: Logical scalar. Add more fine-grained tick
+<dt><code>littleTicks=FALSE</code>:</dt>
+<dd><p>Logical scalar. Add more fine-grained tick
 marks.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=2</code>: Numeric scalar. The line width for the axis
+<dt><code>lwd=2</code>:</dt>
+<dd><p>Numeric scalar. The line width for the axis
 elementes.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>scale=NULL</code>: Numeric scalar. If not <code>NULL</code> a small scale
+<dt><code>scale=NULL</code>:</dt>
+<dd><p>Numeric scalar. If not <code>NULL</code> a small scale
 is drawn instead of the full axis, if the value is between 0 and 1 it is
 interpreted as a fraction of the current plotting region, otherwise as an
 absolute length value in genomic coordinates.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showId=FALSE</code>: Logical scalar. Show the optional range
+<dt><code>showId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Show the optional range
 highlighting annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=FALSE</code>: Logical scalar. Plot a title panel. Defaults
+<dt><code>showTitle=FALSE</code>:</dt>
+<dd><p>Logical scalar. Plot a title panel. Defaults
 to omit the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>ticksAt=NULL</code>: Numeric scalar. The exact x-position for
+<dt><code>ticksAt=NULL</code>:</dt>
+<dd><p>Numeric scalar. The exact x-position for
 tickmarks (in base-pairs).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=NULL</code>: Numeric scalar. The relative size of the track.
+<dt><code>size=NULL</code>:</dt>
+<dd><p>Numeric scalar. The relative size of the track.
 Can be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> function. Defaults to the
 ideal size based on the other track settings.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col="darkgray"</code>: Character scalar. The color for the axis
+<dt><code>col="darkgray"</code>:</dt>
+<dd><p>Character scalar. The color for the axis
 lines and tickmarks.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.line=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=TRUE</code>: Boolean controlling whether to collapse the
+<dt><code>collapse=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to collapse the
 content of the track to accomodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="lightgray"</code>: Integer or character scalar.  Default fill
+<dt><code>fill="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.  Default fill
 color setting for all plotting elements, unless there is a more specific
 control defined elsewhere.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Integer or character scalar. The font face for
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Integer or character scalar. The font face for
 all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Integer or character scalar.  The font
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 family for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Boolean, switching on/off the plotting of a
 grid.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for all
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for all
 text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty="solid"</code>: Numeric scalar. Default line type setting for
+<dt><code>lty="solid"</code>:</dt>
+<dd><p>Numeric scalar. Default line type setting for
 all plotting elements, unless there is a more specific control defined
 elsewhere.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=1</code>: Numeric scalar. The minimum pixel distance
+<dt><code>min.distance=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum pixel distance
 before collapsing range items, only if <code>collapse==TRUE</code>. See
 <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=3</code>: Numeric scalar. The minimum range height in
+<dt><code>min.height=3</code>:</dt>
+<dd><p>Numeric scalar. The minimum range height in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: The rotation angle for all text unless a more
+<dt><code>rotation=0</code>:</dt>
+<dd><p>The rotation angle for all text unless a more
 specific definiton exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -452,16 +458,17 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </dl></dd>
 
 
-<dt>DataTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>aggregateGroups=FALSE</code>: Logical scalar. Aggregate the values
+<dt>DataTrack:</dt>
+<dd>
+
+<dl><dt><code>aggregateGroups=FALSE</code>:</dt>
+<dd><p>Logical scalar. Aggregate the values
 within a sample group using the aggregation funnction specified in the
 <code>aggregation</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>aggregation="mean"</code>: Function or character scalar.  Used to
+<dt><code>aggregation="mean"</code>:</dt>
+<dd><p>Function or character scalar.  Used to
 aggregate values in windows or for collapsing overlapping items. The
 function has to accept a numeric vector as a single input parameter and has
 to return a numeric scalar with the aggregated value. Alternatively, one of
@@ -470,195 +477,195 @@ the predefined options <code>mean</code>, <code>median</code> <code>sum</code>, 
 to <code>mean</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>missingAsZero=TRUE</code>: Logical scalar. Defines how the missing
+<dt><code>missingAsZero=TRUE</code>:</dt>
+<dd><p>Logical scalar. Defines how the missing
 values are treated in the aggregation procedure with running window. Setting
 it to <code>TRUE</code> fills empty positions with zeros, which is default.
 <code>FALSE</code> fills empty positions with <code>NA</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.confint=0.3</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.confint=0.3</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 confidence intervalls in confint-type plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>amount=NULL</code>: Numeric scalar. Amount of jittering in xy-type
+<dt><code>amount=NULL</code>:</dt>
+<dd><p>Numeric scalar. Amount of jittering in xy-type
 plots. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.xyplot.html" class="external-link">panel.xyplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>baseline=NULL</code>: Numeric scalar. Y-axis position of an optional
+<dt><code>baseline=NULL</code>:</dt>
+<dd><p>Numeric scalar. Y-axis position of an optional
 baseline. This parameter has a special meaning for mountain-type and
 polygon-type plots, see the 'Details' section in
 <code><a href="DataTrack-class.html">DataTrack</a></code> for more information.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>box.legend=FALSE</code>: Logical scalar. Draw a box around a
+<dt><code>box.legend=FALSE</code>:</dt>
+<dd><p>Logical scalar. Draw a box around a
 legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>box.ratio=1</code>: Numeric scalar. Parameter controlling the
+<dt><code>box.ratio=1</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>box.width=NULL</code>: Numeric scalar. Parameter controlling the
+<dt><code>box.width=NULL</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Logical vector. Draw a line grid under the track
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Logical vector. Draw a line grid under the track
 content.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.legend=0.8</code>: Numeric scalar. The size factor for the
+<dt><code>cex.legend=0.8</code>:</dt>
+<dd><p>Numeric scalar. The size factor for the
 legend text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.sampleNames=NULL</code>: Numeric scalar. The size factor for the
+<dt><code>cex.sampleNames=NULL</code>:</dt>
+<dd><p>Numeric scalar. The size factor for the
 sample names text in heatmap or horizon plots.  Defaults to an automatic
 setting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=0.7</code>: Numeric scalar. The default pixel size for plotting
+<dt><code>cex=0.7</code>:</dt>
+<dd><p>Numeric scalar. The default pixel size for plotting
 symbols.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>coef=1.5</code>: Numeric scalar. Parameter controlling the boxplot
+<dt><code>coef=1.5</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the boxplot
 appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.baseline=NULL</code>: Character scalar. Color for the optional
+<dt><code>col.baseline=NULL</code>:</dt>
+<dd><p>Character scalar. Color for the optional
 baseline, defaults to the setting of <code>col</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.confint=NA</code>: Character vector. Border colors for the
+<dt><code>col.confint=NA</code>:</dt>
+<dd><p>Character vector. Border colors for the
 confidence intervals for confint-type plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.boxplotFrame="#808080"</code>: Character scalar.  Line color of
+<dt><code>col.boxplotFrame="#808080"</code>:</dt>
+<dd><p>Character scalar.  Line color of
 the frame around grouped boxplots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.histogram="#808080"</code>: Character scalar. Line color in
+<dt><code>col.histogram="#808080"</code>:</dt>
+<dd><p>Character scalar. Line color in
 histogram-type plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.horizon=NA</code>: The line color for the segments in the
+<dt><code>col.horizon=NA</code>:</dt>
+<dd><p>The line color for the segments in the
 <code>horizon</code>-type plot. See <code>horizonplot</code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.mountain=NULL</code>: Character scalar. Line color in
+<dt><code>col.mountain=NULL</code>:</dt>
+<dd><p>Character scalar. Line color in
 mountain-type and polygon-type plots, defaults to the setting of
 <code>col</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.sampleNames="white"</code>: Character or integer scalar. The
+<dt><code>col.sampleNames="white"</code>:</dt>
+<dd><p>Character or integer scalar. The
 color used for the sample names in heatmap plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
-"#00ff00", "brown")</code>: Character or integer vector.  The color used for all
+<dt><code>col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
+"#00ff00", "brown")</code>:</dt>
+<dd><p>Character or integer vector.  The color used for all
 line and symbol elements, unless there is a more specific control defined
 elsewhere. Unless <code>groups</code> are specified, only the first color in the
 vector is usually regarded.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=FALSE</code>: Logical scalar. Collapse overlapping ranges
+<dt><code>collapse=FALSE</code>:</dt>
+<dd><p>Logical scalar. Collapse overlapping ranges
 and aggregate the underlying data.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>degree=1</code>: Numeric scalar. Parameter controlling the loess
+<dt><code>degree=1</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the loess
 calculation for smooth and mountain-type plots.  See
 <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>do.out=TRUE</code>: Logical scalar. Parameter controlling the
+<dt><code>do.out=TRUE</code>:</dt>
+<dd><p>Logical scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>evaluation=50</code>: Numeric scalar. Parameter controlling the
+<dt><code>evaluation=50</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the
 loess calculation for smooth and mountain-type plots. See
 <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>factor=0.5</code>: Numeric scalar. Factor to control amount of
+<dt><code>factor=0.5</code>:</dt>
+<dd><p>Numeric scalar. Factor to control amount of
 jittering in xy-type plots. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.xyplot.html" class="external-link">panel.xyplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>family="symmetric"</code>: Character scalar. Parameter controlling
+<dt><code>family="symmetric"</code>:</dt>
+<dd><p>Character scalar. Parameter controlling
 the loess calculation for smooth and mountain-type plots. See
 <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.confint=NULL</code>: Character vector. Fill colors for the
+<dt><code>fill.confint=NULL</code>:</dt>
+<dd><p>Character vector. Fill colors for the
 confidence intervals for confint-type plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.histogram=NULL</code>: Character scalar. Fill color in
+<dt><code>fill.histogram=NULL</code>:</dt>
+<dd><p>Character scalar. Fill color in
 histogram-type plots, defaults to the setting of <code>fill</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC",
-"#468CC8", "#0165B3")</code>: The fill colors for the segments in the
+<dt><code>fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC",
+"#468CC8", "#0165B3")</code>:</dt>
+<dd><p>The fill colors for the segments in the
 <code>horizon</code>-type plot. This should be a vector of length six, where the
 first three entries are the colors for positive changes, and the latter
 three entries are the colors for negative changes. Defaults to a red-blue
 color scheme. See <code>horizonplot</code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.mountain=c("#CCFFFF", "#FFCCFF")</code>: Character vector of
+<dt><code>fill.mountain=c("#CCFFFF", "#FFCCFF")</code>:</dt>
+<dd><p>Character vector of
 length 2. Fill color in mountain-type and polygon-type plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.legend=NULL</code>: Integer or character scalar. The font
+<dt><code>fontface.legend=NULL</code>:</dt>
+<dd><p>Integer or character scalar. The font
 face for the legend text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.legend=NULL</code>: Integer or character scalar. The font
+<dt><code>fontfamily.legend=NULL</code>:</dt>
+<dd><p>Integer or character scalar. The font
 family for the legend text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize.legend=NULL</code>: Numeric scalar. The pixel size for the
+<dt><code>fontsize.legend=NULL</code>:</dt>
+<dd><p>Numeric scalar. The pixel size for the
 legend text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.legend="#808080"</code>: Integer or character scalar. The
+<dt><code>fontcolor.legend="#808080"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font color for the legend text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
-"#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")</code>: Character vector.
+<dt><code>gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
+"#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")</code>:</dt>
+<dd><p>Character vector.
 The base colors for the <code>gradient</code> plotting type or the <code>heatmap</code>
 type with a single group. When plotting heatmaps with more than one group,
 the <code>col</code> parameter can be used to control the group color scheme,
@@ -666,150 +673,150 @@ however the gradient will always be from white to 'col' and thus does not
 offer as much flexibility as this <code>gradient</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>groups=NULL</code>: Vector coercable to a factor.  Optional sample
+<dt><code>groups=NULL</code>:</dt>
+<dd><p>Vector coercable to a factor.  Optional sample
 grouping. See 'Details' section in <code><a href="DataTrack-class.html">DataTrack</a></code> for
 further information.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>horizon.origin=0</code>: The baseline relative to which changes are
+<dt><code>horizon.origin=0</code>:</dt>
+<dd><p>The baseline relative to which changes are
 indicated on the <code>horizon</code>-type plot. See <code>horizonplot</code> for
 details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>horizon.scale=NULL</code>: The scale for each of the segments in the
+<dt><code>horizon.scale=NULL</code>:</dt>
+<dd><p>The scale for each of the segments in the
 <code>horizon</code>-type plot. Defaults to 1/3 of the absolute data range. See
 <code>horizonplot</code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>jitter.x=FALSE</code>: Logical scalar. Toggle on jittering on the x
+<dt><code>jitter.x=FALSE</code>:</dt>
+<dd><p>Logical scalar. Toggle on jittering on the x
 axis in xy-type plots. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.xyplot.html" class="external-link">panel.xyplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>jitter.y=FALSE</code>: Logical scalar. Toggle off jittering on the y
+<dt><code>jitter.y=FALSE</code>:</dt>
+<dd><p>Logical scalar. Toggle off jittering on the y
 axis in xy-type plots. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.xyplot.html" class="external-link">panel.xyplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>levels.fos=NULL</code>: Numeric scalar. Parameter controlling the
+<dt><code>levels.fos=NULL</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>legend=TRUE</code>: Boolean triggering the addition of a legend to
+<dt><code>legend=TRUE</code>:</dt>
+<dd><p>Boolean triggering the addition of a legend to
 the track to indicate groups. This only has an effect if at least two groups
 are present.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight.legend=NULL</code>: Numeric scalar. The line height for
+<dt><code>lineheight.legend=NULL</code>:</dt>
+<dd><p>Numeric scalar. The line height for
 the legend text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.baseline=NULL</code>: Character or numeric scalar.  Line type of
+<dt><code>lty.baseline=NULL</code>:</dt>
+<dd><p>Character or numeric scalar.  Line type of
 the optional baseline, defaults to the setting of <code>lty</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.mountain=NULL</code>: Character or numeric scalar.  Line type in
+<dt><code>lty.mountain=NULL</code>:</dt>
+<dd><p>Character or numeric scalar.  Line type in
 mountain-type and polygon-type plots, defaults to the setting of
 <code>lty</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.baseline=NULL</code>: Numeric scalar. Line width of the optional
+<dt><code>lwd.baseline=NULL</code>:</dt>
+<dd><p>Numeric scalar. Line width of the optional
 baseline, defaults to the setting of <code>lwd</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.mountain=NULL</code>: Numeric scalar. Line width in
+<dt><code>lwd.mountain=NULL</code>:</dt>
+<dd><p>Numeric scalar. Line width in
 mountain-type and polygon-type plots, defaults to the setting of
 <code>lwd</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=0</code>: Numeric scalar. The mimimum distance in pixel
+<dt><code>min.distance=0</code>:</dt>
+<dd><p>Numeric scalar. The mimimum distance in pixel
 below which to collapse ranges.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>na.rm=FALSE</code>: Boolean controlling whether to discard all NA
+<dt><code>na.rm=FALSE</code>:</dt>
+<dd><p>Boolean controlling whether to discard all NA
 values when plotting or to keep empty spaces for NAs</p></dd>
 
 
-<dt></dt>
-<dd><p><code>ncolor=100</code>: Integer scalar. The number of colors for the
+<dt><code>ncolor=100</code>:</dt>
+<dd><p>Integer scalar. The number of colors for the
 'gradient' plotting type</p></dd>
 
 
-<dt></dt>
-<dd><p><code>notch.frac=0.5</code>: Numeric scalar. Parameter controlling the
+<dt><code>notch.frac=0.5</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>notch=FALSE</code>: Logical scalar. Parameter controlling the
+<dt><code>notch=FALSE</code>:</dt>
+<dd><p>Logical scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>pch=20</code>: Integer scalar. The type of glyph used for plotting
+<dt><code>pch=20</code>:</dt>
+<dd><p>Integer scalar. The type of glyph used for plotting
 symbols.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>separator=0</code>: Numeric scalar. Number of pixels used to
+<dt><code>separator=0</code>:</dt>
+<dd><p>Numeric scalar. Number of pixels used to
 separate individual samples in heatmap- and horizon-type plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showColorBar=TRUE</code>: Boolean. Indicate the data range color
+<dt><code>showColorBar=TRUE</code>:</dt>
+<dd><p>Boolean. Indicate the data range color
 mapping in the axis for 'heatmap' or 'gradient' types.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showSampleNames=FALSE</code>: Boolean. Display the names of the
+<dt><code>showSampleNames=FALSE</code>:</dt>
+<dd><p>Boolean. Display the names of the
 individual samples in a heatmap or a horizon plot.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=NULL</code>: Numeric scalar. The relative size of the track.
+<dt><code>size=NULL</code>:</dt>
+<dd><p>Numeric scalar. The relative size of the track.
 Can be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> function. By default the
 size will be set automatically based on the selected plotting type.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>span=0.2</code>: Numeric scalar. Parameter controlling the loess
+<dt><code>span=0.2</code>:</dt>
+<dd><p>Numeric scalar. Parameter controlling the loess
 calculation for smooth and mountain-type plots.  See
 <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>stackedBars=TRUE</code>: Logical scalar. When there are several data
+<dt><code>stackedBars=TRUE</code>:</dt>
+<dd><p>Logical scalar. When there are several data
 groups, draw the histogram-type plots as stacked barplots or grouped side by
 side.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>stats=X[[i]]</code>: Function. Parameter controlling the boxplot
+<dt><code>stats=X[[i]]</code>:</dt>
+<dd><p>Function. Parameter controlling the boxplot
 appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>transformation=NULL</code>: Function. Applied to the data matrix
+<dt><code>transformation=NULL</code>:</dt>
+<dd><p>Function. Applied to the data matrix
 prior to plotting or when calling the <code>score</code> method. The function
 should accept exactly one input argument and its return value needs to be a
 numeric vector which can be coerced back into a data matrix of identical
 dimensionality as the input data.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>type="p"</code>: Character vector. The plot type, one or several in
+<dt><code>type="p"</code>:</dt>
+<dd><p>Character vector. The plot type, one or several in
 <code>p</code>,<code>l</code>, <code>b</code>, <code>a</code>, <code>a_confint</code>, <code>s</code>, <code>g</code>,
 <code>r</code>, <code>S</code>, <code>confint</code>, <code>smooth</code>, <code>histogram</code>,
 <code>mountain</code>, <code>polygon</code>, <code>h</code>, <code>boxplot</code>, <code>gradient</code>,
@@ -818,13 +825,13 @@ dimensionality as the input data.</p></dd>
 plotting types.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>varwidth=FALSE</code>: Logical scalar. Parameter controlling the
+<dt><code>varwidth=FALSE</code>:</dt>
+<dd><p>Logical scalar. Parameter controlling the
 boxplot appearance. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>window=NULL</code>: Numeric or character scalar.  Aggregate the rows
+<dt><code>window=NULL</code>:</dt>
+<dd><p>Numeric or character scalar.  Aggregate the rows
 values of the data matrix to <code>window</code> equally sized slices on the data
 range using the method defined in <code>aggregation</code>. If negative, apply a
 running window of size <code>windowSize</code> using the same aggregation method.
@@ -833,219 +840,219 @@ determine the optimal window size to avoid overplotting, and <code>fixed</code>
 uses fixed-size windows of size <code>windowSize</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>windowSize=NULL</code>: Numeric scalar. The size of the running
+<dt><code>windowSize=NULL</code>:</dt>
+<dd><p>Numeric scalar. The size of the running
 window when the value of <code>window</code> is negative.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>ylim=NULL</code>: Numeric vector of length 2. The range of the
+<dt><code>ylim=NULL</code>:</dt>
+<dd><p>Numeric vector of length 2. The range of the
 y-axis scale.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>yTicksAt=NULL</code>: Numeric vector. The points at which y-axis
+<dt><code>yTicksAt=NULL</code>:</dt>
+<dd><p>Numeric vector. The points at which y-axis
 tick-marks are to be drawn. By default, when <code>NULL</code>, tickmark locations
 are computed.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.title="lightgray"</code>: Integer or character scalar.
+<dt><code>background.title="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="white"</code>: Integer or character scalar. The
+<dt><code>col.border.title="white"</code>:</dt>
+<dd><p>Integer or character scalar. The
 border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.line=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="lightgray"</code>: Integer or character scalar.  Default fill
+<dt><code>fill="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.  Default fill
 color setting for all plotting elements, unless there is a more specific
 control defined elsewhere.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="black"</code>: Integer or character scalar.  The font
+<dt><code>fontcolor="black"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 color for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Integer or character scalar. The font face for
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Integer or character scalar. The font face for
 all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Integer or character scalar.  The font
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 family for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=12</code>: Numeric scalar. The font size for all text,
+<dt><code>fontsize=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for all text,
 unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for all
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for all
 text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty="solid"</code>: Numeric scalar. Default line type setting for
+<dt><code>lty="solid"</code>:</dt>
+<dd><p>Numeric scalar. Default line type setting for
 all plotting elements, unless there is a more specific control defined
 elsewhere.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=1</code>: Numeric scalar. Default line width setting for all
+<dt><code>lwd=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width setting for all
 plotting elements, unless there is a more specific control defined
 elsewhere.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=3</code>: Numeric scalar. The minimum range height in
+<dt><code>min.height=3</code>:</dt>
+<dd><p>Numeric scalar. The minimum range height in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: The rotation angle for all text unless a more
+<dt><code>rotation=0</code>:</dt>
+<dd><p>The rotation angle for all text unless a more
 specific definiton exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=TRUE</code>: Boolean controlling whether to plot a title
+<dt><code>showTitle=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a title
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
@@ -1053,8 +1060,8 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -1062,271 +1069,272 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </dl></dd>
 
 
-<dt>IdeogramTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>background.title="transparent"</code>: Character scalar.  The
+<dt>IdeogramTrack:</dt>
+<dd>
+
+<dl><dt><code>background.title="transparent"</code>:</dt>
+<dd><p>Character scalar.  The
 background color for the title panel. Defaults to omit the background.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>bevel=0.45</code>: Numeric scalar, between 0 and 1.  The level of
+<dt><code>bevel=0.45</code>:</dt>
+<dd><p>Numeric scalar, between 0 and 1.  The level of
 smoothness for the two ends of the ideogram.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>centromereShape="triangle"</code>: Character scalar.  The shape of
+<dt><code>centromereShape="triangle"</code>:</dt>
+<dd><p>Character scalar.  The shape of
 the centromere. Only "triangle" or "circle" is accepted. Default to
 "triangle"</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.bands=0.7</code>: Numeric scalar. The font expansion factor for
+<dt><code>cex.bands=0.7</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for
 the chromosome band identifier text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=0.8</code>: Numeric scalar. The overall font expansion factor
+<dt><code>cex=0.8</code>:</dt>
+<dd><p>Numeric scalar. The overall font expansion factor
 for the chromosome name text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col="red"</code>: Character scalar. The border color used for the
+<dt><code>col="red"</code>:</dt>
+<dd><p>Character scalar. The border color used for the
 highlighting of the currently displayed genomic region.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="transparent"</code>: Integer or character scalar.
+<dt><code>col.border.title="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="#FFE3E6"</code>: Character scalar. The fill color used for the
+<dt><code>fill="#FFE3E6"</code>:</dt>
+<dd><p>Character scalar. The fill color used for the
 highlighting of the currently displayed genomic region.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Character scalar. The font face for the
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Character scalar. The font face for the
 chromosome name text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Character scalar. The font family for the
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Character scalar. The font family for the
 chromosome name text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="#808080"</code>: Character scalar. The font color for the
+<dt><code>fontcolor="#808080"</code>:</dt>
+<dd><p>Character scalar. The font color for the
 chromosome name text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=10</code>: Numeric scalar. The font size for the chromosome
+<dt><code>fontsize=10</code>:</dt>
+<dd><p>Numeric scalar. The font size for the chromosome
 name text.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>outline=FALSE</code>: Logical scalar. Add borders to the individual
+<dt><code>outline=FALSE</code>:</dt>
+<dd><p>Logical scalar. Add borders to the individual
 chromosome staining bands.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showBandId=FALSE</code>: Logical scalar. Show the identifier for the
+<dt><code>showBandId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Show the identifier for the
 chromosome bands if there is space for it.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty=1</code>: Character or integer scalar. The line type used for
+<dt><code>lty=1</code>:</dt>
+<dd><p>Character or integer scalar. The line type used for
 the highlighting of the currently displayed genomic region.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=1</code>: Numeric scalar. The line width used for the
+<dt><code>lwd=1</code>:</dt>
+<dd><p>Numeric scalar. The line width used for the
 highlighting of the currently displayed genomic region.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showId=TRUE</code>: Logical scalar. Indicate the chromosome name
+<dt><code>showId=TRUE</code>:</dt>
+<dd><p>Logical scalar. Indicate the chromosome name
 next to the ideogram.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=FALSE</code>: Logical scalar. Plot a title panel. Defaults
+<dt><code>showTitle=FALSE</code>:</dt>
+<dd><p>Logical scalar. Plot a title panel. Defaults
 to omit the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=NULL</code>: Numeric scalar. The relative size of the track.
+<dt><code>size=NULL</code>:</dt>
+<dd><p>Numeric scalar. The relative size of the track.
 Defaults to automatic size setting. Can also be overridden in the
 <code><a href="plotTracks.html">plotTracks</a></code> function.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.line=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=TRUE</code>: Boolean controlling whether to collapse the
+<dt><code>collapse=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to collapse the
 content of the track to accomodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Boolean, switching on/off the plotting of a
 grid.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for all
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for all
 text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=1</code>: Numeric scalar. The minimum pixel distance
+<dt><code>min.distance=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum pixel distance
 before collapsing range items, only if <code>collapse==TRUE</code>. See
 <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=3</code>: Numeric scalar. The minimum range height in
+<dt><code>min.height=3</code>:</dt>
+<dd><p>Numeric scalar. The minimum range height in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: The rotation angle for all text unless a more
+<dt><code>rotation=0</code>:</dt>
+<dd><p>The rotation angle for all text unless a more
 specific definiton exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -1334,178 +1342,179 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </dl></dd>
 
 
-<dt>AnnotationTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>arrowHeadWidth=30</code>: Numeric scalar. The width of the arrow
+<dt>AnnotationTrack:</dt>
+<dd>
+
+<dl><dt><code>arrowHeadWidth=30</code>:</dt>
+<dd><p>Numeric scalar. The width of the arrow
 head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>arrowHeadMaxWidth=40</code>: Numeric scalar. The maximum width of
+<dt><code>arrowHeadMaxWidth=40</code>:</dt>
+<dd><p>Numeric scalar. The maximum width of
 the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion factor for
+<dt><code>cex.group=0.6</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for
 the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor for item
+<dt><code>cex=1</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for item
 identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line="darkgray"</code>: Character scalar. The color used for
+<dt><code>col.line="darkgray"</code>:</dt>
+<dd><p>Character scalar. The color used for
 connecting lines between grouped items. Defaults to a light gray, but if set
 to <code>NULL</code> the same color as for the first item in the group is used.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col="transparent"</code>: Character or integer scalar.  The border
+<dt><code>col="transparent"</code>:</dt>
+<dd><p>Character or integer scalar.  The border
 color for all track items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>featureAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>featureAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information to the individual track elements. This can be a value in
 <code>id</code>, <code>group</code> or <code>feature</code>.  Defaults to <code>id</code>. Only
 works if <code>showFeatureId</code> is not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="lightblue"</code>: Character or integer scalar.  The fill
+<dt><code>fill="lightblue"</code>:</dt>
+<dd><p>Character or integer scalar.  The fill
 color for untyped items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.group="sans"</code>: Character scalar. The font family
+<dt><code>fontfamily.group="sans"</code>:</dt>
+<dd><p>Character scalar. The font family
 for the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.group="#808080"</code>: Character or integer scalar. The
+<dt><code>fontcolor.group="#808080"</code>:</dt>
+<dd><p>Character or integer scalar. The
 font color for the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.item="white"</code>: Character or integer scalar. The font
+<dt><code>fontcolor.item="white"</code>:</dt>
+<dd><p>Character or integer scalar. The font
 color for item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.group=2</code>: Numeric scalar. The font face for the
+<dt><code>fontface.group=2</code>:</dt>
+<dd><p>Numeric scalar. The font face for the
 group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize.group=12</code>: Numeric scalar. The font size for the
+<dt><code>fontsize.group=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for the
 group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>groupAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>groupAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information as group labels. This can be a value in <code>id</code>, <code>group</code>
 or <code>feature</code>. Defaults to <code>group</code>. Only works if <code>showId</code> is
 not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>just.group="left"</code>: Character scalar. the justification of
+<dt><code>just.group="left"</code>:</dt>
+<dd><p>Character scalar. the justification of
 group labels. Either <code>left</code>, <code>right</code>, <code>above</code> or
 <code>below</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lex=1</code>: Numeric scalar. The line expansion factor for all
+<dt><code>lex=1</code>:</dt>
+<dd><p>Numeric scalar. The line expansion factor for all
 track items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for item
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for item
 identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty="solid"</code>: Character or integer scalar. The line type for
+<dt><code>lty="solid"</code>:</dt>
+<dd><p>Character or integer scalar. The line type for
 all track items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=1</code>: Integer scalar. The line width for all track items.
+<dt><code>lwd=1</code>:</dt>
+<dd><p>Integer scalar. The line width for all track items.
 This is also used to connect grouped items. See <code><a href="grouping.html">grouping</a></code> for
 details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>mergeGroups=FALSE</code>: Logical scalar. Merge fully overlapping
+<dt><code>mergeGroups=FALSE</code>:</dt>
+<dd><p>Logical scalar. Merge fully overlapping
 groups if <code>collapse==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=3</code>: Numeric scalar. The minimum range height in
+<dt><code>min.height=3</code>:</dt>
+<dd><p>Numeric scalar. The minimum range height in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details. For feathered
 bars indicating the strandedness of grouped items this also controls the
 height of the arrow feathers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: Numeric scalar. The degree of text rotation for
+<dt><code>rotation=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation for
 item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.group=0</code>: Numeric scalar. The degree of text rotation
+<dt><code>rotation.group=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation
 for group labels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.item=0</code>: Numeric scalar. The degree of text rotation
+<dt><code>rotation.item=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation
 for item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>shape="arrow"</code>: Character scalar. The shape in which to
+<dt><code>shape="arrow"</code>:</dt>
+<dd><p>Character scalar. The shape in which to
 display the track items. Currently only <code>box</code>, <code>arrow</code>,
 <code>fixedArrow</code>, <code>ellipse</code>, and <code>smallArrow</code> are implemented.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showFeatureId=FALSE</code>: Logical scalar. Control whether to plot
+<dt><code>showFeatureId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Control whether to plot
 the individual track item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showId=FALSE</code>: Logical scalar. Control whether to annotate
+<dt><code>showId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Control whether to annotate
 individual groups.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showOverplotting=FALSE</code>: Logical scalar. Use a color gradient
+<dt><code>showOverplotting=FALSE</code>:</dt>
+<dd><p>Logical scalar. Use a color gradient
 to show the amount of overplotting for collapsed items. This implies that
 <code>collapse==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=1</code>: Numeric scalar. The relative size of the track. Can
+<dt><code>size=1</code>:</dt>
+<dd><p>Numeric scalar. The relative size of the track. Can
 be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> function.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.  Controls the
+<dl><dt><code>stackHeight=0.75</code>:</dt>
+<dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
 proportion of the total available space for the stack that is used to draw
 the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -1514,181 +1523,181 @@ quarter of the available space each is used for spacing above and below the
 glyph. Defaults to 0.75.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse the y-ordering
+<dt><code>reverseStacking=FALSE</code>:</dt>
+<dd><p>Logical flag. Reverse the y-ordering
 of stacked items. I.e., features that are plotted on the bottom-most stacks
 will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.title="lightgray"</code>: Integer or character scalar.
+<dt><code>background.title="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="white"</code>: Integer or character scalar. The
+<dt><code>col.border.title="white"</code>:</dt>
+<dd><p>Integer or character scalar. The
 border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=TRUE</code>: Boolean controlling whether to collapse the
+<dt><code>collapse=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to collapse the
 content of the track to accomodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="black"</code>: Integer or character scalar.  The font
+<dt><code>fontcolor="black"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 color for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Integer or character scalar. The font face for
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Integer or character scalar. The font face for
 all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Integer or character scalar.  The font
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 family for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=12</code>: Numeric scalar. The font size for all text,
+<dt><code>fontsize=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for all text,
 unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Boolean, switching on/off the plotting of a
 grid.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=1</code>: Numeric scalar. The minimum pixel distance
+<dt><code>min.distance=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum pixel distance
 before collapsing range items, only if <code>collapse==TRUE</code>. See
 <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=TRUE</code>: Boolean controlling whether to plot a title
+<dt><code>showTitle=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a title
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
@@ -1696,8 +1705,8 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -1705,26 +1714,27 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </dl></dd>
 
 
-<dt>GeneRegionTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of the arrow
+<dt>GeneRegionTrack:</dt>
+<dd>
+
+<dl><dt><code>arrowHeadWidth=10</code>:</dt>
+<dd><p>Numeric scalar. The width of the arrow
 head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>arrowHeadMaxWidth=20</code>: Numeric scalar. The maximum width of
+<dt><code>arrowHeadMaxWidth=20</code>:</dt>
+<dd><p>Numeric scalar. The maximum width of
 the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col=NULL</code>: Character or integer scalar. The border color for
+<dt><code>col=NULL</code>:</dt>
+<dd><p>Character or integer scalar. The border color for
 all track items. Defaults to using the same color as in <code>fill</code>, also
 taking into account different track <code>features</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapseTranscripts=FALSE</code>: Logical or character scalar. Can
+<dt><code>collapseTranscripts=FALSE</code>:</dt>
+<dd><p>Logical or character scalar. Can
 be one in <code>gene</code>, <code>longest</code>, <code>shortest</code> or <code>meta</code>. Merge
 all transcripts of the same gene into one single gene model. In the case of
 <code>gene</code> (or <code>TRUE</code>), this will only keep the start location of the
@@ -1735,48 +1745,48 @@ the union of all exons is formed (essentially identical to the operation
 <code>reduce(geneModel)</code>).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>exonAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>exonAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information to the individual exon models. This can be a value in
 <code>symbol</code>, <code>gene</code>, <code>transcript</code>, <code>exon</code> or
 <code>feature</code>. Defaults to <code>exon</code>. Only works if <code>showExonId</code> is
 not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="orange"</code>: Character or integer scalar. The fill color
+<dt><code>fill="orange"</code>:</dt>
+<dd><p>Character or integer scalar. The fill color
 for untyped items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=0</code>: Numeric scalar. The minimum pixel distance
+<dt><code>min.distance=0</code>:</dt>
+<dd><p>Numeric scalar. The minimum pixel distance
 before collapsing range items, only if <code>collapse==TRUE</code>. See
 <code><a href="collapsing.html">collapsing</a></code> for details. Note that a value larger than 0 may
 lead to UTR regions being merged to CDS regions, which in most cases is not
 particularly useful.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>shape=c("smallArrow", "box")</code>: Character scalar.  The shape in
+<dt><code>shape=c("smallArrow", "box")</code>:</dt>
+<dd><p>Character scalar.  The shape in
 which to display the track items. Currently only <code>box</code>, <code>arrow</code>,
 <code>ellipse</code>, and <code>smallArrow</code> are implemented.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showExonId=NULL</code>: Logical scalar. Control whether to plot the
+<dt><code>showExonId=NULL</code>:</dt>
+<dd><p>Logical scalar. Control whether to plot the
 individual exon identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>: Character
+<dt><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
+"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>:</dt>
+<dd><p>Character
 vector. A listing of feature types that should be drawn with thin boxes.
 Typically those are non-coding elements.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>transcriptAnnotation=NULL</code>: Character scalar.  Add annotation
+<dt><code>transcriptAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar.  Add annotation
 information as transcript labels. This can be a value in <code>symbol</code>,
 <code>gene</code>, <code>transcript</code>, <code>exon</code> or <code>feature</code>. Defaults to
 <code>symbol</code>.  Only works if <code>showId</code> is not <code>FALSE</code>.</p></dd>
@@ -1784,149 +1794,149 @@ information as transcript labels. This can be a value in <code>symbol</code>,
 
 
 </dl><p><b><em>Inherited from class AnnotationTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion factor for
+<dl><dt><code>cex.group=0.6</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for
 the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor for item
+<dt><code>cex=1</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for item
 identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line="darkgray"</code>: Character scalar. The color used for
+<dt><code>col.line="darkgray"</code>:</dt>
+<dd><p>Character scalar. The color used for
 connecting lines between grouped items. Defaults to a light gray, but if set
 to <code>NULL</code> the same color as for the first item in the group is used.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>featureAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>featureAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information to the individual track elements. This can be a value in
 <code>id</code>, <code>group</code> or <code>feature</code>.  Defaults to <code>id</code>. Only
 works if <code>showFeatureId</code> is not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.group="sans"</code>: Character scalar. The font family
+<dt><code>fontfamily.group="sans"</code>:</dt>
+<dd><p>Character scalar. The font family
 for the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.group="#808080"</code>: Character or integer scalar. The
+<dt><code>fontcolor.group="#808080"</code>:</dt>
+<dd><p>Character or integer scalar. The
 font color for the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.item="white"</code>: Character or integer scalar. The font
+<dt><code>fontcolor.item="white"</code>:</dt>
+<dd><p>Character or integer scalar. The font
 color for item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.group=2</code>: Numeric scalar. The font face for the
+<dt><code>fontface.group=2</code>:</dt>
+<dd><p>Numeric scalar. The font face for the
 group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize.group=12</code>: Numeric scalar. The font size for the
+<dt><code>fontsize.group=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for the
 group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>groupAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>groupAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information as group labels. This can be a value in <code>id</code>, <code>group</code>
 or <code>feature</code>. Defaults to <code>group</code>. Only works if <code>showId</code> is
 not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>just.group="left"</code>: Character scalar. the justification of
+<dt><code>just.group="left"</code>:</dt>
+<dd><p>Character scalar. the justification of
 group labels. Either <code>left</code>, <code>right</code>, <code>above</code> or
 <code>below</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lex=1</code>: Numeric scalar. The line expansion factor for all
+<dt><code>lex=1</code>:</dt>
+<dd><p>Numeric scalar. The line expansion factor for all
 track items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for item
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for item
 identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty="solid"</code>: Character or integer scalar. The line type for
+<dt><code>lty="solid"</code>:</dt>
+<dd><p>Character or integer scalar. The line type for
 all track items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=1</code>: Integer scalar. The line width for all track items.
+<dt><code>lwd=1</code>:</dt>
+<dd><p>Integer scalar. The line width for all track items.
 This is also used to connect grouped items. See <code><a href="grouping.html">grouping</a></code> for
 details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>mergeGroups=FALSE</code>: Logical scalar. Merge fully overlapping
+<dt><code>mergeGroups=FALSE</code>:</dt>
+<dd><p>Logical scalar. Merge fully overlapping
 groups if <code>collapse==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=3</code>: Numeric scalar. The minimum range height in
+<dt><code>min.height=3</code>:</dt>
+<dd><p>Numeric scalar. The minimum range height in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details. For feathered
 bars indicating the strandedness of grouped items this also controls the
 height of the arrow feathers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: Numeric scalar. The degree of text rotation for
+<dt><code>rotation=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation for
 item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.group=0</code>: Numeric scalar. The degree of text rotation
+<dt><code>rotation.group=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation
 for group labels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.item=0</code>: Numeric scalar. The degree of text rotation
+<dt><code>rotation.item=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation
 for item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showFeatureId=FALSE</code>: Logical scalar. Control whether to plot
+<dt><code>showFeatureId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Control whether to plot
 the individual track item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showId=FALSE</code>: Logical scalar. Control whether to annotate
+<dt><code>showId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Control whether to annotate
 individual groups.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showOverplotting=FALSE</code>: Logical scalar. Use a color gradient
+<dt><code>showOverplotting=FALSE</code>:</dt>
+<dd><p>Logical scalar. Use a color gradient
 to show the amount of overplotting for collapsed items. This implies that
 <code>collapse==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=1</code>: Numeric scalar. The relative size of the track. Can
+<dt><code>size=1</code>:</dt>
+<dd><p>Numeric scalar. The relative size of the track. Can
 be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> function.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.  Controls the
+<dl><dt><code>stackHeight=0.75</code>:</dt>
+<dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
 proportion of the total available space for the stack that is used to draw
 the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -1935,175 +1945,175 @@ quarter of the available space each is used for spacing above and below the
 glyph. Defaults to 0.75.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse the y-ordering
+<dt><code>reverseStacking=FALSE</code>:</dt>
+<dd><p>Logical flag. Reverse the y-ordering
 of stacked items. I.e., features that are plotted on the bottom-most stacks
 will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.title="lightgray"</code>: Integer or character scalar.
+<dt><code>background.title="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="white"</code>: Integer or character scalar. The
+<dt><code>col.border.title="white"</code>:</dt>
+<dd><p>Integer or character scalar. The
 border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=TRUE</code>: Boolean controlling whether to collapse the
+<dt><code>collapse=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to collapse the
 content of the track to accomodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="black"</code>: Integer or character scalar.  The font
+<dt><code>fontcolor="black"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 color for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Integer or character scalar. The font face for
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Integer or character scalar. The font face for
 all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Integer or character scalar.  The font
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 family for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=12</code>: Numeric scalar. The font size for all text,
+<dt><code>fontsize=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for all text,
 unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Boolean, switching on/off the plotting of a
 grid.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=TRUE</code>: Boolean controlling whether to plot a title
+<dt><code>showTitle=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a title
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
@@ -2111,8 +2121,8 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -2120,158 +2130,159 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </dl></dd>
 
 
-<dt>BiomartGeneRegionTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>C_segment="burlywood4"</code>: Character or integer scalar. Fill
+<dt>BiomartGeneRegionTrack:</dt>
+<dd>
+
+<dl><dt><code>C_segment="burlywood4"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'C_segment'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>D_segment="lightblue"</code>: Character or integer scalar. Fill
+<dt><code>D_segment="lightblue"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'C_segment'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>J_segment="dodgerblue2"</code>: Character or integer scalar. Fill
+<dt><code>J_segment="dodgerblue2"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'C_segment'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>Mt_rRNA="yellow"</code>: Character or integer scalar.  Fill color
+<dt><code>Mt_rRNA="yellow"</code>:</dt>
+<dd><p>Character or integer scalar.  Fill color
 for annotation objects of type 'Mt_rRNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>Mt_tRNA="darkgoldenrod"</code>: Character or integer scalar. Fill
+<dt><code>Mt_tRNA="darkgoldenrod"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'Mt_tRNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>Mt_tRNA_pseudogene="darkgoldenrod1"</code>: Character or integer
+<dt><code>Mt_tRNA_pseudogene="darkgoldenrod1"</code>:</dt>
+<dd><p>Character or integer
 scalar. Fill color for annotation objects of type 'Mt_tRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>V_segment="aquamarine"</code>: Character or integer scalar. Fill
+<dt><code>V_segment="aquamarine"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'V_segment'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>miRNA="cornflowerblue"</code>: Character or integer scalar. Fill
+<dt><code>miRNA="cornflowerblue"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'L_segment'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>miRNA_pseudogene="cornsilk"</code>: Character or integer scalar.
+<dt><code>miRNA_pseudogene="cornsilk"</code>:</dt>
+<dd><p>Character or integer scalar.
 Fill color for annotation objects of type 'miRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>misc_RNA="cornsilk3"</code>: Character or integer scalar. Fill color
+<dt><code>misc_RNA="cornsilk3"</code>:</dt>
+<dd><p>Character or integer scalar. Fill color
 for annotation objects of type 'misc_RNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>misc_RNA_pseudogene="cornsilk4"</code>: Character or integer scalar.
+<dt><code>misc_RNA_pseudogene="cornsilk4"</code>:</dt>
+<dd><p>Character or integer scalar.
 Fill color for annotation objects of type 'misc_RNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>protein_coding="#FFD58A"</code>: Character or integer scalar. Fill
+<dt><code>protein_coding="#FFD58A"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'protein_coding'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>pseudogene="brown1"</code>: Character or integer scalar.  Fill color
+<dt><code>pseudogene="brown1"</code>:</dt>
+<dd><p>Character or integer scalar.  Fill color
 for annotation objects of type 'pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rRNA="darkolivegreen1"</code>: Character or integer scalar. Fill
+<dt><code>rRNA="darkolivegreen1"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'rRNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rRNA_pseudogene="darkolivegreen"</code>: Character or integer
+<dt><code>rRNA_pseudogene="darkolivegreen"</code>:</dt>
+<dd><p>Character or integer
 scalar. Fill color for annotation objects of type 'rRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>retrotransposed="blueviolet"</code>: Character or integer scalar.
+<dt><code>retrotransposed="blueviolet"</code>:</dt>
+<dd><p>Character or integer scalar.
 Fill color for annotation objects of type 'retrotransposed'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>scRNA="gold4"</code>: Character or integer scalar. Fill color for
+<dt><code>scRNA="gold4"</code>:</dt>
+<dd><p>Character or integer scalar. Fill color for
 annotation objects of type 'scRNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>scRNA_pseudogene="darkorange2"</code>: Character or integer scalar.
+<dt><code>scRNA_pseudogene="darkorange2"</code>:</dt>
+<dd><p>Character or integer scalar.
 Fill color for annotation objects of type 'scRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>snRNA="coral"</code>: Character or integer scalar. Fill color for
+<dt><code>snRNA="coral"</code>:</dt>
+<dd><p>Character or integer scalar. Fill color for
 annotation objects of type 'snRNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>snRNA_pseudogene="coral3"</code>: Character or integer scalar. Fill
+<dt><code>snRNA_pseudogene="coral3"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'snRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>snoRNA="cyan"</code>: Character or integer scalar. Fill color for
+<dt><code>snoRNA="cyan"</code>:</dt>
+<dd><p>Character or integer scalar. Fill color for
 annotation objects of type 'snoRNA'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>snoRNA_pseudogene="cyan2"</code>: Character or integer scalar. Fill
+<dt><code>snoRNA_pseudogene="cyan2"</code>:</dt>
+<dd><p>Character or integer scalar. Fill
 color for annotation objects of type 'snoRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>tRNA_pseudogene="antiquewhite3"</code>: Character or integer scalar.
+<dt><code>tRNA_pseudogene="antiquewhite3"</code>:</dt>
+<dd><p>Character or integer scalar.
 Fill color for annotation objects of type 'tRNA_pseudogene'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>utr3="#FFD58A"</code>: Character or integer scalar.  Fill color for
+<dt><code>utr3="#FFD58A"</code>:</dt>
+<dd><p>Character or integer scalar.  Fill color for
 annotation objects of type 'utr3'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>utr5="#FFD58A"</code>: Character or integer scalar.  Fill color for
+<dt><code>utr5="#FFD58A"</code>:</dt>
+<dd><p>Character or integer scalar.  Fill color for
 annotation objects of type 'utr5'.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>verbose=FALSE</code>: Logical scalar. Report data loading events
+<dt><code>verbose=FALSE</code>:</dt>
+<dd><p>Logical scalar. Report data loading events
 from Bioamart or retrieval from cache.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GeneRegionTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>arrowHeadWidth=10</code>: Numeric scalar. The width of the arrow
+<dl><dt><code>arrowHeadWidth=10</code>:</dt>
+<dd><p>Numeric scalar. The width of the arrow
 head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>arrowHeadMaxWidth=20</code>: Numeric scalar. The maximum width of
+<dt><code>arrowHeadMaxWidth=20</code>:</dt>
+<dd><p>Numeric scalar. The maximum width of
 the arrow head in pixels if <code>shape</code> is <code>arrow</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col=NULL</code>: Character or integer scalar. The border color for
+<dt><code>col=NULL</code>:</dt>
+<dd><p>Character or integer scalar. The border color for
 all track items. Defaults to using the same color as in <code>fill</code>, also
 taking into account different track <code>features</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapseTranscripts=FALSE</code>: Logical or character scalar. Can
+<dt><code>collapseTranscripts=FALSE</code>:</dt>
+<dd><p>Logical or character scalar. Can
 be one in <code>gene</code>, <code>longest</code>, <code>shortest</code> or <code>meta</code>. Merge
 all transcripts of the same gene into one single gene model. In the case of
 <code>gene</code> (or <code>TRUE</code>), this will only keep the start location of the
@@ -2282,48 +2293,48 @@ the union of all exons is formed (essentially identical to the operation
 <code>reduce(geneModel)</code>).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>exonAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>exonAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information to the individual exon models. This can be a value in
 <code>symbol</code>, <code>gene</code>, <code>transcript</code>, <code>exon</code> or
 <code>feature</code>. Defaults to <code>exon</code>. Only works if <code>showExonId</code> is
 not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="orange"</code>: Character or integer scalar. The fill color
+<dt><code>fill="orange"</code>:</dt>
+<dd><p>Character or integer scalar. The fill color
 for untyped items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=0</code>: Numeric scalar. The minimum pixel distance
+<dt><code>min.distance=0</code>:</dt>
+<dd><p>Numeric scalar. The minimum pixel distance
 before collapsing range items, only if <code>collapse==TRUE</code>. See
 <code><a href="collapsing.html">collapsing</a></code> for details. Note that a value larger than 0 may
 lead to UTR regions being merged to CDS regions, which in most cases is not
 particularly useful.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>shape=c("smallArrow", "box")</code>: Character scalar.  The shape in
+<dt><code>shape=c("smallArrow", "box")</code>:</dt>
+<dd><p>Character scalar.  The shape in
 which to display the track items. Currently only <code>box</code>, <code>arrow</code>,
 <code>ellipse</code>, and <code>smallArrow</code> are implemented.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showExonId=NULL</code>: Logical scalar. Control whether to plot the
+<dt><code>showExonId=NULL</code>:</dt>
+<dd><p>Logical scalar. Control whether to plot the
 individual exon identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>: Character
+<dt><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
+"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>:</dt>
+<dd><p>Character
 vector. A listing of feature types that should be drawn with thin boxes.
 Typically those are non-coding elements.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>transcriptAnnotation=NULL</code>: Character scalar.  Add annotation
+<dt><code>transcriptAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar.  Add annotation
 information as transcript labels. This can be a value in <code>symbol</code>,
 <code>gene</code>, <code>transcript</code>, <code>exon</code> or <code>feature</code>. Defaults to
 <code>symbol</code>.  Only works if <code>showId</code> is not <code>FALSE</code>.</p></dd>
@@ -2331,149 +2342,149 @@ information as transcript labels. This can be a value in <code>symbol</code>,
 
 
 </dl><p><b><em>Inherited from class AnnotationTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>cex.group=0.6</code>: Numeric scalar. The font expansion factor for
+<dl><dt><code>cex.group=0.6</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for
 the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=1</code>: Numeric scalar. The font expansion factor for item
+<dt><code>cex=1</code>:</dt>
+<dd><p>Numeric scalar. The font expansion factor for item
 identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line="darkgray"</code>: Character scalar. The color used for
+<dt><code>col.line="darkgray"</code>:</dt>
+<dd><p>Character scalar. The color used for
 connecting lines between grouped items. Defaults to a light gray, but if set
 to <code>NULL</code> the same color as for the first item in the group is used.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>featureAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>featureAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information to the individual track elements. This can be a value in
 <code>id</code>, <code>group</code> or <code>feature</code>.  Defaults to <code>id</code>. Only
 works if <code>showFeatureId</code> is not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.group="sans"</code>: Character scalar. The font family
+<dt><code>fontfamily.group="sans"</code>:</dt>
+<dd><p>Character scalar. The font family
 for the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.group="#808080"</code>: Character or integer scalar. The
+<dt><code>fontcolor.group="#808080"</code>:</dt>
+<dd><p>Character or integer scalar. The
 font color for the group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor.item="white"</code>: Character or integer scalar. The font
+<dt><code>fontcolor.item="white"</code>:</dt>
+<dd><p>Character or integer scalar. The font
 color for item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.group=2</code>: Numeric scalar. The font face for the
+<dt><code>fontface.group=2</code>:</dt>
+<dd><p>Numeric scalar. The font face for the
 group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize.group=12</code>: Numeric scalar. The font size for the
+<dt><code>fontsize.group=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for the
 group-level annotation.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>groupAnnotation=NULL</code>: Character scalar. Add annotation
+<dt><code>groupAnnotation=NULL</code>:</dt>
+<dd><p>Character scalar. Add annotation
 information as group labels. This can be a value in <code>id</code>, <code>group</code>
 or <code>feature</code>. Defaults to <code>group</code>. Only works if <code>showId</code> is
 not <code>FALSE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>just.group="left"</code>: Character scalar. the justification of
+<dt><code>just.group="left"</code>:</dt>
+<dd><p>Character scalar. the justification of
 group labels. Either <code>left</code>, <code>right</code>, <code>above</code> or
 <code>below</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lex=1</code>: Numeric scalar. The line expansion factor for all
+<dt><code>lex=1</code>:</dt>
+<dd><p>Numeric scalar. The line expansion factor for all
 track items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for item
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for item
 identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty="solid"</code>: Character or integer scalar. The line type for
+<dt><code>lty="solid"</code>:</dt>
+<dd><p>Character or integer scalar. The line type for
 all track items. This is also used to connect grouped items. See
 <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=1</code>: Integer scalar. The line width for all track items.
+<dt><code>lwd=1</code>:</dt>
+<dd><p>Integer scalar. The line width for all track items.
 This is also used to connect grouped items. See <code><a href="grouping.html">grouping</a></code> for
 details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>mergeGroups=FALSE</code>: Logical scalar. Merge fully overlapping
+<dt><code>mergeGroups=FALSE</code>:</dt>
+<dd><p>Logical scalar. Merge fully overlapping
 groups if <code>collapse==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=3</code>: Numeric scalar. The minimum range height in
+<dt><code>min.height=3</code>:</dt>
+<dd><p>Numeric scalar. The minimum range height in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details. For feathered
 bars indicating the strandedness of grouped items this also controls the
 height of the arrow feathers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: Numeric scalar. The degree of text rotation for
+<dt><code>rotation=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation for
 item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.group=0</code>: Numeric scalar. The degree of text rotation
+<dt><code>rotation.group=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation
 for group labels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.item=0</code>: Numeric scalar. The degree of text rotation
+<dt><code>rotation.item=0</code>:</dt>
+<dd><p>Numeric scalar. The degree of text rotation
 for item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showFeatureId=FALSE</code>: Logical scalar. Control whether to plot
+<dt><code>showFeatureId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Control whether to plot
 the individual track item identifiers.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showId=FALSE</code>: Logical scalar. Control whether to annotate
+<dt><code>showId=FALSE</code>:</dt>
+<dd><p>Logical scalar. Control whether to annotate
 individual groups.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showOverplotting=FALSE</code>: Logical scalar. Use a color gradient
+<dt><code>showOverplotting=FALSE</code>:</dt>
+<dd><p>Logical scalar. Use a color gradient
 to show the amount of overplotting for collapsed items. This implies that
 <code>collapse==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=1</code>: Numeric scalar. The relative size of the track. Can
+<dt><code>size=1</code>:</dt>
+<dd><p>Numeric scalar. The relative size of the track. Can
 be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> function.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.  Controls the
+<dl><dt><code>stackHeight=0.75</code>:</dt>
+<dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
 proportion of the total available space for the stack that is used to draw
 the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -2482,175 +2493,175 @@ quarter of the available space each is used for spacing above and below the
 glyph. Defaults to 0.75.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse the y-ordering
+<dt><code>reverseStacking=FALSE</code>:</dt>
+<dd><p>Logical flag. Reverse the y-ordering
 of stacked items. I.e., features that are plotted on the bottom-most stacks
 will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.title="lightgray"</code>: Integer or character scalar.
+<dt><code>background.title="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="white"</code>: Integer or character scalar. The
+<dt><code>col.border.title="white"</code>:</dt>
+<dd><p>Integer or character scalar. The
 border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=TRUE</code>: Boolean controlling whether to collapse the
+<dt><code>collapse=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to collapse the
 content of the track to accomodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="black"</code>: Integer or character scalar.  The font
+<dt><code>fontcolor="black"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 color for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Integer or character scalar. The font face for
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Integer or character scalar. The font face for
 all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Integer or character scalar.  The font
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 family for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=12</code>: Numeric scalar. The font size for all text,
+<dt><code>fontsize=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for all text,
 unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Boolean, switching on/off the plotting of a
 grid.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=TRUE</code>: Boolean controlling whether to plot a title
+<dt><code>showTitle=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a title
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
@@ -2658,8 +2669,8 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -2667,287 +2678,288 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </dl></dd>
 
 
-<dt>AlignmentsTrack</dt>
-<dd><p>:</p>
-<dl><dt></dt>
-<dd><p><code>alpha.reads=0.5</code>: Numeric scalar between 0 and 1. The
+<dt>AlignmentsTrack:</dt>
+<dd>
+
+<dl><dt><code>alpha.reads=0.5</code>:</dt>
+<dd><p>Numeric scalar between 0 and 1. The
 transparency of the individual read icons. Can be used to indicate
 overlapping regions in read pairs. Only on supported devices.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.mismatch=1</code>: Numeric scalar between 0 and 1. The
+<dt><code>alpha.mismatch=1</code>:</dt>
+<dd><p>Numeric scalar between 0 and 1. The
 transparency of the mismatch base information.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex=0.7</code>: Numeric Scalar. The global character expansion
+<dt><code>cex=0.7</code>:</dt>
+<dd><p>Numeric Scalar. The global character expansion
 factor.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.mismatch=NULL</code>: Numeric Scalar. The character expansion
+<dt><code>cex.mismatch=NULL</code>:</dt>
+<dd><p>Numeric Scalar. The character expansion
 factor for the mismatch base letters.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.coverage=NULL</code>: Integer or character scalar.  The line
+<dt><code>col.coverage=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The line
 color for the coverage profile.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.gap="#808080"</code>: Integer or character scalar.  The color of
+<dt><code>col.gap="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  The color of
 the line that is bridging the gap regions in gapped alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.mates="#E0E0E0"</code>: Integer or character scalar.  The color
+<dt><code>col.mates="#E0E0E0"</code>:</dt>
+<dd><p>Integer or character scalar.  The color
 of the line that is connecting two paired reads.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.deletion="#000000"</code>: Integer or character scalar. The
+<dt><code>col.deletion="#000000"</code>:</dt>
+<dd><p>Integer or character scalar. The
 color of the line that is bridging the deleted regions in alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.insertion="#984EA3"</code>: Integer or character scalar. The
+<dt><code>col.insertion="#984EA3"</code>:</dt>
+<dd><p>Integer or character scalar. The
 color of the line that highlighting insertions in alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.mismatch="#808080"</code>: Integer or character scalar. The box
+<dt><code>col.mismatch="#808080"</code>:</dt>
+<dd><p>Integer or character scalar. The box
 color around mismatch bases.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.reads=NULL</code>: Integer or character scalar.  The box color
+<dt><code>col.reads=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The box color
 around reads.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.sashimi=NULL</code>: Integer or character scalar.  The line
+<dt><code>col.sashimi=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The line
 color for sashimi plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col="#808080"</code>: Integer or character scalar. The default color
+<dt><code>col="#808080"</code>:</dt>
+<dd><p>Integer or character scalar. The default color
 of all line elements.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>collapse=FALSE</code>: Logical scalar. Do not perform any collapsing
+<dt><code>collapse=FALSE</code>:</dt>
+<dd><p>Logical scalar. Do not perform any collapsing
 of overlapping elements. Currently not supported.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>coverageHeight=0.1</code>: Numeric scalar. The height of the
+<dt><code>coverageHeight=0.1</code>:</dt>
+<dd><p>Numeric scalar. The height of the
 coverage region of the track. Can either be a value between 0 and 1 in which
 case it is taken as a relative height, or a positive value greater 1 in
 which case it is interpreted as pixels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.coverage=NULL</code>: Integer or character scalar.  The fill
+<dt><code>fill.coverage=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The fill
 color for the coverage profile.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill.reads=NULL</code>: Integer or character scalar.  The fill color
+<dt><code>fill.reads=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The fill color
 for the read icons.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fill="#BABABA"</code>: Integer or character scalar.  The default
+<dt><code>fill="#BABABA"</code>:</dt>
+<dd><p>Integer or character scalar.  The default
 fill color of all plot elements.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.mismatch=2</code>: Integer scalar. The font face for
+<dt><code>fontface.mismatch=2</code>:</dt>
+<dd><p>Integer scalar. The font face for
 mismatch bases.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.coverage=NULL</code>: Integer or character scalar.  The line
+<dt><code>lty.coverage=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The line
 type of the coverage profile.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.gap=NULL</code>: Integer or character scalar. The type of the
+<dt><code>lty.gap=NULL</code>:</dt>
+<dd><p>Integer or character scalar. The type of the
 line that is bridging the gap regions in gapped alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.mates=NULL</code>: Integer or character scalar.  The type of the
+<dt><code>lty.mates=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The type of the
 line that is connecting two paired reads.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.deletion=NULL</code>: Integer or character scalar.  The type of
+<dt><code>lty.deletion=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The type of
 the line that is bridging the deleted regions in alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.insertion=NULL</code>: Integer or character scalar.  The type of
+<dt><code>lty.insertion=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The type of
 the line that highlighting insertions in alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.mismatch=NULL</code>: Integer or character scalar.  The box line
+<dt><code>lty.mismatch=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The box line
 type around mismatch bases.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.reads=NULL</code>: Integer or character scalar.  The box line
+<dt><code>lty.reads=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The box line
 type around mismatch reads.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty=1</code>: Integer or character scalar. The default type of all
+<dt><code>lty=1</code>:</dt>
+<dd><p>Integer or character scalar. The default type of all
 line elements.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.coverage=NULL</code>: Integer or character scalar.  The line
+<dt><code>lwd.coverage=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  The line
 width of the coverage profile.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.gap=NULL</code>: Integer scalar. The width of the line that is
+<dt><code>lwd.gap=NULL</code>:</dt>
+<dd><p>Integer scalar. The width of the line that is
 bridging the gap regions in gapped alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.mates=NULL</code>: Integer scalar. The width of the line that is
+<dt><code>lwd.mates=NULL</code>:</dt>
+<dd><p>Integer scalar. The width of the line that is
 connecting two paired reads.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.deletion=NULL</code>: Integer scalar. The width of the line that
+<dt><code>lwd.deletion=NULL</code>:</dt>
+<dd><p>Integer scalar. The width of the line that
 is bridging the deleted regions in alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.insertion=NULL</code>: Integer scalar. The width of the line
+<dt><code>lwd.insertion=NULL</code>:</dt>
+<dd><p>Integer scalar. The width of the line
 that highlighting insertions in alignments.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.mismatch=NULL</code>: Integer scalar. The box line width around
+<dt><code>lwd.mismatch=NULL</code>:</dt>
+<dd><p>Integer scalar. The box line width around
 mismatch bases.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.reads=NULL</code>: Integer scalar. The box line width around
+<dt><code>lwd.reads=NULL</code>:</dt>
+<dd><p>Integer scalar. The box line width around
 reads.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.sashimiMax=10</code>: Integer scalar. The maximal width of the
+<dt><code>lwd.sashimiMax=10</code>:</dt>
+<dd><p>Integer scalar. The maximal width of the
 line in sashimi plots.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd=1</code>: Integer scalar. The default width of all line
+<dt><code>lwd=1</code>:</dt>
+<dd><p>Integer scalar. The default width of all line
 elements.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>max.height=10</code>: Integer scalar. The maximum height of an
+<dt><code>max.height=10</code>:</dt>
+<dd><p>Integer scalar. The maximum height of an
 individual read in pixels. Can be used in combination with <code>min.height</code>
 to control the read and stacking appearance.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.height=5</code>: Integer scalar. The minimum height of an
+<dt><code>min.height=5</code>:</dt>
+<dd><p>Integer scalar. The minimum height of an
 individual read in pixels. Can be used in combination with <code>max.height</code>
 to control the read and stacking appearance.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>minCoverageHeight=50</code>: Integer scalar. The minimum height of
+<dt><code>minCoverageHeight=50</code>:</dt>
+<dd><p>Integer scalar. The minimum height of
 the coverage section. Uselful in combination with a relative setting of
 <code>coverageHeight</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>minSashimiHeight=50</code>: Integer scalar. The minimum height of
+<dt><code>minSashimiHeight=50</code>:</dt>
+<dd><p>Integer scalar. The minimum height of
 the sashimi section. Uselful in combination with a relative setting of
 <code>sashimiHeight</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>noLetters=FALSE</code>: Logical scalar. Always plot colored boxes
+<dt><code>noLetters=FALSE</code>:</dt>
+<dd><p>Logical scalar. Always plot colored boxes
 for mismatch bases regardles of the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>sashimiFilter=NULL</code>: GRanges object. Only junctions which
+<dt><code>sashimiFilter=NULL</code>:</dt>
+<dd><p>GRanges object. Only junctions which
 overlap equally with <code>sashimiFilter</code> GRanges are shown. Default
 <code>NULL</code>, no filtering.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>sashimiFilterTolerance=0</code>: Integer scalar. Only used in
+<dt><code>sashimiFilterTolerance=0</code>:</dt>
+<dd><p>Integer scalar. Only used in
 combination with <code>sashimiFilter</code>. It allows to include junctions whose
 starts/ends are within specified distance from <code>sashimiFilter</code> GRanges.
 This is useful for cases where the aligner did not place the junction reads
 precisely. Default <code>0L</code> , no tolerance.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>sashimiHeight=0.1</code>: Integer scalar. The height of the sashimi
+<dt><code>sashimiHeight=0.1</code>:</dt>
+<dd><p>Integer scalar. The height of the sashimi
 part of the track. Can either be a value between 0 and 1 in which case it is
 taken as a relative height, or a positive value greater 1 in which case it
 is interpreted as pixels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>sashimiScore=1</code>: Integer scalar. The minimum number of reads
+<dt><code>sashimiScore=1</code>:</dt>
+<dd><p>Integer scalar. The minimum number of reads
 supporting the junction.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>sashimiStrand="*"</code>: Integer scalar. Only reads which have the
+<dt><code>sashimiStrand="*"</code>:</dt>
+<dd><p>Integer scalar. Only reads which have the
 specified strand are considered to count the junctions.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>sashimiTransformation=NULL</code>: Function. Applied to the junction
+<dt><code>sashimiTransformation=NULL</code>:</dt>
+<dd><p>Function. Applied to the junction
 score vector prior to plotting. The function should accept exactly one input
 argument and its return value needs to be a numeric vector of identical
 length as the input data.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showIndels=FALSE</code>: Logical scalar. Consider insertions and
+<dt><code>showIndels=FALSE</code>:</dt>
+<dd><p>Logical scalar. Consider insertions and
 deletions in coverage and pile-up. Default is <code>FALSE</code>. If set to
 <code>TRUE</code> the deletions defined in CIGAR string are not considered in
 coverage plot. The deletions are displayed as bridging lines in pile-up
 track. Insertions are shown as vertical bars.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showMismatches=TRUE</code>: Logical scalar. Add mismatch
+<dt><code>showMismatches=TRUE</code>:</dt>
+<dd><p>Logical scalar. Add mismatch
 information, either as individual base letters or using color coded bars.
 This implies that the reference sequence has been provided, either to the
 class constructor or as part of the track list.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>size=NULL</code>: Numeric scalar. The size of the track.  Defaults
+<dt><code>size=NULL</code>:</dt>
+<dd><p>Numeric scalar. The size of the track.  Defaults
 to automatic sizing.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>transformation=NULL</code>: Function. Applied to the coverage vector
+<dt><code>transformation=NULL</code>:</dt>
+<dd><p>Function. Applied to the coverage vector
 prior to plotting. The function should accept exactly one input argument and
 its return value needs to be a numeric Rle of identical length as the input
 data.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>type=c("coverage", "pileup")</code>: Character vactor.  The type of
+<dt><code>type=c("coverage", "pileup")</code>:</dt>
+<dd><p>Character vactor.  The type of
 information to plot. For <code>coverage</code> a coverage plot, potentially
 augmented by base mismatch information, for <code>sashimi</code> a sashimi plot,
 showing the juctions, and for <code>pileup</code> the pileups of the individual
@@ -2956,8 +2968,8 @@ reads. These three can be combined.</p></dd>
 
 
 </dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>stackHeight=0.75</code>: Numeric between 0 and 1.  Controls the
+<dl><dt><code>stackHeight=0.75</code>:</dt>
+<dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
 proportion of the total available space for the stack that is used to draw
 the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -2966,196 +2978,196 @@ quarter of the available space each is used for spacing above and below the
 glyph. Defaults to 0.75.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStacking=FALSE</code>: Logical flag. Reverse the y-ordering
+<dt><code>reverseStacking=FALSE</code>:</dt>
+<dd><p>Logical flag. Reverse the y-ordering
 of stacked items. I.e., features that are plotted on the bottom-most stacks
 will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
 </dl><p><b><em>Inherited from class GdObject:</em></b></p>
-<dl><dt></dt>
-<dd><p><code>alpha=1</code>: Numeric scalar. The transparency for all track
+<dl><dt><code>alpha=1</code>:</dt>
+<dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the
+<dt><code>alpha.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The transparency for the
 title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.panel="transparent"</code>: Integer or character scalar.
+<dt><code>background.panel="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color of the content panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.title="lightgray"</code>: Integer or character scalar.
+<dt><code>background.title="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the title panel.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>background.legend="transparent"</code>: Integer or character scalar.
+<dt><code>background.legend="transparent"</code>:</dt>
+<dd><p>Integer or character scalar.
 The background color for the legend.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.axis=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 axis annotation. Defaults to <code>NULL</code>, in which case it is automatically
 determined based on the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the
+<dt><code>cex.title=NULL</code>:</dt>
+<dd><p>Numeric scalar. The expansion factor for the
 title panel. This effects the fontsize of both the title and the axis, if
 any. Defaults to <code>NULL</code>, which means that the text size is
 automatically adjusted to the available space.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.axis="white"</code>: Integer or character scalar.  The font and
+<dt><code>col.axis="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The font and
 line color for the y axis, if any.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.border.title="white"</code>: Integer or character scalar. The
+<dt><code>col.border.title="white"</code>:</dt>
+<dd><p>Integer or character scalar. The
 border color for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line
+<dt><code>col.frame="lightgray"</code>:</dt>
+<dd><p>Integer or character scalar. The line
 color used for the panel frame, if <code>frame==TRUE</code></p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.grid="#808080"</code>: Integer or character scalar.  Default
+<dt><code>col.grid="#808080"</code>:</dt>
+<dd><p>Integer or character scalar.  Default
 line color for grid lines, both when <code>type=="g"</code> in
 <code><a href="DataTrack-class.html">DataTrack</a></code>s and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.line=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.line=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.symbol=NULL</code>: Integer or character scalar.  Default colors
+<dt><code>col.symbol=NULL</code>:</dt>
+<dd><p>Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global <code>col</code> parameter.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>col.title="white"</code>: Integer or character scalar.  The border
+<dt><code>col.title="white"</code>:</dt>
+<dd><p>Integer or character scalar.  The border
 color for the title panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontcolor="black"</code>: Integer or character scalar.  The font
+<dt><code>fontcolor="black"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 color for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface.title=2</code>: Integer or character scalar.  The font face
+<dt><code>fontface.title=2</code>:</dt>
+<dd><p>Integer or character scalar.  The font face
 for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontface=1</code>: Integer or character scalar. The font face for
+<dt><code>fontface=1</code>:</dt>
+<dd><p>Integer or character scalar. The font face for
 all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The
+<dt><code>fontfamily.title="sans"</code>:</dt>
+<dd><p>Integer or character scalar. The
 font family for the title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontfamily="sans"</code>: Integer or character scalar.  The font
+<dt><code>fontfamily="sans"</code>:</dt>
+<dd><p>Integer or character scalar.  The font
 family for all text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>fontsize=12</code>: Numeric scalar. The font size for all text,
+<dt><code>fontsize=12</code>:</dt>
+<dd><p>Numeric scalar. The font size for all text,
 unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when
+<dt><code>frame=FALSE</code>:</dt>
+<dd><p>Boolean. Draw a frame around the track when
 plotting.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a
+<dt><code>grid=FALSE</code>:</dt>
+<dd><p>Boolean, switching on/off the plotting of a
 grid.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>h=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 horizontal grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lineheight=1</code>: Numeric scalar. The font line height for all
+<dt><code>lineheight=1</code>:</dt>
+<dd><p>Numeric scalar. The font line height for all
 text, unless a more specific definition exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lty.grid="solid"</code>: Integer or character scalar.  Default line
+<dt><code>lty.grid="solid"</code>:</dt>
+<dd><p>Integer or character scalar.  Default line
 type for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s
 and when display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the
+<dt><code>lwd.border.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the
 title panels.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.title=1</code>: Integer scalar. The border width for the title
+<dt><code>lwd.title=1</code>:</dt>
+<dd><p>Integer scalar. The border width for the title
 panels</p></dd>
 
 
-<dt></dt>
-<dd><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid
+<dt><code>lwd.grid=1</code>:</dt>
+<dd><p>Numeric scalar. Default line width for grid
 lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>s and when
 display parameter <code>grid==TRUE</code>.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.distance=1</code>: Numeric scalar. The minimum pixel distance
+<dt><code>min.distance=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum pixel distance
 before collapsing range items, only if <code>collapse==TRUE</code>. See
 <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>min.width=1</code>: Numeric scalar. The minimum range width in
+<dt><code>min.width=1</code>:</dt>
+<dd><p>Numeric scalar. The minimum range width in
 pixels to display. All ranges are expanded to this size in order to avoid
 rendering issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting
+<dt><code>reverseStrand=FALSE</code>:</dt>
+<dd><p>Logical scalar. Set up the plotting
 coordinates in 3' -&gt; 5' direction if <code>TRUE</code>.  This will effectively
 mirror the plot on the vertical axis.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation.title=90</code>: The rotation angle for the text in the
+<dt><code>rotation.title=90</code>:</dt>
+<dd><p>The rotation angle for the text in the
 title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>rotation=0</code>: The rotation angle for all text unless a more
+<dt><code>rotation=0</code>:</dt>
+<dd><p>The rotation angle for all text unless a more
 specific definiton exists.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis
+<dt><code>showAxis=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).</p></dd>
 
 
-<dt></dt>
-<dd><p><code>showTitle=TRUE</code>: Boolean controlling whether to plot a title
+<dt><code>showTitle=TRUE</code>:</dt>
+<dd><p>Boolean controlling whether to plot a title
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
@@ -3163,8 +3175,8 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
-<dt></dt>
-<dd><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of
+<dt><code>v=-1</code>:</dt>
+<dd><p>Integer scalar. Parameter controlling the number of
 vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></dd>
 
 
@@ -3197,26 +3209,26 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## Which scheme is used?</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"Gviz.scheme"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which scheme is used?</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"Gviz.scheme"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "default"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Change default settings for GeneRegionTrack</span></span>
-<span class="r-in"><span class="va">scheme</span> <span class="op">&lt;-</span> <span class="fu">getScheme</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">scheme</span><span class="op">$</span><span class="va">GeneRegionTrack</span><span class="op">$</span><span class="va">fill</span> <span class="op">&lt;-</span> <span class="st">"salmon"</span></span>
-<span class="r-in"><span class="va">scheme</span><span class="op">$</span><span class="va">GeneRegionTrack</span><span class="op">$</span><span class="va">col</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span class="r-in"><span class="va">scheme</span><span class="op">$</span><span class="va">GeneRegionTrack</span><span class="op">$</span><span class="va">transcriptAnnotation</span> <span class="op">&lt;-</span> <span class="st">"transcript"</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## replace default scheme with myScheme</span></span>
-<span class="r-in"><span class="fu">addScheme</span><span class="op">(</span><span class="va">scheme</span>, <span class="st">"myScheme"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>Gviz.scheme <span class="op">=</span> <span class="st">"myScheme"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"Gviz.scheme"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Change default settings for GeneRegionTrack</span></span></span>
+<span class="r-in"><span><span class="va">scheme</span> <span class="op">&lt;-</span> <span class="fu">getScheme</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scheme</span><span class="op">$</span><span class="va">GeneRegionTrack</span><span class="op">$</span><span class="va">fill</span> <span class="op">&lt;-</span> <span class="st">"salmon"</span></span></span>
+<span class="r-in"><span><span class="va">scheme</span><span class="op">$</span><span class="va">GeneRegionTrack</span><span class="op">$</span><span class="va">col</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="va">scheme</span><span class="op">$</span><span class="va">GeneRegionTrack</span><span class="op">$</span><span class="va">transcriptAnnotation</span> <span class="op">&lt;-</span> <span class="st">"transcript"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## replace default scheme with myScheme</span></span></span>
+<span class="r-in"><span><span class="fu">addScheme</span><span class="op">(</span><span class="va">scheme</span>, <span class="st">"myScheme"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>Gviz.scheme <span class="op">=</span> <span class="st">"myScheme"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"Gviz.scheme"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "myScheme"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">geneModels</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">grtrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">geneModels</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="st">"chr7"</span>, name <span class="op">=</span> <span class="st">"Gene Model"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">geneModels</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">grtrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">geneModels</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="st">"chr7"</span>, name <span class="op">=</span> <span class="st">"Gene Model"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="settings-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -3232,7 +3244,7 @@ vertical grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.fu
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

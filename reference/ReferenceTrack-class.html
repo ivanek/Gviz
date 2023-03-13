@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -53,44 +53,66 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">availableDefaultMapping</span><span class="op">(</span><span class="va">file</span>, <span class="va">trackType</span><span class="op">)</span>
-
-<span class="co"># S4 method for ReferenceTrack</span>
-<span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span>
-  <span class="va">.Object</span>,
-  <span class="va">stream</span>,
-  <span class="va">reference</span>,
-  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  defaults <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">availableDefaultMapping</span><span class="op">(</span><span class="va">file</span>, <span class="va">trackType</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for ReferenceTrack</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span></span>
+<span>  <span class="va">.Object</span>,</span>
+<span>  <span class="va">stream</span>,</span>
+<span>  <span class="va">reference</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  defaults <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>A <code>character</code> scalar with a file name or just a file extension.</p></dd>
+
+
 <dt>trackType</dt>
 <dd><p>A <code>character</code> scalar with one of the available track types
 in the package.</p></dd>
+
+
 <dt>.Object</dt>
 <dd><p>.Object</p></dd>
+
+
 <dt>stream</dt>
 <dd><p>stream</p></dd>
+
+
 <dt>reference</dt>
 <dd><p>reference</p></dd>
+
+
 <dt>mapping</dt>
 <dd><p>mapping</p></dd>
+
+
 <dt>args</dt>
 <dd><p>ars</p></dd>
+
+
 <dt>defaults</dt>
 <dd><p>defaults</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Constructor functions of <code>AnnotationTrack</code>, <code>DataTrack</code>, <code>SequenceTrack</code>and <code>AlignmentsTrack`` can create a special object of corresponding </code>Reference*Track` subclass with pointer to the referenced
-file.
-A virtual class: No objects may be created from it.</p>
+    
+
+<p>Constructor functions of <code>AnnotationTrack</code>, <code>DataTrack</code>, <code>SequenceTrack</code></p>
+
+
+<p>and <code>AlignmentsTrack`` can create a special object of corresponding </code>Reference*Track` subclass with pointer to the referenced
+file.</p>
+
+
+<p>A virtual class: No objects may be created from it.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -101,10 +123,10 @@ file types and the metadata columns of the tracks' <code>GRanges</code> objects.
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>availableDefaultMapping</code>: Function to find out whether the package
+<ul><li><p><code>availableDefaultMapping()</code>: Function to find out whether the package
 defines a mapping scheme between one of the many supported input file types
 and the metadata columns of the tracks's <code>GRanges</code> objects.</p></li>
-<li><p><code>initialize,ReferenceTrack-method</code>: Initialize.</p></li>
+<li><p><code>initialize(ReferenceTrack)</code>: Initialize.</p></li>
 </ul></div>
     <div id="slots">
     <h2>Slots</h2>
@@ -163,15 +185,15 @@ used when neither mapping nor args provides the necessary information.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># This is a reference class, below example from AlignmentsTrack</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">afrom</span> <span class="op">&lt;-</span> <span class="fl">2960000</span></span>
-<span class="r-in"><span class="va">ato</span> <span class="op">&lt;-</span> <span class="fl">3160000</span></span>
-<span class="r-in"><span class="va">alTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AlignmentsTrack-class.html">AlignmentsTrack</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span>
-<span class="r-in">    package <span class="op">=</span> <span class="st">"Gviz"</span>, <span class="st">"extdata"</span>,</span>
-<span class="r-in">    <span class="st">"gapped.bam"</span></span>
-<span class="r-in"><span class="op">)</span>, isPaired <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">alTrack</span>, from <span class="op">=</span> <span class="va">afrom</span>, to <span class="op">=</span> <span class="va">ato</span>, chromosome <span class="op">=</span> <span class="st">"chr12"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># This is a reference class, below example from AlignmentsTrack</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">afrom</span> <span class="op">&lt;-</span> <span class="fl">2960000</span></span></span>
+<span class="r-in"><span><span class="va">ato</span> <span class="op">&lt;-</span> <span class="fl">3160000</span></span></span>
+<span class="r-in"><span><span class="va">alTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="AlignmentsTrack-class.html">AlignmentsTrack</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    package <span class="op">=</span> <span class="st">"Gviz"</span>, <span class="st">"extdata"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"gapped.bam"</span></span></span>
+<span class="r-in"><span><span class="op">)</span>, isPaired <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">alTrack</span>, from <span class="op">=</span> <span class="va">afrom</span>, to <span class="op">=</span> <span class="va">ato</span>, chromosome <span class="op">=</span> <span class="st">"chr12"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ReferenceTrack-class-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -187,7 +209,7 @@ used when neither mapping nor args provides the necessary information.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

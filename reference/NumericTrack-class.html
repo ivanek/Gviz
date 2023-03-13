@@ -18,7 +18,7 @@ contain numeric data. This class merely exists for dispatching purpose."><!-- ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -55,32 +55,39 @@ contain numeric data. This class merely exists for dispatching purpose.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S4 method for NumericTrack</span>
-<span class="fu"><a href="GdObject-class.html">drawAxis</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for NumericTrack</span>
-<span class="fu"><a href="GdObject-class.html">drawGrid</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">from</span>, <span class="va">to</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for NumericTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawAxis</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for NumericTrack</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGrid</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">from</span>, <span class="va">to</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>GdObject</dt>
 <dd><p>Object of <code>GdObject-class</code>.</p></dd>
+
+
 <dt>from, to</dt>
 <dd><p>Numeric scalar, giving the range of genomic coordinates to
 limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A virtual class: No objects may be created from it.</p>
+    
+
+<p>A virtual class: No objects may be created from it.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>drawAxis,NumericTrack-method</code>: add a y-axis to the title panel of a track.</p></li>
-<li><p><code>drawGrid,NumericTrack-method</code>: superpose a grid on top of a track.</p></li>
+<ul><li><p><code>drawAxis(NumericTrack)</code>: add a y-axis to the title panel of a track.</p></li>
+<li><p><code>drawGrid(NumericTrack)</code>: superpose a grid on top of a track.</p></li>
 </ul></div>
     <div id="slots">
     <h2>Slots</h2>
@@ -161,7 +168,7 @@ however this may not always be formally checked upon object instantiation.</p></
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>

@@ -22,7 +22,7 @@ plotTracks."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.43.1</span>
       </span>
     </div>
 
@@ -62,17 +62,17 @@ and to return it as an annotation track object amenable to plotting with
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">UcscTrack</span><span class="op">(</span>
-  <span class="va">track</span>,
-  table <span class="op">=</span> <span class="cn">NULL</span>,
-  trackType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AnnotationTrack"</span>, <span class="st">"GeneRegionTrack"</span>, <span class="st">"DataTrack"</span>, <span class="st">"GenomeAxisTrack"</span><span class="op">)</span>,
-  <span class="va">genome</span>,
-  <span class="va">chromosome</span>,
-  name <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">from</span>,
-  <span class="va">to</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">UcscTrack</span><span class="op">(</span></span>
+<span>  <span class="va">track</span>,</span>
+<span>  table <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  trackType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AnnotationTrack"</span>, <span class="st">"GeneRegionTrack"</span>, <span class="st">"DataTrack"</span>, <span class="st">"GenomeAxisTrack"</span><span class="op">)</span>,</span>
+<span>  <span class="va">genome</span>,</span>
+<span>  <span class="va">chromosome</span>,</span>
+<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">from</span>,</span>
+<span>  <span class="va">to</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,36 +81,53 @@ and to return it as an annotation track object amenable to plotting with
 <dd><p>Character, the name of the track to fetch from UCSC. To find
 out about available tracks please consult the online table browser at
 <a href="http://genome.ucsc.edu/cgi-bin/hgTables?command=start" class="external-link">http://genome.ucsc.edu/cgi-bin/hgTables?command=start</a>.</p></dd>
+
+
 <dt>table</dt>
 <dd><p>Character, the name of the table to fetch from UCSC, or
 <code>NULL</code>, in which case the default selection of tables is used. To find
 out about available tables for a given track please consult the online table
 browser at <a href="http://genome.ucsc.edu/cgi-bin/hgTables?command=start" class="external-link">http://genome.ucsc.edu/cgi-bin/hgTables?command=start</a>.</p></dd>
+
+
 <dt>trackType</dt>
 <dd><p>Character, one in <code>c("AnnotationTrack",
 "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")</code>. The function will try
 to coerce the downloaded data in an object of this class. See below for
 details.</p></dd>
+
+
 <dt>genome</dt>
 <dd><p>Character, a valid USCS genome identifier for which to fetch
 the data.</p></dd>
+
+
 <dt>chromosome</dt>
 <dd><p>Character, a valid USCS character identifier for which to
 fetch the data.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Character, the name to use for the resulting track object.</p></dd>
+
+
 <dt>from, to</dt>
 <dd><p>A range of genomic locations for which to fetch data.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>All additional named arguments are expected to be either
 display parameters for the resulting objects, or character scalars of column
 names in the downloaded UCSC data tables that are matched by name to
 available arguments in the respective constructor functions as defined by
 the <code>trackType</code> argument. See Details section for more information.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An annotation track object as determined by <code>trackType</code>.</p>
+    
+
+<p>An annotation track object as determined by <code>trackType</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -157,32 +174,32 @@ calling <code>options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"</code>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create UcscTrack for Known Genes from mm9 genome</span></span>
-<span class="r-in"><span class="va">from</span> <span class="op">&lt;-</span> <span class="fl">65921878</span></span>
-<span class="r-in"><span class="va">to</span> <span class="op">&lt;-</span> <span class="fl">65980988</span></span>
-<span class="r-in"><span class="va">knownGenes</span> <span class="op">&lt;-</span> <span class="fu">UcscTrack</span><span class="op">(</span></span>
-<span class="r-in">    genome <span class="op">=</span> <span class="st">"mm9"</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span>, track <span class="op">=</span> <span class="st">"knownGene"</span>,</span>
-<span class="r-in">    from <span class="op">=</span> <span class="va">from</span>, to <span class="op">=</span> <span class="va">to</span>, trackType <span class="op">=</span> <span class="st">"GeneRegionTrack"</span>,</span>
-<span class="r-in">    rstarts <span class="op">=</span> <span class="st">"exonStarts"</span>, rends <span class="op">=</span> <span class="st">"exonEnds"</span>, gene <span class="op">=</span> <span class="st">"name"</span>,</span>
-<span class="r-in">    symbol <span class="op">=</span> <span class="st">"name"</span>, transcript <span class="op">=</span> <span class="st">"name"</span>, strand <span class="op">=</span> <span class="st">"strand"</span>,</span>
-<span class="r-in">    fill <span class="op">=</span> <span class="st">"#8282d2"</span>, name <span class="op">=</span> <span class="st">"UCSC Genes"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## if the UCSC is not accessible load prepared object</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ucscItems</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## knownGenes is essentially GeneRegionTrack</span></span>
-<span class="r-in"><span class="va">knownGenes</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create UcscTrack for Known Genes from mm9 genome</span></span></span>
+<span class="r-in"><span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fl">65921878</span></span></span>
+<span class="r-in"><span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fl">65980988</span></span></span>
+<span class="r-in"><span><span class="va">knownGenes</span> <span class="op">&lt;-</span> <span class="fu">UcscTrack</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"mm9"</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span>, track <span class="op">=</span> <span class="st">"knownGene"</span>,</span></span>
+<span class="r-in"><span>    from <span class="op">=</span> <span class="va">from</span>, to <span class="op">=</span> <span class="va">to</span>, trackType <span class="op">=</span> <span class="st">"GeneRegionTrack"</span>,</span></span>
+<span class="r-in"><span>    rstarts <span class="op">=</span> <span class="st">"exonStarts"</span>, rends <span class="op">=</span> <span class="st">"exonEnds"</span>, gene <span class="op">=</span> <span class="st">"name"</span>,</span></span>
+<span class="r-in"><span>    symbol <span class="op">=</span> <span class="st">"name"</span>, transcript <span class="op">=</span> <span class="st">"name"</span>, strand <span class="op">=</span> <span class="st">"strand"</span>,</span></span>
+<span class="r-in"><span>    fill <span class="op">=</span> <span class="st">"#8282d2"</span>, name <span class="op">=</span> <span class="st">"UCSC Genes"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## if the UCSC is not accessible load prepared object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ucscItems</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## knownGenes is essentially GeneRegionTrack</span></span></span>
+<span class="r-in"><span><span class="va">knownGenes</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GeneRegionTrack 'UCSC Genes'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | genome: mm9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chrX</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 76</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## plotting</span></span>
-<span class="r-in"><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">knownGenes</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span>, from <span class="op">=</span> <span class="fl">65920688</span>, to <span class="op">=</span> <span class="fl">65960068</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## plotting</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">knownGenes</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span>, from <span class="op">=</span> <span class="fl">65920688</span>, to <span class="op">=</span> <span class="fl">65960068</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="UcscTrack-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -198,7 +215,7 @@ calling <code>options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"</code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.9000.</p>
 </div>
 
       </footer></div>
