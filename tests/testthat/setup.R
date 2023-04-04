@@ -18,23 +18,25 @@ cyto.bands <- data.frame(
     stringsAsFactors = FALSE
 )
 ## internet access ----------------------------------------------------------
-hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent = TRUE), "try-error")
+# hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent = TRUE), "try-error")
+hasUcscConnection <- FALSE
 check_ucsc <- function() {
     if (!hasUcscConnection) {
         skip("UCSC not available")
     }
 }
 
-oto <- options(timeout = 5)
-hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet = TRUE)), "try-error") &&
-    !is(try(biomaRt::listMarts(), silent = TRUE), "try-error"))
-options(timeout = oto)
+#
+# oto <- options(timeout = 5)
+# hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet = TRUE)), "try-error") &&
+#     !is(try(biomaRt::listMarts(), silent = TRUE), "try-error"))
+#options(timeout = oto)
+hasBiomartConnection <- FALSE
 check_biomart <- function() {
     if (!hasBiomartConnection) {
         skip("Biomart not available")
     }
 }
-
 
 ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") &&

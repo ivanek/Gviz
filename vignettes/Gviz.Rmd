@@ -99,12 +99,13 @@ addParTable <- function(xtabDetails, class,
   return(invisible())
 }
 
-hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
-oto <- options(timeout=5)
-## hasBiomartConnection <- FALSE
-hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
-                         !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
-options(timeout=oto)
+## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error")
+hasUcscConnection <- FALSE
+## oto <- options(timeout=5)
+hasBiomartConnection <- FALSE
+## hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet=TRUE)), "try-error") &&
+##                          !is(try(biomaRt::listMarts(), silent=TRUE), "try-error"))
+## options(timeout=oto)
 
 ## ## clear BiomaRt cache
 ## biomaRt::biomartCacheClear()
@@ -1814,7 +1815,8 @@ if(hasBiomartConnection) {
                                       start = 20e6, end = 21e6,
                                       name = "ENSEMBL", biomart = bm)
 } else {
-    data("biomTrack")
+    data(biomTrack)
+    biomTrack <- as(biomTrack, "GeneRegionTrack")
 }
 plotTracks(biomTrack)
 ```
@@ -1874,6 +1876,7 @@ if(hasBiomartConnection) {
   plotTracks(biomTrack, col.line = NULL, col = NULL, stackHeight = 0.3)
 } else {
   data(biomTrack2)
+  biomTrack2 <- as(biomTrack2, "GeneRegionTrack")
   plotTracks(biomTrack2, col.line = NULL, col = NULL, stackHeight = 0.3)
 }
 ```
