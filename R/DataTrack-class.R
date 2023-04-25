@@ -962,13 +962,17 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             groups <- rep(groups, ncol(vals))
             ylim <- .dpOrDefault(GdObject, "ylim")
             if (!is.null(groups) && nlevels(groups) > 1) {
-                valsS <- if (ncol(vals)) {
-                    do.call(cbind, lapply(
-                        split(vals, groups),
-                        function(x) t(matrix(x, ncol = ncol(vals)))
-                    ))
+                if (ncol(vals)) {
+                valsS <- split(vals, groups)
+                valsS <- do.call(cbind, lapply(seq_along(valsS), function(i) {
+                    tmp <- t(matrix(valsS[[i]], ncol = ncol(vals)))
+                    if (ncol(tmp)) {
+                        colnames(tmp) <- rep(names(valsS)[i], ncol(tmp))
+                    }
+                    tmp
+                }))
                 } else {
-                    matrix(nrow = nlevels(groups), ncol = 0, dimnames = list(levels(groups)))
+                    valsS <- matrix(nrow = nlevels(groups), ncol = 0, dimnames = list(levels(groups)))
                 }
                 displayPars(GdObject) <- list(".__valsS" = valsS)
                 if (stacked == TRUE && is.null(ylim)) {
@@ -1237,8 +1241,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             valsS <- .dpOrDefault(GdObject, ".__valsS")
             if (stacked) {
                 curMinPos <- curMaxPos <- rep(yy, nrow(valsS))
-                for (s in seq_len(ncol(valsS)))
-                {
+                for (s in seq_len(ncol(valsS))) {
                     if (!all(is.na(valsS[, s]))) {
                         sel <- !is.na(valsS[, s]) & valsS[, s] >= 0
                         yyy <- curMinPos
@@ -1247,7 +1250,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                         offset[offset != yy] <- 0
                         grid.rect(start(GdObject), yyy,
                             width = width(GdObject), height = valsS[, s] - offset,
-                            gp = gpar(col = "transparent", fill = pcols$col[s], lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
+                            gp = gpar(col = "transparent", fill = pcols$col[colnames(valsS)[s]], lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
                             just = c("left", "bottom")
                         )
                         curMaxPos[sel] <- curMaxPos[sel] + (valsS[sel, s] - offset[sel])
