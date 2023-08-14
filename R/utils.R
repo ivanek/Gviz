@@ -2407,7 +2407,9 @@ availableDefaultMapping <- function(file, trackType) {
 ## Helper function to go through the metadata columns of a DataFrame and match their colnames to a mapping if they
 ## are available
 .resolveColMapping <- function(data, args, defMap) {
-    colnames(mcols(data)) <- paste(colnames(mcols(data)), "orig", sep = "__.__")
+    if (ncol(mcols(data))) {
+        colnames(mcols(data)) <- paste(colnames(mcols(data)), "orig", sep = "__.__")
+    }
     for (i in names(defMap)) {
         if (is.character(args[[i]]) && length(args[[i]]) == 1 && paste(args[[i]], "orig", sep = "__.__") %in% colnames(mcols(data))) {
             defMap[[i]] <- args[[i]]
