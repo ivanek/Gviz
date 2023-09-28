@@ -2186,6 +2186,7 @@ availableDefaultMapping <- function(file, trackType) {
     if (length(range)) {
         alg <- extractAlignmentRangesOnReference(range$cigar, drop.D.ranges = drop.D.ranges)
         rp <- elementNROWS(alg)
+        if (is.null(range$flag)) range$flag <-  as.character(NA)
         range <- sort(GRanges(
             seqnames = rep(seqnames(range), rp), strand = rep("*", sum(rp)), ranges = shift(unlist(alg), rep(start(range), rp) - 1),
             id = rep(range$id, rp), entityId = rep(seq_along(rp), rp), cigar = rep(range$cigar, rp), md = rep(range$md, rp),
