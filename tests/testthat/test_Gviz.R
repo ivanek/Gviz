@@ -110,7 +110,8 @@ test_that("import of alignments from BAM file works", {
 
     unlink(paste(bamfile, "bai", sep = "."))
     expect_error(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), "Unable to find index for BAM file")
-    bamfile <- Rsamtools::asBam(samfile, indexDestination = TRUE, overwrite = TRUE)
+    bamfile <- Rsamtools::asBam(samfile, indexDestination = FALSE, overwrite = TRUE)
+    Rsamtools::indexBam(bamfile)
 
     expect_identical(.import.bam.alignments(bamfile, GRanges("chr1", IRanges(189891401, 189894000))), bamgr)
     expect_identical(.import.bam.alignments(bamfile, GRanges("chr2", IRanges(1, 2))), empty)
