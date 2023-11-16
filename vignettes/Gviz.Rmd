@@ -1710,9 +1710,10 @@ them using the `r Biocpkg("AnnotationDbi")` framework and corresponding
 `org.eg...db` package. For example here we can use `r Biocpkg("org.eg.Hs.db")`.
 
 ```{r generegtrack4g, eval=FALSE, echo=FALSE, results='hide', fig.width=7.5, fig.height=1}
+library(org.Hs.eg.db)
 symbol(txTr) <- mapIds(org.Hs.eg.db, 
-                            keys=sub("\\.\\d+$", "", gene(txTr)), 
-                            keytype="ENSEMBL", column="SYMBOL")
+                       keys=sub("\\.\\d+$", "", gene(txTr)), 
+                       keytype="ENSEMBL", column="SYMBOL")
 symbol(txTr) <- ifelse(is.na(symbol(txTr)), gene(txTr), symbol(txTr))
 plotTracks(txTr, transcriptAnnotation = "symbol")
 ```
@@ -1935,7 +1936,7 @@ region from the older version Ensembl version 47. The internal
 which is necessary because Ensembl used to call the gene symbol field
 `external_gene_id` in that release.
 
-```{r BiomartGeneRegionTrackCustom, fig.width=7.5, fig.height=1.25, eval=FALSE, echo=F}
+```{r BiomartGeneRegionTrackCustom, fig.width=7.5, fig.height=1.25, eval=FALSE, echo=FALSE}
 library(biomaRt)
 bm <- useEnsembl(host="dec2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEMBL",
               dataset="hsapiens_gene_ensembl")
@@ -2300,7 +2301,7 @@ alTrack <- AlignmentsTrack(
   isPaired = TRUE)
 bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
                               start = afrom, end = ato,
-                              filter = list(with_refseq_mrna = TRUE),
+                              filter = list(with_ox_refseq_mrna = TRUE),
                               stacking = "dense")
 ```
 
@@ -2569,7 +2570,8 @@ like this:
 from <- 65921878
 to <- 65980988
 knownGenes <- UcscTrack(genome = "mm9", chromosome = "chrX", 
-                        track = "knownGene", from = from, to = to,
+                        track = "UCSC Genes", table="knownGene", 
+                        from = from, to = to,
                         trackType = "GeneRegionTrack", 
                         rstarts = "exonStarts", rends = "exonEnds", 
                         gene = "name", symbol = "name", 
@@ -2582,7 +2584,8 @@ tracks based on the `xenoRefGene` and `ensGene` data tables.
 
 ```{r ucscTrack2, eval=FALSE}
 refGenes <- UcscTrack(genome = "mm9", chromosome = "chrX",
-                      track = "xenoRefGene", from = from, to = to,
+                      track="Other RefSeq", table = "xenoRefGene", 
+                      from = from, to = to,
                       trackType = "GeneRegionTrack", 
                       rstarts = "exonStarts", rends = "exonEnds", 
                       gene = "name",  symbol = "name2", 
@@ -2591,7 +2594,8 @@ refGenes <- UcscTrack(genome = "mm9", chromosome = "chrX",
                       name = "Other RefSeq")
 
 ensGenes <- UcscTrack(genome = "mm9", chromosome = "chrX", 
-                      track = "ensGene", from = from, to = to,
+                      track="Ensembl Genes", table = "ensGene", 
+                      from = from, to = to,
                       trackType = "GeneRegionTrack", 
                       rstarts = "exonStarts", rends = "exonEnds",
                       gene = "name", symbol = "name2", 
@@ -2607,14 +2611,16 @@ meta-constructor remains the same.
 
 ```{r ucscTrack3, eval=FALSE}
 cpgIslands <- UcscTrack(genome = "mm9", chromosome = "chrX", 
-                        track = "cpgIslandExt", from = from, to = to,
+                        track="CpG Islands", table = "cpgIslandExt", 
+                        from = from, to = to,
                         trackType = "AnnotationTrack", 
                         start = "chromStart", end = "chromEnd", 
                         id = "name", shape = "box", fill = "#006400", 
                         name = "CpG Islands")
 
 snpLocations <-  UcscTrack(genome = "mm9", chromosome = "chrX", 
-                           track = "snp128", from = from, to = to,
+                           track="SNPs (128)", table = "snp128", 
+                           from = from, to = to,
                            trackType = "AnnotationTrack", 
                            start = "chromStart", end = "chromEnd", 
                            id = "name", feature = "func", 

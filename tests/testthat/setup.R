@@ -57,7 +57,8 @@ sam <- c(
 )
 samfile <- tempfile(fileext = ".sam")
 cat(paste(sam, collapse = "\n"), file = samfile)
-bamfile <- Rsamtools::asBam(samfile, indexDestination = TRUE)
+bamfile <- Rsamtools::asBam(samfile, indexDestination = FALSE)
+Rsamtools::indexBam(bamfile)
 
 ## FASTA
 fastafile <- system.file("extdata/test.fa", package = "Gviz")
