@@ -58,7 +58,7 @@
     availTracks <- .doCache(tracksToken, expression(trackNames(ucscTableQuery(session))), env, cenv)
     track <- match.arg(track, sort(c(availTracks, names(availTracks))))
     if (!is.na(availTracks[track])) {
-        track <- availTracks[track]
+        track <- names(availTracks[track])
     }
     availTables <- .doCache(tablesToken, expression({
         query <- ucscTableQuery(session, track)
