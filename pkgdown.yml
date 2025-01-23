@@ -1,7 +1,6 @@
-pandoc: 3.1.1
-pkgdown: 2.0.7.9000
-pkgdown_sha: ab96d2fa60be7a6e54eb8132b572688eadc41be3
+pandoc: 3.6.2
+pkgdown: 2.1.1.9000
+pkgdown_sha: 6615322cb2ce15b1effcecf894123c88fa10b9c9
 articles:
   Gviz: Gviz.html
-last_built: 2023-11-02T15:34Z
-
+last_built: 2025-01-23T08:37Z
