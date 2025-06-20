@@ -29,6 +29,7 @@
 #' @import S4Vectors
 #' @import IRanges
 #' @import XVector
+#' @import Seqinfo
 #' @import GenomeInfoDb
 #' @import GenomicRanges
 #' @import grid
