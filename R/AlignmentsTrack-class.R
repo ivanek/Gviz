@@ -565,7 +565,7 @@ setMethod("drawAxis", signature(GdObject = "AlignmentsTrack"), function(GdObject
 #' switched off in case subsetting has already been performed before or
 #' is not necessary.
 #'
-#' @importFrom GenomicAlignments cigarRangesAlongReferenceSpace
+#' @importFrom cigarillo cigars_as_ranges_along_ref
 #' @export
 setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...) {
     debug <- .dpOrDefault(GdObject, "debug", FALSE)
@@ -923,7 +923,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
             cigarTmp <- DataFrame(cigar = readInfo$cigar, start = start(readInfo), entityId = readInfo$entityId, groupId = readInfo$groupid)
             cigarTmp <- cigarTmp[order(cigarTmp$entityId, cigarTmp$start), ]
             cigarTmp <- cigarTmp[!duplicated(cigarTmp$entityId), ]
-            delGaps <- unlist(cigarRangesAlongReferenceSpace(cigarTmp$cigar, pos = cigarTmp$start, ops = "D", f = as.factor(cigarTmp$entityId)))
+            delGaps <- unlist(cigars_as_ranges_along_ref(cigarTmp$cigar, lmmpos = cigarTmp$start, ops = "D", f = as.factor(cigarTmp$entityId)))
             gy <- readInfo$stack[match(names(delGaps), readInfo$entityId)]
             if (length(delGaps)) {
                 delCoords <- data.frame(
@@ -936,7 +936,7 @@ setMethod("drawGD", signature("AlignmentsTrack"), function(GdObject, minBase, ma
                 lineCoords <- rbind(delCoords, lineCoords)
                 lineCoords <- lineCoords[!duplicated(lineCoords[, c("x1", "y1", "x2", "y2")]), ]
             }
-            insGaps <- unlist(cigarRangesAlongReferenceSpace(cigarTmp$cigar, pos = cigarTmp$start, ops = "I", f = as.factor(cigarTmp$entityId)))
+            insGaps <- unlist(cigars_as_ranges_along_ref(cigarTmp$cigar, lmmpos = cigarTmp$start, ops = "I", f = as.factor(cigarTmp$entityId)))
             gy <- readInfo$stack[match(names(insGaps), readInfo$entityId)]
             if (length(insGaps)) {
                 ## should both x coordinates be equal to start

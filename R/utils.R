@@ -2006,7 +2006,7 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 #' @importClassesFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString
 #' @importFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString reverseComplement readDNAStringSet DNA_ALPHABET stackStrings
 #' @importFrom Rsamtools scanBamFlag scanBamHeader scanBam ScanBamParam scanFaIndex scanFa BamFile scanBamWhat bamWhich
-#' @importFrom GenomicAlignments sequenceLayer
+#' @importFrom cigarillo project_sequences
 .import.bam.alignments <- function(file, selection) {
     indNames <- c(sub("\\.bam$", ".bai", file), paste(file, "bai", sep = "."))
     index <- NULL
@@ -2035,7 +2035,7 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     reads <- if (as.character(seqnames(selection)[1]) %in% names(scanBamHeader(bf)$targets)) scanBam(bf, param = param)[[1]] else list()
     md <- if (is.null(reads$tag$MD)) rep(as.character(NA), length(reads$pos)) else reads$tag$MD
     if (length(reads$pos)) {
-        layed_seq <- sequenceLayer(reads$seq, reads$cigar)
+        layed_seq <- project_sequences(reads$seq, reads$cigar)
         region <- unlist(bamWhich(param), use.names = FALSE)
         ans <- stackStrings(layed_seq, start(region), end(region), shift = reads$pos - 1L, Lpadding.letter = "+", Rpadding.letter = "+")
         names(ans) <- seq_along(reads$qname)
