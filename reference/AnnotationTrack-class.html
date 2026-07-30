@@ -20,7 +20,7 @@ information for each range."><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -93,11 +93,6 @@ information for each range.</p>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">DetailsAnnotationTrack</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S4 method for class 'DetailsAnnotationTrack'</span></span>
-<span><span class="fu">initialize</span><span class="op">(</span><span class="va">.Object</span>, <span class="va">fun</span>, <span class="va">selectFun</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># S4 method for class 'AnnotationTrack'</span></span>
 <span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
 <span></span>
@@ -140,10 +135,10 @@ information for each range.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AnnotationTrack'</span></span>
-<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, subset <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGrid</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">from</span>, <span class="va">to</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S4 method for class 'DetailsAnnotationTrack'</span></span>
-<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="co"># S4 method for class 'AnnotationTrack'</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, subset <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AnnotationTrack'</span></span>
 <span><span class="fu">show</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
@@ -187,7 +182,7 @@ case, except that the grouping information that is part of the list
 structure is preserved in the <code>AnnotationTrack</code>. I.e., all the elements
 within one list item receive the same group id. For consistency, there is
 also a coercion method from <code>GRangesLists</code> <code>as(obj,"AnnotationTrack")</code>.</p></li>
-<li><p>An <code>IRanges</code> object: almost identical to the
+<li><p>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object: almost identical to the
 <code>GRanges</code> case, except that the chromosome and strand information as
 well as all additional metadata has to be provided in the separate
 <code>chromosome</code>, <code>strand</code>, <code>feature</code>, <code>group</code> or <code>id</code>
@@ -355,55 +350,20 @@ functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</c
     <div id="value">
     <h2>Value</h2>
     <p>The return value of the constructor function is a new object of class
-<code>AnnotationTrack</code> or of class <code>DetailsAnnotationTrack</code>, depending
-on the constructor arguments. Typically the user will not have to be
-troubled with this distinction and can rely on the constructor to make the
-right choice.</p>
+<code>AnnotationTrack</code> or of class <code>DetailsAnnotationTrack</code>, depending on the
+constructor arguments. Typically the user will not have to be troubled
+with this distinction and can rely on the constructor to make the right
+choice.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
 
 <ul><li><p><code>initialize(AnnotationTrack)</code>: Show method.</p></li>
-<li><p><code>ReferenceAnnotationTrack-class</code>: The file-based version of the <code>AnnotationTrack-class</code>.</p></li>
-<li><p><code>initialize(ReferenceAnnotationTrack)</code>: Initialize.</p></li>
+<li><p><code>initialize(ReferenceAnnotationTrack)</code>: Initialize the <code>ReferenceTrack</code> slots
+(<code>stream</code>, <code>reference</code>, <code>mapping</code>, <code>args</code>, <code>defaults</code>) before deferring to
+the <code>AnnotationTrack</code> initializer for the remaining slots.</p></li>
 <li><p><code>AnnotationTrack()</code>: Constructor function for
-<code>AnnotationTrack-class</code></p></li>
-<li><p><code>DetailsAnnotationTrack-class</code>: directly extends <code>AnnotationTrack.</code></p></li>
-<li><p><code>DetailsAnnotationTrack()</code>: Constructor function for
-<code>DetailsAnnotationTrack-class</code></p>
-<p>The <code>DetailsAnnotationTrack</code> class directly extends <code>AnnotationTrack.</code>
-The purpose of this track type is to add an arbitrarily detailed plot
-section (typically consisting of additional quantitative data) for each
-range element of an <code>AnnotationTrack.</code> This allows a locus wide view of
-annotation elements together with any kind of details per feature or element
-that may for instance provide insight on how some complex quantitative
-measurements change according to their position in a locus. If the
-quantitative data is too complex for a <code>DataTrack</code> e.g. because it requires
-extra space or a trellis-like representation, a <code>DetailsAnnotationTrack</code> can
-be used instead. Example: An <code>AnnotationTrack</code> shows the positions of a
-number of probes from a microarray, and you want a histogram of the signal
-intensity distribution derived from all samples at each of these probe
-location. Another example usage would be to show for each element of an
-<code>AnnotationTrack</code> an xy-plot of the signal against some clinical measurement
-such as blood pressure. The limitation for applications of this type of
-track is basically only the available space of the device you are
-plotting to.</p>
-<p>This flexibility is possible by utilizing a simple function model
-to perform all the detailed plotting. The functionality of this plotting
-function fun is totally up to the user, and the function environment is
-prepared in a way that all necessary information about the plotted
-annotation feature is available. To restrict the details section to only
-selected number of annotation features one can supply another function
-<code>selectFun</code>, which decides for each feature separately whether details are
-available or not. Finally, an arbitrary number of additional arguments can
-be passed on to these two function by means of the <code>detailsFunArgs</code> display
-parameter. This is expected to be a named list, and all list elements are
-passed along to the plotting function fun and to the selector function
-<code>selectFun</code> as additional named arguments. Please note that some argument
-names like <code>start</code>, <code>end</code> or <code>identifier</code> are reserved and can not be used
-in the <code>detailsFunArgs</code> list. For examples of plotting functions,
-see the 'Examples' section.</p></li>
-<li><p><code>initialize(DetailsAnnotationTrack)</code>: Initialize.</p></li>
+<code>AnnotationTrack-class</code>.</p></li>
 <li><p><code>group(AnnotationTrack)</code>: extract the group membership for all track items.</p></li>
 <li><p><code>group(GdObject = AnnotationTrack) &lt;- value</code>: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
@@ -417,29 +377,22 @@ This always replaces the group-level identifiers, so essentially it is
 similar to <code>groups&lt;-</code>.</p></li>
 <li><p><code>setStacks(AnnotationTrack)</code>: Recompute the stacks based on the available
 space and on the object's track items and stacking settings.</p></li>
-<li><p><code>consolidateTrack(AnnotationTrack)</code>: Consolidate.
-Determine whether there is group label annotation or not, and add this
-information as the internal display parameter <code>.__hasAnno</code>. Precompute
-the grouped ranges together with optional labels in order to determine
-the correct plotting range later.</p></li>
+<li><p><code>consolidateTrack(AnnotationTrack)</code>: Determine whether there is group label
+annotation or not, and add this information as the internal display
+parameter <code>.__hasAnno</code>. Precompute the grouped ranges together with
+optional labels in order to determine the correct plotting range later.</p></li>
 <li><p><code>collapseTrack(AnnotationTrack)</code>: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>subset(AnnotationTrack)</code>: subset a <code>AnnotationTrack</code> by coordinates
+<li><p><code>subset(AnnotationTrack)</code>: subset an <code>AnnotationTrack</code> by coordinates
 and sort if necessary.</p></li>
 <li><p><code>subset(ReferenceAnnotationTrack)</code>: subset a <code>ReferenceAnnotationTrack</code> by
 coordinates and sort if necessary.</p></li>
+<li><p><code>drawGrid(AnnotationTrack)</code>: superpose a vertical grid across the
+track's plotting area, based on the <code>grid</code>, <code>v</code>, <code>col.grid</code>, <code>lty.grid</code>
+and <code>lwd.grid</code> display parameters.</p></li>
 <li><p><code>drawGD(AnnotationTrack)</code>: plot the object to a graphics device.
-The return value of this method is the input object, potentially updated
-during the plotting operation. Internally, there are two modes in which the
-method can be called. Either in 'prepare' mode, in which case no plotting is
-done but the object is preprocessed based on the available space, or in
-'plotting' mode, in which case the actual graphical output is created.
-Since subsetting of the object can be potentially costly, this can be
-switched off in case subsetting has already been performed before or
-is not necessary.</p></li>
-<li><p><code>drawGD(DetailsAnnotationTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -511,38 +464,29 @@ upon plotting, since the correct stacking is a function of the available
 plotting space.</p></dd>
 
 
-<dt><code>fun</code></dt>
-<dd><p>A function that is being called for each AnnotationTrack element to plot details.</p></dd>
-
-
-<dt><code>selectFun</code></dt>
-<dd><p>A function that is being called for each AnnotationTrack element to decide whether details need to be plotted.</p></dd>
-
-
 </dl></div>
     <div id="objects-from-the-class">
     <h2>Objects from the class</h2>
 
 
 
-<p>Objects can be created using the constructor function
-<code>AnnotationTrack</code>.</p>
+<p>Objects can be created using the constructor function <code>AnnotationTrack</code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code>GRanges</code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code>IRanges</code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -756,10 +700,10 @@ plotting space.</p></dd>
 <span class="r-plt img"><img src="AnnotationTrack-class-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                        x1   y1       x2    y2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 1  38.10304 67.5 171.2010 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 3 304.29899 67.5 437.3970 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 2 224.44021 67.5 384.1578 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 4 464.01657 67.5 490.6362 436.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 1  38.31359 64.5 164.3644 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 3 290.41525 64.5 416.4661 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 2 214.78475 64.5 366.0457 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 4 441.67625 64.5 466.8864 415.5</span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fill</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> annTrack item 1 annTrack item 3 annTrack item 2 annTrack item 4 </span>
@@ -874,7 +818,7 @@ plotting space.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

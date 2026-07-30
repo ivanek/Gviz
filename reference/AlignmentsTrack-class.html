@@ -19,7 +19,7 @@ experiments."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -126,6 +126,9 @@ experiments.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AlignmentsTrack'</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGrid</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">from</span>, <span class="va">to</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'AlignmentsTrack'</span></span>
 <span><span class="fu"><a href="GdObject-class.html">drawAxis</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AlignmentsTrack'</span></span>
@@ -197,52 +200,34 @@ section below for details.</p></dd>
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
 <dd><p>An optional meta argument to handle the different input types.
-If the <code>range</code> argument is missing, all the relevant information to
-create the object has to be provided as individual function arguments
-(see below).</p>
-<p>The different input options for <code>range</code> are:</p>
-<dl><dt>A <code>character</code> string:</dt>
-<dd><p>the path to a <code>BAM</code> file containing
-the read alignments. To be precise, this will result in the instantiation of
-a <code>ReferenceAlignmentsTrack</code> object, but for the user this
-implementation detail should be of no concern.</p></dd>
-
-
-<dt>A <code>GRanges</code> object:</dt>
-<dd><p>the genomic ranges of the individual reads
-as well as the optional additional metadata columns <code>id</code>, <code>cigar</code>,
-<code>mapq</code>, <code>flag</code>, <code>isize</code>, <code>groupid</code>, <code>status</code>,
-<code>md</code> and <code>seqs</code> (see description of the individual function
-parameters below for details). Calling the constructor on a <code>GRanges</code>
-object without further arguments, e.g. <code>AlignmentsTrack(range=obj)</code> is
-equivalent to calling the coerce method <code>as(obj, "AlignmentsTrack")</code>.</p></dd>
-
-
-<dt>An <code>IRanges</code> object:</dt>
-<dd><p>almost identical to the
-<code>GRanges</code> case, except that the chromosome and strand information as
-well as all additional metadata has to be provided in the separate
-<code>chromosome</code>, <code>strand</code>, <code>feature</code>, <code>group</code> or <code>id</code>
-arguments, because it can not be directly encoded in an <code>IRanges</code>
-object. Note that none of those inputs are mandatory, and if not provided
-explicitely the more or less reasonable default values <code>chromosome=NA</code>
-and <code>strand="*"</code> are used.</p></dd>
-
-
-<dt>A <code>data.frame</code> object:</dt>
-<dd><p>the <code>data.frame</code> needs to contain
-at least the two mandatory columns <code>start</code> and <code>end</code> with the
-range coordinates. It may also contain a <code>chromosome</code> and a
-<code>strand</code> column with the chromosome and strand information for each
-range. If missing it will be drawn from the separate <code>chromosome</code> or
-<code>strand</code> arguments. In addition, the <code>id</code>, <code>cigar</code>,
-<code>mapq</code>, <code>flag</code>, <code>isize</code>, <code>groupid</code>, <code>status</code>,
-<code>md</code> and <code>seqs</code> data can be provided as additional columns. The
-above comments about potential default values also apply here.</p></dd>
-
-
-
-</dl></dd>
+If <code>range</code> is missing, all the relevant information to create the object
+has to be provided as individual function arguments (see below).</p>
+<p>The different input options for <code>range</code> are:</p><ul><li><p><strong>A <code>character</code> string</strong>: the path to a <code>BAM</code> file containing the read
+alignments. This results in the instantiation of a
+<code>ReferenceAlignmentsTrack</code> object, but for the user this implementation
+detail should be of no concern.</p></li>
+<li><p><strong>A <code>GRanges</code> object</strong>: the genomic ranges of the individual reads, along
+with the optional additional metadata columns <code>id</code>, <code>cigar</code>, <code>mapq</code>,
+<code>flag</code>, <code>isize</code>, <code>groupid</code>, <code>status</code>, <code>md</code> and <code>seqs</code> (see the individual
+function parameters below for details). Calling the constructor on a
+<code>GRanges</code> object without further arguments, e.g.
+<code>AlignmentsTrack(range = obj)</code>, is equivalent to calling the coerce
+method <code>as(obj, "AlignmentsTrack")</code>.</p></li>
+<li><p><strong>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object</strong>: almost identical to the
+<code>GRanges</code> case, except that the chromosome and strand information, as
+well as all additional metadata, has to be provided via the separate
+<code>chromosome</code>, <code>strand</code>, <code>feature</code>, <code>group</code> or <code>id</code> arguments, since none
+of it can be encoded directly in an <code>IRanges</code> object. None of these
+inputs are mandatory; if not provided explicitly, the defaults
+<code>chromosome = NA</code> and <code>strand = "*"</code> are used.</p></li>
+<li><p><strong>A <code>data.frame</code> object</strong>: must contain at least the two mandatory
+columns <code>start</code> and <code>end</code> with the range coordinates. It may also
+contain <code>chromosome</code> and <code>strand</code> columns; if these are absent, the
+values are taken from the separate <code>chromosome</code> or <code>strand</code> arguments
+instead. In addition, the <code>id</code>, <code>cigar</code>, <code>mapq</code>, <code>flag</code>, <code>isize</code>,
+<code>groupid</code>, <code>status</code>, <code>md</code> and <code>seqs</code> data can be provided as additional
+columns, with the same default-value rules as above.</p></li>
+</ul></dd>
 
 
 <dt id="arg-start-end-width">start, end, width<a class="anchor" aria-label="anchor" href="#arg-start-end-width"></a></dt>
@@ -420,9 +405,12 @@ files.</p></dd>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(AlignmentsTrack)</code>: Initialize.</p></li>
-<li><p><code>ReferenceAlignmentsTrack-class</code>: The file-based version of the <code>AlignmentsTrack-class</code>.</p></li>
-<li><p><code>initialize(ReferenceAlignmentsTrack)</code>: Initialize.</p></li>
+<ul><li><p><code>initialize(AlignmentsTrack)</code>: Initialize the <code>stackRanges</code>, <code>stacks</code>,
+<code>sequences</code> and <code>referenceSequence</code> slots before deferring to the
+<code>StackedTrack</code> initializer for the remaining slots.</p></li>
+<li><p><code>initialize(ReferenceAlignmentsTrack)</code>: Initialize the <code>ReferenceTrack</code> slots
+(<code>stream</code>, <code>reference</code>, <code>mapping</code>, <code>args</code>, <code>defaults</code>) and the
+<code>referenceSequence</code> slot inherited from <code>AlignmentsTrack</code>.</p></li>
 <li><p><code>AlignmentsTrack()</code>: Constructor for <code>AlignmentsTrack-class</code>.</p></li>
 <li><p><code>values(AlignmentsTrack)</code>: Return all additional annotation
 information except for the genomic coordinates for the track items as
@@ -433,10 +421,13 @@ scalar that can be reasonably coerced into one.</p></li>
 <li><p><code>stacks(AlignmentsTrack)</code>: return the stack indices for each track item.</p></li>
 <li><p><code>setStacks(AlignmentsTrack)</code>: recompute the stacks based on the available
 space and on the object's track items and stacking settings.</p></li>
-<li><p><code>subset(AlignmentsTrack)</code>: Subset a <code>AlignmentsTrack</code> by coordinates
+<li><p><code>subset(AlignmentsTrack)</code>: Subset an <code>AlignmentsTrack</code> by coordinates
 and sort if necessary.</p></li>
 <li><p><code>subset(ReferenceAlignmentsTrack)</code>: Subset a <code>ReferenceAlignmentsTrack</code> by coordinates
 and sort if necessary.</p></li>
+<li><p><code>drawGrid(AlignmentsTrack)</code>: superpose a horizontal grid on the
+coverage portion of the track, based on the <code>grid</code>, <code>h</code>, <code>col.grid</code>,
+<code>lty.grid</code> and <code>lwd.grid</code> display parameters.</p></li>
 <li><p><code>drawAxis(AlignmentsTrack)</code>: add a y-axis to the title panel of a track.</p></li>
 <li><p><code>drawGD(AlignmentsTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
@@ -460,19 +451,19 @@ is not necessary.</p></li>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code>GRanges</code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code>IRanges</code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code>panel.grid</code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -530,19 +521,11 @@ is not necessary.</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: XVector</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'Biostrings'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:grid':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     pattern</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:base':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     strsplit</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocIO</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: rtracklayer</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'rtracklayer'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:BiocIO':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     FileForFormat</span>
 <span class="r-plt img"><img src="AlignmentsTrack-class-4.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="AlignmentsTrack-class-5.png" alt="" width="700" height="433"></span>
 </code></pre></div>
@@ -559,7 +542,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

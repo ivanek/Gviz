@@ -19,7 +19,7 @@ UCSC."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -56,17 +56,59 @@ ideogram. The respective information is typically directly fetched from
 UCSC.</p>
     </div>
 
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">initialize</a></span><span class="op">(</span><span class="va">.Object</span>, <span class="va">genome</span>, <span class="va">chromosome</span>, <span class="va">bands</span>, <span class="va">name</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">IdeogramTrack</span><span class="op">(</span>chromosome <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">genome</span>, name <span class="op">=</span> <span class="cn">NULL</span>, bands <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack,ANY,ANY,ANY'</span></span>
+<span><span class="va">x</span><span class="op">[</span><span class="va">i</span>, <span class="va">j</span>, <span class="va">...</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="GdObject-class.html">drawGD</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">minBase</span>, <span class="va">maxBase</span>, prepare <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'IdeogramTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/methods/show.html" class="external-link">show</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
-<dd><p>The chromosome for which to create the ideogram. Has to be
-a valid UCSC chromosome identifier of the form <code>chrx</code>, or a single
-integer or numeric character unless
-<code>option(ucscChromosomeNames=FALSE)</code>. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome.</p></dd>
+<dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
+<dd><p>The object being initialized (standard S4 <code>initialize</code>
+convention); not normally supplied directly by the user.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
@@ -75,9 +117,12 @@ valid UCSC genome identifier if the ideogram data is to be fetched from the
 UCSC repository.</p></dd>
 
 
-<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
-<dd><p>Character scalar of the track's name used in the title panel
-when plotting. Defaults to the selected chromosome.</p></dd>
+<dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
+<dd><p>The chromosome for which to create the ideogram. Has to be
+a valid UCSC chromosome identifier of the form <code>chrx</code>, or a single
+integer or numeric character unless
+<code>option(ucscChromosomeNames=FALSE)</code>. The user has to make sure that the
+respective chromosome is indeed defined for the the track's genome.</p></dd>
 
 
 <dt id="arg-bands">bands<a class="anchor" aria-label="anchor" href="#arg-bands"></a></dt>
@@ -92,9 +137,42 @@ information has been cached locally to avoid the somewhat slow connection to
 UCSC.</p></dd>
 
 
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
+<dd><p>Character scalar of the track's name used in the title panel
+when plotting. Defaults to the selected chromosome.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional items which will all be interpreted as further
 display parameters.</p></dd>
+
+
+<dt id="arg-x-gdobject-object">x, GdObject, object<a class="anchor" aria-label="anchor" href="#arg-x-gdobject-object"></a></dt>
+<dd><p>The <code>IdeogramTrack</code> object.</p></dd>
+
+
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
+<dd><p>The replacement value for a replacement method.</p></dd>
+
+
+<dt id="arg-i-j">i, j<a class="anchor" aria-label="anchor" href="#arg-i-j"></a></dt>
+<dd><p>Index arguments for <code>[</code>-style subsetting; ignored, since
+subsetting is not supported for <code>IdeogramTrack</code>.</p></dd>
+
+
+<dt id="arg-drop">drop<a class="anchor" aria-label="anchor" href="#arg-drop"></a></dt>
+<dd><p><code>logical</code>; ignored, since subsetting is not supported for
+<code>IdeogramTrack</code>.</p></dd>
+
+
+<dt id="arg-minbase-maxbase">minBase, maxBase<a class="anchor" aria-label="anchor" href="#arg-minbase-maxbase"></a></dt>
+<dd><p>The currently plotted genomic range.</p></dd>
+
+
+<dt id="arg-prepare">prepare<a class="anchor" aria-label="anchor" href="#arg-prepare"></a></dt>
+<dd><p><code>logical</code>, indicating whether <code>drawGD</code> is being called in
+'prepare' mode (compute layout only) or 'plotting' mode (render to the
+device).</p></dd>
 
 </dl></div>
     <div id="value">
@@ -109,16 +187,58 @@ information and centromere location. The relevant data for various species
 is stored in the UCSC data base. The initializer method of the class will
 automatically fetch the respective data for a given genome and chromosome
 from UCSC and fill the appropriate object slots. When plotting
-<code>IdeogramTracks</code>, the current genomic location is indicated on the
+<code>IdeogramTrack</code> objects, the current genomic location is indicated on the
 chromosome by a colored box.</p>
 <p>The <code>Gviz.ucscUrl</code> option controls which URL is being used to connect
 to UCSC. For instance, one could switch to the European UCSC mirror by
-calling <code>options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"</code>.</p>
+calling <code>options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")</code>.</p>
     </div>
+    <div id="functions">
+    <h2>Functions</h2>
+
+<ul><li><p><code>initialize(IdeogramTrack)</code>: Fetch the chromosome band and length
+information from UCSC (or use the user-supplied <code>bands</code> table) and use it
+to populate the <code>range</code> and <code>bandTable</code> slots.</p></li>
+<li><p><code>IdeogramTrack()</code>: Constructor function for
+<code>IdeogramTrack-class</code>.</p></li>
+<li><p><code>start(IdeogramTrack)</code>: returns <code>NULL</code>. The start coordinate is
+not a meaningful concept for a whole-chromosome <code>IdeogramTrack</code> and is
+not supported.</p></li>
+<li><p><code>start(IdeogramTrack) &lt;- value</code>: a no-op: the start coordinate cannot be
+set for an <code>IdeogramTrack</code> and the object is returned unchanged.</p></li>
+<li><p><code>end(IdeogramTrack)</code>: returns <code>NULL</code>. The end coordinate is
+not a meaningful concept for a whole-chromosome <code>IdeogramTrack</code> and is
+not supported.</p></li>
+<li><p><code>end(IdeogramTrack) &lt;- value</code>: a no-op: the end coordinate cannot be
+set for an <code>IdeogramTrack</code> and the object is returned unchanged.</p></li>
+<li><p><code>width(IdeogramTrack)</code>: returns <code>NULL</code>. The width is not a
+meaningful concept for a whole-chromosome <code>IdeogramTrack</code> and is not
+supported.</p></li>
+<li><p><code>width(IdeogramTrack) &lt;- value</code>: a no-op: the width cannot be set for an
+<code>IdeogramTrack</code> and the object is returned unchanged.</p></li>
+<li><p><code>length(IdeogramTrack)</code>: return the number of chromosome bands
+stored in the object.</p></li>
+<li><p><code>chromosome(IdeogramTrack) &lt;- value</code>: replace the active chromosome. If band
+information for the new chromosome is already cached in the object's
+<code>bandTable</code> slot it is reused directly; otherwise a new <code>IdeogramTrack</code>
+is constructed by re-fetching the band data for the new chromosome.</p></li>
+<li><p><code>genome(IdeogramTrack) &lt;- value</code>: replace the active genome, re-fetching
+the chromosome band information for the new genome.</p></li>
+<li><p><code>x[i</code>: subsetting is not supported for
+<code>IdeogramTrack</code>; the object is returned unchanged.</p></li>
+<li><p><code>position(IdeogramTrack)</code>: returns <code>NULL</code>. Genomic position is not a
+meaningful concept for a whole-chromosome <code>IdeogramTrack</code> and is not
+supported.</p></li>
+<li><p><code>drawGD(IdeogramTrack)</code>: plot the object to a graphics device,
+rendering the chromosome bands, centromere and, if <code>from</code>/<code>to</code> are
+supplied, a highlighted box indicating the currently displayed genomic
+region.</p></li>
+<li><p><code>show(IdeogramTrack)</code>: Show method.</p></li>
+</ul></div>
     <div id="note">
     <h2>Note</h2>
     <p>When fetching ideogram data from UCSC the results are cached for faster
-acces. See <code><a href="UcscTrack.html">clearSessionCache</a></code> on details to delete these cached
+access. See <a href="UcscTrack.html">clearSessionCache</a> on details to delete these cached
 items.</p>
     </div>
     <div id="objects-from-the-class">
@@ -130,19 +250,19 @@ items.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -178,10 +298,10 @@ items.</p>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mm9"</span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
@@ -278,7 +398,7 @@ items.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

@@ -19,7 +19,7 @@ equal genomic coordinates for a single observation across samples."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -128,6 +128,9 @@ equal genomic coordinates for a single observation across samples.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">chromosome</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'DataTrack'</span></span>
+<span><span class="fu">score</span><span class="op">(</span><span class="va">x</span>, from <span class="op">=</span> <span class="cn">NULL</span>, to <span class="op">=</span> <span class="cn">NULL</span>, sort <span class="op">=</span> <span class="cn">FALSE</span>, transformation <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'DataTrack'</span></span>
 <span><span class="fu"><a href="GdObject-class.html">drawAxis</a></span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'DataTrack'</span></span>
@@ -205,7 +208,7 @@ always take precedence over anything defined in the <code>range</code> argument.
 See below for details.</p></dd>
 
 
-<dt>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object:</dt>
+<dt>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object:</dt>
 <dd><p>this is very similar to the
 above case, except that the numeric data part now always has to be provided
 in the separate <code>data</code> argument. Also the chromosome information must
@@ -370,7 +373,7 @@ the coordinate ranges.</p></dd>
 <dt><code>smooth</code>:</dt>
 <dd><p>add a loess fit to the plot. The following display
 parameters can be used to control the loess calculation: <code>span, degree,
-family, evaluation</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details.</p></dd>
+family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details.</p></dd>
 
 
 <dt><code>histogram</code>:</dt>
@@ -383,7 +386,7 @@ slot.</p></dd>
 <dd><p>plot a smoothed version of the data relative to a
 baseline, as defined by the <code>baseline</code> display parameter. The following
 display parameters can be used to control the smoothing: <code>span, degree,
-family, evaluation</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">panel.loess</a></code> for details. The layout
+family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details. The layout
 of the plot can be further customized via the following display parameters:
 <code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
 
@@ -400,7 +403,7 @@ the plot can be further customized via the following display parameters:
 <dd><p>plot the data as box-and-whisker plots. The layout
 of the plot can be further customized via the following display parameters:
 <code>box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-coef, do.out</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">panel.bwplot</a></code> for details.</p></dd>
+coef, do.out</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">lattice::panel.bwplot</a> for details.</p></dd>
 
 
 <dt><code>gradient</code>:</dt>
@@ -427,7 +430,7 @@ the gradient base colors, respectively.</p></dd>
 segments and overplotting them with color representing the magnitude and
 direction of deviation. This is particularly useful when comparing multiple
 samples, in which case the horizon strips are stacked. See
-<code>horizonplot</code> for details. Please note that the <code>origin</code>
+<a href="https://rdrr.io/pkg/latticeExtra/man/horizonplot.html" class="external-link">latticeExtra::panel.horizonplot</a> for details. Please note that the <code>origin</code>
 and <code>horizonscale</code> arguments of the Lattice <code>horizonplot</code> function
 are available as display parameters <code>horizon.origin</code> and
 <code>horizon.scale</code>.</p></dd>
@@ -457,9 +460,12 @@ optimized to work on large numeric tables.</p>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(DataTrack)</code>: Initialize.</p></li>
-<li><p><code>ReferenceDataTrack-class</code>: The file-based version of the <code>DataTrack-class</code>.</p></li>
-<li><p><code>initialize(ReferenceDataTrack)</code>: Initialize.</p></li>
+<ul><li><p><code>initialize(DataTrack)</code>: Initialize the <code>data</code> slot, and the <code>strand</code>
+slot if provided, before deferring to the <code>GdObject</code> initializer for the
+remaining slots.</p></li>
+<li><p><code>initialize(ReferenceDataTrack)</code>: Initialize the <code>ReferenceTrack</code> slots
+(<code>stream</code>, <code>reference</code>, <code>mapping</code>, <code>args</code>, <code>defaults</code>) before deferring to
+the <code>DataTrack</code> initializer for the remaining slots.</p></li>
 <li><p><code>DataTrack()</code>: Constructor function for <code>DataTrack-class</code></p></li>
 <li><p><code>values(DataTrack)</code>: return the raw data values of the object, i.e.,
 the data matrix in the <code>data</code> slot.</p></li>
@@ -487,6 +493,9 @@ This is essentially similar to subsetting of the <code>GRanges</code> object in 
 and sort if necessary.</p></li>
 <li><p><code>subset(ReferenceDataTrack)</code>: Subset a <code>ReferenceDataTrack</code> by coordinates
 and sort if necessary.</p></li>
+<li><p><code>score(DataTrack)</code>: extract the (optionally subset and transformed)
+data values of the track as a numeric matrix, applying the <code>transformation</code>
+display parameter unless <code>transformation = FALSE</code>.</p></li>
 <li><p><code>drawAxis(DataTrack)</code>: add a y-axis to the title panel of a track.</p></li>
 <li><p><code>drawGD(DataTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
@@ -509,19 +518,19 @@ is not necessary.</p></li>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code>DataTrack</code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p>DataTrack</p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -657,10 +666,10 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr1"</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  chr1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "mm9" </span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">dtTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 100 ranges and 0 metadata columns:</span>
@@ -1067,7 +1076,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

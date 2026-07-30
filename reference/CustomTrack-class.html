@@ -18,7 +18,7 @@ plotting function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -142,7 +142,9 @@ that all plotting operations need to utilize Grid graphics.</p>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(CustomTrack)</code>: Initialize.</p></li>
+<ul><li><p><code>initialize(CustomTrack)</code>: Initialize the <code>plottingFunction</code> and
+<code>variables</code> slots before deferring to the <code>GdObject</code> initializer for the
+remaining slots.</p></li>
 <li><p><code>CustomTrack()</code>: Objects can be created using the constructor function.</p></li>
 <li><p><code>drawGD(CustomTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
@@ -157,19 +159,19 @@ is not necessary.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code>GRanges</code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code>IRanges</code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -197,7 +199,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

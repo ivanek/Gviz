@@ -18,7 +18,7 @@ from EBI's Biomart Ensembl data source."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@ model range.</p></dd>
 
 
 <dt id="arg-biomart">biomart<a class="anchor" aria-label="anchor" href="#arg-biomart"></a></dt>
-<dd><p>An optional <code>Mart</code> object providing access
+<dd><p>An optional <a href="https://huber-group-embl.github.io/biomaRt/reference/Mart-class.html" class="external-link">Mart</a> object providing access
 to the EBI Biomart webservice. As default the appropriate Ensembl data
 source is selected based on the provided genome and chromosome.</p></dd>
 
@@ -180,7 +180,7 @@ stacking at all) are implemented.</p></dd>
 
 <dt id="arg-filters">filters<a class="anchor" aria-label="anchor" href="#arg-filters"></a></dt>
 <dd><p>A list of additional filters to be applied in the Biomart
-query. See <code>getBM</code> for details.</p></dd>
+query. See <a href="https://huber-group-embl.github.io/biomaRt/reference/getBM.html" class="external-link">biomaRt::getBM</a> for details.</p></dd>
 
 
 <dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
@@ -212,14 +212,17 @@ case the class is derived directly from it.</p></dd>
 EBI's Biomart service. Usually the user does not have to take care of the
 Biomart connection, which will be established automatically based on the
 provided genome and chromosome information. However, for full flexibility a
-valid <code>Mart</code> object may be passed on to the constructor.
+valid <a href="https://huber-group-embl.github.io/biomaRt/reference/Mart-class.html" class="external-link">Mart</a> object may be passed on to the constructor.
 Please note that this assumes a connection to one of the Ensembl gene data
 sources, mapping the available query data back to the internal object slots.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(BiomartGeneRegionTrack)</code>: Initialize.</p></li>
+<ul><li><p><code>initialize(BiomartGeneRegionTrack)</code>: Initialize display parameters and
+translate the various id/filter arguments (<code>symbol</code>, <code>gene</code>, <code>transcript</code>,
+<code>entrez</code>, <code>filter</code>) into the internal biomaRt query filters before
+deferring to the <code>GeneRegionTrack</code> initializer.</p></li>
 <li><p><code>BiomartGeneRegionTrack()</code>: Constructor function for
 <code>BiomartGeneRegionTrack-class</code>.</p></li>
 <li><p><code>subset(BiomartGeneRegionTrack)</code>: subset a <code>BiomartGeneRegionTrack</code>
@@ -239,19 +242,19 @@ by coordinates and sort if necessary.</p></li>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code>GRanges</code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code>IRanges</code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -630,27 +633,27 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-plt img"><img src="BiomartGeneRegionTrack-class-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             x1   y1        x2    y2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000742021    38.11788 67.5  41.78433 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000449901   250.58527 67.5 253.11279 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199425   255.51549 67.5 257.84018 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000511070   291.57161 67.5 294.06792 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000514929   305.34813 67.5 308.09407 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199423   315.39579 67.5 317.59566 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000535814   339.45400 67.5 342.37157 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000507557   344.97709 67.5 347.17697 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000498616   481.96224 67.5 490.63693 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000489385    38.99158 67.5  41.78433 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000449901.1 250.58527 67.5 253.11279 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199425.1 255.51549 67.5 257.84018 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000511070.1 291.57161 67.5 294.06792 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000514929.1 305.34813 67.5 308.09407 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199423.1 315.39579 67.5 317.59566 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000535814.1 339.45400 67.5 342.37157 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000507557.1 344.97709 67.5 347.17697 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000496705   470.82245 67.5 471.82097 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625   481.96224 67.5 489.62280 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000736922   336.83287 67.5 342.37157 436.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000748299   344.97709 67.5 347.19257 436.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000742021    38.32764 64.5  41.79997 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000449901   239.54551 64.5 241.93921 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199425   244.21469 64.5 246.41630 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000511070   278.36174 64.5 280.72588 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000514929   291.40884 64.5 294.00939 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199423   300.92450 64.5 303.00790 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000535814   323.70890 64.5 326.47199 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000507557   328.93956 64.5 331.02296 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000498616   458.67175 64.5 466.88714 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000489385    39.15509 64.5  41.79997 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000449901.1 239.54551 64.5 241.93921 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199425.1 244.21469 64.5 246.41630 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000511070.1 278.36174 64.5 280.72588 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000514929.1 291.40884 64.5 294.00939 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000199423.1 300.92450 64.5 303.00790 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000535814.1 323.70890 64.5 326.47199 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000507557.1 328.93956 64.5 331.02296 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000496705   448.09222 64.5 449.08221 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625   458.67175 64.5 465.92671 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000736922   321.22656 64.5 326.47199 415.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000748299   328.93956 64.5 331.03774 415.5</span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">bmTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fill</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000449901   ENSMUSE00000199425 </span>
@@ -712,7 +715,7 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000511070.1 ENSMUSE00000514929.1 ENSMUSE00000199423.1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "26698884"           "26699767"           "26700411" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000535814.1 ENSMUSE00000507557.1   ENSMUSE00000496705 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "26701953"           "26702307"           "26710373" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "26701953"           "26702307"           "26710371" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000750625   ENSMUSE00000736922   ENSMUSE00000748299 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "26711087"           "26701785"           "26702307" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -728,7 +731,7 @@ by coordinates and sort if necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000511070.1 ENSMUSE00000514929.1 ENSMUSE00000199423.1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "26699044"           "26699943"           "26700552" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000535814.1 ENSMUSE00000507557.1   ENSMUSE00000496705 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "26702140"           "26702448"           "26710437" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "26702140"           "26702448"           "26710438" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000750625   ENSMUSE00000736922   ENSMUSE00000748299 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "26711578"           "26702140"           "26702449" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -895,7 +898,7 @@ by coordinates and sort if necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

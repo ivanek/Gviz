@@ -28,7 +28,7 @@ the availableDisplayPars function."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -183,8 +183,12 @@ parameters.</p>
 
 <ul><li><p><code>DisplayPars()</code>: Constructor function.</p></li>
 <li><p><code>getPar()</code>: Generics for <code>getPar</code>.</p></li>
-<li><p><code>getPar(x = DisplayPars, name = character)</code>: Alias for the <code>displayPars</code> method.</p></li>
-<li><p><code>getPar(x = DisplayPars, name = missing)</code>: Alias for the <code>displayPars</code> method.</p></li>
+<li><p><code>getPar(x = DisplayPars, name = character)</code>: Return the value(s) of the display
+parameter(s) named in <code>name</code>, resolving parameter name aliases. <code>getPar</code>
+is the underlying implementation; <code>displayPars</code> is a more descriptive
+alias for it.</p></li>
+<li><p><code>getPar(x = DisplayPars, name = missing)</code>: Return all display parameters as a named
+list, optionally hiding internal (<code>.__</code>-prefixed) parameters.</p></li>
 <li><p><code>displayPars()</code>: Generics for <code>displayPars</code>.</p></li>
 <li><p><code>displayPars(x = DisplayPars, name = missing)</code>: Returns all available display parameters.</p></li>
 <li><p><code>displayPars(x = DisplayPars, name = character)</code>: Returns the value of a subset of display parameters, as identified by <code>name</code>.</p></li>
@@ -345,7 +349,7 @@ so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

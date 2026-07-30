@@ -20,7 +20,7 @@ plotTracks."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@ plotTracks."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     <p>The UCSC data base provides a wealth of annotation information. This
 function can be used to access UCSC, to retrieve the data available there
 and to return it as an annotation track object amenable to plotting with
-<code><a href="plotTracks.html">plotTracks</a></code>.</p>
+<a href="plotTracks.html">plotTracks</a>.</p>
     </div>
 
     <div id="ref-usage">
@@ -90,8 +90,7 @@ browser at <a href="http://genome.ucsc.edu/cgi-bin/hgTables?command=start" class
 
 
 <dt id="arg-tracktype">trackType<a class="anchor" aria-label="anchor" href="#arg-tracktype"></a></dt>
-<dd><p>Character, one in <code>c("AnnotationTrack",
-"GeneRegionTrack", "DataTrack", "GenomeAxisTrack")</code>. The function will try
+<dd><p>Character, one in <code>c("AnnotationTrack", "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")</code>. The function will try
 to coerce the downloaded data in an object of this class. See below for
 details.</p></dd>
 
@@ -128,7 +127,7 @@ the <code>trackType</code> argument. See Details section for more information.</
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p><code>clearSessionCache</code> is can be called to remove all cached items from
+    <p><code>clearSessionCache</code> can be called to remove all cached items from
 the session which are generated when connecting with the UCSC data base.</p>
 <p>The data stored at the UCSC data bases can be of different formats: gene or
 transcript model data, simple annotation features like CpG Island locations
@@ -142,27 +141,25 @@ for the constructor of choice, and single character scalars are replaced by
 the respective data columns in the downloaded UCSC tables if available. For
 instance, assuming the table for track 'foo' contains the columns 'id',
 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start
-end end location. In order to create an <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code>
+end end location. In order to create an <a href="AnnotationTrack-class.html">AnnotationTrack</a>
 object from that data, we have to pass the additional named arguments
 <code>id="id"</code>, <code>feature="type"</code>, <code>start="fromLoc"</code> and
-codeend="toLoc" to the <code>UcscTrack</code> function. The complete function call
+<code>end="toLoc"</code> to the <code>UcscTrack</code> function. The complete function call
 could look like this:</p>
-<p><code>UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000,
-to=10000, trackType="AnnotationTrack", id="id", feature="type",
-start="from", end="to")</code></p>
+<p><code>UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")</code></p>
 <p>To reduce the bandwidth, some caching of the UCSC connection takes place. In
 order to remove these cached session items, call <code>clearSessionCache</code>.</p>
 <p>The <code>Gviz.ucscUrl</code> option controls which URL is being used to connect
 to UCSC. For instance, one could switch to the European UCSC mirror by
-calling <code>options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"</code>.</p>
+calling <code>options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")</code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code></p>
-<p><code><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p></div>
+    <div class="dont-index"><p><a href="AnnotationTrack-class.html">AnnotationTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></p>
+<p><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -212,7 +209,7 @@ calling <code>options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"</code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ the UCSC Genome Browser, except for all of the interactivity."><!-- mathjax --><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -86,14 +86,14 @@ the UCSC Genome Browser, except for all of the interactivity.</p>
 
 <dl><dt id="arg-tracklist">trackList<a class="anchor" aria-label="anchor" href="#arg-tracklist"></a></dt>
 <dd><p>A list of Gviz track objects, all inheriting from
-class <code><a href="GdObject-class.html">GdObject</a></code>. The tracks will all be drawn to the
+class <a href="GdObject-class.html">GdObject</a>. The tracks will all be drawn to the
 same genomic coordinates, either as defined by the <code>from</code> and <code>to</code>
 arguments if supplied, or by the maximum range across all individual items
 in the list.</p></dd>
 
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
-<dd><p>Character scalar, giving the range of genomic coordinates to
+<dd><p>Numeric scalar, giving the range of genomic coordinates to
 draw the tracks in. Note that <code>to</code> cannot be larger than <code>from</code>.
 If <code>NULL</code>, the plotting ranges are derived from the individual tracks.
 See <code>extend.left</code> and <code>extend.right</code> below for the definition of
@@ -129,7 +129,7 @@ range is defined as <code>from-extend.left</code> to <code>to+extend.right</code
 
 
 <dt id="arg-title-width">title.width<a class="anchor" aria-label="anchor" href="#arg-title-width"></a></dt>
-<dd><p>A expansion factor for the width of the title panels.
+<dd><p>An expansion factor for the width of the title panels.
 This can be used to make more space, e.g. to accommodate for more detailed
 data axes. The default is to use as much space as needed to fit all the
 annotation text.</p></dd>
@@ -141,7 +141,7 @@ re-initialising.</p></dd>
 
 
 <dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
-<dd><p>Character scalar, the plots main header.</p></dd>
+<dd><p>Character scalar, the plot's main header.</p></dd>
 
 
 <dt id="arg-cex-main-fontface-main-col-main">cex.main, fontface.main, col.main<a class="anchor" aria-label="anchor" href="#arg-cex-main-fontface-main-col-main"></a></dt>
@@ -175,20 +175,19 @@ an optional axis for tracks containing numeric data, and a data section
 showing the actual data along genomic coordinates. In that sense, the output
 is very similar to the UCSC Genome Browser.</p>
 <p>The layout of the individual tracks is highly customizable though so called
-"display parameters". See <code><a href="settings.html">settings</a></code> for details.</p>
+"display parameters". See <a href="settings.html">settings</a> for details.</p>
 <p>While plotting a track, the software automatically computes HTML image map
 coordinates based on the current graphics device. These coordinates as well
 as the associated annotation information can later be used to embed images
 of the plots in semi-interactive HTML pages. See
-<code><a href="ImageMap-class.html">ImageMap</a></code> for details.</p>
+<a href="ImageMap-class.html">ImageMap</a> for details.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code><a href="StackedTrack-class.html">StackedTrack</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="StackedTrack-class.html">StackedTrack</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -287,7 +286,7 @@ of the plots in semi-interactive HTML pages. See
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

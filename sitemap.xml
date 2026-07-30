@@ -10,6 +10,7 @@
 <url><loc>/reference/BiomartGeneRegionTrack-class.html</loc></url>
 <url><loc>/reference/CustomTrack-class.html</loc></url>
 <url><loc>/reference/DataTrack-class.html</loc></url>
+<url><loc>/reference/DetailsAnnotationTrack-class.html</loc></url>
 <url><loc>/reference/DisplayPars-class.html</loc></url>
 <url><loc>/reference/GdObject-class.html</loc></url>
 <url><loc>/reference/GeneRegionTrack-class.html</loc></url>
@@ -22,7 +23,15 @@
 <url><loc>/reference/NumericTrack-class.html</loc></url>
 <url><loc>/reference/OverlayTrack-class.html</loc></url>
 <url><loc>/reference/RangeTrack-class.html</loc></url>
+<url><loc>/reference/ReferenceAlignmentsTrack-class.html</loc></url>
+<url><loc>/reference/ReferenceAnnotationTrack-class.html</loc></url>
+<url><loc>/reference/ReferenceDataTrack-class.html</loc></url>
+<url><loc>/reference/ReferenceGeneRegionTrack-class.html</loc></url>
+<url><loc>/reference/ReferenceSequenceTrack-class.html</loc></url>
 <url><loc>/reference/ReferenceTrack-class.html</loc></url>
+<url><loc>/reference/SequenceBSgenomeTrack-class.html</loc></url>
+<url><loc>/reference/SequenceDNAStringSetTrack-class.html</loc></url>
+<url><loc>/reference/SequenceRNAStringSetTrack-class.html</loc></url>
 <url><loc>/reference/SequenceTrack-class.html</loc></url>
 <url><loc>/reference/StackedTrack-class.html</loc></url>
 <url><loc>/reference/UcscTrack.html</loc></url>

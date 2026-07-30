@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -60,6 +60,9 @@
 <span></span>
 <span><span class="co"># S4 method for class 'GenomeAxisTrack'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'GenomeAxisTrack'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GenomeAxisTrack'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -166,11 +169,16 @@ are used.</p>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(GenomeAxisTrack)</code>: Intialize.</p></li>
+<ul><li><p><code>initialize(GenomeAxisTrack)</code>: Initialize the <code>range</code> slot (coercing an
+<code>IRanges</code> input to <code>GRanges</code> if necessary) before deferring to the
+<code>GdObject</code> initializer for the remaining slots.</p></li>
 <li><p><code>GenomeAxisTrack()</code>: Constructor</p></li>
 <li><p><code>ranges(GenomeAxisTrack)</code>: return the genomic coordinates for the
 track along with all additional annotation information as an object of
 class <code>GRanges</code>.</p></li>
+<li><p><code>ranges(GenomeAxisTrack) &lt;- value</code>: replace the genomic coordinates and
+associated annotation information for the track with a new <code>GRanges</code>
+object.</p></li>
 <li><p><code>range(GenomeAxisTrack)</code>: return the genomic coordinates for the
 track as an object of class <code>IRanges</code>.
 @export</p></li>
@@ -182,7 +190,7 @@ items.</p></li>
 items.</p></li>
 <li><p><code>end(GenomeAxisTrack) &lt;- value</code>: replace the end coordinates of the track
 items.</p></li>
-<li><p><code>width(GenomeAxisTrack)</code>: return the with of the track items in
+<li><p><code>width(GenomeAxisTrack)</code>: return the width of the track items in
 genomic coordinates.</p></li>
 <li><p><code>length(GenomeAxisTrack)</code>: return the number of items stored in the ranges slot.</p></li>
 <li><p><code>values(GenomeAxisTrack)</code>: return all additional annotation information
@@ -197,7 +205,7 @@ to avoid rendering issues. See collapsing for details.</p></li>
 <li><p><code>x[i</code>: subset the items in the <code>GenomeAxisTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 <code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
-<li><p><code>subset(GenomeAxisTrack)</code>: plot subset all the contained tracks in an
+<li><p><code>subset(GenomeAxisTrack)</code>: subset a
 <code>GenomeAxisTrack</code> by coordinates and sort if necessary.</p></li>
 <li><p><code>drawGD(GenomeAxisTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
@@ -212,19 +220,19 @@ is not necessary.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code><a href="GdObject-class.html">GdObject</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p><a href="GdObject-class.html">GdObject</a></p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -330,9 +338,9 @@ is not necessary.</p></li>
 <span class="r-plt img"><img src="GenomeAxisTrack-class-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">coords</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          x1    y1        x2    y2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  13.75372 227.4  40.22553 276.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 119.64095 227.4 172.58457 276.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 384.35905 227.4 489.71685 276.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  13.51842 216.6  38.68304 263.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 114.17690 216.6 164.50614 263.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 365.82310 216.6 465.97828 263.4</span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $title</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3 </span>
@@ -378,7 +386,7 @@ is not necessary.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

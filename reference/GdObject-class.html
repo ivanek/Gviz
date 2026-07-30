@@ -21,7 +21,7 @@ called in order to assure that all necessary settings are present."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.51.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.2</span>
       </span>
     </div>
 
@@ -124,6 +124,9 @@ called in order to assure that all necessary settings are present.</p>
 <span></span>
 <span><span class="fu">drawGrid</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S4 method for class 'GdObject'</span></span>
+<span><span class="fu">drawGrid</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">drawGD</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">gene</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -163,10 +166,10 @@ called in order to assure that all necessary settings are present.</p>
 <span><span class="fu">position</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GdObject'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GdObject'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
 <span><span class="fu">consolidateTrack</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -376,9 +379,13 @@ See settings for details on display parameters and customization.</p></li>
 <li><p><code>displayPars(x = GdObject) &lt;- value</code>: set display parameters using the values of the
 named list in <code>value</code>. See <code>settings</code> for details on display parameters
 and customization.</p></li>
-<li><p><code>getPar(x = GdObject, name = character)</code>: alias for the <code>displayPars</code> method.
+<li><p><code>getPar(x = GdObject, name = character)</code>: Return the value of the display parameter
+<code>name</code>, delegating to the object's <code>DisplayPars</code> slot. <code>displayPars</code>
+is a more descriptive alias for this method.
 See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>getPar(x = GdObject, name = missing)</code>: alias for the <code>displayPars</code> method.
+<li><p><code>getPar(x = GdObject, name = missing)</code>: Return all display parameters, delegating to
+the object's <code>DisplayPars</code> slot. <code>displayPars</code> is a more descriptive
+alias for this method.
 See <code>settings</code> for details on display parameters and customization.</p></li>
 <li><p><code>displayPars(x = GdObject, name = character)</code>: list the value of the display parameter name.
 See <code>settings</code> for details on display parameters and customization.</p></li>
@@ -405,6 +412,9 @@ this usually returns <code>NULL</code>.</p></li>
 necessary. Unless overwritten in one of the sub-classes this usually
 does not plot anything and returns <code>NULL</code>.</p></li>
 <li><p><code>drawGrid()</code>: Generics for <code>drawGrid</code>.</p></li>
+<li><p><code>drawGrid(GdObject)</code>: superpose a grid on top of a track if necessary.
+Unless overwritten in one of the sub-classes this usually does not plot
+anything and returns <code>NULL</code>.</p></li>
 <li><p><code>drawGD()</code>: Generics for <code>drawGD</code>.</p></li>
 <li><p><code>gene()</code>: Generics for <code>gene</code>.</p></li>
 <li><p><code>gene(GdObject) &lt;- value</code>: Generics for <code>gene&lt;-</code>.</p></li>
@@ -429,15 +439,15 @@ scalar that can be reasonably coerced into one.</p></li>
 <li><p><code>genome(GdObject) &lt;- value</code>: set the track's genome. Usually this has to be a
 valid UCSC identifier, however this is not formally enforced here.</p></li>
 <li><p><code>consolidateTrack()</code>: Generics for <code>consolidateTrack</code>.</p></li>
-<li><p><code>consolidateTrack(GdObject)</code>: Consolidate.
-Determine whether there is <code>alpha</code> settings or not, and add this information
-as the internal display parameter <code>.__hasAlphaSupport</code>.</p></li>
+<li><p><code>consolidateTrack(GdObject)</code>: Determine whether there is <code>alpha</code> settings or
+not, and add this information as the internal display parameter
+<code>.__hasAlphaSupport</code>.</p></li>
 <li><p><code>stacking()</code>: Generics for <code>stacking</code>.</p></li>
 <li><p><code>stacking(GdObject) &lt;- value</code>: Generics for <code>stacking&lt;-</code>.</p></li>
 <li><p><code>stacks()</code>: Generics for <code>stacks</code>.</p></li>
-<li><p><code>setStacks()</code>: Generics for “.</p></li>
+<li><p><code>setStacks()</code>: Generics for <code>setStacks</code>.</p></li>
 <li><p><code>setStacks(GdObject)</code>: set stacks.</p></li>
-<li><p><code>setCoverage()</code>: Generics for “.</p></li>
+<li><p><code>setCoverage()</code>: Generics for <code>setCoverage</code>.</p></li>
 </ul></div>
     <div id="slots">
     <h2>Slots</h2>
@@ -463,19 +473,19 @@ track is plotted to a device and is usually not set by the user.</p></dd>
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="DisplayPars-class.html">DisplayPars</a></code></p>
-<p><code>GdObject</code></p>
-<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
-<p><code><a href="HighlightTrack-class.html">HighlightTrack</a></code></p>
-<p><code><a href="ImageMap-class.html">ImageMap</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
-<p><code><a href="RangeTrack-class.html">RangeTrack</a></code></p>
-<p><code><a href="DataTrack-class.html">DataTrack</a></code></p>
-<p><code><a href="collapsing.html">collapsing</a></code></p>
-<p><code><a href="grouping.html">grouping</a></code></p>
-<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
-<p><code><a href="plotTracks.html">plotTracks</a></code></p>
-<p><code><a href="settings.html">settings</a></code></p></div>
+    <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
+<p>GdObject</p>
+<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
+<p><a href="ImageMap-class.html">ImageMap</a></p>
+<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><a href="RangeTrack-class.html">RangeTrack</a></p>
+<p><a href="DataTrack-class.html">DataTrack</a></p>
+<p><a href="collapsing.html">collapsing</a></p>
+<p><a href="grouping.html">grouping</a></p>
+<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><a href="plotTracks.html">plotTracks</a></p>
+<p><a href="settings.html">settings</a></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -524,7 +534,7 @@ track is plotted to a device and is usually not set by the user.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
