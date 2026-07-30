@@ -47,7 +47,7 @@ jobs:
         run: |
           BiocManager::repositories()
           remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories())
-          remotes::install_cran(c("rcmdcheck", "covr"))
+          remotes::install_cran(c("rcmdcheck", "covr", "BiocCheck"))
         shell: Rscript {0}
 
       - name: Run rcmdcheck
