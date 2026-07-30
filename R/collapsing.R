@@ -14,9 +14,9 @@
 #'
 #' In the simplest case (for `AnnotationTrack` objects) this
 #' involves expanding all shown features to a minimum pixel width and height
-#' (using display parameters `min.width` and `min.heigh`) and
+#' (using display parameters `min.width` and `min.height`) and
 #' collapsing overlapping annotation items (as defined by the parameter
-#' `min.distance` into one single item to prevent over-plotting.
+#' `min.distance`) into one single item to prevent over-plotting.
 #'
 #' For objects of class `DataTrack`, the data values
 #' underlying collapsed regions will be summarized based on the `summary`
@@ -25,9 +25,9 @@
 #' @name collapsing
 #'
 #' @seealso
-#' \code{\linkS4class{AnnotationTrack}}
+#' [AnnotationTrack-class]
 #'
-#' \code{\linkS4class{DataTrack}}
+#' [DataTrack-class]
 #'
-#' \code{\link{settings}}
+#' [settings]
 NULL

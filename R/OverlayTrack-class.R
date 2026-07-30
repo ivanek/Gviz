@@ -10,7 +10,7 @@ NULL
 #' overlays of their content on the same region of the plot.
 #'
 #'
-#' A track to conceptionally group other Gviz track objects into a meta track
+#' A track to conceptually group other Gviz track objects into a meta track
 #' in order to merge them into a single overlay visualization. Only the first
 #' track in the supplied list will be inferred when setting up the track title
 #' and axis, for all the other tracks only the panel content is plotted.
@@ -18,17 +18,17 @@ NULL
 #' @name OverlayTrack-class
 #'
 #' @param trackList A list of Gviz track objects that all have to inherit from
-#' class \code{GdObject}.
+#' class `GdObject`.
 #' @param name Character scalar of the track's name. This is not really used
-#' and only exists fro completeness.
+#' and only exists for completeness.
 #' @param \dots All additional parameters are ignored.
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{OverlayTrack}.
+#' `OverlayTrack`.
 #' @section Objects from the Class:
 #'
-#' Objects can be created using the constructor function \code{OverlayTrack}.
+#' Objects can be created using the constructor function `OverlayTrack`.
 #'
 #' @author Florian Hahne
 #' @inherit GdObject-class seealso
@@ -50,7 +50,8 @@ setClass("OverlayTrack",
 
 ## Initialize ----------------------------------------------------------------
 
-#' @describeIn OverlayTrack-class Initialize.
+#' @describeIn OverlayTrack-class Initialize the `trackList` slot before
+#' deferring to the `GdObject` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "OverlayTrack", function(.Object, trackList, ...) {
     .Object <- .updatePars(.Object, "OverlayTrack")
@@ -76,7 +77,7 @@ OverlayTrack <- function(trackList = list(), name = "OverlayTrack", ...) {
 ## General accessors ---------------------------------------------------------
 
 #' @describeIn OverlayTrack-class set display parameters using the values of
-#' the named list in value. See \code{\link{settings}} for details on
+#' the named list in value. See [settings] for details on
 #' display parameters and customization.
 #' @export
 setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, recursive = FALSE, value) {
@@ -129,8 +130,9 @@ setMethod("setStacks", "OverlayTrack", function(GdObject, ...) {
 
 ## Consolidate ---------------------------------------------------------------
 
-#' @describeIn OverlayTrack-class #' For a `OverlayTrack` apply the method on
-#' each of the subtracks in the `trackList` slot
+#' @describeIn OverlayTrack-class For a `OverlayTrack`, apply the
+#' `consolidateTrack` method on each of the subtracks in the `trackList`
+#' slot.
 #' @keywords internal
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "OverlayTrack"), function(GdObject, chromosome, ...) {
@@ -141,7 +143,7 @@ setMethod("consolidateTrack", signature(GdObject = "OverlayTrack"), function(GdO
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
 
-#' @describeIn OverlayTrack-class plot subset all the contained tracks in an
+#' @describeIn OverlayTrack-class subset all the contained tracks in an
 #' `OverlayTrack` by coordinates and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "OverlayTrack"), function(x, ...) {

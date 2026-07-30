@@ -10,11 +10,11 @@ NULL
 #' the addition of a common highlighting area across tracks.
 #'
 #'
-#' A track to conceptionally group other Gviz track objects into a meta track
+#' A track to conceptually group other Gviz track objects into a meta track
 #' for the sole purpose of overlaying all the contained tracks with the same
 #' highlighting region as defined by the objects genomic ranges. During
 #' rendering the contained tracks will be treated as if they had been provided
-#' to the \code{plotTracks} function as individual objects.
+#' to the `plotTracks` function as individual objects.
 #'
 #' @template HighlightTrack-class_param
 #'
@@ -23,10 +23,10 @@ NULL
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{HighlightTrack}.
+#' `HighlightTrack`.
 #' @section Objects from the Class:
 #'
-#' Objects can be created using the constructor function \code{HighlightTrack}.
+#' Objects can be created using the constructor function `HighlightTrack`.
 #' @author Florian Hahne
 #'
 #' @inherit GdObject-class seealso
@@ -52,7 +52,8 @@ setClass("HighlightTrack",
 
 ## Initialize ----------------------------------------------------------------
 
-#' @describeIn HighlightTrack-class Initialize.
+#' @describeIn HighlightTrack-class Initialize the `trackList` slot before
+#' deferring to the `RangeTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "HighlightTrack", function(.Object, trackList, ...) {
     .Object <- .updatePars(.Object, "HighlightTrack")
@@ -100,7 +101,7 @@ HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end =
 ## General accessors ---------------------------------------------------------
 
 #' @describeIn HighlightTrack-class set display parameters using the values of
-#' the named list in value. See \code{\link{settings}} for details on display
+#' the named list in value. See [settings] for details on display
 #' parameters and customization.
 #' @export
 setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x, recursive = FALSE, value) {
@@ -135,7 +136,7 @@ setReplaceMethod("chromosome", "HighlightTrack", function(GdObject, value) {
 ## Annotation Accessors ------------------------------------------------------
 ## Stacking ------------------------------------------------------------------
 
-#' @describeIn HighlightTrack-class Rrecompute the stacks based on the available
+#' @describeIn HighlightTrack-class Recompute the stacks based on the available
 #' space and on the object's track items and stacking settings.
 #' This really just calls the `setStacks` methods for the contained tracks and
 #' only exists for dispatching reasons.
@@ -147,10 +148,9 @@ setMethod("setStacks", "HighlightTrack", function(GdObject, ...) {
 
 ## Consolidate ---------------------------------------------------------------
 
-#' @describeIn HighlightTrack-class Consolidate
-#' For a `HighlightTrack` apply the method on each of the subtracks in
-#' the `trackList` slot
-# #' @keywords internal
+#' @describeIn HighlightTrack-class For a `HighlightTrack`, apply the
+#' `consolidateTrack` method on each of the subtracks in the `trackList`
+#' slot.
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "HighlightTrack"), function(GdObject, chromosome, ...) {
     GdObject@trackList <- lapply(GdObject@trackList, consolidateTrack, chromosome = chromosome, ...)
@@ -160,7 +160,7 @@ setMethod("consolidateTrack", signature(GdObject = "HighlightTrack"), function(G
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
 
-#' @describeIn HighlightTrack-class subset all the contained tracks in an HighlightTrack by coordinates and sort if necessary.
+#' @describeIn HighlightTrack-class subset all the contained tracks in a HighlightTrack by coordinates and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "HighlightTrack"), function(x, ...) {
     x@trackList <- lapply(x@trackList, subset, ...)

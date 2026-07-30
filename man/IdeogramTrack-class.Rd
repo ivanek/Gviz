@@ -3,38 +3,66 @@
 \docType{class}
 \name{IdeogramTrack-class}
 \alias{IdeogramTrack-class}
-\alias{IdeogramTrack}
-\alias{drawGD,IdeogramTrack-method}
-\alias{end,IdeogramTrack-method}
-\alias{end<-,IdeogramTrack-method}
 \alias{initialize,IdeogramTrack-method}
-\alias{show,IdeogramTrack-method}
+\alias{IdeogramTrack}
 \alias{start,IdeogramTrack-method}
 \alias{start<-,IdeogramTrack-method}
-\alias{subset,IdeogramTrack-method}
+\alias{end,IdeogramTrack-method}
+\alias{end<-,IdeogramTrack-method}
 \alias{width,IdeogramTrack-method}
 \alias{width<-,IdeogramTrack-method}
 \alias{length,IdeogramTrack-method}
-\alias{[,IdeogramTrack-method}
-\alias{[,IdeogramTrack,ANY,ANY-method}
-\alias{[,IdeogramTrack,ANY,ANY,ANY-method}
 \alias{chromosome<-,IdeogramTrack-method}
 \alias{genome<-,IdeogramTrack-method}
+\alias{[,IdeogramTrack,ANY,ANY,ANY-method}
 \alias{position,IdeogramTrack-method}
+\alias{drawGD,IdeogramTrack-method}
+\alias{show,IdeogramTrack-method}
 \title{IdeogramTrack class and methods}
+\usage{
+\S4method{initialize}{IdeogramTrack}(.Object, genome, chromosome, bands, name, ...)
+
+IdeogramTrack(chromosome = NULL, genome, name = NULL, bands = NULL, ...)
+
+\S4method{start}{IdeogramTrack}(x)
+
+\S4method{start}{IdeogramTrack}(x) <- value
+
+\S4method{end}{IdeogramTrack}(x)
+
+\S4method{end}{IdeogramTrack}(x) <- value
+
+\S4method{width}{IdeogramTrack}(x)
+
+\S4method{width}{IdeogramTrack}(x) <- value
+
+\S4method{length}{IdeogramTrack}(x)
+
+\S4method{chromosome}{IdeogramTrack}(GdObject) <- value
+
+\S4method{genome}{IdeogramTrack}(x) <- value
+
+\S4method{[}{IdeogramTrack,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{position}{IdeogramTrack}(GdObject, ...)
+
+\S4method{drawGD}{IdeogramTrack}(GdObject, minBase, maxBase, prepare = FALSE, ...)
+
+\S4method{show}{IdeogramTrack}(object)
+}
 \arguments{
-\item{chromosome}{The chromosome for which to create the ideogram. Has to be
-a valid UCSC chromosome identifier of the form \code{chrx}, or a single
-integer or numeric character unless
-\code{option(ucscChromosomeNames=FALSE)}. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome.}
+\item{.Object}{The object being initialized (standard S4 \code{initialize}
+convention); not normally supplied directly by the user.}
 
 \item{genome}{The genome on which to create the ideogram. This has to be a
 valid UCSC genome identifier if the ideogram data is to be fetched from the
 UCSC repository.}
 
-\item{name}{Character scalar of the track's name used in the title panel
-when plotting. Defaults to the selected chromosome.}
+\item{chromosome}{The chromosome for which to create the ideogram. Has to be
+a valid UCSC chromosome identifier of the form \code{chrx}, or a single
+integer or numeric character unless
+\code{option(ucscChromosomeNames=FALSE)}. The user has to make sure that the
+respective chromosome is indeed defined for the the track's genome.}
 
 \item{bands}{A \code{data.frame} with the cytoband information for all
 available chromosomes on the genome similar to the data that would be
@@ -46,8 +74,27 @@ be used when no connection to the internet is available or when the cytoband
 information has been cached locally to avoid the somewhat slow connection to
 UCSC.}
 
+\item{name}{Character scalar of the track's name used in the title panel
+when plotting. Defaults to the selected chromosome.}
+
 \item{\dots}{Additional items which will all be interpreted as further
 display parameters.}
+
+\item{x, GdObject, object}{The \code{IdeogramTrack} object.}
+
+\item{value}{The replacement value for a replacement method.}
+
+\item{i, j}{Index arguments for \code{[}-style subsetting; ignored, since
+subsetting is not supported for \code{IdeogramTrack}.}
+
+\item{drop}{\code{logical}; ignored, since subsetting is not supported for
+\code{IdeogramTrack}.}
+
+\item{minBase, maxBase}{The currently plotted genomic range.}
+
+\item{prepare}{\code{logical}, indicating whether \code{drawGD} is being called in
+'prepare' mode (compute layout only) or 'plotting' mode (render to the
+device).}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -64,16 +111,72 @@ information and centromere location. The relevant data for various species
 is stored in the UCSC data base. The initializer method of the class will
 automatically fetch the respective data for a given genome and chromosome
 from UCSC and fill the appropriate object slots. When plotting
-\code{IdeogramTracks}, the current genomic location is indicated on the
+\code{IdeogramTrack} objects, the current genomic location is indicated on the
 chromosome by a colored box.
 
 The \code{Gviz.ucscUrl} option controls which URL is being used to connect
 to UCSC. For instance, one could switch to the European UCSC mirror by
-calling \code{options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"}.
+calling \code{options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")}.
 }
+\section{Functions}{
+\itemize{
+\item \code{initialize(IdeogramTrack)}: Fetch the chromosome band and length
+information from UCSC (or use the user-supplied \code{bands} table) and use it
+to populate the \code{range} and \code{bandTable} slots.
+
+\item \code{IdeogramTrack()}: Constructor function for
+\code{IdeogramTrack-class}.
+
+\item \code{start(IdeogramTrack)}: returns \code{NULL}. The start coordinate is
+not a meaningful concept for a whole-chromosome \code{IdeogramTrack} and is
+not supported.
+
+\item \code{start(IdeogramTrack) <- value}: a no-op: the start coordinate cannot be
+set for an \code{IdeogramTrack} and the object is returned unchanged.
+
+\item \code{end(IdeogramTrack)}: returns \code{NULL}. The end coordinate is
+not a meaningful concept for a whole-chromosome \code{IdeogramTrack} and is
+not supported.
+
+\item \code{end(IdeogramTrack) <- value}: a no-op: the end coordinate cannot be
+set for an \code{IdeogramTrack} and the object is returned unchanged.
+
+\item \code{width(IdeogramTrack)}: returns \code{NULL}. The width is not a
+meaningful concept for a whole-chromosome \code{IdeogramTrack} and is not
+supported.
+
+\item \code{width(IdeogramTrack) <- value}: a no-op: the width cannot be set for an
+\code{IdeogramTrack} and the object is returned unchanged.
+
+\item \code{length(IdeogramTrack)}: return the number of chromosome bands
+stored in the object.
+
+\item \code{chromosome(IdeogramTrack) <- value}: replace the active chromosome. If band
+information for the new chromosome is already cached in the object's
+\code{bandTable} slot it is reused directly; otherwise a new \code{IdeogramTrack}
+is constructed by re-fetching the band data for the new chromosome.
+
+\item \code{genome(IdeogramTrack) <- value}: replace the active genome, re-fetching
+the chromosome band information for the new genome.
+
+\item \code{x[i}: subsetting is not supported for
+\code{IdeogramTrack}; the object is returned unchanged.
+
+\item \code{position(IdeogramTrack)}: returns \code{NULL}. Genomic position is not a
+meaningful concept for a whole-chromosome \code{IdeogramTrack} and is not
+supported.
+
+\item \code{drawGD(IdeogramTrack)}: plot the object to a graphics device,
+rendering the chromosome bands, centromere and, if \code{from}/\code{to} are
+supplied, a highlighted box indicating the currently displayed genomic
+region.
+
+\item \code{show(IdeogramTrack)}: Show method.
+
+}}
 \note{
 When fetching ideogram data from UCSC the results are cached for faster
-acces. See \code{\link{clearSessionCache}} on details to delete these cached
+access. See \link{clearSessionCache} on details to delete these cached
 items.
 }
 \section{Objects from the Class}{
@@ -132,31 +235,31 @@ values(idTrack)
 as(idTrack, "data.frame")
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

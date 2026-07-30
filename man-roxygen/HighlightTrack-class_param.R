@@ -22,7 +22,7 @@
 #' \item{A \code{GRanges} object:}{ the genomic ranges for the highlighting
 #' regions.}
 #'
-#' \item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
+#' \item{An [IRanges][IRanges::IRanges-class] object:}{ almost identical to the
 #' \code{GRanges} case, except that the chromosome information has to be
 #' provided in the separate \code{chromosome} argument, because it can not be
 #' directly encoded in an \code{IRanges} object.}

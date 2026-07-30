@@ -26,7 +26,7 @@
 #' always take precedence over anything defined in the \code{range} argument.
 #' See below for details.}
 #'
-#' \item{An \code{\linkS4class{IRanges}} object:}{ this is very similar to the
+#' \item{An [IRanges][IRanges::IRanges-class] object:}{ this is very similar to the
 #' above case, except that the numeric data part now always has to be provided
 #' in the separate \code{data} argument. Also the chromosome information must
 #' be provided in the \code{chromosome} argument, because neither of the two

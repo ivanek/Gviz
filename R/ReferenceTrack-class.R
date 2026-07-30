@@ -31,7 +31,7 @@ NULL
 #'
 #' @return
 #' Constructor functions of `AnnotationTrack`, `DataTrack`, `SequenceTrack`
-#' and `AlignmentsTrack`` can create a special object of corresponding
+#' and `AlignmentsTrack` can create a special object of corresponding
 #' `Reference*Track` subclass with pointer to the referenced
 #' file.
 #'
@@ -79,9 +79,10 @@ setClass("ReferenceTrack",
 
 ## Initialize ----------------------------------------------------------------
 
-#' @describeIn ReferenceTrack-class Initialize.
+#' @describeIn ReferenceTrack-class Initialize all the `ReferenceTrack`
+#' slots (`stream`, `reference`, `mapping`, `args`, `defaults`) from the
+#' supplied arguments and validate the resulting object.
 #' @export
-
 setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, mapping = list(),
                                                    args = list(), defaults = list()) {
     .Object@stream <- stream
@@ -105,6 +106,7 @@ setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, m
 
 ## For character scalars the data need to be extracted from a file and we have to deal with parser functions
 ## and column assignments here.
+#' @noRd
 setMethod(
     ".buildRange", signature("character"),
     function(range, importFun = NULL, trackType, stream = FALSE, args, defaults, autodetect = is.null(importFun), ...) {

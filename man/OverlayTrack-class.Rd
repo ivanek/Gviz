@@ -45,7 +45,7 @@ class \code{GdObject}.}
 \item{\dots}{All additional parameters are ignored.}
 
 \item{name}{Character scalar of the track's name. This is not really used
-and only exists fro completeness.}
+and only exists for completeness.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -56,19 +56,20 @@ A container for other track objects from the Gviz package that allows for
 overlays of their content on the same region of the plot.
 }
 \details{
-A track to conceptionally group other Gviz track objects into a meta track
+A track to conceptually group other Gviz track objects into a meta track
 in order to merge them into a single overlay visualization. Only the first
 track in the supplied list will be inferred when setting up the track title
 and axis, for all the other tracks only the panel content is plotted.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(OverlayTrack)}: Initialize.
+\item \code{initialize(OverlayTrack)}: Initialize the \code{trackList} slot before
+deferring to the \code{GdObject} initializer for the remaining slots.
 
 \item \code{OverlayTrack()}: Constructor function for \code{OverlayTrack-class}.
 
 \item \code{displayPars(x = OverlayTrack) <- value}: set display parameters using the values of
-the named list in value. See \code{\link{settings}} for details on
+the named list in value. See \link{settings} for details on
 display parameters and customization.
 
 \item \code{length(OverlayTrack)}: return the number of subtracks.
@@ -85,10 +86,11 @@ space and on the object's track items and stacking settings.
 This really just calls the setStacks methods for the contained
 tracks and only exists for dispatching reasons.
 
-\item \code{consolidateTrack(OverlayTrack)}: #' For a \code{OverlayTrack} apply the method on
-each of the subtracks in the \code{trackList} slot
+\item \code{consolidateTrack(OverlayTrack)}: For a \code{OverlayTrack}, apply the
+\code{consolidateTrack} method on each of the subtracks in the \code{trackList}
+slot.
 
-\item \code{subset(OverlayTrack)}: plot subset all the contained tracks in an
+\item \code{subset(OverlayTrack)}: subset all the contained tracks in an
 \code{OverlayTrack} by coordinates and sort if necessary.
 
 \item \code{drawGD(OverlayTrack)}: plot the object to a graphics device.
@@ -121,31 +123,31 @@ dt2 <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome =
 ot <- OverlayTrack(trackList = list(dt1, dt2))
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

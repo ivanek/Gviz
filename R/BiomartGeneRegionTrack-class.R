@@ -14,7 +14,7 @@ NULL
 #' EBI's Biomart service. Usually the user does not have to take care of the
 #' Biomart connection, which will be established automatically based on the
 #' provided genome and chromosome information. However, for full flexibility a
-#' valid \code{\linkS4class{Mart}} object may be passed on to the constructor.
+#' valid [Mart][biomaRt::Mart-class] object may be passed on to the constructor.
 #' Please note that this assumes a connection to one of the Ensembl gene data
 #' sources, mapping the available query data back to the internal object slots.
 #'
@@ -309,7 +309,10 @@ setClass("BiomartGeneRegionTrack",
 
 # #' @noRd
 # #' @keywords internal
-#' @describeIn BiomartGeneRegionTrack-class Initialize.
+#' @describeIn BiomartGeneRegionTrack-class Initialize display parameters and
+#' translate the various id/filter arguments (`symbol`, `gene`, `transcript`,
+#' `entrez`, `filter`) into the internal biomaRt query filters before
+#' deferring to the `GeneRegionTrack` initializer.
 #' @export
 setMethod("initialize", "BiomartGeneRegionTrack", function(.Object, start = NULL, end = NULL, biomart, filter = list(), range, genome = NULL, chromosome = NULL, strand = NULL,
                                                            featureMap = NULL, symbol = NULL, gene = NULL, transcript = NULL, entrez = NULL, ...) {

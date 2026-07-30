@@ -10,7 +10,7 @@
 #' gene model range.
 #' @param end An integer scalar with the genomic end coordinates for the gene
 #' model range.
-#' @param biomart An optional \code{\linkS4class{Mart}} object providing access
+#' @param biomart An optional [Mart][biomaRt::Mart-class] object providing access
 #' to the EBI Biomart webservice. As default the appropriate Ensembl data
 #' source is selected based on the provided genome and chromosome.
 #' @param strand Character scalar, the strand for which to fetch gene
@@ -31,7 +31,7 @@
 #' the track items, squish (make best use of the available space) and dense (no
 #' stacking at all) are implemented.
 #' @param filters A list of additional filters to be applied in the Biomart
-#' query. See \code{\link{getBM}} for details.
+#' query. See [biomaRt::getBM] for details.
 #' @param featureMap Named character vector or list to map between the fields
 #' in the Biomart data base and the features as they are used to construct the
 #' track. If multiple values are provided in a single list item, the package

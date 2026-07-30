@@ -23,22 +23,22 @@
 #' is very similar to the UCSC Genome Browser.
 #'
 #' The layout of the individual tracks is highly customizable though so called
-#' "display parameters". See \code{\link{settings}} for details.
+#' "display parameters". See [settings] for details.
 #'
 #' While plotting a track, the software automatically computes HTML image map
 #' coordinates based on the current graphics device. These coordinates as well
 #' as the associated annotation information can later be used to embed images
 #' of the plots in semi-interactive HTML pages. See
-#' \code{\linkS4class{ImageMap}} for details.
+#' [ImageMap-class] for details.
 #'
 #' @name plotTracks
 #'
 #' @param trackList A list of Gviz track objects, all inheriting from
-#' class \code{\linkS4class{GdObject}}. The tracks will all be drawn to the
+#' class [GdObject-class]. The tracks will all be drawn to the
 #' same genomic coordinates, either as defined by the `from` and `to`
 #' arguments if supplied, or by the maximum range across all individual items
 #' in the list.
-#' @param from,to Character scalar, giving the range of genomic coordinates to
+#' @param from,to Numeric scalar, giving the range of genomic coordinates to
 #' draw the tracks in. Note that `to` cannot be larger than `from`.
 #' If `NULL`, the plotting ranges are derived from the individual tracks.
 #' See `extend.left` and `extend.right` below for the definition of
@@ -59,13 +59,13 @@
 #' @param extend.right,extend.left Numeric scalar, extend the plotting range to
 #' the right or to the left by a fixed number of bases. The final plotting
 #' range is defined as `from-extend.left` to `to+extend.right`.
-#' @param title.width A expansion factor for the width of the title panels.
+#' @param title.width An expansion factor for the width of the title panels.
 #' This can be used to make more space, e.g. to accommodate for more detailed
 #' data axes. The default is to use as much space as needed to fit all the
 #' annotation text.
 #' @param add Logical flag, add the plot to an existing plotting canvas without
 #' re-initialising.
-#' @param main Character scalar, the plots main header.
+#' @param main Character scalar, the plot's main header.
 #' @param cex.main,fontface.main,col.main The fontface, color and expansion
 #' factor settings for the main header.
 #' @param margin The margin width to add to the plot in pixels.
@@ -79,15 +79,13 @@
 #' @author Florian Hahne
 #'
 #' @seealso
-#' \code{\linkS4class{GdObject}}
+#' [GdObject-class]
 #'
-#' \code{\linkS4class{ImageMap}}
+#' [ImageMap-class]
 #'
-#' \code{\linkS4class{ImageMap}}
+#' [StackedTrack-class]
 #'
-#' \code{\linkS4class{StackedTrack}}
-#'
-#' \code{\link{settings}}
+#' [settings]
 #'
 #' @examples
 #' ## Create some tracks to plot

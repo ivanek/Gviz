@@ -6,6 +6,7 @@
 \alias{initialize,GenomeAxisTrack-method}
 \alias{GenomeAxisTrack}
 \alias{ranges,GenomeAxisTrack-method}
+\alias{ranges<-,GenomeAxisTrack-method}
 \alias{range,GenomeAxisTrack-method}
 \alias{start,GenomeAxisTrack-method}
 \alias{start<-,GenomeAxisTrack-method}
@@ -27,6 +28,8 @@
 GenomeAxisTrack(range = NULL, name = "Axis", id, ...)
 
 \S4method{ranges}{GenomeAxisTrack}(x)
+
+\S4method{ranges}{GenomeAxisTrack}(x) <- value
 
 \S4method{range}{GenomeAxisTrack}(x)
 
@@ -107,13 +110,19 @@ are used.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(GenomeAxisTrack)}: Intialize.
+\item \code{initialize(GenomeAxisTrack)}: Initialize the \code{range} slot (coercing an
+\code{IRanges} input to \code{GRanges} if necessary) before deferring to the
+\code{GdObject} initializer for the remaining slots.
 
 \item \code{GenomeAxisTrack()}: Constructor
 
 \item \code{ranges(GenomeAxisTrack)}: return the genomic coordinates for the
 track along with all additional annotation information as an object of
 class \code{GRanges}.
+
+\item \code{ranges(GenomeAxisTrack) <- value}: replace the genomic coordinates and
+associated annotation information for the track with a new \code{GRanges}
+object.
 
 \item \code{range(GenomeAxisTrack)}: return the genomic coordinates for the
 track as an object of class \code{IRanges}.
@@ -131,7 +140,7 @@ items.
 \item \code{end(GenomeAxisTrack) <- value}: replace the end coordinates of the track
 items.
 
-\item \code{width(GenomeAxisTrack)}: return the with of the track items in
+\item \code{width(GenomeAxisTrack)}: return the width of the track items in
 genomic coordinates.
 
 \item \code{length(GenomeAxisTrack)}: return the number of items stored in the ranges slot.
@@ -152,7 +161,7 @@ to avoid rendering issues. See collapsing for details.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 \code{range} slot. For most applications, the subset method may be more appropriate.
 
-\item \code{subset(GenomeAxisTrack)}: plot subset all the contained tracks in an
+\item \code{subset(GenomeAxisTrack)}: subset a
 \code{GenomeAxisTrack} by coordinates and sort if necessary.
 
 \item \code{drawGD(GenomeAxisTrack)}: plot the object to a graphics device.
@@ -235,31 +244,31 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale = 5000)))
 plotTracks(list(grTrack, GenomeAxisTrack(scale = 0.5, labelPos = "below")))
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

@@ -23,9 +23,12 @@
 
 #' @importFrom rtracklayer ucscGenomes browserSession
 #' @importMethodsFrom rtracklayer chrom close getTable "tableName<-" track
-#' ucscTableQuery trackNames tableNames import import.gff import.gff1
-#' import.gff2 import.gff3 import.2bit import.bed15 import.bw import.ucsc
-#' import.bed import.bedGraph import.chain import.wig seqinfo
+#' @importMethodsFrom rtracklayer ucscTableQuery trackNames tableNames import
+#' @importMethodsFrom rtracklayer import.gff import.gff1 import.gff2
+#' @importMethodsFrom rtracklayer import.gff3 import.2bit import.bed15
+#' @importMethodsFrom rtracklayer import.bw import.ucsc import.bed
+#' @importMethodsFrom rtracklayer import.bedGraph import.chain import.wig
+#' @importMethodsFrom rtracklayer seqinfo
 #'
 #' @export
 .doCache <- function(token, expression, env, callEnv = environment()) {
@@ -169,9 +172,9 @@ clearSessionCache <- function() {
 #' The UCSC data base provides a wealth of annotation information. This
 #' function can be used to access UCSC, to retrieve the data available there
 #' and to return it as an annotation track object amenable to plotting with
-#' \code{\link{plotTracks}}.
+#' [plotTracks].
 #'
-#' \code{clearSessionCache} is can be called to remove all cached items from
+#' `clearSessionCache` can be called to remove all cached items from
 #' the session which are generated when connecting with the UCSC data base.
 #'
 #'
@@ -180,40 +183,40 @@ clearSessionCache <- function() {
 #' or SNPs, or numeric data like conservation or mapability. This function
 #' presents a unified API to download all kinds of data and to map them back to
 #' one of the annotation track objects defined in this package. The type of
-#' object to hold the data has to be given in the \code{trackType} argument,
+#' object to hold the data has to be given in the `trackType` argument,
 #' and subsequently the function passes all data on to the respective object
 #' constructor. All additional named arguments are considered to be relevant
 #' for the constructor of choice, and single character scalars are replaced by
 #' the respective data columns in the downloaded UCSC tables if available. For
 #' instance, assuming the table for track 'foo' contains the columns 'id',
 #' 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start
-#' end end location. In order to create an \code{\linkS4class{AnnotationTrack}}
+#' end end location. In order to create an [AnnotationTrack][AnnotationTrack-class]
 #' object from that data, we have to pass the additional named arguments
-#' \code{id="id"}, \code{feature="type"}, \code{start="fromLoc"} and
-#' codeend="toLoc" to the \code{UcscTrack} function. The complete function call
+#' `id="id"`, `feature="type"`, `start="fromLoc"` and
+#' `end="toLoc"` to the `UcscTrack` function. The complete function call
 #' could look like this:
 #'
-#' \code{UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000,
+#' `UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000,
 #' to=10000, trackType="AnnotationTrack", id="id", feature="type",
-#' start="from", end="to")}
+#' start="from", end="to")`
 #'
 #' To reduce the bandwidth, some caching of the UCSC connection takes place. In
-#' order to remove these cached session items, call \code{clearSessionCache}.
+#' order to remove these cached session items, call `clearSessionCache`.
 #'
-#' The \code{Gviz.ucscUrl} option controls which URL is being used to connect
+#' The `Gviz.ucscUrl` option controls which URL is being used to connect
 #' to UCSC. For instance, one could switch to the European UCSC mirror by
-#' calling \code{options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"}.
+#' calling `options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")`.
 #'
 #' @aliases UcscTrack clearSessionCache
 #' @param track Character, the name of the track to fetch from UCSC. To find
 #' out about available tracks please consult the online table browser at
 #' \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.
 #' @param table Character, the name of the table to fetch from UCSC, or
-#' \code{NULL}, in which case the default selection of tables is used. To find
+#' `NULL`, in which case the default selection of tables is used. To find
 #' out about available tables for a given track please consult the online table
 #' browser at \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.
-#' @param trackType Character, one in \code{c("AnnotationTrack",
-#' "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")}. The function will try
+#' @param trackType Character, one in `c("AnnotationTrack",
+#' "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")`. The function will try
 #' to coerce the downloaded data in an object of this class. See below for
 #' details.
 #' @param genome Character, a valid USCS genome identifier for which to fetch
@@ -226,22 +229,22 @@ clearSessionCache <- function() {
 #' display parameters for the resulting objects, or character scalars of column
 #' names in the downloaded UCSC data tables that are matched by name to
 #' available arguments in the respective constructor functions as defined by
-#' the \code{trackType} argument. See Details section for more information.
+#' the `trackType` argument. See Details section for more information.
 #' @return
 #'
-#' An annotation track object as determined by \code{trackType}.
+#' An annotation track object as determined by `trackType`.
 #' @author Florian Hahne
 #' @seealso
 #'
-#' \code{\linkS4class{AnnotationTrack}}
+#' [AnnotationTrack-class]
 #'
-#' \code{\linkS4class{DataTrack}}
+#' [DataTrack-class]
 #'
-#' \code{\linkS4class{GeneRegionTrack}}
+#' [GeneRegionTrack-class]
 #'
-#' \code{\linkS4class{GenomeAxisTrack}}
+#' [GenomeAxisTrack-class]
 #'
-#' \code{\link{plotTracks}}
+#' [plotTracks]
 #' @examples
 #' \dontrun{
 #'

@@ -69,7 +69,9 @@ when plotted.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(StackedTrack)}: Initialize.
+\item \code{initialize(StackedTrack)}: Initialize the \code{stacking} slot (validating
+it against the allowed \code{stackingValues}) and reset the \code{stacks} slot,
+before deferring to the \code{RangeTrack} initializer for the remaining slots.
 
 \item \code{stacking(StackedTrack)}: return the current stacking type.
 
@@ -81,8 +83,10 @@ when plotted.
 \item \code{setStacks(StackedTrack)}: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 
-\item \code{consolidateTrack(StackedTrack)}: Consolidate.
-a display parameter)
+\item \code{consolidateTrack(StackedTrack)}: For \code{StackedTrack} objects, set the
+stacking (which could have been passed in as a display parameter) before
+deferring to the \code{RangeTrack} method for the remaining consolidation
+steps.
 
 \item \code{x[i}: subset the items in the \code{StackedTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
@@ -181,31 +185,31 @@ stacking(annTrack) <- "dense"
 plotTracks(annTrack)
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

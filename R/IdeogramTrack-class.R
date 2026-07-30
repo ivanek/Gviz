@@ -16,57 +16,60 @@ NULL
 #' is stored in the UCSC data base. The initializer method of the class will
 #' automatically fetch the respective data for a given genome and chromosome
 #' from UCSC and fill the appropriate object slots. When plotting
-#' \code{IdeogramTracks}, the current genomic location is indicated on the
+#' `IdeogramTrack` objects, the current genomic location is indicated on the
 #' chromosome by a colored box.
 #'
-#' The \code{Gviz.ucscUrl} option controls which URL is being used to connect
+#' The `Gviz.ucscUrl` option controls which URL is being used to connect
 #' to UCSC. For instance, one could switch to the European UCSC mirror by
-#' calling \code{options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"}.
+#' calling `options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")`.
 #'
 #' @name IdeogramTrack-class
-#' @aliases IdeogramTrack-class IdeogramTrack drawGD,IdeogramTrack-method
-#' end,IdeogramTrack-method end<-,IdeogramTrack-method
-#' initialize,IdeogramTrack-method show,IdeogramTrack-method
-#' start,IdeogramTrack-method start<-,IdeogramTrack-method
-#' subset,IdeogramTrack-method width,IdeogramTrack-method
-#' width<-,IdeogramTrack-method length,IdeogramTrack-method
-#' [,IdeogramTrack-method [,IdeogramTrack,ANY,ANY-method
-#' [,IdeogramTrack,ANY,ANY,ANY-method chromosome<-,IdeogramTrack-method
-#' genome<-,IdeogramTrack-method position,IdeogramTrack-method
 #' @docType class
 #' @param chromosome The chromosome for which to create the ideogram. Has to be
-#' a valid UCSC chromosome identifier of the form \code{chrx}, or a single
+#' a valid UCSC chromosome identifier of the form `chrx`, or a single
 #' integer or numeric character unless
-#' \code{option(ucscChromosomeNames=FALSE)}. The user has to make sure that the
+#' `option(ucscChromosomeNames=FALSE)`. The user has to make sure that the
 #' respective chromosome is indeed defined for the the track's genome.
 #' @param genome The genome on which to create the ideogram. This has to be a
 #' valid UCSC genome identifier if the ideogram data is to be fetched from the
 #' UCSC repository.
 #' @param name Character scalar of the track's name used in the title panel
 #' when plotting. Defaults to the selected chromosome.
-#' @param bands A \code{data.frame} with the cytoband information for all
+#' @param bands A `data.frame` with the cytoband information for all
 #' available chromosomes on the genome similar to the data that would be
 #' fetched from UCSC. The table needs to contain the mandatory columns
-#' \code{chrom}, \code{chromStart}, \code{chromEnd}, \code{name} and
-#' \code{gieStain} with the chromosome name, cytoband start and end
+#' `chrom`, `chromStart`, `chromEnd`, `name` and
+#' `gieStain` with the chromosome name, cytoband start and end
 #' coordinates, cytoband name and coloring information, respectively. This can
 #' be used when no connection to the internet is available or when the cytoband
 #' information has been cached locally to avoid the somewhat slow connection to
 #' UCSC.
 #' @param \dots Additional items which will all be interpreted as further
 #' display parameters.
+#' @param .Object The object being initialized (standard S4 `initialize`
+#' convention); not normally supplied directly by the user.
+#' @param x,GdObject,object The `IdeogramTrack` object.
+#' @param i,j Index arguments for `[`-style subsetting; ignored, since
+#' subsetting is not supported for `IdeogramTrack`.
+#' @param drop `logical`; ignored, since subsetting is not supported for
+#' `IdeogramTrack`.
+#' @param minBase,maxBase The currently plotted genomic range.
+#' @param prepare `logical`, indicating whether `drawGD` is being called in
+#' 'prepare' mode (compute layout only) or 'plotting' mode (render to the
+#' device).
+#' @param value The replacement value for a replacement method.
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{IdeogramTrack}.
+#' `IdeogramTrack`.
 #' @note
 #'
 #' When fetching ideogram data from UCSC the results are cached for faster
-#' acces. See \code{\link{clearSessionCache}} on details to delete these cached
+#' access. See [clearSessionCache] on details to delete these cached
 #' items.
 #' @section Objects from the Class:
 #'
-#' Objects can be created using the constructor function \code{IdeogramTrack}.
+#' Objects can be created using the constructor function `IdeogramTrack`.
 #' @author Florian Hahne
 #' @inherit GdObject-class seealso
 #'
@@ -154,6 +157,9 @@ setClass("IdeogramTrack",
 
 ## Grab the chromosome band and length information from UCSC and fill the ranges slot.
 
+#' @describeIn IdeogramTrack-class Fetch the chromosome band and length
+#' information from UCSC (or use the user-supplied `bands` table) and use it
+#' to populate the `range` and `bandTable` slots.
 #' @export
 setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, bands, name, ...) {
     ## the display parameter defaults
@@ -210,6 +216,8 @@ setMethod("initialize", "IdeogramTrack", function(.Object, genome, chromosome, b
 ##    o genome, chromosome: the reference genome and active chromosome for the track.
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
+#' @describeIn IdeogramTrack-class Constructor function for
+#' `IdeogramTrack-class`.
 #' @export
 IdeogramTrack <- function(chromosome = NULL, genome, name = NULL, bands = NULL, ...) {
     if (missing(genome)) stop("Need to specify genome for creating an IdeogramTrack")
@@ -218,35 +226,56 @@ IdeogramTrack <- function(chromosome = NULL, genome, name = NULL, bands = NULL, 
 
 ## General accessors ---------------------------------------------------------
 
+#' @describeIn IdeogramTrack-class returns `NULL`. The start coordinate is
+#' not a meaningful concept for a whole-chromosome `IdeogramTrack` and is
+#' not supported.
 #' @export
 setMethod("start", "IdeogramTrack", function(x) NULL) # if(length(x)) start(range(x)) else NULL)
 
+#' @describeIn IdeogramTrack-class a no-op: the start coordinate cannot be
+#' set for an `IdeogramTrack` and the object is returned unchanged.
 #' @export
 setReplaceMethod("start", "IdeogramTrack", function(x, value) {
     # start(x@range) <- value
     return(x)
 })
 
+#' @describeIn IdeogramTrack-class returns `NULL`. The end coordinate is
+#' not a meaningful concept for a whole-chromosome `IdeogramTrack` and is
+#' not supported.
 #' @export
 setMethod("end", "IdeogramTrack", function(x) NULL) # if(length(x)) end(range(x)) else NULL)
 
+#' @describeIn IdeogramTrack-class a no-op: the end coordinate cannot be
+#' set for an `IdeogramTrack` and the object is returned unchanged.
 #' @export
 setReplaceMethod("end", "IdeogramTrack", function(x, value) {
     # end(x@range) <- value
     return(x)
 })
 
+#' @describeIn IdeogramTrack-class returns `NULL`. The width is not a
+#' meaningful concept for a whole-chromosome `IdeogramTrack` and is not
+#' supported.
 #' @export
 setMethod("width", "IdeogramTrack", function(x) NULL) # if(length(x)) width(range(x)) else NULL)
 
+#' @describeIn IdeogramTrack-class a no-op: the width cannot be set for an
+#' `IdeogramTrack` and the object is returned unchanged.
 #' @export
 setReplaceMethod("width", "IdeogramTrack", function(x, value) {
     return(x)
 })
 
+#' @describeIn IdeogramTrack-class return the number of chromosome bands
+#' stored in the object.
 #' @export
 setMethod("length", "IdeogramTrack", function(x) length(ranges(x)))
 
+#' @describeIn IdeogramTrack-class replace the active chromosome. If band
+#' information for the new chromosome is already cached in the object's
+#' `bandTable` slot it is reused directly; otherwise a new `IdeogramTrack`
+#' is constructed by re-fetching the band data for the new chromosome.
 #' @export
 setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value) {
     ## We have changed the class definition to include the bands for all chromosomes, but still want the old objects to work
@@ -275,6 +304,8 @@ setReplaceMethod("chromosome", "IdeogramTrack", function(GdObject, value) {
     return(tmp)
 })
 
+#' @describeIn IdeogramTrack-class replace the active genome, re-fetching
+#' the chromosome band information for the new genome.
 #' @export
 setReplaceMethod("genome", "IdeogramTrack", function(x, value) {
     if (genome(x) != value) {
@@ -290,6 +321,8 @@ setReplaceMethod("genome", "IdeogramTrack", function(x, value) {
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
 
+#' @describeIn IdeogramTrack-class subsetting is not supported for
+#' `IdeogramTrack`; the object is returned unchanged.
 #' @export
 setMethod("[", signature(x = "IdeogramTrack"), function(x, i, j, ..., drop = TRUE) {
     return(x)
@@ -297,6 +330,9 @@ setMethod("[", signature(x = "IdeogramTrack"), function(x, i, j, ..., drop = TRU
 
 ## Position ------------------------------------------------------------------
 
+#' @describeIn IdeogramTrack-class returns `NULL`. Genomic position is not a
+#' meaningful concept for a whole-chromosome `IdeogramTrack` and is not
+#' supported.
 #' @export
 setMethod("position", signature("IdeogramTrack"), definition = function(GdObject, ...) NULL)
 
@@ -355,6 +391,10 @@ setMethod("position", signature("IdeogramTrack"), definition = function(GdObject
 }
 
 ## The actual drawing method
+#' @describeIn IdeogramTrack-class plot the object to a graphics device,
+#' rendering the chromosome bands, centromere and, if `from`/`to` are
+#' supplied, a highlighted box indicating the currently displayed genomic
+#' region.
 #' @importFrom grDevices rgb2hsv
 #' @export
 setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, ...) {
@@ -538,6 +578,7 @@ setMethod("drawGD", signature("IdeogramTrack"), function(GdObject, minBase, maxB
 
 ## Show ----------------------------------------------------------------------
 
+#' @describeIn IdeogramTrack-class Show method.
 #' @export
 setMethod(
     "show", signature(object = "IdeogramTrack"),

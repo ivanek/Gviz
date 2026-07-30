@@ -138,7 +138,9 @@ setClass("GenomeAxisTrack",
 
 ## Only pass on the stuff to the GdObject initializer
 
-#' @describeIn GenomeAxisTrack-class Intialize.
+#' @describeIn GenomeAxisTrack-class Initialize the `range` slot (coercing an
+#' `IRanges` input to `GRanges` if necessary) before deferring to the
+#' `GdObject` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...) {
     ## the diplay parameter defaults
@@ -172,6 +174,10 @@ GenomeAxisTrack <- function(range = NULL, name = "Axis", id, ...) {
 #' track along with all additional annotation information as an object of
 #' class `GRanges`.
 setMethod("ranges", "GenomeAxisTrack", function(x) x@range)
+
+#' @describeIn GenomeAxisTrack-class replace the genomic coordinates and
+#' associated annotation information for the track with a new `GRanges`
+#' object.
 setReplaceMethod("ranges", "GenomeAxisTrack", function(x, value) {
     x@range <- value
     return(x)
@@ -208,7 +214,7 @@ setReplaceMethod("end", "GenomeAxisTrack", function(x, value) {
     return(x)
 })
 
-#' @describeIn GenomeAxisTrack-class return the with of the track items in
+#' @describeIn GenomeAxisTrack-class return the width of the track items in
 #' genomic coordinates.
 #' @export
 setMethod("width", "GenomeAxisTrack", function(x) if (length(x)) as.integer(width(range(x))) else NULL)
@@ -268,7 +274,7 @@ setMethod("[", signature(x = "GenomeAxisTrack"), function(x, i, j, ..., drop = T
     return(x)
 })
 
-#' @describeIn GenomeAxisTrack-class plot subset all the contained tracks in an
+#' @describeIn GenomeAxisTrack-class subset a
 #' `GenomeAxisTrack` by coordinates and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "GenomeAxisTrack"), function(x, from = NULL, to = NULL, sort = FALSE, ...) {

@@ -38,7 +38,8 @@ in the package.}
 }
 \value{
 Constructor functions of \code{AnnotationTrack}, \code{DataTrack}, \code{SequenceTrack}
-and \verb{AlignmentsTrack`` can create a special object of corresponding }Reference*Track` subclass with pointer to the referenced
+and \code{AlignmentsTrack} can create a special object of corresponding
+\code{Reference*Track} subclass with pointer to the referenced
 file.
 
 A virtual class: No objects may be created from it.
@@ -57,7 +58,9 @@ file types and the metadata columns of the tracks' \code{GRanges} objects.
 defines a mapping scheme between one of the many supported input file types
 and the metadata columns of the tracks's \code{GRanges} objects.
 
-\item \code{initialize(ReferenceTrack)}: Initialize.
+\item \code{initialize(ReferenceTrack)}: Initialize all the \code{ReferenceTrack}
+slots (\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) from the
+supplied arguments and validate the resulting object.
 
 }}
 \section{Slots}{
@@ -95,31 +98,31 @@ alTrack <- AlignmentsTrack(system.file(
 plotTracks(alTrack, from = afrom, to = ato, chromosome = "chr12")
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

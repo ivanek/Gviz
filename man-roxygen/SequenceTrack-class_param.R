@@ -3,7 +3,6 @@
 #' case the class is derived directly from it.
 #' @param minBase Start of the sequence.
 #' @param maxBase End of the sequence.
-#' @param reference Name of the file (for streatming).
 #' @param value Value to be set.
 #' @param prepare `logical`
 #' @param object object
@@ -41,7 +40,6 @@
 #' import function, an error is raised asking for a user-defined import
 #' function. Currently the following file types can be imported with the
 #' default functions: \code{fa/fasta} and \code{2bit}.
-#'
 #' Both file types support indexing by genomic coordinates, and it makes sense
 #' to only load the part of the file that is needed for plotting. To this end,
 #' the \code{Gviz} package defines the derived \code{ReferenceSequenceTrack}

@@ -6,14 +6,14 @@
 #'
 #'
 #' All track objects that inherit from class
-#' \code{\linkS4class{AnnotationTrack}} support the grouping feature. The
+#' [AnnotationTrack-class] support the grouping feature. The
 #' information is usually passed on to the constructor function (for
-#' \code{AnnotationTrack} via the \code{groups} argument and for
-#' \code{\linkS4class{GeneRegionTrack}} objects via the \code{exon} argument)
+#' `AnnotationTrack` via the `group` argument and for
+#' [GeneRegionTrack-class] objects via the `exon` argument)
 #' or automatically downloaded from an online annotation repository
-#' (\code{\linkS4class{BiomartGeneRegionTrack}}). Group membership is specified
+#' ([BiomartGeneRegionTrack-class]). Group membership is specified
 #' by a factor vector with as many items as there are annotation items in the
-#' track (i.e., the value of \code{length(track)}. Upon plotting, the grouped
+#' track (i.e., the value of `length(track)`). Upon plotting, the grouped
 #' annotation features are displayed together and will not be separated in the
 #' stacking of track items.
 #'
@@ -22,9 +22,9 @@
 #' @author Florian Hahne
 #' @seealso
 #'
-#' \code{\linkS4class{AnnotationTrack}}
+#' [AnnotationTrack-class]
 #'
-#' \code{\linkS4class{BiomartGeneRegionTrack}}
+#' [BiomartGeneRegionTrack-class]
 #'
-#' \code{\linkS4class{GeneRegionTrack}}
+#' [GeneRegionTrack-class]
 NULL

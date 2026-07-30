@@ -43,7 +43,7 @@ NULL
 #'
 #' \item{\code{smooth}:}{ add a loess fit to the plot. The following display
 #' parameters can be used to control the loess calculation: \code{span, degree,
-#' family, evaluation}. See \code{\link{panel.loess}} for details.}
+#' family, evaluation}. See [lattice::panel.loess] for details.}
 #'
 #' \item{\code{histogram}:}{ plot data as a histogram, where the width of the
 #' histogram bars reflects the width of the genomic ranges in the \code{range}
@@ -52,7 +52,7 @@ NULL
 #' \item{\code{mountain}:}{ plot a smoothed version of the data relative to a
 #' baseline, as defined by the \code{baseline} display parameter. The following
 #' display parameters can be used to control the smoothing: \code{span, degree,
-#' family, evaluation}. See \code{\link{panel.loess}} for details. The layout
+#' family, evaluation}. See [lattice::panel.loess] for details. The layout
 #' of the plot can be further customized via the following display parameters:
 #' \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 #'
@@ -65,7 +65,7 @@ NULL
 #' \item{\code{boxplot}:}{ plot the data as box-and-whisker plots. The layout
 #' of the plot can be further customized via the following display parameters:
 #' \code{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-#' coef, do.out}. See \code{\link{panel.bwplot}} for details.}
+#' coef, do.out}. See [lattice::panel.bwplot] for details.}
 #'
 #' \item{\code{gradient}:}{ collapse the data across samples and plot this
 #' average value as a color-coded gradient. Essenitally this is similar to the
@@ -86,7 +86,7 @@ NULL
 #' segments and overplotting them with color representing the magnitude and
 #' direction of deviation. This is particularly useful when comparing multiple
 #' samples, in which case the horizon strips are stacked. See
-#' \code{\link{horizonplot}} for details. Please note that the \code{origin}
+#' [latticeExtra::panel.horizonplot] for details. Please note that the \code{origin}
 #' and \code{horizonscale} arguments of the Lattice \code{horizonplot} function
 #' are available as display parameters \code{horizon.origin} and
 #' \code{horizon.scale}.}
@@ -297,7 +297,9 @@ setClass("DataTrack",
 
 ## Only pass on the stuff to the GdObject initializer
 
-#' @describeIn DataTrack-class  Initialize.
+#' @describeIn DataTrack-class Initialize the `data` slot, and the `strand`
+#' slot if provided, before deferring to the `GdObject` initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "DataTrack", function(.Object, data = matrix(), strand, ...) {
     ## the display parameter defaults
@@ -314,14 +316,24 @@ setMethod("initialize", "DataTrack", function(.Object, data = matrix(), strand, 
 ## The file-based version of the DataTrack class. This will mainly provide a means to dispatch to
 ## a special 'subset' method which should stream the necessary data from disk.
 
-#' @describeIn DataTrack-class The file-based version of the `DataTrack-class`.
+#' The file-based version of the `DataTrack` class
+#'
+#' This will mainly provide a means to dispatch to a special `subset` method
+#' which should stream the necessary data from disk. Users typically do not
+#' have to deal with this distinction directly and can rely on the
+#' `DataTrack` constructor to make the right choice.
+#'
+#' @name ReferenceDataTrack-class
 #' @exportClass ReferenceDataTrack
+#' @keywords internal
 setClass("ReferenceDataTrack", contains = c("DataTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
 
-#' @describeIn DataTrack-class  Initialize.
+#' @describeIn DataTrack-class Initialize the `ReferenceTrack` slots
+#' (`stream`, `reference`, `mapping`, `args`, `defaults`) before deferring to
+#' the `DataTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, reference, mapping = list(),
                                                        args = list(), defaults = list(), ...) {
@@ -835,6 +847,10 @@ setMethod("subset", signature(x = "ReferenceDataTrack"), function(x, from, to, c
 
 ## Position ------------------------------------------------------------------
 
+#' @describeIn DataTrack-class extract the (optionally subset and transformed)
+#' data values of the track as a numeric matrix, applying the `transformation`
+#' display parameter unless `transformation = FALSE`.
+#' @export
 setMethod("score", signature("DataTrack"), function(x, from = NULL, to = NULL, sort = FALSE, transformation = TRUE, ...) {
     if (!is.null(from) && !is.null(to)) {
         x <- subset(x, from = from, to = to, sort = sort, ...)

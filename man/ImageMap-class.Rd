@@ -13,13 +13,13 @@
 \usage{
 coords(ImageMap, ...)
 
-\S4method{coords}{`NULL`}(ImageMap)
+\S4method{coords}{NULL}(ImageMap)
 
 \S4method{coords}{ImageMap}(ImageMap)
 
 tags(ImageMap, ...)
 
-\S4method{tags}{`NULL`}(ImageMap)
+\S4method{tags}{NULL}(ImageMap)
 
 \S4method{tags}{ImageMap}(ImageMap)
 }

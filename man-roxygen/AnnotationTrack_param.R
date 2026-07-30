@@ -17,7 +17,7 @@
 #' structure is preserved in the `AnnotationTrack`. I.e., all the elements
 #' within one list item receive the same group id. For consistency, there is
 #' also a coercion method from `GRangesLists` `as(obj,"AnnotationTrack")`.
-#' * An \code{\linkS4class{IRanges}} object: almost identical to the
+#' * An [IRanges][IRanges::IRanges-class] object: almost identical to the
 #' `GRanges` case, except that the chromosome and strand information as
 #' well as all additional metadata has to be provided in the separate
 #' `chromosome`, `strand`, `feature`, `group` or `id`

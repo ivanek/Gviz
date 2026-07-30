@@ -5,6 +5,7 @@
 \alias{RangeTrack-class}
 \alias{initialize,RangeTrack-method}
 \alias{ranges,RangeTrack-method}
+\alias{ranges<-,RangeTrack-method}
 \alias{range,RangeTrack-method}
 \alias{seqnames,RangeTrack-method}
 \alias{seqlevels,RangeTrack-method}
@@ -37,6 +38,8 @@
 \S4method{initialize}{RangeTrack}(.Object, range, chromosome, genome, ...)
 
 \S4method{ranges}{RangeTrack}(x)
+
+\S4method{ranges}{RangeTrack}(x) <- value
 
 \S4method{range}{RangeTrack}(x)
 
@@ -106,8 +109,7 @@
 \item{range}{range}
 
 \item{chromosome}{the currently active chromosome which may have to be set
-for a \code{RangeTrack} or a \code{SequenceTrack} object
-parameters}
+for a \code{RangeTrack} or a \code{SequenceTrack} object}
 
 \item{genome}{genome}
 
@@ -145,14 +147,20 @@ and the associated genome.)
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(RangeTrack)}: Initialize.
+\item \code{initialize(RangeTrack)}: Initialize the \code{range}, \code{chromosome} and
+\code{genome} slots before deferring to the \code{GdObject} initializer for the
+remaining slots.
 
 \item \code{ranges(RangeTrack)}: return the genomic coordinates for the track
 along with all additional annotation information as an object of
-class \code{GRanges.}
+class \code{GRanges}.
+
+\item \code{ranges(RangeTrack) <- value}: replace the genomic coordinates and
+associated annotation information for the track with a new \code{GRanges}
+object.
 
 \item \code{range(RangeTrack)}: return the genomic coordinates for the
-track as an object of class IRanges.
+track as an object of class \code{IRanges}.
 
 \item \code{seqnames(RangeTrack)}: return the track's seqnames.
 
@@ -234,7 +242,9 @@ coerced into one) of the same length as the number of items in the
 details.
 @export
 
-\item \code{consolidateTrack(RangeTrack)}: Consolidate.
+\item \code{consolidateTrack(RangeTrack)}: Update the active chromosome (if provided)
+before deferring to the \code{GdObject} method for the remaining
+consolidation steps.
 
 }}
 \section{Slots}{
@@ -302,31 +312,31 @@ if (!interactive()) {
 plotTracks(annTrack)
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

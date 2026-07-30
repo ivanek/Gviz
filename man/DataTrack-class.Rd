@@ -4,7 +4,6 @@
 \name{DataTrack-class}
 \alias{DataTrack-class}
 \alias{initialize,DataTrack-method}
-\alias{ReferenceDataTrack-class}
 \alias{initialize,ReferenceDataTrack-method}
 \alias{DataTrack}
 \alias{values,DataTrack-method}
@@ -18,6 +17,7 @@
 \alias{[,DataTrack,ANY,ANY,ANY-method}
 \alias{subset,DataTrack-method}
 \alias{subset,ReferenceDataTrack-method}
+\alias{score,DataTrack-method}
 \alias{drawAxis,DataTrack-method}
 \alias{drawGD,DataTrack-method}
 \alias{show,DataTrack-method}
@@ -81,6 +81,8 @@ DataTrack(
 
 \S4method{subset}{ReferenceDataTrack}(x, from, to, chromosome, ...)
 
+\S4method{score}{DataTrack}(x, from = NULL, to = NULL, sort = FALSE, transformation = TRUE, ...)
+
 \S4method{drawAxis}{DataTrack}(GdObject, ...)
 
 \S4method{drawGD}{DataTrack}(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...)
@@ -142,7 +144,7 @@ dimensions of the data matrix. If \code{data} is not \code{NULL}, this will
 always take precedence over anything defined in the \code{range} argument.
 See below for details.}
 
-\item{An \code{\linkS4class{IRanges}} object:}{ this is very similar to the
+\item{An \link[IRanges:IRanges-class]{IRanges} object:}{ this is very similar to the
 above case, except that the numeric data part now always has to be provided
 in the separate \code{data} argument. Also the chromosome information must
 be provided in the \code{chromosome} argument, because neither of the two
@@ -273,7 +275,7 @@ the coordinate ranges.}
 
 \item{\code{smooth}:}{ add a loess fit to the plot. The following display
 parameters can be used to control the loess calculation: \code{span, degree,
-family, evaluation}. See \code{\link{panel.loess}} for details.}
+family, evaluation}. See \link[lattice:panel.loess]{lattice::panel.loess} for details.}
 
 \item{\code{histogram}:}{ plot data as a histogram, where the width of the
 histogram bars reflects the width of the genomic ranges in the \code{range}
@@ -282,7 +284,7 @@ slot.}
 \item{\code{mountain}:}{ plot a smoothed version of the data relative to a
 baseline, as defined by the \code{baseline} display parameter. The following
 display parameters can be used to control the smoothing: \code{span, degree,
-family, evaluation}. See \code{\link{panel.loess}} for details. The layout
+family, evaluation}. See \link[lattice:panel.loess]{lattice::panel.loess} for details. The layout
 of the plot can be further customized via the following display parameters:
 \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 
@@ -295,7 +297,7 @@ the plot can be further customized via the following display parameters:
 \item{\code{boxplot}:}{ plot the data as box-and-whisker plots. The layout
 of the plot can be further customized via the following display parameters:
 \code{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-coef, do.out}. See \code{\link{panel.bwplot}} for details.}
+coef, do.out}. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{gradient}:}{ collapse the data across samples and plot this
 average value as a color-coded gradient. Essenitally this is similar to the
@@ -316,7 +318,7 @@ the gradient base colors, respectively.}
 segments and overplotting them with color representing the magnitude and
 direction of deviation. This is particularly useful when comparing multiple
 samples, in which case the horizon strips are stacked. See
-\code{\link{horizonplot}} for details. Please note that the \code{origin}
+\link[latticeExtra:panel.horizonplot]{latticeExtra::panel.horizonplot} for details. Please note that the \code{origin}
 and \code{horizonscale} arguments of the Lattice \code{horizonplot} function
 are available as display parameters \code{horizon.origin} and
 \code{horizon.scale}.}
@@ -347,11 +349,13 @@ optimized to work on large numeric tables.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(DataTrack)}: Initialize.
+\item \code{initialize(DataTrack)}: Initialize the \code{data} slot, and the \code{strand}
+slot if provided, before deferring to the \code{GdObject} initializer for the
+remaining slots.
 
-\item \code{ReferenceDataTrack-class}: The file-based version of the \code{DataTrack-class}.
-
-\item \code{initialize(ReferenceDataTrack)}: Initialize.
+\item \code{initialize(ReferenceDataTrack)}: Initialize the \code{ReferenceTrack} slots
+(\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) before deferring to
+the \code{DataTrack} initializer for the remaining slots.
 
 \item \code{DataTrack()}: Constructor function for \code{DataTrack-class}
 
@@ -391,6 +395,10 @@ and sort if necessary.
 
 \item \code{subset(ReferenceDataTrack)}: Subset a \code{ReferenceDataTrack} by coordinates
 and sort if necessary.
+
+\item \code{score(DataTrack)}: extract the (optionally subset and transformed)
+data values of the track as a numeric matrix, applying the \code{transformation}
+display parameter unless \code{transformation = FALSE}.
 
 \item \code{drawAxis(DataTrack)}: add a y-axis to the title panel of a track.
 
@@ -497,31 +505,31 @@ score(dtTrack)
 as(dtTrack, "data.frame")
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

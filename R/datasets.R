@@ -5,9 +5,9 @@
 #' @name datasets
 #'
 #' @aliases bmTrack cyp2b10 idTrack biomTrack biomTrack2 cpgIslands axTrack
-#' conservation ensGenes denseAnnTrack geneModels iTrack itrack idxTrack
-#' ideoTrack twoGroups from gcContent idTrack knownGenes refGenes snpLocations
-#' to ctrack geneDetails dtHoriz bmt
+#' @aliases conservation ensGenes denseAnnTrack geneModels iTrack itrack
+#' @aliases idxTrack ideoTrack twoGroups from gcContent idTrack knownGenes
+#' @aliases refGenes snpLocations to ctrack geneDetails dtHoriz bmt
 #'
 #' @docType data
 #' @keywords datasets

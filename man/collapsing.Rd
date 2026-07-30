@@ -19,18 +19,18 @@ or off using the \code{collapse} display parameter (see
 
 In the simplest case (for \code{AnnotationTrack} objects) this
 involves expanding all shown features to a minimum pixel width and height
-(using display parameters \code{min.width} and \code{min.heigh}) and
+(using display parameters \code{min.width} and \code{min.height}) and
 collapsing overlapping annotation items (as defined by the parameter
-\code{min.distance} into one single item to prevent over-plotting.
+\code{min.distance}) into one single item to prevent over-plotting.
 
 For objects of class \code{DataTrack}, the data values
 underlying collapsed regions will be summarized based on the \code{summary}
 display parameter. See the class' documentation for more details.
 }
 \seealso{
-\code{\linkS4class{AnnotationTrack}}
+\link[=AnnotationTrack-class]{AnnotationTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{settings}}
+\link{settings}
 }

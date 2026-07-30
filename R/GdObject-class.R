@@ -25,31 +25,31 @@ NULL
 #' @author Florian Hahne
 #'
 #' @seealso
-#' \code{\linkS4class{DisplayPars}}
+#' [DisplayPars-class]
 #'
-#' \code{\linkS4class{GdObject}}
+#' [GdObject-class]
 #'
-#' \code{\linkS4class{GRanges}}
+#' [GRanges][GenomicRanges::GRanges-class]
 #'
-#' \code{\linkS4class{HighlightTrack}}
+#' [HighlightTrack-class]
 #'
-#' \code{\linkS4class{ImageMap}}
+#' [ImageMap-class]
 #'
-#' \code{\linkS4class{IRanges}}
+#' [IRanges][IRanges::IRanges-class]
 #'
-#' \code{\linkS4class{RangeTrack}}
+#' [RangeTrack-class]
 #'
-#' \code{\linkS4class{DataTrack}}
+#' [DataTrack-class]
 #'
-#' \code{\link{collapsing}}
+#' [collapsing]
 #'
-#' \code{\link{grouping}}
+#' [grouping]
 #'
-#' \code{\link{panel.grid}}
+#' [panel.grid][lattice::panel.grid]
 #'
-#' \code{\link{plotTracks}}
+#' [plotTracks]
 #'
-#' \code{\link{settings}}
+#' [settings]
 #'
 #' @examples
 #' ## This is a reference class therefore we show below
@@ -204,11 +204,15 @@ setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recur
 
 ##  GdObject Methods Getters -------------------------------------------------
 
-#' @describeIn GdObject-class alias for the `displayPars` method.
+#' @describeIn GdObject-class Return the value of the display parameter
+#' `name`, delegating to the object's `DisplayPars` slot. `displayPars`
+#' is a more descriptive alias for this method.
 #' See `settings` for details on display parameters and customization.
 setMethod("getPar", c("GdObject", "character"), function(x, name, asIs = FALSE) getPar(x@dp, name, asIs = asIs))
 
-#' @describeIn GdObject-class alias for the `displayPars` method.
+#' @describeIn GdObject-class Return all display parameters, delegating to
+#' the object's `DisplayPars` slot. `displayPars` is a more descriptive
+#' alias for this method.
 #' See `settings` for details on display parameters and customization.
 setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal = TRUE) getPar(x@dp, hideInternal = hideInternal))
 
@@ -313,9 +317,9 @@ setMethod("drawAxis", signature(GdObject = "GdObject"), function(GdObject, ...) 
 #' @describeIn GdObject-class Generics for `drawGrid`.
 setGeneric("drawGrid", function(GdObject, ...) standardGeneric("drawGrid"))
 
-# #' @describeIn GdObject-class superpose a grid on top of a track if necessary.
-# #' Unless overwritten in one of the sub-classes this usually does not plot
-# #' anything and returns `NULL`.
+#' @describeIn GdObject-class superpose a grid on top of a track if necessary.
+#' Unless overwritten in one of the sub-classes this usually does not plot
+#' anything and returns `NULL`.
 #' @keywords internal
 setMethod("drawGrid", signature(GdObject = "GdObject"), function(GdObject, ...) {
     return(NULL)
@@ -455,11 +459,10 @@ setReplaceMethod("genome", "GdObject", function(x, value) {
 #' @keywords internal
 setGeneric("consolidateTrack", function(GdObject, ...) standardGeneric("consolidateTrack"))
 
-#' @describeIn GdObject-class Consolidate.
-#' Determine whether there is `alpha` settings or not, and add this information
-#' as the internal display parameter `.__hasAlphaSupport`.
+#' @describeIn GdObject-class Determine whether there is `alpha` settings or
+#' not, and add this information as the internal display parameter
+#' `.__hasAlphaSupport`.
 #' @export
-# #' @keywords internal
 setMethod("consolidateTrack", signature(GdObject = "GdObject"), function(GdObject, alpha, ...) {
     pars <- list(...)
     pars <- pars[names(pars) != ""]
@@ -488,7 +491,7 @@ setGeneric("stacking<-", function(GdObject, value) standardGeneric("stacking<-")
 setGeneric("stacks", function(GdObject, ...) standardGeneric("stacks"))
 
 #' @exportMethod setStacks
-#' @describeIn GdObject-class Generics for ``.
+#' @describeIn GdObject-class Generics for `setStacks`.
 #' @keywords internal
 setGeneric("setStacks", function(GdObject, ...) standardGeneric("setStacks"))
 
@@ -497,7 +500,7 @@ setGeneric("setStacks", function(GdObject, ...) standardGeneric("setStacks"))
 setMethod("setStacks", "GdObject", function(GdObject, ...) GdObject)
 
 #' @exportMethod setCoverage
-#' @describeIn GdObject-class Generics for ``.
+#' @describeIn GdObject-class Generics for `setCoverage`.
 #' @keywords internal
 setGeneric("setCoverage", function(GdObject, ...) standardGeneric("setCoverage"))
 

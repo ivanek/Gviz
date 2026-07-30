@@ -43,7 +43,9 @@ setClass("CustomTrack",
 
 ## Initialize ----------------------------------------------------------------
 
-#' @describeIn CustomTrack-class Initialize.
+#' @describeIn CustomTrack-class Initialize the `plottingFunction` and
+#' `variables` slots before deferring to the `GdObject` initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, variables, ...) {
     .Object <- .updatePars(.Object, "CustomTrack")

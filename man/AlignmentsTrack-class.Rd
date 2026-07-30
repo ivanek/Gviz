@@ -4,7 +4,6 @@
 \name{AlignmentsTrack-class}
 \alias{AlignmentsTrack-class}
 \alias{initialize,AlignmentsTrack-method}
-\alias{ReferenceAlignmentsTrack-class}
 \alias{initialize,ReferenceAlignmentsTrack-method}
 \alias{AlignmentsTrack}
 \alias{values,AlignmentsTrack-method}
@@ -13,6 +12,7 @@
 \alias{setStacks,AlignmentsTrack-method}
 \alias{subset,AlignmentsTrack-method}
 \alias{subset,ReferenceAlignmentsTrack-method}
+\alias{drawGrid,AlignmentsTrack-method}
 \alias{drawAxis,AlignmentsTrack-method}
 \alias{drawGD,AlignmentsTrack-method}
 \alias{show,AlignmentsTrack-method}
@@ -79,6 +79,8 @@ AlignmentsTrack(
 
 \S4method{subset}{ReferenceAlignmentsTrack}(x, from, to, chromosome, ...)
 
+\S4method{drawGrid}{AlignmentsTrack}(GdObject, from, to)
+
 \S4method{drawAxis}{AlignmentsTrack}(GdObject, ...)
 
 \S4method{drawGD}{AlignmentsTrack}(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...)
@@ -120,46 +122,36 @@ section below for details.}
 \item{defaults}{defaults}
 
 \item{range}{An optional meta argument to handle the different input types.
-If the \code{range} argument is missing, all the relevant information to
-create the object has to be provided as individual function arguments
-(see below).
+If \code{range} is missing, all the relevant information to create the object
+has to be provided as individual function arguments (see below).
 
 The different input options for \code{range} are:
-
-\describe{
-
-\item{A \code{character} string:}{ the path to a \code{BAM} file containing
-the read alignments. To be precise, this will result in the instantiation of
-a \code{ReferenceAlignmentsTrack} object, but for the user this
-implementation detail should be of no concern.}
-
-\item{A \code{GRanges} object:}{ the genomic ranges of the individual reads
-as well as the optional additional metadata columns \code{id}, \code{cigar},
-\code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status},
-\code{md} and \code{seqs} (see description of the individual function
-parameters below for details). Calling the constructor on a \code{GRanges}
-object without further arguments, e.g. \code{AlignmentsTrack(range=obj)} is
-equivalent to calling the coerce method \code{as(obj, "AlignmentsTrack")}.}
-
-\item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
-\code{GRanges} case, except that the chromosome and strand information as
-well as all additional metadata has to be provided in the separate
-\code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id}
-arguments, because it can not be directly encoded in an \code{IRanges}
-object. Note that none of those inputs are mandatory, and if not provided
-explicitely the more or less reasonable default values \code{chromosome=NA}
-and \code{strand="*"} are used. }
-
-\item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
-at least the two mandatory columns \code{start} and \code{end} with the
-range coordinates. It may also contain a \code{chromosome} and a
-\code{strand} column with the chromosome and strand information for each
-range. If missing it will be drawn from the separate \code{chromosome} or
-\code{strand} arguments. In addition, the \code{id}, \code{cigar},
-\code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status},
-\code{md} and \code{seqs} data can be provided as additional columns. The
-above comments about potential default values also apply here.}
-
+\itemize{
+\item \strong{A \code{character} string}: the path to a \code{BAM} file containing the read
+alignments. This results in the instantiation of a
+\code{ReferenceAlignmentsTrack} object, but for the user this implementation
+detail should be of no concern.
+\item \strong{A \code{GRanges} object}: the genomic ranges of the individual reads, along
+with the optional additional metadata columns \code{id}, \code{cigar}, \code{mapq},
+\code{flag}, \code{isize}, \code{groupid}, \code{status}, \code{md} and \code{seqs} (see the individual
+function parameters below for details). Calling the constructor on a
+\code{GRanges} object without further arguments, e.g.
+\code{AlignmentsTrack(range = obj)}, is equivalent to calling the coerce
+method \code{as(obj, "AlignmentsTrack")}.
+\item \strong{An \link[IRanges:IRanges-class]{IRanges} object}: almost identical to the
+\code{GRanges} case, except that the chromosome and strand information, as
+well as all additional metadata, has to be provided via the separate
+\code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id} arguments, since none
+of it can be encoded directly in an \code{IRanges} object. None of these
+inputs are mandatory; if not provided explicitly, the defaults
+\code{chromosome = NA} and \code{strand = "*"} are used.
+\item \strong{A \code{data.frame} object}: must contain at least the two mandatory
+columns \code{start} and \code{end} with the range coordinates. It may also
+contain \code{chromosome} and \code{strand} columns; if these are absent, the
+values are taken from the separate \code{chromosome} or \code{strand} arguments
+instead. In addition, the \code{id}, \code{cigar}, \code{mapq}, \code{flag}, \code{isize},
+\code{groupid}, \code{status}, \code{md} and \code{seqs} data can be provided as additional
+columns, with the same default-value rules as above.
 }}
 
 \item{start, end, width}{Integer vectors, giving the start and the end
@@ -288,11 +280,13 @@ experiments.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(AlignmentsTrack)}: Initialize.
+\item \code{initialize(AlignmentsTrack)}: Initialize the \code{stackRanges}, \code{stacks},
+\code{sequences} and \code{referenceSequence} slots before deferring to the
+\code{StackedTrack} initializer for the remaining slots.
 
-\item \code{ReferenceAlignmentsTrack-class}: The file-based version of the \code{AlignmentsTrack-class}.
-
-\item \code{initialize(ReferenceAlignmentsTrack)}: Initialize.
+\item \code{initialize(ReferenceAlignmentsTrack)}: Initialize the \code{ReferenceTrack} slots
+(\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) and the
+\code{referenceSequence} slot inherited from \code{AlignmentsTrack}.
 
 \item \code{AlignmentsTrack()}: Constructor for \code{AlignmentsTrack-class}.
 
@@ -309,11 +303,15 @@ scalar that can be reasonably coerced into one.
 \item \code{setStacks(AlignmentsTrack)}: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 
-\item \code{subset(AlignmentsTrack)}: Subset a \code{AlignmentsTrack} by coordinates
+\item \code{subset(AlignmentsTrack)}: Subset an \code{AlignmentsTrack} by coordinates
 and sort if necessary.
 
 \item \code{subset(ReferenceAlignmentsTrack)}: Subset a \code{ReferenceAlignmentsTrack} by coordinates
 and sort if necessary.
+
+\item \code{drawGrid(AlignmentsTrack)}: superpose a horizontal grid on the
+coverage portion of the track, based on the \code{grid}, \code{h}, \code{col.grid},
+\code{lty.grid} and \code{lwd.grid} display parameters.
 
 \item \code{drawAxis(AlignmentsTrack)}: add a y-axis to the title panel of a track.
 
@@ -382,31 +380,31 @@ if (require(BSgenome.Hsapiens.UCSC.hg19)) {
 }
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

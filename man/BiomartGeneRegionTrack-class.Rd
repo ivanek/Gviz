@@ -55,7 +55,7 @@ gene model range.}
 \item{end}{An integer scalar with the genomic end coordinates for the gene
 model range.}
 
-\item{biomart}{An optional \code{\linkS4class{Mart}} object providing access
+\item{biomart}{An optional \link[biomaRt:Mart-class]{Mart} object providing access
 to the EBI Biomart webservice. As default the appropriate Ensembl data
 source is selected based on the provided genome and chromosome.}
 
@@ -100,7 +100,7 @@ the track items, squish (make best use of the available space) and dense (no
 stacking at all) are implemented.}
 
 \item{filters}{A list of additional filters to be applied in the Biomart
-query. See \code{\link{getBM}} for details.}
+query. See \link[biomaRt:getBM]{biomaRt::getBM} for details.}
 
 \item{name}{Character scalar of the track's name used in the title panel
 when plotting.}
@@ -125,13 +125,16 @@ A track containing all gene models in a particular region as fetched from
 EBI's Biomart service. Usually the user does not have to take care of the
 Biomart connection, which will be established automatically based on the
 provided genome and chromosome information. However, for full flexibility a
-valid \code{\linkS4class{Mart}} object may be passed on to the constructor.
+valid \link[biomaRt:Mart-class]{Mart} object may be passed on to the constructor.
 Please note that this assumes a connection to one of the Ensembl gene data
 sources, mapping the available query data back to the internal object slots.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(BiomartGeneRegionTrack)}: Initialize.
+\item \code{initialize(BiomartGeneRegionTrack)}: Initialize display parameters and
+translate the various id/filter arguments (\code{symbol}, \code{gene}, \code{transcript},
+\code{entrez}, \code{filter}) into the internal biomaRt query filters before
+deferring to the \code{GeneRegionTrack} initializer.
 
 \item \code{BiomartGeneRegionTrack()}: Constructor function for
 \code{BiomartGeneRegionTrack-class}.
@@ -253,31 +256,31 @@ tags(bmTrack)
 EBI Biomart webservice at \url{http://www.biomart.org}.
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

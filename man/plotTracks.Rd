@@ -26,12 +26,12 @@ plotTracks(
 }
 \arguments{
 \item{trackList}{A list of Gviz track objects, all inheriting from
-class \code{\linkS4class{GdObject}}. The tracks will all be drawn to the
+class \link[=GdObject-class]{GdObject}. The tracks will all be drawn to the
 same genomic coordinates, either as defined by the \code{from} and \code{to}
 arguments if supplied, or by the maximum range across all individual items
 in the list.}
 
-\item{from, to}{Character scalar, giving the range of genomic coordinates to
+\item{from, to}{Numeric scalar, giving the range of genomic coordinates to
 draw the tracks in. Note that \code{to} cannot be larger than \code{from}.
 If \code{NULL}, the plotting ranges are derived from the individual tracks.
 See \code{extend.left} and \code{extend.right} below for the definition of
@@ -57,7 +57,7 @@ Usually the function is called for a single track only when
 the right or to the left by a fixed number of bases. The final plotting
 range is defined as \code{from-extend.left} to \code{to+extend.right}.}
 
-\item{title.width}{A expansion factor for the width of the title panels.
+\item{title.width}{An expansion factor for the width of the title panels.
 This can be used to make more space, e.g. to accommodate for more detailed
 data axes. The default is to use as much space as needed to fit all the
 annotation text.}
@@ -65,7 +65,7 @@ annotation text.}
 \item{add}{Logical flag, add the plot to an existing plotting canvas without
 re-initialising.}
 
-\item{main}{Character scalar, the plots main header.}
+\item{main}{Character scalar, the plot's main header.}
 
 \item{cex.main, fontface.main, col.main}{The fontface, color and expansion
 factor settings for the main header.}
@@ -95,13 +95,13 @@ showing the actual data along genomic coordinates. In that sense, the output
 is very similar to the UCSC Genome Browser.
 
 The layout of the individual tracks is highly customizable though so called
-"display parameters". See \code{\link{settings}} for details.
+"display parameters". See \link{settings} for details.
 
 While plotting a track, the software automatically computes HTML image map
 coordinates based on the current graphics device. These coordinates as well
 as the associated annotation information can later be used to embed images
 of the plots in semi-interactive HTML pages. See
-\code{\linkS4class{ImageMap}} for details.
+\link[=ImageMap-class]{ImageMap} for details.
 }
 \examples{
 ## Create some tracks to plot
@@ -185,15 +185,13 @@ xyplot(b ~ a | c, data.frame(a = a, b = 1, c = cut(a, 4)),
 
 }
 \seealso{
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{ImageMap}}
+\link[=StackedTrack-class]{StackedTrack}
 
-\code{\linkS4class{StackedTrack}}
-
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

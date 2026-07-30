@@ -249,7 +249,7 @@ plotting.}
 grid.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
 text, unless a more specific definition exists.}
@@ -296,7 +296,7 @@ specific definiton exists.}
 (only applies to track types where axes are implemented).}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -327,7 +327,7 @@ it to \code{TRUE} fills empty positions with zeros, which is default.
 confidence intervalls in confint-type plots.}
 
 \item{\code{amount=NULL}:}{ Numeric scalar. Amount of jittering in xy-type
-plots. See \code{\link{panel.xyplot}} for details.}
+plots. See \link[lattice:panel.xyplot]{lattice::panel.xyplot} for details.}
 
 \item{\code{baseline=NULL}:}{ Numeric scalar. Y-axis position of an optional
 baseline. This parameter has a special meaning for mountain-type and
@@ -338,10 +338,10 @@ polygon-type plots, see the 'Details' section in
 legend.}
 
 \item{\code{box.ratio=1}:}{ Numeric scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{box.width=NULL}:}{ Numeric scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{grid=FALSE}:}{ Logical vector. Draw a line grid under the track
 content.}
@@ -357,7 +357,7 @@ setting.}
 symbols.}
 
 \item{\code{coef=1.5}:}{ Numeric scalar. Parameter controlling the boxplot
-appearance. See \code{\link{panel.bwplot}} for details.}
+appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{col.baseline=NULL}:}{ Character scalar. Color for the optional
 baseline, defaults to the setting of \code{col}.}
@@ -372,7 +372,7 @@ the frame around grouped boxplots.}
 histogram-type plots.}
 
 \item{\code{col.horizon=NA}:}{ The line color for the segments in the
-\code{horizon}-type plot. See \code{\link{horizonplot}} for details.}
+\code{horizon}-type plot. See \link[latticeExtra:panel.horizonplot]{latticeExtra::panel.horizonplot} for details.}
 
 \item{\code{col.mountain=NULL}:}{ Character scalar. Line color in
 mountain-type and polygon-type plots, defaults to the setting of
@@ -392,21 +392,21 @@ and aggregate the underlying data.}
 
 \item{\code{degree=1}:}{ Numeric scalar. Parameter controlling the loess
 calculation for smooth and mountain-type plots.  See
-\code{\link{panel.loess}} for details.}
+\link[lattice:panel.loess]{lattice::panel.loess} for details.}
 
 \item{\code{do.out=TRUE}:}{ Logical scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{evaluation=50}:}{ Numeric scalar. Parameter controlling the
 loess calculation for smooth and mountain-type plots. See
-\code{\link{panel.loess}} for details.}
+\link[lattice:panel.loess]{lattice::panel.loess} for details.}
 
 \item{\code{factor=0.5}:}{ Numeric scalar. Factor to control amount of
-jittering in xy-type plots. See \code{\link{panel.xyplot}} for details.}
+jittering in xy-type plots. See \link[lattice:panel.xyplot]{lattice::panel.xyplot} for details.}
 
 \item{\code{family="symmetric"}:}{ Character scalar. Parameter controlling
 the loess calculation for smooth and mountain-type plots. See
-\code{\link{panel.loess}} for details.}
+\link[lattice:panel.loess]{lattice::panel.loess} for details.}
 
 \item{\code{fill.confint=NULL}:}{ Character vector. Fill colors for the
 confidence intervals for confint-type plots.}
@@ -419,7 +419,7 @@ histogram-type plots, defaults to the setting of \code{fill}.}
 \code{horizon}-type plot. This should be a vector of length six, where the
 first three entries are the colors for positive changes, and the latter
 three entries are the colors for negative changes. Defaults to a red-blue
-color scheme. See \code{\link{horizonplot}} for details.}
+color scheme. See \link[latticeExtra:panel.horizonplot]{latticeExtra::panel.horizonplot} for details.}
 
 \item{\code{fill.mountain=c("#CCFFFF", "#FFCCFF")}:}{ Character vector of
 length 2. Fill color in mountain-type and polygon-type plots.}
@@ -449,21 +449,21 @@ grouping. See 'Details' section in \code{\linkS4class{DataTrack}} for
 further information.}
 
 \item{\code{horizon.origin=0}:}{ The baseline relative to which changes are
-indicated on the \code{horizon}-type plot. See \code{\link{horizonplot}} for
-details.}
+indicated on the \code{horizon}-type plot. See \link[latticeExtra:panel.horizonplot]{latticeExtra::panel.horizonplot}
+for details.}
 
 \item{\code{horizon.scale=NULL}:}{ The scale for each of the segments in the
 \code{horizon}-type plot. Defaults to 1/3 of the absolute data range. See
-\code{\link{horizonplot}} for details.}
+\link[latticeExtra:panel.horizonplot]{latticeExtra::panel.horizonplot} for details.}
 
 \item{\code{jitter.x=FALSE}:}{ Logical scalar. Toggle on jittering on the x
-axis in xy-type plots. See \code{\link{panel.xyplot}} for details.}
+axis in xy-type plots. See \link[lattice:panel.xyplot]{lattice::panel.xyplot} for details.}
 
 \item{\code{jitter.y=FALSE}:}{ Logical scalar. Toggle off jittering on the y
-axis in xy-type plots. See \code{\link{panel.xyplot}} for details.}
+axis in xy-type plots. See \link[lattice:panel.xyplot]{lattice::panel.xyplot} for details.}
 
 \item{\code{levels.fos=NULL}:}{ Numeric scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{legend=TRUE}:}{ Boolean triggering the addition of a legend to
 the track to indicate groups. This only has an effect if at least two groups
@@ -496,10 +496,10 @@ values when plotting or to keep empty spaces for NAs}
 'gradient' plotting type}
 
 \item{\code{notch.frac=0.5}:}{ Numeric scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{notch=FALSE}:}{ Logical scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{pch=20}:}{ Integer scalar. The type of glyph used for plotting
 symbols.}
@@ -519,14 +519,14 @@ size will be set automatically based on the selected plotting type.}
 
 \item{\code{span=0.2}:}{ Numeric scalar. Parameter controlling the loess
 calculation for smooth and mountain-type plots.  See
-\code{\link{panel.loess}} for details.}
+\link[lattice:panel.loess]{lattice::panel.loess} for details.}
 
 \item{\code{stackedBars=TRUE}:}{ Logical scalar. When there are several data
 groups, draw the histogram-type plots as stacked barplots or grouped side by
 side.}
 
 \item{\code{stats=X[[i]]}:}{ Function. Parameter controlling the boxplot
-appearance. See \code{\link{panel.bwplot}} for details.}
+appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{transformation=NULL}:}{ Function. Applied to the data matrix
 prior to plotting or when calling the \code{score} method. The function
@@ -543,7 +543,7 @@ dimensionality as the input data.}
 plotting types.}
 
 \item{\code{varwidth=FALSE}:}{ Logical scalar. Parameter controlling the
-boxplot appearance. See \code{\link{panel.bwplot}} for details.}
+boxplot appearance. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{window=NULL}:}{ Numeric or character scalar.  Aggregate the rows
 values of the data matrix to \code{window} equally sized slices on the data
@@ -641,7 +641,7 @@ unless a more specific definition exists.}
 plotting.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
 text, unless a more specific definition exists.}
@@ -698,7 +698,7 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -833,7 +833,7 @@ plotting.}
 grid.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
 text, unless a more specific definition exists.}
@@ -876,7 +876,7 @@ specific definiton exists.}
 (only applies to track types where axes are implemented).}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -1088,7 +1088,7 @@ plotting.}
 grid.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
 type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
@@ -1127,7 +1127,7 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -1381,7 +1381,7 @@ plotting.}
 grid.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
 type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
@@ -1416,7 +1416,7 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -1754,7 +1754,7 @@ plotting.}
 grid.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
 type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
@@ -1789,7 +1789,7 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -2075,7 +2075,7 @@ plotting.}
 grid.}
 
 \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
-horizontal grid lines, see \code{\link{panel.grid}} for details.}
+horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
 text, unless a more specific definition exists.}
@@ -2124,7 +2124,7 @@ true for axes. Note that the the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
-vertical grid lines, see \code{\link{panel.grid}} for details.}
+vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 }
 
@@ -2168,15 +2168,15 @@ plotTracks(grtrack)
 
 \code{\link{grouping}}
 
-\code{\link{horizonplot}}
+\link[latticeExtra:panel.horizonplot]{latticeExtra::panel.horizonplot}
 
-\code{\link{panel.bwplot}}
+\link[lattice:panel.bwplot]{lattice::panel.bwplot}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{lattice::panel.grid}
 
-\code{\link{panel.loess}}
+\link[lattice:panel.loess]{lattice::panel.loess}
 
-\code{\link{panel.xyplot}}
+\link[lattice:panel.xyplot]{lattice::panel.xyplot}
 
 \code{\link{plotTracks}}
 }

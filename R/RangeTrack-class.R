@@ -72,7 +72,9 @@ setClass("RangeTrack",
 )
 
 ## Coercing all input to the appropriate form
-#' @describeIn RangeTrack-class Initialize.
+#' @describeIn RangeTrack-class Initialize the `range`, `chromosome` and
+#' `genome` slots before deferring to the `GdObject` initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genome, ...) {
     ## the diplay parameter defaults
@@ -169,6 +171,7 @@ setMethod(
 }
 
 ## For numeric vectors we can immediately create a data frame after some sanity checking and pass that on to the next method.
+#' @noRd
 setMethod(
     ".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrNULL", "NumericOrNULL"),
     function(range, start, end, width, asIRanges = FALSE, by = NULL, len, args, defaults, ...) {
@@ -211,6 +214,7 @@ setMethod(
 ## For data.frames we need to check for additional arguments
 ## (like feature, group, etc.), the chromosome information
 ## and create the final GRanges object
+#' @noRd
 setMethod(
     ".buildRange", signature("data.frame"),
     function(range, asIRanges = FALSE, args = list(), defaults = list(), chromosome = NULL, trackType, ...) {
@@ -243,6 +247,7 @@ setMethod(
 
 ## For GRanges we just need to check for the existence of additional
 ## arguments (like feature, group, etc.)
+#' @noRd
 setMethod(
     ".buildRange", signature("GRanges"),
     function(range, asIRanges = FALSE, args = list(), defaults = list(), trackType = NULL, ...) {
@@ -292,6 +297,7 @@ setMethod(
 
 ## For IRanges we need to deal with additional arguments
 ## (like feature, group, etc.) and create the final GRanges object
+#' @noRd
 setMethod(
     ".buildRange", signature("IRanges"),
     function(range, asIRanges = FALSE, args = list(), defaults = list(), chromosome = NULL, strand, ...) {
@@ -312,6 +318,7 @@ setMethod(
 
 ## For GRangesLists we capture the grouping information from the list
 ## structure, `unlist` and use the `GRanges` method
+#' @noRd
 setMethod(
     ".buildRange", signature("GRangesList"),
     function(range, groupId = "group", ...) {
@@ -332,8 +339,12 @@ setMethod(
 
 #' @describeIn RangeTrack-class return the genomic coordinates for the track
 #' along with all additional annotation information as an object of
-#' class `GRanges.`
+#' class `GRanges`.
 setMethod("ranges", "RangeTrack", function(x) x@range)
+
+#' @describeIn RangeTrack-class replace the genomic coordinates and
+#' associated annotation information for the track with a new `GRanges`
+#' object.
 setReplaceMethod("ranges", "RangeTrack", function(x, value) {
     x@range <- value
     return(x)
@@ -343,7 +354,7 @@ setReplaceMethod("ranges", "RangeTrack", function(x, value) {
 ## of an object inheriting from RangeTrack
 
 #' @describeIn RangeTrack-class return the genomic coordinates for the
-#' track as an object of class IRanges.
+#' track as an object of class `IRanges`.
 #' @export
 setMethod("range", "RangeTrack", function(x) ranges(x@range))
 
@@ -439,7 +450,7 @@ setMethod("max", "RangeTrack", function(x) max(end(x)))
 #' @export
 setMethod("length", "RangeTrack", function(x) sum(seqnames(x) == chromosome(x)))
 
-#' @describeIn RangeTrack-class  return a vector of strand specifiers for all
+#' @describeIn RangeTrack-class return a vector of strand specifiers for all
 #' track items, in the form '+' for the Watson strand, '-' for the Crick
 #' strand or '*' for either of the two.
 #' @export
@@ -561,12 +572,12 @@ setReplaceMethod("feature", signature("RangeTrack", "character"), function(GdObj
 
 ## RangeTrack Methods consolidate --------------------------------------------
 
-#' @describeIn RangeTrack-class Consolidate.
+#' @describeIn RangeTrack-class Update the active chromosome (if provided)
+#' before deferring to the `GdObject` method for the remaining
+#' consolidation steps.
 #' @param GdObject the input track object
 #' @param chromosome the currently active chromosome which may have to be set
 #' for a `RangeTrack` or a `SequenceTrack` object
-#' parameters
-# #' @keywords internal
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "RangeTrack"), function(GdObject, chromosome, ...) {
     if (!is.null(chromosome)) {

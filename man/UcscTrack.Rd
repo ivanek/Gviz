@@ -28,8 +28,7 @@ out about available tracks please consult the online table browser at
 out about available tables for a given track please consult the online table
 browser at \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.}
 
-\item{trackType}{Character, one in \code{c("AnnotationTrack",
-"GeneRegionTrack", "DataTrack", "GenomeAxisTrack")}. The function will try
+\item{trackType}{Character, one in \code{c("AnnotationTrack", "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")}. The function will try
 to coerce the downloaded data in an object of this class. See below for
 details.}
 
@@ -56,10 +55,10 @@ An annotation track object as determined by \code{trackType}.
 The UCSC data base provides a wealth of annotation information. This
 function can be used to access UCSC, to retrieve the data available there
 and to return it as an annotation track object amenable to plotting with
-\code{\link{plotTracks}}.
+\link{plotTracks}.
 }
 \details{
-\code{clearSessionCache} is can be called to remove all cached items from
+\code{clearSessionCache} can be called to remove all cached items from
 the session which are generated when connecting with the UCSC data base.
 
 The data stored at the UCSC data bases can be of different formats: gene or
@@ -74,22 +73,20 @@ for the constructor of choice, and single character scalars are replaced by
 the respective data columns in the downloaded UCSC tables if available. For
 instance, assuming the table for track 'foo' contains the columns 'id',
 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start
-end end location. In order to create an \code{\linkS4class{AnnotationTrack}}
+end end location. In order to create an \link[=AnnotationTrack-class]{AnnotationTrack}
 object from that data, we have to pass the additional named arguments
 \code{id="id"}, \code{feature="type"}, \code{start="fromLoc"} and
-codeend="toLoc" to the \code{UcscTrack} function. The complete function call
+\code{end="toLoc"} to the \code{UcscTrack} function. The complete function call
 could look like this:
 
-\code{UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000,
-to=10000, trackType="AnnotationTrack", id="id", feature="type",
-start="from", end="to")}
+\code{UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")}
 
 To reduce the bandwidth, some caching of the UCSC connection takes place. In
 order to remove these cached session items, call \code{clearSessionCache}.
 
 The \code{Gviz.ucscUrl} option controls which URL is being used to connect
 to UCSC. For instance, one could switch to the European UCSC mirror by
-calling \code{options(Gviz.ucscUrl="http://genome-euro.ucsc.edu/cgi-bin/"}.
+calling \code{options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")}.
 }
 \examples{
 \dontrun{
@@ -116,15 +113,15 @@ knownGenes
 plotTracks(knownGenes, chromosome = "chrX", from = 65920688, to = 65960068)
 }
 \seealso{
-\code{\linkS4class{AnnotationTrack}}
+\link[=AnnotationTrack-class]{AnnotationTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\linkS4class{GeneRegionTrack}}
+\link[=GeneRegionTrack-class]{GeneRegionTrack}
 
-\code{\linkS4class{GenomeAxisTrack}}
+\link[=GenomeAxisTrack-class]{GenomeAxisTrack}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 }
 \author{
 Florian Hahne

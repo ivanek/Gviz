@@ -114,9 +114,13 @@ the \code{availableDisplayPars} function.
 
 \item \code{getPar()}: Generics for \code{getPar}.
 
-\item \code{getPar(x = DisplayPars, name = character)}: Alias for the \code{displayPars} method.
+\item \code{getPar(x = DisplayPars, name = character)}: Return the value(s) of the display
+parameter(s) named in \code{name}, resolving parameter name aliases. \code{getPar}
+is the underlying implementation; \code{displayPars} is a more descriptive
+alias for it.
 
-\item \code{getPar(x = DisplayPars, name = missing)}: Alias for the \code{displayPars} method.
+\item \code{getPar(x = DisplayPars, name = missing)}: Return all display parameters as a named
+list, optionally hiding internal (\code{.__}-prefixed) parameters.
 
 \item \code{displayPars()}: Generics for \code{displayPars}.
 

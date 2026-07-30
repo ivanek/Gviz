@@ -19,47 +19,39 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #' @name AlignmentsTrack-class
 #'
 #' @param range An optional meta argument to handle the different input types.
-#' If the \code{range} argument is missing, all the relevant information to
-#' create the object has to be provided as individual function arguments
-#' (see below).
+#' If `range` is missing, all the relevant information to create the object
+#' has to be provided as individual function arguments (see below).
 #'
-#' The different input options for \code{range} are:
+#' The different input options for `range` are:
 #'
-#' \describe{
+#' - **A `character` string**: the path to a `BAM` file containing the read
+#'   alignments. This results in the instantiation of a
+#'   `ReferenceAlignmentsTrack` object, but for the user this implementation
+#'   detail should be of no concern.
 #'
-#' \item{A \code{character} string:}{ the path to a \code{BAM} file containing
-#' the read alignments. To be precise, this will result in the instantiation of
-#' a \code{ReferenceAlignmentsTrack} object, but for the user this
-#' implementation detail should be of no concern.}
+#' - **A `GRanges` object**: the genomic ranges of the individual reads, along
+#'   with the optional additional metadata columns `id`, `cigar`, `mapq`,
+#'   `flag`, `isize`, `groupid`, `status`, `md` and `seqs` (see the individual
+#'   function parameters below for details). Calling the constructor on a
+#'   `GRanges` object without further arguments, e.g.
+#'   `AlignmentsTrack(range = obj)`, is equivalent to calling the coerce
+#'   method `as(obj, "AlignmentsTrack")`.
 #'
-#' \item{A \code{GRanges} object:}{ the genomic ranges of the individual reads
-#' as well as the optional additional metadata columns \code{id}, \code{cigar},
-#' \code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status},
-#' \code{md} and \code{seqs} (see description of the individual function
-#' parameters below for details). Calling the constructor on a \code{GRanges}
-#' object without further arguments, e.g. \code{AlignmentsTrack(range=obj)} is
-#' equivalent to calling the coerce method \code{as(obj, "AlignmentsTrack")}.}
+#' - **An [IRanges][IRanges::IRanges-class] object**: almost identical to the
+#'   `GRanges` case, except that the chromosome and strand information, as
+#'   well as all additional metadata, has to be provided via the separate
+#'   `chromosome`, `strand`, `feature`, `group` or `id` arguments, since none
+#'   of it can be encoded directly in an `IRanges` object. None of these
+#'   inputs are mandatory; if not provided explicitly, the defaults
+#'   `chromosome = NA` and `strand = "*"` are used.
 #'
-#' \item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
-#' \code{GRanges} case, except that the chromosome and strand information as
-#' well as all additional metadata has to be provided in the separate
-#' \code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id}
-#' arguments, because it can not be directly encoded in an \code{IRanges}
-#' object. Note that none of those inputs are mandatory, and if not provided
-#' explicitely the more or less reasonable default values \code{chromosome=NA}
-#' and \code{strand="*"} are used. }
-#'
-#' \item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
-#' at least the two mandatory columns \code{start} and \code{end} with the
-#' range coordinates. It may also contain a \code{chromosome} and a
-#' \code{strand} column with the chromosome and strand information for each
-#' range. If missing it will be drawn from the separate \code{chromosome} or
-#' \code{strand} arguments. In addition, the \code{id}, \code{cigar},
-#' \code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status},
-#' \code{md} and \code{seqs} data can be provided as additional columns. The
-#' above comments about potential default values also apply here.}
-#'
-#' }
+#' - **A `data.frame` object**: must contain at least the two mandatory
+#'   columns `start` and `end` with the range coordinates. It may also
+#'   contain `chromosome` and `strand` columns; if these are absent, the
+#'   values are taken from the separate `chromosome` or `strand` arguments
+#'   instead. In addition, the `id`, `cigar`, `mapq`, `flag`, `isize`,
+#'   `groupid`, `status`, `md` and `seqs` data can be provided as additional
+#'   columns, with the same default-value rules as above.
 #'
 #' @template AlignmentsTrack-class_param
 #'
@@ -193,7 +185,9 @@ setClass("AlignmentsTrack",
 
 ## Initialize ----------------------------------------------------------------
 
-#' @describeIn AlignmentsTrack-class Initialize.
+#' @describeIn AlignmentsTrack-class Initialize the `stackRanges`, `stacks`,
+#' `sequences` and `referenceSequence` slots before deferring to the
+#' `StackedTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges = GRanges(), stacks = numeric(), sequences = DNAStringSet(),
                                                     referenceSequence = NULL, ...) {
@@ -210,8 +204,16 @@ setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges = GRang
 
 ## ReferenceAlignmentsTrack Class --------------------------------------------
 
-#' @describeIn AlignmentsTrack-class The file-based version of the `AlignmentsTrack-class`.
+#' The file-based version of the `AlignmentsTrack` class
+#'
+#' This will mainly provide a means to dispatch to a special `subset` method
+#' which should stream the necessary data from disk. Users typically do not
+#' have to deal with this distinction directly and can rely on the
+#' `AlignmentsTrack` constructor to make the right choice.
+#'
+#' @name ReferenceAlignmentsTrack-class
 #' @exportClass ReferenceAlignmentsTrack
+#' @keywords internal
 setClass("ReferenceAlignmentsTrack", contains = c("AlignmentsTrack", "ReferenceTrack"))
 
 ## Initialize ----------------------------------------------------------------
@@ -222,7 +224,9 @@ setClass("ReferenceAlignmentsTrack", contains = c("AlignmentsTrack", "ReferenceT
 
 #' @importClassesFrom Biostrings DNAStringSet
 #' @importFrom Biostrings DNAStringSet
-#' @describeIn AlignmentsTrack-class Initialize.
+#' @describeIn AlignmentsTrack-class Initialize the `ReferenceTrack` slots
+#' (`stream`, `reference`, `mapping`, `args`, `defaults`) and the
+#' `referenceSequence` slot inherited from `AlignmentsTrack`.
 #' @export
 setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), stacks = numeric(),
@@ -381,7 +385,7 @@ setMethod("setStacks", "AlignmentsTrack", function(GdObject, ...) {
 ## we keep all the bits that belong to a given group. We still want to record the requested ranges in the internal '.__plottingRange'
 ## display parameter.
 
-#' @describeIn AlignmentsTrack-class Subset a `AlignmentsTrack` by coordinates
+#' @describeIn AlignmentsTrack-class Subset an `AlignmentsTrack` by coordinates
 #' and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "AlignmentsTrack"), function(x, from = NULL, to = NULL, stacks = FALSE, use.defaults = TRUE, ...) {
@@ -452,6 +456,9 @@ setMethod("subset", signature(x = "ReferenceAlignmentsTrack"), function(x, from,
 ## Position ------------------------------------------------------------------
 ## DrawGrid ------------------------------------------------------------------
 
+#' @describeIn AlignmentsTrack-class superpose a horizontal grid on the
+#' coverage portion of the track, based on the `grid`, `h`, `col.grid`,
+#' `lty.grid` and `lwd.grid` display parameters.
 setMethod("drawGrid", signature(GdObject = "AlignmentsTrack"), function(GdObject, from, to) {
     if (.dpOrDefault(GdObject, "grid", FALSE)) {
         yvals <- values(GdObject)

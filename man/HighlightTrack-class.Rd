@@ -61,7 +61,7 @@ The different input options for \code{range} are:
 \item{A \code{GRanges} object:}{ the genomic ranges for the highlighting
 regions.}
 
-\item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
+\item{An \link[IRanges:IRanges-class]{IRanges} object:}{ almost identical to the
 \code{GRanges} case, except that the chromosome information has to be
 provided in the separate \code{chromosome} argument, because it can not be
 directly encoded in an \code{IRanges} object.}
@@ -126,7 +126,7 @@ A container for other track objects from the Gviz package that allows for
 the addition of a common highlighting area across tracks.
 }
 \details{
-A track to conceptionally group other Gviz track objects into a meta track
+A track to conceptually group other Gviz track objects into a meta track
 for the sole purpose of overlaying all the contained tracks with the same
 highlighting region as defined by the objects genomic ranges. During
 rendering the contained tracks will be treated as if they had been provided
@@ -134,13 +134,14 @@ to the \code{plotTracks} function as individual objects.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(HighlightTrack)}: Initialize.
+\item \code{initialize(HighlightTrack)}: Initialize the \code{trackList} slot before
+deferring to the \code{RangeTrack} initializer for the remaining slots.
 
 \item \code{HighlightTrack()}: Constructor function for
 \code{HighlightTrack-class}.
 
 \item \code{displayPars(x = HighlightTrack) <- value}: set display parameters using the values of
-the named list in value. See \code{\link{settings}} for details on display
+the named list in value. See \link{settings} for details on display
 parameters and customization.
 
 \item \code{length(HighlightTrack)}: return the number of subtracks.
@@ -149,16 +150,16 @@ parameters and customization.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.
 
-\item \code{setStacks(HighlightTrack)}: Rrecompute the stacks based on the available
+\item \code{setStacks(HighlightTrack)}: Recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 This really just calls the \code{setStacks} methods for the contained tracks and
 only exists for dispatching reasons.
 
-\item \code{consolidateTrack(HighlightTrack)}: Consolidate
-For a \code{HighlightTrack} apply the method on each of the subtracks in
-the \code{trackList} slot
+\item \code{consolidateTrack(HighlightTrack)}: For a \code{HighlightTrack}, apply the
+\code{consolidateTrack} method on each of the subtracks in the \code{trackList}
+slot.
 
-\item \code{subset(HighlightTrack)}: subset all the contained tracks in an HighlightTrack by coordinates and sort if necessary.
+\item \code{subset(HighlightTrack)}: subset all the contained tracks in a HighlightTrack by coordinates and sort if necessary.
 
 \item \code{show(HighlightTrack)}: Show method.
 
@@ -179,31 +180,31 @@ dt <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = 
 ht <- HighlightTrack(trackList = list(gt, dt))
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

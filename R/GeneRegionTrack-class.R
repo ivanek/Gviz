@@ -21,20 +21,20 @@ NULL
 #' \describe{
 #'
 #' \item{exon level:}{identifiers are stored in the exon column of the
-#' \code{\linkS4class{GRanges}} object in the \code{range} slot. Data may be
+#' [GRanges][GenomicRanges::GRanges-class] object in the \code{range} slot. Data may be
 #' extracted using the \code{exon} method.}
 #'
 #' \item{transcript level:}{identifiers are stored in the transcript column of
-#' the \code{\linkS4class{GRanges}} object. Data may be extracted using the
+#' the [GRanges][GenomicRanges::GRanges-class] object. Data may be extracted using the
 #' \code{transcript} method.}
 #'
 #' \item{gene level:}{identifiers are stored in the gene column of the
-#' \code{\linkS4class{GRanges}} object, more human-readable versions in the
+#' [GRanges][GenomicRanges::GRanges-class] object, more human-readable versions in the
 #' symbol column. Data may be extracted using the \code{gene} or the
 #' \code{symbol} methods.}
 #'
 #' \item{transcript-type level:}{information is stored in the feature column of
-#' the \code{\linkS4class{GRanges}} object. If a display parameter of the same
+#' the [GRanges][GenomicRanges::GRanges-class] object. If a display parameter of the same
 #' name is specified, the software will use its value for the coloring.}
 #'
 #' }
@@ -88,7 +88,7 @@ NULL
 #' data slots, the object will not be particularly useful, because all the
 #' identifiers will be set to a common default value.}
 #'
-#' \item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
+#' \item{An [IRanges][IRanges::IRanges-class] object:}{ almost identical to the
 #' \code{GRanges} case, except that the chromosome and strand information as
 #' well as all additional data has to be provided in the separate
 #' \code{chromosome}, \code{strand}, \code{feature}, \code{transcript},
@@ -282,7 +282,9 @@ setClass("GeneRegionTrack",
 
 ## Initialize ----------------------------------------------------------------
 
-#' @describeIn GeneRegionTrack-class Initialize.
+#' @describeIn GeneRegionTrack-class Initialize the `start` and `end` slots
+#' before deferring to the `AnnotationTrack` initializer for the remaining
+#' slots.
 #' @export
 setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...) {
     if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
@@ -302,8 +304,16 @@ setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...) {
 ## The file-based version of the GeneRegionTrack class. This will mainly provide a means to dispatch to
 ## a special 'subset' method which should stream the necessary data from disk.
 
-#' @describeIn GeneRegionTrack-class The file-based version of the `GeneRegionTrack-class`.
+#' The file-based version of the `GeneRegionTrack` class
+#'
+#' This will mainly provide a means to dispatch to a special `subset` method
+#' which should stream the necessary data from disk. Users typically do not
+#' have to deal with this distinction directly and can rely on the
+#' `GeneRegionTrack` constructor to make the right choice.
+#'
+#' @name ReferenceGeneRegionTrack-class
 #' @exportClass ReferenceGeneRegionTrack
+#' @keywords internal
 setClass("ReferenceGeneRegionTrack", contains = c("GeneRegionTrack", "ReferenceTrack"))
 
 ## Initialize ----------------------------------------------------------------
@@ -312,7 +322,9 @@ setClass("ReferenceGeneRegionTrack", contains = c("GeneRegionTrack", "ReferenceT
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritence has some strange features with regards to method selection
 
-#' @describeIn GeneRegionTrack-class Initialize.
+#' @describeIn GeneRegionTrack-class Initialize the `ReferenceTrack` slots
+#' (`stream`, `reference`, `mapping`, `args`, `defaults`) before deferring to
+#' the `GeneRegionTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), ...) {

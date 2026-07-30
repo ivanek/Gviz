@@ -4,7 +4,6 @@
 \name{GeneRegionTrack-class}
 \alias{GeneRegionTrack-class}
 \alias{initialize,GeneRegionTrack-method}
-\alias{ReferenceGeneRegionTrack-class}
 \alias{initialize,ReferenceGeneRegionTrack-method}
 \alias{GeneRegionTrack}
 \alias{gene,GeneRegionTrack-method}
@@ -161,7 +160,7 @@ gene ids, symbols, etc. is present in the individual \code{GRanges} meta
 data slots, the object will not be particularly useful, because all the
 identifiers will be set to a common default value.}
 
-\item{An \code{\linkS4class{IRanges}} object:}{ almost identical to the
+\item{An \link[IRanges:IRanges-class]{IRanges} object:}{ almost identical to the
 \code{GRanges} case, except that the chromosome and strand information as
 well as all additional data has to be provided in the separate
 \code{chromosome}, \code{strand}, \code{feature}, \code{transcript},
@@ -316,20 +315,20 @@ for plotting later on. There are several levels of data associated to a
 \describe{
 
 \item{exon level:}{identifiers are stored in the exon column of the
-\code{\linkS4class{GRanges}} object in the \code{range} slot. Data may be
+\link[GenomicRanges:GRanges-class]{GRanges} object in the \code{range} slot. Data may be
 extracted using the \code{exon} method.}
 
 \item{transcript level:}{identifiers are stored in the transcript column of
-the \code{\linkS4class{GRanges}} object. Data may be extracted using the
+the \link[GenomicRanges:GRanges-class]{GRanges} object. Data may be extracted using the
 \code{transcript} method.}
 
 \item{gene level:}{identifiers are stored in the gene column of the
-\code{\linkS4class{GRanges}} object, more human-readable versions in the
+\link[GenomicRanges:GRanges-class]{GRanges} object, more human-readable versions in the
 symbol column. Data may be extracted using the \code{gene} or the
 \code{symbol} methods.}
 
 \item{transcript-type level:}{information is stored in the feature column of
-the \code{\linkS4class{GRanges}} object. If a display parameter of the same
+the \link[GenomicRanges:GRanges-class]{GRanges} object. If a display parameter of the same
 name is specified, the software will use its value for the coloring.}
 
 }
@@ -344,11 +343,13 @@ are considered to be coding elements.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(GeneRegionTrack)}: Initialize.
+\item \code{initialize(GeneRegionTrack)}: Initialize the \code{start} and \code{end} slots
+before deferring to the \code{AnnotationTrack} initializer for the remaining
+slots.
 
-\item \code{ReferenceGeneRegionTrack-class}: The file-based version of the \code{GeneRegionTrack-class}.
-
-\item \code{initialize(ReferenceGeneRegionTrack)}: Initialize.
+\item \code{initialize(ReferenceGeneRegionTrack)}: Initialize the \code{ReferenceTrack} slots
+(\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) before deferring to
+the \code{GeneRegionTrack} initializer for the remaining slots.
 
 \item \code{GeneRegionTrack()}: Constructor function for \code{GeneRegionTrack-class}.
 
@@ -548,31 +549,31 @@ coords(grTrack)
 tags(grTrack)
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne, Steve Lianoglou

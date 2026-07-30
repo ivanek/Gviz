@@ -26,6 +26,7 @@
 \alias{drawAxis}
 \alias{drawAxis,GdObject-method}
 \alias{drawGrid}
+\alias{drawGrid,GdObject-method}
 \alias{drawGD}
 \alias{gene}
 \alias{gene<-}
@@ -101,6 +102,8 @@ drawAxis(GdObject, ...)
 \S4method{drawAxis}{GdObject}(GdObject, ...)
 
 drawGrid(GdObject, ...)
+
+\S4method{drawGrid}{GdObject}(GdObject, ...)
 
 drawGD(GdObject, ...)
 
@@ -331,10 +334,14 @@ See settings for details on display parameters and customization.
 named list in \code{value}. See \code{settings} for details on display parameters
 and customization.
 
-\item \code{getPar(x = GdObject, name = character)}: alias for the \code{displayPars} method.
+\item \code{getPar(x = GdObject, name = character)}: Return the value of the display parameter
+\code{name}, delegating to the object's \code{DisplayPars} slot. \code{displayPars}
+is a more descriptive alias for this method.
 See \code{settings} for details on display parameters and customization.
 
-\item \code{getPar(x = GdObject, name = missing)}: alias for the \code{displayPars} method.
+\item \code{getPar(x = GdObject, name = missing)}: Return all display parameters, delegating to
+the object's \code{DisplayPars} slot. \code{displayPars} is a more descriptive
+alias for this method.
 See \code{settings} for details on display parameters and customization.
 
 \item \code{displayPars(x = GdObject, name = character)}: list the value of the display parameter name.
@@ -378,6 +385,10 @@ necessary. Unless overwritten in one of the sub-classes this usually
 does not plot anything and returns \code{NULL}.
 
 \item \code{drawGrid()}: Generics for \code{drawGrid}.
+
+\item \code{drawGrid(GdObject)}: superpose a grid on top of a track if necessary.
+Unless overwritten in one of the sub-classes this usually does not plot
+anything and returns \code{NULL}.
 
 \item \code{drawGD()}: Generics for \code{drawGD}.
 
@@ -424,9 +435,9 @@ valid UCSC identifier, however this is not formally enforced here.
 
 \item \code{consolidateTrack()}: Generics for \code{consolidateTrack}.
 
-\item \code{consolidateTrack(GdObject)}: Consolidate.
-Determine whether there is \code{alpha} settings or not, and add this information
-as the internal display parameter \code{.__hasAlphaSupport}.
+\item \code{consolidateTrack(GdObject)}: Determine whether there is \code{alpha} settings or
+not, and add this information as the internal display parameter
+\code{.__hasAlphaSupport}.
 
 \item \code{stacking()}: Generics for \code{stacking}.
 
@@ -434,11 +445,11 @@ as the internal display parameter \code{.__hasAlphaSupport}.
 
 \item \code{stacks()}: Generics for \code{stacks}.
 
-\item \code{setStacks()}: Generics for ``.
+\item \code{setStacks()}: Generics for \code{setStacks}.
 
 \item \code{setStacks(GdObject)}: set stacks.
 
-\item \code{setCoverage()}: Generics for ``.
+\item \code{setCoverage()}: Generics for \code{setCoverage}.
 
 }}
 \section{Slots}{
@@ -488,31 +499,31 @@ if (!interactive()) {
 plotTracks(annTrack)
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

@@ -6,14 +6,6 @@
 \alias{initialize,SequenceTrack-method}
 \alias{SequenceTrack}
 \alias{RNASequenceTrack}
-\alias{SequenceDNAStringSetTrack-class}
-\alias{initialize,SequenceDNAStringSetTrack-method}
-\alias{SequenceRNAStringSetTrack-class}
-\alias{initialize,SequenceRNAStringSetTrack-method}
-\alias{SequenceBSgenomeTrack-class}
-\alias{initialize,SequenceBSgenomeTrack-method}
-\alias{ReferenceSequenceTrack-class}
-\alias{initialize,ReferenceSequenceTrack-method}
 \alias{seqnames,SequenceTrack-method}
 \alias{seqnames,SequenceBSgenomeTrack-method}
 \alias{seqlevels,SequenceTrack-method}
@@ -22,6 +14,8 @@
 \alias{end,SequenceTrack-method}
 \alias{width,SequenceTrack-method}
 \alias{length,SequenceTrack-method}
+\alias{subseq,SequenceTrack-method}
+\alias{subseq,ReferenceSequenceTrack-method}
 \alias{chromosome,SequenceTrack-method}
 \alias{chromosome<-,SequenceTrack-method}
 \alias{genome,SequenceTrack-method}
@@ -55,14 +49,6 @@ RNASequenceTrack(
   ...
 )
 
-\S4method{initialize}{SequenceDNAStringSetTrack}(.Object, sequence, ...)
-
-\S4method{initialize}{SequenceRNAStringSetTrack}(.Object, sequence, ...)
-
-\S4method{initialize}{SequenceBSgenomeTrack}(.Object, sequence = NULL, ...)
-
-\S4method{initialize}{ReferenceSequenceTrack}(.Object, stream, reference, ...)
-
 \S4method{seqnames}{SequenceTrack}(x)
 
 \S4method{seqnames}{SequenceBSgenomeTrack}(x)
@@ -78,6 +64,10 @@ RNASequenceTrack(
 \S4method{width}{SequenceTrack}(x)
 
 \S4method{length}{SequenceTrack}(x)
+
+\S4method{subseq}{SequenceTrack}(x, start = NA, end = NA, width = NA)
+
+\S4method{subseq}{ReferenceSequenceTrack}(x, start = NA, end = NA, width = NA)
 
 \S4method{chromosome}{SequenceTrack}(GdObject)
 
@@ -119,23 +109,18 @@ section below for details.}
 of a \code{SequenceTrack} as flexible as possible.
 
 The different input options for \code{sequence} are:
-
-\describe{
-
-\item{An object of class \code{\linkS4class{DNAStringSet}}.}{ The individual
-\code{\linkS4class{DNAString}}s are considered to be the different
-chromosome sequences.}
-
-\item{An object of class \code{\linkS4class{BSgenome}}.}{ The \code{Gviz}
-package tries to follow the \code{BSgenome} philosophy in that the
-respective chromosome sequences are only realized once they are first
-accessed.}
-
-\item{A \code{character} scalar:}{ in this case the value of the
-\code{sequence} argument is considered to be a file path to an annotation
-file on disk. A range of file types are supported by the \code{Gviz} package
-as identified by the file extension. See the \code{importFunction}
-documentation below for further details.}
+\itemize{
+\item \strong{An object of class \link[Biostrings:DNAStringSet-class]{DNAStringSet}}:
+the individual \code{DNAString}s are considered to be the different
+chromosome sequences.
+\item \strong{An object of class \link[BSgenome:BSgenome-class]{BSgenome}}: the \code{Gviz}
+package tries to follow the \code{BSgenome} philosophy in that the respective
+chromosome sequences are only realized once they are first accessed.
+\item \strong{A \code{character} scalar}: the value of the \code{sequence} argument is
+considered to be a file path to an annotation file on disk. A range of
+file types are supported by the \code{Gviz} package as identified by the file
+extension. See the \code{importFunction} documentation below for further
+details.
 }}
 
 \item{name}{Character scalar of the track's name used in the title panel
@@ -153,7 +138,6 @@ input file name. If the extension can not be mapped to any of the existing
 import function, an error is raised asking for a user-defined import
 function. Currently the following file types can be imported with the
 default functions: \code{fa/fasta} and \code{2bit}.
-
 Both file types support indexing by genomic coordinates, and it makes sense
 to only load the part of the file that is needed for plotting. To this end,
 the \code{Gviz} package defines the derived \code{ReferenceSequenceTrack}
@@ -175,10 +159,11 @@ function can deal with indexed files and knows how to process the additional
 constructor to return a \code{ReferenceSequenceTrack} object which will grab
 the necessary data on the fly during each plotting operation.}
 
-\item{reference}{Name of the file (for streatming).}
-
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
+
+\item{start, end, width}{Integer scalars defining the requested subsequence.
+Exactly two of the three must be provided; the third is derived from them.}
 
 \item{GdObject}{the input track object}
 
@@ -194,7 +179,7 @@ case the class is derived directly from it.}
 }
 \value{
 The return value of the constructor function is a new object of class
-\code{SequenceDNAStringSetTrack}, \code{SequenceBSgenomeTrack} ore
+\code{SequenceDNAStringSetTrack}, \code{SequenceBSgenomeTrack} or
 \code{ReferenceSequenceTrack}, depending on the constructor arguments.
 Typically the user will not have to be troubled with this distinction and
 can rely on the constructor to make the right choice.
@@ -207,27 +192,13 @@ are of no particular relevance to the user.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(SequenceTrack)}: Initialize.
+\item \code{initialize(SequenceTrack)}: Initialize the display parameter defaults
+and the \code{chromosome}/\code{genome} slots before deferring to the \code{GdObject}
+initializer for the remaining slots.
 
 \item \code{SequenceTrack()}: Constructor
 
 \item \code{RNASequenceTrack()}: Constructor
-
-\item \code{SequenceDNAStringSetTrack-class}: The \code{DNAStringSet}-based version of the \code{SequenceTrack-class}.
-
-\item \code{initialize(SequenceDNAStringSetTrack)}: Initialize.
-
-\item \code{SequenceRNAStringSetTrack-class}: The \code{RNAStringSet}-based version of the \code{SequenceTrack-class}.
-
-\item \code{initialize(SequenceRNAStringSetTrack)}: Initialize \code{RNAStringSet}-based version of the \code{SequenceTrack-class}.
-
-\item \code{SequenceBSgenomeTrack-class}: The \code{BSgenome}-based version of the \code{SequenceTrack-class}.
-
-\item \code{initialize(SequenceBSgenomeTrack)}: Initialize.
-
-\item \code{ReferenceSequenceTrack-class}: The file-based version of the \code{SequenceTrack-class}.
-
-\item \code{initialize(ReferenceSequenceTrack)}: Initialize.
 
 \item \code{seqnames(SequenceTrack)}: return the names (i.e., the chromosome)
 of the sequences contained in the object.
@@ -252,6 +223,15 @@ genomic coordinates.
 
 \item \code{length(SequenceTrack)}: return the length of the sequence for
 active chromosome.
+
+\item \code{subseq(SequenceTrack)}: extract a subsequence for the active
+chromosome between \code{start} and \code{end} (or of the given \code{width}), padding
+with \code{-} outside the available sequence range. Two of \code{start}, \code{end} and
+\code{width} must be provided.
+
+\item \code{subseq(ReferenceSequenceTrack)}: extract a subsequence for the active
+chromosome by streaming the required region from the referenced file,
+rather than from an in-memory sequence.
 
 \item \code{chromosome(SequenceTrack)}: return the chromosome for which the track
 is defined.
@@ -360,31 +340,31 @@ subseq(sTrack, start = 100000, width = 20)
 subseq(sTrack, start = length(sTrack), width = 20)
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne

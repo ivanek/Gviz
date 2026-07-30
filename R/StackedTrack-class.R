@@ -18,7 +18,6 @@ NULL
 #' @name StackedTrack-class
 #'
 #' @return A virtual Class: No objects may be created from it.
-
 #' @author Florian Hahne
 #'
 #' @inherit GdObject-class seealso
@@ -79,7 +78,9 @@ setClass("StackedTrack",
 ## Initialize ----------------------------------------------------------------
 
 ## Need to fill the stacks slot here, don't want to recompute all the time
-#' @describeIn StackedTrack-class Initialize.
+#' @describeIn StackedTrack-class Initialize the `stacking` slot (validating
+#' it against the allowed `stackingValues`) and reset the `stacks` slot,
+#' before deferring to the `RangeTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
     ## the diplay parameter defaults
@@ -109,12 +110,12 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
 
 ## Stacking controls what to do with overlapping annotation regions.
 
-#' @describeIn StackedTrack-class  return the current stacking type.
+#' @describeIn StackedTrack-class return the current stacking type.
 #' @export
 setMethod("stacking", "StackedTrack", function(GdObject) GdObject@stacking)
 
 
-#' @describeIn StackedTrack-class  set the object's stacking type to one in
+#' @describeIn StackedTrack-class set the object's stacking type to one in
 #' `c(hide, dense, squish, pack,full)`.
 #' @export
 setReplaceMethod(
@@ -153,7 +154,7 @@ setMethod("stacks", "StackedTrack",
 )
 
 
-#' @describeIn StackedTrack-class  recompute the stacks based on the available
+#' @describeIn StackedTrack-class recompute the stacks based on the available
 #' space and on the object's track items and stacking settings.
 #' @export
 setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
@@ -164,10 +165,10 @@ setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
 
 ## Consolidate ---------------------------------------------------------------
 
-#' @describeIn StackedTrack-class Consolidate.
-# 'For `StackedTrack`s set the stacking (which could have been passed in as
-#' a display parameter)
-# #' @keywords internal
+#' @describeIn StackedTrack-class For `StackedTrack` objects, set the
+#' stacking (which could have been passed in as a display parameter) before
+#' deferring to the `RangeTrack` method for the remaining consolidation
+#' steps.
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "StackedTrack"), function(GdObject, ...) {
     GdObject <- callNextMethod()

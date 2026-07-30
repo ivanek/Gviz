@@ -127,7 +127,10 @@ DisplayPars <- function(...) {
 #' @describeIn DisplayPars-class Generics for `getPar`.
 setGeneric("getPar", def = function(x, name, ...) standardGeneric("getPar"))
 
-#' @describeIn DisplayPars-class Alias for the `displayPars` method.
+#' @describeIn DisplayPars-class Return the value(s) of the display
+#' parameter(s) named in `name`, resolving parameter name aliases. `getPar`
+#' is the underlying implementation; `displayPars` is a more descriptive
+#' alias for it.
 #' @export
 setMethod(
     "getPar", c("DisplayPars", "character"),
@@ -149,7 +152,8 @@ setMethod(
     }
 )
 
-#' @describeIn DisplayPars-class Alias for the `displayPars` method.
+#' @describeIn DisplayPars-class Return all display parameters as a named
+#' list, optionally hiding internal (`.__`-prefixed) parameters.
 #' @export
 setMethod("getPar", c("DisplayPars", "missing"), function(x, hideInternal = TRUE) {
     pars <- as.list(x@pars)
@@ -230,7 +234,7 @@ setGeneric("displayPars<-",
     function(x, recursive = FALSE, value) standardGeneric("displayPars<-")
 )
 
-#' @describeIn DisplayPars-class  Replaces or adds display parameters as provided by the named `list` items.
+#' @describeIn DisplayPars-class Replaces or adds display parameters as provided by the named `list` items.
 #' @export
 setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, recursive = FALSE, value) {
     x <- setPar(x, value, interactive = FALSE)

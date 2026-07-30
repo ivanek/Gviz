@@ -4,12 +4,8 @@
 \name{AnnotationTrack-class}
 \alias{AnnotationTrack-class}
 \alias{initialize,AnnotationTrack-method}
-\alias{ReferenceAnnotationTrack-class}
 \alias{initialize,ReferenceAnnotationTrack-method}
 \alias{AnnotationTrack}
-\alias{DetailsAnnotationTrack-class}
-\alias{DetailsAnnotationTrack}
-\alias{initialize,DetailsAnnotationTrack-method}
 \alias{group,AnnotationTrack-method}
 \alias{group<-,AnnotationTrack,character-method}
 \alias{identifier,AnnotationTrack-method}
@@ -19,8 +15,8 @@
 \alias{collapseTrack,AnnotationTrack-method}
 \alias{subset,AnnotationTrack-method}
 \alias{subset,ReferenceAnnotationTrack-method}
+\alias{drawGrid,AnnotationTrack-method}
 \alias{drawGD,AnnotationTrack-method}
-\alias{drawGD,DetailsAnnotationTrack-method}
 \alias{show,AnnotationTrack-method}
 \alias{show,ReferenceAnnotationTrack-method}
 \title{AnnotationTrack class and methods}
@@ -57,10 +53,6 @@ AnnotationTrack(
   ...
 )
 
-DetailsAnnotationTrack(...)
-
-\S4method{initialize}{DetailsAnnotationTrack}(.Object, fun, selectFun, ...)
-
 \S4method{group}{AnnotationTrack}(GdObject)
 
 \S4method{group}{AnnotationTrack,character}(GdObject) <- value
@@ -93,9 +85,9 @@ DetailsAnnotationTrack(...)
 
 \S4method{subset}{ReferenceAnnotationTrack}(x, from, to, chromosome, ...)
 
-\S4method{drawGD}{AnnotationTrack}(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...)
+\S4method{drawGrid}{AnnotationTrack}(GdObject, from, to)
 
-\S4method{drawGD}{DetailsAnnotationTrack}(GdObject, minBase, maxBase, prepare = FALSE, ...)
+\S4method{drawGD}{AnnotationTrack}(GdObject, minBase, maxBase, prepare = FALSE, subset = TRUE, ...)
 
 \S4method{show}{AnnotationTrack}(object)
 
@@ -131,7 +123,7 @@ case, except that the grouping information that is part of the list
 structure is preserved in the \code{AnnotationTrack}. I.e., all the elements
 within one list item receive the same group id. For consistency, there is
 also a coercion method from \code{GRangesLists} \code{as(obj,"AnnotationTrack")}.
-\item An \code{\linkS4class{IRanges}} object: almost identical to the
+\item An \link[IRanges:IRanges-class]{IRanges} object: almost identical to the
 \code{GRanges} case, except that the chromosome and strand information as
 well as all additional metadata has to be provided in the separate
 \code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id}
@@ -277,10 +269,10 @@ functions: \code{gff}, \code{gff1}, \code{gff2}, \code{gff3}, \code{bed}, \code{
 }
 \value{
 The return value of the constructor function is a new object of class
-\code{AnnotationTrack} or of class \code{DetailsAnnotationTrack}, depending
-on the constructor arguments. Typically the user will not have to be
-troubled with this distinction and can rely on the constructor to make the
-right choice.
+\code{AnnotationTrack} or of class \code{DetailsAnnotationTrack}, depending on the
+constructor arguments. Typically the user will not have to be troubled
+with this distinction and can rely on the constructor to make the right
+choice.
 }
 \description{
 A fairly generic track object for arbitrary genomic range annotations, with
@@ -292,53 +284,12 @@ information for each range.
 \itemize{
 \item \code{initialize(AnnotationTrack)}: Show method.
 
-\item \code{ReferenceAnnotationTrack-class}: The file-based version of the \code{AnnotationTrack-class}.
-
-\item \code{initialize(ReferenceAnnotationTrack)}: Initialize.
+\item \code{initialize(ReferenceAnnotationTrack)}: Initialize the \code{ReferenceTrack} slots
+(\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) before deferring to
+the \code{AnnotationTrack} initializer for the remaining slots.
 
 \item \code{AnnotationTrack()}: Constructor function for
-\code{AnnotationTrack-class}
-
-\item \code{DetailsAnnotationTrack-class}: directly extends \code{AnnotationTrack.}
-
-\item \code{DetailsAnnotationTrack()}: Constructor function for
-\code{DetailsAnnotationTrack-class}
-
-The \code{DetailsAnnotationTrack} class directly extends \code{AnnotationTrack.}
-The purpose of this track type is to add an arbitrarily detailed plot
-section (typically consisting of additional quantitative data) for each
-range element of an \code{AnnotationTrack.} This allows a locus wide view of
-annotation elements together with any kind of details per feature or element
-that may for instance provide insight on how some complex quantitative
-measurements change according to their position in a locus. If the
-quantitative data is too complex for a \code{DataTrack} e.g. because it requires
-extra space or a trellis-like representation, a \code{DetailsAnnotationTrack} can
-be used instead. Example: An \code{AnnotationTrack} shows the positions of a
-number of probes from a microarray, and you want a histogram of the signal
-intensity distribution derived from all samples at each of these probe
-location. Another example usage would be to show for each element of an
-\code{AnnotationTrack} an xy-plot of the signal against some clinical measurement
-such as blood pressure. The limitation for applications of this type of
-track is basically only the available space of the device you are
-plotting to.
-
-This flexibility is possible by utilizing a simple function model
-to perform all the detailed plotting. The functionality of this plotting
-function fun is totally up to the user, and the function environment is
-prepared in a way that all necessary information about the plotted
-annotation feature is available. To restrict the details section to only
-selected number of annotation features one can supply another function
-\code{selectFun}, which decides for each feature separately whether details are
-available or not. Finally, an arbitrary number of additional arguments can
-be passed on to these two function by means of the \code{detailsFunArgs} display
-parameter. This is expected to be a named list, and all list elements are
-passed along to the plotting function fun and to the selector function
-\code{selectFun} as additional named arguments. Please note that some argument
-names like \code{start}, \code{end} or \code{identifier} are reserved and can not be used
-in the \code{detailsFunArgs} list. For examples of plotting functions,
-see the 'Examples' section.
-
-\item \code{initialize(DetailsAnnotationTrack)}: Initialize.
+\code{AnnotationTrack-class}.
 
 \item \code{group(AnnotationTrack)}: extract the group membership for all track items.
 
@@ -358,34 +309,27 @@ similar to \verb{groups<-}.
 \item \code{setStacks(AnnotationTrack)}: Recompute the stacks based on the available
 space and on the object's track items and stacking settings.
 
-\item \code{consolidateTrack(AnnotationTrack)}: Consolidate.
-Determine whether there is group label annotation or not, and add this
-information as the internal display parameter \code{.__hasAnno}. Precompute
-the grouped ranges together with optional labels in order to determine
-the correct plotting range later.
+\item \code{consolidateTrack(AnnotationTrack)}: Determine whether there is group label
+annotation or not, and add this information as the internal display
+parameter \code{.__hasAnno}. Precompute the grouped ranges together with
+optional labels in order to determine the correct plotting range later.
 
 \item \code{collapseTrack(AnnotationTrack)}: preprocess the track before plotting.
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{subset(AnnotationTrack)}: subset a \code{AnnotationTrack} by coordinates
+\item \code{subset(AnnotationTrack)}: subset an \code{AnnotationTrack} by coordinates
 and sort if necessary.
 
 \item \code{subset(ReferenceAnnotationTrack)}: subset a \code{ReferenceAnnotationTrack} by
 coordinates and sort if necessary.
 
-\item \code{drawGD(AnnotationTrack)}: plot the object to a graphics device.
-The return value of this method is the input object, potentially updated
-during the plotting operation. Internally, there are two modes in which the
-method can be called. Either in 'prepare' mode, in which case no plotting is
-done but the object is preprocessed based on the available space, or in
-'plotting' mode, in which case the actual graphical output is created.
-Since subsetting of the object can be potentially costly, this can be
-switched off in case subsetting has already been performed before or
-is not necessary.
+\item \code{drawGrid(AnnotationTrack)}: superpose a vertical grid across the
+track's plotting area, based on the \code{grid}, \code{v}, \code{col.grid}, \code{lty.grid}
+and \code{lwd.grid} display parameters.
 
-\item \code{drawGD(DetailsAnnotationTrack)}: plot the object to a graphics device.
+\item \code{drawGD(AnnotationTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
 method can be called. Either in 'prepare' mode, in which case no plotting is
@@ -442,17 +386,12 @@ implemented.}
 track item. This slot is usually populated by calling the \code{setStacks} method
 upon plotting, since the correct stacking is a function of the available
 plotting space.}
-
-\item{\code{fun}}{A function that is being called for each AnnotationTrack element to plot details.}
-
-\item{\code{selectFun}}{A function that is being called for each AnnotationTrack element to decide whether details need to be plotted.}
 }}
 
 \section{Objects from the class}{
 
 
-Objects can be created using the constructor function
-\code{AnnotationTrack}.
+Objects can be created using the constructor function \code{AnnotationTrack}.
 }
 
 \examples{
@@ -618,31 +557,31 @@ deTrack <- AnnotationTrack(
 plotTracks(deTrack)
 }
 \seealso{
-\code{\linkS4class{DisplayPars}}
+\link[=DisplayPars-class]{DisplayPars}
 
-\code{\linkS4class{GdObject}}
+\link[=GdObject-class]{GdObject}
 
-\code{\linkS4class{GRanges}}
+\link[GenomicRanges:GRanges-class]{GRanges}
 
-\code{\linkS4class{HighlightTrack}}
+\link[=HighlightTrack-class]{HighlightTrack}
 
-\code{\linkS4class{ImageMap}}
+\link[=ImageMap-class]{ImageMap}
 
-\code{\linkS4class{IRanges}}
+\link[IRanges:IRanges-class]{IRanges}
 
-\code{\linkS4class{RangeTrack}}
+\link[=RangeTrack-class]{RangeTrack}
 
-\code{\linkS4class{DataTrack}}
+\link[=DataTrack-class]{DataTrack}
 
-\code{\link{collapsing}}
+\link{collapsing}
 
-\code{\link{grouping}}
+\link{grouping}
 
-\code{\link{panel.grid}}
+\link[lattice:panel.grid]{panel.grid}
 
-\code{\link{plotTracks}}
+\link{plotTracks}
 
-\code{\link{settings}}
+\link{settings}
 }
 \author{
 Florian Hahne, Arne Mueller

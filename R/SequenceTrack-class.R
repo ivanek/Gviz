@@ -8,8 +8,8 @@ NULL
 #'
 #'
 #' A track class to represent genomic sequences. The three child classes
-#' \code{SequenceDNAStringSetTrack}, \code{SequenceRNAStringSetTrack} and
-#' \code{SequenceBSgenomeTrack} do most of the work, however in practise they
+#' `SequenceDNAStringSetTrack`, `SequenceRNAStringSetTrack` and
+#' `SequenceBSgenomeTrack` do most of the work, however in practise they
 #' are of no particular relevance to the user.
 #'
 #'
@@ -17,40 +17,36 @@ NULL
 #' @param sequence
 #'
 #' A meta argument to handle the different input types, making the construction
-#' of a \code{SequenceTrack} as flexible as possible.
+#' of a `SequenceTrack` as flexible as possible.
 #'
-#' The different input options for \code{sequence} are:
+#' The different input options for `sequence` are:
 #'
-#' \describe{
+#' - **An object of class [DNAStringSet][Biostrings::DNAStringSet-class]**:
+#'   the individual `DNAString`s are considered to be the different
+#'   chromosome sequences.
 #'
-#' \item{An object of class \code{\linkS4class{DNAStringSet}}.}{ The individual
-#' \code{\linkS4class{DNAString}}s are considered to be the different
-#' chromosome sequences.}
+#' - **An object of class [BSgenome][BSgenome::BSgenome-class]**: the `Gviz`
+#'   package tries to follow the `BSgenome` philosophy in that the respective
+#'   chromosome sequences are only realized once they are first accessed.
 #'
-#' \item{An object of class \code{\linkS4class{BSgenome}}.}{ The \code{Gviz}
-#' package tries to follow the \code{BSgenome} philosophy in that the
-#' respective chromosome sequences are only realized once they are first
-#' accessed.}
-#'
-#' \item{A \code{character} scalar:}{ in this case the value of the
-#' \code{sequence} argument is considered to be a file path to an annotation
-#' file on disk. A range of file types are supported by the \code{Gviz} package
-#' as identified by the file extension. See the \code{importFunction}
-#' documentation below for further details.}
-#' }
+#' - **A `character` scalar**: the value of the `sequence` argument is
+#'   considered to be a file path to an annotation file on disk. A range of
+#'   file types are supported by the `Gviz` package as identified by the file
+#'   extension. See the `importFunction` documentation below for further
+#'   details.
 #'
 #' @template SequenceTrack-class_param
 #'
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{SequenceDNAStringSetTrack}, \code{SequenceBSgenomeTrack} ore
-#' \code{ReferenceSequenceTrack}, depending on the constructor arguments.
+#' `SequenceDNAStringSetTrack`, `SequenceBSgenomeTrack` or
+#' `ReferenceSequenceTrack`, depending on the constructor arguments.
 #' Typically the user will not have to be troubled with this distinction and
 #' can rely on the constructor to make the right choice.
 #' @section Objects from the class:
 #'
-#' Objects can be created using the constructor function \code{SequenceTrack}.
+#' Objects can be created using the constructor function `SequenceTrack`.
 #' @author Florian Hahne
 #' @inherit GdObject-class seealso
 #'
@@ -155,7 +151,9 @@ setClass("SequenceTrack",
 
 ## Essentially we just update the display parameters here and set the chromosome and the genome
 
-#' @describeIn  SequenceTrack-class Initialize.
+#' @describeIn SequenceTrack-class Initialize the display parameter defaults
+#' and the `chromosome`/`genome` slots before deferring to the `GdObject`
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, ...) {
     ## the display parameter defaults
@@ -307,7 +305,14 @@ RNASequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack
 ## Slots:
 ##    o sequence: a DNAStringSet object that contains all the sequence data
 
-#' @describeIn SequenceTrack-class The `DNAStringSet`-based version of the `SequenceTrack-class`.
+#' The `DNAStringSet`-based version of the `SequenceTrack` class
+#'
+#' @template SequenceDNAStringSetTrack-class_param
+#'
+#' @slot sequence A `DNAStringSet` object containing the sequence data, with
+#' one element per chromosome.
+#'
+#' @name SequenceDNAStringSetTrack-class
 #' @exportClass SequenceDNAStringSetTrack
 setClass("SequenceDNAStringSetTrack",
     representation = representation(sequence = "DNAStringSet"),
@@ -318,7 +323,9 @@ setClass("SequenceDNAStringSetTrack",
     )
 )
 
-#' @describeIn  SequenceTrack-class Initialize.
+#' @describeIn SequenceDNAStringSetTrack-class Initialize the `sequence` slot
+#' (defaulting to an empty `DNAStringSet` if none is supplied) before
+#' deferring to the `SequenceTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
     if (missing(sequence) || is.null(sequence)) {
@@ -336,7 +343,14 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
 ## Slots:
 ##    o sequence: a RNAStringSet object that contains all the sequence data
 
-#' @describeIn SequenceTrack-class The `RNAStringSet`-based version of the `SequenceTrack-class`.
+#' The `RNAStringSet`-based version of the `SequenceTrack` class
+#'
+#' @template SequenceRNAStringSetTrack-class_param
+#'
+#' @slot sequence A `RNAStringSet` object containing the sequence data, with
+#' one element per chromosome.
+#'
+#' @name SequenceRNAStringSetTrack-class
 #' @exportClass SequenceRNAStringSetTrack
 setClass("SequenceRNAStringSetTrack",
     representation = representation(sequence = "RNAStringSet"),
@@ -347,7 +361,9 @@ setClass("SequenceRNAStringSetTrack",
     )
 )
 
-#' @describeIn SequenceTrack-class Initialize `RNAStringSet`-based version of the `SequenceTrack-class`.
+#' @describeIn SequenceRNAStringSetTrack-class Initialize the `sequence` slot
+#' (defaulting to an empty `RNAStringSet` if none is supplied) before
+#' deferring to the `SequenceTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence, ...) {
     if (missing(sequence) || is.null(sequence)) {
@@ -368,7 +384,16 @@ setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence,
 ##    o pointerCache: an environment to hold pointers to the BSgenome sequences to prevent garbage collection. This
 ##       will only be filled once the individual sequences have been accessed for the first time
 
-#' @describeIn SequenceTrack-class The `BSgenome`-based version of the `SequenceTrack-class`.
+#' The `BSgenome`-based version of the `SequenceTrack` class
+#'
+#' @template SequenceBSgenomeTrack-class_param
+#'
+#' @slot sequence A `BSgenome` object (or `NULL`), realized on demand as
+#' individual chromosome sequences are accessed.
+#' @slot pointerCache An environment holding pointers to the `BSgenome`
+#' sequences that have already been realized, to prevent garbage collection.
+#'
+#' @name SequenceBSgenomeTrack-class
 #' @exportClass SequenceBSgenomeTrack
 setClass("SequenceBSgenomeTrack",
     representation = representation(sequence = "BSgenomeOrNULL", pointerCache = "environment"),
@@ -379,7 +404,9 @@ setClass("SequenceBSgenomeTrack",
     )
 )
 
-#' @describeIn  SequenceTrack-class Initialize.
+#' @describeIn SequenceBSgenomeTrack-class Initialize the `sequence` and
+#' `pointerCache` slots before deferring to the `SequenceTrack` initializer
+#' for the remaining slots.
 #' @export
 setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence = NULL, ...) {
     .Object@sequence <- sequence
@@ -396,14 +423,24 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence = NU
 ##                         This will mainly provide a means to dispatch to a special 'subseq' method
 ##                         which should stream the necessary data from disk.
 
-#' @describeIn SequenceTrack-class The file-based version of the `SequenceTrack-class`.
+#' The file-based version of the `SequenceTrack` class
+#'
+#' This will mainly provide a means to dispatch to a special `subseq` method
+#' which should stream the necessary data from disk. Users typically do not
+#' have to deal with this distinction directly and can rely on the
+#' `SequenceTrack` constructor to make the right choice.
+#'
+#' @name ReferenceSequenceTrack-class
 #' @exportClass ReferenceSequenceTrack
+#' @keywords internal
 setClass("ReferenceSequenceTrack", contains = c("SequenceDNAStringSetTrack", "ReferenceTrack"))
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
 
-#' @describeIn  SequenceTrack-class Initialize.
+#' @describeIn ReferenceSequenceTrack-class Initialize the `ReferenceTrack` slots
+#' (`stream`, `reference`) before deferring to the
+#' `SequenceDNAStringSetTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream)
@@ -463,7 +500,14 @@ setMethod("length", "SequenceTrack", function(x) {
     if (chromosome(x) %in% seqnames(x)) length(x@sequence[[chromosome(x)]]) else 0
 })
 
+#' @describeIn SequenceTrack-class extract a subsequence for the active
+#' chromosome between `start` and `end` (or of the given `width`), padding
+#' with `-` outside the available sequence range. Two of `start`, `end` and
+#' `width` must be provided.
+#' @param start,end,width Integer scalars defining the requested subsequence.
+#' Exactly two of the three must be provided; the third is derived from them.
 #' @importMethodsFrom Biostrings unmasked complement
+#' @export
 setMethod("subseq", "SequenceTrack", function(x, start = NA, end = NA, width = NA) {
     padding <- "-"
     if (!is.na(start[1] + end[1] + width[1])) {
@@ -527,6 +571,10 @@ setMethod("subseq", "SequenceTrack", function(x, start = NA, end = NA, width = N
 })
 
 
+#' @describeIn SequenceTrack-class extract a subsequence for the active
+#' chromosome by streaming the required region from the referenced file,
+#' rather than from an in-memory sequence.
+#' @export
 setMethod("subseq", "ReferenceSequenceTrack", function(x, start = NA, end = NA, width = NA) {
     if (sum(c(is.na(start[1]), is.na(end[1]), is.na(width[1]))) >= 2) {
         stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
