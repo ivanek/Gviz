@@ -19,3 +19,10 @@ New docs with roxygen
 Clean the code
    o styler::style_pkg(indent_by = 4, scope=I(c("spaces", "indention", "line_breaks", "tokens")))
    o formatR::tidy_dir("tests/testthat", comment=TRUE, blank=TRUE, brace.newline=FALSE, wrap=TRUE, args.newline=FALSE, width.cutoff=I(80), indent=4)
+
+Check conversion to hg38/mm39
+   o convert the BAM files and all the data / extdata / images
+   o check subset by coordinates (does it work?)
+   o biomart genome version
+   o UCSC implementation
+

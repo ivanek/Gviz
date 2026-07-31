@@ -472,9 +472,9 @@ names(grTrack) <- "foo"
 plotTracks(grTrack)
 
 ## Subsetting and splitting
-subTrack <- subset(grTrack, from = 26700000, to = 26705000)
+subTrack <- subset(grTrack, from = 25597000, to = 25610000)
 length(subTrack)
-subTrack <- grTrack[transcript(grTrack) == "ENSMUST00000144140"]
+subTrack <- grTrack[transcript(grTrack) == "ENSMUST00000005477"]
 split(grTrack, transcript(grTrack))
 
 ## Accessors
@@ -491,7 +491,7 @@ chromosome(grTrack)
 chromosome(subTrack) <- "chrX"
 
 genome(grTrack)
-genome(subTrack) <- "mm10"
+genome(subTrack) <- "mm39"
 
 range(grTrack)
 ranges(grTrack)
@@ -505,7 +505,7 @@ feature(grTrack)
 feature(subTrack) <- "foo"
 
 exon(grTrack)
-exon(subTrack) <- letters[1:2]
+exon(subTrack) <- rep(letters[1:2], 6)
 
 gene(grTrack)
 gene(subTrack) <- "bar"
@@ -514,7 +514,7 @@ symbol(grTrack)
 symbol(subTrack) <- "foo"
 
 transcript(grTrack)
-transcript(subTrack) <- c("foo", "bar")
+transcript(subTrack) <- "foo"
 chromosome(subTrack) <- "chr7"
 plotTracks(subTrack)
 
