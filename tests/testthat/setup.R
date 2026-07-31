@@ -1,5 +1,5 @@
 ## libs ---------------------------------------------------------------------
-library(BSgenome.Hsapiens.UCSC.hg19)
+library(BSgenome.Hsapiens.UCSC.hg38)
 
 ## general ------------------------------------------------------------------
 set.seed(789)
@@ -18,29 +18,51 @@ cyto.bands <- data.frame(
     stringsAsFactors = FALSE
 )
 ## internet access ----------------------------------------------------------
-# hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent = TRUE), "try-error")
-hasUcscConnection <- FALSE
+# GitHub Actions always sets GITHUB_ACTIONS="true".
+# The Bioconductor Build System sets BBS_HOME on its build/check nodes.
+# (Some Bioc machines can also be recognized by hostname as a fallback.)
+.skipNetworkTests <- function() {
+    isGHA <- identical(Sys.getenv("GITHUB_ACTIONS"), "true")
+    isBBS <- nzchar(Sys.getenv("BBS_HOME"))
+
+    biocHostPattern <- "nebbiolo|tokay|kunpeng|riesling|merida|palomino|lconway"
+    host <- tolower(Sys.info()[["nodename"]])
+    isBiocHost <- grepl(biocHostPattern, host)
+
+    isGHA || isBBS || isBiocHost
+}
+
+hasUcscConnection <- if (.skipNetworkTests()) {
+    FALSE
+} else {
+    # # Simple check of UCSC server
+    # !is(try(rtracklayer::browserSession(), silent = TRUE), "try-error")
+    # # This helps when the UCSC server has a hick-up but still lets you connect:
+    !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") &&
+        !is(try(IdeogramTrack(genome="hg38", chromosome=7), silent=TRUE), "try-error")
+}
+
 check_ucsc <- function() {
     if (!hasUcscConnection) {
         skip("UCSC not available")
     }
 }
 
-#
-# oto <- options(timeout = 5)
-# hasBiomartConnection <- (!is(try(download.file("http://www.biomart.org", tempfile(), quiet = TRUE)), "try-error") &&
-#     !is(try(biomaRt::listMarts(), silent = TRUE), "try-error"))
-#options(timeout = oto)
-hasBiomartConnection <- FALSE
+hasBiomartConnection <- if (.skipNetworkTests()) {
+    FALSE
+} else {
+    oto <- options(timeout = 5)
+    on.exit(options(oto), add = TRUE)
+    !is(try(download.file("https://www.biomart.org", tempfile(), quiet = TRUE),
+            silent = TRUE), "try-error") &&
+        !is(try(biomaRt::listMarts(), silent = TRUE), "try-error")
+}
+
 check_biomart <- function() {
     if (!hasBiomartConnection) {
         skip("Biomart not available")
     }
 }
-
-## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
-## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") &&
-##   !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
 
 ## tmp files ----------------------------------------------------------------
 ## BAM file
@@ -130,7 +152,7 @@ dataTrack <- DataTrack(gr)
 annoTrack <- AnnotationTrack(gr)
 
 ## GeneRegionTrack
-geneTrack <- GeneRegionTrack(geneModels, genome = "hg19", chromosome = "chr7", name = "foo")
+geneTrack <- GeneRegionTrack(geneModels, genome = "hg38", chromosome = "chr7", name = "foo")
 ## BiomartGeneRegionTrack
 
 ## DetailsAnnotationTrack
@@ -144,7 +166,7 @@ detTrack <- DetailsAnnotationTrack(geneDetails,
 ## SequenceTrack
 seqTrack.dna <- SequenceTrack(dna.sq)
 seqTrack.rna <- RNASequenceTrack(rna.sq)
-seqTrack.bs <- SequenceTrack(BSgenome.Hsapiens.UCSC.hg19)
+seqTrack.bs <- SequenceTrack(BSgenome.Hsapiens.UCSC.hg38)
 
 ## AlignmentsTrack
 alnTrack <- AlignmentsTrack(bamfile)
