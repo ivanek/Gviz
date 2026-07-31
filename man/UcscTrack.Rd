@@ -79,7 +79,7 @@ object from that data, we have to pass the additional named arguments
 \code{end="toLoc"} to the \code{UcscTrack} function. The complete function call
 could look like this:
 
-\code{UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")}
+\code{UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")}
 
 To reduce the bandwidth, some caching of the UCSC connection takes place. In
 order to remove these cached session items, call \code{clearSessionCache}.
@@ -91,11 +91,11 @@ calling \code{options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")}.
 \examples{
 \dontrun{
 
-## Create UcscTrack for Known Genes from mm9 genome
+## Create UcscTrack for Known Genes from mm39 genome
 from <- 65921878
 to <- 65980988
 knownGenes <- UcscTrack(
-    genome = "mm9", chromosome = "chrX", track = "knownGene",
+    genome = "mm39", chromosome = "chrX", track = "knownGene",
     from = from, to = to, trackType = "GeneRegionTrack",
     rstarts = "exonStarts", rends = "exonEnds", gene = "name",
     symbol = "name", transcript = "name", strand = "strand",

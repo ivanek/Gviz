@@ -21,6 +21,39 @@
 .ensemblCache <- new.env()
 .martCache <- new.env()
 
+## Default UCSC base URL. UCSC's table-browser backend now sits behind
+## api.genome.ucsc.edu / the hubApi REST interface. Some rtracklayer
+## versions mishandle the plain "http://" redirect to "https://" for that
+## backend (see https://github.com/lawremi/rtracklayer/issues/148), so we
+## default to https explicitly unless the user overrides Gviz.ucscUrl.
+.gvizUcscUrl <- function() {
+    myUcscUrl <- getOption("Gviz.ucscUrl")
+    if (is.null(myUcscUrl)) "https://genome.ucsc.edu/cgi-bin/" else myUcscUrl
+}
+
+## Newer rtracklayer releases query UCSC via the REST-based hubApi, which
+## flattened the old track/table distinction: track information now has to
+## be requested through the 'table' argument of ucscTableQuery() instead of
+## the (now deprecated/unreliable) positional 'track' argument. Older
+## rtracklayer releases still expect 'track'. This helper tries the modern
+## calling convention first and falls back to the legacy one so that
+## UcscTrack() keeps working across rtracklayer versions.
+.ucscTableQueryCompat <- function(session, track, range = NULL) {
+    modernArgs <- c(list(session, table = track), if (!is.null(range)) list(range = range))
+    res <- tryCatch(do.call(ucscTableQuery, modernArgs), error = function(e) e)
+    if (inherits(res, "error")) {
+        legacyArgs <- c(list(session, track), if (!is.null(range)) list(range = range))
+        res <- tryCatch(do.call(ucscTableQuery, legacyArgs), error = function(e) e)
+    }
+    if (inherits(res, "error")) {
+        stop(
+            "Unable to query UCSC track/table '", track, "'. This may be caused by an incompatible ",
+            "rtracklayer version or a change in the UCSC REST API. Original error: ", conditionMessage(res)
+        )
+    }
+    res
+}
+
 #' @importFrom rtracklayer ucscGenomes browserSession
 #' @importMethodsFrom rtracklayer chrom close getTable "tableName<-" track
 #' @importMethodsFrom rtracklayer ucscTableQuery trackNames tableNames import
@@ -52,8 +85,7 @@
     session <- .doCache(
         sessionToken,
         expression({
-            myUcscUrl <- getOption("Gviz.ucscUrl")
-            tmp <- if (is.null(myUcscUrl)) browserSession() else browserSession(url = myUcscUrl)
+            tmp <- browserSession(url = .gvizUcscUrl())
             genome(tmp) <- genome
             tmp
         }), env, cenv
@@ -64,7 +96,7 @@
         track <- names(availTracks[track])
     }
     availTables <- .doCache(tablesToken, expression({
-        query <- ucscTableQuery(session, track)
+        query <- .ucscTableQueryCompat(session, track)
         sort(tableNames(query))
     }), env, cenv)
     chrInfo <- seqlengths(session)
@@ -88,8 +120,7 @@
             session <- .doCache(
                 sessionToken,
                 expression({
-                    myUcscUrl <- getOption("Gviz.ucscUrl")
-                    tmp <- if (is.null(myUcscUrl)) browserSession() else browserSession(url = myUcscUrl)
+                    tmp <- browserSession(url = .gvizUcscUrl())
                     genome(tmp) <- genome
                     tmp
                 }), env, cenv
@@ -196,7 +227,7 @@ clearSessionCache <- function() {
 #' `end="toLoc"` to the `UcscTrack` function. The complete function call
 #' could look like this:
 #'
-#' `UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000,
+#' `UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000,
 #' to=10000, trackType="AnnotationTrack", id="id", feature="type",
 #' start="from", end="to")`
 #'
@@ -248,11 +279,11 @@ clearSessionCache <- function() {
 #' @examples
 #' \dontrun{
 #'
-#' ## Create UcscTrack for Known Genes from mm9 genome
+#' ## Create UcscTrack for Known Genes from mm39 genome
 #' from <- 65921878
 #' to <- 65980988
 #' knownGenes <- UcscTrack(
-#'     genome = "mm9", chromosome = "chrX", track = "knownGene",
+#'     genome = "mm39", chromosome = "chrX", track = "knownGene",
 #'     from = from, to = to, trackType = "GeneRegionTrack",
 #'     rstarts = "exonStarts", rends = "exonEnds", gene = "name",
 #'     symbol = "name", transcript = "name", strand = "strand",
@@ -288,7 +319,7 @@ UcscTrack <- function(track, table = NULL,
     }
     gr <- GRanges(ranges = IRanges(start = from, end = to), seqnames = chromosome)
     suppressWarnings(genome(gr) <- unname(genome))[1]
-    query <- ucscTableQuery(sessionInfo$session, sessionInfo$track, gr)
+    query <- .ucscTableQueryCompat(sessionInfo$session, sessionInfo$track, range = gr)
     if (!is.null(table)) {
         table <- match.arg(table, sessionInfo$availTables)
         tableName(query) <- table
