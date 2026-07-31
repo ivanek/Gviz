@@ -21,6 +21,79 @@
 .ensemblCache <- new.env()
 .martCache <- new.env()
 
+## rtracklayer's tableNames() (the REST-API-era replacement for the now
+## defunct trackNames()) does not always return a simple named character
+## vector: it can come back as a list, with NULL entries for
+## access-protected tracks and vector-valued entries for tracks that have
+## more than one sub-table. sort()/match.arg() need an atomic vector, so we
+## flatten it here, dropping protected (NULL) entries and replicating the
+## track name across each of its sub-tables.
+.flattenTableNames <- function(tn) {
+    if (!is.list(tn)) {
+        return(tn)
+    }
+    tn <- tn[!vapply(tn, is.null, logical(1))]
+    if (!length(tn)) {
+        return(character(0))
+    }
+    trackIds <- rep(names(tn), lengths(tn))
+    tables <- unlist(tn, use.names = FALSE)
+    names(tables) <- trackIds
+    tables
+}
+
+## Some UCSC tracks (notably "knownGene" on hg38 and other recently-updated
+## assemblies) are no longer served as the classic genePred table with
+## absolute-coordinate, comma-separated "exonStarts"/"exonEnds" columns.
+## They now come back in the bigGenePred/BED12+ schema instead, where exon
+## (block) coordinates are given as "chromStarts" (offsets *relative* to
+## "chromStart") together with "blockSizes", following the ordinary BED12
+## convention. If we don't bridge this, rstarts/rends arguments such as the
+## commonly-documented rstarts="exonStarts", rends="exonEnds" silently fail
+## to resolve to real columns (they get passed through as literal strings)
+## and blow up deep inside GeneRegionTrack's range-building code with a
+## confusing "Number of elements ... is invalid" error.
+##
+## This synthesizes legacy-style absolute exonStarts/exonEnds (and a few
+## other commonly-used legacy aliases) from the new columns whenever they're
+## present and the legacy ones are missing, so existing calls keep working
+## unchanged. It's a no-op when the table already looks like a classic
+## genePred (or doesn't have enough bigGenePred columns to convert).
+.bigGenePredToGenePredCompat <- function(tableDat) {
+    bigGenePredCols <- c("chromStart", "chromEnd", "blockSizes", "chromStarts")
+    if (!is.data.frame(tableDat) || !all(bigGenePredCols %in% colnames(tableDat))) {
+        return(tableDat)
+    }
+    if (all(c("exonStarts", "exonEnds") %in% colnames(tableDat))) {
+        return(tableDat)
+    }
+    parseCsv <- function(x) as.integer(strsplit(sub(",+$", "", x), ",")[[1]])
+    toCsv <- function(x) paste0(paste(x, collapse = ","), ",")
+    exonCoords <- Map(function(chromStart, blockStarts, blockSizes) {
+        starts <- chromStart + parseCsv(blockStarts)
+        ends <- starts + parseCsv(blockSizes)
+        list(starts = toCsv(starts), ends = toCsv(ends))
+    }, tableDat$chromStart, tableDat$chromStarts, tableDat$blockSizes)
+    tableDat$exonStarts <- vapply(exonCoords, `[[`, character(1), "starts")
+    tableDat$exonEnds <- vapply(exonCoords, `[[`, character(1), "ends")
+    if (!"exonCount" %in% colnames(tableDat) && "blockCount" %in% colnames(tableDat)) {
+        tableDat$exonCount <- tableDat$blockCount
+    }
+    if (!"txStart" %in% colnames(tableDat)) {
+        tableDat$txStart <- tableDat$chromStart
+    }
+    if (!"txEnd" %in% colnames(tableDat)) {
+        tableDat$txEnd <- tableDat$chromEnd
+    }
+    if (!"cdsStart" %in% colnames(tableDat) && "thickStart" %in% colnames(tableDat)) {
+        tableDat$cdsStart <- tableDat$thickStart
+    }
+    if (!"cdsEnd" %in% colnames(tableDat) && "thickEnd" %in% colnames(tableDat)) {
+        tableDat$cdsEnd <- tableDat$thickEnd
+    }
+    tableDat
+}
+
 ## Default UCSC base URL. UCSC's table-browser backend now sits behind
 ## api.genome.ucsc.edu / the hubApi REST interface. Some rtracklayer
 ## versions mishandle the plain "http://" redirect to "https://" for that
@@ -90,14 +163,14 @@
             tmp
         }), env, cenv
     )
-    availTracks <- .doCache(tracksToken, expression(trackNames(ucscTableQuery(session))), env, cenv)
+    availTracks <- .doCache(tracksToken, expression(.flattenTableNames(tableNames(ucscTableQuery(session)))), env, cenv)
     track <- match.arg(track, sort(c(availTracks, names(availTracks))))
     if (!is.na(availTracks[track])) {
         track <- names(availTracks[track])
     }
     availTables <- .doCache(tablesToken, expression({
         query <- .ucscTableQueryCompat(session, track)
-        sort(tableNames(query))
+        sort(.flattenTableNames(tableNames(query)))
     }), env, cenv)
     chrInfo <- seqlengths(session)
     return(list(
@@ -346,6 +419,20 @@ UcscTrack <- function(track, table = NULL,
     }
     if (is(tmp, "try-error") && nrow(tableDat) == 0) {
         stop("Error fetching data from UCSC")
+    }
+    tableDat <- .bigGenePredToGenePredCompat(tableDat)
+    if (trackType == "GeneRegionTrack") {
+        dots <- list(...)
+        for (colArg in c("rstarts", "rends")) {
+            val <- dots[[colArg]]
+            if (is.character(val) && length(val) == 1 && !val %in% colnames(tableDat)) {
+                stop(
+                    "Column '", val, "' (", colArg, ") was not found in the data fetched from UCSC ",
+                    "for track '", track, "'. This can happen when UCSC changes a track's table schema. ",
+                    "Available columns are: ", paste(colnames(tableDat), collapse = ", ")
+                )
+            }
+        }
     }
     args <- lapply(list(...), function(x) {
         if (is.character(x) && length(x) == 1) {
