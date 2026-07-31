@@ -7,8 +7,12 @@ ir <- IRanges(1L, 5L)
 gr <- GRanges("chr1", ir, score = 1)
 ir2 <- IRanges(2L, 6L)
 gr2 <- GRanges("chr1", ir2, score = 2)
-dna.sq <- DNAStringSet(c(chr1 = paste(sample(DNA_BASES, 100, replace = TRUE), collapse = "")))
-rna.sq <- RNAStringSet(c(chr1 = paste(sample(RNA_BASES, 100, replace = TRUE), collapse = "")))
+dna.sq <- DNAStringSet(c(
+    chr1 = paste(sample(DNA_BASES, 100, replace = TRUE), collapse = "")
+))
+rna.sq <- RNAStringSet(c(
+    chr1 = paste(sample(RNA_BASES, 100, replace = TRUE), collapse = "")
+))
 cyto.bands <- data.frame(
     chrom = rep(c("chrI", "chrII"), each = 4),
     chromStart = rep(c(1L, 148071L, 151524L, 154977L), 2),
@@ -38,8 +42,11 @@ hasUcscConnection <- if (.skipNetworkTests()) {
     # # Simple check of UCSC server
     # !is(try(rtracklayer::browserSession(), silent = TRUE), "try-error")
     # # This helps when the UCSC server has a hick-up but still lets you connect:
-    !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") &&
-        !is(try(IdeogramTrack(genome="hg38", chromosome=7), silent=TRUE), "try-error")
+    !is(try(rtracklayer::browserSession(), silent = TRUE), "try-error") &&
+        !is(
+            try(IdeogramTrack(genome = "hg38", chromosome = 7), silent = TRUE),
+            "try-error"
+        )
 }
 
 check_ucsc <- function() {
@@ -53,8 +60,13 @@ hasBiomartConnection <- if (.skipNetworkTests()) {
 } else {
     oto <- options(timeout = 5)
     on.exit(options(oto), add = TRUE)
-    !is(try(download.file("https://www.biomart.org", tempfile(), quiet = TRUE),
-            silent = TRUE), "try-error") &&
+    !is(
+        try(
+            download.file("https://www.biomart.org", tempfile(), quiet = TRUE),
+            silent = TRUE
+        ),
+        "try-error"
+    ) &&
         !is(try(biomaRt::listMarts(), silent = TRUE), "try-error")
 }
 
@@ -85,11 +97,13 @@ Rsamtools::indexBam(bamfile)
 ## FASTA
 fastafile <- system.file("extdata/test.fa", package = "Gviz")
 
-bamgr <- GRanges("chr1", IRanges(
-    c(189892390L, 189892202L, 189893347L, 189891483L, 189893352L),
-    c(189892465L, 189892277L, 189893422L, 189891558L, 189893427L)
-),
-strand = rep(c("-", "+"), c(2, 3))
+bamgr <- GRanges(
+    "chr1",
+    IRanges(
+        c(189892390L, 189892202L, 189893347L, 189891483L, 189893352L),
+        c(189892465L, 189892277L, 189893422L, 189891558L, 189893427L)
+    ),
+    strand = rep(c("-", "+"), c(2, 3))
 )
 mcols(bamgr) <- DataFrame(
     id = c(
@@ -112,11 +126,11 @@ mcols(bamgr) <- DataFrame(
     )),
     isize = c(113L, 113L, 48L, 47L, 30L),
     groupid = c(1L, 1L, 2L, 3L, 4L),
-    status = factor(rep(c("mated", "unmated"), c(2, 3)),
+    status = factor(
+        rep(c("mated", "unmated"), c(2, 3)),
         levels = c("mated", "ambiguous", "unmated")
     )
 )
-
 
 
 selFun <- function(identifier, start, end, track, GdObject, ...) {
@@ -126,11 +140,13 @@ selFun <- function(identifier, start, end, track, GdObject, ...) {
     return((end - start) < pxRange && gcount[identifier] == 1)
 }
 detFun <- function(identifier, GdObject.original, ...) {
-    plotTracks(list(
-        GenomeAxisTrack(scale = 0.3, size = 0.2, cex = 0.7),
-        GdObject.original[group(GdObject.original) == identifier]
-    ),
-    add = TRUE, showTitle = FALSE
+    plotTracks(
+        list(
+            GenomeAxisTrack(scale = 0.3, size = 0.2, cex = 0.7),
+            GdObject.original[group(GdObject.original) == identifier]
+        ),
+        add = TRUE,
+        showTitle = FALSE
     )
 }
 
@@ -140,7 +156,11 @@ data(geneModels)
 ## classes ------------------------------------------------------------------
 
 ## IdeogramTrack
-ideoTrack <- IdeogramTrack(chromosome = "chrI", genome = "sacCer3", bands = cyto.bands)
+ideoTrack <- IdeogramTrack(
+    chromosome = "chrI",
+    genome = "sacCer3",
+    bands = cyto.bands
+)
 
 ## GenomeAxisTrack
 axisTrack <- GenomeAxisTrack(gr)
@@ -152,15 +172,25 @@ dataTrack <- DataTrack(gr)
 annoTrack <- AnnotationTrack(gr)
 
 ## GeneRegionTrack
-geneTrack <- GeneRegionTrack(geneModels, genome = "hg38", chromosome = "chr7", name = "foo")
+geneTrack <- GeneRegionTrack(
+    geneModels,
+    genome = "hg38",
+    chromosome = "chr7",
+    name = "foo"
+)
 ## BiomartGeneRegionTrack
 
 ## DetailsAnnotationTrack
-detTrack <- DetailsAnnotationTrack(geneDetails,
-    fun = detFun, selectFun = selFun,
-    groupDetails = TRUE, details.size = 0.5,
-    detailsConnector.cex = 0.5, detailsConnector.lty = "dotted",
-    shape = c("smallArrow", "arrow"), groupAnnotation = "group"
+detTrack <- DetailsAnnotationTrack(
+    geneDetails,
+    fun = detFun,
+    selectFun = selFun,
+    groupDetails = TRUE,
+    details.size = 0.5,
+    detailsConnector.cex = 0.5,
+    detailsConnector.lty = "dotted",
+    shape = c("smallArrow", "arrow"),
+    groupAnnotation = "group"
 )
 
 ## SequenceTrack
