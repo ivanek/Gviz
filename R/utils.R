@@ -1446,76 +1446,158 @@ addScheme <- function(scheme, name) {
 ## Arguments:
 ##    o id: character scalar, a UCSC genome identifier
 ## Value: a list with ENSEMBL the genome information
+# .ucsc2Ensembl <- function(id) {
+#     mt <- match(tolower(id), tolower(.biomartCurrentVersionTable$ucscId))
+#     val <- .biomartCurrentVersionTable[mt, ]
+#     if (is.na(mt)) {
+#         mt <- match(tolower(id), tolower(.biomartVersionTable$ucscId))
+#         val <- .biomartVersionTable[mt, c("species", "value", "dataset", "ucscId", "speciesShort", "speciesLong", "date", "version")]
+#     }
+#     return(as.list(val))
+# }
+
+## Maps a UCSC genome ID to its organism + Ensembl build info
 .ucsc2Ensembl <- function(id) {
-    mt <- match(tolower(id), tolower(.biomartCurrentVersionTable$ucscId))
-    val <- .biomartCurrentVersionTable[mt, ]
-    if (is.na(mt)) {
-        mt <- match(tolower(id), tolower(.biomartVersionTable$ucscId))
-        val <- .biomartVersionTable[mt, c("species", "value", "dataset", "ucscId", "speciesShort", "speciesLong", "date", "version")]
+    registry <- registered_UCSC_genomes()               # organism, genome, NCBI_assembly, ...
+    reg_row  <- registry[tolower(registry$genome) == tolower(id), ]
+    if (nrow(reg_row) == 0) {
+        stop(sprintf("UCSC genome id '%s' is not registered in GenomeInfoDb", id))
     }
-    return(as.list(val))
+    build <- mapGenomeBuilds(id, style = "Ensembl")      # ensemblID, ensemblVersion, ensemblDate, ucscID
+    list(
+        organism  = as.character(reg_row$organism[1]),
+        ucscId    = id,
+        ensemblID = build$ensemblID[1],
+        version   = build$ensemblVersion[1],
+        date      = build$ensemblDate[1]
+    )
 }
+
+## Derive the biomaRt dataset name from a scientific name,
+## e.g. "Homo sapiens" -> "hsapiens_gene_ensembl"
+## (standard Ensembl/biomaRt naming convention: first letter of genus + species)
+.datasetFromOrganism <- function(organism) {
+    parts <- strsplit(organism, " ")[[1]]
+    paste0(tolower(substr(parts[1], 1, 1)), tolower(parts[2]), "_gene_ensembl")
+}
+
 
 ## Helper function to get the ENSEMBL biomart given a UCSC identifier
 ## Arguments:
 ##    o genome: character scalar, a UCSC genome identifier
 ## Value: a biomaRt object
-.getBiomart <- function(genome) {
-    map <- .ucsc2Ensembl(genome)
-    if (map$date == "head") {
-        bm <- useEnsembl(biomart = "ensembl", dataset = map$dataset)
-        ds <- listDatasets(bm)
-        mt <- ds[match(map$dataset, ds$dataset), "version"]
-        if (is.na(mt)) {
-            stop(sprintf(
-                "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-                genome, map$dataset
-            ), "\nPlease manually provide biomaRt object")
-        }
-        if (mt != map$value) {
-            stop(sprintf(
-                "Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s', ",
-                genome, map$value, mt
-            ), "but its current version is '%s'.\nPlease manually provide biomaRt object.")
-        }
-    } else {
-        bm <- useEnsembl(biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset, host = sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))))
-        ds <- listDatasets(bm)
-        mt <- ds[match(map$dataset, ds$dataset), "version"]
-        if (is.na(mt)) {
-            stop(sprintf(
-                "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-                genome, map$dataset
-            ), "\nPlease manually provide biomaRt object")
-        }
-        if (mt != map$value) {
-            stop(
-                sprintf(
-                    "Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
-                    genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt
-                ),
-                "but its version is '%s'.\nPlease manually provide biomaRt object"
-            )
-        }
-    }
-    return(bm)
-}
+# .getBiomart <- function(genome) {
+#     map <- .ucsc2Ensembl(genome)
+#     if (map$date == "head") {
+#         bm <- useEnsembl(biomart = "ensembl", dataset = map$dataset)
+#         ds <- listDatasets(bm)
+#         mt <- ds[match(map$dataset, ds$dataset), "version"]
+#         if (is.na(mt)) {
+#             stop(sprintf(
+#                 "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+#                 genome, map$dataset
+#             ), "\nPlease manually provide biomaRt object")
+#         }
+#         if (mt != map$value) {
+#             stop(sprintf(
+#                 "Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s', ",
+#                 genome, map$value, mt
+#             ), "but its current version is '%s'.\nPlease manually provide biomaRt object.")
+#         }
+#     } else {
+#         bm <- useEnsembl(biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset, host = sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))))
+#         ds <- listDatasets(bm)
+#         mt <- ds[match(map$dataset, ds$dataset), "version"]
+#         if (is.na(mt)) {
+#             stop(sprintf(
+#                 "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
+#                 genome, map$dataset
+#             ), "\nPlease manually provide biomaRt object")
+#         }
+#         if (mt != map$value) {
+#             stop(
+#                 sprintf(
+#                     "Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
+#                     genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt
+#                 ),
+#                 "but its version is '%s'.\nPlease manually provide biomaRt object"
+#             )
+#         }
+#     }
+#     return(bm)
+# }
 
+.getBiomart <- function(genome) {
+    map     <- .ucsc2Ensembl(genome)
+    dataset <- .datasetFromOrganism(map$organism)
+
+    if (is.na(map$version) || identical(map$date, "head")) {
+        bm <- useEnsembl(biomart = "genes", dataset = dataset)
+    } else {
+        bm <- useEnsembl(biomart = "genes", dataset = dataset, version = map$version)
+    }
+
+    ## --- Validation: does the dataset/build we connected to match what we expected? ---
+    ds <- listDatasets(bm)
+    row <- ds[ds$dataset == dataset, ]
+
+    if (nrow(row) == 0) {
+        stop(sprintf(
+            "UCSC genome id '%s' was mapped to Biomart dataset '%s',",
+            genome, dataset),
+            " which doesn't exist on this Ensembl host.\n",
+            "Please supply a biomaRt object manually.")
+    }
+
+    actual_build <- row$version[1]
+    expected_build <- map$ensemblID
+
+    ## Allow for patch-level differences,
+    ## e.g. expected "GRCh38" vs actual "GRCh38.p14"
+    build_matches <- identical(actual_build, expected_build) ||
+        startsWith(actual_build, expected_build) ||
+        startsWith(expected_build, actual_build)
+
+    if (!build_matches) {
+        stop(sprintf(
+            paste0(
+                "UCSC genome id '%s' was expected to map to Ensembl build '%s' ",
+                "(dataset '%s'), but the connected Biomart reports build '%s' instead.\n",
+                "This mismatch likely means the wrong Ensembl version/archive was used.\n",
+                "Please supply a biomaRt object manually."
+            ),
+            genome, expected_build, dataset, actual_build
+        ))
+    }
+
+    bm
+}
 
 ## Helper function to translate from a UCSC genome name to a Biomart data set. This also caches the mart
 ## object in order to speed up subsequent calls
 ## Arguments:
 ##    o genome: character giving the UCSC genome
 ## Value: A BiomaRt connection object
+# .genome2Dataset <- function(genome) {
+#     map <- .ucsc2Ensembl(genome)
+#     if (is.na(map$date)) {
+#         stop(sprintf("Unable to automatically determine Biomart data set for UCSC genome identifier '%s'.\nPlease manually provide biomaRt object", genome))
+#     }
+#     cenv <- environment()
+#     bm <- .doCache(paste(map$dataset, genome, sep = "_"), expression(.getBiomart(genome)), .ensemblCache, cenv)
+#     return(bm)
+# }
+
+## Replaces .genome2Dataset() (in-session cache instead of Gviz's .doCache)
+.ensemblCache <- new.env(parent = emptyenv())
+
 .genome2Dataset <- function(genome) {
-    map <- .ucsc2Ensembl(genome)
-    if (is.na(map$date)) {
-        stop(sprintf("Unable to automatically determine Biomart data set for UCSC genome identifier '%s'.\nPlease manually provide biomaRt object", genome))
+    if (!exists(genome, envir = .ensemblCache, inherits = FALSE)) {
+        assign(genome, .getBiomart(genome), envir = .ensemblCache)
     }
-    cenv <- environment()
-    bm <- .doCache(paste(map$dataset, genome, sep = "_"), expression(.getBiomart(genome)), .ensemblCache, cenv)
-    return(bm)
+    get(genome, envir = .ensemblCache)
 }
+
 
 
 
