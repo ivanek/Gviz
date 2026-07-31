@@ -433,7 +433,7 @@ DataTrack()
 dat <- matrix(runif(400), nrow = 4)
 dtTrack <- DataTrack(
     start = seq(1, 1000, len = 100), width = 10, data = dat,
-    chromosome = 1, genome = "mm9", name = "random data"
+    chromosome = 1, genome = "mm39", name = "random data"
 )
 
 ## from GRanges
@@ -442,18 +442,18 @@ gr <- GRanges(seqnames = "chr1", ranges = IRanges(seq(1, 1000, len = 100),
     width = 10
 ))
 values(gr) <- t(dat)
-dtTrack <- DataTrack(range = gr, genome = "mm9", name = "random data")
+dtTrack <- DataTrack(range = gr, genome = "mm39", name = "random data")
 
 ## from IRanges
 dtTrack <- DataTrack(
-    range = ranges(gr), data = dat, genome = "mm9",
+    range = ranges(gr), data = dat, genome = "mm39",
     name = "random data", chromosome = 1
 )
 
 ## from a data.frame
 df <- as.data.frame(gr)
 colnames(df)[1] <- "chromosome"
-dtTrack <- DataTrack(range = df, genome = "mm9", name = "random data")
+dtTrack <- DataTrack(range = df, genome = "mm39", name = "random data")
 \dontshow{
 ## For some annoying reason the postscript device does not know about
 ## the sans font
@@ -492,7 +492,7 @@ chromosome(dtTrack)
 chromosome(subTrack) <- "chrX"
 
 genome(dtTrack)
-genome(subTrack) <- "mm9"
+genome(subTrack) <- "mm39"
 
 range(dtTrack)
 ranges(dtTrack)

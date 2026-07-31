@@ -81,7 +81,7 @@ NULL
 #'
 #' ## Construct the object
 #' \dontrun{
-#' idTrack <- IdeogramTrack(chromosome = 7, genome = "mm9")
+#' idTrack <- IdeogramTrack(chromosome = 7, genome = "mm39")
 #' }
 #'
 #' \dontshow{
@@ -110,7 +110,7 @@ NULL
 #'
 #' genome(idTrack)
 #' \dontrun{
-#' genome(id) <- "hg19"
+#' genome(id) <- "hg38"
 #' }
 #'
 #' range(idTrack)

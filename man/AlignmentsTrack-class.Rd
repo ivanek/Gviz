@@ -358,7 +358,7 @@ plotTracks(alTrack,
 )
 
 ## Including sequence information with the constructor
-if (require(BSgenome.Hsapiens.UCSC.hg19)) {
+if (require(BSgenome.Hsapiens.UCSC.hg38)) {
     strack <- SequenceTrack(Hsapiens, chromosome = "chr21")
     afrom <- 44945200
     ato <- 44947200

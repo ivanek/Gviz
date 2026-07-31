@@ -61,7 +61,7 @@ NULL
 #' seqs <- DNAStringSet(c(chr1 = paste(sample(letters, 100000, TRUE),
 #'     collapse = ""
 #' ), chr2 = paste(sample(letters, 200000, TRUE), collapse = "")))
-#' sTrack <- SequenceTrack(seqs, genome = "hg19")
+#' sTrack <- SequenceTrack(seqs, genome = "hg38")
 #' sTrack
 #'
 #' ## Construct from BSGenome object
@@ -109,7 +109,7 @@ NULL
 #'
 #' ## Accessors
 #' genome(sTrack)
-#' genome(sTrack) <- "mm9"
+#' genome(sTrack) <- "mm39"
 #' length(sTrack)
 #'
 #' ## Sequence extraction

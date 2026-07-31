@@ -36,7 +36,7 @@ NULL
 #'
 #' annTrack <- AnnotationTrack(
 #'     start = st, end = ed, strand = str, chromosome = 7,
-#'     genome = "hg19", feature = "test", group = gr,
+#'     genome = "hg38", feature = "test", group = gr,
 #'     id = paste("annTrack item", 1:4),
 #'     name = "generic annotation", stacking = "squish"
 #' )
@@ -47,7 +47,7 @@ NULL
 #'     feature = "test", group = gr
 #' )
 #' annTrack <- AnnotationTrack(
-#'     range = df, genome = "hg19", chromosome = 7,
+#'     range = df, genome = "hg38", chromosome = 7,
 #'     name = "generic annotation", stacking = "squish"
 #' )
 #'
@@ -56,7 +56,7 @@ NULL
 #'     seqnames = "chr7", range = IRanges(start = df$start, end = df$end),
 #'     strand = str
 #' )
-#' genome(gr) <- "hg19"
+#' genome(gr) <- "hg38"
 #' mcols(gr) <- df[, -(1:3)]
 #' annTrack <- AnnotationTrack(
 #'     range = gr, name = "generic annotation",
@@ -103,7 +103,7 @@ NULL
 #' chromosome(subTrack) <- "chrX"
 #'
 #' genome(annTrack)
-#' genome(subTrack) <- "mm9"
+#' genome(subTrack) <- "mm39"
 #'
 #' range(annTrack)
 #' ranges(annTrack)
@@ -167,7 +167,7 @@ NULL
 #' }
 #'
 #' deTrack <- AnnotationTrack(
-#'     range = gr, genome = "hg19", chromosome = 7,
+#'     range = gr, genome = "hg38", chromosome = 7,
 #'     name = "generic annotation with details per entry", stacking = "squish",
 #'     fun = details, details.ratio = 1
 #' )
@@ -176,7 +176,7 @@ NULL
 #'
 #' set.seed(1234)
 #' deTrack <- AnnotationTrack(
-#'     range = gr, genome = "hg19", chromosome = 7,
+#'     range = gr, genome = "hg38", chromosome = 7,
 #'     name = "generic annotation with details per entry",
 #'     stacking = "squish", fun = details,
 #'     details.ratio = 1, selectFun = function(...) {

@@ -233,7 +233,7 @@ tags(axTrack)
 data(cyp2b10)
 grTrack <- GeneRegionTrack(
     start = 26682683, end = 26711643,
-    rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm9",
+    rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm39",
     transcript = cyp2b10$transcript, gene = cyp2b10$gene, symbol = cyp2b10$symbol,
     name = "Cyp2b10", strand = cyp2b10$strand
 )

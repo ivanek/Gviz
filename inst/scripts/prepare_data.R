@@ -121,3 +121,42 @@ denseAnnTrack <- AnnotationTrack(denseAnn)
 displayPars(denseAnnTrack) <- dp
 save(denseAnnTrack, file = "data/denseAnnTrack.rda")
 
+
+# cyp2b10 ------
+edb <- EnsDb("~/Downloads/mm39_ensdb112_toUCSC.sqlite")
+myfilters <- GeneIdFilter("ENSMUSG00000030483")
+#myfilters <- GeneIdFilter("Cyp2b10")
+cds <- cdsBy(
+    edb,
+    by = "tx",
+    columns = mycolumns,
+    filter = myfilters
+) |>
+    unlist()
+
+utr5 <- fiveUTRsByTranscript(
+    edb,
+    columns = mycolumns,
+    filter = myfilters
+) |>
+    unlist()
+utr5$gene_biotype <- "utr5"
+
+utr3 <- threeUTRsByTranscript(
+    edb,
+    columns = mycolumns,
+    filter = myfilters
+) |>
+    unlist()
+utr3$gene_biotype <- "utr3"
+
+cyp2b10 <- c(cds, utr5, utr3)
+names(cyp2b10) <- NULL
+cyp2b10 <- cyp2b10 |>
+    sort() |>
+    as.data.frame() |>
+    dplyr::select(
+        chromosome=seqnames, start,end, width, strand,
+        feature=gene_biotype, gene=gene_id, exon=exon_id,
+        transcript=tx_id, symbol)
+save(cyp2b10, file="data/cyp2b10.rda")

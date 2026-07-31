@@ -436,7 +436,7 @@ data(cyp2b10)
 ## Construct the object
 grTrack <- GeneRegionTrack(
     start = 26682683, end = 26711643,
-    rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm9",
+    rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm39",
     transcript = cyp2b10$transcript, gene = cyp2b10$gene, symbol = cyp2b10$symbol,
     feature = cyp2b10$feature, exon = cyp2b10$exon,
     name = "Cyp2b10", strand = cyp2b10$strand
@@ -491,7 +491,7 @@ chromosome(grTrack)
 chromosome(subTrack) <- "chrX"
 
 genome(grTrack)
-genome(subTrack) <- "hg19"
+genome(subTrack) <- "mm10"
 
 range(grTrack)
 ranges(grTrack)

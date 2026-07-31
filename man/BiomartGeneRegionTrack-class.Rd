@@ -158,9 +158,15 @@ data(bmTrack)
 
 ## Construct the object
 \dontrun{
+# create biomaRt object first
+bm <- useEnsembl(
+biomart = "ENSEMBL_MART_ENSEMBL",
+dataset = "mmusculus_gene_ensembl"
+)
+# pass it to the `BiomartGeneRegionTrack`
 bmTrack <- BiomartGeneRegionTrack(
     start = 26682683, end = 26711643,
-    chromosome = 7, genome = "mm9"
+    chromosome = 7, biomart = bm
 )
 }
 
@@ -253,7 +259,7 @@ coords(bmTrack)
 tags(bmTrack)
 }
 \references{
-EBI Biomart webservice at \url{http://www.biomart.org}.
+EBI Biomart webservice at \url{https://www.biomart.org}.
 }
 \seealso{
 \link[=DisplayPars-class]{DisplayPars}
