@@ -510,7 +510,7 @@ plotting space.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu">AnnotationTrack</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    start <span class="op">=</span> <span class="va">st</span>, end <span class="op">=</span> <span class="va">ed</span>, strand <span class="op">=</span> <span class="va">str</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
-<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"hg19"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"hg38"</span>, feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span>,</span></span>
 <span class="r-in"><span>    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"annTrack item"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    name <span class="op">=</span> <span class="st">"generic annotation"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -521,7 +521,7 @@ plotting space.</p></dd>
 <span class="r-in"><span>    feature <span class="op">=</span> <span class="st">"test"</span>, group <span class="op">=</span> <span class="va">gr</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu">AnnotationTrack</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    range <span class="op">=</span> <span class="va">df</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    range <span class="op">=</span> <span class="va">df</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
 <span class="r-in"><span>    name <span class="op">=</span> <span class="st">"generic annotation"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -530,7 +530,7 @@ plotting space.</p></dd>
 <span class="r-in"><span>    seqnames <span class="op">=</span> <span class="st">"chr7"</span>, range <span class="op">=</span> <span class="fu">IRanges</span><span class="op">(</span>start <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">start</span>, end <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">end</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    strand <span class="op">=</span> <span class="va">str</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">gr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span></span>
+<span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">gr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg38"</span></span></span>
 <span class="r-in"><span><span class="fu">mcols</span><span class="op">(</span><span class="va">gr</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">annTrack</span> <span class="op">&lt;-</span> <span class="fu">AnnotationTrack</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    range <span class="op">=</span> <span class="va">gr</span>, name <span class="op">=</span> <span class="st">"generic annotation"</span>,</span></span>
@@ -541,7 +541,7 @@ plotting space.</p></dd>
 <span class="r-in"><span><span class="va">grl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">gr</span>, <span class="fu">values</span><span class="op">(</span><span class="va">gr</span><span class="op">)</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">AnnotationTrack</span><span class="op">(</span><span class="va">grl</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AnnotationTrack 'AnnotationTrack'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 4</span>
 <span class="r-in"><span></span></span>
@@ -562,19 +562,19 @@ plotting space.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
 <span class="r-in"><span><span class="va">subTrack</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AnnotationTrack 'foo'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 2</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">annTrack</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AnnotationTrack 'foo'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> AnnotationTrack 'foo'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -600,8 +600,8 @@ plotting space.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   chr7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "hg19" </span>
-<span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "hg38" </span>
+<span class="r-in"><span><span class="fu">genome</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm39"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 4 ranges and 0 metadata columns:</span>
@@ -626,7 +626,7 @@ plotting space.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [3]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [4]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from hg19 genome; no seqlengths</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from hg38 genome; no seqlengths</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Annotation</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
@@ -784,7 +784,7 @@ plotting space.</p></dd>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">deTrack</span> <span class="op">&lt;-</span> <span class="fu">AnnotationTrack</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    range <span class="op">=</span> <span class="va">gr</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    range <span class="op">=</span> <span class="va">gr</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
 <span class="r-in"><span>    name <span class="op">=</span> <span class="st">"generic annotation with details per entry"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span>,</span></span>
 <span class="r-in"><span>    fun <span class="op">=</span> <span class="va">details</span>, details.ratio <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -794,7 +794,7 @@ plotting space.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">deTrack</span> <span class="op">&lt;-</span> <span class="fu">AnnotationTrack</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    range <span class="op">=</span> <span class="va">gr</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>    range <span class="op">=</span> <span class="va">gr</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, chromosome <span class="op">=</span> <span class="fl">7</span>,</span></span>
 <span class="r-in"><span>    name <span class="op">=</span> <span class="st">"generic annotation with details per entry"</span>,</span></span>
 <span class="r-in"><span>    stacking <span class="op">=</span> <span class="st">"squish"</span>, fun <span class="op">=</span> <span class="va">details</span>,</span></span>
 <span class="r-in"><span>    details.ratio <span class="op">=</span> <span class="fl">1</span>, selectFun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>

@@ -146,7 +146,7 @@ object from that data, we have to pass the additional named arguments
 <code>id="id"</code>, <code>feature="type"</code>, <code>start="fromLoc"</code> and
 <code>end="toLoc"</code> to the <code>UcscTrack</code> function. The complete function call
 could look like this:</p>
-<p><code>UcscTrack(track="foo", genome="mm9", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")</code></p>
+<p><code>UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")</code></p>
 <p>To reduce the bandwidth, some caching of the UCSC connection takes place. In
 order to remove these cached session items, call <code>clearSessionCache</code>.</p>
 <p>The <code>Gviz.ucscUrl</code> option controls which URL is being used to connect
@@ -170,11 +170,11 @@ calling <code>options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")</co
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Create UcscTrack for Known Genes from mm9 genome</span></span></span>
+<span class="r-in"><span><span class="co">## Create UcscTrack for Known Genes from mm39 genome</span></span></span>
 <span class="r-in"><span><span class="va">from</span> <span class="op">&lt;-</span> <span class="fl">65921878</span></span></span>
 <span class="r-in"><span><span class="va">to</span> <span class="op">&lt;-</span> <span class="fl">65980988</span></span></span>
 <span class="r-in"><span><span class="va">knownGenes</span> <span class="op">&lt;-</span> <span class="fu">UcscTrack</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"mm9"</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span>, track <span class="op">=</span> <span class="st">"knownGene"</span>,</span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"mm39"</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span>, track <span class="op">=</span> <span class="st">"knownGene"</span>,</span></span>
 <span class="r-in"><span>    from <span class="op">=</span> <span class="va">from</span>, to <span class="op">=</span> <span class="va">to</span>, trackType <span class="op">=</span> <span class="st">"GeneRegionTrack"</span>,</span></span>
 <span class="r-in"><span>    rstarts <span class="op">=</span> <span class="st">"exonStarts"</span>, rends <span class="op">=</span> <span class="st">"exonEnds"</span>, gene <span class="op">=</span> <span class="st">"name"</span>,</span></span>
 <span class="r-in"><span>    symbol <span class="op">=</span> <span class="st">"name"</span>, transcript <span class="op">=</span> <span class="st">"name"</span>, strand <span class="op">=</span> <span class="st">"strand"</span>,</span></span>

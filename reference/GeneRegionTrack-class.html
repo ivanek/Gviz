@@ -564,7 +564,7 @@ is not necessary.</p></li>
 <span class="r-in"><span><span class="co">## Construct the object</span></span></span>
 <span class="r-in"><span><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu">GeneRegionTrack</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span></span>
-<span class="r-in"><span>    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm9"</span>,</span></span>
+<span class="r-in"><span>    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm39"</span>,</span></span>
 <span class="r-in"><span>    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>, symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span></span>
 <span class="r-in"><span>    feature <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">feature</span>, exon <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">exon</span>,</span></span>
 <span class="r-in"><span>    name <span class="op">=</span> <span class="st">"Cyp2b10"</span>, strand <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">strand</span></span></span>
@@ -607,10 +607,10 @@ is not necessary.</p></li>
 <span class="r-plt img"><img src="GeneRegionTrack-class-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Subsetting and splitting</span></span></span>
-<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">grTrack</span>, from <span class="op">=</span> <span class="fl">26700000</span>, to <span class="op">=</span> <span class="fl">26705000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">grTrack</span>, from <span class="op">=</span> <span class="fl">25597000</span>, to <span class="op">=</span> <span class="fl">25610000</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="va">grTrack</span><span class="op">[</span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">==</span> <span class="st">"ENSMUST00000144140"</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 23</span>
+<span class="r-in"><span><span class="va">subTrack</span> <span class="op">&lt;-</span> <span class="va">grTrack</span><span class="op">[</span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span> <span class="op">==</span> <span class="st">"ENSMUST00000005477"</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/splitAsList.html" class="external-link">split</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GeneRegionTrack 'foo'</span>
@@ -624,37 +624,28 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 11</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ENSMUST00000144140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GeneRegionTrack 'foo'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | annotation features: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Accessors</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">start</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25897620 25897676 25897685 25897685 25911238 25911238 25911554 25911554</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25913865 25913865 25914748 25914748 25915392 25915392 25916766 25916934</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25916934 25917288 25917288 25917288 25925373 25926068 25926068 25926250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] 25926250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25597045 25597101 25597110 25597110 25610663 25610663 25610979 25610979</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25613290 25613290 25614173 25614173 25614817 25614817 25616359 25616359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25616713 25616713 25624798 25625493 25625493 25625675 25625675</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/start.html" class="external-link">end</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25897684 25897684 25897855 25897855 25911400 25911400 25911703 25911703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25914025 25914025 25914924 25914924 25915533 25915533 25917121 25917121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25917121 25917429 25917429 25917430 25925399 25926249 25926249 25926559</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] 25926624</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25597109 25597109 25597280 25597280 25610825 25610825 25611128 25611128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25613450 25613450 25614349 25614349 25614958 25614958 25616546 25616546</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25616854 25616854 25624824 25625674 25625674 25625984 25626049</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  65   9 171 171 163 163 150 150 161 161 177 177 142 142 356 188 188 142 142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] 143  27 182 182 310 375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  65   9 171 171 163 163 150 150 161 161 177 177 142 142 188 188 142 142  27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] 182 182 310 375</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">position</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25897652 25897680 25897770 25897770 25911319 25911319 25911628 25911628</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25913945 25913945 25914836 25914836 25915462 25915462 25916944 25917028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25917028 25917358 25917358 25917359 25925386 25926158 25926158 25926404</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] 25926437</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 25597077 25597105 25597195 25597195 25610744 25610744 25611054 25611054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 25613370 25613370 25614261 25614261 25614888 25614888 25616452 25616452</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 25616784 25616784 25624811 25625584 25625584 25625830 25625862</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/start.html" class="external-link">width</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">+</span> <span class="fl">100</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+" "+"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "+" "+" "+" "+" "+" "+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "+" "+" "+" "+"</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/strand.html" class="external-link">strand</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"-"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
@@ -663,51 +654,51 @@ is not necessary.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg19"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm39"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 25 ranges and 0 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 23 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            start       end     width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]  25897620  25897684        65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]  25897676  25897684         9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]  25897685  25897855       171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]  25897685  25897855       171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]  25911238  25911400       163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]  25597045  25597109        65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]  25597101  25597109         9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]  25597110  25597280       171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]  25597110  25597280       171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]  25610663  25610825       163</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ...       ...       ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [21]  25925373  25925399        27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [22]  25926068  25926249       182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [23]  25926068  25926249       182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [24]  25926250  25926559       310</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [25]  25926250  25926624       375</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [19]  25624798  25624824        27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [20]  25625493  25625674       182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [21]  25625493  25625674       182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [22]  25625675  25625984       310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [23]  25625675  25626049       375</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 25 ranges and 7 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 23 ranges and 7 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        seqnames            ranges strand |        feature          id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |       &lt;factor&gt; &lt;character&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]     chr7 25897620-25897684      + | utr5               unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]     chr7 25897676-25897684      + | utr5               unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]     chr7 25897685-25897855      + | protein_coding     unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]     chr7 25897685-25897855      + | protein_coding     unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]     chr7 25911238-25911400      + | protein_coding     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |    &lt;character&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]     chr7 25597045-25597109      + |           utr5     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]     chr7 25597101-25597109      + |           utr5     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]     chr7 25597110-25597280      + | protein_coding     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]     chr7 25597110-25597280      + | protein_coding     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]     chr7 25610663-25610825      + | protein_coding     unknown</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ...      ...               ...    ... .            ...         ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [21]     chr7 25925373-25925399      + | protein_coding     unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [22]     chr7 25926068-25926249      + | protein_coding     unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [23]     chr7 25926068-25926249      + | protein_coding     unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [24]     chr7 25926250-25926559      + | utr3               unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [25]     chr7 25926250-25926624      + | utr3               unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      exon         transcript               gene   symbol</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  &lt;factor&gt;           &lt;factor&gt;           &lt;factor&gt; &lt;factor&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1] ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [2] ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [3] ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [4] ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [5] ENSMUSE00000973560 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ...                ...                ...                ...      ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [21] ENSMUSE00000496705 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [22] ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [23] ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [24] ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [25] ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [19]     chr7 25624798-25624824      + | protein_coding     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [20]     chr7 25625493-25625674      + | protein_coding     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [21]     chr7 25625493-25625674      + | protein_coding     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [22]     chr7 25625675-25625984      + |           utr3     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [23]     chr7 25625675-25626049      + |           utr3     unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      exon         transcript               gene      symbol</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;character&gt;        &lt;character&gt;        &lt;character&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [1] ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [2] ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [3] ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [4] ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [5] ENSMUSE00000973560 ENSMUST00000005477 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ...                ...                ...                ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [19] ENSMUSE00000496705 ENSMUST00000005477 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [20] ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [21] ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [22] ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [23] ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483     Cyp2b10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;numeric&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [1]         1</span>
@@ -716,11 +707,11 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [4]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    [5]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ...       ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [19]         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [20]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [21]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [22]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [23]         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [24]         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [25]         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
 <span class="r-in"><span></span></span>
@@ -729,17 +720,16 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10"</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"lowest"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000489385" "ENSMUSE00000742021"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000489385" "ENSMUSE00000973560" "ENSMUSE00000973560"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000489385" "ENSMUSE00000489385"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000742021" "ENSMUSE00000973560" "ENSMUSE00000973560"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSE00001043622" "ENSMUSE00001043622" "ENSMUSE00001013991"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ENSMUSE00001013991" "ENSMUSE00000996531" "ENSMUSE00000996531"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSE00000999790" "ENSMUSE00000999790" "ENSMUSE00000736922"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSE00000963884" "ENSMUSE00000963884" "ENSMUSE00001063063"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00001063063" "ENSMUSE00000748299" "ENSMUSE00000496705"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSE00000498616" "ENSMUSE00000750625" "ENSMUSE00000750625"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUSE00000498616"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSE00000999790" "ENSMUSE00000999790" "ENSMUSE00000963884"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSE00000963884" "ENSMUSE00001063063" "ENSMUSE00001063063"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00000496705" "ENSMUSE00000750625" "ENSMUSE00000498616"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSE00000750625" "ENSMUSE00000498616"</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
@@ -748,21 +738,19 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [17] "protein_coding" "protein_coding" "protein_coding" "protein_coding"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "protein_coding" "protein_coding" "protein_coding" "utr3"          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "utr3"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "protein_coding" "utr3"           "utr3"          </span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000489385" "ENSMUSE00000742021"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000489385" "ENSMUSE00000973560" "ENSMUSE00000973560"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSE00000742021" "ENSMUSE00000489385" "ENSMUSE00000489385"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUSE00000742021" "ENSMUSE00000973560" "ENSMUSE00000973560"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUSE00001043622" "ENSMUSE00001043622" "ENSMUSE00001013991"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ENSMUSE00001013991" "ENSMUSE00000996531" "ENSMUSE00000996531"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSE00000999790" "ENSMUSE00000999790" "ENSMUSE00000736922"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSE00000963884" "ENSMUSE00000963884" "ENSMUSE00001063063"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00001063063" "ENSMUSE00000748299" "ENSMUSE00000496705"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSE00000498616" "ENSMUSE00000750625" "ENSMUSE00000750625"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUSE00000498616"</span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSE00000999790" "ENSMUSE00000999790" "ENSMUSE00000963884"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSE00000963884" "ENSMUSE00001063063" "ENSMUSE00001063063"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSE00000496705" "ENSMUSE00000750625" "ENSMUSE00000498616"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSE00000750625" "ENSMUSE00000498616"</span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
@@ -772,28 +760,26 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUSG00000030483"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUSG00000030483" "ENSMUSG00000030483"</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">gene</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"bar"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10"</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">symbol</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000144140"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUST00000072438"</span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr7"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-3.png" alt="" width="700" height="433"></span>
@@ -802,29 +788,27 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           feature      id               exon         transcript</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1            utr5 unknown ENSMUSE00000742021 ENSMUST00000072438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            utr5 unknown ENSMUSE00000489385 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  protein_coding unknown ENSMUSE00000742021 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  protein_coding unknown ENSMUSE00000489385 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  protein_coding unknown ENSMUSE00000973560 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  protein_coding unknown ENSMUSE00000973560 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  protein_coding unknown ENSMUSE00001043622 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  protein_coding unknown ENSMUSE00001043622 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  protein_coding unknown ENSMUSE00001013991 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 protein_coding unknown ENSMUSE00001013991 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 protein_coding unknown ENSMUSE00000996531 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 protein_coding unknown ENSMUSE00000996531 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 protein_coding unknown ENSMUSE00000999790 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 protein_coding unknown ENSMUSE00000999790 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 protein_coding unknown ENSMUSE00000736922 ENSMUST00000144140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  protein_coding unknown ENSMUSE00000489385 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  protein_coding unknown ENSMUSE00000742021 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  protein_coding unknown ENSMUSE00000973560 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  protein_coding unknown ENSMUSE00000973560 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  protein_coding unknown ENSMUSE00001043622 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  protein_coding unknown ENSMUSE00001043622 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  protein_coding unknown ENSMUSE00001013991 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 protein_coding unknown ENSMUSE00001013991 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 protein_coding unknown ENSMUSE00000996531 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 protein_coding unknown ENSMUSE00000996531 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 protein_coding unknown ENSMUSE00000999790 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 protein_coding unknown ENSMUSE00000999790 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 protein_coding unknown ENSMUSE00000963884 ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16 protein_coding unknown ENSMUSE00000963884 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 protein_coding unknown ENSMUSE00000963884 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 protein_coding unknown ENSMUSE00001063063 ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 18 protein_coding unknown ENSMUSE00001063063 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 protein_coding unknown ENSMUSE00001063063 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 protein_coding unknown ENSMUSE00000748299 ENSMUST00000144140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 protein_coding unknown ENSMUSE00000496705 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 protein_coding unknown ENSMUSE00000498616 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 protein_coding unknown ENSMUSE00000750625 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24           utr3 unknown ENSMUSE00000750625 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25           utr3 unknown ENSMUSE00000498616 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 protein_coding unknown ENSMUSE00000496705 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 protein_coding unknown ENSMUSE00000750625 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 protein_coding unknown ENSMUSE00000498616 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22           utr3 unknown ENSMUSE00000750625 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23           utr3 unknown ENSMUSE00000498616 ENSMUST00000072438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  gene  symbol density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  ENSMUSG00000030483 Cyp2b10       1</span>
@@ -849,23 +833,21 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSG00000030483 Cyp2b10       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 ENSMUSG00000030483 Cyp2b10       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Grouping</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000144140"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000072438"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000005477" "ENSMUST00000072438"</span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Group 1" "Group 1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Group 1" "Group 1" "Group 1" "Group 1" "Group 1" "Group 1" "Group 1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Group 1" "Group 1" "Group 1" "Group 1" "Group 1"</span>
 <span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="GeneRegionTrack-class-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
@@ -886,83 +868,77 @@ is not necessary.</p></li>
 <span class="r-in"><span><span class="co">## coercion</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X.seqnames  X.start    X.end X.width X.strand      X.feature    X.id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        chr7 25897620 25897684      65        +           utr5 unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        chr7 25897676 25897684       9        +           utr5 unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        chr7 25897685 25897855     171        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        chr7 25897685 25897855     171        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        chr7 25911238 25911400     163        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        chr7 25911238 25911400     163        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        chr7 25911554 25911703     150        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        chr7 25911554 25911703     150        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        chr7 25913865 25914025     161        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10       chr7 25913865 25914025     161        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11       chr7 25914748 25914924     177        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       chr7 25914748 25914924     177        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13       chr7 25915392 25915533     142        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14       chr7 25915392 25915533     142        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15       chr7 25916766 25917121     356        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16       chr7 25916934 25917121     188        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17       chr7 25916934 25917121     188        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18       chr7 25917288 25917429     142        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19       chr7 25917288 25917429     142        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20       chr7 25917288 25917430     143        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21       chr7 25925373 25925399      27        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22       chr7 25926068 25926249     182        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23       chr7 25926068 25926249     182        + protein_coding unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24       chr7 25926250 25926559     310        +           utr3 unknown</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25       chr7 25926250 25926624     375        +           utr3 unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        chr7 25597045 25597109      65        +           utr5 unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        chr7 25597101 25597109       9        +           utr5 unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        chr7 25597110 25597280     171        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        chr7 25597110 25597280     171        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        chr7 25610663 25610825     163        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        chr7 25610663 25610825     163        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        chr7 25610979 25611128     150        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        chr7 25610979 25611128     150        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        chr7 25613290 25613450     161        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       chr7 25613290 25613450     161        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11       chr7 25614173 25614349     177        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12       chr7 25614173 25614349     177        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13       chr7 25614817 25614958     142        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14       chr7 25614817 25614958     142        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15       chr7 25616359 25616546     188        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16       chr7 25616359 25616546     188        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17       chr7 25616713 25616854     142        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18       chr7 25616713 25616854     142        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19       chr7 25624798 25624824      27        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20       chr7 25625493 25625674     182        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21       chr7 25625493 25625674     182        + protein_coding unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22       chr7 25625675 25625984     310        +           utr3 unknown</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23       chr7 25625675 25626049     375        +           utr3 unknown</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                X.exon       X.transcript             X.gene X.symbol X.density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  ENSMUSE00000973560 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  ENSMUSE00000973560 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  ENSMUSE00001043622 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  ENSMUSE00001043622 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  ENSMUSE00001013991 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 ENSMUSE00001013991 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 ENSMUSE00000996531 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 ENSMUSE00000996531 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 ENSMUSE00000999790 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 ENSMUSE00000999790 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 ENSMUSE00000736922 ENSMUST00000144140 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  ENSMUSE00000489385 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  ENSMUSE00000742021 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  ENSMUSE00000973560 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  ENSMUSE00000973560 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  ENSMUSE00001043622 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  ENSMUSE00001043622 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  ENSMUSE00001013991 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 ENSMUSE00001013991 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 ENSMUSE00000996531 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 ENSMUSE00000996531 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 ENSMUSE00000999790 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 ENSMUSE00000999790 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 ENSMUSE00000963884 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16 ENSMUSE00000963884 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 ENSMUSE00000963884 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 ENSMUSE00001063063 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 18 ENSMUSE00001063063 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 ENSMUSE00001063063 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 ENSMUSE00000748299 ENSMUST00000144140 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 ENSMUSE00000496705 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 ENSMUSE00000496705 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 ENSMUSE00000750625 ENSMUST00000005477 ENSMUSG00000030483  Cyp2b10         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSE00000498616 ENSMUST00000072438 ENSMUSG00000030483  Cyp2b10         1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           feature      id               exon         transcript</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1            utr5 unknown ENSMUSE00000742021 ENSMUST00000072438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            utr5 unknown ENSMUSE00000489385 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  protein_coding unknown ENSMUSE00000742021 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  protein_coding unknown ENSMUSE00000489385 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  protein_coding unknown ENSMUSE00000973560 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  protein_coding unknown ENSMUSE00000973560 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  protein_coding unknown ENSMUSE00001043622 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  protein_coding unknown ENSMUSE00001043622 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  protein_coding unknown ENSMUSE00001013991 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 protein_coding unknown ENSMUSE00001013991 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 protein_coding unknown ENSMUSE00000996531 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 protein_coding unknown ENSMUSE00000996531 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 protein_coding unknown ENSMUSE00000999790 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 protein_coding unknown ENSMUSE00000999790 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 protein_coding unknown ENSMUSE00000736922 ENSMUST00000144140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  protein_coding unknown ENSMUSE00000489385 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  protein_coding unknown ENSMUSE00000742021 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  protein_coding unknown ENSMUSE00000973560 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  protein_coding unknown ENSMUSE00000973560 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  protein_coding unknown ENSMUSE00001043622 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  protein_coding unknown ENSMUSE00001043622 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  protein_coding unknown ENSMUSE00001013991 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 protein_coding unknown ENSMUSE00001013991 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 protein_coding unknown ENSMUSE00000996531 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 protein_coding unknown ENSMUSE00000996531 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 protein_coding unknown ENSMUSE00000999790 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 protein_coding unknown ENSMUSE00000999790 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 protein_coding unknown ENSMUSE00000963884 ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16 protein_coding unknown ENSMUSE00000963884 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 protein_coding unknown ENSMUSE00000963884 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 protein_coding unknown ENSMUSE00001063063 ENSMUST00000005477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 18 protein_coding unknown ENSMUSE00001063063 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 protein_coding unknown ENSMUSE00001063063 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 protein_coding unknown ENSMUSE00000748299 ENSMUST00000144140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 protein_coding unknown ENSMUSE00000496705 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 protein_coding unknown ENSMUSE00000498616 ENSMUST00000072438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 protein_coding unknown ENSMUSE00000750625 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24           utr3 unknown ENSMUSE00000750625 ENSMUST00000005477</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25           utr3 unknown ENSMUSE00000498616 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 protein_coding unknown ENSMUSE00000496705 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 protein_coding unknown ENSMUSE00000750625 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 protein_coding unknown ENSMUSE00000498616 ENSMUST00000072438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22           utr3 unknown ENSMUSE00000750625 ENSMUST00000005477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23           utr3 unknown ENSMUSE00000498616 ENSMUST00000072438</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  gene  symbol density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  ENSMUSG00000030483 Cyp2b10       1</span>
@@ -987,21 +963,17 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSG00000030483 Cyp2b10       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 ENSMUSG00000030483 Cyp2b10       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">grTrack</span>, <span class="st">"UCSCData"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> UCSC track 'foo'</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> UCSCData object with 3 ranges and 6 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> UCSCData object with 2 ranges and 6 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       seqnames            ranges strand |                 id        name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; |        &lt;character&gt; &lt;character&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]     chr7 25897676-25926559      + | ENSMUST00000005477     Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [2]     chr7 25897620-25926624      + | ENSMUST00000072438     Cyp2b10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [3]     chr7 25916766-25917430      + | ENSMUST00000144140     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]     chr7 25597101-25625984      + | ENSMUST00000005477     Cyp2b10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2]     chr7 25597045-25626049      + | ENSMUST00000072438     Cyp2b10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           itemRgb blockCount             blockSizes            blockStarts</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;character&gt;  &lt;numeric&gt;            &lt;character&gt;            &lt;character&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1]     #FFD58A         12 9,171,163,150,161,17.. 0,9,13562,13878,1618..</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2]     #FFD58A         11 65,171,163,150,161,1.. 0,65,13618,13934,162..</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [3]     #FFD58A          2                356,143                  0,522</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
 <span class="r-in"><span></span></span>
@@ -1033,8 +1005,6 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000496705   448.09222  64.50 449.08221 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625   458.67175  64.50 461.34619 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1 461.36096 152.25 465.92671 327.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000736922   321.22656  64.50 326.47199 415.50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000748299   328.93956  64.50 331.03774 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000742021    38.29809  64.50  41.79997 415.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000489385    38.71181  64.50  41.79997 415.50</span>
 <span class="r-in"><span><span class="fu"><a href="ImageMap-class.html">tags</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
@@ -1051,10 +1021,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "#FFD58A"            "#FFD58A"            "#FFD58A" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "#FFD58A"            "#FFD58A"            "#FFD58A" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "#FFD58A"            "#FFD58A"            "#FFD58A" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            "#FFD58A"            "#FFD58A" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $strand</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1069,10 +1037,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  "+"                  "+"                  "+" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  "+"                  "+"                  "+" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  "+"                  "+"                  "+" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  "+"                  "+" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $text</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1087,46 +1053,40 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000996531" "ENSMUSE00000999790" "ENSMUSE00000963884" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00001063063" "ENSMUSE00000496705" "ENSMUSE00000750625" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $start</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25911238"           "25911554"           "25913865" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25610663"           "25610979"           "25613290" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000996531   ENSMUSE00000999790   ENSMUSE00000963884 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25914748"           "25915392"           "25916934" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25614173"           "25614817"           "25616359" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00001063063   ENSMUSE00000498616 ENSMUSE00000498616.1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25917288"           "25926068"           "25926250" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25616713"           "25625493"           "25625675" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000973560.1 ENSMUSE00001043622.1 ENSMUSE00001013991.1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25911238"           "25911554"           "25913865" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25610663"           "25610979"           "25613290" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000996531.1 ENSMUSE00000999790.1 ENSMUSE00000963884.1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25914748"           "25915392"           "25916934" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25614173"           "25614817"           "25616359" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25917288"           "25925352"           "25926068" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25926250"           "25916766"           "25917288" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25897618"           "25897646" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25616713"           "25624777"           "25625493" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25625675"           "25597043"           "25597071" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $end</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25911400"           "25911703"           "25914025" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25610825"           "25611128"           "25613450" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000996531   ENSMUSE00000999790   ENSMUSE00000963884 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25914924"           "25915533"           "25917121" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25614349"           "25614958"           "25616546" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00001063063   ENSMUSE00000498616 ENSMUSE00000498616.1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25917429"           "25926249"           "25926624" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25616854"           "25625674"           "25626049" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000973560.1 ENSMUSE00001043622.1 ENSMUSE00001013991.1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25911400"           "25911703"           "25914025" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25610825"           "25611128"           "25613450" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000996531.1 ENSMUSE00000999790.1 ENSMUSE00000963884.1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25914924"           "25915533"           "25917121" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25614349"           "25614958"           "25616546" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25917429"           "25925419"           "25926249" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25926559"           "25917121"           "25917430" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "25897855"           "25897855" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25616854"           "25624844"           "25625674" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           "25625984"           "25597280"           "25597280" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $feature</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1141,10 +1101,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "protein_coding"     "protein_coding"     "protein_coding" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "protein_coding"     "protein_coding"     "protein_coding" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               "utr3"     "protein_coding"     "protein_coding" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          "composite"          "composite" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               "utr3"          "composite"          "composite" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1159,10 +1117,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "unknown"            "unknown"            "unknown" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "unknown"            "unknown"            "unknown" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "unknown"            "unknown"            "unknown" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            "unknown"            "unknown" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $exon</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1177,10 +1133,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000996531" "ENSMUSE00000999790" "ENSMUSE00000963884" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00001063063" "ENSMUSE00000496705" "ENSMUSE00000750625" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $transcript</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1195,10 +1149,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000005477" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUST00000005477" "ENSMUST00000144140" "ENSMUST00000144140" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUST00000072438" "ENSMUST00000005477" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $gene</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1213,10 +1165,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSG00000030483" "ENSMUSG00000030483" "ENSMUSG00000030483" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSG00000030483" "ENSMUSG00000030483" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $symbol</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1231,10 +1181,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "Cyp2b10"            "Cyp2b10"            "Cyp2b10" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "Cyp2b10"            "Cyp2b10"            "Cyp2b10" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            "Cyp2b10"            "Cyp2b10"            "Cyp2b10" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            "Cyp2b10"            "Cyp2b10" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1249,10 +1197,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  "1"                  "1"                  "1" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  "1"                  "1"                  "1" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  "1"                  "1"                  "1" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  "2"                  "2" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  "1"                  "2"                  "2" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $gdensity</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1267,10 +1213,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   NA                   NA                   NA </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   NA                   NA                   NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   NA                   NA                   NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  "1"                  "1" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   NA                  "1"                  "1" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $exonId</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1285,10 +1229,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000996531" "ENSMUSE00000999790" "ENSMUSE00000963884" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00001063063" "ENSMUSE00000496705" "ENSMUSE00000750625" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $origExonId</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1303,10 +1245,8 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000996531" "ENSMUSE00000999790" "ENSMUSE00000963884" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00001063063" "ENSMUSE00000496705" "ENSMUSE00000750625" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000736922" "ENSMUSE00000748299" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "ENSMUSE00000750625" "ENSMUSE00000742021" "ENSMUSE00000489385" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $col</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000973560   ENSMUSE00001043622   ENSMUSE00001013991 </span>
@@ -1321,16 +1261,13 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "darkgray"           "darkgray"           "darkgray" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00001063063.1   ENSMUSE00000496705   ENSMUSE00000750625 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "darkgray"           "darkgray"           "darkgray" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000736922   ENSMUSE00000748299 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ENSMUSE00000750625.1   ENSMUSE00000742021   ENSMUSE00000489385 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           "darkgray"           "darkgray"           "darkgray" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ENSMUSE00000742021   ENSMUSE00000489385 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           "darkgray"           "darkgray" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $title</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10" "Cyp2b10"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "Cyp2b10" "Cyp2b10"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

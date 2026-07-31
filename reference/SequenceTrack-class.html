@@ -369,32 +369,32 @@ is not necessary.</p></li>
 <span class="r-in"><span><span class="va">seqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-class.html" class="external-link">DNAStringSet</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>chr1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">100000</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    collapse <span class="op">=</span> <span class="st">""</span></span></span>
 <span class="r-in"><span><span class="op">)</span>, chr2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, <span class="fl">200000</span>, <span class="cn">TRUE</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">seqs</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">seqs</span>, genome <span class="op">=</span> <span class="st">"hg38"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sTrack</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sequence track 'SequenceTrack':</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | chromosomes: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr1 (100000 nucleotides)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call seqnames() to list all available chromosomes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call chromosome()&lt;- to change the active chromosome</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Construct from BSGenome object</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu">SequenceTrack</span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="va">sTrack</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sequence track 'SequenceTrack':</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | chromosomes: 298</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr1 (249250621 nucleotides)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | genome: hg38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | chromosomes: 711</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | active chromosome: chr1 (248956422 nucleotides)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call seqnames() to list all available chromosomes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call chromosome()&lt;- to change the active chromosome</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parent BSgenome object:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | organism: Homo sapiens</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | provider: UCSC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | provider version: hg19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | release date: June 2013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> | package name: BSgenome.Hsapiens.UCSC.hg19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | provider version: hg38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | release date: 2023/01/31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | package name: BSgenome.Hsapiens.UCSC.hg38</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Set active chromosome</span></span></span>
@@ -437,10 +437,10 @@ is not necessary.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Accessors</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hg19"</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm9"</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "hg38"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"mm39"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 243199373</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 242193529</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Sequence extraction</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/XVector/man/XVector-class.html" class="external-link">subseq</a></span><span class="op">(</span><span class="va">sTrack</span>, start <span class="op">=</span> <span class="fl">100000</span>, width <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>

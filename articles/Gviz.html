@@ -144,7 +144,7 @@ You may decide to turn this feature off by calling
 <code>options(ucscChromosomeNames=FALSE)</code>. For the remainder of
 this vignette however, we will make use of the UCSC genome and
 chromosome identifiers, e.g., the <code>chr7</code> chromosome on the
-mouse <code>mm9</code> genome.</p>
+human <code>hg38</code> genome.</p>
 <p>The different track classes will be described in more detail in the
 @ref(track-classes) section further below. For now, let’s just take a
 look at a typical <em><a href="https://bioconductor.org/packages/3.23/Gviz" class="external-link">Gviz</a></em> session
@@ -292,7 +292,7 @@ broader overview. To that end, <code>plotTracks</code> supports the
 arbitrary genomic range to plot.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">itrack</span>, <span class="va">gtrack</span>, <span class="va">atrack</span>, <span class="va">grtrack</span><span class="op">)</span>,</span>
-<span>           from <span class="op">=</span> <span class="fl">26700000</span>, to <span class="op">=</span> <span class="fl">26750000</span><span class="op">)</span></span></code></pre></div>
+<span>           from <span class="op">=</span> <span class="fl">159000000</span>, to <span class="op">=</span> <span class="fl">159050000</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/zooming-1.png"><!-- --></p>
 <p>Another pair of arguments that controls the zoom state are
 <code>extend.left</code> and <code>extend.right</code>. Rather than
@@ -328,10 +328,10 @@ provides the track class <code>SequenceTrack</code> that let’s you do
 just that. Among several other options it can draw the necessary
 sequence information from one of the <code>BSgenome</code> packages.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span></span>
 <span><span class="va">strack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SequenceTrack-class.html">SequenceTrack</a></span><span class="op">(</span><span class="va">Hsapiens</span>, chromosome <span class="op">=</span> <span class="va">chr</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">itrack</span>, <span class="va">gtrack</span>, <span class="va">atrack</span>, <span class="va">grtrack</span>, <span class="va">strack</span><span class="op">)</span>, </span>
-<span>           from <span class="op">=</span> <span class="fl">26591822</span>, to <span class="op">=</span> <span class="fl">26591852</span>, cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
+<span>           from <span class="op">=</span> <span class="fl">159024485</span>, to <span class="op">=</span> <span class="fl">159231338</span>, cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/zooming4-1.png"><!-- --></p>
 <p>So far we have replicated the features of a whole bunch of other
 genome browser tools out there. The real power of the package comes with
@@ -349,7 +349,7 @@ For demonstration purposes we can create a simple <code>DataTrack</code>
 object from randomly sampled data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">255</span><span class="op">)</span></span>
-<span><span class="va">lim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">26700000</span>, <span class="fl">26750000</span><span class="op">)</span></span>
+<span><span class="va">lim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">159000000</span>, <span class="fl">159050000</span><span class="op">)</span></span>
 <span><span class="va">coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">lim</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, </span>
 <span>                 <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">lim</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, to <span class="op">=</span> <span class="va">lim</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>, <span class="fl">99</span><span class="op">)</span>, </span>
 <span>                 <span class="va">lim</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
@@ -829,7 +829,7 @@ by calling the <code>clearSessionCache</code> function. Of course it is
 also possible to construct <code>IdeogramTrack</code> objects from local
 data. Please see the class’ man page for details.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ideoTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/IdeogramTrack-class.html">IdeogramTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ideoTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/IdeogramTrack-class.html">IdeogramTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg38"</span>, chromosome <span class="op">=</span> <span class="st">"chrX"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">ideoTrack</span>, from <span class="op">=</span> <span class="fl">85e6</span>, to <span class="op">=</span> <span class="fl">129e6</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/IdeogramTrackClass1Do-1.png"><!-- --></p>
 <p>We can turn off the explicit plotting of the chromosome name by
@@ -1177,7 +1177,7 @@ we have to load the whole file content when instantiating the
 object.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bgFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/test.bedGraph"</span>, package <span class="op">=</span> <span class="st">"Gviz"</span><span class="op">)</span></span>
-<span><span class="va">dTrack2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bgFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
+<span><span class="va">dTrack2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bgFile</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
 <span>                     chromosome <span class="op">=</span> <span class="st">"chr19"</span>, name <span class="op">=</span> <span class="st">"bedGraph"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">dTrack2</span><span class="op">)</span></span>
 <span><span class="co">## [1] "DataTrack"</span></span>
@@ -1208,7 +1208,7 @@ package for most of the file import operations, just as we do here in a
 more explicit way.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rtracklayer</span><span class="op">)</span></span>
-<span><span class="va">dTrack3</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bgFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
+<span><span class="va">dTrack3</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bgFile</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
 <span>                      chromosome <span class="op">=</span> <span class="st">"chr19"</span>, name <span class="op">=</span> <span class="st">"bedGraph"</span>,</span>
 <span>                      importFunction <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span><span class="op">)</span> <span class="fu">import</span><span class="op">(</span>con<span class="op">=</span><span class="va">file</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">dTrack2</span>, <span class="va">dTrack3</span><span class="op">)</span></span>
@@ -1230,7 +1230,7 @@ coverage at a given position only and to encode this in a single
 metadata column.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bamFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/test.bam"</span>, package <span class="op">=</span> <span class="st">"Gviz"</span><span class="op">)</span></span>
-<span><span class="va">dTrack4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
+<span><span class="va">dTrack4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, type <span class="op">=</span> <span class="st">"l"</span>, </span>
 <span>                     name <span class="op">=</span> <span class="st">"Coverage"</span>, window <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, </span>
 <span>                     chromosome <span class="op">=</span> <span class="st">"chr1"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">dTrack4</span><span class="op">)</span></span>
@@ -1268,7 +1268,7 @@ file by setting the <code>stream</code> argument to
 <code class="sourceCode R"><span><span class="va">myImportFun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file</span>, <span class="va">selection</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="co">## do something here</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span><span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, type <span class="op">=</span> <span class="st">"l"</span>,</span>
 <span>          name <span class="op">=</span> <span class="st">"Coverage"</span>, window <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, chromosome <span class="op">=</span> <span class="st">"chr1"</span>,</span>
 <span>          importFunction <span class="op">=</span> <span class="va">myImportFun</span>, stream <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1285,9 +1285,9 @@ To illustrate this let’s create a significantly bigger
 <code>DataTrack</code> than the one we used before, containing purely
 synthetic data for only a single sample.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">pi</span>, <span class="fl">10</span><span class="op">*</span><span class="va">pi</span>, len<span class="op">=</span><span class="fl">500</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># dat &lt;- sin(seq(pi, 10*pi, len=500))</span></span>
 <span><span class="va">dTrack.big</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DataTrack-class.html">DataTrack</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100000</span>, len <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">15</span>, </span>
-<span>                        chromosome <span class="op">=</span> <span class="st">"chrX"</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, </span>
+<span>                        chromosome <span class="op">=</span> <span class="st">"chrX"</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, </span>
 <span>                        name <span class="op">=</span> <span class="st">"sinus"</span>,</span>
 <span>                        data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">pi</span>, <span class="fl">5</span> <span class="op">*</span> <span class="va">pi</span>, len <span class="op">=</span> <span class="fl">500</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> </span>
 <span>                          <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span></span>
@@ -1801,7 +1801,7 @@ a look at a very simple track:</p>
 <span>                          chromosome <span class="op">=</span> <span class="st">"chrX"</span>, </span>
 <span>                          strand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"+"</span>, <span class="st">"*"</span>, <span class="st">"-"</span><span class="op">)</span>,</span>
 <span>                          id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Huey"</span>, <span class="st">"Dewey"</span>, <span class="st">"Louie"</span><span class="op">)</span>, </span>
-<span>                          genome <span class="op">=</span> <span class="st">"hg19"</span>, name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
+<span>                          genome <span class="op">=</span> <span class="st">"hg38"</span>, name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">aTrack</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/anntrack1-1.png"><!-- --></p>
 <p>The ranges are plotted as simple boxes if no strand information is
@@ -1835,7 +1835,7 @@ feature groups, and we can toggle on their printing by setting
 <span>                                              <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                                 group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Huey"</span>, <span class="st">"Dewey"</span>, <span class="st">"Louie"</span><span class="op">)</span>, </span>
 <span>                                             <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                                 genome <span class="op">=</span> <span class="st">"hg19"</span>, name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
+<span>                                 genome <span class="op">=</span> <span class="st">"hg38"</span>, name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">aTrack.groups</span>, groupAnnotation <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/anntrack4f-1.png"><!-- --></p>
 <p>We can control the placement of the group labels through the
@@ -1864,7 +1864,7 @@ exemplify this feature with a slightly modified
 <span>                                  strand <span class="op">=</span> <span class="st">"*"</span>,</span>
 <span>                                  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Huey"</span>, <span class="st">"Dewey"</span>, <span class="st">"Louie"</span><span class="op">)</span>, </span>
 <span>                                              <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                                  genome <span class="op">=</span> <span class="st">"hg19"</span>, name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
+<span>                                  genome <span class="op">=</span> <span class="st">"h38"</span>, name <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">aTrack.stacked</span>, groupAnnotation<span class="op">=</span><span class="st">"group"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/stacking1-1.png"><!-- --></p>
 <p>We now have our three annotation feature groups distributed over two
@@ -2033,7 +2033,7 @@ example. This time the default import function reads the coordinates of
 all the sequence alignments from the file and even knows how to deal
 with grouped elements.</p>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aTrack2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, </span>
+<code class="sourceCode R"><span><span class="va">aTrack2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, </span>
 <span>                           name <span class="op">=</span> <span class="st">"Reads"</span>, chromosome <span class="op">=</span> <span class="st">"chr1"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">aTrack2</span><span class="op">)</span></span>
 <span><span class="co">## [1] "ReferenceAnnotationTrack"</span></span>
@@ -2061,7 +2061,7 @@ values. For instance we can map the <code>id</code> column to the
 <code>group</code> attribute and thus suppress the grouping of sequence
 alignments that originate from the same sequencing read.</p>
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aTrack3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, </span>
+<code class="sourceCode R"><span><span class="va">aTrack3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">bamFile</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, </span>
 <span>                           name <span class="op">=</span> <span class="st">"Reads"</span>, chromosome <span class="op">=</span> <span class="st">"chr1"</span>, </span>
 <span>                           group <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span>
 <span><span class="va">aTrack3</span></span>
@@ -2316,7 +2316,7 @@ using the <code>transcriptAnnotation</code> and
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span>, transcriptAnnotation <span class="op">=</span> <span class="st">"transcript"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/generegtrack2bf-1.png"><!-- --></p>
 <div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span>, exonAnnotation <span class="op">=</span> <span class="st">"exon"</span>, extend.left <span class="op">=</span> <span class="op">-</span><span class="fl">0.8</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span>, exonAnnotation <span class="op">=</span> <span class="st">"exon"</span>, extend.left <span class="op">=</span> <span class="op">-</span><span class="fl">.98</span>, </span>
 <span>           fontcolor.exon <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/generegtrack2cf-1.png"><!-- --></p>
 <p>Since we have the gene and transcript level information as part of
@@ -2410,7 +2410,7 @@ information has to be added manually and the default value of the
 possible cases. It is up to the user to come up with a complete list of
 non-coding feature types depending on the source of the data.</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/GdObject-class.html">feature</a></span><span class="op">(</span><span class="va">txTr</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># feature(txTr) # TODO FIX</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">txTr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/generegtrack4f-1.png"><!-- --></p>
 <!--
@@ -2455,10 +2455,12 @@ by calling <code>seqlevelsStyle(edb) &lt;- "UCSC"</code> - or set
 <span><span class="va">edb</span> <span class="op">&lt;-</span> <span class="va">EnsDb.Hsapiens.v75</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqlevelsStyle.html" class="external-link">seqlevelsStyle</a></span><span class="op">(</span><span class="va">edb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"UCSC"</span></span>
 <span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>ucscChromosomeNames<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">eTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">edb</span>, chromosome <span class="op">=</span> <span class="st">"chr6"</span>, </span>
 <span>                          start <span class="op">=</span> <span class="fl">35000000</span>, end <span class="op">=</span> <span class="fl">40000000</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">eTrack</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">eTrack</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>ucscChromosomeNames<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co"># TODO FIX </span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="display-parameters-for-generegiontrack-objects">Display parameters for GeneRegionTrack objects<a class="anchor" aria-label="anchor" href="#display-parameters-for-generegiontrack-objects"></a>
@@ -2693,14 +2695,15 @@ will always link to the most recent version). To that end, the
 <code>biomart</code> parameter can be used to supply a
 <code>biomaRt</code> object. Please note that a data set has to be
 selected in that object. In the example code below, the older version of
-human genome assembly (hg19) and matching Biomart version are used.</p>
+human genome assembly (hg38) and matching Biomart version are used.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Huber-group-EMBL/biomaRt" class="external-link">biomaRt</a></span><span class="op">)</span></span>
-<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://huber-group-embl.github.io/biomaRt/reference/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"https://grch37.ensembl.org"</span>, </span>
-<span>              biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, </span>
-<span>              dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span></span>
-<span><span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, </span>
-<span>                                    start <span class="op">=</span> <span class="fl">20e6</span>, end <span class="op">=</span> <span class="fl">21e6</span>,</span>
+<span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://huber-group-embl.github.io/biomaRt/reference/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span></span>
+<span>  biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, </span>
+<span>  dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>chromosome <span class="op">=</span> <span class="st">"chr7"</span>, </span>
+<span>                                    start <span class="op">=</span> <span class="fl">20.75e6</span>, end <span class="op">=</span> <span class="fl">21e6</span>,</span>
 <span>                                    name <span class="op">=</span> <span class="st">"ENSEMBL"</span>, biomart <span class="op">=</span> <span class="va">bm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">biomTrack</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/BiomartGeneRegionTrackDo-1.png"><!-- --></p>
@@ -2731,10 +2734,11 @@ limit the returned gene models to RefSeq models only. Please see the
 documentation in the <em><a href="https://bioconductor.org/packages/3.23/biomaRt" class="external-link">biomaRt</a></em>
 package for details.</p>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://huber-group-embl.github.io/biomaRt/reference/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"https://grch37.ensembl.org"</span>, </span>
-<span>              biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, </span>
-<span>              dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span></span>
-<span><span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="va">chr</span>, </span>
+<code class="sourceCode R"><span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://huber-group-embl.github.io/biomaRt/reference/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span></span>
+<span>  biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>, </span>
+<span>  dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>chromosome <span class="op">=</span> <span class="va">chr</span>, </span>
 <span>                                    start <span class="op">=</span> <span class="fl">20e6</span>, end <span class="op">=</span> <span class="fl">21e6</span>,</span>
 <span>                                    name <span class="op">=</span> <span class="st">"ENSEMBL"</span>, </span>
 <span>                                    filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>with_refseq_mrna<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, </span>
@@ -2754,11 +2758,13 @@ constructor will also fetch models for other genes that overlap the same
 region. If that is not desired one needs to provide an explicit Biomart
 filter.</p>
 <div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://huber-group-embl.github.io/biomaRt/reference/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span>host <span class="op">=</span> <span class="st">"https://grch37.ensembl.org"</span>, </span>
-<span>              biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>,</span>
-<span>              dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span><span class="op">)</span></span>
-<span><span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, name <span class="op">=</span> <span class="st">"ENSEMBL"</span>, </span>
-<span>                                    symbol <span class="op">=</span> <span class="st">"ABCB5"</span>, biomart <span class="op">=</span> <span class="va">bm</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">bm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://huber-group-embl.github.io/biomaRt/reference/useEnsembl.html" class="external-link">useEnsembl</a></span><span class="op">(</span></span>
+<span>  biomart <span class="op">=</span> <span class="st">"ENSEMBL_MART_ENSEMBL"</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="st">"hsapiens_gene_ensembl"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">biomTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"ENSEMBL"</span>, </span>
+<span>                                    symbol <span class="op">=</span> <span class="st">"ABCB5"</span>, </span>
+<span>                                    biomart <span class="op">=</span> <span class="va">bm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">biomTrack</span>, transcriptAnnotation <span class="op">=</span> <span class="st">"symbol"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Gviz_files/figure-html/BiomartGeneRegionTrackSymbolDo-1.png"><!-- --></p>
 <!--
@@ -3042,7 +3048,7 @@ data matrix.</p>
 constructor, passing along the wrapper function and calling
 <code>plotTracks</code>.</p>
 <div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">deTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">probes</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, </span>
+<code class="sourceCode R"><span><span class="va">deTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnotationTrack-class.html">AnnotationTrack</a></span><span class="op">(</span>range <span class="op">=</span> <span class="va">probes</span>, genome <span class="op">=</span> <span class="st">"hg38"</span>, </span>
 <span>                           chromosome <span class="op">=</span> <span class="fl">7</span>, id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">methylation</span><span class="op">)</span>,</span>
 <span>                           name <span class="op">=</span> <span class="st">"probe details"</span>, stacking <span class="op">=</span> <span class="st">"squish"</span>,</span>
 <span>                           fun <span class="op">=</span> <span class="va">details</span><span class="op">)</span></span>
@@ -3224,23 +3230,23 @@ the <code>BSgenome</code> packages. There is not formal checking of the
 track’s genome, so it is up to the user to provide reasonable inputs to
 the class’ constructor. As with all the other track types, the
 constructor has the same name as the class. In this example we build a
-<code>SequenceTrack</code> from the human hg19 UCSC genome.</p>
+<code>SequenceTrack</code> from the human hg38 UCSC genome.</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg38</span><span class="op">)</span></span>
 <span><span class="va">sTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SequenceTrack-class.html">SequenceTrack</a></span><span class="op">(</span><span class="va">Hsapiens</span><span class="op">)</span></span>
 <span><span class="va">sTrack</span></span>
 <span><span class="co">## Sequence track 'SequenceTrack':</span></span>
-<span><span class="co">## | genome: hg19</span></span>
-<span><span class="co">## | chromosomes: 298</span></span>
-<span><span class="co">## | active chromosome: chr1 (249250621 nucleotides)</span></span>
+<span><span class="co">## | genome: hg38</span></span>
+<span><span class="co">## | chromosomes: 711</span></span>
+<span><span class="co">## | active chromosome: chr1 (248956422 nucleotides)</span></span>
 <span><span class="co">## Call seqnames() to list all available chromosomes</span></span>
 <span><span class="co">## Call chromosome()&lt;- to change the active chromosome</span></span>
 <span><span class="co">## Parent BSgenome object:</span></span>
 <span><span class="co">## | organism: Homo sapiens</span></span>
 <span><span class="co">## | provider: UCSC</span></span>
-<span><span class="co">## | provider version: hg19</span></span>
-<span><span class="co">## | release date: June 2013</span></span>
-<span><span class="co">## | package name: BSgenome.Hsapiens.UCSC.hg19</span></span></code></pre></div>
+<span><span class="co">## | provider version: hg38</span></span>
+<span><span class="co">## | release date: 2023/01/31</span></span>
+<span><span class="co">## | package name: BSgenome.Hsapiens.UCSC.hg38</span></span></code></pre></div>
 <p>Here we retain the same benefits as for regular <code>BSgenome</code>
 objects in that the actual sequence is only loaded into memory when a
 particular chromosome is first accessed. Plotting the track yields the
@@ -3413,7 +3419,7 @@ those. For all other file representations of alignments a user will have
 to provide their own import function, and this topic is further
 discussed in the class’ documentation. For this demonstration let’s use
 a small <code>BAM</code> file for which paired NGS reads have been
-mapped to an extract of the human hg19 genome. The data originate from
+mapped to an extract of the human hg38 genome. The data originate from
 an RNASeq experiment, and the alignments have been performed using the
 <code>STAR</code> aligner allowing for gaps. We also download some gene
 annotation data for that region from Biomart.</p>
@@ -3432,10 +3438,10 @@ argument explicitly if you know what type of data to expect.</p>
 <span><span class="va">alTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AlignmentsTrack-class.html">AlignmentsTrack</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"Gviz"</span>, <span class="st">"extdata"</span>, <span class="st">"gapped.bam"</span><span class="op">)</span>,</span>
 <span>  isPaired <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">bmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="st">"chr12"</span>,</span>
+<span><span class="va">bmt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></span><span class="op">(</span>chromosome <span class="op">=</span> <span class="st">"chr12"</span>,</span>
 <span>                              start <span class="op">=</span> <span class="va">afrom</span>, end <span class="op">=</span> <span class="va">ato</span>,</span>
-<span>                              filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>with_ox_refseq_mrna <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>                              stacking <span class="op">=</span> <span class="st">"dense"</span><span class="op">)</span></span></code></pre></div>
+<span>                              filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>with_refseq_mrna <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>                              stacking <span class="op">=</span> <span class="st">"dense"</span>, biomart <span class="op">=</span> <span class="va">bm</span><span class="op">)</span></span></code></pre></div>
 <p>We can create a first plot of our read alignments data from a birds
 eye perspective, say a range of 20,000 nucleotides.</p>
 <div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
@@ -3545,7 +3551,7 @@ later if found necessary.)</p>
 <p>To better show the features of the <code>AlignmentsTrack</code> for
 sequence variants we will load a different data set, this time from a
 whole genome DNASeq SNP calling experiment. Again the reference genome
-is hg19 and the alignments have been performed using
+is hg38 and the alignments have been performed using
 <code>Bowtie2</code>.</p>
 <div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">afrom</span> <span class="op">&lt;-</span> <span class="fl">44945200</span></span>
@@ -4554,71 +4560,73 @@ directory as the original <code>BAM</code> file.</td>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] lattice_0.22-9                    biomaRt_2.68.0                   </span></span>
 <span><span class="co">##  [3] GenomicFeatures_1.64.0            AnnotationDbi_1.74.0             </span></span>
-<span><span class="co">##  [5] Biobase_2.72.0                    BSgenome.Hsapiens.UCSC.hg19_1.4.3</span></span>
+<span><span class="co">##  [5] Biobase_2.72.0                    BSgenome.Hsapiens.UCSC.hg38_1.4.5</span></span>
 <span><span class="co">##  [7] BSgenome_1.80.0                   rtracklayer_1.72.0               </span></span>
 <span><span class="co">##  [9] BiocIO_1.22.0                     Biostrings_2.80.1                </span></span>
-<span><span class="co">## [11] XVector_0.52.0                    Gviz_1.57.2                      </span></span>
-<span><span class="co">## [13] GenomicRanges_1.64.0              Seqinfo_1.2.0                    </span></span>
-<span><span class="co">## [15] IRanges_2.46.0                    S4Vectors_0.50.1                 </span></span>
-<span><span class="co">## [17] BiocGenerics_0.58.1               generics_0.1.4                   </span></span>
-<span><span class="co">## [19] knitr_1.51                        BiocStyle_2.40.0                 </span></span>
+<span><span class="co">## [11] XVector_0.52.0                    GenomeInfoDb_1.48.0              </span></span>
+<span><span class="co">## [13] Gviz_1.57.2                       GenomicRanges_1.64.0             </span></span>
+<span><span class="co">## [15] Seqinfo_1.2.0                     IRanges_2.46.0                   </span></span>
+<span><span class="co">## [17] S4Vectors_0.50.1                  BiocGenerics_0.58.1              </span></span>
+<span><span class="co">## [19] generics_0.1.4                    knitr_1.51                       </span></span>
+<span><span class="co">## [21] BiocStyle_2.40.0                 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##   [1] DBI_1.3.0                   bitops_1.0-9               </span></span>
-<span><span class="co">##   [3] deldir_2.0-4                gridExtra_2.3.1            </span></span>
-<span><span class="co">##   [5] httr2_1.3.0                 rlang_1.3.0                </span></span>
-<span><span class="co">##   [7] magrittr_2.0.5              biovizBase_1.60.0          </span></span>
-<span><span class="co">##   [9] otel_0.2.0                  matrixStats_1.5.0          </span></span>
-<span><span class="co">##  [11] compiler_4.6.1              RSQLite_3.53.3             </span></span>
-<span><span class="co">##  [13] png_0.1-9                   systemfonts_1.3.2          </span></span>
-<span><span class="co">##  [15] vctrs_0.7.3                 ProtGenerics_1.44.0        </span></span>
-<span><span class="co">##  [17] stringr_1.6.0               pkgconfig_2.0.3            </span></span>
-<span><span class="co">##  [19] crayon_1.5.3                fastmap_1.2.0              </span></span>
-<span><span class="co">##  [21] backports_1.5.1             dbplyr_2.6.0               </span></span>
-<span><span class="co">##  [23] Rsamtools_2.28.0            rmarkdown_2.31             </span></span>
-<span><span class="co">##  [25] UCSC.utils_1.8.0            ragg_1.5.2                 </span></span>
-<span><span class="co">##  [27] bit_4.6.0                   xfun_0.60                  </span></span>
-<span><span class="co">##  [29] cachem_1.1.0                cigarillo_1.2.1            </span></span>
-<span><span class="co">##  [31] GenomeInfoDb_1.48.0         jsonlite_2.0.0             </span></span>
-<span><span class="co">##  [33] progress_1.2.3              blob_1.3.0                 </span></span>
-<span><span class="co">##  [35] DelayedArray_0.38.2         BiocParallel_1.46.0        </span></span>
-<span><span class="co">##  [37] jpeg_0.1-11                 parallel_4.6.1             </span></span>
-<span><span class="co">##  [39] prettyunits_1.2.0           cluster_2.1.8.2            </span></span>
-<span><span class="co">##  [41] VariantAnnotation_1.58.0    R6_2.6.1                   </span></span>
-<span><span class="co">##  [43] bslib_0.11.0                stringi_1.8.7              </span></span>
-<span><span class="co">##  [45] RColorBrewer_1.1-3          rpart_4.1.27               </span></span>
-<span><span class="co">##  [47] jquerylib_0.1.4             Rcpp_1.1.2                 </span></span>
-<span><span class="co">##  [49] bookdown_0.47               SummarizedExperiment_1.42.0</span></span>
-<span><span class="co">##  [51] base64enc_0.1-6             Matrix_1.7-6               </span></span>
-<span><span class="co">##  [53] nnet_7.3-20                 tidyselect_1.2.1           </span></span>
-<span><span class="co">##  [55] rstudioapi_0.19.0           dichromat_2.0-1            </span></span>
-<span><span class="co">##  [57] abind_1.4-8                 yaml_2.3.12                </span></span>
-<span><span class="co">##  [59] codetools_0.2-20            curl_7.1.0                 </span></span>
-<span><span class="co">##  [61] tibble_3.3.1                KEGGREST_1.52.2            </span></span>
-<span><span class="co">##  [63] S7_0.2.2                    evaluate_1.0.5             </span></span>
-<span><span class="co">##  [65] foreign_0.8-91              desc_1.4.3                 </span></span>
-<span><span class="co">##  [67] BiocFileCache_3.2.0         pillar_1.11.1              </span></span>
-<span><span class="co">##  [69] BiocManager_1.30.27         filelock_1.0.3             </span></span>
-<span><span class="co">##  [71] MatrixGenerics_1.24.0       checkmate_2.3.4            </span></span>
-<span><span class="co">##  [73] RCurl_1.98-1.19             ensembldb_2.36.1           </span></span>
-<span><span class="co">##  [75] hms_1.1.4                   ggplot2_4.0.3              </span></span>
-<span><span class="co">##  [77] scales_1.4.0                glue_1.8.1                 </span></span>
-<span><span class="co">##  [79] lazyeval_0.2.3              Hmisc_5.2-6                </span></span>
-<span><span class="co">##  [81] tools_4.6.1                 interp_1.1-6               </span></span>
-<span><span class="co">##  [83] data.table_1.18.4           GenomicAlignments_1.48.0   </span></span>
-<span><span class="co">##  [85] fs_2.1.0                    XML_3.99-0.23              </span></span>
-<span><span class="co">##  [87] latticeExtra_0.6-31         colorspace_2.1-3           </span></span>
-<span><span class="co">##  [89] htmlTable_2.5.0             restfulr_0.0.17            </span></span>
-<span><span class="co">##  [91] Formula_1.2-5               cli_3.6.6                  </span></span>
-<span><span class="co">##  [93] textshaping_1.0.5           S4Arrays_1.12.0            </span></span>
-<span><span class="co">##  [95] dplyr_1.2.1                 AnnotationFilter_1.36.0    </span></span>
-<span><span class="co">##  [97] gtable_0.3.6                sass_0.4.10                </span></span>
-<span><span class="co">##  [99] digest_0.6.39               SparseArray_1.12.2         </span></span>
-<span><span class="co">## [101] rjson_0.2.23                htmlwidgets_1.6.4          </span></span>
-<span><span class="co">## [103] farver_2.1.2                memoise_2.0.1              </span></span>
-<span><span class="co">## [105] htmltools_0.5.9             pkgdown_2.2.1              </span></span>
-<span><span class="co">## [107] lifecycle_1.0.5             httr_1.4.8                 </span></span>
-<span><span class="co">## [109] bit64_4.8.2</span></span></code></pre></div>
+<span><span class="co">##   [1] RColorBrewer_1.1-3          rstudioapi_0.19.0          </span></span>
+<span><span class="co">##   [3] jsonlite_2.0.0              magrittr_2.0.5             </span></span>
+<span><span class="co">##   [5] farver_2.1.2                rmarkdown_2.31             </span></span>
+<span><span class="co">##   [7] fs_2.1.0                    ragg_1.5.2                 </span></span>
+<span><span class="co">##   [9] vctrs_0.7.3                 memoise_2.0.1              </span></span>
+<span><span class="co">##  [11] Rsamtools_2.28.0            RCurl_1.98-1.19            </span></span>
+<span><span class="co">##  [13] base64enc_0.1-6             htmltools_0.5.9            </span></span>
+<span><span class="co">##  [15] S4Arrays_1.12.0             progress_1.2.3             </span></span>
+<span><span class="co">##  [17] curl_7.1.0                  SparseArray_1.12.2         </span></span>
+<span><span class="co">##  [19] Formula_1.2-5               sass_0.4.10                </span></span>
+<span><span class="co">##  [21] bslib_0.11.0                htmlwidgets_1.6.4          </span></span>
+<span><span class="co">##  [23] desc_1.4.3                  httr2_1.3.0                </span></span>
+<span><span class="co">##  [25] cachem_1.1.0                GenomicAlignments_1.48.0   </span></span>
+<span><span class="co">##  [27] lifecycle_1.0.5             pkgconfig_2.0.3            </span></span>
+<span><span class="co">##  [29] Matrix_1.7-6                R6_2.6.1                   </span></span>
+<span><span class="co">##  [31] fastmap_1.2.0               MatrixGenerics_1.24.0      </span></span>
+<span><span class="co">##  [33] digest_0.6.39               colorspace_2.1-3           </span></span>
+<span><span class="co">##  [35] textshaping_1.0.5           Hmisc_5.2-6                </span></span>
+<span><span class="co">##  [37] RSQLite_3.53.3              filelock_1.0.3             </span></span>
+<span><span class="co">##  [39] httr_1.4.8                  abind_1.4-8                </span></span>
+<span><span class="co">##  [41] compiler_4.6.1              bit64_4.8.2                </span></span>
+<span><span class="co">##  [43] withr_3.0.3                 htmlTable_2.5.0            </span></span>
+<span><span class="co">##  [45] S7_0.2.2                    backports_1.5.1            </span></span>
+<span><span class="co">##  [47] BiocParallel_1.46.0         DBI_1.3.0                  </span></span>
+<span><span class="co">##  [49] DelayedArray_0.38.2         rjson_0.2.23               </span></span>
+<span><span class="co">##  [51] tools_4.6.1                 foreign_0.8-91             </span></span>
+<span><span class="co">##  [53] otel_0.2.0                  nnet_7.3-20                </span></span>
+<span><span class="co">##  [55] glue_1.8.1                  restfulr_0.0.17            </span></span>
+<span><span class="co">##  [57] checkmate_2.3.4             cluster_2.1.8.3            </span></span>
+<span><span class="co">##  [59] gtable_0.3.6                ensembldb_2.36.1           </span></span>
+<span><span class="co">##  [61] data.table_1.18.4           hms_1.1.4                  </span></span>
+<span><span class="co">##  [63] xml2_1.6.0                  pillar_1.11.1              </span></span>
+<span><span class="co">##  [65] stringr_1.6.0               dplyr_1.2.1                </span></span>
+<span><span class="co">##  [67] BiocFileCache_3.2.0         bit_4.6.0                  </span></span>
+<span><span class="co">##  [69] deldir_2.0-4                biovizBase_1.60.0          </span></span>
+<span><span class="co">##  [71] tidyselect_1.2.1            gridExtra_2.3.1            </span></span>
+<span><span class="co">##  [73] bookdown_0.47               ProtGenerics_1.44.0        </span></span>
+<span><span class="co">##  [75] SummarizedExperiment_1.42.0 xfun_0.60                  </span></span>
+<span><span class="co">##  [77] matrixStats_1.5.0           stringi_1.8.7              </span></span>
+<span><span class="co">##  [79] UCSC.utils_1.8.0            lazyeval_0.2.3             </span></span>
+<span><span class="co">##  [81] yaml_2.3.12                 evaluate_1.0.5             </span></span>
+<span><span class="co">##  [83] codetools_0.2-20            cigarillo_1.2.1            </span></span>
+<span><span class="co">##  [85] interp_1.1-6                tibble_3.3.1               </span></span>
+<span><span class="co">##  [87] BiocManager_1.30.27         cli_3.6.6                  </span></span>
+<span><span class="co">##  [89] rpart_4.1.27                systemfonts_1.3.2          </span></span>
+<span><span class="co">##  [91] jquerylib_0.1.4             dichromat_2.0-1            </span></span>
+<span><span class="co">##  [93] Rcpp_1.1.2                  dbplyr_2.6.0               </span></span>
+<span><span class="co">##  [95] png_0.1-9                   XML_3.99-0.23              </span></span>
+<span><span class="co">##  [97] parallel_4.6.1              pkgdown_2.2.1              </span></span>
+<span><span class="co">##  [99] ggplot2_4.0.3               blob_1.3.0                 </span></span>
+<span><span class="co">## [101] prettyunits_1.2.0           latticeExtra_0.6-31        </span></span>
+<span><span class="co">## [103] jpeg_0.1-11                 AnnotationFilter_1.36.0    </span></span>
+<span><span class="co">## [105] bitops_1.1-0                VariantAnnotation_1.58.0   </span></span>
+<span><span class="co">## [107] scales_1.4.0                purrr_1.2.2                </span></span>
+<span><span class="co">## [109] crayon_1.5.3                rlang_1.3.0                </span></span>
+<span><span class="co">## [111] KEGGREST_1.52.2</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
