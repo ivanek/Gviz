@@ -1,0 +1,221 @@
+name	description	organism	scientificName	sourceName	taxId	orderKey
+anoGam3	Oct. 2006 (AgamP3/anoGam3)	A. gambiae	Anopheles gambiae	The International Consortium for the Sequencing of Anopheles Genome	180454	1009
+anoGam1	Feb. 2003 (IAGEC MOZ2/anoGam1)	A. gambiae	Anopheles gambiae	IAGEC v.MOZ2	7165	1010
+apiMel2	Jan. 2005 (Baylor 2.0/apiMel2)	A. mellifera	Apis mellifera	Baylor HGSC Amel_2.0	7460	1052
+apiMel1	July 2004 (Baylor 1.2/apiMel1)	A. mellifera	Apis mellifera	Baylor HGSC Amel_1.2	7460	1053
+xenLae2	Aug. 2016 (Xenopus_laevis_v2/xenLae2)	African clawed frog	Xenopus laevis	International Xenopus Sequencing Consortium	8355	1225
+vicPac2	Mar. 2013 (Vicugna_pacos-2.0.1/vicPac2)	Alpaca	Vicugna pacos	Broad Institute	30538	1350
+vicPac1	Jul. 2008 (Broad/vicPac1)	Alpaca	Vicugna pacos	Broad Institute vicPac1	30538	1351
+allMis1	Aug. 2012 (allMis0.2/allMis1)	American alligator	Alligator mississippiensis	International Crocodilian Genomes Working Group	8496	1425
+dasNov3	Dec. 2011 (Baylor/dasNov3)	Armadillo	Dasypus novemcinctus	Baylor College of Medicine Dasnov3.0 (GCA_000208655.2)	9361	1725
+gadMor1	May 2010 (Genofisk GadMor_May2010/gadMor1)	Atlantic cod	Gadus morhua	Genofisk GadMor_May2010 (GCA_000231765.1)	8049	1840
+papAnu4	Apr. 2017 (Panu_3.0/papAnu4)	Baboon	Papio anubis	Human Genome Sequencing Center	9555	2048
+papAnu2	Mar. 2012 (Baylor Panu_2.0/papAnu2)	Baboon	Papio anubis	Baylor College of Medicine	9555	2050
+papHam1	Nov. 2008 (Baylor Pham_1.0/papHam1)	Baboon	Papio hamadryas	Baylor BCM HGSC Pham_1.0	9562	2051
+bisBis1	Oct. 2014 (Bison_UMD1.0/bisBis1)	Bison	Bison bison bison	U. Maryland	43346	2325
+panPan3	May 2020 (Mhudiblu_PPA_v0/panPan3)	Bonobo	Pan paniscus	University of Washington	9597	2623
+panPan2	Aug. 2015 (MPI-EVA panpan1.1/panPan2)	Bonobo	Pan paniscus	Max-Planck Institute for Evolutionary Anthropology	9597	2624
+panPan1	May 2012 (Max-Planck/panPan1)	Bonobo	Pan paniscus	Max-Planck Institute panpan1 (GCA_000258655.1)	9597	2625
+aptMan1	Jun. 2015 (MPI-EVA AptMant0/aptMan1)	Brown kiwi	Apteryx australis	Max-Plank Institute for Evolutionary Anthropology AptMant0	202946	2715
+melUnd1	Sep. 2011 (WUSTL v6.3/melUnd1)	Budgerigar	Melopsittacus undulatus	WUSTL Melopsittacus undulatus Budgerigar Version 6.3 (GCA_000238935.1)	13146	2905
+otoGar3	Mar. 2011 (Broad/otoGar3)	Bushbaby	Otolemur garnettii	Broad Institute (GCA_000181295.3)	30611	2940
+caePb2	Feb. 2008 (WUGSC 6.0.1/caePb2)	C. brenneri	Caenorhabditis brenneri	Washington University School of Medicine GSC Caenorhabditis brenneri (PB2801) 6.0.1	135651	3011
+caePb1	Jan. 2007 (WUGSC 4.0/caePb1)	C. brenneri	Caenorhabditis brenneri	Washington University School of Medicine GSC Caenorhabditis n. sp. PB2801	135651	3012
+cb3	Jan. 2007 (WUGSC 1.0/cb3)	C. briggsae	Caenorhabditis briggsae	Washington University School of Medicine GSC and Sanger Institute cb3	6238	3016
+cb1	July 2002 (WormBase cb25.agp8/cb1)	C. briggsae	Caenorhabditis briggsae	WormBase v. cb25.agp8	6238	3018
+ce11	Feb. 2013 (WBcel235/ce11)	C. elegans	Caenorhabditis elegans	C. elegans Sequencing Consortium WBcel235 (GCA_000002985.3)	6239	3024
+ce10	Oct. 2010 (WS220/ce10)	C. elegans	Caenorhabditis elegans	Washington University School of Medicine GSC and Sanger Institute WS220	6239	3025
+ce6	May 2008 (WS190/ce6)	C. elegans	Caenorhabditis elegans	Washington University School of Medicine GSC and Sanger Institute WS190	6239	3029
+ce4	Jan. 2007 (WS170/ce4)	C. elegans	Caenorhabditis elegans	Washington University School of Medicine GSC and Sanger Institute WS170	6239	3031
+ce2	Mar. 2004 (WS120/ce2)	C. elegans	Caenorhabditis elegans	WormBase v. WS120	6239	3033
+ci3	Apr. 2011 (Kyoto KH/ci3)	C. intestinalis	Ciona intestinalis	Kyoto KH	7719	3044
+ci2	Mar. 2005 (JGI 2.1/ci2)	C. intestinalis	Ciona intestinalis	JGI v2.0	7719	3045
+ci1	Dec. 2002 (JGI 1.0/ci1)	C. intestinalis	Ciona intestinalis	JGI v1.0	7719	3046
+caeJap1	Mar. 2008 (WUGSC 3.0.2/caeJap1)	C. japonica	Caenorhabditis japonica	Washington University School of Medicine GSC C. remanei 3.0.2	281687	3058
+caeRem3	May 2007 (WUGSC 15.0.1/caeRem3)	C. remanei	Caenorhabditis remanei	Washington University School of Medicine GSC C. remanei 15.0.1	31234	3066
+caeRem2	Mar. 2006 (WUGSC 1.0/caeRem2)	C. remanei	Caenorhabditis remanei	Washington University School of Medicine GSC C. remanei 1.0	31234	3067
+felCat9	Nov. 2017 (Felis_catus_9.0/felCat9)	Cat	Felis catus	Genome Sequencing Center (GSC) at Washington University (WashU) School of Medicine	9685	3239
+felCat8	Nov. 2014 (ICGSC Felis_catus_8.0/felCat8)	Cat	Felis catus	International Cat Genome Sequencing Consortium	9685	3240
+felCat5	Sep. 2011 (ICGSC Felis_catus 6.2/felCat5)	Cat	Felis catus	International Cat Genome Sequencing Consortium Felis_catus-6.2 (NCBI project 16726, accession AANG00000000.2, GCA_000181335.2)	9685	3241
+felCat4	Dec. 2008 (NHGRI/GTB V17e/felCat4)	Cat	Felis catus	NHGRI/Genome Technology Branch (NCBI project 10703, accession ACBE0100000)	9685	3242
+felCat3	Mar. 2006 (Broad/felCat3)	Cat	Felis catus	Broad Release 3	9685	3243
+galGal6	Mar. 2018 (GRCg6a/galGal6)	Chicken	Gallus gallus	Genome Reference Consortium	9031	3313
+galGal5	Dec 2015 (Gallus_gallus-5.0/galGal5)	Chicken	Gallus gallus	ICGC Gallus_gallus-5.0 (GCA_000002315.3)	9031	3314
+galGal4	Nov. 2011 (ICGSC Gallus_gallus-4.0/galGal4)	Chicken	Gallus gallus	ICGSC Gallus_gallus-4.0 (GCA_000002315.2)	9031	3315
+galGal3	May 2006 (WUGSC 2.1/galGal3)	Chicken	Gallus gallus	Chicken Genome Sequencing Consortium May 2006 release	9031	3316
+galGal2	Feb. 2004 (WUGSC 1.0/galGal2)	Chicken	Gallus gallus	Chicken Genome Sequencing Consortium Feb. 2004 release	9031	3317
+panTro6	Jan. 2018 (Clint_PTRv2/panTro6)	Chimp	Pan troglodytes	University of Washington	9598	3325
+panTro5	May 2016 (Pan_tro 3.0/panTro5)	Chimp	Pan troglodytes	Chimpanzee Sequencing and Analysis Consortium	9598	3326
+panTro4	Feb. 2011 (CSAC 2.1.4/panTro4)	Chimp	Pan troglodytes	CSAC Pan_troglodytes-2.1.4 (GCA_000001515.4)	9598	3327
+panTro3	Oct. 2010 (CGSC 2.1.3/panTro3)	Chimp	Pan troglodytes	CGSC 2.1.3 (GCA_000001515.3)	9598	3328
+panTro2	Mar. 2006 (CGSC 2.1/panTro2)	Chimp	Pan troglodytes	Washington University Build 2 Version 1	9598	3329
+panTro1	Nov. 2003 (CGSC 1.1/panTro1)	Chimp	Pan troglodytes	CGSC Build 1 Version 1 Arachne assembly	9598	3330
+criGriChoV2	Jun. 2017 (CHOK1S_HZDv1/criGriChoV2)	Chinese hamster	Cricetulus griseus	Eagle Genomics Ltd	10029	3348
+criGriChoV1	Aug. 2011 (CHO K1 cell line/criGriChoV1)	Chinese hamster	Cricetulus griseus	Beijing Genomics Institute	10029	3349
+criGri1	Jul. 2013 (C_griseus_v1.0/criGri1)	Chinese hamster	Cricetulus griseus	Beijing Genomics Institution-Shenzhen	10029	3350
+manPen1	Aug 2014 (M_pentadactyla-1.1.1/manPen1)	Chinese pangolin	Manis pentadactyla	Washington University (WashU) GCA_000738955.1	143292	3355
+latCha1	Aug. 2011 (Broad/latCha1)	Coelacanth	Latimeria chalumnae	Broad LatCha1 (GCA_000225785.1)	7897	3610
+bosTau9	Apr. 2018 (ARS-UCD1.2/bosTau9)	Cow	Bos taurus	USDA ARS	9913	3626
+bosTau8	Jun. 2014 (Bos_taurus_UMD_3.1.1/bosTau8)	Cow	Bos taurus	University of Maryland Bos_taurus_UMD_3.1.1	9913	3627
+bosTau7	Oct. 2011 (Baylor Btau_4.6.1/bosTau7)	Cow	Bos taurus	Btau_4.6.1 (NCBI project 12555, accession GCA_000003205.4)	9913	3628
+bosTau6	Nov. 2009 (Bos_taurus_UMD_3.1/bosTau6)	Cow	Bos taurus	UMD_3.1 (NCBI project 10708, accession GCA_000003055.3)	9913	3629
+bosTau4	Oct. 2007 (Baylor 4.0/bosTau4)	Cow	Bos taurus	Baylor Release 4.0	9913	3632
+bosTau3	Aug. 2006 (Baylor 3.1/bosTau3)	Cow	Bos taurus	Baylor Release 3.1	9913	3633
+bosTau2	Mar. 2005 (Baylor 2.0/bosTau2)	Cow	Bos taurus	Baylor Btau_2.0	9913	3634
+macFas5	Jun. 2013 (Macaca_fascicularis_5.0/macFas5)	Crab-eating macaque	Macaca fascicularis	Washington University (WashU) GCA_000364345.1	9541	3705
+droAna2	Aug. 2005 (Agencourt prelim/droAna2)	D. ananassae	Drosophila ananassae	Agencourt 1 August 2005	7217	4014
+droAna1	July 2004 (TIGR/droAna1)	D. ananassae	Drosophila ananassae	TIGR 15 July 2004	7217	4015
+droEre1	Aug. 2005 (Agencourt prelim/droEre1)	D. erecta	Drosophila erecta	Agencourt 1 Aug 2005	7220	4035
+droGri1	Aug. 2005 (Agencourt prelim/droGri1)	D. grimshawi	Drosophila grimshawi	Agencourt 1 Aug 2005	7222	4050
+dm6	Aug. 2014 (BDGP Release 6 + ISO1 MT/dm6)	D. melanogaster	Drosophila melanogaster	The FlyBase Consortium/Berkeley Drosophila Genome Project/Celera Genomics (GCA_000001215.4)	7227	4067
+dm3	Apr. 2006 (BDGP R5/dm3)	D. melanogaster	Drosophila melanogaster	BDGP Release 5	7227	4068
+dm2	Apr. 2004 (BDGP R4/dm2)	D. melanogaster	Drosophila melanogaster	BDGP v. 4 / DHGP v. 3.2	7227	4069
+dm1	Jan. 2003 (BDGP R3/dm1)	D. melanogaster	Drosophila melanogaster	BDGP v. 3	7227	4070
+droMoj2	Aug. 2005 (Agencourt prelim/droMoj2)	D. mojavensis	Drosophila mojavensis	Agencourt 1 August 2005	7230	4079
+droMoj1	Aug. 2004 (Agencourt prelim/droMoj1)	D. mojavensis	Drosophila mojavensis	Agencourt 11 Aug 2004	7230	4080
+droPer1	Oct. 2005 (Broad/droPer1)	D. persimilis	Drosophila persimilis	Broad 28 Oct. 2005	7234	4085
+dp3	Nov. 2004 (FlyBase 1.03/dp3)	D. pseudoobscura	Drosophila pseudoobscura	FlyBase Release 1.03	7237	4094
+dp2	Aug. 2003 (Baylor freeze1/dp2)	D. pseudoobscura	Drosophila pseudoobscura	Baylor HGSC Freeze 1	7237	4095
+droSec1	Oct. 2005 (Broad/droSec1)	D. sechellia	Drosophila sechellia	Broad 28 Oct. 2005	7238	4105
+droSim1	Apr. 2005 (WUGSC mosaic 1.0/droSim1)	D. simulans	Drosophila simulans	WUSTL version 1.0	7240	4110
+droVir2	Aug. 2005 (Agencourt prelim/droVir2)	D. virilis	Drosophila virilis	Agencourt 1 August 2005	7244	4124
+droVir1	July 2004 (Agencourt prelim/droVir1)	D. virilis	Drosophila virilis	Agencourt 12 July 2004	7244	4125
+droYak2	Nov. 2005 (WUGSC 7.1/droYak2)	D. yakuba	Drosophila yakuba	WUSTL version 2.0	7245	4134
+droYak1	Apr. 2004 (WUGSC 1.0/droYak1)	D. yakuba	Drosophila yakuba	WUSTL version 1.0	7245	4135
+canFam6	Oct. 2020 (Dog10K_Boxer_Tasha/canFam6)	Dog	Canis lupus familiaris	Dog Genome Sequencing Consortium	9615	4660
+canFam5	May 2019 (UMICH_Zoey_3.1/canFam5)	Dog	Canis lupus familiaris	University of Michigan	9615	4661
+canFam4	Mar. 2020 (UU_Cfam_GSD_1.0/canFam4)	Dog	Canis lupus familiaris	Uppsala University	9615	4662
+canFam3	Sep. 2011 (Broad CanFam3.1/canFam3)	Dog	Canis lupus familiaris	Broad CanFam3.1 (GCA_000002285.2)	9615	4663
+canFam2	May 2005 (Broad/canFam2)	Dog	Canis lupus familiaris	Broad Institute v. 2.0	9615	4664
+canFam1	July 2004 (Broad/canFam1)	Dog	Canis lupus familiaris	Broad Institute v. 1.0	9615	4665
+turTru2	Oct. 2011 (Baylor Ttru_1.4/turTru2)	Dolphin	Tursiops truncatus	Baylor College of Medicine Ttru_1.4 (NCBI project 20365, GCA_000151865.2, WGS ABRN02)	9739	4674
+eboVir3	Sierra Leone 2014 (G3683/KM034562.1/eboVir3)	Ebola virus	Filoviridae ebolavirus	West Africa 01 June 2014 EBOV/G3683/KM034562.1	186538	5058
+loxAfr3	Jul. 2009 (Broad/loxAfr3)	Elephant	Loxodonta africana	Broad Institute loxAfr3 (NCBI project 12569, AAGU03000000)	9785	5518
+calMil1	Dec. 2013 (Callorhinchus_milii-6.1.3/calMil1)	Elephant shark	Callorhinchus milii	Institute of Molecular and Cell Biology, Singapore	7868	5525
+musFur1	Apr. 2011 (MusPutFur1.0/musFur1)	Ferret 	Mustela putorius furo	Ferret Genome Sequencing Consortium	9669	6315
+fr3	Oct. 2011 (FUGU5/fr3)	Fugu	Takifugu rubripes	Fugu Genome Sequencing Consortium - FUGU5 (NCBI project 1434, GCA_000180615.2)	31033	6863
+fr2	Oct. 2004 (JGI 4.0/fr2)	Fugu	Takifugu rubripes	JGI V4.0	31033	6864
+fr1	Aug. 2002 (JGI 3.0/fr1)	Fugu	Takifugu rubripes	JGI V3.0	31033	6865
+thaSir1	Jun. 2015 (Thamnophis_sirtalis-6.0/thaSir1)	Garter snake	Thamnophis sirtalis	The Genome Institute at Washington University School of Medicine (WUGSC)	35019	7000
+nomLeu3	Oct. 2012 (GGSC Nleu3.0/nomLeu3)	Gibbon	Nomascus leucogenys	Gibbon Genome Sequencing Consortium 	61853	7413
+nomLeu2	Jun. 2011 (GGSC Nleu1.1/nomLeu2)	Gibbon	Nomascus leucogenys	Gibbon Genome Sequencing Consortium Nleu1.1 (NCBI project 13975, GCA_000146795.2, WGS ADFV01)	61853	7414
+nomLeu1	Jan. 2010 (GGSC Nleu1.0/nomLeu1)	Gibbon	Nomascus leucogenys	GGSC (NCBI project 13975, accession GCA_000146795.1)	61853	7415
+aquChr2	Oct. 2014 (aquChr-1.0.2/aquChr2)	Golden eagle	Aquila chrysaetos canadensis	WashU	216574	7664
+rhiRox1	Oct. 2014 (Rrox_v1/rhiRox1)	Golden snub-nosed monkey	Rhinopithecus roxellana	Novogene	61622	7673
+gorGor6	Aug. 2019 (Kamilah_GGO_v0/gorGor6)	Gorilla	Gorilla gorilla gorilla	University of Washington	9595	7680
+gorGor5	Mar. 2016 (GSMRT3/gorGor5)	Gorilla	Gorilla gorilla gorilla	UNIVERSITY OF WASHINGTON	9595	7681
+gorGor4	Dec 2014 (gorGor4.1/gorGor4)	Gorilla	Gorilla gorilla gorilla	Wellcome Trust Sanger Institute Dec 2014 (NCBI project 31265, GCA_000151905.1)	9595	7682
+gorGor3	May 2011 (gorGor3.1/gorGor3)	Gorilla	Gorilla gorilla gorilla	Wellcome Trust Sanger Institute May 2011 (NCBI project 31265, GCA_000151905.1)	9595	7683
+chlSab2	Mar. 2014 (Chlorocebus_sabeus 1.1/chlSab2)	Green monkey	Chlorocebus sabaeus	Vervet Genomics Consortium GCA_000409795.2	60711	7779
+cavPor3	Feb. 2008 (Broad/cavPor3)	Guinea pig	Cavia porcellus	Broad Institute cavPor3	10141	7859
+neoSch1	Jun. 2017 (ASM220157v1/neoSch1)	Hawaiian monk seal	Neomonachus schauinslandi	Johns Hopkins University	29088	8055
+eriEur2	May 2012 (EriEur2.0/eriEur2)	Hedgehog	Erinaceus europaeus	Broad Institute EriEur2.0	9365	8314
+eriEur1	June 2006 (Broad/eriEur1)	Hedgehog	Erinaceus europaeus	Broad Institute eriEur1 (Draft_v1, NCBI project 12575)	9365	8315
+equCab3	Jan. 2018 (EquCab3.0/equCab3)	Horse	Equus caballus	University of Louisville	9796	8683
+equCab2	Sep. 2007 (Broad/equCab2)	Horse	Equus caballus	Broad Institute EquCab2	9796	8684
+equCab1	Jan. 2007 (Broad/equCab1)	Horse	Equus caballus	Broad Institute equCab1 (1.0)	9796	8685
+hs1	Jan. 2022 (T2T CHM13v2.0/hs1)	Human	Homo sapiens	Telomere to telomere (T2T) assembly of haploid CHM13 + chrY (GCA_009914755.4)	9606	45
+hg38	Dec. 2013 (GRCh38/hg38)	Human	Homo sapiens	GRCh38 Genome Reference Consortium Human Reference 38 (GCA_000001405.15)	9606	50
+hg19	Feb. 2009 (GRCh37/hg19)	Human	Homo sapiens	GRCh37 Genome Reference Consortium Human Reference 37 (GCA_000001405.1)	9606	60
+hg18	Mar. 2006 (NCBI36/hg18)	Human	Homo sapiens	NCBI Build 36.1	9606	70
+hg17	May 2004 (NCBI35/hg17)	Human	Homo sapiens	NCBI Build 35	9606	80
+hg16	July 2003 (NCBI34/hg16)	Human	Homo sapiens	NCBI Build 34	9606	90
+dipOrd1	Jul. 2008 (Broad/dipOrd1)	Kangaroo rat	Dipodomys ordii	Broad Institute dipOrd1 (NCBI project 20385, ABRO01000000)	10020	11010
+petMar3	Dec. 2017 (Pmar_germline 1.0/petMar3)	Lamprey	Petromyzon marinus	University of Kentucky	7757	12018
+petMar2	Sep. 2010 (WUGSC 7.0/petMar2)	Lamprey	Petromyzon marinus	GSC Washington University School of Medicine	7757	12019
+petMar1	Mar. 2007 (WUGSC 3.0/petMar1)	Lamprey	Petromyzon marinus	WUSTL v.3.0 (March 2007)	7757	12020
+braFlo1	Mar. 2006 (JGI 1.0/braFlo1)	Lancelet	Branchiostoma floridae	JGI v.1.0 (March 2006)	7739	12025
+anoCar2	May 2010 (Broad AnoCar2.0/anoCar2)	Lizard	Anolis carolinensis	Broad Institute of MIT and Harvard AnoCar 2.0 (GCA_000090745.1)	28377	12444
+anoCar1	Feb. 2007 (Broad/anoCar1)	Lizard	Anolis carolinensis	Broad Institute AnoCar (1.0)	28377	12445
+galVar1	Jun. 2014 (G_variegatus-3.0.2/galVar1)	Malayan flying lemur	Galeopterus variegatus	Washington University (WashU)	482537	13060
+triMan1	Oct. 2011 (Broad v1.0/triMan1)	Manatee	Trichechus manatus latirostris	Broad Institute of MIT and Harvard TriManLat1.0 (GCA_000243295.1)	127582	13075
+calJac4	May 2020 (Callithrix_jacchus_cj1700_1.1/calJac4)	Marmoset	Callithrix jacchus	McDonnell Genome Institute at Washington University	9483	13083
+calJac3	March 2009 (WUGSC 3.2/calJac3)	Marmoset	Callithrix jacchus	WUSTL 3.2 (GCA_000004665.1)	9483	13084
+calJac1	June 2007 (WUGSC 2.0.2/calJac1)	Marmoset	Callithrix jacchus	WUSTL 2.0.2	9483	13085
+oryLat2	Oct. 2005 (NIG/UT MEDAKA1/oryLat2)	Medaka	Oryzias latipes	NIG and Tokyo Univ MEDAKA1 (NCBI project 16702, BAAF04000000)	8090	13359
+geoFor1	Apr. 2012 (GeoFor_1.0/geoFor1)	Medium ground finch	Geospiza fortis	Beijing Genomics Institute	48883	13365
+pteVam1	Jul. 2008 (Broad/pteVam1)	Megabat	Pteropus vampyrus	Broad Institute pteVam1 (NCBI project 20325, ABRP01000000)	132908	13370
+balAcu1	Oct. 2013 (BalAcu1.0/balAcu1)	Minke whale	Balaenoptera acutorostrata scammoni	Korea Ocean Research & Development Institute	310752	13475
+mpxvRivers	MPXV-M5312_HM12_Rivers (MT903340.1/GCF_014621545.1)	Monkeypox virus	Monkeypox virus	Monkeypox virus	10244	22325
+mm39	Jun. 2020 (GRCm39/mm39)	Mouse	Mus musculus	Genome Reference Consortium Mouse Build 39 (GCA_000001635.9)	10090	269
+mm10	Dec. 2011 (GRCm38/mm10)	Mouse	Mus musculus	Genome Reference Consortium Mouse Build 38 (GCA_000001635.2)	10090	270
+mm9	July 2007 (NCBI37/mm9)	Mouse	Mus musculus	NCBI Build 37	10090	287
+mm8	Feb. 2006 (NCBI36/mm8)	Mouse	Mus musculus	NCBI Build 36	10090	288
+mm7	Aug. 2005 (NCBI35/mm7)	Mouse	Mus musculus	NCBI Build 35	10090	289
+micMur2	May 2015 (Mouse lemur/micMur2)	Mouse lemur	Microcebus murinus	Broad Institute and Baylor College of Medicine Mmur_2.0	30608	13679
+micMur1	Jul. 2007 (Broad/micMur1)	Mouse lemur	Microcebus murinus	Broad Institute micMur1 (NCBI project 19967, ABDC00000000)	30608	13680
+hetGla2	Jan. 2012 (Broad HetGla_female_1.0/hetGla2)	Naked mole-rat	Heterocephalus glaber	Broad Institute HetGla_female_1.0 (NCBI project 72441, GCA_000247695.1, WGS AHKG01)	10181	14014
+hetGla1	Jul. 2011 (BGI HetGla_1.0/hetGla1)	Naked mole-rat	Heterocephalus glaber	HetGla_1.0 (NCBI project 68323, accession GCA_000230445.1	10181	14015
+oreNil2	Jan. 2011 (Broad oreNil1.1/oreNil2)	Nile tilapia	Oreochromis niloticus	Broad Institute of MIT and Harvard Orenil1.1 (GCA_000188235.2)	8128	14419
+monDom5	Oct. 2006 (Broad/monDom5)	Opossum	Monodelphis domestica	Broad Institute monDom5 (NCBI project 12561, accession AAFR03000000)	13616	15622
+monDom4	Jan. 2006 (Broad/monDom4)	Opossum	Monodelphis domestica	Broad Inst. monDom4 Jan06	13616	15623
+monDom1	Oct. 2004 (Broad prelim/monDom1)	Opossum	Monodelphis domestica	Broad Inst. Prelim Oct04	13616	15625
+ponAbe3	Jan. 2018 (Susie_PABv2/ponAbe3)	Orangutan	Pongo pygmaeus abelii	University of Washington	9601	15764
+ponAbe2	July 2007 (WUGSC 2.0.2/ponAbe2)	Orangutan	Pongo pygmaeus abelii	WUSTL 3.0	9601	15765
+priPac1	Feb. 2007 (WUGSC 5.0/priPac1)	P. pacificus	Pristionchus pacificus	Washington University School of Medicine GSC Pristionchus pacificus 5.0	54126	16015
+chrPic1	Dec. 2011 (v3.0.1/chrPic1)	Painted turtle	Chrysemys picta bellii	International Painted Turtle Genome Sequencing Consortium (GCA_000241765.1)	8478	16065
+ailMel1	Dec. 2009 (BGI-Shenzhen 1.0/ailMel1)	Panda	Ailuropoda melanoleuca	BGI-Shenzhen AilMel 1.0 Dec. 2009	9646	16070
+susScr11	Feb. 2017 (Sscrofa11.1/susScr11)	Pig	Sus scrofa	The Swine Genome Sequencing Consortium (SGSC)	9823	16312
+susScr3	Aug. 2011 (SGSC Sscrofa10.2/susScr3)	Pig	Sus scrofa	SGSC Sscrofa10.2 (NCBI project 13421, GCA_000003025.4, WGS AEMK01)	9823	16313
+susScr2	Nov. 2009 (SGSC Sscrofa9.2/susScr2)	Pig	Sus scrofa	SGSC Sscrofa9.2 (NCBI project 10718, GCA_000003025.2)	9823	16314
+ochPri3	May 2012 (OchPri3.0/ochPri3)	Pika	Ochotona princeps	Broad Institute	9978	16324
+ochPri2	Jul. 2008 (Broad/ochPri2)	Pika	Ochotona princeps	Broad Institute ochPri2	9978	16325
+ornAna2	Feb. 2007 (ASM227v2/ornAna2)	Platypus	Ornithorhynchus anatinus	WUGSC ASM227v2	9258	16409
+ornAna1	Mar. 2007 (WUGSC 5.0.1/ornAna1)	Platypus	Ornithorhynchus anatinus	WUSTL version 5.0.1	9258	16410
+nasLar1	Nov. 2014 (Charlie1.0/nasLar1)	Proboscis monkey	Nasalis larvatus	Proboscis Monkey Functional Genome Consortium	43780	16785
+oryCun2	Apr. 2009 (Broad/oryCun2)	Rabbit	Oryctolagus cuniculus	Broad Institute oryCun2 (NCBI project 12819, AAGW00000000)	9986	18009
+rn7	Nov. 2020 (mRatBN7.2/rn7)	Rat	Rattus norvegicus	Wellcome Sanger Institute	10116	18019
+rn6	Jul. 2014 (RGSC 6.0/rn6)	Rat	Rattus norvegicus	RGSC Rnor_6.0 (GCA_000001895.4)	10116	18031
+rn5	Mar. 2012 (RGSC 5.0/rn5)	Rat	Rattus norvegicus	RGSC Rnor_5.0 (GCA_000001895.3)	10116	18032
+rn4	Nov. 2004 (Baylor 3.4/rn4)	Rat	Rattus norvegicus	Baylor HGSC v. 3.4	10116	18033
+rn3	June 2003 (Baylor 3.1/rn3)	Rat	Rattus norvegicus	Baylor HGSC v. 3.1	10116	18034
+rheMac10	Feb. 2019 (Mmul_10/rheMac10)	Rhesus	Macaca mulatta	The Genome Institute at Washington University School of Medicine	9544	18410
+rheMac8	Nov. 2015 (BCM Mmul_8.0.1/rheMac8)	Rhesus	Macaca mulatta	Baylor College of Medicine Genome Sequencing Center	9544	18411
+rheMac3	Oct. 2010 (BGI CR_1.0/rheMac3)	Rhesus	Macaca mulatta	Beijing Genomics Institute, Shenzhen (GCA_000230795.1)	9544	18413
+rheMac2	Jan. 2006 (MGSC Merged 1.0/rheMac2)	Rhesus	Macaca mulatta	Venter Inst./Baylor/WashU Merged assembly Jan 2006 v1 edit4	9544	18414
+proCap1	Jul. 2008 (Broad/proCap1)	Rock hyrax	Procavia capensis	Broad Institute proCap1 (NCBI project 13972, ABRQ01000000)	9813	18760
+sacCer3	Apr. 2011 (SacCer_Apr2011/sacCer3)	S. cerevisiae	Saccharomyces cerevisiae	Saccharomyces cerevisiae S288c assembly from Saccharomyces Genome Database (GCA_000146045.2)	559292	19013
+sacCer2	June 2008 (SGD/sacCer2)	S. cerevisiae	Saccharomyces cerevisiae	SGD June 2008	4932	19014
+sacCer1	Oct. 2003 (SGD/sacCer1)	S. cerevisiae	Saccharomyces cerevisiae	SGD sequence data as of 1 Oct. 2003	4932	19015
+strPur2	Sep. 2006 (Baylor 2.1/strPur2)	S. purpuratus	Strongylocentrotus purpuratus	Baylor release 3 Spur 2.1	7668	19039
+strPur1	Apr. 2005 (Baylor 1.1/strPur1)	S. purpuratus	Strongylocentrotus purpuratus	Baylor	7668	19040
+wuhCor1	Jan. 2020 (NC_045512.2)	SARS-CoV-2	SARS-CoV-2	SARS-CoV-2	2697049	22324
+aplCal1	Sept. 2008 (Broad 2.0/aplCal1)	Sea hare	Aplysia californica	Broad v. Aplcal2.0	6500	19205
+oviAri4	Nov. 2015 (Oar_v4.0/oviAri4)	Sheep	Ovis aries	International Sheep Genome Consortium	9940	19313
+oviAri3	Aug. 2012 (ISGC Oar_v3.1/oviAri3)	Sheep	Ovis aries	International Sheep Genome Consortium	9940	19314
+oviAri1	Feb. 2010 (ISGC Ovis_aries_1.0/oviAri1)	Sheep	Ovis aries	ISGC (NCBI project 10709, accession GCA_000005525.1)	9940	19315
+sorAra2	Aug. 2008 (Broad/sorAra2)	Shrew	Sorex araneus	Broad Institute SorAra2.0	42254	19329
+sorAra1	June 2006 (Broad/sorAra1)	Shrew	Sorex araneus	Broad Institute sorAra1 (Draft_v2)	42254	19330
+choHof1	Jul. 2008 (Broad/choHof1)	Sloth	Choloepus hoffmanni	Broad Institute choHof1	9358	19460
+enhLutNer1	Jun. 2019 (ASM641071v1/enhLutNer1)	Southern sea otter	Enhydra lutris nereis	UCLA	1049777	19259
+speTri2	Nov. 2011 (Broad/speTri2)	Squirrel	Spermophilus tridecemlineatus	Broad Institute (GCA_000236235.1)	43179	19714
+saiBol1	Oct. 2011 (Broad/saiBol1)	Squirrel monkey	Saimiri boliviensis	Broad SaiBol1.0 (GCA_000235385.1)	39432	19725
+gasAcu1	Feb. 2006 (Broad/gasAcu1)	Stickleback	Gasterosteus aculeatus	Broad Institute gasAcu1 (1.0) (NCBI project 13579, AANH01000000)	69293	19820
+tarSyr2	Sep. 2013 (Tarsius_syrichta-2.0.1/tarSyr2)	Tarsier	Tarsius syrichta	Washington University	9478	20079
+tarSyr1	Aug. 2008 (Broad/tarSyr1)	Tarsier	Tarsius syrichta	Broad Institute tarSyr1 (NCBI project 20335, ABRT000000000)	9478	20080
+sarHar1	Feb. 2011 (WTSI Devil_ref v7.0/sarHar1)	Tasmanian devil	Sarcophilus harrisii	Wellcome Trust Sanger Institute Devil_ref v7.0 (GCA_000189315.1)	9305	20085
+echTel2	Nov. 2012 (Broad/echTel2)	Tenrec	Echinops telfairi	Broad/EchTel2.0	9371	20174
+echTel1	July 2005 (Broad/echTel1)	Tenrec	Echinops telfairi	Broad July 2005	9371	20175
+tetNig2	Mar. 2007 (Genoscope 8.0/tetNig2)	Tetraodon	Tetraodon nigroviridis	Genoscope Tetraodon v8.0 (NCBI project 12350, CAAE01000000)	99883	20184
+tetNig1	Feb. 2004 (Genoscope 7/tetNig1)	Tetraodon	Tetraodon nigroviridis	Genoscope and Broad Institute V7 (NCBI project 12350, CAAE01000000)	99883	20185
+nanPar1	Mar. 2015 (BGI_ZX_2015/nanPar1)	Tibetan frog	Nanorana parkeri	ASM93562v1	125878	20312
+tupBel1	Dec. 2006 (Broad/tupBel1)	Tree shrew	Tupaia belangeri	Broad Institute tupBel1 (NCBI project 13971, AAPY01000000)	37347	20715
+melGal5	Nov. 2014 (Turkey_5.0/melGal5)	Turkey	Meleagris gallopavo	Turkey Genome Consortium	9103	20834
+melGal1	Dec. 2009 (TGC Turkey_2.01/melGal1)	Turkey	Meleagris gallopavo	TGC (NCBI Project ID: 10805, Accession: GCA_000146605.1)	9103	20835
+macEug2	Sep. 2009 (TWGS Meug_1.1/macEug2)	Wallaby	Macropus eugenii	TWGS (NCBI Project ID: 12586, Accession: GCA_000004035.1)	9315	23019
+cerSim1	May 2012 (CerSimSim1.0/cerSim1)	White rhinoceros	Ceratotherium simum	Broad Institute	73337	23265
+xenTro10	Nov. 2019 (UCB_Xtro_10.0/xenTro10)	X. tropicalis	Xenopus tropicalis	University of California, Berkeley	8364	24035
+xenTro9	Jul. 2016 (Xenopus_tropicalis_v9.1/xenTro9)	X. tropicalis	Xenopus tropicalis	DOE Joint Genome Institute	8364	24036
+xenTro7	Sep. 2012 (JGI 7.0/xenTro7)	X. tropicalis	Xenopus tropicalis	US DOE Joint Genome Institute (JGI-PGF)	8364	24037
+xenTro3	Nov. 2009 (JGI 4.2/xenTro3)	X. tropicalis	Xenopus tropicalis	US DOE Joint Genome Institute (JGI-PGF) (GCA_000004195.1)	8364	24038
+xenTro2	Aug. 2005 (JGI 4.1/xenTro2)	X. tropicalis	Xenopus tropicalis	JGI v4.1	8364	24039
+xenTro1	Oct. 2004 (JGI 3.0/xenTro1)	X. tropicalis	Xenopus tropicalis	JGI v3.0	8364	24040
+taeGut2	Feb. 2013 (WashU taeGut324/taeGut2)	Zebra finch	Taeniopygia guttata	Washington University School of Medicine	59729	26159
+taeGut1	Jul. 2008 (WUGSC 3.2.4/taeGut1)	Zebra finch	Taeniopygia guttata	Washington University taeGut1	59729	26160
+danRer11	May 2017 (GRCz11/danRer11)	Zebrafish	Danio rerio	Genome Reference Consortium Zebrafish Build 11 (GCA_000002035.4)	7955	26172
+danRer10	Sep. 2014 (GRCz10/danRer10)	Zebrafish	Danio rerio	Genome Reference Consortium Zebrafish Build 10 (GCA_000002035.3)	7955	26173
+danRer7	Jul. 2010 (Zv9/danRer7)	Zebrafish	Danio rerio	Wellcome Trust Sanger Institute Zv9 (GCA_000002035.2)	7955	26174
+danRer6	Dec. 2008 (Zv8/danRer6)	Zebrafish	Danio rerio	Wellcome Trust Sanger Institute, Zv8 assembly (CAAK00000000.5)	7955	26175
+danRer5	July 2007 (Zv7/danRer5)	Zebrafish	Danio rerio	Wellcome Trust Sanger Institute, Zv7 assembly	7955	26176
+danRer4	Mar. 2006 (Zv6/danRer4)	Zebrafish	Danio rerio	Sanger Centre, Danio rerio Sequencing Project Zv6	7955	26177
+danRer3	May 2005 (Zv5/danRer3)	Zebrafish	Danio rerio	Sanger Centre, Danio rerio Sequencing Project Zv5	7955	26178
