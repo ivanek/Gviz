@@ -1,34 +1,60 @@
 library(Gviz)
-library(parallel)
+library(BiocParallel)
 library(biomaRt)
 library(Biobase)
 library(rtracklayer)
 library(RMySQL)
+library(RMariaDB)
 
+# mysql --user=genome --host=genome-euro-mysql.soe.ucsc.edu -A -P 3306
 fetchAllGenomesFromUcsc <- function() {
-    mydb <- dbConnect(MySQL(),
-        user = "genome", dbname = "hgcentral",
-        host = "genome-mysql.cse.ucsc.edu"
+    mydb <- dbConnect(
+        RMySQL::MySQL(), # RMariaDB::MariaDB(),
+        user = "genome",
+        dbname = "hgcentral",
+        host = "genome-euro-mysql.soe.ucsc.edu",
+        port = 3306
     )
+    on.exit(dbDisconnect(mydb), add = TRUE)
+
     rs <- dbSendQuery(mydb, "select * from dbDb")
     out <- fetch(rs, n = -1)
     out <- out[out$active != 0, ] # only active
     cols <- c(
-        "name", "description", "organism", "scientificName",
-        "sourceName", "taxId", "orderKey"
+        "name",
+        "description",
+        "organism",
+        "scientificName",
+        "sourceName",
+        "taxId",
+        "orderKey"
     ) # smallest orderKey == rescent
     out <- out[, cols]
     out <- out[order(out$organism, out$orderKey), ]
     return(out)
 }
 
+# ucsc_versions <- fetchAllGenomesFromUcsc()
+# write.table(
+#     ucsc,
+#     file = "inst/extdata/ucsc_versions.txt",
+#     sep = "\t",
+#     quote = FALSE
+#     row.names = FALSE,
+# )
 
 testBiomartVersion <- function() {
     allGenomes <- union(
-        read.delim(system.file(package = "Gviz", "extdata/biomartVersionsLatest.txt"))$ucscId,
-        read.delim(system.file(package = "Gviz", "extdata/biomartVersionsNow.txt"))$ucscId
+        read.delim(system.file(
+            package = "Gviz",
+            "extdata/biomartVersionsLatest.txt"
+        ))$ucscId,
+        read.delim(system.file(
+            package = "Gviz",
+            "extdata/biomartVersionsNow.txt"
+        ))$ucscId
     )
-    res <- mclapply(allGenomes, function(genome) {
+    res <- bplapply(allGenomes, function(genome) {
         return(try(
             {
                 map <- Gviz:::.ucsc2Ensembl(genome)
@@ -38,25 +64,50 @@ testBiomartVersion <- function() {
                     ds <- listDatasets(bm)
                     mt <- ds[match(map$dataset, ds$dataset), "version"]
                     if (is.na(mt)) {
-                        res <- list(current = genome, set = map$dataset, type = "head", cause = "error")
+                        res <- list(
+                            current = genome,
+                            set = map$dataset,
+                            type = "head",
+                            cause = "error"
+                        )
                     }
                     if (mt != map$value) {
-                        res <- list(current = genome, set = map$value, setCurrent = mt, type = "head", cause = "mismatch")
+                        res <- list(
+                            current = genome,
+                            set = map$value,
+                            setCurrent = mt,
+                            type = "head",
+                            cause = "mismatch"
+                        )
                     }
                 } else {
                     bm <- useMart(
-                        host = sprintf("https://%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))),
-                        biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset
+                        host = sprintf(
+                            "https://%s.archive.ensembl.org",
+                            tolower(sub(".", "", map$date, fixed = TRUE))
+                        ),
+                        biomart = "ENSEMBL_MART_ENSEMBL",
+                        dataset = map$dataset
                     )
                     ds <- listDatasets(bm)
                     mt <- ds[match(map$dataset, ds$dataset), "version"]
                     if (is.na(mt)) {
-                        res <- list(current = genome, set = map$dataset, type = "archive", cause = "error")
+                        res <- list(
+                            current = genome,
+                            set = map$dataset,
+                            type = "archive",
+                            cause = "error"
+                        )
                     }
                     if (mt != map$value) {
                         res <- list(
-                            current = genome, set = map$value, setArchive = sub(".", " ", map$date, fixed = TRUE),
-                            setVersion = map$version, setCurrent = mt, type = "archive", cause = "mismatch"
+                            current = genome,
+                            set = map$value,
+                            setArchive = sub(".", " ", map$date, fixed = TRUE),
+                            setVersion = map$version,
+                            setCurrent = mt,
+                            type = "archive",
+                            cause = "mismatch"
                         )
                     }
                 }
@@ -68,14 +119,19 @@ testBiomartVersion <- function() {
     res <- res[listLen(res) > 0]
     res[sapply(res, is, "try-error")] <- list(type = "error")
     allFields <- unique(unlist(lapply(res, names)))
-    dt <- as.data.frame(do.call(rbind, lapply(res, function(x) t(as.data.frame(unlist(x)[allFields])))),
+    dt <- as.data.frame(
+        do.call(
+            rbind,
+            lapply(res, function(x) t(as.data.frame(unlist(x)[allFields])))
+        ),
         stringsAsFactors = FALSE
     )
     rownames(dt) <- NULL
     gens <- ucscGenomes()
     gens$version <- as.numeric(gsub("[a-zA-Z]*", "", gens$db))
     gensS <- split(gens, gsub("[0-9]*$", "", gens$db))
-    highestVersion <- as.data.frame(t(sapply(gensS, function(x) unlist(x[which.max(x$version), ]))),
+    highestVersion <- as.data.frame(
+        t(sapply(gensS, function(x) unlist(x[which.max(x$version), ]))),
         stringsAsFactors = FALSE
     )
     rownames(gens) <- gens$db
