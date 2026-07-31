@@ -57,7 +57,7 @@ Imports:
     stats, 
     utils
 Suggests:
-    BSgenome.Hsapiens.UCSC.hg19,
+    BSgenome.Hsapiens.UCSC.hg38,
     xml2,
     BiocStyle,
     knitr,

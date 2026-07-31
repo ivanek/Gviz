@@ -65,7 +65,7 @@ NULL
 #' sTrack
 #'
 #' ## Construct from BSGenome object
-#' if (require(BSgenome.Hsapiens.UCSC.hg19)) {
+#' if (require(BSgenome.Hsapiens.UCSC.hg38)) {
 #'     sTrack <- SequenceTrack(Hsapiens)
 #'     sTrack
 #' }

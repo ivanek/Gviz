@@ -112,7 +112,7 @@ hasBiomartConnection <- FALSE
 
 ## ## Uncommenting this helps when the UCSC server has a hickup but still lets you connect:
 ## hasUcscConnection <- !is(try(rtracklayer::browserSession(), silent=TRUE), "try-error") && 
-##   !is(try(IdeogramTrack(genome="hg19", chromosome=7), silent=TRUE), "try-error")
+##   !is(try(IdeogramTrack(genome="hg38", chromosome=7), silent=TRUE), "try-error")
 ```
 
 # Introduction
@@ -171,7 +171,7 @@ start with the `chr` string). You may decide to turn this feature
 off by calling `options(ucscChromosomeNames=FALSE)`. For the
 remainder of this vignette however, we will make use of the UCSC
 genome and chromosome identifiers, e.g., the `chr7` chromosome
-on the mouse `mm9` genome.
+on the human `hg38` genome.
 
 The different track classes will be described in more detail in the
 \@ref(track-classes) section further below. For now, let's just
@@ -351,7 +351,7 @@ choose an arbitrary genomic range to plot.
 
 ```{r zooming, fig.width=7.5, fig.height=2.2}
 plotTracks(list(itrack, gtrack, atrack, grtrack),
-           from = 26700000, to = 26750000)
+           from = 159000000, to = 159050000)
 ```
 
 Another pair of arguments that controls the zoom state are
@@ -393,10 +393,10 @@ that. Among several other options it can draw the necessary sequence
 information from one of the `BSgenome` packages.
 
 ```{r zooming4, fig.width=7.5, fig.height=3.1}
-library(BSgenome.Hsapiens.UCSC.hg19)
+library(BSgenome.Hsapiens.UCSC.hg38)
 strack <- SequenceTrack(Hsapiens, chromosome = chr)
 plotTracks(list(itrack, gtrack, atrack, grtrack, strack), 
-           from = 26591822, to = 26591852, cex = 0.8)
+           from = 159024485, to = 159231338, cex = 0.8)
 ```
 
 So far we have replicated the features of a whole bunch of other
@@ -416,7 +416,7 @@ a simple `DataTrack` object from randomly sampled data.
 
 ```{r DataTrack, fig.width=7.5, fig.height=4}
 set.seed(255)
-lim <- c(26700000, 26750000)
+lim <- c(159000000, 159050000)
 coords <- sort(c(lim[1], 
                  sample(seq(from = lim[1], to = lim[2]), 99), 
                  lim[2]))
@@ -755,13 +755,13 @@ possible to construct `IdeogramTrack` objects from local
 data. Please see the class' man page for details.
 
 ```{r IdeogramTrackClass1Show, eval=FALSE}
-ideoTrack <- IdeogramTrack(genome = "hg19", chromosome = "chrX")
+ideoTrack <- IdeogramTrack(genome = "hg38", chromosome = "chrX")
 plotTracks(ideoTrack, from = 85e6, to = 129e6)
 ```
 
 ```{r IdeogramTrackClass1Do, fig.width=7.5, fig.height=0.5, echo=FALSE, results='hide'}
 if(hasUcscConnection) {
-  ideoTrack <- IdeogramTrack(genome = "hg19", chromosome = "chrX")
+  ideoTrack <- IdeogramTrack(genome = "hg38", chromosome = "chrX")
 } else{
   data(ideoTrack)
 }
@@ -1009,7 +1009,7 @@ object.
 
 ```{r filedt1, fig.width=7.5, fig.height=1}
 bgFile <- system.file("extdata/test.bedGraph", package = "Gviz")
-dTrack2 <- DataTrack(range = bgFile, genome = "hg19", type = "l", 
+dTrack2 <- DataTrack(range = bgFile, genome = "hg38", type = "l", 
                      chromosome = "chr19", name = "bedGraph")
 class(dTrack2)
 plotTracks(dTrack2)
@@ -1038,7 +1038,7 @@ a more explicit way.
 
 ```{r filedt2}
 library(rtracklayer)
-dTrack3 <-  DataTrack(range = bgFile, genome = "hg19", type = "l", 
+dTrack3 <-  DataTrack(range = bgFile, genome = "hg38", type = "l", 
                       chromosome = "chr19", name = "bedGraph",
                       importFunction = function(file) import(con=file))
 identical(dTrack2, dTrack3)
@@ -1061,7 +1061,7 @@ position only and to encode this in a single metadata column.
 
 ```{r filedt3, fig.width=7.5, fig.height=1}
 bamFile <- system.file("extdata/test.bam", package = "Gviz")
-dTrack4 <- DataTrack(range = bamFile, genome = "hg19", type = "l", 
+dTrack4 <- DataTrack(range = bamFile, genome = "hg38", type = "l", 
                      name = "Coverage", window = -1, 
                      chromosome = "chr1")
 class(dTrack4)
@@ -1099,7 +1099,7 @@ by setting the `stream` argument to `TRUE`.
 myImportFun <- function(file, selection){
     ## do something here
 }
-DataTrack(range = bamFile, genome = "hg19", type = "l",
+DataTrack(range = bamFile, genome = "hg38", type = "l",
           name = "Coverage", window = -1, chromosome = "chr1",
           importFunction = myImportFun, stream = TRUE)
 ```
@@ -1116,9 +1116,9 @@ x-axis). To illustrate this let's create a significantly bigger
 synthetic data for only a single sample.
 
 ```{r biggerdata, results='hide', fig.width=7.5, fig.height=1.5}
-dat <- sin(seq(pi, 10*pi, len=500))
+# dat <- sin(seq(pi, 10*pi, len=500))
 dTrack.big <- DataTrack(start = seq(1, 100000, len = 500), width = 15, 
-                        chromosome = "chrX", genome = "hg19", 
+                        chromosome = "chrX", genome = "hg38", 
                         name = "sinus",
                         data = sin(seq(pi, 5 * pi, len = 500)) * 
                           runif(500, 0.5, 1.5))
@@ -1242,7 +1242,7 @@ aTrack <- AnnotationTrack(start = c(10, 40, 120), width = 15,
                           chromosome = "chrX", 
                           strand = c("+", "*", "-"),
                           id = c("Huey", "Dewey", "Louie"), 
-                          genome = "hg19", name = "foo")
+                          genome = "hg38", name = "foo")
 plotTracks(aTrack)
 ```
 
@@ -1281,7 +1281,7 @@ aTrack.groups <- AnnotationTrack(start = c(50, 180, 260, 460, 860, 1240),
                                               c(1, 3, 2)),
                                  group = rep(c("Huey", "Dewey", "Louie"), 
                                              c(1, 3, 2)),
-                                 genome = "hg19", name = "foo")
+                                 genome = "hg38", name = "foo")
 plotTracks(aTrack.groups, groupAnnotation = "group")
 ```
 
@@ -1315,7 +1315,7 @@ aTrack.stacked <- AnnotationTrack(start = c(50, 180, 260, 800, 600, 1240),
                                   strand = "*",
                                   group = rep(c("Huey", "Dewey", "Louie"), 
                                               c(1, 3, 2)),
-                                  genome = "hg19", name = "foo")
+                                  genome = "h38", name = "foo")
 plotTracks(aTrack.stacked, groupAnnotation="group")
 ```
 
@@ -1399,9 +1399,8 @@ data("denseAnnTrack")
 plotTracks(denseAnnTrack, showOverplotting = TRUE)
 ```
 
-
-
 ### Collapsing
+
 All track types that inherit from class `AnnotationTrack` support
 the collapsing of overlapping track items, either because they have
 initially been defined as overlapping coordinates, or because the
@@ -1503,7 +1502,7 @@ of all the sequence alignments from the file and even knows how to
 deal with grouped elements.
 
 ```{r fileat1, fig.width=7.5, fig.height=1}
-aTrack2 <- AnnotationTrack(range = bamFile, genome = "hg19", 
+aTrack2 <- AnnotationTrack(range = bamFile, genome = "hg38", 
                            name = "Reads", chromosome = "chr1")
 class(aTrack2)
 aTrack2
@@ -1530,7 +1529,7 @@ their values. For instance we can map the `id` column to the
 alignments that originate from the same sequencing read.
 
 ```{r fileat2, fig.width=7.5, fig.height=1}
-aTrack3 <- AnnotationTrack(range = bamFile, genome = "hg19", 
+aTrack3 <- AnnotationTrack(range = bamFile, genome = "hg38", 
                            name = "Reads", chromosome = "chr1", 
                            group = "id")
 aTrack3
@@ -1615,7 +1614,7 @@ plotTracks(grtrack, transcriptAnnotation = "transcript")
 ```
 
 ```{r generegtrack2cf, results='hide', fig.width=7.5, fig.height=1}
-plotTracks(grtrack, exonAnnotation = "exon", extend.left = -0.8, 
+plotTracks(grtrack, exonAnnotation = "exon", extend.left = -.98, 
            fontcolor.exon = 1)
 ```
 
@@ -1700,7 +1699,7 @@ possible cases. It is up to the user to come up with a complete
 list of non-coding feature types depending on the source of the data.
 
 ```{r generegtrack4f, results='hide', fig.width=7.5, fig.height=1}
-feature(txTr)
+# feature(txTr) # TODO FIX
 plotTracks(txTr)
 ```
 
@@ -1752,10 +1751,12 @@ library(EnsDb.Hsapiens.v75)
 edb <- EnsDb.Hsapiens.v75
 seqlevelsStyle(edb) <- "UCSC"
 
+options(ucscChromosomeNames=FALSE)
 eTrack <- GeneRegionTrack(edb, chromosome = "chr6", 
                           start = 35000000, end = 40000000)
 
 plotTracks(eTrack)
+options(ucscChromosomeNames=TRUE) # TODO FIX 
 ```
 
 ### Display parameters for GeneRegionTrack objects
@@ -1794,30 +1795,32 @@ instance when trying to retrieve data from an archived Ensembl version
 (by default, `r Biocpkg("biomaRt")` will always link to the most recent
 version). To that end, the `biomart` parameter can be used to
 supply a `biomaRt` object. Please note that a data set has to
-be selected in that object. In the example code below, the older version of human genome assembly (hg19) and matching Biomart version are used.
+be selected in that object. In the example code below, the older version of human genome assembly (hg38) and matching Biomart version are used.
 
 ```{r BiomartGeneRegionTrackShow, eval=FALSE}
 library(biomaRt)
-bm <- useEnsembl(host = "https://grch37.ensembl.org", 
-              biomart = "ENSEMBL_MART_ENSEMBL", 
-              dataset = "hsapiens_gene_ensembl")
-biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
-                                    start = 20e6, end = 21e6,
+bm <- useEnsembl(
+  biomart = "ENSEMBL_MART_ENSEMBL", 
+  dataset = "hsapiens_gene_ensembl"
+)
+biomTrack <- BiomartGeneRegionTrack(chromosome = "chr7", 
+                                    start = 20.75e6, end = 21e6,
                                     name = "ENSEMBL", biomart = bm)
 plotTracks(biomTrack)
 ```
 ```{r BiomartGeneRegionTrackDo, echo=FALSE, results='hide', fig.width=7.5, fig.height=1.25}
 library(biomaRt)
 if(hasBiomartConnection) {
-  bm <- useEnsembl(host = "https://grch37.ensembl.org", 
-                biomart = "ENSEMBL_MART_ENSEMBL", 
-                dataset = "hsapiens_gene_ensembl")
-  biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
-                                      start = 20e6, end = 21e6,
-                                      name = "ENSEMBL", biomart = bm)
+  bm <- useEnsembl(
+  biomart = "ENSEMBL_MART_ENSEMBL", 
+  dataset = "hsapiens_gene_ensembl"
+  )
+  biomTrack <- BiomartGeneRegionTrack(
+    chromosome = "chr7", 
+    start = 20.75e6, end = 21e6,
+    name = "ENSEMBL", biomart = bm)
 } else {
     data(biomTrack)
-    biomTrack <- as(biomTrack, "GeneRegionTrack")
 }
 plotTracks(biomTrack)
 ```
@@ -1854,10 +1857,11 @@ see the documentation in the `r Biocpkg("biomaRt")` package for details.
 
 
 ```{r BiomartGeneRegionTrackFilterShow, eval=FALSE}
-bm <- useEnsembl(host = "https://grch37.ensembl.org", 
-              biomart = "ENSEMBL_MART_ENSEMBL", 
-              dataset = "hsapiens_gene_ensembl")
-biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
+bm <- useEnsembl(
+  biomart = "ENSEMBL_MART_ENSEMBL", 
+  dataset = "hsapiens_gene_ensembl"
+)
+biomTrack <- BiomartGeneRegionTrack(chromosome = chr, 
                                     start = 20e6, end = 21e6,
                                     name = "ENSEMBL", 
                                     filter = list(with_refseq_mrna=TRUE), 
@@ -1866,19 +1870,19 @@ plotTracks(biomTrack, col.line = NULL, col = NULL, stackHeight = 0.3)
 ```
 ```{r BiomartGeneRegionTrackFilterDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection) {
-  bm <- useEnsembl(host = "https://grch37.ensembl.org",
-                biomart = "ENSEMBL_MART_ENSEMBL",
-                dataset = "hsapiens_gene_ensembl")
-  biomTrack <- BiomartGeneRegionTrack(genome = "hg19", chromosome = chr, 
+  bm <- useEnsembl(
+    biomart = "ENSEMBL_MART_ENSEMBL",
+    dataset = "hsapiens_gene_ensembl"
+  )
+  biomTrack <- BiomartGeneRegionTrack(chromosome = chr, 
                                       start = 20e6, end = 21e6,
                                       name = "ENSEMBL",
                                       filter = list(with_refseq_mrna=TRUE), 
                                       biomart = bm)
   plotTracks(biomTrack, col.line = NULL, col = NULL, stackHeight = 0.3)
 } else {
-  data(biomTrack2)
-  biomTrack2 <- as(biomTrack2, "GeneRegionTrack")
-  plotTracks(biomTrack2, col.line = NULL, col = NULL, stackHeight = 0.3)
+  data(biomTrack)
+  plotTracks(biomTrack, col.line = NULL, col = NULL, stackHeight = 0.3)
 }
 ```
 
@@ -1896,20 +1900,24 @@ region. If that is not desired one needs to provide an explicit
 Biomart filter.
 
 ```{r BiomartGeneRegionTrackSymbolShow, eval=FALSE}
-bm <- useEnsembl(host = "https://grch37.ensembl.org", 
-              biomart = "ENSEMBL_MART_ENSEMBL",
-              dataset = "hsapiens_gene_ensembl")
-biomTrack <- BiomartGeneRegionTrack(genome = "hg19", name = "ENSEMBL", 
-                                    symbol = "ABCB5", biomart = bm)
+bm <- useEnsembl(
+  biomart = "ENSEMBL_MART_ENSEMBL",
+  dataset = "hsapiens_gene_ensembl"
+)
+biomTrack <- BiomartGeneRegionTrack(name = "ENSEMBL", 
+                                    symbol = "ABCB5", 
+                                    biomart = bm)
 plotTracks(biomTrack, transcriptAnnotation = "symbol")
 ```
 ```{r BiomartGeneRegionTrackSymbolDo, fig.width=7.5, fig.height=1.25, echo=FALSE, results='hide'}
 if(hasBiomartConnection) {
-  bm <- useEnsembl(host = "https://grch37.ensembl.org", 
-                biomart = "ENSEMBL_MART_ENSEMBL", 
-                dataset = "hsapiens_gene_ensembl")
-  biomTrack <- BiomartGeneRegionTrack(genome = "hg19", name = "ENSEMBL", 
-                                      symbol = "ABCB5", biomart = bm)
+bm <- useEnsembl(
+  biomart = "ENSEMBL_MART_ENSEMBL",
+  dataset = "hsapiens_gene_ensembl"
+)
+biomTrack <- BiomartGeneRegionTrack(name = "ENSEMBL", 
+                                    symbol = "ABCB5", 
+                                    biomart = bm)
 } else {
     ranges(biomTrack) <- ranges(biomTrack)[symbol(biomTrack) == "ABCB5"]
 }
@@ -1942,7 +1950,7 @@ bm <- useEnsembl(host="dec2012.archive.ensembl.org", biomart="ENSEMBL_MART_ENSEM
               dataset="hsapiens_gene_ensembl")
 fm <- Gviz:::.getBMFeatureMap()
 fm[["symbol"]] <- "external_gene_id"
-biomTrack <- BiomartGeneRegionTrack(genome="hg19", chromosome="chr7", start=20e6, end=21e6,name="ENSEMBL",
+biomTrack <- BiomartGeneRegionTrack(genome="hg38", chromosome="chr7", start=20e6, end=21e6,name="ENSEMBL",
                                     featureMap=fm, biomart=bm)
 plotTracks(biomTrack, col.line=NULL, col=NULL, stackHeight=0.3)
 ```
@@ -2051,7 +2059,7 @@ constructor, passing along the wrapper function and calling
 `plotTracks`.
 
 ```{r DetailsAnnotationTrack4, results='hide', fig.width=7.5, fig.height=5}
-deTrack <- AnnotationTrack(range = probes, genome = "hg19", 
+deTrack <- AnnotationTrack(range = probes, genome = "hg38", 
                            chromosome = 7, id = rownames(methylation),
                            name = "probe details", stacking = "squish",
                            fun = details)
@@ -2154,10 +2162,10 @@ genomic sequence information derived from either a
 track's genome, so it is up to the user to provide reasonable inputs
 to the class' constructor. As with all the other track types, the
 constructor has the same name as the class. In this example we build a
-`SequenceTrack` from the human hg19 UCSC genome.
+`SequenceTrack` from the human hg38 UCSC genome.
 
 ```{r SequenceTrack1}
-library(BSgenome.Hsapiens.UCSC.hg19)
+library(BSgenome.Hsapiens.UCSC.hg38)
 sTrack <- SequenceTrack(Hsapiens)
 sTrack
 ```
@@ -2269,7 +2277,7 @@ those. For all other file representations of alignments a user will
 have to provide their own import function, and this topic is further
 discussed in the class' documentation. For this demonstration let's use
 a small `BAM` file for which paired NGS reads have been mapped to
-an extract of the human hg19 genome. The data originate from an RNASeq
+an extract of the human hg38 genome. The data originate from an RNASeq
 experiment, and the alignments have been performed using the
 `STAR` aligner allowing for gaps. We also download some gene
 annotation data for that region from Biomart.
@@ -2299,10 +2307,10 @@ ato <- 3160000
 alTrack <- AlignmentsTrack(
   system.file(package = "Gviz", "extdata", "gapped.bam"),
   isPaired = TRUE)
-bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
+bmt <- BiomartGeneRegionTrack(chromosome = "chr12",
                               start = afrom, end = ato,
-                              filter = list(with_ox_refseq_mrna = TRUE),
-                              stacking = "dense")
+                              filter = list(with_refseq_mrna = TRUE),
+                              stacking = "dense", biomart = bm)
 ```
 
 We can create a first plot of our read alignments data from a birds
@@ -2434,7 +2442,7 @@ found necessary.)
 To better show the features of the `AlignmentsTrack` for
 sequence variants we will load a different data set, this time from a
 whole genome DNASeq SNP calling experiment. Again the reference genome
-is hg19 and the alignments have been performed using `Bowtie2`.
+is hg38 and the alignments have been performed using `Bowtie2`.
 
 ```{r alignmentstrack_7, results='hide', fig.width=7.5, fig.height=5}
 afrom <- 44945200
