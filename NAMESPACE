@@ -136,77 +136,101 @@ importClassesFrom(biomaRt,Mart)
 importClassesFrom(ensembldb,EnsDb)
 importClassesFrom(rtracklayer,UCSCData)
 importFrom(BSgenome,bsapply)
-importFrom(Biobase,listLen)
-importFrom(Biobase,rowMax)
-importFrom(Biobase,rowMin)
-importFrom(Biostrings,BString)
-importFrom(Biostrings,BStringSet)
-importFrom(Biostrings,DNAString)
-importFrom(Biostrings,DNAStringSet)
-importFrom(Biostrings,DNA_ALPHABET)
-importFrom(Biostrings,RNAString)
-importFrom(Biostrings,RNAStringSet)
-importFrom(Biostrings,readDNAStringSet)
-importFrom(Biostrings,reverseComplement)
-importFrom(Biostrings,stackStrings)
-importFrom(GenomicAlignments,GAlignments)
-importFrom(GenomicAlignments,extractAlignmentRangesOnReference)
-importFrom(GenomicAlignments,summarizeJunctions)
+importFrom(Biobase,
+  listLen,
+  rowMax,
+  rowMin
+)
+importFrom(Biostrings,
+  BString,
+  BStringSet,
+  DNAString,
+  DNAStringSet,
+  DNA_ALPHABET,
+  RNAString,
+  RNAStringSet,
+  readDNAStringSet,
+  reverseComplement,
+  stackStrings
+)
+importFrom(GenomicAlignments,
+  GAlignments,
+  extractAlignmentRangesOnReference,
+  summarizeJunctions
+)
 importFrom(RColorBrewer,brewer.pal)
-importFrom(Rsamtools,BamFile)
-importFrom(Rsamtools,ScanBamParam)
-importFrom(Rsamtools,bamWhich)
-importFrom(Rsamtools,scanBam)
-importFrom(Rsamtools,scanBamFlag)
-importFrom(Rsamtools,scanBamHeader)
-importFrom(Rsamtools,scanBamWhat)
-importFrom(Rsamtools,scanFa)
-importFrom(Rsamtools,scanFaIndex)
-importFrom(biomaRt,getBM)
-importFrom(biomaRt,listAttributes)
-importFrom(biomaRt,listDatasets)
-importFrom(biomaRt,listFilters)
-importFrom(biomaRt,useEnsembl)
-importFrom(biomaRt,useMart)
+importFrom(Rsamtools,
+  BamFile,
+  ScanBamParam,
+  bamWhich,
+  scanBam,
+  scanBamFlag,
+  scanBamHeader,
+  scanBamWhat,
+  scanFa,
+  scanFaIndex
+)
+importFrom(biomaRt,
+  getBM,
+  listAttributes,
+  listDatasets,
+  listFilters,
+  useEnsembl,
+  useMart
+)
 importFrom(biovizBase,getBioColor)
-importFrom(cigarillo,cigars_as_ranges_along_ref)
-importFrom(cigarillo,project_sequences)
+importFrom(cigarillo,
+  cigars_as_ranges_along_ref,
+  project_sequences
+)
 importFrom(digest,digest)
-importFrom(grDevices,boxplot.stats)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,colorRampPalette)
-importFrom(grDevices,dev.cur)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,extendrange)
-importFrom(grDevices,hsv)
-importFrom(grDevices,rgb2hsv)
+importFrom(grDevices,
+  boxplot.stats,
+  col2rgb,
+  colorRampPalette,
+  dev.cur,
+  dev.off,
+  extendrange,
+  hsv,
+  rgb2hsv
+)
 importFrom(graphics,par)
-importFrom(lattice,current.panel.limits)
-importFrom(lattice,panel.abline)
-importFrom(lattice,panel.grid)
-importFrom(lattice,panel.lines)
-importFrom(lattice,panel.points)
-importFrom(lattice,panel.polygon)
-importFrom(lattice,panel.segments)
-importFrom(lattice,panel.text)
-importFrom(lattice,panel.xyplot)
-importFrom(lattice,trellis.par.get)
+importFrom(lattice,
+  current.panel.limits,
+  panel.abline,
+  panel.grid,
+  panel.lines,
+  panel.points,
+  panel.polygon,
+  panel.segments,
+  panel.text,
+  panel.xyplot,
+  trellis.par.get
+)
 importFrom(latticeExtra,panel.horizonplot)
-importFrom(matrixStats,colMaxs)
-importFrom(matrixStats,rowMedians)
-importFrom(matrixStats,rowMins)
-importFrom(rtracklayer,BigWigFile)
-importFrom(rtracklayer,FastaFile)
-importFrom(rtracklayer,GenomicData)
-importFrom(rtracklayer,TwoBitFile)
-importFrom(rtracklayer,browserSession)
-importFrom(rtracklayer,ucscGenomes)
-importFrom(stats,loess.smooth)
-importFrom(stats,setNames)
-importFrom(utils,assignInNamespace)
-importFrom(utils,modifyList)
-importFrom(utils,type.convert)
-importFrom(utils,write.table)
+importFrom(matrixStats,
+  colMaxs,
+  rowMedians,
+  rowMins
+)
+importFrom(rtracklayer,
+  BigWigFile,
+  FastaFile,
+  GenomicData,
+  TwoBitFile,
+  browserSession,
+  ucscGenomes
+)
+importFrom(stats,
+  loess.smooth,
+  setNames
+)
+importFrom(utils,
+  assignInNamespace,
+  modifyList,
+  type.convert,
+  write.table
+)
 importMethodsFrom(AnnotationDbi,colnames)
 importMethodsFrom(AnnotationDbi,get)
 importMethodsFrom(AnnotationDbi,ls)

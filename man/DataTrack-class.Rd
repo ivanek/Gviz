@@ -386,7 +386,7 @@ This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{x[i}: subset the items in the \code{DataTrack} object.
+\item \code{x = DataTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{DataTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 \code{range} slot. For most applications, the subset method may be more appropriate.
 

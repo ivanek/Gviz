@@ -159,7 +159,7 @@ is constructed by re-fetching the band data for the new chromosome.
 \item \code{genome(IdeogramTrack) <- value}: replace the active genome, re-fetching
 the chromosome band information for the new genome.
 
-\item \code{x[i}: subsetting is not supported for
+\item \code{x = IdeogramTrack[i = ANY, j = ANY, drop = ANY]}: subsetting is not supported for
 \code{IdeogramTrack}; the object is returned unchanged.
 
 \item \code{position(IdeogramTrack)}: returns \code{NULL}. Genomic position is not a

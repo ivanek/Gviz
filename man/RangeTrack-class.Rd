@@ -214,7 +214,7 @@ of strand values.
 \item \code{position(RangeTrack)}: the arithmetic mean of the track item's
 coordionates, i.e., \code{(end(obj)-start(obj))/2}.
 
-\item \code{x[i}: subset the items in the \code{RangeTrack} object.
+\item \code{x = RangeTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{RangeTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 \code{range} slot. For most applications, the subset method may be more appropriate.
 

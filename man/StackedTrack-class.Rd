@@ -88,7 +88,7 @@ stacking (which could have been passed in as a display parameter) before
 deferring to the \code{RangeTrack} method for the remaining consolidation
 steps.
 
-\item \code{x[i}: subset the items in the \code{StackedTrack} object.
+\item \code{x = StackedTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{StackedTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 range slot. For most applications, the subset method may be more appropriate.
 
