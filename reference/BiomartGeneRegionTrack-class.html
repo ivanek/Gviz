@@ -101,7 +101,8 @@ from EBI's Biomart Ensembl data source.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code>new()</code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-start">start<a class="anchor" aria-label="anchor" href="#arg-start"></a></dt>
@@ -115,17 +116,19 @@ model range.</p></dd>
 
 
 <dt id="arg-biomart">biomart<a class="anchor" aria-label="anchor" href="#arg-biomart"></a></dt>
-<dd><p>An optional <a href="https://huber-group-embl.github.io/biomaRt/reference/Mart-class.html" class="external-link">Mart</a> object providing access
-to the EBI Biomart webservice. As default the appropriate Ensembl data
+<dd><p>An optional <a href="https://huber-group-embl.github.io/biomaRt/reference/Mart-class.html" class="external-link">Mart</a> object providing
+access to the EBI Biomart webservice. As default the appropriate Ensembl data
 source is selected based on the provided genome and chromosome.</p></dd>
 
 
 <dt id="arg-filter">filter<a class="anchor" aria-label="anchor" href="#arg-filter"></a></dt>
-<dd><p>filter</p></dd>
+<dd><p>A named <code>list</code> of additional filters to be applied in the
+Biomart query.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
-<dd><p>range</p></dd>
+<dd><p>A <code>GRanges</code> object with the genomic coordinates of the gene
+model items.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
@@ -194,11 +197,13 @@ case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
-<dd><p>from, to</p></dd>
+<dd><p>Numeric scalar, giving the range of genomic coordinates to
+limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
 
 
 <dt id="arg-use-defaults">use.defaults<a class="anchor" aria-label="anchor" href="#arg-use-defaults"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Derive the subsetting range from the track's
+own defaults rather than using <code>from</code> and <code>to</code> verbatim.</p></dd>
 
 </dl></div>
     <div id="value">

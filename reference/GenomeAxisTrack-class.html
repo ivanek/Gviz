@@ -125,7 +125,7 @@ regions to be highlighted on the axis by coloured boxes.</p></dd>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional items which will all be interpreted as further
-display parameters. See <code>settings</code> and the "Display Parameters"
+display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
 section below for details.</p></dd>
 
 
@@ -192,9 +192,10 @@ items.</p></li>
 items.</p></li>
 <li><p><code>width(GenomeAxisTrack)</code>: return the width of the track items in
 genomic coordinates.</p></li>
-<li><p><code>length(GenomeAxisTrack)</code>: return the number of items stored in the ranges slot.</p></li>
-<li><p><code>values(GenomeAxisTrack)</code>: return all additional annotation information
-except for the genomic coordinates for the track items.</p></li>
+<li><p><code>length(GenomeAxisTrack)</code>: return the number of items stored in the
+ranges slot.</p></li>
+<li><p><code>values(GenomeAxisTrack)</code>: return all additional annotation
+information except for the genomic coordinates for the track items.</p></li>
 <li><p><code>strand(GenomeAxisTrack)</code>: return a vector of strand specifiers for
 all track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.</p></li>
@@ -202,9 +203,10 @@ strand or '*' for either of the two.</p></li>
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>GenomeAxisTrack</code> object.
-This is essentially similar to subsetting of the <code>GRanges</code> object in the
-<code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
+<li><p><code>x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>GenomeAxisTrack</code>
+object. This is essentially similar to subsetting of the <code>GRanges</code> object in
+the <code>range</code> slot. For most applications, the subset method may be more
+appropriate.</p></li>
 <li><p><code>subset(GenomeAxisTrack)</code>: subset a
 <code>GenomeAxisTrack</code> by coordinates and sort if necessary.</p></li>
 <li><p><code>drawGD(GenomeAxisTrack)</code>: plot the object to a graphics device.
@@ -359,8 +361,10 @@ is not necessary.</p></li>
 <span class="r-in"><span><span class="fu">data</span><span class="op">(</span><span class="va">cyp2b10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">grTrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    start <span class="op">=</span> <span class="fl">26682683</span>, end <span class="op">=</span> <span class="fl">26711643</span>,</span></span>
-<span class="r-in"><span>    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>, chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm39"</span>,</span></span>
-<span class="r-in"><span>    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>, symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span></span>
+<span class="r-in"><span>    rstart <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">start</span>, rends <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">end</span>,</span></span>
+<span class="r-in"><span>    chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm39"</span>,</span></span>
+<span class="r-in"><span>    transcript <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">transcript</span>, gene <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">gene</span>,</span></span>
+<span class="r-in"><span>    symbol <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">symbol</span>,</span></span>
 <span class="r-in"><span>    name <span class="op">=</span> <span class="st">"Cyp2b10"</span>, strand <span class="op">=</span> <span class="va">cyp2b10</span><span class="op">$</span><span class="va">strand</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

@@ -148,7 +148,8 @@ equal genomic coordinates for a single observation across samples.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -209,10 +210,10 @@ See below for details.</p></dd>
 
 
 <dt>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object:</dt>
-<dd><p>this is very similar to the
-above case, except that the numeric data part now always has to be provided
-in the separate <code>data</code> argument. Also the chromosome information must
-be provided in the <code>chromosome</code> argument, because neither of the two
+<dd><p>this is very similar to
+the above case, except that the numeric data part now always has to be
+provided in the separate <code>data</code> argument. Also the chromosome information
+must be provided in the <code>chromosome</code> argument, because neither of the two
 can be directly encoded in an <code>IRange</code> object.</p></dd>
 
 
@@ -372,8 +373,7 @@ the coordinate ranges.</p></dd>
 
 <dt><code>smooth</code>:</dt>
 <dd><p>add a loess fit to the plot. The following display
-parameters can be used to control the loess calculation: <code>span, degree,
-family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details.</p></dd>
+parameters can be used to control the loess calculation: <code>span, degree, family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details.</p></dd>
 
 
 <dt><code>histogram</code>:</dt>
@@ -385,8 +385,7 @@ slot.</p></dd>
 <dt><code>mountain</code>:</dt>
 <dd><p>plot a smoothed version of the data relative to a
 baseline, as defined by the <code>baseline</code> display parameter. The following
-display parameters can be used to control the smoothing: <code>span, degree,
-family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details. The layout
+display parameters can be used to control the smoothing: <code>span, degree, family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details. The layout
 of the plot can be further customized via the following display parameters:
 <code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
 
@@ -402,8 +401,7 @@ the plot can be further customized via the following display parameters:
 <dt><code>boxplot</code>:</dt>
 <dd><p>plot the data as box-and-whisker plots. The layout
 of the plot can be further customized via the following display parameters:
-<code>box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-coef, do.out</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">lattice::panel.bwplot</a> for details.</p></dd>
+<code>box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats, coef, do.out</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">lattice::panel.bwplot</a> for details.</p></dd>
 
 
 <dt><code>gradient</code>:</dt>
@@ -473,8 +471,9 @@ the data matrix in the <code>data</code> slot.</p></li>
 <li><p><code>strand(DataTrack)</code>: return a vector of strand specifiers for all
 track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.</p></li>
-<li><p><code>strand(x = DataTrack) &lt;- value</code>: replace the strand information for the track items.
-The replacement value needs to be an appropriate scalar or vector of strand values.</p></li>
+<li><p><code>strand(x = DataTrack) &lt;- value</code>: replace the strand information for the track
+items. The replacement value needs to be an appropriate scalar or vector of
+strand values.</p></li>
 <li><p><code>split(x = DataTrack, f = ANY)</code>: Split a <code>DataTrack</code> object by an appropriate
 factor vector (or another vector that can be coerced into one).
 The output of this operation is a list of <code>DataTrack</code> objects.</p></li>
@@ -486,9 +485,9 @@ there is no grouping information for the ranges in a <code>DataTrack</code>.</p>
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>x = DataTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>DataTrack</code> object.
-This is essentially similar to subsetting of the <code>GRanges</code> object in the
-<code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
+<li><p><code>x = DataTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>DataTrack</code> object. This
+is essentially similar to subsetting of the <code>GRanges</code> object in the <code>range</code>
+slot. For most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(DataTrack)</code>: Subset a <code>DataTrack</code> by coordinates
 and sort if necessary.</p></li>
 <li><p><code>subset(ReferenceDataTrack)</code>: Subset a <code>ReferenceDataTrack</code> by coordinates

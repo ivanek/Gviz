@@ -97,11 +97,11 @@ their default values by calling the <code><a href="DisplayPars-class.html">avail
 function, or by inspecting the man pages of the individual track classes.
 The structure of the classes defined in this package is hierarchical, and so
 are the available display parameters, i.e., all objects inherit the
-parameters defined in the commom <code>GdObject</code> parent class, and so on.</p>
+parameters defined in the common <code>GdObject</code> parent class, and so on.</p>
 <p>Once a track object has been created, the display parameters are still open
-for modification. To this end, the <code><a href="DisplayPars-class.html">DisplayPars</a></code> replacement
-method is available for all objects inheriting from class <code>GdObject</code>.
-The method takes a named list of parameters as input, e.g.:</p>
+for modification. To this end, the <code><a href="DisplayPars-class.html">DisplayPars</a></code>
+replacement method is available for all objects inheriting from class
+<code>GdObject</code>. The method takes a named list of parameters as input, e.g.:</p>
 <p><code>displayPars(foo) &lt;- list(col="red", lwd=2)</code></p>
 <p>In the same spirit, the currently set display parameters for the object
 <code>foo</code> can be inferred using the <code>displayPars</code> method directly,
@@ -463,7 +463,7 @@ vertical grid lines, see <a href="https://rdrr.io/pkg/lattice/man/panel.function
 
 <dl><dt><code>aggregateGroups=FALSE</code>:</dt>
 <dd><p>Logical scalar. Aggregate the values
-within a sample group using the aggregation funnction specified in the
+within a sample group using the aggregation function specified in the
 <code>aggregation</code> parameter.</p></dd>
 
 
@@ -578,8 +578,7 @@ mountain-type and polygon-type plots, defaults to the setting of
 color used for the sample names in heatmap plots.</p></dd>
 
 
-<dt><code>col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
-"#00ff00", "brown")</code>:</dt>
+<dt><code>col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange", "#00ff00", "brown")</code>:</dt>
 <dd><p>Character or integer vector.  The color used for all
 line and symbol elements, unless there is a more specific control defined
 elsewhere. Unless <code>groups</code> are specified, only the first color in the
@@ -629,8 +628,7 @@ confidence intervals for confint-type plots.</p></dd>
 histogram-type plots, defaults to the setting of <code>fill</code>.</p></dd>
 
 
-<dt><code>fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC",
-"#468CC8", "#0165B3")</code>:</dt>
+<dt><code>fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3")</code>:</dt>
 <dd><p>The fill colors for the segments in the
 <code>horizon</code>-type plot. This should be a vector of length six, where the
 first three entries are the colors for positive changes, and the latter
@@ -663,8 +661,7 @@ legend text.</p></dd>
 font color for the legend text.</p></dd>
 
 
-<dt><code>gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
-"#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")</code>:</dt>
+<dt><code>gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")</code>:</dt>
 <dd><p>Character vector.
 The base colors for the <code>gradient</code> plotting type or the <code>heatmap</code>
 type with a single group. When plotting heatmaps with more than one group,
@@ -1778,11 +1775,9 @@ which to display the track items. Currently only <code>box</code>, <code>arrow</
 individual exon identifiers.</p></dd>
 
 
-<dt><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>:</dt>
-<dd><p>Character
-vector. A listing of feature types that should be drawn with thin boxes.
-Typically those are non-coding elements.</p></dd>
+<dt><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>:</dt>
+<dd><p>Character vector. A listing of feature types that should be drawn with thin
+boxes. Typically those are non-coding elements.</p></dd>
 
 
 <dt><code>transcriptAnnotation=NULL</code>:</dt>
@@ -2326,11 +2321,9 @@ which to display the track items. Currently only <code>box</code>, <code>arrow</
 individual exon identifiers.</p></dd>
 
 
-<dt><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>:</dt>
-<dd><p>Character
-vector. A listing of feature types that should be drawn with thin boxes.
-Typically those are non-coding elements.</p></dd>
+<dt><code>thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")</code>:</dt>
+<dd><p>Character vector. A listing of feature types that should be drawn with thin
+boxes. Typically those are non-coding elements.</p></dd>
 
 
 <dt><code>transcriptAnnotation=NULL</code>:</dt>
@@ -3227,7 +3220,9 @@ vertical grid lines, see <a href="https://rdrr.io/pkg/lattice/man/panel.function
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "myScheme"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">data</span><span class="op">(</span><span class="va">geneModels</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">grtrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">geneModels</span>, genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="st">"chr7"</span>, name <span class="op">=</span> <span class="st">"Gene Model"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">grtrack</span> <span class="op">&lt;-</span> <span class="fu"><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></span><span class="op">(</span><span class="va">geneModels</span>,</span></span>
+<span class="r-in"><span>    genome <span class="op">=</span> <span class="st">"hg19"</span>, chromosome <span class="op">=</span> <span class="st">"chr7"</span>, name <span class="op">=</span> <span class="st">"Gene Model"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">grtrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="settings-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

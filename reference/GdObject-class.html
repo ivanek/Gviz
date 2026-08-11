@@ -210,19 +210,25 @@ case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Emit the message explaining that <code>setPar</code> no
+longer supports pass-by-reference semantics and that its result has to be
+reassigned.</p></dd>
 
 
 <dt id="arg-recursive">recursive<a class="anchor" aria-label="anchor" href="#arg-recursive"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. For composite tracks, also set the display
+parameters on each of the contained sub-tracks.</p></dd>
 
 
 <dt id="arg-asis">asIs<a class="anchor" aria-label="anchor" href="#arg-asis"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Return the queried parameters as a list. When
+<code>FALSE</code>, the default, the result of a single-parameter query is unlisted
+for convenience.</p></dd>
 
 
 <dt id="arg-hideinternal">hideInternal<a class="anchor" aria-label="anchor" href="#arg-hideinternal"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Omit the internal display parameters, i.e.,
+those whose names are prefixed with <code>.__</code>.</p></dd>
 
 
 <dt id="arg-imagemap">ImageMap<a class="anchor" aria-label="anchor" href="#arg-imagemap"></a></dt>
@@ -387,9 +393,11 @@ alias for this method.
 See <code>settings</code> for details on display parameters and customization.</p></li>
 <li><p><code>displayPars(x = GdObject, name = character)</code>: list the value of the display parameter name.
 See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>displayPars(x = GdObject, name = missing)</code>: list the value of all available display parameters.
-See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>coords(GdObject)</code>: return the coordinates from the internal image map.</p></li>
+<li><p><code>displayPars(x = GdObject, name = missing)</code>: list the value of all available display
+parameters. See <code>settings</code> for details on display parameters and
+customization.</p></li>
+<li><p><code>coords(GdObject)</code>: return the coordinates from the internal image
+map.</p></li>
 <li><p><code>tags(GdObject)</code>: return the tags from the internal image map.</p></li>
 <li><p><code>subset(GdObject)</code>: subset a <code>GdObject</code> by coordinates.
 Most of the respective sub-classes inheriting from <code>GdObject</code> overwrite this
@@ -426,7 +434,8 @@ anything and returns <code>NULL</code>.</p></li>
 <li><p><code>identifier()</code>: Generics for <code>identifier</code>.</p></li>
 <li><p><code>identifier(GdObject) &lt;- value</code>: Generics for <code>identifier&lt;-</code>.</p></li>
 <li><p><code>chromosome()</code>: Generics for <code>chromosome</code>.</p></li>
-<li><p><code>chromosome(GdObject)</code>: return the chromosome for which the track is defined.</p></li>
+<li><p><code>chromosome(GdObject)</code>: return the chromosome for which the track is
+defined.</p></li>
 <li><p><code>chromosome(GdObject) &lt;- value</code>: Generics for <code>chromosome</code>.</p></li>
 <li><p><code>chromosome(GdObject) &lt;- value</code>: replace the value of the track's chromosome. This
 has to be a valid UCSC chromosome identifier or an integer or character

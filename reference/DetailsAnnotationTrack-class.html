@@ -74,12 +74,13 @@ constructor documentation below for more information.</p>
 
 <dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional items which will all be interpreted as further
-display parameters. See <a href="settings">settings</a> and the "Display Parameters"
+display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
 section below for details.</p></dd>
 
 
 <dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
@@ -132,15 +133,18 @@ omitted.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code></p></dd>
+<dd><p>Object of <code>GdObject-class</code>.</p></dd>
 
 
 <dt id="arg-minbase-maxbase">minBase, maxBase<a class="anchor" aria-label="anchor" href="#arg-minbase-maxbase"></a></dt>
-<dd><p>minBase,maxBase</p></dd>
+<dd><p>Numeric scalar, the start and end coordinates of the
+plotting range.</p></dd>
 
 
 <dt id="arg-prepare">prepare<a class="anchor" aria-label="anchor" href="#arg-prepare"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.</p></dd>
 
 </dl></div>
     <div id="functions">
@@ -183,26 +187,28 @@ see the 'Examples' section.</p></li>
 <li><p><code>initialize(DetailsAnnotationTrack)</code>: Initialize the <code>fun</code> and <code>selectFun</code>
 slots before deferring to the <code>AnnotationTrack</code> initializer for the
 remaining slots.</p></li>
-<li><p><code>drawGD(DetailsAnnotationTrack)</code>: plot the object to a graphics device.
-The return value of this method is the input object, potentially updated
-during the plotting operation. Internally, there are two modes in which the
-method can be called. Either in 'prepare' mode, in which case no plotting is
-done but the object is preprocessed based on the available space, or in
-'plotting' mode, in which case the actual graphical output is created.
+<li><p><code>drawGD(DetailsAnnotationTrack)</code>: plot the object to a graphics
+device. The return value of this method is the input object, potentially
+updated during the plotting operation. Internally, there are two modes in
+which the method can be called. Either in 'prepare' mode, in which case no
+plotting is done but the object is preprocessed based on the available space,
+or in 'plotting' mode, in which case the actual graphical output is created.
 Since subsetting of the object can be potentially costly, this can be
-switched off in case subsetting has already been performed before or
-is not necessary.</p></li>
+switched off in case subsetting has already been performed before or is not
+necessary.</p></li>
 </ul></div>
     <div id="slots">
     <h2>Slots</h2>
 
 
 <dl><dt><code>fun</code></dt>
-<dd><p>A function that is being called for each AnnotationTrack element to plot details.</p></dd>
+<dd><p>A function that is being called for each <code>AnnotationTrack</code>
+element to plot details.</p></dd>
 
 
 <dt><code>selectFun</code></dt>
-<dd><p>A function that is being called for each AnnotationTrack element to decide whether details need to be plotted.</p></dd>
+<dd><p>A function that is being called for each <code>AnnotationTrack</code>
+element to decide whether details need to be plotted.</p></dd>
 
 
 </dl></div>

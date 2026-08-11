@@ -80,27 +80,32 @@ in the package.</p></dd>
 
 
 <dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-stream">stream<a class="anchor" aria-label="anchor" href="#arg-stream"></a></dt>
-<dd><p>stream</p></dd>
+<dd><p>A function to stream the data from an indexed file. It has to
+accept the two arguments <code>file</code> and <code>selection</code>, and to return a <code>GRanges</code>
+object.</p></dd>
 
 
 <dt id="arg-reference">reference<a class="anchor" aria-label="anchor" href="#arg-reference"></a></dt>
-<dd><p>reference</p></dd>
+<dd><p>A <code>character</code> scalar with the path to the referenced file.</p></dd>
 
 
 <dt id="arg-mapping">mapping<a class="anchor" aria-label="anchor" href="#arg-mapping"></a></dt>
-<dd><p>mapping</p></dd>
+<dd><p>A named <code>list</code> mapping the columns of the imported data to
+the metadata columns of the track's <code>GRanges</code> object.</p></dd>
 
 
 <dt id="arg-args">args<a class="anchor" aria-label="anchor" href="#arg-args"></a></dt>
-<dd><p>ars</p></dd>
+<dd><p>A <code>list</code> of the arguments the object has been constructed with.</p></dd>
 
 
 <dt id="arg-defaults">defaults<a class="anchor" aria-label="anchor" href="#arg-defaults"></a></dt>
-<dd><p>defaults</p></dd>
+<dd><p>A <code>list</code> of the constructor's default arguments, used to
+fill in whatever has not been provided in <code>args</code>.</p></dd>
 
 </dl></div>
     <div id="value">

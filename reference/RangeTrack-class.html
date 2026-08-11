@@ -161,11 +161,13 @@ and the associated genome.)</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
-<dd><p>range</p></dd>
+<dd><p>A <code>GRanges</code> object with the genomic coordinates of the track
+items, and any additional annotation stored in its metadata columns.</p></dd>
 
 
 <dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
@@ -174,7 +176,9 @@ for a <code>RangeTrack</code> or a <code>SequenceTrack</code> object</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
-<dd><p>genome</p></dd>
+<dd><p>The genome on which the track's ranges are defined. Usually
+this is a valid UCSC genome identifier, however this is not being formally
+checked at this point.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -200,7 +204,8 @@ limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.
 
 
 <dt id="arg-sort">sort<a class="anchor" aria-label="anchor" href="#arg-sort"></a></dt>
-<dd><p><code>logical</code>.</p></dd>
+<dd><p><code>logical</code>. Sort the track's ranges by their genomic coordinates
+after subsetting.</p></dd>
 
 
 <dt id="arg-i">i<a class="anchor" aria-label="anchor" href="#arg-i"></a></dt>
@@ -212,15 +217,19 @@ limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.
 
 
 <dt id="arg-drop">drop<a class="anchor" aria-label="anchor" href="#arg-drop"></a></dt>
-<dd><p><code>logical</code>, indicating if levels that do not occur should be dropped (if <code>f</code> is a factor).</p></dd>
+<dd><p><code>logical</code>, indicating if levels that do not occur should be
+dropped (if <code>f</code> is a factor).</p></dd>
 
 
 <dt id="arg-use-defaults">use.defaults<a class="anchor" aria-label="anchor" href="#arg-use-defaults"></a></dt>
-<dd><p><code>logical</code>.</p></dd>
+<dd><p><code>logical</code>. Derive the subsetting range from the track's
+own defaults, honouring the <code>min.width</code> and similar display parameters,
+rather than using <code>from</code> and <code>to</code> verbatim.</p></dd>
 
 
 <dt id="arg-f">f<a class="anchor" aria-label="anchor" href="#arg-f"></a></dt>
-<dd><p><code>factor</code> in the sense that <code>as.factor(f)</code> defines the grouping,</p></dd>
+<dd><p><code>factor</code> in the sense that <code>as.factor(f)</code> defines the grouping used
+to split the track into a list of tracks.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -247,7 +256,8 @@ track as an object of class <code>IRanges</code>.</p></li>
 <li><p><code>genome(RangeTrack)</code>: return the track's genome.</p></li>
 <li><p><code>genome(RangeTrack) &lt;- value</code>: set the track's genome. Usually this has to
 be a valid UCSC identifier, however this is not formally enforced here.</p></li>
-<li><p><code>chromosome(RangeTrack)</code>: return the chromosome for which the track is defined.</p></li>
+<li><p><code>chromosome(RangeTrack)</code>: return the chromosome for which the track is
+defined.</p></li>
 <li><p><code>chromosome(RangeTrack) &lt;- value</code>: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
 scalar that can be reasonably coerced into one.</p></li>
@@ -263,8 +273,10 @@ genomic coordinates.</p></li>
 coordinates.</p></li>
 <li><p><code>width(RangeTrack) &lt;- value</code>: replace the width of the track items in genomic
 coordinates.</p></li>
-<li><p><code>min(RangeTrack)</code>: return the start position for the leftmost range item.</p></li>
-<li><p><code>max(RangeTrack)</code>: return the end position for the rightmost range item.</p></li>
+<li><p><code>min(RangeTrack)</code>: return the start position for the leftmost range
+item.</p></li>
+<li><p><code>max(RangeTrack)</code>: return the end position for the rightmost range
+item.</p></li>
 <li><p><code>length(RangeTrack)</code>: return the number of items in the track.</p></li>
 <li><p><code>strand(RangeTrack)</code>: return a vector of strand specifiers for all
 track items, in the form '+' for the Watson strand, '-' for the Crick
@@ -276,7 +288,8 @@ of strand values.</p></li>
 coordionates, i.e., <code>(end(obj)-start(obj))/2</code>.</p></li>
 <li><p><code>x = RangeTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>RangeTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
-<code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
+<code>range</code> slot. For most applications, the subset method may be more
+appropriate.</p></li>
 <li><p><code>subset(RangeTrack)</code>: subset a <code>RangeTrack</code> by coordinates and
 sort if necessary.</p></li>
 <li><p><code>split(x = RangeTrack, f = ANY)</code>: split a <code>RangeTrack</code> object by an appropriate

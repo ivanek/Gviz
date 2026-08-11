@@ -146,30 +146,33 @@ experiments.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code>new()</code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-stackranges">stackRanges<a class="anchor" aria-label="anchor" href="#arg-stackranges"></a></dt>
-<dd><p>stackRanges</p></dd>
+<dd><p>A <code>GRanges</code> object with the merged extent of each read
+group, i.e., the region spanned by a read and its mate. This is what the
+reads are stacked on, and its names match the <code>groupid</code> metadata column.</p></dd>
 
 
 <dt id="arg-stacks">stacks<a class="anchor" aria-label="anchor" href="#arg-stacks"></a></dt>
-<dd><p>stacks</p></dd>
+<dd><p><code>logical</code>. Set if stacking should  be preserved.</p></dd>
 
 
 <dt id="arg-sequences">sequences<a class="anchor" aria-label="anchor" href="#arg-sequences"></a></dt>
-<dd><p>sequences</p></dd>
+<dd><p>A <code>DNAStringSet</code> with the read sequences.</p></dd>
 
 
 <dt id="arg-referencesequence">referenceSequence<a class="anchor" aria-label="anchor" href="#arg-referencesequence"></a></dt>
 <dd><p>An optional <code><a href="SequenceTrack-class.html">SequenceTrack</a></code>
 object containing the reference sequence against which the reads have been
-aligned. This is only needed when mismatch information has to be added to
-the plot (i.e., the <code>showMismatchs</code> display parameter is <code>TRUE</code>)
-because this is normally not encoded in the <code>BAM</code> file. If not provided
-through this argument, the <code><a href="plotTracks.html">plotTracks</a></code> function is smart enough
-to detect the presence of a <code><a href="SequenceTrack-class.html">SequenceTrack</a></code> object in the
-track list and will use that as a reference sequence.</p></dd>
+aligned. This is only needed when mismatch information has to be added to the
+plot (i.e., the <code>showMismatchs</code> display parameter is <code>TRUE</code>) because this is
+normally not encoded in the <code>BAM</code> file. If not provided through this
+argument, the <code><a href="plotTracks.html">plotTracks</a></code> function is smart enough to detect the presence
+of a <code><a href="SequenceTrack-class.html">SequenceTrack</a></code> object in the track list and will
+use that as a reference sequence.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -179,23 +182,27 @@ section below for details.</p></dd>
 
 
 <dt id="arg-stream">stream<a class="anchor" aria-label="anchor" href="#arg-stream"></a></dt>
-<dd><p>stream</p></dd>
+<dd><p>A function to stream the data from an indexed file. It has to
+accept the two arguments <code>file</code> and <code>selection</code>, and to return a <code>GRanges</code>
+object.</p></dd>
 
 
 <dt id="arg-reference">reference<a class="anchor" aria-label="anchor" href="#arg-reference"></a></dt>
-<dd><p>reference</p></dd>
+<dd><p>A <code>character</code> scalar with the path to the referenced file.</p></dd>
 
 
 <dt id="arg-mapping">mapping<a class="anchor" aria-label="anchor" href="#arg-mapping"></a></dt>
-<dd><p>mapping</p></dd>
+<dd><p>A named <code>list</code> mapping the columns of the imported data to
+the metadata columns of the track's <code>GRanges</code> object.</p></dd>
 
 
 <dt id="arg-args">args<a class="anchor" aria-label="anchor" href="#arg-args"></a></dt>
-<dd><p>args</p></dd>
+<dd><p>A <code>list</code> of the arguments the object has been constructed with.</p></dd>
 
 
 <dt id="arg-defaults">defaults<a class="anchor" aria-label="anchor" href="#arg-defaults"></a></dt>
-<dd><p>defaults</p></dd>
+<dd><p>A <code>list</code> of the constructor's default arguments, used to
+fill in whatever has not been provided in <code>args</code>.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
@@ -362,7 +369,8 @@ files.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>x</p></dd>
+<dd><p>A valid track object class name, or the object itself, in which
+case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
@@ -370,31 +378,37 @@ files.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
-<dd><p>value</p></dd>
+<dd><p>Value to be set.</p></dd>
 
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
-<dd><p>from,to</p></dd>
+<dd><p>Numeric scalar, giving the range of genomic coordinates to
+limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
 
 
 <dt id="arg-use-defaults">use.defaults<a class="anchor" aria-label="anchor" href="#arg-use-defaults"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Derive the subsetting range from the track's
+own defaults rather than using <code>from</code> and <code>to</code> verbatim.</p></dd>
 
 
 <dt id="arg-minbase-maxbase">minBase, maxBase<a class="anchor" aria-label="anchor" href="#arg-minbase-maxbase"></a></dt>
-<dd><p>minBase,maxBase</p></dd>
+<dd><p>Numeric scalar, the start and end coordinates of the
+plotting range.</p></dd>
 
 
 <dt id="arg-prepare">prepare<a class="anchor" aria-label="anchor" href="#arg-prepare"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.</p></dd>
 
 
 <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Subset the track to the current plotting range
+before drawing.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>object</p></dd>
+<dd><p>Object inheriting from <code>AlignmentsTrack-class</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -415,16 +429,17 @@ files.</p></dd>
 <li><p><code>values(AlignmentsTrack)</code>: Return all additional annotation
 information except for the genomic coordinates for the track items as
 a <code>data.frame</code>.</p></li>
-<li><p><code>chromosome(AlignmentsTrack) &lt;- value</code>: replace the value of the track's chromosome.
-This has to be a valid UCSC chromosome identifier or an integer or character
-scalar that can be reasonably coerced into one.</p></li>
-<li><p><code>stacks(AlignmentsTrack)</code>: return the stack indices for each track item.</p></li>
+<li><p><code>chromosome(AlignmentsTrack) &lt;- value</code>: replace the value of the track's
+chromosome. This has to be a valid UCSC chromosome identifier or an integer
+or character scalar that can be reasonably coerced into one.</p></li>
+<li><p><code>stacks(AlignmentsTrack)</code>: return the stack indices for each track
+item.</p></li>
 <li><p><code>setStacks(AlignmentsTrack)</code>: recompute the stacks based on the available
 space and on the object's track items and stacking settings.</p></li>
 <li><p><code>subset(AlignmentsTrack)</code>: Subset an <code>AlignmentsTrack</code> by coordinates
 and sort if necessary.</p></li>
-<li><p><code>subset(ReferenceAlignmentsTrack)</code>: Subset a <code>ReferenceAlignmentsTrack</code> by coordinates
-and sort if necessary.</p></li>
+<li><p><code>subset(ReferenceAlignmentsTrack)</code>: Subset a <code>ReferenceAlignmentsTrack</code> by
+coordinates and sort if necessary.</p></li>
 <li><p><code>drawGrid(AlignmentsTrack)</code>: superpose a horizontal grid on the
 coverage portion of the track, based on the <code>grid</code>, <code>h</code>, <code>col.grid</code>,
 <code>lty.grid</code> and <code>lwd.grid</code> display parameters.</p></li>

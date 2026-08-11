@@ -97,7 +97,8 @@ the addition of a common highlighting area across tracks.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-tracklist">trackList<a class="anchor" aria-label="anchor" href="#arg-tracklist"></a></dt>
@@ -110,9 +111,9 @@ class <code>GdObject</code>.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
-<dd><p>An optional meta argument to handle the different input types. If the
-<code>range</code> argument is missing, all the relevant information to create the
-object has to be provided as individual function arguments (see below).</p>
+<dd><p>An optional meta argument to handle the different input types.
+If the <code>range</code> argument is missing, all the relevant information to create
+the object has to be provided as individual function arguments (see below).</p>
 <p>The different input options for <code>range</code> are:</p>
 <dl><dt>A <code>GRanges</code> object:</dt>
 <dd><p>the genomic ranges for the highlighting
@@ -186,7 +187,8 @@ case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-recursive">recursive<a class="anchor" aria-label="anchor" href="#arg-recursive"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. For composite tracks, also set the display
+parameters on each of the contained sub-tracks.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -198,7 +200,7 @@ case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>object</p></dd>
+<dd><p>Object of <code>HighlightTrack-class</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -235,7 +237,8 @@ only exists for dispatching reasons.</p></li>
 <li><p><code>consolidateTrack(HighlightTrack)</code>: For a <code>HighlightTrack</code>, apply the
 <code>consolidateTrack</code> method on each of the subtracks in the <code>trackList</code>
 slot.</p></li>
-<li><p><code>subset(HighlightTrack)</code>: subset all the contained tracks in a HighlightTrack by coordinates and sort if necessary.</p></li>
+<li><p><code>subset(HighlightTrack)</code>: subset all the contained tracks in a
+HighlightTrack by coordinates and sort if necessary.</p></li>
 <li><p><code>show(HighlightTrack)</code>: Show method.</p></li>
 </ul></div>
     <div id="objects-from-the-class">
@@ -272,7 +275,9 @@ slot.</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, min <span class="op">=</span> <span class="op">-</span><span class="fl">2</span>, max <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gt</span> <span class="op">&lt;-</span> <span class="fu"><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu"><a href="DataTrack-class.html">DataTrack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">dat</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/Bimap-envirAPI.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">1</span>, genome <span class="op">=</span> <span class="st">"hg19"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ht</span> <span class="op">&lt;-</span> <span class="fu">HighlightTrack</span><span class="op">(</span>trackList <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">gt</span>, <span class="va">dt</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>

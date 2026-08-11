@@ -78,7 +78,8 @@ plotting function.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code>new()</code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-plottingfunction">plottingFunction<a class="anchor" aria-label="anchor" href="#arg-plottingfunction"></a></dt>
@@ -97,7 +98,7 @@ plotting function.</p></dd>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional items which will all be interpreted as further
-display parameters. See <code>settings</code> and the "Display Parameters"
+display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
 section below for details.</p></dd>
 
 
@@ -110,19 +111,21 @@ section below for details.</p></dd>
 
 
 <dt id="arg-minbase">minBase<a class="anchor" aria-label="anchor" href="#arg-minbase"></a></dt>
-<dd><p>minBase</p></dd>
+<dd><p>Numeric scalar, the start coordinate of the plotting range.</p></dd>
 
 
 <dt id="arg-maxbase">maxBase<a class="anchor" aria-label="anchor" href="#arg-maxbase"></a></dt>
-<dd><p>maxBase</p></dd>
+<dd><p>Numeric scalar, the end coordinate of the plotting range.</p></dd>
 
 
 <dt id="arg-prepare">prepare<a class="anchor" aria-label="anchor" href="#arg-prepare"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>object</p></dd>
+<dd><p>Object of <code>CustomTrack-class</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -145,7 +148,8 @@ that all plotting operations need to utilize Grid graphics.</p>
 <ul><li><p><code>initialize(CustomTrack)</code>: Initialize the <code>plottingFunction</code> and
 <code>variables</code> slots before deferring to the <code>GdObject</code> initializer for the
 remaining slots.</p></li>
-<li><p><code>CustomTrack()</code>: Objects can be created using the constructor function.</p></li>
+<li><p><code>CustomTrack()</code>: Objects can be created using the constructor
+function.</p></li>
 <li><p><code>drawGD(CustomTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the

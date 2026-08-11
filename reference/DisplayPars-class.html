@@ -139,11 +139,14 @@ individual parameters, regardless of their type.</p></dd>
 
 
 <dt id="arg-asis">asIs<a class="anchor" aria-label="anchor" href="#arg-asis"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Return the queried parameters as a list. When
+<code>FALSE</code>, the default, the result of a single-parameter query is unlisted
+for convenience.</p></dd>
 
 
 <dt id="arg-hideinternal">hideInternal<a class="anchor" aria-label="anchor" href="#arg-hideinternal"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Omit the internal display parameters, i.e.,
+those whose names are prefixed with <code>.__</code>.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -151,15 +154,18 @@ individual parameters, regardless of their type.</p></dd>
 
 
 <dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Emit the message explaining that <code>setPar</code> no
+longer supports pass-by-reference semantics and that its result has to be
+reassigned.</p></dd>
 
 
 <dt id="arg-recursive">recursive<a class="anchor" aria-label="anchor" href="#arg-recursive"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. For composite tracks, also set the display
+parameters on each of the contained sub-tracks.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>object</p></dd>
+<dd><p>Object of <code>DisplayPars-class</code>.</p></dd>
 
 
 <dt id="arg-class">class<a class="anchor" aria-label="anchor" href="#arg-class"></a></dt>
@@ -191,18 +197,21 @@ alias for it.</p></li>
 list, optionally hiding internal (<code>.__</code>-prefixed) parameters.</p></li>
 <li><p><code>displayPars()</code>: Generics for <code>displayPars</code>.</p></li>
 <li><p><code>displayPars(x = DisplayPars, name = missing)</code>: Returns all available display parameters.</p></li>
-<li><p><code>displayPars(x = DisplayPars, name = character)</code>: Returns the value of a subset of display parameters, as identified by <code>name</code>.</p></li>
+<li><p><code>displayPars(x = DisplayPars, name = character)</code>: Returns the value of a subset of display
+parameters, as identified by <code>name</code>.</p></li>
 <li><p><code>as.list(DisplayPars)</code>: Converts <code>DisplayPars</code> to <code>list</code>.</p></li>
 <li><p><code>setPar()</code>: Generics for <code>SetPar</code>.</p>
 <p>SetPar generic function</p></li>
 <li><p><code>setPar(x = DisplayPars, value = list)</code>: Sets display parameters by the values of the
-named <code>list</code> in value. Note that display parameters in the <code>DisplayPars-class</code>
-are pass-by-reference, so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
+named <code>list</code> in value. Note that display parameters in the
+<code>DisplayPars-class</code> are pass-by-reference, so no re-assignment to the symbol
+<code>obj</code> is necessary.</p></li>
 <li><p><code>setPar(x = DisplayPars, value = character)</code>: set the single display parameter name to value.
 Note that display parameters in the DisplayPars class are pass-by-reference,
 so no re-assignment to the symbol <code>obj</code> is necessary.</p></li>
 <li><p><code>displayPars(x, recursive = FALSE) &lt;- value</code>: Generics for <code>displayPars&lt;-</code>.</p></li>
-<li><p><code>displayPars(x = DisplayPars) &lt;- value</code>: Replaces or adds display parameters as provided by the named <code>list</code> items.</p></li>
+<li><p><code>displayPars(x = DisplayPars) &lt;- value</code>: Replaces or adds display parameters as provided
+by the named <code>list</code> items.</p></li>
 <li><p><code>show(DisplayPars)</code>: Show method.</p></li>
 <li><p><code>as.list(InferredDisplayPars)</code>: Return <code>InferredDisplayPars</code> as a <code>list</code>.</p></li>
 <li><p><code>show(InferredDisplayPars)</code>: Show method.</p></li>

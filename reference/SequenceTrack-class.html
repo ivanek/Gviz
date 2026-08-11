@@ -145,7 +145,8 @@ are of no particular relevance to the user.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
@@ -170,8 +171,8 @@ section below for details.</p></dd>
 
 
 <dt id="arg-sequence">sequence<a class="anchor" aria-label="anchor" href="#arg-sequence"></a></dt>
-<dd><p>A meta argument to handle the different input types, making the construction
-of a <code>SequenceTrack</code> as flexible as possible.</p>
+<dd><p>A meta argument to handle the different input types, making
+the construction of a <code>SequenceTrack</code> as flexible as possible.</p>
 <p>The different input options for <code>sequence</code> are:</p><ul><li><p><strong>An object of class <a href="https://rdrr.io/pkg/Biostrings/man/XStringSet-class.html" class="external-link">DNAStringSet</a></strong>:
 the individual <code>DNAString</code>s are considered to be the different
 chromosome sequences.</p></li>
@@ -255,11 +256,13 @@ Exactly two of the three must be provided; the third is derived from them.</p></
 
 
 <dt id="arg-prepare">prepare<a class="anchor" aria-label="anchor" href="#arg-prepare"></a></dt>
-<dd><p><code>logical</code></p></dd>
+<dd><p><code>logical</code>. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>object</p></dd>
+<dd><p>Object inheriting from <code>SequenceTrack-class</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -309,8 +312,8 @@ scalar that can be reasonably coerced into one.</p></li>
 <li><p><code>genome(SequenceTrack)</code>: Set the track's genome.
 Usually this has to be a valid UCSC identifier, however this is not
 formally enforced here.</p></li>
-<li><p><code>consolidateTrack(SequenceTrack)</code>: Consolidate/
-Determine whether there is <code>chromosome</code> settings or not, and add this information.</p></li>
+<li><p><code>consolidateTrack(SequenceTrack)</code>: Consolidate/ Determine whether there is
+<code>chromosome</code> settings or not, and add this information.</p></li>
 <li><p><code>drawGD(SequenceTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which the
@@ -421,7 +424,9 @@ is not necessary.</p></li>
 <span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">## Sequence complement</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, complement <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>,</span></span>
+<span class="r-in"><span>    from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, complement <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SequenceTrack-class-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co">## Colors</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">sTrack</span>, from <span class="op">=</span> <span class="fl">199970</span>, to <span class="op">=</span> <span class="fl">200000</span>, add53 <span class="op">=</span> <span class="cn">TRUE</span>, fontcolor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>

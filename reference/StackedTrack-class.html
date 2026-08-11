@@ -90,11 +90,15 @@ when plotted.</p>
 
 
 <dl><dt id="arg--object">.Object<a class="anchor" aria-label="anchor" href="#arg--object"></a></dt>
-<dd><p>.Object</p></dd>
+<dd><p>The object skeleton passed on by <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code> during class
+instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-stacking">stacking<a class="anchor" aria-label="anchor" href="#arg-stacking"></a></dt>
-<dd><p>stacking</p></dd>
+<dd><p>The stacking type for overlapping items of the track. One in
+<code>c(hide, dense, squish, pack, full)</code>. Currently, only squish (make best use
+of the available space), dense (no stacking, collapse overlapping ranges),
+and hide (do not show any track items at all) are implemented.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -123,7 +127,8 @@ case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-drop">drop<a class="anchor" aria-label="anchor" href="#arg-drop"></a></dt>
-<dd><p><code>logical</code>, indicating if levels that do not occur should be dropped (if <code>f</code> is a factor).</p></dd>
+<dd><p><code>logical</code>, indicating if levels that do not occur should be
+dropped (if <code>f</code> is a factor).</p></dd>
 
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
@@ -132,7 +137,8 @@ limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.
 
 
 <dt id="arg-sort">sort<a class="anchor" aria-label="anchor" href="#arg-sort"></a></dt>
-<dd><p><code>logical</code>.</p></dd>
+<dd><p><code>logical</code>. Sort the track's ranges by their genomic coordinates
+after subsetting.</p></dd>
 
 
 <dt id="arg-stacks">stacks<a class="anchor" aria-label="anchor" href="#arg-stacks"></a></dt>
@@ -162,7 +168,8 @@ steps.</p></li>
 <li><p><code>x = StackedTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>StackedTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 range slot. For most applications, the subset method may be more appropriate.</p></li>
-<li><p><code>subset(StackedTrack)</code>: subset a <code>StackedTrack</code> by coordinates and sort if necessary.</p></li>
+<li><p><code>subset(StackedTrack)</code>: subset a <code>StackedTrack</code> by coordinates and
+sort if necessary.</p></li>
 <li><p><code>drawGD(StackedTrack)</code>: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
 during the plotting operation. Internally, there are two modes in which
