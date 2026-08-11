@@ -255,20 +255,18 @@ setReplaceMethod(
 
 ##  GdObject Methods Group ---------------------------------------------------
 
-#' @describeIn GdObject-class Generics for `group`.
-#' @exportMethod group
-#' @keywords internal
-setGeneric("group", function(GdObject, ...) standardGeneric("group"))
+#' @importFrom BiocGenerics group
+NULL
 
 #' @exportMethod "group<-"
 #' @describeIn GdObject-class Generics for `group<-`.
 #' @keywords internal
-setGeneric("group<-", function(GdObject, value) standardGeneric("group<-"))
+setGeneric("group<-", function(object, value) standardGeneric("group<-"))
 
 #' @describeIn GdObject-class return grouping information for the individual
 #' items in the track. Unless overwritten in one of the sub-classes,
 #' this usually returns `NULL`.
-setMethod("group", "GdObject", function(GdObject) NULL)
+setMethod("group", "GdObject", function(object) NULL)
 
 ##  GdObject Methods ImageMap ------------------------------------------------
 

@@ -500,13 +500,13 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 
 #' @describeIn AnnotationTrack-class extract the group membership for all track items.
 #' @export
-setMethod("group", "AnnotationTrack", function(GdObject) .getAnn(GdObject, "group"))
+setMethod("group", "AnnotationTrack", function(object) .getAnn(object, "group"))
 
 #' @describeIn AnnotationTrack-class replace the grouping information for track items.
 #' The replacement value must be a factor of appropriate length or another
 #' vector that can be coerced into such.
 #' @export
-setReplaceMethod("group", signature("AnnotationTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "group"))
+setReplaceMethod("group", signature("AnnotationTrack", "character"), function(object, value) .setAnn(object, value, "group"))
 
 ## Context-dependent meta-accessors to the identifier data of an AnnotationTrack and a GeneRegionTrack. For the former, those will
 ## be the content of the 'id', the 'group' or the 'feature' metadata column, for the latter, one in

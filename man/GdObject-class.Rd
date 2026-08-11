@@ -16,7 +16,6 @@
 \alias{subset,GdObject-method}
 \alias{names,GdObject-method}
 \alias{names<-,GdObject,character-method}
-\alias{group}
 \alias{group<-}
 \alias{group,GdObject-method}
 \alias{imageMap}
@@ -83,11 +82,9 @@
 
 \S4method{names}{GdObject,character}(x) <- value
 
-group(GdObject, ...)
+group(object) <- value
 
-group(GdObject) <- value
-
-\S4method{group}{GdObject}(GdObject)
+\S4method{group}{GdObject}(object)
 
 imageMap(GdObject, ...)
 
@@ -362,9 +359,7 @@ method, the default is to return the unaltered input object.
 
 \item \code{names(x = GdObject) <- value}: set the value of the \code{name} slot.
 
-\item \code{group()}: Generics for \code{group}.
-
-\item \code{group(GdObject) <- value}: Generics for \verb{group<-}.
+\item \code{group(object) <- value}: Generics for \verb{group<-}.
 
 \item \code{group(GdObject)}: return grouping information for the individual
 items in the track. Unless overwritten in one of the sub-classes,

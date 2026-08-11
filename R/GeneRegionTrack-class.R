@@ -712,7 +712,7 @@ setReplaceMethod("exon", signature("GeneRegionTrack", "character"), function(GdO
 
 #' @describeIn GeneRegionTrack-class extract the group membership for all track items.
 #' @export
-setMethod("group", "GeneRegionTrack", function(GdObject) transcript(GdObject))
+setMethod("group", "GeneRegionTrack", function(object) transcript(object))
 
 #' @describeIn GeneRegionTrack-class replace the grouping information for track items.
 #' The replacement value must be a factor of appropriate length or another
@@ -720,7 +720,7 @@ setMethod("group", "GeneRegionTrack", function(GdObject) transcript(GdObject))
 #' @export
 setReplaceMethod(
     "group", signature("GeneRegionTrack", "character"),
-    function(GdObject, value) .setAnn(GdObject, value, "transcript")
+    function(object, value) .setAnn(object, value, "transcript")
 )
 
 #' @describeIn GeneRegionTrack-class return track item identifiers.

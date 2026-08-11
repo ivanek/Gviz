@@ -53,9 +53,9 @@ AnnotationTrack(
   ...
 )
 
-\S4method{group}{AnnotationTrack}(GdObject)
+\S4method{group}{AnnotationTrack}(object)
 
-\S4method{group}{AnnotationTrack,character}(GdObject) <- value
+\S4method{group}{AnnotationTrack,character}(object) <- value
 
 \S4method{identifier}{AnnotationTrack}(GdObject, type = .dpOrDefault(GdObject, "groupAnnotation", "group"))
 
@@ -293,7 +293,7 @@ the \code{AnnotationTrack} initializer for the remaining slots.
 
 \item \code{group(AnnotationTrack)}: extract the group membership for all track items.
 
-\item \code{group(GdObject = AnnotationTrack) <- value}: replace the grouping information for track items.
+\item \code{group(object = AnnotationTrack) <- value}: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.
 

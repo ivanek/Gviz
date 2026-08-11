@@ -141,6 +141,7 @@ importFrom(Biobase,
   rowMax,
   rowMin
 )
+importFrom(BiocGenerics,group)
 importFrom(Biostrings,
   BString,
   BStringSet,

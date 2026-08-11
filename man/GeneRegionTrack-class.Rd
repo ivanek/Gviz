@@ -74,9 +74,9 @@ GeneRegionTrack(
 
 \S4method{exon}{GeneRegionTrack,character}(GdObject) <- value
 
-\S4method{group}{GeneRegionTrack}(GdObject)
+\S4method{group}{GeneRegionTrack}(object)
 
-\S4method{group}{GeneRegionTrack,character}(GdObject) <- value
+\S4method{group}{GeneRegionTrack,character}(object) <- value
 
 \S4method{identifier}{GeneRegionTrack}(
   GdObject,
@@ -289,12 +289,12 @@ functions: \code{gff}, \code{gff1}, \code{gff2}, \code{gff3}, \code{gtf}.}
 
 \item{value}{Value to be set.}
 
+\item{object}{object}
+
 \item{type}{type}
 
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
-
-\item{object}{object}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -385,7 +385,7 @@ length or another vector that can be coerced into such.
 
 \item \code{group(GeneRegionTrack)}: extract the group membership for all track items.
 
-\item \code{group(GdObject = GeneRegionTrack) <- value}: replace the grouping information for track items.
+\item \code{group(object = GeneRegionTrack) <- value}: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.
 
