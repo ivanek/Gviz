@@ -11,106 +11,106 @@ NULL
 #' samples as well as sample groupings are supported, with the restriction of
 #' equal genomic coordinates for a single observation across samples.
 #'
-#' Depending on the setting of the \code{type} display parameter, the data can
+#' Depending on the setting of the `type` display parameter, the data can
 #' be plotted in various different forms as well as combinations thereof.
 #' Supported plotting types are:
 #'
 #' \describe{
 #'
-#' \item{\code{p}:}{ simple xy-plot.}
+#' \item{`p`:}{ simple xy-plot.}
 #'
-#' \item{\code{l}:}{ lines plot. In the case of multiple samples this plotting
+#' \item{`l`:}{ lines plot. In the case of multiple samples this plotting
 #' type is not overly usefull since the points in the data matrix are connected
-#' in column-wise order. Type \code{a} might be more appropriate in these
+#' in column-wise order. Type `a` might be more appropriate in these
 #' situations.}
 #'
-#' \item{\code{b}:}{ combination of xy-plot and lines plot.}
+#' \item{`b`:}{ combination of xy-plot and lines plot.}
 #'
-#' \item{\code{a}:}{ lines plot of the column-wise average values.}
+#' \item{`a`:}{ lines plot of the column-wise average values.}
 #'
-#' \item{\code{s}:}{ sort and connect data points along the x-axis}
+#' \item{`s`:}{ sort and connect data points along the x-axis}
 #'
-#' \item{\code{S}:}{ sort and connect data points along the y-axis}
+#' \item{`S`:}{ sort and connect data points along the y-axis}
 #'
-#' \item{\code{g}:}{ add grid lines. To ensure a consitant look and feel across
+#' \item{`g`:}{ add grid lines. To ensure a consitant look and feel across
 #' multiple tracks, grid lines should preferentially be added by using the
-#' \code{grid} display parameter.}
+#' `grid` display parameter.}
 #'
-#' \item{\code{r}:}{ add a regression line to the plot.}
+#' \item{`r`:}{ add a regression line to the plot.}
 #'
-#' \item{\code{h}:}{ histogram-like vertical lines centered in the middle of
+#' \item{`h`:}{ histogram-like vertical lines centered in the middle of
 #' the coordinate ranges.}
 #'
-#' \item{\code{smooth}:}{ add a loess fit to the plot. The following display
-#' parameters can be used to control the loess calculation: \code{span, degree,
-#' family, evaluation}. See [lattice::panel.loess] for details.}
+#' \item{`smooth`:}{ add a loess fit to the plot. The following display
+#' parameters can be used to control the loess calculation: `span, degree,
+#' family, evaluation`. See [lattice::panel.loess] for details.}
 #'
-#' \item{\code{histogram}:}{ plot data as a histogram, where the width of the
-#' histogram bars reflects the width of the genomic ranges in the \code{range}
+#' \item{`histogram`:}{ plot data as a histogram, where the width of the
+#' histogram bars reflects the width of the genomic ranges in the `range`
 #' slot.}
 #'
-#' \item{\code{mountain}:}{ plot a smoothed version of the data relative to a
-#' baseline, as defined by the \code{baseline} display parameter. The following
-#' display parameters can be used to control the smoothing: \code{span, degree,
-#' family, evaluation}. See [lattice::panel.loess] for details. The layout
+#' \item{`mountain`:}{ plot a smoothed version of the data relative to a
+#' baseline, as defined by the `baseline` display parameter. The following
+#' display parameters can be used to control the smoothing: `span, degree,
+#' family, evaluation`. See [lattice::panel.loess] for details. The layout
 #' of the plot can be further customized via the following display parameters:
-#' \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
+#' `col.mountain, lwd.mountain, lty.mountain, fill.mountain`.}
 #'
-#' \item{\code{polygon}:}{ plot data as a polygon (similar to
-#' \code{mountain}-type but without smoothing). Data are plotted relative to a
-#' baseline, as defined by the \code{baseline} display parameter. The layout of
+#' \item{`polygon`:}{ plot data as a polygon (similar to
+#' `mountain`-type but without smoothing). Data are plotted relative to a
+#' baseline, as defined by the `baseline` display parameter. The layout of
 #' the plot can be further customized via the following display parameters:
-#' \code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
+#' `col.mountain, lwd.mountain, lty.mountain, fill.mountain`.}
 #'
-#' \item{\code{boxplot}:}{ plot the data as box-and-whisker plots. The layout
+#' \item{`boxplot`:}{ plot the data as box-and-whisker plots. The layout
 #' of the plot can be further customized via the following display parameters:
-#' \code{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-#' coef, do.out}. See [lattice::panel.bwplot] for details.}
+#' `box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
+#' coef, do.out`. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{gradient}:}{ collapse the data across samples and plot this
+#' \item{`gradient`:}{ collapse the data across samples and plot this
 #' average value as a color-coded gradient. Essenitally this is similar to the
 #' heatmap-type plot of a single sample. The layout of the plot can be further
-#' customized via the display parameters \code{ncolor} and \code{gradient}
+#' customized via the display parameters `ncolor` and `gradient`
 #' which control the number of gradient colors as well as the gradient base
 #' colors, respectively.}
 #'
-#' \item{\code{heatmap}:}{ plot the color-coded values for all samples in the
+#' \item{`heatmap`:}{ plot the color-coded values for all samples in the
 #' form of a heatmap. The data for individual samples can be visually separated
-#' by setting the \code{separator} display parameter. It's value is taken as
+#' by setting the `separator` display parameter. It's value is taken as
 #' the amount of spacing in pixels in between two heatmap rows. The layout of
-#' the plot can be further customized via the display parameters \code{ncolor}
-#' and \code{gradient} which control the number of gradient colors as well as
+#' the plot can be further customized via the display parameters `ncolor`
+#' and `gradient` which control the number of gradient colors as well as
 #' the gradient base colors, respectively.}
 #'
-#' \item{\code{horizon}:}{ plot continuous data by cutting the y range into
+#' \item{`horizon`:}{ plot continuous data by cutting the y range into
 #' segments and overplotting them with color representing the magnitude and
 #' direction of deviation. This is particularly useful when comparing multiple
 #' samples, in which case the horizon strips are stacked. See
-#' [latticeExtra::panel.horizonplot] for details. Please note that the \code{origin}
-#' and \code{horizonscale} arguments of the Lattice \code{horizonplot} function
-#' are available as display parameters \code{horizon.origin} and
-#' \code{horizon.scale}.}
+#' [latticeExtra::panel.horizonplot] for details. Please note that the `origin`
+#' and `horizonscale` arguments of the Lattice `horizonplot` function
+#' are available as display parameters `horizon.origin` and
+#' `horizon.scale`.}
 #'
 #' }
 #'
-#' For some of the above plotting-types the \code{groups} display parameter can
+#' For some of the above plotting-types the `groups` display parameter can
 #' be used to indicate sample sub-groupings. Its value is supposed to be a
 #' factor vector of similar length as the number of samples. In most cases, the
 #' groups are shown in different plotting colors and data aggregation
 #' operations are done in a stratified fashion.
 #'
-#' The \code{window} display parameter can be used to aggregate the data prior
+#' The `window` display parameter can be used to aggregate the data prior
 #' to plotting. Its value is taken as the number of equal-sized windows along
 #' the genomic coordinates of the track for which to compute average values.
-#' The special value \code{auto} can be used to automatically determine a
+#' The special value `auto` can be used to automatically determine a
 #' reasonable number of windows which can be particularly useful when plotting
 #' very large genomic regions with many data points.
 #'
-#' The \code{aggregation} parameter can be set to define the aggregation
+#' The `aggregation` parameter can be set to define the aggregation
 #' function to be used when averaging in windows or across collapsed items. It
 #' takes the form of either a function which should condense a numeric vector
 #' into a single number, or one of the predefined options as character scalars
-#' \code{"mean"}, \code{"median"} or \code{"sum"} for mean, median or
+#' `"mean"`, `"median"` or `"sum"` for mean, median or
 #' summation, respectively. Defaults to computing mean values for each sample.
 #' Note that the predefined options can be much faster because they are
 #' optimized to work on large numeric tables.
@@ -122,10 +122,10 @@ NULL
 #'
 #' @return
 #' The return value of the constructor function is a new object of class
-#' \code{DataTrack} or \code{ReferenceDataTrack}.
+#' `DataTrack` or `ReferenceDataTrack`.
 #' @section Objects from the class:
 #'
-#' Objects can be created using the constructor function \code{DataTrack}.
+#' Objects can be created using the constructor function `DataTrack`.
 #'
 #' @author Florian Hahne
 #' @inherit GdObject-class seealso
@@ -466,8 +466,9 @@ setReplaceMethod("values", "DataTrack", function(x, value) {
 #' @export
 setMethod("strand", "DataTrack", function(x) x@strand)
 
-#' @describeIn DataTrack-class replace the strand information for the track items.
-#' The replacement value needs to be an appropriate scalar or vector of strand values.
+#' @describeIn DataTrack-class replace the strand information for the track
+#' items. The replacement value needs to be an appropriate scalar or vector of
+#' strand values.
 #' @export
 setReplaceMethod("strand", "DataTrack", function(x, value) {
     if (!is.character(value) || length(value) != 1 || !value %in% c("+", "-", "*")) {
@@ -778,9 +779,9 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
 
 ## Subset --------------------------------------------------------------------
 
-#' @describeIn DataTrack-class subset the items in the `DataTrack` object.
-#' This is essentially similar to subsetting of the `GRanges` object in the
-#' `range` slot. For most applications, the subset method may be more appropriate.
+#' @describeIn DataTrack-class subset the items in the `DataTrack` object. This
+#' is essentially similar to subsetting of the `GRanges` object in the `range`
+#' slot. For most applications, the subset method may be more appropriate.
 #' @export
 setMethod("[", signature(x = "DataTrack"), function(x, i, j, ..., drop = FALSE) {
     x <- .deepCopyPars(x)

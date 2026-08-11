@@ -61,9 +61,9 @@ hence the constructor function \code{ImageMap} is not exported in the name space
 order x bl, y bl, x tr, y tr. Row names are mandatory for the matrix
 and have to be unique.}
 
-\item{\code{tags}}{Object of class \code{list}, the individual HTML tags for the image map.
-The value of each list item has to be a named character vector,
-where the names must match back into the row names of the \code{coords} matrix}
+\item{\code{tags}}{Object of class \code{list}, the individual HTML tags for the image
+map. The value of each list item has to be a named character vector, where
+the names must match back into the row names of the \code{coords} matrix.}
 }}
 
 \examples{

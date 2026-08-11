@@ -17,7 +17,7 @@
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
 limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
 
-\item{\dots}{Additional arguments.}
+\item{...}{Additional arguments.}
 }
 \value{
 A virtual class: No objects may be created from it.

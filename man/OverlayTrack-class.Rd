@@ -42,7 +42,7 @@ OverlayTrack(trackList = list(), name = "OverlayTrack", ...)
 \item{trackList}{A list of Gviz track objects that all have to inherit from
 class \code{GdObject}.}
 
-\item{\dots}{All additional parameters are ignored.}
+\item{...}{All additional parameters are ignored.}
 
 \item{name}{Character scalar of the track's name. This is not really used
 and only exists for completeness.}
@@ -118,8 +118,12 @@ Objects can be created using the constructor function \code{OverlayTrack}.
 ## Object construction:
 set.seed(123)
 dat <- runif(100, min = -2, max = 22)
-dt1 <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19")
-dt2 <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19")
+dt1 <- DataTrack(
+    data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19"
+)
+dt2 <- DataTrack(
+    data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19"
+)
 ot <- OverlayTrack(trackList = list(dt1, dt2))
 }
 \seealso{

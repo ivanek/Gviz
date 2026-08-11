@@ -4,7 +4,7 @@
 \alias{UcscTrack}
 \alias{clearSessionCache}
 \title{Meta-constructor for Gviz tracks fetched directly from the various
-UCSC data sources.}
+UCSC data sources}
 \usage{
 UcscTrack(
   track,
@@ -42,7 +42,7 @@ fetch the data.}
 
 \item{from, to}{A range of genomic locations for which to fetch data.}
 
-\item{\dots}{All additional named arguments are expected to be either
+\item{...}{All additional named arguments are expected to be either
 display parameters for the resulting objects, or character scalars of column
 names in the downloaded UCSC data tables that are matched by name to
 available arguments in the respective constructor functions as defined by
@@ -66,18 +66,17 @@ transcript model data, simple annotation features like CpG Island locations
 or SNPs, or numeric data like conservation or mapability. This function
 presents a unified API to download all kinds of data and to map them back to
 one of the annotation track objects defined in this package. The type of
-object to hold the data has to be given in the \code{trackType} argument,
-and subsequently the function passes all data on to the respective object
-constructor. All additional named arguments are considered to be relevant
-for the constructor of choice, and single character scalars are replaced by
-the respective data columns in the downloaded UCSC tables if available. For
+object to hold the data has to be given in the \code{trackType} argument, and
+subsequently the function passes all data on to the respective object
+constructor. All additional named arguments are considered to be relevant for
+the constructor of choice, and single character scalars are replaced by the
+respective data columns in the downloaded UCSC tables if available. For
 instance, assuming the table for track 'foo' contains the columns 'id',
-'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start
-end end location. In order to create an \link[=AnnotationTrack-class]{AnnotationTrack}
+'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start end
+end location. In order to create an \link[=AnnotationTrack-class]{AnnotationTrack}
 object from that data, we have to pass the additional named arguments
-\code{id="id"}, \code{feature="type"}, \code{start="fromLoc"} and
-\code{end="toLoc"} to the \code{UcscTrack} function. The complete function call
-could look like this:
+\code{id="id"}, \code{feature="type"}, \code{start="fromLoc"} and \code{end="toLoc"} to the
+\code{UcscTrack} function. The complete function call could look like this:
 
 \code{UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")}
 

@@ -24,7 +24,8 @@ CustomTrack(
 \S4method{show}{CustomTrack}(object)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{plottingFunction}{A user-defined function to be executed once the
 track coordinates have been properly set up. The function needs to accept
@@ -36,21 +37,23 @@ needs to return the input \code{GdObject}, potentially with modifications.}
 \item{variables}{A list of additional variables for the user-defined
 plotting function.}
 
-\item{\dots}{Additional items which will all be interpreted as further
-display parameters. See \code{settings} and the "Display Parameters"
+\item{...}{Additional items which will all be interpreted as further
+display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
 \item{name}{Character scalar of the track's name.}
 
 \item{GdObject}{Object of \code{GdObject-class}.}
 
-\item{minBase}{minBase}
+\item{minBase}{Numeric scalar, the start coordinate of the plotting range.}
 
-\item{maxBase}{maxBase}
+\item{maxBase}{Numeric scalar, the end coordinate of the plotting range.}
 
-\item{prepare}{\code{logical}}
+\item{prepare}{\code{logical}. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.}
 
-\item{object}{object}
+\item{object}{Object of \code{CustomTrack-class}.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -74,7 +77,8 @@ that all plotting operations need to utilize Grid graphics.
 \code{variables} slots before deferring to the \code{GdObject} initializer for the
 remaining slots.
 
-\item \code{CustomTrack()}: Objects can be created using the constructor function.
+\item \code{CustomTrack()}: Objects can be created using the constructor
+function.
 
 \item \code{drawGD(CustomTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated

@@ -43,16 +43,17 @@ HighlightTrack(
 \S4method{show}{HighlightTrack}(object)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{trackList}{A list of Gviz track objects that all have to inherit from
 class \code{GdObject}.}
 
-\item{\dots}{All additional parameters are ignored.}
+\item{...}{All additional parameters are ignored.}
 
-\item{range}{An optional meta argument to handle the different input types. If the
-\code{range} argument is missing, all the relevant information to create the
-object has to be provided as individual function arguments (see below).
+\item{range}{An optional meta argument to handle the different input types.
+If the \code{range} argument is missing, all the relevant information to create
+the object has to be provided as individual function arguments (see below).
 
 The different input options for \code{range} are:
 
@@ -94,7 +95,7 @@ based on the available inputs, and as a last resort will fall back to the
 value \code{chrNA}. Please note that by definition all objects in the
 \code{Gviz} package can only have a single active chromosome at a time
 (although internally the information for more than one chromosome may be
-present), and the user has to call the \code{chromosome<-} replacement
+present), and the user has to call the \verb{chromosome<-} replacement
 method in order to change to a different active chromosome.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
@@ -109,13 +110,14 @@ and only exists fro completeness.}
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
 
-\item{recursive}{\code{logical}}
+\item{recursive}{\code{logical}. For composite tracks, also set the display
+parameters on each of the contained sub-tracks.}
 
 \item{value}{Value to be set.}
 
 \item{GdObject}{Object of \code{GdObject-class}.}
 
-\item{object}{object}
+\item{object}{Object of \code{HighlightTrack-class}.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -159,7 +161,8 @@ only exists for dispatching reasons.
 \code{consolidateTrack} method on each of the subtracks in the \code{trackList}
 slot.
 
-\item \code{subset(HighlightTrack)}: subset all the contained tracks in a HighlightTrack by coordinates and sort if necessary.
+\item \code{subset(HighlightTrack)}: subset all the contained tracks in a
+HighlightTrack by coordinates and sort if necessary.
 
 \item \code{show(HighlightTrack)}: Show method.
 
@@ -175,7 +178,9 @@ Objects can be created using the constructor function \code{HighlightTrack}.
 set.seed(123)
 dat <- runif(100, min = -2, max = 22)
 gt <- GenomeAxisTrack()
-dt <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19")
+dt <- DataTrack(
+    data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19"
+)
 
 ht <- HighlightTrack(trackList = list(gt, dt))
 }

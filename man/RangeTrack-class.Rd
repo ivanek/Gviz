@@ -104,14 +104,18 @@
 \S4method{consolidateTrack}{RangeTrack}(GdObject, chromosome, ...)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
-\item{range}{range}
+\item{range}{A \code{GRanges} object with the genomic coordinates of the track
+items, and any additional annotation stored in its metadata columns.}
 
 \item{chromosome}{the currently active chromosome which may have to be set
 for a \code{RangeTrack} or a \code{SequenceTrack} object}
 
-\item{genome}{genome}
+\item{genome}{The genome on which the track's ranges are defined. Usually
+this is a valid UCSC genome identifier, however this is not being formally
+checked at this point.}
 
 \item{...}{Additional arguments.}
 
@@ -125,17 +129,22 @@ case the class is derived directly from it.}
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
 limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
 
-\item{sort}{\code{logical}.}
+\item{sort}{\code{logical}. Sort the track's ranges by their genomic coordinates
+after subsetting.}
 
 \item{i}{Numeric scalar, index to subset.}
 
 \item{j}{Numeric scalar, index to subset. Ignored.}
 
-\item{drop}{\code{logical}, indicating if levels that do not occur should be dropped (if \code{f} is a factor).}
+\item{drop}{\code{logical}, indicating if levels that do not occur should be
+dropped (if \code{f} is a factor).}
 
-\item{use.defaults}{\code{logical}.}
+\item{use.defaults}{\code{logical}. Derive the subsetting range from the track's
+own defaults, honouring the \code{min.width} and similar display parameters,
+rather than using \code{from} and \code{to} verbatim.}
 
-\item{f}{\code{factor} in the sense that \code{as.factor(f)} defines the grouping,}
+\item{f}{\code{factor} in the sense that \code{as.factor(f)} defines the grouping used
+to split the track into a list of tracks.}
 }
 \value{
 A virtual class: No objects may be created from it.
@@ -173,7 +182,8 @@ track as an object of class \code{IRanges}.
 \item \code{genome(RangeTrack) <- value}: set the track's genome. Usually this has to
 be a valid UCSC identifier, however this is not formally enforced here.
 
-\item \code{chromosome(RangeTrack)}: return the chromosome for which the track is defined.
+\item \code{chromosome(RangeTrack)}: return the chromosome for which the track is
+defined.
 
 \item \code{chromosome(RangeTrack) <- value}: replace the value of the track's chromosome.
 This has to be a valid UCSC chromosome identifier or an integer or character
@@ -197,9 +207,11 @@ coordinates.
 \item \code{width(RangeTrack) <- value}: replace the width of the track items in genomic
 coordinates.
 
-\item \code{min(RangeTrack)}: return the start position for the leftmost range item.
+\item \code{min(RangeTrack)}: return the start position for the leftmost range
+item.
 
-\item \code{max(RangeTrack)}: return the end position for the rightmost range item.
+\item \code{max(RangeTrack)}: return the end position for the rightmost range
+item.
 
 \item \code{length(RangeTrack)}: return the number of items in the track.
 
@@ -216,7 +228,8 @@ coordionates, i.e., \code{(end(obj)-start(obj))/2}.
 
 \item \code{x = RangeTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{RangeTrack} object.
 This is essentially similar to subsetting of the \code{GRanges} object in the
-\code{range} slot. For most applications, the subset method may be more appropriate.
+\code{range} slot. For most applications, the subset method may be more
+appropriate.
 
 \item \code{subset(RangeTrack)}: subset a \code{RangeTrack} by coordinates and
 sort if necessary.

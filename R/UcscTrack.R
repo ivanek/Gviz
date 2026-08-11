@@ -270,7 +270,7 @@ clearSessionCache <- function() {
 
 
 #' Meta-constructor for Gviz tracks fetched directly from the various
-#' UCSC data sources.
+#' UCSC data sources
 #'
 #'
 #' The UCSC data base provides a wealth of annotation information. This
@@ -287,18 +287,17 @@ clearSessionCache <- function() {
 #' or SNPs, or numeric data like conservation or mapability. This function
 #' presents a unified API to download all kinds of data and to map them back to
 #' one of the annotation track objects defined in this package. The type of
-#' object to hold the data has to be given in the `trackType` argument,
-#' and subsequently the function passes all data on to the respective object
-#' constructor. All additional named arguments are considered to be relevant
-#' for the constructor of choice, and single character scalars are replaced by
-#' the respective data columns in the downloaded UCSC tables if available. For
+#' object to hold the data has to be given in the `trackType` argument, and
+#' subsequently the function passes all data on to the respective object
+#' constructor. All additional named arguments are considered to be relevant for
+#' the constructor of choice, and single character scalars are replaced by the
+#' respective data columns in the downloaded UCSC tables if available. For
 #' instance, assuming the table for track 'foo' contains the columns 'id',
-#' 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start
-#' end end location. In order to create an [AnnotationTrack][AnnotationTrack-class]
+#' 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start end
+#' end location. In order to create an [AnnotationTrack][AnnotationTrack-class]
 #' object from that data, we have to pass the additional named arguments
-#' `id="id"`, `feature="type"`, `start="fromLoc"` and
-#' `end="toLoc"` to the `UcscTrack` function. The complete function call
-#' could look like this:
+#' `id="id"`, `feature="type"`, `start="fromLoc"` and `end="toLoc"` to the
+#' `UcscTrack` function. The complete function call could look like this:
 #'
 #' `UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000,
 #' to=10000, trackType="AnnotationTrack", id="id", feature="type",
@@ -329,7 +328,7 @@ clearSessionCache <- function() {
 #' fetch the data.
 #' @param name Character, the name to use for the resulting track object.
 #' @param from,to A range of genomic locations for which to fetch data.
-#' @param \dots All additional named arguments are expected to be either
+#' @param ... All additional named arguments are expected to be either
 #' display parameters for the resulting objects, or character scalars of column
 #' names in the downloaded UCSC data tables that are matched by name to
 #' available arguments in the respective constructor functions as defined by

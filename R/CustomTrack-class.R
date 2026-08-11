@@ -66,10 +66,11 @@ setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, varia
 #' @param variables A list of additional variables for the user-defined
 #' plotting function.
 #' @param name Character scalar of the track's name.
-#' @param \dots Additional items which will all be interpreted as further
-#' display parameters. See `settings` and the "Display Parameters"
+#' @param ... Additional items which will all be interpreted as further
+#' display parameters. See [`settings`] and the "Display Parameters"
 #' section below for details.
-#' @describeIn CustomTrack-class Objects can be created using the constructor function.
+#' @describeIn CustomTrack-class Objects can be created using the constructor
+#' function.
 #' @export
 CustomTrack <- function(plottingFunction = function(GdObject, prepare = FALSE, ...) {}, variables = list(), name = "CustomTrack", ...) {
     return(new("CustomTrack", plottingFunction = plottingFunction, variables = variables, name = name, ...))

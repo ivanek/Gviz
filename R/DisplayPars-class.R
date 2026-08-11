@@ -170,7 +170,8 @@ setGeneric("displayPars", function(x, name, ...) standardGeneric("displayPars"))
 #' @export
 setMethod("displayPars", c("DisplayPars", "missing"), function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal))
 
-#' @describeIn DisplayPars-class Returns the value of a subset of display parameters, as identified by `name`.
+#' @describeIn DisplayPars-class Returns the value of a subset of display
+#' parameters, as identified by `name`.
 #' @export
 setMethod("displayPars", c("DisplayPars", "character"), function(x, name) getPar(x, name))
 
@@ -192,8 +193,9 @@ setAs("DisplayPars", "list", function(from, to) if (!is.null(from)) as.list(from
 setGeneric("setPar", function(x, value, ...) standardGeneric("setPar"))
 
 #' @describeIn DisplayPars-class Sets display parameters by the values of the
-#' named `list` in value. Note that display parameters in the `DisplayPars-class`
-#' are pass-by-reference, so no re-assignment to the symbol `obj` is necessary.
+#' named `list` in value. Note that display parameters in the
+#' `DisplayPars-class` are pass-by-reference, so no re-assignment to the symbol
+#' `obj` is necessary.
 setMethod(
     "setPar", signature("DisplayPars", "list"),
     function(x, value, interactive = TRUE) {
@@ -234,7 +236,8 @@ setGeneric("displayPars<-",
     function(x, recursive = FALSE, value) standardGeneric("displayPars<-")
 )
 
-#' @describeIn DisplayPars-class Replaces or adds display parameters as provided by the named `list` items.
+#' @describeIn DisplayPars-class Replaces or adds display parameters as provided
+#' by the named `list` items.
 #' @export
 setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, recursive = FALSE, value) {
     x <- setPar(x, value, interactive = FALSE)

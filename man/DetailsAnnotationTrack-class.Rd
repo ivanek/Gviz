@@ -15,11 +15,12 @@ DetailsAnnotationTrack(...)
 \S4method{drawGD}{DetailsAnnotationTrack}(GdObject, minBase, maxBase, prepare = FALSE, ...)
 }
 \arguments{
-\item{\dots}{Additional items which will all be interpreted as further
-display parameters. See \url{settings} and the "Display Parameters"
+\item{...}{Additional items which will all be interpreted as further
+display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{fun}{A function that is being called for each entry in the
 \code{AnnotationTrack} object. See section 'Details' and 'Examples' for
@@ -68,11 +69,14 @@ logical scalar. If the return value is \code{TRUE}, details will be drawn
 for the item, if it is \code{FALSE}, the details strip for the item is
 omitted.}
 
-\item{GdObject}{Object of \code{GdObject-class}}
+\item{GdObject}{Object of \code{GdObject-class}.}
 
-\item{minBase, maxBase}{minBase,maxBase}
+\item{minBase, maxBase}{Numeric scalar, the start and end coordinates of the
+plotting range.}
 
-\item{prepare}{\code{logical}}
+\item{prepare}{\code{logical}. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.}
 }
 \description{
 The purpose of this track type is to add an arbitrarily detailed plot
@@ -123,22 +127,24 @@ see the 'Examples' section.
 slots before deferring to the \code{AnnotationTrack} initializer for the
 remaining slots.
 
-\item \code{drawGD(DetailsAnnotationTrack)}: plot the object to a graphics device.
-The return value of this method is the input object, potentially updated
-during the plotting operation. Internally, there are two modes in which the
-method can be called. Either in 'prepare' mode, in which case no plotting is
-done but the object is preprocessed based on the available space, or in
-'plotting' mode, in which case the actual graphical output is created.
+\item \code{drawGD(DetailsAnnotationTrack)}: plot the object to a graphics
+device. The return value of this method is the input object, potentially
+updated during the plotting operation. Internally, there are two modes in
+which the method can be called. Either in 'prepare' mode, in which case no
+plotting is done but the object is preprocessed based on the available space,
+or in 'plotting' mode, in which case the actual graphical output is created.
 Since subsetting of the object can be potentially costly, this can be
-switched off in case subsetting has already been performed before or
-is not necessary.
+switched off in case subsetting has already been performed before or is not
+necessary.
 
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{fun}}{A function that is being called for each AnnotationTrack element to plot details.}
+\item{\code{fun}}{A function that is being called for each \code{AnnotationTrack}
+element to plot details.}
 
-\item{\code{selectFun}}{A function that is being called for each AnnotationTrack element to decide whether details need to be plotted.}
+\item{\code{selectFun}}{A function that is being called for each \code{AnnotationTrack}
+element to decide whether details need to be plotted.}
 }}
 

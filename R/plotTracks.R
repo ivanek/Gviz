@@ -9,7 +9,7 @@
 ## Value: the function is called for its side-effect of drawing on the graphics device
 
 
-#' The main plotting function for one or several Gviz tracks.
+#' The main plotting function for one or several Gviz tracks
 #'
 #' `plotTracks` is the main interface when plotting single track objects,
 #' or lists of tracks linked together across the same genomic coordinates.
@@ -43,7 +43,7 @@
 #' If `NULL`, the plotting ranges are derived from the individual tracks.
 #' See `extend.left` and `extend.right` below for the definition of
 #' the final plotting ranges.
-#' @param \dots Additional arguments which are all interpreted as display
+#' @param ... Additional arguments which are all interpreted as display
 #' parameters to tweak the appearance of the plot. These parameters are global,
 #' meaning that they will be used for all tracks in the list where they
 #' actually make sense, and they override the track-internal settings. See
@@ -127,7 +127,9 @@
 #' res <- plotTracks(list(ax, annTrack, dt), from = 2080000, to = 2156000)
 #'
 #' ## Extend plotting ranges
-#' res <- plotTracks(list(ax, annTrack, dt), extend.left = 200000, extend.right = 200000)
+#' res <- plotTracks(list(ax, annTrack, dt),
+#'     extend.left = 200000, extend.right = 200000
+#' )
 #'
 #' ## Add a header
 #' res <- plotTracks(list(ax, annTrack, dt),
@@ -168,7 +170,9 @@
 #' }
 #'
 #' @export
-#' @importFrom lattice current.panel.limits panel.abline panel.grid panel.lines panel.points panel.polygon panel.segments panel.xyplot panel.text trellis.par.get
+#' @importFrom lattice current.panel.limits panel.abline panel.grid panel.lines
+#' @importFrom lattice panel.points panel.polygon panel.segments panel.xyplot
+#' @importFrom lattice panel.text trellis.par.get
 #'
 plotTracks <- function(trackList, from = NULL, to = NULL, ..., sizes = NULL, panel.only = FALSE, extend.right = 0,
                        extend.left = 0, title.width = NULL, add = FALSE, main, cex.main = 2, fontface.main = 2,

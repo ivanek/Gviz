@@ -58,24 +58,30 @@ displayPars(x, recursive = FALSE) <- value
 availableDisplayPars(class)
 }
 \arguments{
-\item{\dots}{All named arguments are stored in the object's environment as
+\item{...}{All named arguments are stored in the object's environment as
 individual parameters, regardless of their type.}
 
 \item{x}{object to set the displayPar value on}
 
 \item{name}{Name of the retrieved parameter.}
 
-\item{asIs}{\code{logical}}
+\item{asIs}{\code{logical}. Return the queried parameters as a list. When
+\code{FALSE}, the default, the result of a single-parameter query is unlisted
+for convenience.}
 
-\item{hideInternal}{\code{logical}}
+\item{hideInternal}{\code{logical}. Omit the internal display parameters, i.e.,
+those whose names are prefixed with \code{.__}.}
 
 \item{value}{named value to be set}
 
-\item{interactive}{\code{logical}}
+\item{interactive}{\code{logical}. Emit the message explaining that \code{setPar} no
+longer supports pass-by-reference semantics and that its result has to be
+reassigned.}
 
-\item{recursive}{\code{logical}}
+\item{recursive}{\code{logical}. For composite tracks, also set the display
+parameters on each of the contained sub-tracks.}
 
-\item{object}{object}
+\item{object}{Object of \code{DisplayPars-class}.}
 
 \item{class}{Either character scalar or object. Supported classes are:
 \code{GdObject}, \code{GenomeAxisTrack}, \code{RangeTrack}, \code{NumericTrack}, \code{DataTrack},
@@ -126,7 +132,8 @@ list, optionally hiding internal (\code{.__}-prefixed) parameters.
 
 \item \code{displayPars(x = DisplayPars, name = missing)}: Returns all available display parameters.
 
-\item \code{displayPars(x = DisplayPars, name = character)}: Returns the value of a subset of display parameters, as identified by \code{name}.
+\item \code{displayPars(x = DisplayPars, name = character)}: Returns the value of a subset of display
+parameters, as identified by \code{name}.
 
 \item \code{as.list(DisplayPars)}: Converts \code{DisplayPars} to \code{list}.
 
@@ -135,8 +142,9 @@ list, optionally hiding internal (\code{.__}-prefixed) parameters.
 SetPar generic function
 
 \item \code{setPar(x = DisplayPars, value = list)}: Sets display parameters by the values of the
-named \code{list} in value. Note that display parameters in the \code{DisplayPars-class}
-are pass-by-reference, so no re-assignment to the symbol \code{obj} is necessary.
+named \code{list} in value. Note that display parameters in the
+\code{DisplayPars-class} are pass-by-reference, so no re-assignment to the symbol
+\code{obj} is necessary.
 
 \item \code{setPar(x = DisplayPars, value = character)}: set the single display parameter name to value.
 Note that display parameters in the DisplayPars class are pass-by-reference,
@@ -144,7 +152,8 @@ so no re-assignment to the symbol \code{obj} is necessary.
 
 \item \code{displayPars(x, recursive = FALSE) <- value}: Generics for \verb{displayPars<-}.
 
-\item \code{displayPars(x = DisplayPars) <- value}: Replaces or adds display parameters as provided by the named \code{list} items.
+\item \code{displayPars(x = DisplayPars) <- value}: Replaces or adds display parameters as provided
+by the named \code{list} items.
 
 \item \code{show(DisplayPars)}: Show method.
 

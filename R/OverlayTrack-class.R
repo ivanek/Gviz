@@ -21,7 +21,7 @@ NULL
 #' class `GdObject`.
 #' @param name Character scalar of the track's name. This is not really used
 #' and only exists for completeness.
-#' @param \dots All additional parameters are ignored.
+#' @param ... All additional parameters are ignored.
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
@@ -38,8 +38,12 @@ NULL
 #' ## Object construction:
 #' set.seed(123)
 #' dat <- runif(100, min = -2, max = 22)
-#' dt1 <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19")
-#' dt2 <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19")
+#' dt1 <- DataTrack(
+#'     data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19"
+#' )
+#' dt2 <- DataTrack(
+#'     data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19"
+#' )
 #' ot <- OverlayTrack(trackList = list(dt1, dt2))
 #' @exportClass OverlayTrack
 setClass("OverlayTrack",

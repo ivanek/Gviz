@@ -77,7 +77,7 @@ UCSC.}
 \item{name}{Character scalar of the track's name used in the title panel
 when plotting. Defaults to the selected chromosome.}
 
-\item{\dots}{Additional items which will all be interpreted as further
+\item{...}{Additional items which will all be interpreted as further
 display parameters.}
 
 \item{x, GdObject, object}{The \code{IdeogramTrack} object.}

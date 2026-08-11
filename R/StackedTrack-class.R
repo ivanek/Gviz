@@ -208,7 +208,8 @@ setMethod("[", signature(x = "StackedTrack"), function(x, i, j, ..., drop = TRUE
     return(x)
 })
 
-#' @describeIn StackedTrack-class subset a `StackedTrack` by coordinates and sort if necessary.
+#' @describeIn StackedTrack-class subset a `StackedTrack` by coordinates and
+#' sort if necessary.
 #' @export
 setMethod("subset", signature(x = "StackedTrack"), function(x, from = NULL, to = NULL, sort = FALSE, stacks = FALSE, ...) {
     x <- callNextMethod(x = x, from = from, to = to, sort = sort)

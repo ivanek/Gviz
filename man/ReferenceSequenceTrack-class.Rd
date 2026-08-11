@@ -16,8 +16,8 @@ have to deal with this distinction directly and can rely on the
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(ReferenceSequenceTrack)}: Initialize the \code{ReferenceTrack} slots
-(\code{stream}, \code{reference}) before deferring to the
+\item \code{initialize(ReferenceSequenceTrack)}: Initialize the \code{ReferenceTrack}
+slots (\code{stream}, \code{reference}) before deferring to the
 \code{SequenceDNAStringSetTrack} initializer for the remaining slots.
 
 }}

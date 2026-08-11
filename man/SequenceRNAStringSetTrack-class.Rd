@@ -9,9 +9,11 @@
 \S4method{initialize}{SequenceRNAStringSetTrack}(.Object, sequence, ...)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
-\item{sequence}{sequence}
+\item{sequence}{An \code{RNAStringSet} object with one RNA sequence per
+chromosome. The names have to match the chromosome identifiers.}
 
 \item{...}{Additional arguments.}
 }

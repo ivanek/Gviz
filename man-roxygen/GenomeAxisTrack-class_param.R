@@ -7,6 +7,6 @@
 #' the ids from `names(range)`.
 #' @param name Character scalar of the track's name used in the title panel
 #' when plotting.
-#' @param \dots Additional items which will all be interpreted as further
-#' display parameters. See `settings` and the "Display Parameters"
+#' @param ... Additional items which will all be interpreted as further
+#' display parameters. See [`settings`] and the "Display Parameters"
 #' section below for details.

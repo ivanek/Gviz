@@ -220,13 +220,15 @@ setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal = TRUE) g
 #' See `settings` for details on display parameters and customization.
 setMethod("displayPars", c("GdObject", "character"), function(x, name) getPar(x, name))
 
-#' @describeIn GdObject-class list the value of all available display parameters.
-#' See `settings` for details on display parameters and customization.
+#' @describeIn GdObject-class list the value of all available display
+#' parameters. See `settings` for details on display parameters and
+#' customization.
 setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal))
 
 ##  GdObject Methods Coord and Tags  -----------------------------------------
 
-#' @describeIn GdObject-class return the coordinates from the internal image map.
+#' @describeIn GdObject-class return the coordinates from the internal image
+#' map.
 setMethod("coords", "GdObject", function(ImageMap) coords(imageMap(ImageMap)))
 
 #' @describeIn GdObject-class return the tags from the internal image map.
@@ -415,7 +417,8 @@ setGeneric("identifier<-", function(GdObject, value) standardGeneric("identifier
 #' @keywords internal
 setGeneric("chromosome", function(GdObject, ...) standardGeneric("chromosome"))
 
-#' @describeIn GdObject-class return the chromosome for which the track is defined.
+#' @describeIn GdObject-class return the chromosome for which the track is
+#' defined.
 #' @export
 setMethod("chromosome", "GdObject", function(GdObject) {
     return(NULL)

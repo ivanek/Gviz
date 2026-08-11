@@ -47,7 +47,8 @@ BiomartGeneRegionTrack(
 \S4method{subset}{BiomartGeneRegionTrack}(x, from, to, chromosome, use.defaults = TRUE, ...)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{start}{An integer scalar with the genomic start coordinates for the
 gene model range.}
@@ -55,13 +56,15 @@ gene model range.}
 \item{end}{An integer scalar with the genomic end coordinates for the gene
 model range.}
 
-\item{biomart}{An optional \link[biomaRt:Mart-class]{Mart} object providing access
-to the EBI Biomart webservice. As default the appropriate Ensembl data
+\item{biomart}{An optional \link[biomaRt:Mart-class]{Mart} object providing
+access to the EBI Biomart webservice. As default the appropriate Ensembl data
 source is selected based on the provided genome and chromosome.}
 
-\item{filter}{filter}
+\item{filter}{A named \code{list} of additional filters to be applied in the
+Biomart query.}
 
-\item{range}{range}
+\item{range}{A \code{GRanges} object with the genomic coordinates of the gene
+model items.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
@@ -77,7 +80,7 @@ where \code{x} may be any possible string. The user has to make sure that
 the respective chromosome is indeed defined for the the track's genome.}
 
 \item{strand}{Character scalar, the strand for which to fetch gene
-information from Biomart. One in \code{+}, \code{-}, or \code{+-}.}
+information from Biomart. One in \code{+}, \code{-}, or \verb{+-}.}
 
 \item{featureMap}{Named character vector or list to map between the fields
 in the Biomart data base and the features as they are used to construct the
@@ -90,7 +93,7 @@ ENTREZ gene identifiers, respectively. The genomic locus of their gene model
 will be fetch from Biomart instead of providing explicit start and end
 coordinates.}
 
-\item{\dots}{Additional items which will all be interpreted as further
+\item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
@@ -108,9 +111,11 @@ when plotting.}
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
 
-\item{from, to}{from, to}
+\item{from, to}{Numeric scalar, giving the range of genomic coordinates to
+limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
 
-\item{use.defaults}{\code{logical}}
+\item{use.defaults}{\code{logical}. Derive the subsetting range from the track's
+own defaults rather than using \code{from} and \code{to} verbatim.}
 }
 \value{
 The return value of the constructor function is a new object of class

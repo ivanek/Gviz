@@ -161,20 +161,26 @@ setCoverage(GdObject, ...)
 \arguments{
 \item{name}{Name of the retrieved parameter.}
 
-\item{\dots}{Additional arguments.}
+\item{...}{Additional arguments.}
 
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
 
 \item{value}{Value to be set.}
 
-\item{interactive}{\code{logical}}
+\item{interactive}{\code{logical}. Emit the message explaining that \code{setPar} no
+longer supports pass-by-reference semantics and that its result has to be
+reassigned.}
 
-\item{recursive}{\code{logical}}
+\item{recursive}{\code{logical}. For composite tracks, also set the display
+parameters on each of the contained sub-tracks.}
 
-\item{asIs}{\code{logical}}
+\item{asIs}{\code{logical}. Return the queried parameters as a list. When
+\code{FALSE}, the default, the result of a single-parameter query is unlisted
+for convenience.}
 
-\item{hideInternal}{\code{logical}}
+\item{hideInternal}{\code{logical}. Omit the internal display parameters, i.e.,
+those whose names are prefixed with \code{.__}.}
 
 \item{ImageMap}{Object of \code{ImageMap-class}, containing optional information
 for an HTML image map.}
@@ -344,10 +350,12 @@ See \code{settings} for details on display parameters and customization.
 \item \code{displayPars(x = GdObject, name = character)}: list the value of the display parameter name.
 See \code{settings} for details on display parameters and customization.
 
-\item \code{displayPars(x = GdObject, name = missing)}: list the value of all available display parameters.
-See \code{settings} for details on display parameters and customization.
+\item \code{displayPars(x = GdObject, name = missing)}: list the value of all available display
+parameters. See \code{settings} for details on display parameters and
+customization.
 
-\item \code{coords(GdObject)}: return the coordinates from the internal image map.
+\item \code{coords(GdObject)}: return the coordinates from the internal image
+map.
 
 \item \code{tags(GdObject)}: return the tags from the internal image map.
 
@@ -413,7 +421,8 @@ anything and returns \code{NULL}.
 
 \item \code{chromosome()}: Generics for \code{chromosome}.
 
-\item \code{chromosome(GdObject)}: return the chromosome for which the track is defined.
+\item \code{chromosome(GdObject)}: return the chromosome for which the track is
+defined.
 
 \item \code{chromosome(GdObject) <- value}: Generics for \code{chromosome}.
 

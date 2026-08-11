@@ -6,7 +6,7 @@
 \description{
 These functions are provided for compatibility with older
 versions of \code{Gviz} only, and will be defunct at the next release.
-\subsection{The following functions are deprecated and will be made defunct (use the replacement indicated below):}{
+\subsection{Deprecated functions, with their replacements}{
 
 (none)
 }

@@ -6,50 +6,50 @@
 #' parameters and list all available settings for the different track classes.
 #'
 #'
-#' All of the package's track objects inherit the \code{dp} slot from the
-#' \code{\linkS4class{GdObject}} parent class, which is the main container to
+#' All of the package's track objects inherit the `dp` slot from the
+#' [`GdObject`][GdObject-class] parent class, which is the main container to
 #' store an object's display parameters. Internally, the content of this slot
-#' has to be an object of class \code{\linkS4class{DisplayPars}}, but the user
+#' has to be an object of class [`DisplayPars`][DisplayPars-class], but the user
 #' is usually not exposed to this low level implementation. Instead, there are
 #' two main interaction points, namely the individual object constructor
-#' functions and the final \code{\link{plotTracks}} function. In both cases,
+#' functions and the final [`plotTracks`] function. In both cases,
 #' all additional arguments that are not caught by any of the formally defined
 #' function parameters are being interpreted as additional display parameters
 #' and are automatically added to the aforementioned slot. The main difference
 #' here is that display parameters that are passed on to the constructor
 #' function are specific for an individual track object, whereas those supplied
-#' to the \code{plotTracks} function will be applied to all the objects in the
+#' to the `plotTracks` function will be applied to all the objects in the
 #' plotting list. Not all display parameters have an effect on the plotting of
 #' all track classes, and those will be silently ignored.
 #'
 #' One can query the available display parameters for a given class as well as
-#' their default values by calling the \code{\link{availableDisplayPars}}
+#' their default values by calling the [`availableDisplayPars`]
 #' function, or by inspecting the man pages of the individual track classes.
 #' The structure of the classes defined in this package is hierarchical, and so
 #' are the available display parameters, i.e., all objects inherit the
-#' parameters defined in the commom \code{GdObject} parent class, and so on.
+#' parameters defined in the common `GdObject` parent class, and so on.
 #'
 #' Once a track object has been created, the display parameters are still open
-#' for modification. To this end, the \code{\linkS4class{DisplayPars}} replacement
-#' method is available for all objects inheriting from class \code{GdObject}.
-#' The method takes a named list of parameters as input, e.g.:
+#' for modification. To this end, the [`DisplayPars`][DisplayPars-class]
+#' replacement method is available for all objects inheriting from class
+#' `GdObject`. The method takes a named list of parameters as input, e.g.:
 #'
-#' \code{displayPars(foo) <- list(col="red", lwd=2)}
+#' `displayPars(foo) <- list(col="red", lwd=2)`
 #'
 #' In the same spirit, the currently set display parameters for the object
-#' \code{foo} can be inferred using the \code{displayPars} method directly,
+#' `foo` can be inferred using the `displayPars` method directly,
 #' e.g.:
 #'
-#' \code{displayPars(foo)}
+#' `displayPars(foo)`
 #'
 #' For track objects inheriting from class
-#' \code{\linkS4class{AnnotationTrack}}, display parameters that are not
+#' [`AnnotationTrack`][AnnotationTrack-class], display parameters that are not
 #' formally defined in the class definition or in any of the parent classes are
 #' considered to be valid R color identifiers that are used to distinguish
 #' between different types of annotation features. For instance, the parameter
 #' 'miRNA' will be used to color all annotation features of class miRNA. The
 #' annotation types can be set in the constructor function of the track object
-#' via the \code{feature} argument. For most of the tracks that have been
+#' via the `feature` argument. For most of the tracks that have been
 #' inferred from one of the online repositories, this classification will
 #' usually be downloaded along with the actual annotation data.
 #'
@@ -60,16 +60,16 @@
 #' lists, where the names on the first level of nesting should correspond to
 #' track class names, and the names on the second level to the display
 #' parameters to set. The currently active schmeme can be changed by setting
-#' the global option \code{Gviz.scheme}, and a new scheme can be registered by
-#' using the \code{addScheme} function, providing both the list and the name
-#' for the new scheme. The \code{getScheme} function is useful to get the
+#' the global option `Gviz.scheme`, and a new scheme can be registered by
+#' using the `addScheme` function, providing both the list and the name
+#' for the new scheme. The `getScheme` function is useful to get the
 #' current scheme as a list structure, for instance to use as a skeleton for
 #' your own custom scheme.
 #'
 #' In order to make these settings persitant across R sessions one can create
 #' one or several schemes in the global environment in the special object
-#' \code{.GvizSchemes}, for instance by putting the necessary code in the
-#' \code{.Rprofile} file. This object needs to be a named list of schemes, and
+#' `.GvizSchemes`, for instance by putting the necessary code in the
+#' `.Rprofile` file. This object needs to be a named list of schemes, and
 #' it will be collected when the Givz package loads. Its content is then
 #' automatically added to the collection of available schemes.
 #'
@@ -84,7 +84,7 @@
 #' @param name A character scalar with the scheme name.
 #' @return
 #'
-#' The \code{getScheme} function returns current scheme as a list structure.
+#' The `getScheme` function returns current scheme as a list structure.
 #' @section Display Parameters:
 #'
 #' \describe{
@@ -93,201 +93,201 @@
 #'
 #' \describe{
 #'
-#' \item{\code{add35=FALSE}:}{ Logical scalar. Add 3' to 5' direction
+#' \item{`add35=FALSE`:}{ Logical scalar. Add 3' to 5' direction
 #' indicators.}
 #'
-#' \item{\code{add53=FALSE}:}{ Logical scalar. Add 5' to 3' direction
+#' \item{`add53=FALSE`:}{ Logical scalar. Add 5' to 3' direction
 #' indicators.}
 #'
-#' \item{\code{background.title="transparent"}:}{ Character scalar.  The
+#' \item{`background.title="transparent"`:}{ Character scalar.  The
 #' background color for the title panel. Defaults to omit the background.}
 #'
-#' \item{\code{cex.id=0.7}:}{ Numeric scalar. The text size for the optional
+#' \item{`cex.id=0.7`:}{ Numeric scalar. The text size for the optional
 #' range annotation.}
 #'
-#' \item{\code{cex=0.8}:}{ Numeric scalar. The overall font expansion factor
+#' \item{`cex=0.8`:}{ Numeric scalar. The overall font expansion factor
 #' for the axis annotation text.}
 #'
-#' \item{\code{col.border.title="transparent"}:}{ Integer or character scalar.
+#' \item{`col.border.title="transparent"`:}{ Integer or character scalar.
 #' The border color for the title panels.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{col.id="white"}:}{ Character scalar. The text color for the
+#' \item{`col.id="white"`:}{ Character scalar. The text color for the
 #' optional range annotation.}
 #'
-#' \item{\code{col.range="cornsilk4"}:}{ Character scalar. The border color for
+#' \item{`col.range="cornsilk4"`:}{ Character scalar. The border color for
 #' highlighted regions on the axis.}
 #'
-#' \item{\code{distFromAxis=1}:}{ Numeric scalar. Control the distance of the
+#' \item{`distFromAxis=1`:}{ Numeric scalar. Control the distance of the
 #' axis annotation from the tick marks.}
 #'
-#' \item{\code{exponent=NULL}:}{ Numeric scalar. The exponent for the axis
+#' \item{`exponent=NULL`:}{ Numeric scalar. The exponent for the axis
 #' coordinates, e.g., 3 means mb, 6 means gb, etc. The default is to
 #' automatically determine the optimal exponent.}
 #'
-#' \item{\code{fill.range="cornsilk3"}:}{ Character scalar. The fill color for
+#' \item{`fill.range="cornsilk3"`:}{ Character scalar. The fill color for
 #' highlighted regions on the axis.}
 #'
-#' \item{\code{fontcolor="#808080"}:}{ Character scalar. The font color for the
+#' \item{`fontcolor="#808080"`:}{ Character scalar. The font color for the
 #' axis annotation text.}
 #'
-#' \item{\code{fontsize=10}:}{ Numeric scalar. Font size for the axis
+#' \item{`fontsize=10`:}{ Numeric scalar. Font size for the axis
 #' annotation text in points.}
 #'
-#' \item{\code{labelPos="alternating"}:}{ Character vector, one in
+#' \item{`labelPos="alternating"`:}{ Character vector, one in
 #' "alternating", "revAlternating", "above" or "below". The vertical
-#' positioning of the axis labels. If \code{scale} is not \code{NULL}, the
+#' positioning of the axis labels. If `scale` is not `NULL`, the
 #' possible values are "above", "below" and "beside".}
 #'
-#' \item{\code{littleTicks=FALSE}:}{ Logical scalar. Add more fine-grained tick
+#' \item{`littleTicks=FALSE`:}{ Logical scalar. Add more fine-grained tick
 #' marks.}
 #'
-#' \item{\code{lwd=2}:}{ Numeric scalar. The line width for the axis
+#' \item{`lwd=2`:}{ Numeric scalar. The line width for the axis
 #' elementes.}
 #'
-#' \item{\code{scale=NULL}:}{ Numeric scalar. If not \code{NULL} a small scale
+#' \item{`scale=NULL`:}{ Numeric scalar. If not `NULL` a small scale
 #' is drawn instead of the full axis, if the value is between 0 and 1 it is
 #' interpreted as a fraction of the current plotting region, otherwise as an
 #' absolute length value in genomic coordinates.}
 #'
-#' \item{\code{showId=FALSE}:}{ Logical scalar. Show the optional range
+#' \item{`showId=FALSE`:}{ Logical scalar. Show the optional range
 #' highlighting annotation.}
 #'
-#' \item{\code{showTitle=FALSE}:}{ Logical scalar. Plot a title panel. Defaults
+#' \item{`showTitle=FALSE`:}{ Logical scalar. Plot a title panel. Defaults
 #' to omit the title panel.}
 #'
-#' \item{\code{ticksAt=NULL}:}{ Numeric scalar. The exact x-position for
+#' \item{`ticksAt=NULL`:}{ Numeric scalar. The exact x-position for
 #' tickmarks (in base-pairs).}
 #'
-#' \item{\code{size=NULL}:}{ Numeric scalar. The relative size of the track.
-#' Can be overridden in the \code{\link{plotTracks}} function. Defaults to the
+#' \item{`size=NULL`:}{ Numeric scalar. The relative size of the track.
+#' Can be overridden in the [`plotTracks`] function. Defaults to the
 #' ideal size based on the other track settings.}
 #'
-#' \item{\code{col="darkgray"}:}{ Character scalar. The color for the axis
+#' \item{`col="darkgray"`:}{ Character scalar. The color for the axis
 #' lines and tickmarks.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot lines. Usually the same as the global \code{col} parameter.}
+#' \item{`col.line=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot lines. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
+#' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
 #' content of the track to accomodate the minimum current device resolution.
-#' See \code{\link{collapsing}} for details.}
+#' See [`collapsing`] for details.}
 #'
-#' \item{\code{fill="lightgray"}:}{ Integer or character scalar.  Default fill
+#' \item{`fill="lightgray"`:}{ Integer or character scalar.  Default fill
 #' color setting for all plotting elements, unless there is a more specific
 #' control defined elsewhere.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontface=1}:}{ Integer or character scalar. The font face for
+#' \item{`fontface=1`:}{ Integer or character scalar. The font face for
 #' all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Integer or character scalar.  The font
+#' \item{`fontfamily="sans"`:}{ Integer or character scalar.  The font
 #' family for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{grid=FALSE}:}{ Boolean, switching on/off the plotting of a
+#' \item{`grid=FALSE`:}{ Boolean, switching on/off the plotting of a
 #' grid.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for all
 #' text, unless a more specific definition exists.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lty="solid"}:}{ Numeric scalar. Default line type setting for
+#' \item{`lty="solid"`:}{ Numeric scalar. Default line type setting for
 #' all plotting elements, unless there is a more specific control defined
 #' elsewhere.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
-#' before collapsing range items, only if \code{collapse==TRUE}. See
-#' \code{\link{collapsing}} for details.}
+#' \item{`min.distance=1`:}{ Numeric scalar. The minimum pixel distance
+#' before collapsing range items, only if `collapse==TRUE`. See
+#' [`collapsing`] for details.}
 #'
-#' \item{\code{min.height=3}:}{ Numeric scalar. The minimum range height in
+#' \item{`min.height=3`:}{ Numeric scalar. The minimum range height in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
+#' \item{`rotation=0`:}{ The rotation angle for all text unless a more
 #' specific definiton exists.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -298,398 +298,398 @@
 #'
 #' \describe{
 #'
-#' \item{\code{aggregateGroups=FALSE}:}{ Logical scalar. Aggregate the values
-#' within a sample group using the aggregation funnction specified in the
-#' \code{aggregation} parameter.}
+#' \item{`aggregateGroups=FALSE`:}{ Logical scalar. Aggregate the values
+#' within a sample group using the aggregation function specified in the
+#' `aggregation` parameter.}
 #'
-#' \item{\code{aggregation="mean"}:}{ Function or character scalar.  Used to
+#' \item{`aggregation="mean"`:}{ Function or character scalar.  Used to
 #' aggregate values in windows or for collapsing overlapping items. The
 #' function has to accept a numeric vector as a single input parameter and has
 #' to return a numeric scalar with the aggregated value. Alternatively, one of
-#' the predefined options \code{mean}, \code{median} \code{sum}, \code{min},
-#' \code{max} or \code{extreme} can be supplied as a character scalar. Defaults
-#' to \code{mean}.}
+#' the predefined options `mean`, `median` `sum`, `min`,
+#' `max` or `extreme` can be supplied as a character scalar. Defaults
+#' to `mean`.}
 #'
-#' \item{\code{missingAsZero=TRUE}:}{ Logical scalar. Defines how the missing
+#' \item{`missingAsZero=TRUE`:}{ Logical scalar. Defines how the missing
 #' values are treated in the aggregation procedure with running window. Setting
-#' it to \code{TRUE} fills empty positions with zeros, which is default.
-#' \code{FALSE} fills empty positions with \code{NA}.}
+#' it to `TRUE` fills empty positions with zeros, which is default.
+#' `FALSE` fills empty positions with `NA`.}
 #'
-#' \item{\code{alpha.confint=0.3}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.confint=0.3`:}{ Numeric scalar. The transparency for the
 #' confidence intervalls in confint-type plots.}
 #'
-#' \item{\code{amount=NULL}:}{ Numeric scalar. Amount of jittering in xy-type
+#' \item{`amount=NULL`:}{ Numeric scalar. Amount of jittering in xy-type
 #' plots. See [lattice::panel.xyplot] for details.}
 #'
-#' \item{\code{baseline=NULL}:}{ Numeric scalar. Y-axis position of an optional
+#' \item{`baseline=NULL`:}{ Numeric scalar. Y-axis position of an optional
 #' baseline. This parameter has a special meaning for mountain-type and
 #' polygon-type plots, see the 'Details' section in
-#' \code{\linkS4class{DataTrack}} for more information.}
+#' [`DataTrack`][DataTrack-class] for more information.}
 #'
-#' \item{\code{box.legend=FALSE}:}{ Logical scalar. Draw a box around a
+#' \item{`box.legend=FALSE`:}{ Logical scalar. Draw a box around a
 #' legend.}
 #'
-#' \item{\code{box.ratio=1}:}{ Numeric scalar. Parameter controlling the
+#' \item{`box.ratio=1`:}{ Numeric scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{box.width=NULL}:}{ Numeric scalar. Parameter controlling the
+#' \item{`box.width=NULL`:}{ Numeric scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{grid=FALSE}:}{ Logical vector. Draw a line grid under the track
+#' \item{`grid=FALSE`:}{ Logical vector. Draw a line grid under the track
 #' content.}
 #'
-#' \item{\code{cex.legend=0.8}:}{ Numeric scalar. The size factor for the
+#' \item{`cex.legend=0.8`:}{ Numeric scalar. The size factor for the
 #' legend text.}
 #'
-#' \item{\code{cex.sampleNames=NULL}:}{ Numeric scalar. The size factor for the
+#' \item{`cex.sampleNames=NULL`:}{ Numeric scalar. The size factor for the
 #' sample names text in heatmap or horizon plots.  Defaults to an automatic
 #' setting.}
 #'
-#' \item{\code{cex=0.7}:}{ Numeric scalar. The default pixel size for plotting
+#' \item{`cex=0.7`:}{ Numeric scalar. The default pixel size for plotting
 #' symbols.}
 #'
-#' \item{\code{coef=1.5}:}{ Numeric scalar. Parameter controlling the boxplot
+#' \item{`coef=1.5`:}{ Numeric scalar. Parameter controlling the boxplot
 #' appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{col.baseline=NULL}:}{ Character scalar. Color for the optional
-#' baseline, defaults to the setting of \code{col}.}
+#' \item{`col.baseline=NULL`:}{ Character scalar. Color for the optional
+#' baseline, defaults to the setting of `col`.}
 #'
-#' \item{\code{col.confint=NA}:}{ Character vector. Border colors for the
+#' \item{`col.confint=NA`:}{ Character vector. Border colors for the
 #' confidence intervals for confint-type plots.}
 #'
-#' \item{\code{col.boxplotFrame="#808080"}:}{ Character scalar.  Line color of
+#' \item{`col.boxplotFrame="#808080"`:}{ Character scalar.  Line color of
 #' the frame around grouped boxplots.}
 #'
-#' \item{\code{col.histogram="#808080"}:}{ Character scalar. Line color in
+#' \item{`col.histogram="#808080"`:}{ Character scalar. Line color in
 #' histogram-type plots.}
 #'
-#' \item{\code{col.horizon=NA}:}{ The line color for the segments in the
-#' \code{horizon}-type plot. See [latticeExtra::panel.horizonplot] for details.}
+#' \item{`col.horizon=NA`:}{ The line color for the segments in the
+#' `horizon`-type plot. See [latticeExtra::panel.horizonplot] for details.}
 #'
-#' \item{\code{col.mountain=NULL}:}{ Character scalar. Line color in
+#' \item{`col.mountain=NULL`:}{ Character scalar. Line color in
 #' mountain-type and polygon-type plots, defaults to the setting of
-#' \code{col}.}
+#' `col`.}
 #'
-#' \item{\code{col.sampleNames="white"}:}{ Character or integer scalar. The
+#' \item{`col.sampleNames="white"`:}{ Character or integer scalar. The
 #' color used for the sample names in heatmap plots.}
 #'
-#' \item{\code{col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
-#' "#00ff00", "brown")}:}{ Character or integer vector.  The color used for all
+#' \item{`col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
+#' "#00ff00", "brown")`:}{ Character or integer vector.  The color used for all
 #' line and symbol elements, unless there is a more specific control defined
-#' elsewhere. Unless \code{groups} are specified, only the first color in the
+#' elsewhere. Unless `groups` are specified, only the first color in the
 #' vector is usually regarded.}
 #'
-#' \item{\code{collapse=FALSE}:}{ Logical scalar. Collapse overlapping ranges
+#' \item{`collapse=FALSE`:}{ Logical scalar. Collapse overlapping ranges
 #' and aggregate the underlying data.}
 #'
-#' \item{\code{degree=1}:}{ Numeric scalar. Parameter controlling the loess
+#' \item{`degree=1`:}{ Numeric scalar. Parameter controlling the loess
 #' calculation for smooth and mountain-type plots.  See
 #' [lattice::panel.loess] for details.}
 #'
-#' \item{\code{do.out=TRUE}:}{ Logical scalar. Parameter controlling the
+#' \item{`do.out=TRUE`:}{ Logical scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{evaluation=50}:}{ Numeric scalar. Parameter controlling the
+#' \item{`evaluation=50`:}{ Numeric scalar. Parameter controlling the
 #' loess calculation for smooth and mountain-type plots. See
 #' [lattice::panel.loess] for details.}
 #'
-#' \item{\code{factor=0.5}:}{ Numeric scalar. Factor to control amount of
+#' \item{`factor=0.5`:}{ Numeric scalar. Factor to control amount of
 #' jittering in xy-type plots. See [lattice::panel.xyplot] for details.}
 #'
-#' \item{\code{family="symmetric"}:}{ Character scalar. Parameter controlling
+#' \item{`family="symmetric"`:}{ Character scalar. Parameter controlling
 #' the loess calculation for smooth and mountain-type plots. See
 #' [lattice::panel.loess] for details.}
 #'
-#' \item{\code{fill.confint=NULL}:}{ Character vector. Fill colors for the
+#' \item{`fill.confint=NULL`:}{ Character vector. Fill colors for the
 #' confidence intervals for confint-type plots.}
 #'
-#' \item{\code{fill.histogram=NULL}:}{ Character scalar. Fill color in
-#' histogram-type plots, defaults to the setting of \code{fill}.}
+#' \item{`fill.histogram=NULL`:}{ Character scalar. Fill color in
+#' histogram-type plots, defaults to the setting of `fill`.}
 #'
-#' \item{\code{fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC",
-#' "#468CC8", "#0165B3")}:}{ The fill colors for the segments in the
-#' \code{horizon}-type plot. This should be a vector of length six, where the
+#' \item{`fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC",
+#' "#468CC8", "#0165B3")`:}{ The fill colors for the segments in the
+#' `horizon`-type plot. This should be a vector of length six, where the
 #' first three entries are the colors for positive changes, and the latter
 #' three entries are the colors for negative changes. Defaults to a red-blue
 #' color scheme. See [latticeExtra::panel.horizonplot] for details.}
 #'
-#' \item{\code{fill.mountain=c("#CCFFFF", "#FFCCFF")}:}{ Character vector of
+#' \item{`fill.mountain=c("#CCFFFF", "#FFCCFF")`:}{ Character vector of
 #' length 2. Fill color in mountain-type and polygon-type plots.}
 #'
-#' \item{\code{fontface.legend=NULL}:}{ Integer or character scalar. The font
+#' \item{`fontface.legend=NULL`:}{ Integer or character scalar. The font
 #' face for the legend text.}
 #'
-#' \item{\code{fontfamily.legend=NULL}:}{ Integer or character scalar. The font
+#' \item{`fontfamily.legend=NULL`:}{ Integer or character scalar. The font
 #' family for the legend text.}
 #'
-#' \item{\code{fontsize.legend=NULL}:}{ Numeric scalar. The pixel size for the
+#' \item{`fontsize.legend=NULL`:}{ Numeric scalar. The pixel size for the
 #' legend text.}
 #'
-#' \item{\code{fontcolor.legend="#808080"}:}{ Integer or character scalar. The
+#' \item{`fontcolor.legend="#808080"`:}{ Integer or character scalar. The
 #' font color for the legend text.}
 #'
-#' \item{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
-#' "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")}:}{ Character vector.
-#' The base colors for the \code{gradient} plotting type or the \code{heatmap}
+#' \item{`gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
+#' "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")`:}{ Character vector.
+#' The base colors for the `gradient` plotting type or the `heatmap`
 #' type with a single group. When plotting heatmaps with more than one group,
-#' the \code{col} parameter can be used to control the group color scheme,
+#' the `col` parameter can be used to control the group color scheme,
 #' however the gradient will always be from white to 'col' and thus does not
-#' offer as much flexibility as this \code{gradient} parameter.}
+#' offer as much flexibility as this `gradient` parameter.}
 #'
-#' \item{\code{groups=NULL}:}{ Vector coercable to a factor.  Optional sample
-#' grouping. See 'Details' section in \code{\linkS4class{DataTrack}} for
+#' \item{`groups=NULL`:}{ Vector coercable to a factor.  Optional sample
+#' grouping. See 'Details' section in [`DataTrack`][DataTrack-class] for
 #' further information.}
 #'
-#' \item{\code{horizon.origin=0}:}{ The baseline relative to which changes are
-#' indicated on the \code{horizon}-type plot. See [latticeExtra::panel.horizonplot]
+#' \item{`horizon.origin=0`:}{ The baseline relative to which changes are
+#' indicated on the `horizon`-type plot. See [latticeExtra::panel.horizonplot]
 #' for details.}
 #'
-#' \item{\code{horizon.scale=NULL}:}{ The scale for each of the segments in the
-#' \code{horizon}-type plot. Defaults to 1/3 of the absolute data range. See
+#' \item{`horizon.scale=NULL`:}{ The scale for each of the segments in the
+#' `horizon`-type plot. Defaults to 1/3 of the absolute data range. See
 #' [latticeExtra::panel.horizonplot] for details.}
 #'
-#' \item{\code{jitter.x=FALSE}:}{ Logical scalar. Toggle on jittering on the x
+#' \item{`jitter.x=FALSE`:}{ Logical scalar. Toggle on jittering on the x
 #' axis in xy-type plots. See [lattice::panel.xyplot] for details.}
 #'
-#' \item{\code{jitter.y=FALSE}:}{ Logical scalar. Toggle off jittering on the y
+#' \item{`jitter.y=FALSE`:}{ Logical scalar. Toggle off jittering on the y
 #' axis in xy-type plots. See [lattice::panel.xyplot] for details.}
 #'
-#' \item{\code{levels.fos=NULL}:}{ Numeric scalar. Parameter controlling the
+#' \item{`levels.fos=NULL`:}{ Numeric scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{legend=TRUE}:}{ Boolean triggering the addition of a legend to
+#' \item{`legend=TRUE`:}{ Boolean triggering the addition of a legend to
 #' the track to indicate groups. This only has an effect if at least two groups
 #' are present.}
 #'
-#' \item{\code{lineheight.legend=NULL}:}{ Numeric scalar. The line height for
+#' \item{`lineheight.legend=NULL`:}{ Numeric scalar. The line height for
 #' the legend text.}
 #'
-#' \item{\code{lty.baseline=NULL}:}{ Character or numeric scalar.  Line type of
-#' the optional baseline, defaults to the setting of \code{lty}.}
+#' \item{`lty.baseline=NULL`:}{ Character or numeric scalar.  Line type of
+#' the optional baseline, defaults to the setting of `lty`.}
 #'
-#' \item{\code{lty.mountain=NULL}:}{ Character or numeric scalar.  Line type in
+#' \item{`lty.mountain=NULL`:}{ Character or numeric scalar.  Line type in
 #' mountain-type and polygon-type plots, defaults to the setting of
-#' \code{lty}.}
+#' `lty`.}
 #'
-#' \item{\code{lwd.baseline=NULL}:}{ Numeric scalar. Line width of the optional
-#' baseline, defaults to the setting of \code{lwd}.}
+#' \item{`lwd.baseline=NULL`:}{ Numeric scalar. Line width of the optional
+#' baseline, defaults to the setting of `lwd`.}
 #'
-#' \item{\code{lwd.mountain=NULL}:}{ Numeric scalar. Line width in
+#' \item{`lwd.mountain=NULL`:}{ Numeric scalar. Line width in
 #' mountain-type and polygon-type plots, defaults to the setting of
-#' \code{lwd}.}
+#' `lwd`.}
 #'
-#' \item{\code{min.distance=0}:}{ Numeric scalar. The mimimum distance in pixel
+#' \item{`min.distance=0`:}{ Numeric scalar. The mimimum distance in pixel
 #' below which to collapse ranges.}
 #'
-#' \item{\code{na.rm=FALSE}:}{ Boolean controlling whether to discard all NA
+#' \item{`na.rm=FALSE`:}{ Boolean controlling whether to discard all NA
 #' values when plotting or to keep empty spaces for NAs}
 #'
-#' \item{\code{ncolor=100}:}{ Integer scalar. The number of colors for the
+#' \item{`ncolor=100`:}{ Integer scalar. The number of colors for the
 #' 'gradient' plotting type}
 #'
-#' \item{\code{notch.frac=0.5}:}{ Numeric scalar. Parameter controlling the
+#' \item{`notch.frac=0.5`:}{ Numeric scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{notch=FALSE}:}{ Logical scalar. Parameter controlling the
+#' \item{`notch=FALSE`:}{ Logical scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{pch=20}:}{ Integer scalar. The type of glyph used for plotting
+#' \item{`pch=20`:}{ Integer scalar. The type of glyph used for plotting
 #' symbols.}
 #'
-#' \item{\code{separator=0}:}{ Numeric scalar. Number of pixels used to
+#' \item{`separator=0`:}{ Numeric scalar. Number of pixels used to
 #' separate individual samples in heatmap- and horizon-type plots.}
 #'
-#' \item{\code{showColorBar=TRUE}:}{ Boolean. Indicate the data range color
+#' \item{`showColorBar=TRUE`:}{ Boolean. Indicate the data range color
 #' mapping in the axis for 'heatmap' or 'gradient' types.}
 #'
-#' \item{\code{showSampleNames=FALSE}:}{ Boolean. Display the names of the
+#' \item{`showSampleNames=FALSE`:}{ Boolean. Display the names of the
 #' individual samples in a heatmap or a horizon plot.}
 #'
-#' \item{\code{size=NULL}:}{ Numeric scalar. The relative size of the track.
-#' Can be overridden in the \code{\link{plotTracks}} function. By default the
+#' \item{`size=NULL`:}{ Numeric scalar. The relative size of the track.
+#' Can be overridden in the [`plotTracks`] function. By default the
 #' size will be set automatically based on the selected plotting type.}
 #'
-#' \item{\code{span=0.2}:}{ Numeric scalar. Parameter controlling the loess
+#' \item{`span=0.2`:}{ Numeric scalar. Parameter controlling the loess
 #' calculation for smooth and mountain-type plots.  See
 #' [lattice::panel.loess] for details.}
 #'
-#' \item{\code{stackedBars=TRUE}:}{ Logical scalar. When there are several data
+#' \item{`stackedBars=TRUE`:}{ Logical scalar. When there are several data
 #' groups, draw the histogram-type plots as stacked barplots or grouped side by
 #' side.}
 #'
-#' \item{\code{stats=X[[i]]}:}{ Function. Parameter controlling the boxplot
+#' \item{`stats=X[[i]]`:}{ Function. Parameter controlling the boxplot
 #' appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{transformation=NULL}:}{ Function. Applied to the data matrix
-#' prior to plotting or when calling the \code{score} method. The function
+#' \item{`transformation=NULL`:}{ Function. Applied to the data matrix
+#' prior to plotting or when calling the `score` method. The function
 #' should accept exactly one input argument and its return value needs to be a
 #' numeric vector which can be coerced back into a data matrix of identical
 #' dimensionality as the input data.}
 #'
-#' \item{\code{type="p"}:}{ Character vector. The plot type, one or several in
-#' \code{p},\code{l}, \code{b}, \code{a}, \code{a_confint}, \code{s}, \code{g},
-#' \code{r}, \code{S}, \code{confint}, \code{smooth}, \code{histogram},
-#' \code{mountain}, \code{polygon}, \code{h}, \code{boxplot}, \code{gradient},
-#' \code{heatmap}, \code{horizon}. See 'Details' section in
-#' \code{\linkS4class{DataTrack}} for more information on the individual
+#' \item{`type="p"`:}{ Character vector. The plot type, one or several in
+#' `p`,`l`, `b`, `a`, `a_confint`, `s`, `g`,
+#' `r`, `S`, `confint`, `smooth`, `histogram`,
+#' `mountain`, `polygon`, `h`, `boxplot`, `gradient`,
+#' `heatmap`, `horizon`. See 'Details' section in
+#' [`DataTrack`][DataTrack-class] for more information on the individual
 #' plotting types.}
 #'
-#' \item{\code{varwidth=FALSE}:}{ Logical scalar. Parameter controlling the
+#' \item{`varwidth=FALSE`:}{ Logical scalar. Parameter controlling the
 #' boxplot appearance. See [lattice::panel.bwplot] for details.}
 #'
-#' \item{\code{window=NULL}:}{ Numeric or character scalar.  Aggregate the rows
-#' values of the data matrix to \code{window} equally sized slices on the data
-#' range using the method defined in \code{aggregation}. If negative, apply a
-#' running window of size \code{windowSize} using the same aggregation method.
-#' Alternatively, the special value \code{auto} causes the function to
-#' determine the optimal window size to avoid overplotting, and \code{fixed}
-#' uses fixed-size windows of size \code{windowSize}.}
+#' \item{`window=NULL`:}{ Numeric or character scalar.  Aggregate the rows
+#' values of the data matrix to `window` equally sized slices on the data
+#' range using the method defined in `aggregation`. If negative, apply a
+#' running window of size `windowSize` using the same aggregation method.
+#' Alternatively, the special value `auto` causes the function to
+#' determine the optimal window size to avoid overplotting, and `fixed`
+#' uses fixed-size windows of size `windowSize`.}
 #'
-#' \item{\code{windowSize=NULL}:}{ Numeric scalar. The size of the running
-#' window when the value of \code{window} is negative.}
+#' \item{`windowSize=NULL`:}{ Numeric scalar. The size of the running
+#' window when the value of `window` is negative.}
 #'
-#' \item{\code{ylim=NULL}:}{ Numeric vector of length 2. The range of the
+#' \item{`ylim=NULL`:}{ Numeric vector of length 2. The range of the
 #' y-axis scale.}
 #'
-#' \item{\code{yTicksAt=NULL}:}{ Numeric vector. The points at which y-axis
-#' tick-marks are to be drawn. By default, when \code{NULL}, tickmark locations
+#' \item{`yTicksAt=NULL`:}{ Numeric vector. The points at which y-axis
+#' tick-marks are to be drawn. By default, when `NULL`, tickmark locations
 #' are computed.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.title="lightgray"}:}{ Integer or character scalar.
+#' \item{`background.title="lightgray"`:}{ Integer or character scalar.
 #' The background color for the title panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.border.title="white"}:}{ Integer or character scalar. The
+#' \item{`col.border.title="white"`:}{ Integer or character scalar. The
 #' border color for the title panels.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot lines. Usually the same as the global \code{col} parameter.}
+#' \item{`col.line=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot lines. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{fill="lightgray"}:}{ Integer or character scalar.  Default fill
+#' \item{`fill="lightgray"`:}{ Integer or character scalar.  Default fill
 #' color setting for all plotting elements, unless there is a more specific
 #' control defined elsewhere.}
 #'
-#' \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
+#' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
 #' color for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontface=1}:}{ Integer or character scalar. The font face for
+#' \item{`fontface=1`:}{ Integer or character scalar. The font face for
 #' all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Integer or character scalar.  The font
+#' \item{`fontfamily="sans"`:}{ Integer or character scalar.  The font
 #' family for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontsize=12}:}{ Numeric scalar. The font size for all text,
+#' \item{`fontsize=12`:}{ Numeric scalar. The font size for all text,
 #' unless a more specific definition exists.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for all
 #' text, unless a more specific definition exists.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lty="solid"}:}{ Numeric scalar. Default line type setting for
+#' \item{`lty="solid"`:}{ Numeric scalar. Default line type setting for
 #' all plotting elements, unless there is a more specific control defined
 #' elsewhere.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lwd=1}:}{ Numeric scalar. Default line width setting for all
+#' \item{`lwd=1`:}{ Numeric scalar. Default line width setting for all
 #' plotting elements, unless there is a more specific control defined
 #' elsewhere.}
 #'
-#' \item{\code{min.height=3}:}{ Numeric scalar. The minimum range height in
+#' \item{`min.height=3`:}{ Numeric scalar. The minimum range height in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
+#' \item{`rotation=0`:}{ The rotation angle for all text unless a more
 #' specific definiton exists.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{showTitle=TRUE}:}{ Boolean controlling whether to plot a title
+#' \item{`showTitle=TRUE`:}{ Boolean controlling whether to plot a title
 #' panel. Although this can be set individually for each track, in multi-track
-#' plots as created by \code{\link{plotTracks}} there will still be an empty
+#' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
 #' true for axes. Note that the the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -700,174 +700,174 @@
 #'
 #' \describe{
 #'
-#' \item{\code{background.title="transparent"}:}{ Character scalar.  The
+#' \item{`background.title="transparent"`:}{ Character scalar.  The
 #' background color for the title panel. Defaults to omit the background.}
 #'
-#' \item{\code{bevel=0.45}:}{ Numeric scalar, between 0 and 1.  The level of
+#' \item{`bevel=0.45`:}{ Numeric scalar, between 0 and 1.  The level of
 #' smoothness for the two ends of the ideogram.}
 #'
-#' \item{\code{centromereShape="triangle"}:}{ Character scalar.  The shape of
+#' \item{`centromereShape="triangle"`:}{ Character scalar.  The shape of
 #' the centromere. Only "triangle" or "circle" is accepted. Default to
 #' "triangle"}
 #'
-#' \item{\code{cex.bands=0.7}:}{ Numeric scalar. The font expansion factor for
+#' \item{`cex.bands=0.7`:}{ Numeric scalar. The font expansion factor for
 #' the chromosome band identifier text.}
 #'
-#' \item{\code{cex=0.8}:}{ Numeric scalar. The overall font expansion factor
+#' \item{`cex=0.8`:}{ Numeric scalar. The overall font expansion factor
 #' for the chromosome name text.}
 #'
-#' \item{\code{col="red"}:}{ Character scalar. The border color used for the
+#' \item{`col="red"`:}{ Character scalar. The border color used for the
 #' highlighting of the currently displayed genomic region.}
 #'
-#' \item{\code{col.border.title="transparent"}:}{ Integer or character scalar.
+#' \item{`col.border.title="transparent"`:}{ Integer or character scalar.
 #' The border color for the title panels.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{fill="#FFE3E6"}:}{ Character scalar. The fill color used for the
+#' \item{`fill="#FFE3E6"`:}{ Character scalar. The fill color used for the
 #' highlighting of the currently displayed genomic region.}
 #'
-#' \item{\code{fontface=1}:}{ Character scalar. The font face for the
+#' \item{`fontface=1`:}{ Character scalar. The font face for the
 #' chromosome name text.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Character scalar. The font family for the
+#' \item{`fontfamily="sans"`:}{ Character scalar. The font family for the
 #' chromosome name text.}
 #'
-#' \item{\code{fontcolor="#808080"}:}{ Character scalar. The font color for the
+#' \item{`fontcolor="#808080"`:}{ Character scalar. The font color for the
 #' chromosome name text.}
 #'
-#' \item{\code{fontsize=10}:}{ Numeric scalar. The font size for the chromosome
+#' \item{`fontsize=10`:}{ Numeric scalar. The font size for the chromosome
 #' name text.}
 #'
-#' \item{\code{outline=FALSE}:}{ Logical scalar. Add borders to the individual
+#' \item{`outline=FALSE`:}{ Logical scalar. Add borders to the individual
 #' chromosome staining bands.}
 #'
-#' \item{\code{showBandId=FALSE}:}{ Logical scalar. Show the identifier for the
+#' \item{`showBandId=FALSE`:}{ Logical scalar. Show the identifier for the
 #' chromosome bands if there is space for it.}
 #'
-#' \item{\code{lty=1}:}{ Character or integer scalar. The line type used for
+#' \item{`lty=1`:}{ Character or integer scalar. The line type used for
 #' the highlighting of the currently displayed genomic region.}
 #'
-#' \item{\code{lwd=1}:}{ Numeric scalar. The line width used for the
+#' \item{`lwd=1`:}{ Numeric scalar. The line width used for the
 #' highlighting of the currently displayed genomic region.}
 #'
-#' \item{\code{showId=TRUE}:}{ Logical scalar. Indicate the chromosome name
+#' \item{`showId=TRUE`:}{ Logical scalar. Indicate the chromosome name
 #' next to the ideogram.}
 #'
-#' \item{\code{showTitle=FALSE}:}{ Logical scalar. Plot a title panel. Defaults
+#' \item{`showTitle=FALSE`:}{ Logical scalar. Plot a title panel. Defaults
 #' to omit the title panel.}
 #'
-#' \item{\code{size=NULL}:}{ Numeric scalar. The relative size of the track.
+#' \item{`size=NULL`:}{ Numeric scalar. The relative size of the track.
 #' Defaults to automatic size setting. Can also be overridden in the
-#' \code{\link{plotTracks}} function.}
+#' [`plotTracks`] function.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot lines. Usually the same as the global \code{col} parameter.}
+#' \item{`col.line=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot lines. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
+#' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
 #' content of the track to accomodate the minimum current device resolution.
-#' See \code{\link{collapsing}} for details.}
+#' See [`collapsing`] for details.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{grid=FALSE}:}{ Boolean, switching on/off the plotting of a
+#' \item{`grid=FALSE`:}{ Boolean, switching on/off the plotting of a
 #' grid.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for all
 #' text, unless a more specific definition exists.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
-#' before collapsing range items, only if \code{collapse==TRUE}. See
-#' \code{\link{collapsing}} for details.}
+#' \item{`min.distance=1`:}{ Numeric scalar. The minimum pixel distance
+#' before collapsing range items, only if `collapse==TRUE`. See
+#' [`collapsing`] for details.}
 #'
-#' \item{\code{min.height=3}:}{ Numeric scalar. The minimum range height in
+#' \item{`min.height=3`:}{ Numeric scalar. The minimum range height in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
+#' \item{`rotation=0`:}{ The rotation angle for all text unless a more
 #' specific definiton exists.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -878,119 +878,119 @@
 #'
 #' \describe{
 #'
-#' \item{\code{arrowHeadWidth=30}:}{ Numeric scalar. The width of the arrow
-#' head in pixels if \code{shape} is \code{fixedArrow}.}
+#' \item{`arrowHeadWidth=30`:}{ Numeric scalar. The width of the arrow
+#' head in pixels if `shape` is `fixedArrow`.}
 #'
-#' \item{\code{arrowHeadMaxWidth=40}:}{ Numeric scalar. The maximum width of
-#' the arrow head in pixels if \code{shape} is \code{arrow}.}
+#' \item{`arrowHeadMaxWidth=40`:}{ Numeric scalar. The maximum width of
+#' the arrow head in pixels if `shape` is `arrow`.}
 #'
-#' \item{\code{cex.group=0.6}:}{ Numeric scalar. The font expansion factor for
+#' \item{`cex.group=0.6`:}{ Numeric scalar. The font expansion factor for
 #' the group-level annotation.}
 #'
-#' \item{\code{cex=1}:}{ Numeric scalar. The font expansion factor for item
+#' \item{`cex=1`:}{ Numeric scalar. The font expansion factor for item
 #' identifiers.}
 #'
-#' \item{\code{col.line="darkgray"}:}{ Character scalar. The color used for
+#' \item{`col.line="darkgray"`:}{ Character scalar. The color used for
 #' connecting lines between grouped items. Defaults to a light gray, but if set
-#' to \code{NULL} the same color as for the first item in the group is used.}
+#' to `NULL` the same color as for the first item in the group is used.}
 #'
-#' \item{\code{col="transparent"}:}{ Character or integer scalar.  The border
+#' \item{`col="transparent"`:}{ Character or integer scalar.  The border
 #' color for all track items.}
 #'
-#' \item{\code{featureAnnotation=NULL}:}{ Character scalar. Add annotation
+#' \item{`featureAnnotation=NULL`:}{ Character scalar. Add annotation
 #' information to the individual track elements. This can be a value in
-#' \code{id}, \code{group} or \code{feature}.  Defaults to \code{id}. Only
-#' works if \code{showFeatureId} is not \code{FALSE}.}
+#' `id`, `group` or `feature`.  Defaults to `id`. Only
+#' works if `showFeatureId` is not `FALSE`.}
 #'
-#' \item{\code{fill="lightblue"}:}{ Character or integer scalar.  The fill
+#' \item{`fill="lightblue"`:}{ Character or integer scalar.  The fill
 #' color for untyped items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{fontfamily.group="sans"}:}{ Character scalar. The font family
+#' \item{`fontfamily.group="sans"`:}{ Character scalar. The font family
 #' for the group-level annotation.}
 #'
-#' \item{\code{fontcolor.group="#808080"}:}{ Character or integer scalar. The
+#' \item{`fontcolor.group="#808080"`:}{ Character or integer scalar. The
 #' font color for the group-level annotation.}
 #'
-#' \item{\code{fontcolor.item="white"}:}{ Character or integer scalar. The font
+#' \item{`fontcolor.item="white"`:}{ Character or integer scalar. The font
 #' color for item identifiers.}
 #'
-#' \item{\code{fontface.group=2}:}{ Numeric scalar. The font face for the
+#' \item{`fontface.group=2`:}{ Numeric scalar. The font face for the
 #' group-level annotation.}
 #'
-#' \item{\code{fontsize.group=12}:}{ Numeric scalar. The font size for the
+#' \item{`fontsize.group=12`:}{ Numeric scalar. The font size for the
 #' group-level annotation.}
 #'
-#' \item{\code{groupAnnotation=NULL}:}{ Character scalar. Add annotation
-#' information as group labels. This can be a value in \code{id}, \code{group}
-#' or \code{feature}. Defaults to \code{group}. Only works if \code{showId} is
-#' not \code{FALSE}.}
+#' \item{`groupAnnotation=NULL`:}{ Character scalar. Add annotation
+#' information as group labels. This can be a value in `id`, `group`
+#' or `feature`. Defaults to `group`. Only works if `showId` is
+#' not `FALSE`.}
 #'
-#' \item{\code{just.group="left"}:}{ Character scalar. the justification of
-#' group labels. Either \code{left}, \code{right}, \code{above} or
-#' \code{below}.}
+#' \item{`just.group="left"`:}{ Character scalar. the justification of
+#' group labels. Either `left`, `right`, `above` or
+#' `below`.}
 #'
-#' \item{\code{lex=1}:}{ Numeric scalar. The line expansion factor for all
+#' \item{`lex=1`:}{ Numeric scalar. The line expansion factor for all
 #' track items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for item
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for item
 #' identifiers.}
 #'
-#' \item{\code{lty="solid"}:}{ Character or integer scalar. The line type for
+#' \item{`lty="solid"`:}{ Character or integer scalar. The line type for
 #' all track items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{lwd=1}:}{ Integer scalar. The line width for all track items.
-#' This is also used to connect grouped items. See \code{\link{grouping}} for
+#' \item{`lwd=1`:}{ Integer scalar. The line width for all track items.
+#' This is also used to connect grouped items. See [`grouping`] for
 #' details.}
 #'
-#' \item{\code{mergeGroups=FALSE}:}{ Logical scalar. Merge fully overlapping
-#' groups if \code{collapse==TRUE}.}
+#' \item{`mergeGroups=FALSE`:}{ Logical scalar. Merge fully overlapping
+#' groups if `collapse==TRUE`.}
 #'
-#' \item{\code{min.height=3}:}{ Numeric scalar. The minimum range height in
+#' \item{`min.height=3`:}{ Numeric scalar. The minimum range height in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details. For feathered
+#' rendering issues. See [`collapsing`] for details. For feathered
 #' bars indicating the strandedness of grouped items this also controls the
 #' height of the arrow feathers.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{rotation=0}:}{ Numeric scalar. The degree of text rotation for
+#' \item{`rotation=0`:}{ Numeric scalar. The degree of text rotation for
 #' item identifiers.}
 #'
-#' \item{\code{rotation.group=0}:}{ Numeric scalar. The degree of text rotation
+#' \item{`rotation.group=0`:}{ Numeric scalar. The degree of text rotation
 #' for group labels.}
 #'
-#' \item{\code{rotation.item=0}:}{ Numeric scalar. The degree of text rotation
+#' \item{`rotation.item=0`:}{ Numeric scalar. The degree of text rotation
 #' for item identifiers.}
 #'
-#' \item{\code{shape="arrow"}:}{ Character scalar. The shape in which to
-#' display the track items. Currently only \code{box}, \code{arrow},
-#' \code{fixedArrow}, \code{ellipse}, and \code{smallArrow} are implemented.}
+#' \item{`shape="arrow"`:}{ Character scalar. The shape in which to
+#' display the track items. Currently only `box`, `arrow`,
+#' `fixedArrow`, `ellipse`, and `smallArrow` are implemented.}
 #'
-#' \item{\code{showFeatureId=FALSE}:}{ Logical scalar. Control whether to plot
+#' \item{`showFeatureId=FALSE`:}{ Logical scalar. Control whether to plot
 #' the individual track item identifiers.}
 #'
-#' \item{\code{showId=FALSE}:}{ Logical scalar. Control whether to annotate
+#' \item{`showId=FALSE`:}{ Logical scalar. Control whether to annotate
 #' individual groups.}
 #'
-#' \item{\code{showOverplotting=FALSE}:}{ Logical scalar. Use a color gradient
+#' \item{`showOverplotting=FALSE`:}{ Logical scalar. Use a color gradient
 #' to show the amount of overplotting for collapsed items. This implies that
-#' \code{collapse==TRUE}}
+#' `collapse==TRUE`}
 #'
-#' \item{\code{size=1}:}{ Numeric scalar. The relative size of the track. Can
-#' be overridden in the \code{\link{plotTracks}} function.}
+#' \item{`size=1`:}{ Numeric scalar. The relative size of the track. Can
+#' be overridden in the [`plotTracks`] function.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class StackedTrack:}}
+#' \bold{*Inherited from class StackedTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{stackHeight=0.75}:}{ Numeric between 0 and 1.  Controls the
+#' \item{`stackHeight=0.75`:}{ Numeric between 0 and 1.  Controls the
 #' vertical size and spacing between stacked elements. The number defines the
 #' proportion of the total available space for the stack that is used to draw
 #' the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -998,127 +998,127 @@
 #' quarter of the available space each is used for spacing above and below the
 #' glyph. Defaults to 0.75.}
 #'
-#' \item{\code{reverseStacking=FALSE}:}{ Logical flag. Reverse the y-ordering
+#' \item{`reverseStacking=FALSE`:}{ Logical flag. Reverse the y-ordering
 #' of stacked items. I.e., features that are plotted on the bottom-most stacks
 #' will be moved to the top-most stack and vice versa.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.title="lightgray"}:}{ Integer or character scalar.
+#' \item{`background.title="lightgray"`:}{ Integer or character scalar.
 #' The background color for the title panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.border.title="white"}:}{ Integer or character scalar. The
+#' \item{`col.border.title="white"`:}{ Integer or character scalar. The
 #' border color for the title panels.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
+#' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
 #' content of the track to accomodate the minimum current device resolution.
-#' See \code{\link{collapsing}} for details.}
+#' See [`collapsing`] for details.}
 #'
-#' \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
+#' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
 #' color for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontface=1}:}{ Integer or character scalar. The font face for
+#' \item{`fontface=1`:}{ Integer or character scalar. The font face for
 #' all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Integer or character scalar.  The font
+#' \item{`fontfamily="sans"`:}{ Integer or character scalar.  The font
 #' family for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontsize=12}:}{ Numeric scalar. The font size for all text,
+#' \item{`fontsize=12`:}{ Numeric scalar. The font size for all text,
 #' unless a more specific definition exists.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{grid=FALSE}:}{ Boolean, switching on/off the plotting of a
+#' \item{`grid=FALSE`:}{ Boolean, switching on/off the plotting of a
 #' grid.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
-#' before collapsing range items, only if \code{collapse==TRUE}. See
-#' \code{\link{collapsing}} for details.}
+#' \item{`min.distance=1`:}{ Numeric scalar. The minimum pixel distance
+#' before collapsing range items, only if `collapse==TRUE`. See
+#' [`collapsing`] for details.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{showTitle=TRUE}:}{ Boolean controlling whether to plot a title
+#' \item{`showTitle=TRUE`:}{ Boolean controlling whether to plot a title
 #' panel. Although this can be set individually for each track, in multi-track
-#' plots as created by \code{\link{plotTracks}} there will still be an empty
+#' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
 #' true for axes. Note that the the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -1129,161 +1129,161 @@
 #'
 #' \describe{
 #'
-#' \item{\code{arrowHeadWidth=10}:}{ Numeric scalar. The width of the arrow
-#' head in pixels if \code{shape} is \code{fixedArrow}.}
+#' \item{`arrowHeadWidth=10`:}{ Numeric scalar. The width of the arrow
+#' head in pixels if `shape` is `fixedArrow`.}
 #'
-#' \item{\code{arrowHeadMaxWidth=20}:}{ Numeric scalar. The maximum width of
-#' the arrow head in pixels if \code{shape} is \code{arrow}.}
+#' \item{`arrowHeadMaxWidth=20`:}{ Numeric scalar. The maximum width of
+#' the arrow head in pixels if `shape` is `arrow`.}
 #'
-#' \item{\code{col=NULL}:}{ Character or integer scalar. The border color for
-#' all track items. Defaults to using the same color as in \code{fill}, also
-#' taking into account different track \code{features}.}
+#' \item{`col=NULL`:}{ Character or integer scalar. The border color for
+#' all track items. Defaults to using the same color as in `fill`, also
+#' taking into account different track `features`.}
 #'
-#' \item{\code{collapseTranscripts=FALSE}:}{ Logical or character scalar. Can
-#' be one in \code{gene}, \code{longest}, \code{shortest} or \code{meta}. Merge
+#' \item{`collapseTranscripts=FALSE`:}{ Logical or character scalar. Can
+#' be one in `gene`, `longest`, `shortest` or `meta`. Merge
 #' all transcripts of the same gene into one single gene model. In the case of
-#' \code{gene} (or \code{TRUE}), this will only keep the start location of the
+#' `gene` (or `TRUE`), this will only keep the start location of the
 #' first exon and the end location of the last exon from all transcripts of the
-#' gene. For \code{shortest} and \code{longest}, only the longest or shortest
-#' transcript model is retained.  For \code{meta}, a meta-transcript containing
+#' gene. For `shortest` and `longest`, only the longest or shortest
+#' transcript model is retained.  For `meta`, a meta-transcript containing
 #' the union of all exons is formed (essentially identical to the operation
-#' \code{reduce(geneModel)}).}
+#' `reduce(geneModel)`).}
 #'
-#' \item{\code{exonAnnotation=NULL}:}{ Character scalar. Add annotation
+#' \item{`exonAnnotation=NULL`:}{ Character scalar. Add annotation
 #' information to the individual exon models. This can be a value in
-#' \code{symbol}, \code{gene}, \code{transcript}, \code{exon} or
-#' \code{feature}. Defaults to \code{exon}. Only works if \code{showExonId} is
-#' not \code{FALSE}.}
+#' `symbol`, `gene`, `transcript`, `exon` or
+#' `feature`. Defaults to `exon`. Only works if `showExonId` is
+#' not `FALSE`.}
 #'
-#' \item{\code{fill="orange"}:}{ Character or integer scalar. The fill color
+#' \item{`fill="orange"`:}{ Character or integer scalar. The fill color
 #' for untyped items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{min.distance=0}:}{ Numeric scalar. The minimum pixel distance
-#' before collapsing range items, only if \code{collapse==TRUE}. See
-#' \code{\link{collapsing}} for details. Note that a value larger than 0 may
+#' \item{`min.distance=0`:}{ Numeric scalar. The minimum pixel distance
+#' before collapsing range items, only if `collapse==TRUE`. See
+#' [`collapsing`] for details. Note that a value larger than 0 may
 #' lead to UTR regions being merged to CDS regions, which in most cases is not
 #' particularly useful.}
 #'
-#' \item{\code{shape=c("smallArrow", "box")}:}{ Character scalar.  The shape in
-#' which to display the track items. Currently only \code{box}, \code{arrow},
-#' \code{ellipse}, and \code{smallArrow} are implemented.}
+#' \item{`shape=c("smallArrow", "box")`:}{ Character scalar.  The shape in
+#' which to display the track items. Currently only `box`, `arrow`,
+#' `ellipse`, and `smallArrow` are implemented.}
 #'
-#' \item{\code{showExonId=NULL}:}{ Logical scalar. Control whether to plot the
+#' \item{`showExonId=NULL`:}{ Logical scalar. Control whether to plot the
 #' individual exon identifiers.}
 #'
-#' \item{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-#' "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")}:}{ Character
-#' vector. A listing of feature types that should be drawn with thin boxes.
-#' Typically those are non-coding elements.}
+#' \item{`thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
+#' "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")`:}{
+#' Character vector. A listing of feature types that should be drawn with thin
+#' boxes. Typically those are non-coding elements.}
 #'
-#' \item{\code{transcriptAnnotation=NULL}:}{ Character scalar.  Add annotation
-#' information as transcript labels. This can be a value in \code{symbol},
-#' \code{gene}, \code{transcript}, \code{exon} or \code{feature}. Defaults to
-#' \code{symbol}.  Only works if \code{showId} is not \code{FALSE}.}
+#' \item{`transcriptAnnotation=NULL`:}{ Character scalar.  Add annotation
+#' information as transcript labels. This can be a value in `symbol`,
+#' `gene`, `transcript`, `exon` or `feature`. Defaults to
+#' `symbol`.  Only works if `showId` is not `FALSE`.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class AnnotationTrack:}}
+#' \bold{*Inherited from class AnnotationTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{cex.group=0.6}:}{ Numeric scalar. The font expansion factor for
+#' \item{`cex.group=0.6`:}{ Numeric scalar. The font expansion factor for
 #' the group-level annotation.}
 #'
-#' \item{\code{cex=1}:}{ Numeric scalar. The font expansion factor for item
+#' \item{`cex=1`:}{ Numeric scalar. The font expansion factor for item
 #' identifiers.}
 #'
-#' \item{\code{col.line="darkgray"}:}{ Character scalar. The color used for
+#' \item{`col.line="darkgray"`:}{ Character scalar. The color used for
 #' connecting lines between grouped items. Defaults to a light gray, but if set
-#' to \code{NULL} the same color as for the first item in the group is used.}
+#' to `NULL` the same color as for the first item in the group is used.}
 #'
-#' \item{\code{featureAnnotation=NULL}:}{ Character scalar. Add annotation
+#' \item{`featureAnnotation=NULL`:}{ Character scalar. Add annotation
 #' information to the individual track elements. This can be a value in
-#' \code{id}, \code{group} or \code{feature}.  Defaults to \code{id}. Only
-#' works if \code{showFeatureId} is not \code{FALSE}.}
+#' `id`, `group` or `feature`.  Defaults to `id`. Only
+#' works if `showFeatureId` is not `FALSE`.}
 #'
-#' \item{\code{fontfamily.group="sans"}:}{ Character scalar. The font family
+#' \item{`fontfamily.group="sans"`:}{ Character scalar. The font family
 #' for the group-level annotation.}
 #'
-#' \item{\code{fontcolor.group="#808080"}:}{ Character or integer scalar. The
+#' \item{`fontcolor.group="#808080"`:}{ Character or integer scalar. The
 #' font color for the group-level annotation.}
 #'
-#' \item{\code{fontcolor.item="white"}:}{ Character or integer scalar. The font
+#' \item{`fontcolor.item="white"`:}{ Character or integer scalar. The font
 #' color for item identifiers.}
 #'
-#' \item{\code{fontface.group=2}:}{ Numeric scalar. The font face for the
+#' \item{`fontface.group=2`:}{ Numeric scalar. The font face for the
 #' group-level annotation.}
 #'
-#' \item{\code{fontsize.group=12}:}{ Numeric scalar. The font size for the
+#' \item{`fontsize.group=12`:}{ Numeric scalar. The font size for the
 #' group-level annotation.}
 #'
-#' \item{\code{groupAnnotation=NULL}:}{ Character scalar. Add annotation
-#' information as group labels. This can be a value in \code{id}, \code{group}
-#' or \code{feature}. Defaults to \code{group}. Only works if \code{showId} is
-#' not \code{FALSE}.}
+#' \item{`groupAnnotation=NULL`:}{ Character scalar. Add annotation
+#' information as group labels. This can be a value in `id`, `group`
+#' or `feature`. Defaults to `group`. Only works if `showId` is
+#' not `FALSE`.}
 #'
-#' \item{\code{just.group="left"}:}{ Character scalar. the justification of
-#' group labels. Either \code{left}, \code{right}, \code{above} or
-#' \code{below}.}
+#' \item{`just.group="left"`:}{ Character scalar. the justification of
+#' group labels. Either `left`, `right`, `above` or
+#' `below`.}
 #'
-#' \item{\code{lex=1}:}{ Numeric scalar. The line expansion factor for all
+#' \item{`lex=1`:}{ Numeric scalar. The line expansion factor for all
 #' track items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for item
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for item
 #' identifiers.}
 #'
-#' \item{\code{lty="solid"}:}{ Character or integer scalar. The line type for
+#' \item{`lty="solid"`:}{ Character or integer scalar. The line type for
 #' all track items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{lwd=1}:}{ Integer scalar. The line width for all track items.
-#' This is also used to connect grouped items. See \code{\link{grouping}} for
+#' \item{`lwd=1`:}{ Integer scalar. The line width for all track items.
+#' This is also used to connect grouped items. See [`grouping`] for
 #' details.}
 #'
-#' \item{\code{mergeGroups=FALSE}:}{ Logical scalar. Merge fully overlapping
-#' groups if \code{collapse==TRUE}.}
+#' \item{`mergeGroups=FALSE`:}{ Logical scalar. Merge fully overlapping
+#' groups if `collapse==TRUE`.}
 #'
-#' \item{\code{min.height=3}:}{ Numeric scalar. The minimum range height in
+#' \item{`min.height=3`:}{ Numeric scalar. The minimum range height in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details. For feathered
+#' rendering issues. See [`collapsing`] for details. For feathered
 #' bars indicating the strandedness of grouped items this also controls the
 #' height of the arrow feathers.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{rotation=0}:}{ Numeric scalar. The degree of text rotation for
+#' \item{`rotation=0`:}{ Numeric scalar. The degree of text rotation for
 #' item identifiers.}
 #'
-#' \item{\code{rotation.group=0}:}{ Numeric scalar. The degree of text rotation
+#' \item{`rotation.group=0`:}{ Numeric scalar. The degree of text rotation
 #' for group labels.}
 #'
-#' \item{\code{rotation.item=0}:}{ Numeric scalar. The degree of text rotation
+#' \item{`rotation.item=0`:}{ Numeric scalar. The degree of text rotation
 #' for item identifiers.}
 #'
-#' \item{\code{showFeatureId=FALSE}:}{ Logical scalar. Control whether to plot
+#' \item{`showFeatureId=FALSE`:}{ Logical scalar. Control whether to plot
 #' the individual track item identifiers.}
 #'
-#' \item{\code{showId=FALSE}:}{ Logical scalar. Control whether to annotate
+#' \item{`showId=FALSE`:}{ Logical scalar. Control whether to annotate
 #' individual groups.}
 #'
-#' \item{\code{showOverplotting=FALSE}:}{ Logical scalar. Use a color gradient
+#' \item{`showOverplotting=FALSE`:}{ Logical scalar. Use a color gradient
 #' to show the amount of overplotting for collapsed items. This implies that
-#' \code{collapse==TRUE}}
+#' `collapse==TRUE`}
 #'
-#' \item{\code{size=1}:}{ Numeric scalar. The relative size of the track. Can
-#' be overridden in the \code{\link{plotTracks}} function.}
+#' \item{`size=1`:}{ Numeric scalar. The relative size of the track. Can
+#' be overridden in the [`plotTracks`] function.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class StackedTrack:}}
+#' \bold{*Inherited from class StackedTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{stackHeight=0.75}:}{ Numeric between 0 and 1.  Controls the
+#' \item{`stackHeight=0.75`:}{ Numeric between 0 and 1.  Controls the
 #' vertical size and spacing between stacked elements. The number defines the
 #' proportion of the total available space for the stack that is used to draw
 #' the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -1291,123 +1291,123 @@
 #' quarter of the available space each is used for spacing above and below the
 #' glyph. Defaults to 0.75.}
 #'
-#' \item{\code{reverseStacking=FALSE}:}{ Logical flag. Reverse the y-ordering
+#' \item{`reverseStacking=FALSE`:}{ Logical flag. Reverse the y-ordering
 #' of stacked items. I.e., features that are plotted on the bottom-most stacks
 #' will be moved to the top-most stack and vice versa.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.title="lightgray"}:}{ Integer or character scalar.
+#' \item{`background.title="lightgray"`:}{ Integer or character scalar.
 #' The background color for the title panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.border.title="white"}:}{ Integer or character scalar. The
+#' \item{`col.border.title="white"`:}{ Integer or character scalar. The
 #' border color for the title panels.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
+#' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
 #' content of the track to accomodate the minimum current device resolution.
-#' See \code{\link{collapsing}} for details.}
+#' See [`collapsing`] for details.}
 #'
-#' \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
+#' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
 #' color for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontface=1}:}{ Integer or character scalar. The font face for
+#' \item{`fontface=1`:}{ Integer or character scalar. The font face for
 #' all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Integer or character scalar.  The font
+#' \item{`fontfamily="sans"`:}{ Integer or character scalar.  The font
 #' family for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontsize=12}:}{ Numeric scalar. The font size for all text,
+#' \item{`fontsize=12`:}{ Numeric scalar. The font size for all text,
 #' unless a more specific definition exists.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{grid=FALSE}:}{ Boolean, switching on/off the plotting of a
+#' \item{`grid=FALSE`:}{ Boolean, switching on/off the plotting of a
 #' grid.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{showTitle=TRUE}:}{ Boolean controlling whether to plot a title
+#' \item{`showTitle=TRUE`:}{ Boolean controlling whether to plot a title
 #' panel. Although this can be set individually for each track, in multi-track
-#' plots as created by \code{\link{plotTracks}} there will still be an empty
+#' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
 #' true for axes. Note that the the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -1418,245 +1418,245 @@
 #'
 #' \describe{
 #'
-#' \item{\code{C_segment="burlywood4"}:}{ Character or integer scalar. Fill
+#' \item{`C_segment="burlywood4"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'C_segment'.}
 #'
-#' \item{\code{D_segment="lightblue"}:}{ Character or integer scalar. Fill
+#' \item{`D_segment="lightblue"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'C_segment'.}
 #'
-#' \item{\code{J_segment="dodgerblue2"}:}{ Character or integer scalar. Fill
+#' \item{`J_segment="dodgerblue2"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'C_segment'.}
 #'
-#' \item{\code{Mt_rRNA="yellow"}:}{ Character or integer scalar.  Fill color
+#' \item{`Mt_rRNA="yellow"`:}{ Character or integer scalar.  Fill color
 #' for annotation objects of type 'Mt_rRNA'.}
 #'
-#' \item{\code{Mt_tRNA="darkgoldenrod"}:}{ Character or integer scalar. Fill
+#' \item{`Mt_tRNA="darkgoldenrod"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'Mt_tRNA'.}
 #'
-#' \item{\code{Mt_tRNA_pseudogene="darkgoldenrod1"}:}{ Character or integer
+#' \item{`Mt_tRNA_pseudogene="darkgoldenrod1"`:}{ Character or integer
 #' scalar. Fill color for annotation objects of type 'Mt_tRNA_pseudogene'.}
 #'
-#' \item{\code{V_segment="aquamarine"}:}{ Character or integer scalar. Fill
+#' \item{`V_segment="aquamarine"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'V_segment'.}
 #'
-#' \item{\code{miRNA="cornflowerblue"}:}{ Character or integer scalar. Fill
+#' \item{`miRNA="cornflowerblue"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'L_segment'.}
 #'
-#' \item{\code{miRNA_pseudogene="cornsilk"}:}{ Character or integer scalar.
+#' \item{`miRNA_pseudogene="cornsilk"`:}{ Character or integer scalar.
 #' Fill color for annotation objects of type 'miRNA_pseudogene'.}
 #'
-#' \item{\code{misc_RNA="cornsilk3"}:}{ Character or integer scalar. Fill color
+#' \item{`misc_RNA="cornsilk3"`:}{ Character or integer scalar. Fill color
 #' for annotation objects of type 'misc_RNA'.}
 #'
-#' \item{\code{misc_RNA_pseudogene="cornsilk4"}:}{ Character or integer scalar.
+#' \item{`misc_RNA_pseudogene="cornsilk4"`:}{ Character or integer scalar.
 #' Fill color for annotation objects of type 'misc_RNA_pseudogene'.}
 #'
-#' \item{\code{protein_coding="#FFD58A"}:}{ Character or integer scalar. Fill
+#' \item{`protein_coding="#FFD58A"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'protein_coding'.}
 #'
-#' \item{\code{pseudogene="brown1"}:}{ Character or integer scalar.  Fill color
+#' \item{`pseudogene="brown1"`:}{ Character or integer scalar.  Fill color
 #' for annotation objects of type 'pseudogene'.}
 #'
-#' \item{\code{rRNA="darkolivegreen1"}:}{ Character or integer scalar. Fill
+#' \item{`rRNA="darkolivegreen1"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'rRNA'.}
 #'
-#' \item{\code{rRNA_pseudogene="darkolivegreen"}:}{ Character or integer
+#' \item{`rRNA_pseudogene="darkolivegreen"`:}{ Character or integer
 #' scalar. Fill color for annotation objects of type 'rRNA_pseudogene'.}
 #'
-#' \item{\code{retrotransposed="blueviolet"}:}{ Character or integer scalar.
+#' \item{`retrotransposed="blueviolet"`:}{ Character or integer scalar.
 #' Fill color for annotation objects of type 'retrotransposed'.}
 #'
-#' \item{\code{scRNA="gold4"}:}{ Character or integer scalar. Fill color for
+#' \item{`scRNA="gold4"`:}{ Character or integer scalar. Fill color for
 #' annotation objects of type 'scRNA'.}
 #'
-#' \item{\code{scRNA_pseudogene="darkorange2"}:}{ Character or integer scalar.
+#' \item{`scRNA_pseudogene="darkorange2"`:}{ Character or integer scalar.
 #' Fill color for annotation objects of type 'scRNA_pseudogene'.}
 #'
-#' \item{\code{snRNA="coral"}:}{ Character or integer scalar. Fill color for
+#' \item{`snRNA="coral"`:}{ Character or integer scalar. Fill color for
 #' annotation objects of type 'snRNA'.}
 #'
-#' \item{\code{snRNA_pseudogene="coral3"}:}{ Character or integer scalar. Fill
+#' \item{`snRNA_pseudogene="coral3"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'snRNA_pseudogene'.}
 #'
-#' \item{\code{snoRNA="cyan"}:}{ Character or integer scalar. Fill color for
+#' \item{`snoRNA="cyan"`:}{ Character or integer scalar. Fill color for
 #' annotation objects of type 'snoRNA'.}
 #'
-#' \item{\code{snoRNA_pseudogene="cyan2"}:}{ Character or integer scalar. Fill
+#' \item{`snoRNA_pseudogene="cyan2"`:}{ Character or integer scalar. Fill
 #' color for annotation objects of type 'snoRNA_pseudogene'.}
 #'
-#' \item{\code{tRNA_pseudogene="antiquewhite3"}:}{ Character or integer scalar.
+#' \item{`tRNA_pseudogene="antiquewhite3"`:}{ Character or integer scalar.
 #' Fill color for annotation objects of type 'tRNA_pseudogene'.}
 #'
-#' \item{\code{utr3="#FFD58A"}:}{ Character or integer scalar.  Fill color for
+#' \item{`utr3="#FFD58A"`:}{ Character or integer scalar.  Fill color for
 #' annotation objects of type 'utr3'.}
 #'
-#' \item{\code{utr5="#FFD58A"}:}{ Character or integer scalar.  Fill color for
+#' \item{`utr5="#FFD58A"`:}{ Character or integer scalar.  Fill color for
 #' annotation objects of type 'utr5'.}
 #'
-#' \item{\code{verbose=FALSE}:}{ Logical scalar. Report data loading events
+#' \item{`verbose=FALSE`:}{ Logical scalar. Report data loading events
 #' from Bioamart or retrieval from cache.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GeneRegionTrack:}}
+#' \bold{*Inherited from class GeneRegionTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{arrowHeadWidth=10}:}{ Numeric scalar. The width of the arrow
-#' head in pixels if \code{shape} is \code{fixedArrow}.}
+#' \item{`arrowHeadWidth=10`:}{ Numeric scalar. The width of the arrow
+#' head in pixels if `shape` is `fixedArrow`.}
 #'
-#' \item{\code{arrowHeadMaxWidth=20}:}{ Numeric scalar. The maximum width of
-#' the arrow head in pixels if \code{shape} is \code{arrow}.}
+#' \item{`arrowHeadMaxWidth=20`:}{ Numeric scalar. The maximum width of
+#' the arrow head in pixels if `shape` is `arrow`.}
 #'
-#' \item{\code{col=NULL}:}{ Character or integer scalar. The border color for
-#' all track items. Defaults to using the same color as in \code{fill}, also
-#' taking into account different track \code{features}.}
+#' \item{`col=NULL`:}{ Character or integer scalar. The border color for
+#' all track items. Defaults to using the same color as in `fill`, also
+#' taking into account different track `features`.}
 #'
-#' \item{\code{collapseTranscripts=FALSE}:}{ Logical or character scalar. Can
-#' be one in \code{gene}, \code{longest}, \code{shortest} or \code{meta}. Merge
+#' \item{`collapseTranscripts=FALSE`:}{ Logical or character scalar. Can
+#' be one in `gene`, `longest`, `shortest` or `meta`. Merge
 #' all transcripts of the same gene into one single gene model. In the case of
-#' \code{gene} (or \code{TRUE}), this will only keep the start location of the
+#' `gene` (or `TRUE`), this will only keep the start location of the
 #' first exon and the end location of the last exon from all transcripts of the
-#' gene. For \code{shortest} and \code{longest}, only the longest or shortest
-#' transcript model is retained.  For \code{meta}, a meta-transcript containing
+#' gene. For `shortest` and `longest`, only the longest or shortest
+#' transcript model is retained.  For `meta`, a meta-transcript containing
 #' the union of all exons is formed (essentially identical to the operation
-#' \code{reduce(geneModel)}).}
+#' `reduce(geneModel)`).}
 #'
-#' \item{\code{exonAnnotation=NULL}:}{ Character scalar. Add annotation
+#' \item{`exonAnnotation=NULL`:}{ Character scalar. Add annotation
 #' information to the individual exon models. This can be a value in
-#' \code{symbol}, \code{gene}, \code{transcript}, \code{exon} or
-#' \code{feature}. Defaults to \code{exon}. Only works if \code{showExonId} is
-#' not \code{FALSE}.}
+#' `symbol`, `gene`, `transcript`, `exon` or
+#' `feature`. Defaults to `exon`. Only works if `showExonId` is
+#' not `FALSE`.}
 #'
-#' \item{\code{fill="orange"}:}{ Character or integer scalar. The fill color
+#' \item{`fill="orange"`:}{ Character or integer scalar. The fill color
 #' for untyped items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{min.distance=0}:}{ Numeric scalar. The minimum pixel distance
-#' before collapsing range items, only if \code{collapse==TRUE}. See
-#' \code{\link{collapsing}} for details. Note that a value larger than 0 may
+#' \item{`min.distance=0`:}{ Numeric scalar. The minimum pixel distance
+#' before collapsing range items, only if `collapse==TRUE`. See
+#' [`collapsing`] for details. Note that a value larger than 0 may
 #' lead to UTR regions being merged to CDS regions, which in most cases is not
 #' particularly useful.}
 #'
-#' \item{\code{shape=c("smallArrow", "box")}:}{ Character scalar.  The shape in
-#' which to display the track items. Currently only \code{box}, \code{arrow},
-#' \code{ellipse}, and \code{smallArrow} are implemented.}
+#' \item{`shape=c("smallArrow", "box")`:}{ Character scalar.  The shape in
+#' which to display the track items. Currently only `box`, `arrow`,
+#' `ellipse`, and `smallArrow` are implemented.}
 #'
-#' \item{\code{showExonId=NULL}:}{ Logical scalar. Control whether to plot the
+#' \item{`showExonId=NULL`:}{ Logical scalar. Control whether to plot the
 #' individual exon identifiers.}
 #'
-#' \item{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-#' "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")}:}{ Character
-#' vector. A listing of feature types that should be drawn with thin boxes.
-#' Typically those are non-coding elements.}
+#' \item{`thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
+#' "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")`:}{
+#' Character vector. A listing of feature types that should be drawn with thin
+#' boxes. Typically those are non-coding elements.}
 #'
-#' \item{\code{transcriptAnnotation=NULL}:}{ Character scalar.  Add annotation
-#' information as transcript labels. This can be a value in \code{symbol},
-#' \code{gene}, \code{transcript}, \code{exon} or \code{feature}. Defaults to
-#' \code{symbol}.  Only works if \code{showId} is not \code{FALSE}.}
+#' \item{`transcriptAnnotation=NULL`:}{ Character scalar.  Add annotation
+#' information as transcript labels. This can be a value in `symbol`,
+#' `gene`, `transcript`, `exon` or `feature`. Defaults to
+#' `symbol`.  Only works if `showId` is not `FALSE`.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class AnnotationTrack:}}
+#' \bold{*Inherited from class AnnotationTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{cex.group=0.6}:}{ Numeric scalar. The font expansion factor for
+#' \item{`cex.group=0.6`:}{ Numeric scalar. The font expansion factor for
 #' the group-level annotation.}
 #'
-#' \item{\code{cex=1}:}{ Numeric scalar. The font expansion factor for item
+#' \item{`cex=1`:}{ Numeric scalar. The font expansion factor for item
 #' identifiers.}
 #'
-#' \item{\code{col.line="darkgray"}:}{ Character scalar. The color used for
+#' \item{`col.line="darkgray"`:}{ Character scalar. The color used for
 #' connecting lines between grouped items. Defaults to a light gray, but if set
-#' to \code{NULL} the same color as for the first item in the group is used.}
+#' to `NULL` the same color as for the first item in the group is used.}
 #'
-#' \item{\code{featureAnnotation=NULL}:}{ Character scalar. Add annotation
+#' \item{`featureAnnotation=NULL`:}{ Character scalar. Add annotation
 #' information to the individual track elements. This can be a value in
-#' \code{id}, \code{group} or \code{feature}.  Defaults to \code{id}. Only
-#' works if \code{showFeatureId} is not \code{FALSE}.}
+#' `id`, `group` or `feature`.  Defaults to `id`. Only
+#' works if `showFeatureId` is not `FALSE`.}
 #'
-#' \item{\code{fontfamily.group="sans"}:}{ Character scalar. The font family
+#' \item{`fontfamily.group="sans"`:}{ Character scalar. The font family
 #' for the group-level annotation.}
 #'
-#' \item{\code{fontcolor.group="#808080"}:}{ Character or integer scalar. The
+#' \item{`fontcolor.group="#808080"`:}{ Character or integer scalar. The
 #' font color for the group-level annotation.}
 #'
-#' \item{\code{fontcolor.item="white"}:}{ Character or integer scalar. The font
+#' \item{`fontcolor.item="white"`:}{ Character or integer scalar. The font
 #' color for item identifiers.}
 #'
-#' \item{\code{fontface.group=2}:}{ Numeric scalar. The font face for the
+#' \item{`fontface.group=2`:}{ Numeric scalar. The font face for the
 #' group-level annotation.}
 #'
-#' \item{\code{fontsize.group=12}:}{ Numeric scalar. The font size for the
+#' \item{`fontsize.group=12`:}{ Numeric scalar. The font size for the
 #' group-level annotation.}
 #'
-#' \item{\code{groupAnnotation=NULL}:}{ Character scalar. Add annotation
-#' information as group labels. This can be a value in \code{id}, \code{group}
-#' or \code{feature}. Defaults to \code{group}. Only works if \code{showId} is
-#' not \code{FALSE}.}
+#' \item{`groupAnnotation=NULL`:}{ Character scalar. Add annotation
+#' information as group labels. This can be a value in `id`, `group`
+#' or `feature`. Defaults to `group`. Only works if `showId` is
+#' not `FALSE`.}
 #'
-#' \item{\code{just.group="left"}:}{ Character scalar. the justification of
-#' group labels. Either \code{left}, \code{right}, \code{above} or
-#' \code{below}.}
+#' \item{`just.group="left"`:}{ Character scalar. the justification of
+#' group labels. Either `left`, `right`, `above` or
+#' `below`.}
 #'
-#' \item{\code{lex=1}:}{ Numeric scalar. The line expansion factor for all
+#' \item{`lex=1`:}{ Numeric scalar. The line expansion factor for all
 #' track items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for item
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for item
 #' identifiers.}
 #'
-#' \item{\code{lty="solid"}:}{ Character or integer scalar. The line type for
+#' \item{`lty="solid"`:}{ Character or integer scalar. The line type for
 #' all track items. This is also used to connect grouped items. See
-#' \code{\link{grouping}} for details.}
+#' [`grouping`] for details.}
 #'
-#' \item{\code{lwd=1}:}{ Integer scalar. The line width for all track items.
-#' This is also used to connect grouped items. See \code{\link{grouping}} for
+#' \item{`lwd=1`:}{ Integer scalar. The line width for all track items.
+#' This is also used to connect grouped items. See [`grouping`] for
 #' details.}
 #'
-#' \item{\code{mergeGroups=FALSE}:}{ Logical scalar. Merge fully overlapping
-#' groups if \code{collapse==TRUE}.}
+#' \item{`mergeGroups=FALSE`:}{ Logical scalar. Merge fully overlapping
+#' groups if `collapse==TRUE`.}
 #'
-#' \item{\code{min.height=3}:}{ Numeric scalar. The minimum range height in
+#' \item{`min.height=3`:}{ Numeric scalar. The minimum range height in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details. For feathered
+#' rendering issues. See [`collapsing`] for details. For feathered
 #' bars indicating the strandedness of grouped items this also controls the
 #' height of the arrow feathers.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{rotation=0}:}{ Numeric scalar. The degree of text rotation for
+#' \item{`rotation=0`:}{ Numeric scalar. The degree of text rotation for
 #' item identifiers.}
 #'
-#' \item{\code{rotation.group=0}:}{ Numeric scalar. The degree of text rotation
+#' \item{`rotation.group=0`:}{ Numeric scalar. The degree of text rotation
 #' for group labels.}
 #'
-#' \item{\code{rotation.item=0}:}{ Numeric scalar. The degree of text rotation
+#' \item{`rotation.item=0`:}{ Numeric scalar. The degree of text rotation
 #' for item identifiers.}
 #'
-#' \item{\code{showFeatureId=FALSE}:}{ Logical scalar. Control whether to plot
+#' \item{`showFeatureId=FALSE`:}{ Logical scalar. Control whether to plot
 #' the individual track item identifiers.}
 #'
-#' \item{\code{showId=FALSE}:}{ Logical scalar. Control whether to annotate
+#' \item{`showId=FALSE`:}{ Logical scalar. Control whether to annotate
 #' individual groups.}
 #'
-#' \item{\code{showOverplotting=FALSE}:}{ Logical scalar. Use a color gradient
+#' \item{`showOverplotting=FALSE`:}{ Logical scalar. Use a color gradient
 #' to show the amount of overplotting for collapsed items. This implies that
-#' \code{collapse==TRUE}}
+#' `collapse==TRUE`}
 #'
-#' \item{\code{size=1}:}{ Numeric scalar. The relative size of the track. Can
-#' be overridden in the \code{\link{plotTracks}} function.}
+#' \item{`size=1`:}{ Numeric scalar. The relative size of the track. Can
+#' be overridden in the [`plotTracks`] function.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class StackedTrack:}}
+#' \bold{*Inherited from class StackedTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{stackHeight=0.75}:}{ Numeric between 0 and 1.  Controls the
+#' \item{`stackHeight=0.75`:}{ Numeric between 0 and 1.  Controls the
 #' vertical size and spacing between stacked elements. The number defines the
 #' proportion of the total available space for the stack that is used to draw
 #' the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -1664,123 +1664,123 @@
 #' quarter of the available space each is used for spacing above and below the
 #' glyph. Defaults to 0.75.}
 #'
-#' \item{\code{reverseStacking=FALSE}:}{ Logical flag. Reverse the y-ordering
+#' \item{`reverseStacking=FALSE`:}{ Logical flag. Reverse the y-ordering
 #' of stacked items. I.e., features that are plotted on the bottom-most stacks
 #' will be moved to the top-most stack and vice versa.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.title="lightgray"}:}{ Integer or character scalar.
+#' \item{`background.title="lightgray"`:}{ Integer or character scalar.
 #' The background color for the title panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.border.title="white"}:}{ Integer or character scalar. The
+#' \item{`col.border.title="white"`:}{ Integer or character scalar. The
 #' border color for the title panels.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
+#' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
 #' content of the track to accomodate the minimum current device resolution.
-#' See \code{\link{collapsing}} for details.}
+#' See [`collapsing`] for details.}
 #'
-#' \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
+#' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
 #' color for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontface=1}:}{ Integer or character scalar. The font face for
+#' \item{`fontface=1`:}{ Integer or character scalar. The font face for
 #' all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Integer or character scalar.  The font
+#' \item{`fontfamily="sans"`:}{ Integer or character scalar.  The font
 #' family for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontsize=12}:}{ Numeric scalar. The font size for all text,
+#' \item{`fontsize=12`:}{ Numeric scalar. The font size for all text,
 #' unless a more specific definition exists.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{grid=FALSE}:}{ Boolean, switching on/off the plotting of a
+#' \item{`grid=FALSE`:}{ Boolean, switching on/off the plotting of a
 #' grid.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{showTitle=TRUE}:}{ Boolean controlling whether to plot a title
+#' \item{`showTitle=TRUE`:}{ Boolean controlling whether to plot a title
 #' panel. Although this can be set individually for each track, in multi-track
-#' plots as created by \code{\link{plotTracks}} there will still be an empty
+#' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
 #' true for axes. Note that the the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -1791,194 +1791,194 @@
 #'
 #' \describe{
 #'
-#' \item{\code{alpha.reads=0.5}:}{ Numeric scalar between 0 and 1. The
+#' \item{`alpha.reads=0.5`:}{ Numeric scalar between 0 and 1. The
 #' transparency of the individual read icons. Can be used to indicate
 #' overlapping regions in read pairs. Only on supported devices.}
 #'
-#' \item{\code{alpha.mismatch=1}:}{ Numeric scalar between 0 and 1. The
+#' \item{`alpha.mismatch=1`:}{ Numeric scalar between 0 and 1. The
 #' transparency of the mismatch base information.}
 #'
-#' \item{\code{cex=0.7}:}{ Numeric Scalar. The global character expansion
+#' \item{`cex=0.7`:}{ Numeric Scalar. The global character expansion
 #' factor.}
 #'
-#' \item{\code{cex.mismatch=NULL}:}{ Numeric Scalar. The character expansion
+#' \item{`cex.mismatch=NULL`:}{ Numeric Scalar. The character expansion
 #' factor for the mismatch base letters.}
 #'
-#' \item{\code{col.coverage=NULL}:}{ Integer or character scalar.  The line
+#' \item{`col.coverage=NULL`:}{ Integer or character scalar.  The line
 #' color for the coverage profile.}
 #'
-#' \item{\code{col.gap="#808080"}:}{ Integer or character scalar.  The color of
+#' \item{`col.gap="#808080"`:}{ Integer or character scalar.  The color of
 #' the line that is bridging the gap regions in gapped alignments.}
 #'
-#' \item{\code{col.mates="#E0E0E0"}:}{ Integer or character scalar.  The color
+#' \item{`col.mates="#E0E0E0"`:}{ Integer or character scalar.  The color
 #' of the line that is connecting two paired reads.}
 #'
-#' \item{\code{col.deletion="#000000"}:}{ Integer or character scalar. The
+#' \item{`col.deletion="#000000"`:}{ Integer or character scalar. The
 #' color of the line that is bridging the deleted regions in alignments.}
 #'
-#' \item{\code{col.insertion="#984EA3"}:}{ Integer or character scalar. The
+#' \item{`col.insertion="#984EA3"`:}{ Integer or character scalar. The
 #' color of the line that highlighting insertions in alignments.}
 #'
-#' \item{\code{col.mismatch="#808080"}:}{ Integer or character scalar. The box
+#' \item{`col.mismatch="#808080"`:}{ Integer or character scalar. The box
 #' color around mismatch bases.}
 #'
-#' \item{\code{col.reads=NULL}:}{ Integer or character scalar.  The box color
+#' \item{`col.reads=NULL`:}{ Integer or character scalar.  The box color
 #' around reads.}
 #'
-#' \item{\code{col.sashimi=NULL}:}{ Integer or character scalar.  The line
+#' \item{`col.sashimi=NULL`:}{ Integer or character scalar.  The line
 #' color for sashimi plots.}
 #'
-#' \item{\code{col="#808080"}:}{ Integer or character scalar. The default color
+#' \item{`col="#808080"`:}{ Integer or character scalar. The default color
 #' of all line elements.}
 #'
-#' \item{\code{collapse=FALSE}:}{ Logical scalar. Do not perform any collapsing
+#' \item{`collapse=FALSE`:}{ Logical scalar. Do not perform any collapsing
 #' of overlapping elements. Currently not supported.}
 #'
-#' \item{\code{coverageHeight=0.1}:}{ Numeric scalar. The height of the
+#' \item{`coverageHeight=0.1`:}{ Numeric scalar. The height of the
 #' coverage region of the track. Can either be a value between 0 and 1 in which
 #' case it is taken as a relative height, or a positive value greater 1 in
 #' which case it is interpreted as pixels.}
 #'
-#' \item{\code{fill.coverage=NULL}:}{ Integer or character scalar.  The fill
+#' \item{`fill.coverage=NULL`:}{ Integer or character scalar.  The fill
 #' color for the coverage profile.}
 #'
-#' \item{\code{fill.reads=NULL}:}{ Integer or character scalar.  The fill color
+#' \item{`fill.reads=NULL`:}{ Integer or character scalar.  The fill color
 #' for the read icons.}
 #'
-#' \item{\code{fill="#BABABA"}:}{ Integer or character scalar.  The default
+#' \item{`fill="#BABABA"`:}{ Integer or character scalar.  The default
 #' fill color of all plot elements.}
 #'
-#' \item{\code{fontface.mismatch=2}:}{ Integer scalar. The font face for
+#' \item{`fontface.mismatch=2`:}{ Integer scalar. The font face for
 #' mismatch bases.}
 #'
-#' \item{\code{lty.coverage=NULL}:}{ Integer or character scalar.  The line
+#' \item{`lty.coverage=NULL`:}{ Integer or character scalar.  The line
 #' type of the coverage profile.}
 #'
-#' \item{\code{lty.gap=NULL}:}{ Integer or character scalar. The type of the
+#' \item{`lty.gap=NULL`:}{ Integer or character scalar. The type of the
 #' line that is bridging the gap regions in gapped alignments.}
 #'
-#' \item{\code{lty.mates=NULL}:}{ Integer or character scalar.  The type of the
+#' \item{`lty.mates=NULL`:}{ Integer or character scalar.  The type of the
 #' line that is connecting two paired reads.}
 #'
-#' \item{\code{lty.deletion=NULL}:}{ Integer or character scalar.  The type of
+#' \item{`lty.deletion=NULL`:}{ Integer or character scalar.  The type of
 #' the line that is bridging the deleted regions in alignments.}
 #'
-#' \item{\code{lty.insertion=NULL}:}{ Integer or character scalar.  The type of
+#' \item{`lty.insertion=NULL`:}{ Integer or character scalar.  The type of
 #' the line that highlighting insertions in alignments.}
 #'
-#' \item{\code{lty.mismatch=NULL}:}{ Integer or character scalar.  The box line
+#' \item{`lty.mismatch=NULL`:}{ Integer or character scalar.  The box line
 #' type around mismatch bases.}
 #'
-#' \item{\code{lty.reads=NULL}:}{ Integer or character scalar.  The box line
+#' \item{`lty.reads=NULL`:}{ Integer or character scalar.  The box line
 #' type around mismatch reads.}
 #'
-#' \item{\code{lty=1}:}{ Integer or character scalar. The default type of all
+#' \item{`lty=1`:}{ Integer or character scalar. The default type of all
 #' line elements.}
 #'
-#' \item{\code{lwd.coverage=NULL}:}{ Integer or character scalar.  The line
+#' \item{`lwd.coverage=NULL`:}{ Integer or character scalar.  The line
 #' width of the coverage profile.}
 #'
-#' \item{\code{lwd.gap=NULL}:}{ Integer scalar. The width of the line that is
+#' \item{`lwd.gap=NULL`:}{ Integer scalar. The width of the line that is
 #' bridging the gap regions in gapped alignments.}
 #'
-#' \item{\code{lwd.mates=NULL}:}{ Integer scalar. The width of the line that is
+#' \item{`lwd.mates=NULL`:}{ Integer scalar. The width of the line that is
 #' connecting two paired reads.}
 #'
-#' \item{\code{lwd.deletion=NULL}:}{ Integer scalar. The width of the line that
+#' \item{`lwd.deletion=NULL`:}{ Integer scalar. The width of the line that
 #' is bridging the deleted regions in alignments.}
 #'
-#' \item{\code{lwd.insertion=NULL}:}{ Integer scalar. The width of the line
+#' \item{`lwd.insertion=NULL`:}{ Integer scalar. The width of the line
 #' that highlighting insertions in alignments.}
 #'
-#' \item{\code{lwd.mismatch=NULL}:}{ Integer scalar. The box line width around
+#' \item{`lwd.mismatch=NULL`:}{ Integer scalar. The box line width around
 #' mismatch bases.}
 #'
-#' \item{\code{lwd.reads=NULL}:}{ Integer scalar. The box line width around
+#' \item{`lwd.reads=NULL`:}{ Integer scalar. The box line width around
 #' reads.}
 #'
-#' \item{\code{lwd.sashimiMax=10}:}{ Integer scalar. The maximal width of the
+#' \item{`lwd.sashimiMax=10`:}{ Integer scalar. The maximal width of the
 #' line in sashimi plots.}
 #'
-#' \item{\code{lwd=1}:}{ Integer scalar. The default width of all line
+#' \item{`lwd=1`:}{ Integer scalar. The default width of all line
 #' elements.}
 #'
-#' \item{\code{max.height=10}:}{ Integer scalar. The maximum height of an
-#' individual read in pixels. Can be used in combination with \code{min.height}
+#' \item{`max.height=10`:}{ Integer scalar. The maximum height of an
+#' individual read in pixels. Can be used in combination with `min.height`
 #' to control the read and stacking appearance.}
 #'
-#' \item{\code{min.height=5}:}{ Integer scalar. The minimum height of an
-#' individual read in pixels. Can be used in combination with \code{max.height}
+#' \item{`min.height=5`:}{ Integer scalar. The minimum height of an
+#' individual read in pixels. Can be used in combination with `max.height`
 #' to control the read and stacking appearance.}
 #'
-#' \item{\code{minCoverageHeight=50}:}{ Integer scalar. The minimum height of
+#' \item{`minCoverageHeight=50`:}{ Integer scalar. The minimum height of
 #' the coverage section. Uselful in combination with a relative setting of
-#' \code{coverageHeight}.}
+#' `coverageHeight`.}
 #'
-#' \item{\code{minSashimiHeight=50}:}{ Integer scalar. The minimum height of
+#' \item{`minSashimiHeight=50`:}{ Integer scalar. The minimum height of
 #' the sashimi section. Uselful in combination with a relative setting of
-#' \code{sashimiHeight}.}
+#' `sashimiHeight`.}
 #'
-#' \item{\code{noLetters=FALSE}:}{ Logical scalar. Always plot colored boxes
+#' \item{`noLetters=FALSE`:}{ Logical scalar. Always plot colored boxes
 #' for mismatch bases regardles of the available space.}
 #'
-#' \item{\code{sashimiFilter=NULL}:}{ GRanges object. Only junctions which
-#' overlap equally with \code{sashimiFilter} GRanges are shown. Default
-#' \code{NULL}, no filtering.}
+#' \item{`sashimiFilter=NULL`:}{ GRanges object. Only junctions which
+#' overlap equally with `sashimiFilter` GRanges are shown. Default
+#' `NULL`, no filtering.}
 #'
-#' \item{\code{sashimiFilterTolerance=0}:}{ Integer scalar. Only used in
-#' combination with \code{sashimiFilter}. It allows to include junctions whose
-#' starts/ends are within specified distance from \code{sashimiFilter} GRanges.
+#' \item{`sashimiFilterTolerance=0`:}{ Integer scalar. Only used in
+#' combination with `sashimiFilter`. It allows to include junctions whose
+#' starts/ends are within specified distance from `sashimiFilter` GRanges.
 #' This is useful for cases where the aligner did not place the junction reads
-#' precisely. Default \code{0L} , no tolerance.}
+#' precisely. Default `0L` , no tolerance.}
 #'
-#' \item{\code{sashimiHeight=0.1}:}{ Integer scalar. The height of the sashimi
+#' \item{`sashimiHeight=0.1`:}{ Integer scalar. The height of the sashimi
 #' part of the track. Can either be a value between 0 and 1 in which case it is
 #' taken as a relative height, or a positive value greater 1 in which case it
 #' is interpreted as pixels.}
 #'
-#' \item{\code{sashimiScore=1}:}{ Integer scalar. The minimum number of reads
+#' \item{`sashimiScore=1`:}{ Integer scalar. The minimum number of reads
 #' supporting the junction.}
 #'
-#' \item{\code{sashimiStrand="*"}:}{ Integer scalar. Only reads which have the
+#' \item{`sashimiStrand="*"`:}{ Integer scalar. Only reads which have the
 #' specified strand are considered to count the junctions.}
 #'
-#' \item{\code{sashimiTransformation=NULL}:}{ Function. Applied to the junction
+#' \item{`sashimiTransformation=NULL`:}{ Function. Applied to the junction
 #' score vector prior to plotting. The function should accept exactly one input
 #' argument and its return value needs to be a numeric vector of identical
 #' length as the input data.}
 #'
-#' \item{\code{showIndels=FALSE}:}{ Logical scalar. Consider insertions and
-#' deletions in coverage and pile-up. Default is \code{FALSE}. If set to
-#' \code{TRUE} the deletions defined in CIGAR string are not considered in
+#' \item{`showIndels=FALSE`:}{ Logical scalar. Consider insertions and
+#' deletions in coverage and pile-up. Default is `FALSE`. If set to
+#' `TRUE` the deletions defined in CIGAR string are not considered in
 #' coverage plot. The deletions are displayed as bridging lines in pile-up
 #' track. Insertions are shown as vertical bars.}
 #'
-#' \item{\code{showMismatches=TRUE}:}{ Logical scalar. Add mismatch
+#' \item{`showMismatches=TRUE`:}{ Logical scalar. Add mismatch
 #' information, either as individual base letters or using color coded bars.
 #' This implies that the reference sequence has been provided, either to the
 #' class constructor or as part of the track list.}
 #'
-#' \item{\code{size=NULL}:}{ Numeric scalar. The size of the track.  Defaults
+#' \item{`size=NULL`:}{ Numeric scalar. The size of the track.  Defaults
 #' to automatic sizing.}
 #'
-#' \item{\code{transformation=NULL}:}{ Function. Applied to the coverage vector
+#' \item{`transformation=NULL`:}{ Function. Applied to the coverage vector
 #' prior to plotting. The function should accept exactly one input argument and
 #' its return value needs to be a numeric Rle of identical length as the input
 #' data.}
 #'
-#' \item{\code{type=c("coverage", "pileup")}:}{ Character vactor.  The type of
-#' information to plot. For \code{coverage} a coverage plot, potentially
-#' augmented by base mismatch information, for \code{sashimi} a sashimi plot,
-#' showing the juctions, and for \code{pileup} the pileups of the individual
+#' \item{`type=c("coverage", "pileup")`:}{ Character vactor.  The type of
+#' information to plot. For `coverage` a coverage plot, potentially
+#' augmented by base mismatch information, for `sashimi` a sashimi plot,
+#' showing the juctions, and for `pileup` the pileups of the individual
 #' reads. These three can be combined.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class StackedTrack:}}
+#' \bold{*Inherited from class StackedTrack:*}
 #'
 #' \describe{
 #'
-#' \item{\code{stackHeight=0.75}:}{ Numeric between 0 and 1.  Controls the
+#' \item{`stackHeight=0.75`:}{ Numeric between 0 and 1.  Controls the
 #' vertical size and spacing between stacked elements. The number defines the
 #' proportion of the total available space for the stack that is used to draw
 #' the glyphs.  E.g., a value of 0.5 means that half of the available vertical
@@ -1986,136 +1986,136 @@
 #' quarter of the available space each is used for spacing above and below the
 #' glyph. Defaults to 0.75.}
 #'
-#' \item{\code{reverseStacking=FALSE}:}{ Logical flag. Reverse the y-ordering
+#' \item{`reverseStacking=FALSE`:}{ Logical flag. Reverse the y-ordering
 #' of stacked items. I.e., features that are plotted on the bottom-most stacks
 #' will be moved to the top-most stack and vice versa.}
 #'
 #' }
 #'
-#' \bold{\emph{Inherited from class GdObject:}}
+#' \bold{*Inherited from class GdObject:*}
 #'
 #' \describe{
 #'
-#' \item{\code{alpha=1}:}{ Numeric scalar. The transparency for all track
+#' \item{`alpha=1`:}{ Numeric scalar. The transparency for all track
 #' items.}
 #'
-#' \item{\code{alpha.title=NULL}:}{ Numeric scalar. The transparency for the
+#' \item{`alpha.title=NULL`:}{ Numeric scalar. The transparency for the
 #' title panel.}
 #'
-#' \item{\code{background.panel="transparent"}:}{ Integer or character scalar.
+#' \item{`background.panel="transparent"`:}{ Integer or character scalar.
 #' The background color of the content panel.}
 #'
-#' \item{\code{background.title="lightgray"}:}{ Integer or character scalar.
+#' \item{`background.title="lightgray"`:}{ Integer or character scalar.
 #' The background color for the title panel.}
 #'
-#' \item{\code{background.legend="transparent"}:}{ Integer or character scalar.
+#' \item{`background.legend="transparent"`:}{ Integer or character scalar.
 #' The background color for the legend.}
 #'
-#' \item{\code{cex.axis=NULL}:}{ Numeric scalar. The expansion factor for the
-#' axis annotation. Defaults to \code{NULL}, in which case it is automatically
+#' \item{`cex.axis=NULL`:}{ Numeric scalar. The expansion factor for the
+#' axis annotation. Defaults to `NULL`, in which case it is automatically
 #' determined based on the available space.}
 #'
-#' \item{\code{cex.title=NULL}:}{ Numeric scalar. The expansion factor for the
+#' \item{`cex.title=NULL`:}{ Numeric scalar. The expansion factor for the
 #' title panel. This effects the fontsize of both the title and the axis, if
-#' any. Defaults to \code{NULL}, which means that the text size is
+#' any. Defaults to `NULL`, which means that the text size is
 #' automatically adjusted to the available space.}
 #'
-#' \item{\code{col.axis="white"}:}{ Integer or character scalar.  The font and
+#' \item{`col.axis="white"`:}{ Integer or character scalar.  The font and
 #' line color for the y axis, if any.}
 #'
-#' \item{\code{col.border.title="white"}:}{ Integer or character scalar. The
+#' \item{`col.border.title="white"`:}{ Integer or character scalar. The
 #' border color for the title panels.}
 #'
-#' \item{\code{col.frame="lightgray"}:}{ Integer or character scalar. The line
-#' color used for the panel frame, if \code{frame==TRUE}}
+#' \item{`col.frame="lightgray"`:}{ Integer or character scalar. The line
+#' color used for the panel frame, if `frame==TRUE`}
 #'
-#' \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
-#' line color for grid lines, both when \code{type=="g"} in
-#' \code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+#' \item{`col.grid="#808080"`:}{ Integer or character scalar.  Default
+#' line color for grid lines, both when `type=="g"` in
+#' [`DataTrack`][DataTrack-class]s and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot lines. Usually the same as the global \code{col} parameter.}
+#' \item{`col.line=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot lines. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
-#' for plot symbols. Usually the same as the global \code{col} parameter.}
+#' \item{`col.symbol=NULL`:}{ Integer or character scalar.  Default colors
+#' for plot symbols. Usually the same as the global `col` parameter.}
 #'
-#' \item{\code{col.title="white"}:}{ Integer or character scalar.  The border
+#' \item{`col.title="white"`:}{ Integer or character scalar.  The border
 #' color for the title panels}
 #'
-#' \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
+#' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
 #' color for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
+#' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
 #' for the title panels.}
 #'
-#' \item{\code{fontface=1}:}{ Integer or character scalar. The font face for
+#' \item{`fontface=1`:}{ Integer or character scalar. The font face for
 #' all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontfamily.title="sans"}:}{ Integer or character scalar. The
+#' \item{`fontfamily.title="sans"`:}{ Integer or character scalar. The
 #' font family for the title panels.}
 #'
-#' \item{\code{fontfamily="sans"}:}{ Integer or character scalar.  The font
+#' \item{`fontfamily="sans"`:}{ Integer or character scalar.  The font
 #' family for all text, unless a more specific definition exists.}
 #'
-#' \item{\code{fontsize=12}:}{ Numeric scalar. The font size for all text,
+#' \item{`fontsize=12`:}{ Numeric scalar. The font size for all text,
 #' unless a more specific definition exists.}
 #'
-#' \item{\code{frame=FALSE}:}{ Boolean. Draw a frame around the track when
+#' \item{`frame=FALSE`:}{ Boolean. Draw a frame around the track when
 #' plotting.}
 #'
-#' \item{\code{grid=FALSE}:}{ Boolean, switching on/off the plotting of a
+#' \item{`grid=FALSE`:}{ Boolean, switching on/off the plotting of a
 #' grid.}
 #'
-#' \item{\code{h=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`h=-1`:}{ Integer scalar. Parameter controlling the number of
 #' horizontal grid lines, see [lattice::panel.grid] for details.}
 #'
-#' \item{\code{lineheight=1}:}{ Numeric scalar. The font line height for all
+#' \item{`lineheight=1`:}{ Numeric scalar. The font line height for all
 #' text, unless a more specific definition exists.}
 #'
-#' \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-#' type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
-#' and when display parameter \code{grid==TRUE}.}
+#' \item{`lty.grid="solid"`:}{ Integer or character scalar.  Default line
+#' type for grid lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s
+#' and when display parameter `grid==TRUE`.}
 #'
-#' \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
+#' \item{`lwd.border.title=1`:}{ Integer scalar. The border width for the
 #' title panels.}
 #'
-#' \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
+#' \item{`lwd.title=1`:}{ Integer scalar. The border width for the title
 #' panels}
 #'
-#' \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-#' lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
-#' display parameter \code{grid==TRUE}.}
+#' \item{`lwd.grid=1`:}{ Numeric scalar. Default line width for grid
+#' lines, both when `type=="g"` in [`DataTrack`][DataTrack-class]s and when
+#' display parameter `grid==TRUE`.}
 #'
-#' \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
-#' before collapsing range items, only if \code{collapse==TRUE}. See
-#' \code{\link{collapsing}} for details.}
+#' \item{`min.distance=1`:}{ Numeric scalar. The minimum pixel distance
+#' before collapsing range items, only if `collapse==TRUE`. See
+#' [`collapsing`] for details.}
 #'
-#' \item{\code{min.width=1}:}{ Numeric scalar. The minimum range width in
+#' \item{`min.width=1`:}{ Numeric scalar. The minimum range width in
 #' pixels to display. All ranges are expanded to this size in order to avoid
-#' rendering issues. See \code{\link{collapsing}} for details.}
+#' rendering issues. See [`collapsing`] for details.}
 #'
-#' \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
-#' coordinates in 3' -> 5' direction if \code{TRUE}.  This will effectively
+#' \item{`reverseStrand=FALSE`:}{ Logical scalar. Set up the plotting
+#' coordinates in 3' -> 5' direction if `TRUE`.  This will effectively
 #' mirror the plot on the vertical axis.}
 #'
-#' \item{\code{rotation.title=90}:}{ The rotation angle for the text in the
+#' \item{`rotation.title=90`:}{ The rotation angle for the text in the
 #' title panel. Even though this can be adjusted, the automatic resizing of the
 #' title panel will currently not work, so use at own risk.}
 #'
-#' \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
+#' \item{`rotation=0`:}{ The rotation angle for all text unless a more
 #' specific definiton exists.}
 #'
-#' \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
+#' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
 #'
-#' \item{\code{showTitle=TRUE}:}{ Boolean controlling whether to plot a title
+#' \item{`showTitle=TRUE`:}{ Boolean controlling whether to plot a title
 #' panel. Although this can be set individually for each track, in multi-track
-#' plots as created by \code{\link{plotTracks}} there will still be an empty
+#' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
 #' true for axes. Note that the the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
-#' \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
+#' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
 #' vertical grid lines, see [lattice::panel.grid] for details.}
 #'
 #' }
@@ -2129,19 +2129,19 @@
 #' @author Florian Hahne
 #'
 #' @seealso
-#' \code{\linkS4class{AnnotationTrack}}
+#' [`AnnotationTrack`][AnnotationTrack-class]
 #'
-#' \code{\linkS4class{DataTrack}}
+#' [`DataTrack`][DataTrack-class]
 #'
-#' \code{\linkS4class{DisplayPars}}
+#' [`DisplayPars`][DisplayPars-class]
 #'
-#' \code{\linkS4class{GdObject}}
+#' [`GdObject`][GdObject-class]
 #'
-#' \code{\link{availableDisplayPars}}
+#' [`availableDisplayPars`]
 #'
-#' \code{\link{collapsing}}
+#' [`collapsing`]
 #'
-#' \code{\link{grouping}}
+#' [`grouping`]
 #'
 #' [latticeExtra::panel.horizonplot]
 #'
@@ -2153,7 +2153,7 @@
 #'
 #' [lattice::panel.xyplot]
 #'
-#' \code{\link{plotTracks}}
+#' [`plotTracks`]
 #'
 #' @examples
 #'
@@ -2172,6 +2172,8 @@
 #' getOption("Gviz.scheme")
 #'
 #' data(geneModels)
-#' grtrack <- GeneRegionTrack(geneModels, genome = "hg19", chromosome = "chr7", name = "Gene Model")
+#' grtrack <- GeneRegionTrack(geneModels,
+#'     genome = "hg19", chromosome = "chr7", name = "Gene Model"
+#' )
 #' plotTracks(grtrack)
 NULL

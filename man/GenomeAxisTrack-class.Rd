@@ -70,8 +70,8 @@ GenomeAxisTrack(range = NULL, name = "Axis", id, ...)
 \item{range}{Optional object of class \code{GRanges} or \code{IRanges} containing
 regions to be highlighted on the axis by coloured boxes.}
 
-\item{\dots}{Additional items which will all be interpreted as further
-display parameters. See \code{settings} and the "Display Parameters"
+\item{...}{Additional items which will all be interpreted as further
+display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
 \item{name}{Character scalar of the track's name used in the title panel
@@ -143,10 +143,11 @@ items.
 \item \code{width(GenomeAxisTrack)}: return the width of the track items in
 genomic coordinates.
 
-\item \code{length(GenomeAxisTrack)}: return the number of items stored in the ranges slot.
+\item \code{length(GenomeAxisTrack)}: return the number of items stored in the
+ranges slot.
 
-\item \code{values(GenomeAxisTrack)}: return all additional annotation information
-except for the genomic coordinates for the track items.
+\item \code{values(GenomeAxisTrack)}: return all additional annotation
+information except for the genomic coordinates for the track items.
 
 \item \code{strand(GenomeAxisTrack)}: return a vector of strand specifiers for
 all track items, in the form '+' for the Watson strand, '-' for the Crick
@@ -157,9 +158,10 @@ This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{GenomeAxisTrack} object.
-This is essentially similar to subsetting of the \code{GRanges} object in the
-\code{range} slot. For most applications, the subset method may be more appropriate.
+\item \code{x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{GenomeAxisTrack}
+object. This is essentially similar to subsetting of the \code{GRanges} object in
+the \code{range} slot. For most applications, the subset method may be more
+appropriate.
 
 \item \code{subset(GenomeAxisTrack)}: subset a
 \code{GenomeAxisTrack} by coordinates and sort if necessary.
@@ -233,8 +235,10 @@ tags(axTrack)
 data(cyp2b10)
 grTrack <- GeneRegionTrack(
     start = 26682683, end = 26711643,
-    rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm39",
-    transcript = cyp2b10$transcript, gene = cyp2b10$gene, symbol = cyp2b10$symbol,
+    rstart = cyp2b10$start, rends = cyp2b10$end,
+    chromosome = 7, genome = "mm39",
+    transcript = cyp2b10$transcript, gene = cyp2b10$gene,
+    symbol = cyp2b10$symbol,
     name = "Cyp2b10", strand = cyp2b10$strand
 )
 

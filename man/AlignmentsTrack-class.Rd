@@ -90,36 +90,43 @@ AlignmentsTrack(
 \S4method{show}{ReferenceAlignmentsTrack}(object)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
-\item{stackRanges}{stackRanges}
+\item{stackRanges}{A \code{GRanges} object with the merged extent of each read
+group, i.e., the region spanned by a read and its mate. This is what the
+reads are stacked on, and its names match the \code{groupid} metadata column.}
 
-\item{stacks}{stacks}
+\item{stacks}{\code{logical}. Set if stacking should  be preserved.}
 
-\item{sequences}{sequences}
+\item{sequences}{A \code{DNAStringSet} with the read sequences.}
 
-\item{referenceSequence}{An optional \code{\linkS4class{SequenceTrack}}
+\item{referenceSequence}{An optional \code{\link[=SequenceTrack-class]{SequenceTrack}}
 object containing the reference sequence against which the reads have been
-aligned. This is only needed when mismatch information has to be added to
-the plot (i.e., the \code{showMismatchs} display parameter is \code{TRUE})
-because this is normally not encoded in the \code{BAM} file. If not provided
-through this argument, the \code{\link{plotTracks}} function is smart enough
-to detect the presence of a \code{\linkS4class{SequenceTrack}} object in the
-track list and will use that as a reference sequence.}
+aligned. This is only needed when mismatch information has to be added to the
+plot (i.e., the \code{showMismatchs} display parameter is \code{TRUE}) because this is
+normally not encoded in the \code{BAM} file. If not provided through this
+argument, the \code{\link{plotTracks}} function is smart enough to detect the presence
+of a \code{\link[=SequenceTrack-class]{SequenceTrack}} object in the track list and will
+use that as a reference sequence.}
 
-\item{\dots}{Additional items which will all be interpreted as further
+\item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
-\item{stream}{stream}
+\item{stream}{A function to stream the data from an indexed file. It has to
+accept the two arguments \code{file} and \code{selection}, and to return a \code{GRanges}
+object.}
 
-\item{reference}{reference}
+\item{reference}{A \code{character} scalar with the path to the referenced file.}
 
-\item{mapping}{mapping}
+\item{mapping}{A named \code{list} mapping the columns of the imported data to
+the metadata columns of the track's \code{GRanges} object.}
 
-\item{args}{args}
+\item{args}{A \code{list} of the arguments the object has been constructed with.}
 
-\item{defaults}{defaults}
+\item{defaults}{A \code{list} of the constructor's default arguments, used to
+fill in whatever has not been provided in \code{args}.}
 
 \item{range}{An optional meta argument to handle the different input types.
 If \code{range} is missing, all the relevant information to create the object
@@ -179,7 +186,7 @@ information based on the available inputs, and as a last resort will fall
 back to the value \code{chrNA}. Please note that by definition all objects
 in the \code{Gviz} package can only have a single active chromosome at a
 time (although internally the information for more than one chromosome may
-be present), and the user has to call the \code{chromosome<-} replacement
+be present), and the user has to call the \verb{chromosome<-} replacement
 method in order to change to a different active chromosome.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
@@ -251,23 +258,30 @@ argument \code{x} containing the file path and a second argument
 default import function is already implemented in the package for \code{BAM}
 files.}
 
-\item{x}{x}
+\item{x}{A valid track object class name, or the object itself, in which
+case the class is derived directly from it.}
 
 \item{GdObject}{Object of \code{GdObject-class}.}
 
-\item{value}{value}
+\item{value}{Value to be set.}
 
-\item{from, to}{from,to}
+\item{from, to}{Numeric scalar, giving the range of genomic coordinates to
+limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
 
-\item{use.defaults}{\code{logical}}
+\item{use.defaults}{\code{logical}. Derive the subsetting range from the track's
+own defaults rather than using \code{from} and \code{to} verbatim.}
 
-\item{minBase, maxBase}{minBase,maxBase}
+\item{minBase, maxBase}{Numeric scalar, the start and end coordinates of the
+plotting range.}
 
-\item{prepare}{\code{logical}}
+\item{prepare}{\code{logical}. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.}
 
-\item{subset}{\code{logical}}
+\item{subset}{\code{logical}. Subset the track to the current plotting range
+before drawing.}
 
-\item{object}{object}
+\item{object}{Object inheriting from \code{AlignmentsTrack-class}.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -294,11 +308,12 @@ experiments.
 information except for the genomic coordinates for the track items as
 a \code{data.frame}.
 
-\item \code{chromosome(AlignmentsTrack) <- value}: replace the value of the track's chromosome.
-This has to be a valid UCSC chromosome identifier or an integer or character
-scalar that can be reasonably coerced into one.
+\item \code{chromosome(AlignmentsTrack) <- value}: replace the value of the track's
+chromosome. This has to be a valid UCSC chromosome identifier or an integer
+or character scalar that can be reasonably coerced into one.
 
-\item \code{stacks(AlignmentsTrack)}: return the stack indices for each track item.
+\item \code{stacks(AlignmentsTrack)}: return the stack indices for each track
+item.
 
 \item \code{setStacks(AlignmentsTrack)}: recompute the stacks based on the available
 space and on the object's track items and stacking settings.
@@ -306,8 +321,8 @@ space and on the object's track items and stacking settings.
 \item \code{subset(AlignmentsTrack)}: Subset an \code{AlignmentsTrack} by coordinates
 and sort if necessary.
 
-\item \code{subset(ReferenceAlignmentsTrack)}: Subset a \code{ReferenceAlignmentsTrack} by coordinates
-and sort if necessary.
+\item \code{subset(ReferenceAlignmentsTrack)}: Subset a \code{ReferenceAlignmentsTrack} by
+coordinates and sort if necessary.
 
 \item \code{drawGrid(AlignmentsTrack)}: superpose a horizontal grid on the
 coverage portion of the track, based on the \code{grid}, \code{h}, \code{col.grid},

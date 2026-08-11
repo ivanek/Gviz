@@ -34,7 +34,9 @@
 #' @import GenomicRanges
 #' @import grid
 
-#' @importFrom lattice current.panel.limits panel.abline panel.grid panel.lines panel.points panel.polygon panel.segments panel.xyplot panel.text trellis.par.get
+#' @importFrom lattice current.panel.limits panel.abline panel.grid panel.lines
+#' @importFrom lattice panel.points panel.polygon panel.segments panel.xyplot
+#' @importFrom lattice panel.text trellis.par.get
 #' @importFrom RColorBrewer brewer.pal
 
 #' @importMethodsFrom AnnotationDbi colnames get ls mget tail
@@ -2085,9 +2087,13 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     return(res)
 }
 
-#' @importClassesFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString
-#' @importFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString reverseComplement readDNAStringSet DNA_ALPHABET stackStrings
-#' @importFrom Rsamtools scanBamFlag scanBamHeader scanBam ScanBamParam scanFaIndex scanFa BamFile scanBamWhat bamWhich
+#' @importClassesFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString
+#' @importClassesFrom Biostrings RNAString BString
+#' @importFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString
+#' @importFrom Biostrings RNAString BString reverseComplement readDNAStringSet
+#' @importFrom Biostrings DNA_ALPHABET stackStrings
+#' @importFrom Rsamtools scanBamFlag scanBamHeader scanBam ScanBamParam
+#' @importFrom Rsamtools scanFaIndex scanFa BamFile scanBamWhat bamWhich
 #' @importFrom cigarillo project_sequences
 .import.bam.alignments <- function(file, selection) {
     indNames <- c(sub("\\.bam$", ".bai", file), paste(file, "bai", sep = "."))
@@ -2229,12 +2235,17 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 #' @param file A `character` scalar with a file name or just a file extension.
 #' @param trackType A `character` scalar with one of the available track types
 #' in the package.
-#' @param stream stream
-#' @param reference reference
-#' @param mapping mapping
-#' @param args ars
-#' @param defaults defaults
-#' @param .Object .Object
+#' @param stream A function to stream the data from an indexed file. It has to
+#' accept the two arguments `file` and `selection`, and to return a `GRanges`
+#' object.
+#' @param reference A `character` scalar with the path to the referenced file.
+#' @param mapping A named `list` mapping the columns of the imported data to
+#' the metadata columns of the track's `GRanges` object.
+#' @param args A `list` of the arguments the object has been constructed with.
+#' @param defaults A `list` of the constructor's default arguments, used to
+#' fill in whatever has not been provided in `args`.
+#' @param .Object The object skeleton passed on by `new()` during class
+#' instantiation, to be filled in by the `initialize` method.
 #'
 #' @export
 availableDefaultMapping <- function(file, trackType) {

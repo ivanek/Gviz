@@ -159,10 +159,14 @@ NULL
 #' ## function is defined in. To avoid overwriting 'm' you should use a closure
 #' ## or environment to access 'm'.
 #' details <- function(identifier, ...) {
-#'     d <- data.frame(signal = m[identifier, ], group = rep(c("grp1", "grp2"), each = 50))
+#'     d <- data.frame(
+#'         signal = m[identifier, ],
+#'         group = rep(c("grp1", "grp2"), each = 50)
+#'     )
 #'     print(densityplot(~signal,
 #'         group = group, data = d, main = identifier,
-#'         scales = list(draw = FALSE, x = list(draw = TRUE)), ylab = "", xlab = "",
+#'         scales = list(draw = FALSE, x = list(draw = TRUE)),
+#'         ylab = "", xlab = "",
 #'     ), newpage = FALSE, prefix = "plot")
 #' }
 #'
@@ -498,13 +502,14 @@ setMethod("initialize", "DetailsAnnotationTrack", function(.Object, fun, selectF
 ## General accessors ---------------------------------------------------------
 ## Annotation Accessors ------------------------------------------------------
 
-#' @describeIn AnnotationTrack-class extract the group membership for all track items.
+#' @describeIn AnnotationTrack-class extract the group membership for all track
+#' items.
 #' @export
 setMethod("group", "AnnotationTrack", function(object) .getAnn(object, "group"))
 
-#' @describeIn AnnotationTrack-class replace the grouping information for track items.
-#' The replacement value must be a factor of appropriate length or another
-#' vector that can be coerced into such.
+#' @describeIn AnnotationTrack-class replace the grouping information for track
+#' items. The replacement value must be a factor of appropriate length or
+#' another vector that can be coerced into such.
 #' @export
 setReplaceMethod("group", signature("AnnotationTrack", "character"), function(object, value) .setAnn(object, value, "group"))
 
@@ -1254,15 +1259,15 @@ setMethod("drawGD", signature("AnnotationTrack"), function(GdObject, minBase, ma
     return(args)
 }
 
-#' @describeIn DetailsAnnotationTrack-class plot the object to a graphics device.
-#' The return value of this method is the input object, potentially updated
-#' during the plotting operation. Internally, there are two modes in which the
-#' method can be called. Either in 'prepare' mode, in which case no plotting is
-#' done but the object is preprocessed based on the available space, or in
-#' 'plotting' mode, in which case the actual graphical output is created.
+#' @describeIn DetailsAnnotationTrack-class plot the object to a graphics
+#' device. The return value of this method is the input object, potentially
+#' updated during the plotting operation. Internally, there are two modes in
+#' which the method can be called. Either in 'prepare' mode, in which case no
+#' plotting is done but the object is preprocessed based on the available space,
+#' or in 'plotting' mode, in which case the actual graphical output is created.
 #' Since subsetting of the object can be potentially costly, this can be
-#' switched off in case subsetting has already been performed before or
-#' is not necessary.
+#' switched off in case subsetting has already been performed before or is not
+#' necessary.
 #'
 #' @export
 setMethod(

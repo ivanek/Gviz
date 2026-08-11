@@ -106,7 +106,7 @@
 #' overridden in the `plotTracks` function.
 #' @param v=-1 Integer scalar. Parameter controlling the number of vertical
 #' grid lines, see panel.grid for details.
-#' @param \dots additional display parameters are allowed. Those typically
+#' @param ... additional display parameters are allowed. Those typically
 #' take the value of a valid R colour descriptors. The parameter names will
 #' later be matched to optional track item types as defined in the 'feature'
 #' range attribute, and all tracks of the matched types are coloured

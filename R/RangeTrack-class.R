@@ -385,7 +385,8 @@ setReplaceMethod("genome", "RangeTrack", function(x, value) {
     return(x)
 })
 
-#' @describeIn RangeTrack-class return the chromosome for which the track is defined.
+#' @describeIn RangeTrack-class return the chromosome for which the track is
+#' defined.
 #' @export
 setMethod("chromosome", "RangeTrack", function(GdObject) GdObject@chromosome)
 
@@ -438,11 +439,13 @@ setReplaceMethod("width", "RangeTrack", function(x, value) {
     return(x)
 })
 
-#' @describeIn RangeTrack-class return the start position for the leftmost range item.
+#' @describeIn RangeTrack-class return the start position for the leftmost range
+#' item.
 #' @export
 setMethod("min", "RangeTrack", function(x) min(start(x)))
 
-#' @describeIn RangeTrack-class return the end position for the rightmost range item.
+#' @describeIn RangeTrack-class return the end position for the rightmost range
+#' item.
 #' @export
 setMethod("max", "RangeTrack", function(x) max(end(x)))
 
@@ -489,7 +492,8 @@ setMethod("position", signature("RangeTrack"), definition = function(GdObject, f
 
 #' @describeIn RangeTrack-class subset the items in the `RangeTrack` object.
 #' This is essentially similar to subsetting of the `GRanges` object in the
-#' `range` slot. For most applications, the subset method may be more appropriate.
+#' `range` slot. For most applications, the subset method may be more
+#' appropriate.
 #' @export
 setMethod("[", signature(x = "RangeTrack"), function(x, i, j, ..., drop = TRUE) {
     x <- .deepCopyPars(x)

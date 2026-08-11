@@ -25,11 +25,11 @@ NULL
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{BiomartGeneRegionTrack}.
+#' `BiomartGeneRegionTrack`.
 #' @section Objects from the class:
 #'
 #' Objects can be created using the constructor function
-#' \code{BiomartGeneRegionTrack}.
+#' `BiomartGeneRegionTrack`.
 #'
 #' @author Florian Hahne
 #'
@@ -144,7 +144,8 @@ NULL
 #' bmTrack <- plotTracks(bmTrack)$foo
 #' coords(bmTrack)
 #' tags(bmTrack)
-#' @importFrom biomaRt getBM useEnsembl useMart listDatasets listAttributes listFilters
+#' @importFrom biomaRt getBM useEnsembl useMart listDatasets listAttributes
+#' @importFrom biomaRt listFilters
 #'
 #' @exportClass BiomartGeneRegionTrack
 setClass("BiomartGeneRegionTrack",

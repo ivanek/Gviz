@@ -2,7 +2,7 @@
 % Please edit documentation in R/exportTracks.R
 \name{exportTracks}
 \alias{exportTracks}
-\title{Export Gviz tracks into an annotation file representation.}
+\title{Export Gviz tracks into an annotation file representation}
 \usage{
 exportTracks(tracks, range, chromosome, file)
 }
@@ -13,7 +13,8 @@ single BED file.}
 \item{range}{A numeric vector or length 2. The genomic range to display when
 opening the file in a browser.}
 
-\item{chromosome}{The chromosome to display when opening the file in a browser.}
+\item{chromosome}{The chromosome to display when opening the file in a
+browser.}
 
 \item{file}{Character, the path to the file to write into.}
 }

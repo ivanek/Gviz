@@ -14,105 +14,104 @@ NULL
 #' usually fetched dynamially from an online data store, but it is also
 #' possible to manully construct objects from local data. Connections to
 #' particular online data sources should be implemented as sub-classes, and
-#' \code{GeneRegionTrack} is just the commone denominator that is being used
+#' `GeneRegionTrack` is just the commone denominator that is being used
 #' for plotting later on. There are several levels of data associated to a
-#' \code{GeneRegionTrack}:
+#' `GeneRegionTrack`:
 #'
 #' \describe{
 #'
 #' \item{exon level:}{identifiers are stored in the exon column of the
-#' [GRanges][GenomicRanges::GRanges-class] object in the \code{range} slot. Data may be
-#' extracted using the \code{exon} method.}
+#' [GRanges][GenomicRanges::GRanges-class] object in the `range` slot. Data may
+#' be extracted using the `exon` method.}
 #'
 #' \item{transcript level:}{identifiers are stored in the transcript column of
-#' the [GRanges][GenomicRanges::GRanges-class] object. Data may be extracted using the
-#' \code{transcript} method.}
+#' the [GRanges][GenomicRanges::GRanges-class] object. Data may be extracted
+#' using the `transcript` method.}
 #'
 #' \item{gene level:}{identifiers are stored in the gene column of the
-#' [GRanges][GenomicRanges::GRanges-class] object, more human-readable versions in the
-#' symbol column. Data may be extracted using the \code{gene} or the
-#' \code{symbol} methods.}
+#' [GRanges][GenomicRanges::GRanges-class] object, more human-readable versions
+#' in the symbol column. Data may be extracted using the `gene` or the `symbol`
+#' methods.}
 #'
 #' \item{transcript-type level:}{information is stored in the feature column of
-#' the [GRanges][GenomicRanges::GRanges-class] object. If a display parameter of the same
-#' name is specified, the software will use its value for the coloring.}
+#' the [GRanges][GenomicRanges::GRanges-class] object. If a display parameter of
+#' the same name is specified, the software will use its value for the
+#' coloring.}
 #'
 #' }
 #'
-#' \code{GeneRegionTrack} objects also know about coding regions and non-coding
+#' `GeneRegionTrack` objects also know about coding regions and non-coding
 #' regions (e.g., UTRs) in a transcript, and will indicate those by using
 #' different shapes (wide boxes for all coding regions, thinner boxes for
-#' non-coding regions). This is archived by setting the \code{feature} values
+#' non-coding regions). This is archived by setting the `feature` values
 #' of the object for non-coding elements to one of the options that are
-#' provided in the \code{thinBoxFeature} display parameters. All other elements
+#' provided in the `thinBoxFeature` display parameters. All other elements
 #' are considered to be coding elements.
 #'
 #' @name GeneRegionTrack-class
 #'
-#' @param range
+#' @param range An optional meta argument to handle the different input types.
+#' If the `range` argument is missing, all the relevant information to create
+#' the object has to be provided as individual function arguments (see below).
 #'
-#' An optional meta argument to handle the different input types. If the
-#' \code{range} argument is missing, all the relevant information to create the
-#' object has to be provided as individual function arguments (see below).
-#'
-#' The different input options for \code{range} are:
+#' The different input options for `range` are:
 #'
 #' \describe{
 #'
-#' \item{A \code{TxDb} object:}{ all the necessary gene model information
+#' \item{A `TxDb` object:}{ all the necessary gene model information
 #' including exon locations, transcript groupings and associated gene ids are
-#' contained in \code{TxDb} objects, and the coercion between the two is almost
+#' contained in `TxDb` objects, and the coercion between the two is almost
 #' completely automated. If desired, the data to be fetched from the
-#' \code{TxDb} object can be restricted using the constructor's
-#' \code{chromosome}, \code{start} and \code{end} arguments. See below for
-#' details. A direct coercion method \code{as(obj, "GeneRegionTrack")} is also
+#' `TxDb` object can be restricted using the constructor's
+#' `chromosome`, `start` and `end` arguments. See below for
+#' details. A direct coercion method `as(obj, "GeneRegionTrack")` is also
 #' available. A nice added benefit of this input option is that the UTR and
-#' coding region information that is part of the original \code{TxDb} object is
-#' retained in the \code{GeneRegionTrack}.}
+#' coding region information that is part of the original `TxDb` object is
+#' retained in the `GeneRegionTrack`.}
 #'
-#' \item{A \code{GRanges} object:}{ the genomic ranges for the
-#' \code{GeneRegion} track as well as the optional additional metadata columns
-#' \code{feature}, \code{transcript}, \code{gene}, \code{exon} and
-#' \code{symbol} (see description of the individual function parameters below
-#' for details). Calling the constructor on a \code{GRanges} object without
-#' further arguments, e.g.  \code{GeneRegionTrack(range=obj)} is equivalent to
-#' calling the coerce method \code{as(obj, "GeneRegionTrack")}.}
+#' \item{A `GRanges` object:}{ the genomic ranges for the
+#' `GeneRegion` track as well as the optional additional metadata columns
+#' `feature`, `transcript`, `gene`, `exon` and
+#' `symbol` (see description of the individual function parameters below
+#' for details). Calling the constructor on a `GRanges` object without
+#' further arguments, e.g.  `GeneRegionTrack(range=obj)` is equivalent to
+#' calling the coerce method `as(obj, "GeneRegionTrack")`.}
 #'
-#' \item{A \code{GRangesList} object:}{ this is very similar to the previous
+#' \item{A `GRangesList` object:}{ this is very similar to the previous
 #' case, except that the grouping information that is part of the list
-#' structure is preserved in the \code{GeneRegionTrack}. I.e., all the elements
+#' structure is preserved in the `GeneRegionTrack`. I.e., all the elements
 #' within one list item receive the same group id. For consistancy, there is
-#' also a coercion method from \code{GRangesLists} \code{as(obj,
-#' "GeneRegionTrack")}. Please note that unless the necessary information about
-#' gene ids, symbols, etc. is present in the individual \code{GRanges} meta
+#' also a coercion method from `GRangesLists` `as(obj,
+#' "GeneRegionTrack")`. Please note that unless the necessary information about
+#' gene ids, symbols, etc. is present in the individual `GRanges` meta
 #' data slots, the object will not be particularly useful, because all the
 #' identifiers will be set to a common default value.}
 #'
 #' \item{An [IRanges][IRanges::IRanges-class] object:}{ almost identical to the
-#' \code{GRanges} case, except that the chromosome and strand information as
+#' `GRanges` case, except that the chromosome and strand information as
 #' well as all additional data has to be provided in the separate
-#' \code{chromosome}, \code{strand}, \code{feature}, \code{transcript},
-#' \code{symbol}, \code{exon} or \code{gene} arguments, because it can not be
-#' directly encoded in an \code{IRanges} object. Note that only the former two
+#' `chromosome`, `strand`, `feature`, `transcript`,
+#' `symbol`, `exon` or `gene` arguments, because it can not be
+#' directly encoded in an `IRanges` object. Note that only the former two
 #' are mandatory (if not provided explicitely the more or less reasonable
-#' default values \code{chromosome=NA} and \code{strand=*} are used, but not
+#' default values `chromosome=NA` and `strand=*` are used, but not
 #' providing information about the gene-to-transcript relationship or the
 #' human-readble symbols renders a lot of the class' functionality useles.}
 #'
-#' \item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
-#' at least the two mandatory columns \code{start} and \code{end} with the
-#' range coordinates. It may also contain a \code{chromosome} and a
-#' \code{strand} column with the chromosome and strand information for each
+#' \item{A `data.frame` object:}{ the `data.frame` needs to contain
+#' at least the two mandatory columns `start` and `end` with the
+#' range coordinates. It may also contain a `chromosome` and a
+#' `strand` column with the chromosome and strand information for each
 #' range. If missing, this information will be drawn from the constructor's
-#' \code{chromosome} or \code{strand} arguments. In addition, the
-#' \code{feature}, \code{exon}, \code{transcript}, \code{gene} and
-#' \code{symbol} data can be provided as columns in the \code{data.frame}. The
+#' `chromosome` or `strand` arguments. In addition, the
+#' `feature`, `exon`, `transcript`, `gene` and
+#' `symbol` data can be provided as columns in the `data.frame`. The
 #' above comments about potential default values also apply here.}
 #'
-#' \item{A \code{character} scalar:}{ in this case the value of the
-#' \code{range} argument is considered to be a file path to an annotation file
-#' on disk. A range of file types are supported by the \code{Gviz} package as
-#' identified by the file extension. See the \code{importFunction}
+#' \item{A `character` scalar:}{ in this case the value of the
+#' `range` argument is considered to be a file path to an annotation file
+#' on disk. A range of file types are supported by the `Gviz` package as
+#' identified by the file extension. See the `importFunction`
 #' documentation below for further details.}
 #'
 #' }
@@ -120,11 +119,11 @@ NULL
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{GeneRegionTrack}.
+#' `GeneRegionTrack`.
 #' @section Objects from the class:
 #'
 #' Objects can be created using the constructor function
-#' \code{GeneRegionTrack}.
+#' `GeneRegionTrack`.
 #'
 #' @author Florian Hahne, Steve Lianoglou
 #'
@@ -142,8 +141,10 @@ NULL
 #' ## Construct the object
 #' grTrack <- GeneRegionTrack(
 #'     start = 26682683, end = 26711643,
-#'     rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm39",
-#'     transcript = cyp2b10$transcript, gene = cyp2b10$gene, symbol = cyp2b10$symbol,
+#'     rstart = cyp2b10$start, rends = cyp2b10$end,
+#'     chromosome = 7, genome = "mm39",
+#'     transcript = cyp2b10$transcript, gene = cyp2b10$gene,
+#'     symbol = cyp2b10$symbol,
 #'     feature = cyp2b10$feature, exon = cyp2b10$exon,
 #'     name = "Cyp2b10", strand = cyp2b10$strand
 #' )
@@ -158,7 +159,9 @@ NULL
 #'                               package = "GenomicFeatures")
 #'     txdb <- loadDb(samplefile)
 #'     GeneRegionTrack(txdb)
-#'     GeneRegionTrack(txdb, chromosome = "chr6", start = 35000000, end = 40000000)
+#'     GeneRegionTrack(txdb,
+#'         chromosome = "chr6", start = 35000000, end = 40000000
+#'     )
 #' }
 #' \dontshow{
 #' ## For some annoying reason the postscript device does not know about
@@ -352,7 +355,8 @@ setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, re
 ##    o delim: the delimiter if coordinates are in a list
 ## All additional items in ... are being treated as DisplayParameters
 
-#' @describeIn GeneRegionTrack-class Constructor function for `GeneRegionTrack-class`.
+#' @describeIn GeneRegionTrack-class Constructor function for
+#' `GeneRegionTrack-class`.
 #' @export
 GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths = NULL, strand, feature, exon,
                             transcript, gene, symbol, chromosome, genome, stacking = "squish",
@@ -433,7 +437,9 @@ GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths 
 ## For TxDb objects we extract the grouping information and use the GRanges method
 
 #' @importClassesFrom GenomicFeatures TxDb
-#' @importMethodsFrom GenomicFeatures isActiveSeq "isActiveSeq<-" cdsBy exonsBy fiveUTRsByTranscript threeUTRsByTranscript transcriptsBy transcripts
+#' @importMethodsFrom GenomicFeatures isActiveSeq "isActiveSeq<-" cdsBy exonsBy
+#' @importMethodsFrom GenomicFeatures fiveUTRsByTranscript threeUTRsByTranscript
+#' @importMethodsFrom GenomicFeatures transcriptsBy transcripts
 setMethod(
     ".buildRange", signature("TxDb"),
     function(range, groupId = "transcript", tstart, tend, chromosome, args, ...) {
@@ -552,7 +558,8 @@ setMethod(
 ## For ensDb objects we extract the grouping information and use the GRanges method
 
 #' @importClassesFrom ensembldb EnsDb
-#' @importMethodsFrom ensembldb cdsBy exonsBy fiveUTRsByTranscript threeUTRsByTranscript transcriptsBy transcripts
+#' @importMethodsFrom ensembldb cdsBy exonsBy fiveUTRsByTranscript
+#' @importMethodsFrom ensembldb threeUTRsByTranscript transcriptsBy transcripts
 setMethod(
     ".buildRange", signature("EnsDb"),
     function(range, groupId = "transcript", tstart, tend, chromosome, args, ...) {
@@ -710,13 +717,14 @@ setMethod("exon", signature(GdObject = "GeneRegionTrack"), function(GdObject) .g
 #' @export
 setReplaceMethod("exon", signature("GeneRegionTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "exon"))
 
-#' @describeIn GeneRegionTrack-class extract the group membership for all track items.
+#' @describeIn GeneRegionTrack-class extract the group membership for all track
+#' items.
 #' @export
 setMethod("group", "GeneRegionTrack", function(object) transcript(object))
 
-#' @describeIn GeneRegionTrack-class replace the grouping information for track items.
-#' The replacement value must be a factor of appropriate length or another
-#' vector that can be coerced into such.
+#' @describeIn GeneRegionTrack-class replace the grouping information for track
+#' items. The replacement value must be a factor of appropriate length or
+#' another vector that can be coerced into such.
 #' @export
 setReplaceMethod(
     "group", signature("GeneRegionTrack", "character"),

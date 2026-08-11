@@ -58,11 +58,11 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' \code{AlignmentsTrack} or \code{ReferenceAlignmentsTrack}.
+#' `AlignmentsTrack` or `ReferenceAlignmentsTrack`.
 #' @section Objects from the Class:
 #'
 #' Objects can be created using the constructor function
-#' \code{AlignmentsTrack}.
+#' `AlignmentsTrack`.
 #'
 #' @author Florian Hahne
 #'
@@ -109,7 +109,8 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #'         to = 44946660
 #'     )
 #' }
-#' @importFrom Rsamtools scanBamFlag scanBamHeader scanBam ScanBamParam scanFaIndex scanFa BamFile scanBamWhat bamWhich
+#' @importFrom Rsamtools scanBamFlag scanBamHeader scanBam ScanBamParam
+#' @importFrom Rsamtools scanFaIndex scanFa BamFile scanBamWhat bamWhich
 #'
 #' @exportClass AlignmentsTrack
 setClass("AlignmentsTrack",
@@ -341,9 +342,9 @@ AlignmentsTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL
 #' @export
 setMethod("values", "AlignmentsTrack", function(x) .dpOrDefault(x, ".__coverage"))
 
-#' @describeIn AlignmentsTrack-class replace the value of the track's chromosome.
-#' This has to be a valid UCSC chromosome identifier or an integer or character
-#' scalar that can be reasonably coerced into one.
+#' @describeIn AlignmentsTrack-class replace the value of the track's
+#' chromosome. This has to be a valid UCSC chromosome identifier or an integer
+#' or character scalar that can be reasonably coerced into one.
 #' @export
 setReplaceMethod("chromosome", "AlignmentsTrack", function(GdObject, value) {
     GdObject <- callNextMethod()
@@ -358,7 +359,8 @@ setReplaceMethod("chromosome", "AlignmentsTrack", function(GdObject, value) {
 ## Annotation Accessors ------------------------------------------------------
 ## Stacking ------------------------------------------------------------------
 
-#' @describeIn AlignmentsTrack-class return the stack indices for each track item.
+#' @describeIn AlignmentsTrack-class return the stack indices for each track
+#' item.
 #' @export
 setMethod(
     "stacks", "AlignmentsTrack",
@@ -420,8 +422,8 @@ setMethod("subset", signature(x = "AlignmentsTrack"), function(x, from = NULL, t
 
 ## ReferenceAlignmentsTracks need to stream the data from file and then pass the results on to the next method
 
-#' @describeIn AlignmentsTrack-class Subset a `ReferenceAlignmentsTrack` by coordinates
-#' and sort if necessary.
+#' @describeIn AlignmentsTrack-class Subset a `ReferenceAlignmentsTrack` by
+#' coordinates and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "ReferenceAlignmentsTrack"), function(x, from, to, chromosome, ...) {
     ## We only need to reach out into the referenced file once if the range is already contained in the object

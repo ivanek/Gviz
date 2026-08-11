@@ -33,9 +33,13 @@
 \S4method{drawGD}{StackedTrack}(GdObject, ...)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
-\item{stacking}{stacking}
+\item{stacking}{The stacking type for overlapping items of the track. One in
+\code{c(hide, dense, squish, pack, full)}. Currently, only squish (make best use
+of the available space), dense (no stacking, collapse overlapping ranges),
+and hide (do not show any track items at all) are implemented.}
 
 \item{...}{Additional arguments.}
 
@@ -50,12 +54,14 @@ case the class is derived directly from it.}
 
 \item{j}{Numeric scalar, index to subset. Ignored.}
 
-\item{drop}{\code{logical}, indicating if levels that do not occur should be dropped (if \code{f} is a factor).}
+\item{drop}{\code{logical}, indicating if levels that do not occur should be
+dropped (if \code{f} is a factor).}
 
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
 limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
 
-\item{sort}{\code{logical}.}
+\item{sort}{\code{logical}. Sort the track's ranges by their genomic coordinates
+after subsetting.}
 
 \item{stacks}{\code{logical}. Set if stacking should  be preserved.}
 }
@@ -92,7 +98,8 @@ steps.
 This is essentially similar to subsetting of the \code{GRanges} object in the
 range slot. For most applications, the subset method may be more appropriate.
 
-\item \code{subset(StackedTrack)}: subset a \code{StackedTrack} by coordinates and sort if necessary.
+\item \code{subset(StackedTrack)}: subset a \code{StackedTrack} by coordinates and
+sort if necessary.
 
 \item \code{drawGD(StackedTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated

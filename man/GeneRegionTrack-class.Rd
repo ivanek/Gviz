@@ -94,7 +94,8 @@ GeneRegionTrack(
 \S4method{show}{ReferenceGeneRegionTrack}(object)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{start, end}{An integer scalar with the genomic start or end coordinate
 for the gene model range. If those are missing, the default value will
@@ -105,7 +106,7 @@ can be used to subset the desired annotation data by genomic coordinates.
 Please note this in that case the \code{chromosome} parameter must also be
 set.}
 
-\item{\dots}{Additional items which will all be interpreted as further
+\item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
@@ -115,17 +116,19 @@ function can deal with indexed files and knows how to process the additional
 constructor to return a \code{ReferenceGeneRegionTrack} object which will
 grab the necessary data on the fly during each plotting operation.}
 
-\item{reference}{reference file}
+\item{reference}{A \code{character} scalar with the path to the referenced file.}
 
-\item{mapping}{mapping}
+\item{mapping}{A named \code{list} mapping the columns of the imported data to
+the metadata columns of the track's \code{GRanges} object.}
 
-\item{args}{args}
+\item{args}{A \code{list} of the arguments the object has been constructed with.}
 
-\item{defaults}{\code{logical}}
+\item{defaults}{A \code{list} of the constructor's default arguments, used to
+fill in whatever has not been provided in \code{args}.}
 
-\item{range}{An optional meta argument to handle the different input types. If the
-\code{range} argument is missing, all the relevant information to create the
-object has to be provided as individual function arguments (see below).
+\item{range}{An optional meta argument to handle the different input types.
+If the \code{range} argument is missing, all the relevant information to create
+the object has to be provided as individual function arguments (see below).
 
 The different input options for \code{range} are:
 
@@ -154,8 +157,7 @@ calling the coerce method \code{as(obj, "GeneRegionTrack")}.}
 case, except that the grouping information that is part of the list
 structure is preserved in the \code{GeneRegionTrack}. I.e., all the elements
 within one list item receive the same group id. For consistancy, there is
-also a coercion method from \code{GRangesLists} \code{as(obj,
-"GeneRegionTrack")}. Please note that unless the necessary information about
+also a coercion method from \code{GRangesLists} \code{as(obj, "GeneRegionTrack")}. Please note that unless the necessary information about
 gene ids, symbols, etc. is present in the individual \code{GRanges} meta
 data slots, the object will not be particularly useful, because all the
 identifiers will be set to a common default value.}
@@ -167,7 +169,7 @@ well as all additional data has to be provided in the separate
 \code{symbol}, \code{exon} or \code{gene} arguments, because it can not be
 directly encoded in an \code{IRanges} object. Note that only the former two
 are mandatory (if not provided explicitely the more or less reasonable
-default values \code{chromosome=NA} and \code{strand=*} are used, but not
+default values \code{chromosome=NA} and \verb{strand=*} are used, but not
 providing information about the gene-to-transcript relationship or the
 human-readble symbols renders a lot of the class' functionality useles.}
 
@@ -252,7 +254,7 @@ based on the available inputs, and as a last resort will fall back to the
 value \code{chrNA}. Please note that by definition all objects in the
 \code{Gviz} package can only have a single active chromosome at a time
 (although internally the information for more than one chromosome may be
-present), and the user has to call the \code{chromosome<-} replacement
+present), and the user has to call the \verb{chromosome<-} replacement
 method in order to change to a different active chromosome. When creating a
 \code{GeneRegionTrack} from a \code{TxDb} object, the value of this
 parameter can be used to subset the data to fetch only transcripts from a
@@ -289,9 +291,10 @@ functions: \code{gff}, \code{gff1}, \code{gff2}, \code{gff3}, \code{gtf}.}
 
 \item{value}{Value to be set.}
 
-\item{object}{object}
+\item{object}{Object inheriting from \code{GeneRegionTrack-class}.}
 
-\item{type}{type}
+\item{type}{A \code{character} scalar with the name of the track class, used to
+label the streamed reference in the object's \code{show} method.}
 
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
@@ -315,21 +318,22 @@ for plotting later on. There are several levels of data associated to a
 \describe{
 
 \item{exon level:}{identifiers are stored in the exon column of the
-\link[GenomicRanges:GRanges-class]{GRanges} object in the \code{range} slot. Data may be
-extracted using the \code{exon} method.}
+\link[GenomicRanges:GRanges-class]{GRanges} object in the \code{range} slot. Data may
+be extracted using the \code{exon} method.}
 
 \item{transcript level:}{identifiers are stored in the transcript column of
-the \link[GenomicRanges:GRanges-class]{GRanges} object. Data may be extracted using the
-\code{transcript} method.}
+the \link[GenomicRanges:GRanges-class]{GRanges} object. Data may be extracted
+using the \code{transcript} method.}
 
 \item{gene level:}{identifiers are stored in the gene column of the
-\link[GenomicRanges:GRanges-class]{GRanges} object, more human-readable versions in the
-symbol column. Data may be extracted using the \code{gene} or the
-\code{symbol} methods.}
+\link[GenomicRanges:GRanges-class]{GRanges} object, more human-readable versions
+in the symbol column. Data may be extracted using the \code{gene} or the \code{symbol}
+methods.}
 
 \item{transcript-type level:}{information is stored in the feature column of
-the \link[GenomicRanges:GRanges-class]{GRanges} object. If a display parameter of the same
-name is specified, the software will use its value for the coloring.}
+the \link[GenomicRanges:GRanges-class]{GRanges} object. If a display parameter of
+the same name is specified, the software will use its value for the
+coloring.}
 
 }
 
@@ -351,7 +355,8 @@ slots.
 (\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) before deferring to
 the \code{GeneRegionTrack} initializer for the remaining slots.
 
-\item \code{GeneRegionTrack()}: Constructor function for \code{GeneRegionTrack-class}.
+\item \code{GeneRegionTrack()}: Constructor function for
+\code{GeneRegionTrack-class}.
 
 \item \code{gene(GeneRegionTrack)}: Extract the gene identifiers for all
 gene models.
@@ -383,11 +388,12 @@ in the gene models.
 in the gene model. The replacement value must be a character of appropriate
 length or another vector that can be coerced into such.
 
-\item \code{group(GeneRegionTrack)}: extract the group membership for all track items.
+\item \code{group(GeneRegionTrack)}: extract the group membership for all track
+items.
 
-\item \code{group(object = GeneRegionTrack) <- value}: replace the grouping information for track items.
-The replacement value must be a factor of appropriate length or another
-vector that can be coerced into such.
+\item \code{group(object = GeneRegionTrack) <- value}: replace the grouping information for track
+items. The replacement value must be a factor of appropriate length or
+another vector that can be coerced into such.
 
 \item \code{identifier(GeneRegionTrack)}: return track item identifiers.
 Depending on the setting of the optional argument lowest, these are either
@@ -436,8 +442,10 @@ data(cyp2b10)
 ## Construct the object
 grTrack <- GeneRegionTrack(
     start = 26682683, end = 26711643,
-    rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm39",
-    transcript = cyp2b10$transcript, gene = cyp2b10$gene, symbol = cyp2b10$symbol,
+    rstart = cyp2b10$start, rends = cyp2b10$end,
+    chromosome = 7, genome = "mm39",
+    transcript = cyp2b10$transcript, gene = cyp2b10$gene,
+    symbol = cyp2b10$symbol,
     feature = cyp2b10$feature, exon = cyp2b10$exon,
     name = "Cyp2b10", strand = cyp2b10$strand
 )
@@ -452,7 +460,9 @@ if (require(GenomicFeatures)) {
                               package = "GenomicFeatures")
     txdb <- loadDb(samplefile)
     GeneRegionTrack(txdb)
-    GeneRegionTrack(txdb, chromosome = "chr6", start = 35000000, end = 40000000)
+    GeneRegionTrack(txdb,
+        chromosome = "chr6", start = 35000000, end = 40000000
+    )
 }
 \dontshow{
 ## For some annoying reason the postscript device does not know about

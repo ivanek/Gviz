@@ -67,7 +67,7 @@
 #' entries will result in casting of an error.
 #' @param chromosome The chromosome on which the track's genomic ranges are
 #' defined. A valid UCSC chromosome identifier if
-#' \code{options(ucscChromosomeNames=TRUE)}. Please note that in this case only
+#' `options(ucscChromosomeNames=TRUE)`. Please note that in this case only
 #' syntactic checking takes place, i.e., the argument value needs to be an
 #' integer, numeric character or a character of the form `chrx`, where
 #' `x` may be any possible string. The user has to make sure that the
@@ -153,6 +153,6 @@
 #' `selection` argument when accessing the data on disk. This causes the
 #' constructor to return a `ReferenceAnnotationTrack` object which will
 #' grab the necessary data on the fly during each plotting operation.
-#' @param \dots Additional items which will all be interpreted as further
-#' display parameters. See [`settings`](settings) and the "Display Parameters"
+#' @param ... Additional items which will all be interpreted as further
+#' display parameters. See [`settings`] and the "Display Parameters"
 #' section below for details.

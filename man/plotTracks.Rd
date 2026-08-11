@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotTracks.R
 \name{plotTracks}
 \alias{plotTracks}
-\title{The main plotting function for one or several Gviz tracks.}
+\title{The main plotting function for one or several Gviz tracks}
 \usage{
 plotTracks(
   trackList,
@@ -37,7 +37,7 @@ If \code{NULL}, the plotting ranges are derived from the individual tracks.
 See \code{extend.left} and \code{extend.right} below for the definition of
 the final plotting ranges.}
 
-\item{\dots}{Additional arguments which are all interpreted as display
+\item{...}{Additional arguments which are all interpreted as display
 parameters to tweak the appearance of the plot. These parameters are global,
 meaning that they will be used for all tracks in the list where they
 actually make sense, and they override the track-internal settings. See
@@ -143,7 +143,9 @@ res <- plotTracks(list(ax, annTrack, dt))
 res <- plotTracks(list(ax, annTrack, dt), from = 2080000, to = 2156000)
 
 ## Extend plotting ranges
-res <- plotTracks(list(ax, annTrack, dt), extend.left = 200000, extend.right = 200000)
+res <- plotTracks(list(ax, annTrack, dt),
+    extend.left = 200000, extend.right = 200000
+)
 
 ## Add a header
 res <- plotTracks(list(ax, annTrack, dt),

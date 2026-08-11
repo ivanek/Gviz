@@ -36,7 +36,9 @@ NULL
 #' set.seed(123)
 #' dat <- runif(100, min = -2, max = 22)
 #' gt <- GenomeAxisTrack()
-#' dt <- DataTrack(data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19")
+#' dt <- DataTrack(
+#'     data = dat, start = sort(sample(200, 100)), width = 1, genome = "hg19"
+#' )
 #'
 #' ht <- HighlightTrack(trackList = list(gt, dt))
 #' @exportClass HighlightTrack
@@ -160,7 +162,8 @@ setMethod("consolidateTrack", signature(GdObject = "HighlightTrack"), function(G
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
 
-#' @describeIn HighlightTrack-class subset all the contained tracks in a HighlightTrack by coordinates and sort if necessary.
+#' @describeIn HighlightTrack-class subset all the contained tracks in a
+#' HighlightTrack by coordinates and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "HighlightTrack"), function(x, ...) {
     x@trackList <- lapply(x@trackList, subset, ...)

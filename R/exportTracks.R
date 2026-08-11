@@ -1,7 +1,7 @@
 ## Write all tracks in a list of tracks into a single BED file.
 # FIXME: Need to support WIG exports as well...
 
-#' Export Gviz tracks into an annotation file representation.
+#' Export Gviz tracks into an annotation file representation
 #'
 #' This function is still a bit experimental. Write all tracks provided as a
 #' list `tracks` into a single BED file. So far only BED export is supported.
@@ -12,7 +12,8 @@
 #' single BED file.
 #' @param range A numeric vector or length 2. The genomic range to display when
 #' opening the file in a browser.
-#' @param chromosome The chromosome to display when opening the file in a browser.
+#' @param chromosome The chromosome to display when opening the file in a
+#' browser.
 #' @param file Character, the path to the file to write into.
 #'
 #' @return The function is called for its side effect of writing to a file.

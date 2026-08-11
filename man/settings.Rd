@@ -22,9 +22,9 @@ parameters and list all available settings for the different track classes.
 }
 \details{
 All of the package's track objects inherit the \code{dp} slot from the
-\code{\linkS4class{GdObject}} parent class, which is the main container to
+\code{\link[=GdObject-class]{GdObject}} parent class, which is the main container to
 store an object's display parameters. Internally, the content of this slot
-has to be an object of class \code{\linkS4class{DisplayPars}}, but the user
+has to be an object of class \code{\link[=DisplayPars-class]{DisplayPars}}, but the user
 is usually not exposed to this low level implementation. Instead, there are
 two main interaction points, namely the individual object constructor
 functions and the final \code{\link{plotTracks}} function. In both cases,
@@ -42,12 +42,12 @@ their default values by calling the \code{\link{availableDisplayPars}}
 function, or by inspecting the man pages of the individual track classes.
 The structure of the classes defined in this package is hierarchical, and so
 are the available display parameters, i.e., all objects inherit the
-parameters defined in the commom \code{GdObject} parent class, and so on.
+parameters defined in the common \code{GdObject} parent class, and so on.
 
 Once a track object has been created, the display parameters are still open
-for modification. To this end, the \code{\linkS4class{DisplayPars}} replacement
-method is available for all objects inheriting from class \code{GdObject}.
-The method takes a named list of parameters as input, e.g.:
+for modification. To this end, the \code{\link[=DisplayPars-class]{DisplayPars}}
+replacement method is available for all objects inheriting from class
+\code{GdObject}. The method takes a named list of parameters as input, e.g.:
 
 \code{displayPars(foo) <- list(col="red", lwd=2)}
 
@@ -58,7 +58,7 @@ e.g.:
 \code{displayPars(foo)}
 
 For track objects inheriting from class
-\code{\linkS4class{AnnotationTrack}}, display parameters that are not
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}}, display parameters that are not
 formally defined in the class definition or in any of the parent classes are
 considered to be valid R color identifiers that are used to distinguish
 between different types of annotation features. For instance, the parameter
@@ -211,7 +211,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global \code{col} parameter.}
@@ -255,7 +255,7 @@ horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for de
 text, unless a more specific definition exists.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lty="solid"}:}{ Numeric scalar. Default line type setting for
@@ -266,7 +266,7 @@ elsewhere.}
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
@@ -307,7 +307,7 @@ vertical grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for deta
 \describe{
 
 \item{\code{aggregateGroups=FALSE}:}{ Logical scalar. Aggregate the values
-within a sample group using the aggregation funnction specified in the
+within a sample group using the aggregation function specified in the
 \code{aggregation} parameter.}
 
 \item{\code{aggregation="mean"}:}{ Function or character scalar.  Used to
@@ -332,7 +332,7 @@ plots. See \link[lattice:panel.xyplot]{lattice::panel.xyplot} for details.}
 \item{\code{baseline=NULL}:}{ Numeric scalar. Y-axis position of an optional
 baseline. This parameter has a special meaning for mountain-type and
 polygon-type plots, see the 'Details' section in
-\code{\linkS4class{DataTrack}} for more information.}
+\code{\link[=DataTrack-class]{DataTrack}} for more information.}
 
 \item{\code{box.legend=FALSE}:}{ Logical scalar. Draw a box around a
 legend.}
@@ -381,8 +381,7 @@ mountain-type and polygon-type plots, defaults to the setting of
 \item{\code{col.sampleNames="white"}:}{ Character or integer scalar. The
 color used for the sample names in heatmap plots.}
 
-\item{\code{col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange",
-"#00ff00", "brown")}:}{ Character or integer vector.  The color used for all
+\item{\code{col=c("#0080ff", "#ff00ff", "darkgreen", "#ff0000", "orange", "#00ff00", "brown")}:}{ Character or integer vector.  The color used for all
 line and symbol elements, unless there is a more specific control defined
 elsewhere. Unless \code{groups} are specified, only the first color in the
 vector is usually regarded.}
@@ -414,8 +413,7 @@ confidence intervals for confint-type plots.}
 \item{\code{fill.histogram=NULL}:}{ Character scalar. Fill color in
 histogram-type plots, defaults to the setting of \code{fill}.}
 
-\item{\code{fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC",
-"#468CC8", "#0165B3")}:}{ The fill colors for the segments in the
+\item{\code{fill.horizon=c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3")}:}{ The fill colors for the segments in the
 \code{horizon}-type plot. This should be a vector of length six, where the
 first three entries are the colors for positive changes, and the latter
 three entries are the colors for negative changes. Defaults to a red-blue
@@ -436,8 +434,7 @@ legend text.}
 \item{\code{fontcolor.legend="#808080"}:}{ Integer or character scalar. The
 font color for the legend text.}
 
-\item{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1",
-"#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")}:}{ Character vector.
+\item{\code{gradient=c("#F7FBFF", "#DEEBF7", "#C6DBEF", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5", "#08519C", "#08306B")}:}{ Character vector.
 The base colors for the \code{gradient} plotting type or the \code{heatmap}
 type with a single group. When plotting heatmaps with more than one group,
 the \code{col} parameter can be used to control the group color scheme,
@@ -445,7 +442,7 @@ however the gradient will always be from white to 'col' and thus does not
 offer as much flexibility as this \code{gradient} parameter.}
 
 \item{\code{groups=NULL}:}{ Vector coercable to a factor.  Optional sample
-grouping. See 'Details' section in \code{\linkS4class{DataTrack}} for
+grouping. See 'Details' section in \code{\link[=DataTrack-class]{DataTrack}} for
 further information.}
 
 \item{\code{horizon.origin=0}:}{ The baseline relative to which changes are
@@ -539,7 +536,7 @@ dimensionality as the input data.}
 \code{r}, \code{S}, \code{confint}, \code{smooth}, \code{histogram},
 \code{mountain}, \code{polygon}, \code{h}, \code{boxplot}, \code{gradient},
 \code{heatmap}, \code{horizon}. See 'Details' section in
-\code{\linkS4class{DataTrack}} for more information on the individual
+\code{\link[=DataTrack-class]{DataTrack}} for more information on the individual
 plotting types.}
 
 \item{\code{varwidth=FALSE}:}{ Logical scalar. Parameter controlling the
@@ -604,7 +601,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global \code{col} parameter.}
@@ -647,7 +644,7 @@ horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for de
 text, unless a more specific definition exists.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lty="solid"}:}{ Numeric scalar. Default line type setting for
@@ -661,7 +658,7 @@ title panels.}
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{lwd=1}:}{ Numeric scalar. Default line width setting for all
@@ -805,7 +802,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global \code{col} parameter.}
@@ -839,14 +836,14 @@ horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for de
 text, unless a more specific definition exists.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lwd.title=1}:}{ Integer scalar. The border width for the title
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
@@ -1051,7 +1048,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global \code{col} parameter.}
@@ -1091,7 +1088,7 @@ grid.}
 horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
@@ -1101,7 +1098,7 @@ title panels.}
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
@@ -1180,10 +1177,9 @@ which to display the track items. Currently only \code{box}, \code{arrow},
 \item{\code{showExonId=NULL}:}{ Logical scalar. Control whether to plot the
 individual exon identifiers.}
 
-\item{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")}:}{ Character
-vector. A listing of feature types that should be drawn with thin boxes.
-Typically those are non-coding elements.}
+\item{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")}:}{
+Character vector. A listing of feature types that should be drawn with thin
+boxes. Typically those are non-coding elements.}
 
 \item{\code{transcriptAnnotation=NULL}:}{ Character scalar.  Add annotation
 information as transcript labels. This can be a value in \code{symbol},
@@ -1344,7 +1340,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global \code{col} parameter.}
@@ -1384,7 +1380,7 @@ grid.}
 horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
@@ -1394,7 +1390,7 @@ title panels.}
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
@@ -1553,10 +1549,9 @@ which to display the track items. Currently only \code{box}, \code{arrow},
 \item{\code{showExonId=NULL}:}{ Logical scalar. Control whether to plot the
 individual exon identifiers.}
 
-\item{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR",
-"5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")}:}{ Character
-vector. A listing of feature types that should be drawn with thin boxes.
-Typically those are non-coding elements.}
+\item{\code{thinBoxFeature=c("utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR", "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR")}:}{
+Character vector. A listing of feature types that should be drawn with thin
+boxes. Typically those are non-coding elements.}
 
 \item{\code{transcriptAnnotation=NULL}:}{ Character scalar.  Add annotation
 information as transcript labels. This can be a value in \code{symbol},
@@ -1717,7 +1712,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.symbol=NULL}:}{ Integer or character scalar.  Default colors
 for plot symbols. Usually the same as the global \code{col} parameter.}
@@ -1757,7 +1752,7 @@ grid.}
 horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for details.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
@@ -1767,7 +1762,7 @@ title panels.}
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{reverseStrand=FALSE}:}{ Logical scalar. Set up the plotting
@@ -2039,7 +2034,7 @@ color used for the panel frame, if \code{frame==TRUE}}
 
 \item{\code{col.grid="#808080"}:}{ Integer or character scalar.  Default
 line color for grid lines, both when \code{type=="g"} in
-\code{\linkS4class{DataTrack}}s and when display parameter \code{grid==TRUE}.}
+\code{\link[=DataTrack-class]{DataTrack}}s and when display parameter \code{grid==TRUE}.}
 
 \item{\code{col.line=NULL}:}{ Integer or character scalar.  Default colors
 for plot lines. Usually the same as the global \code{col} parameter.}
@@ -2081,7 +2076,7 @@ horizontal grid lines, see \link[lattice:panel.grid]{lattice::panel.grid} for de
 text, unless a more specific definition exists.}
 
 \item{\code{lty.grid="solid"}:}{ Integer or character scalar.  Default line
-type for grid lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s
+type for grid lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s
 and when display parameter \code{grid==TRUE}.}
 
 \item{\code{lwd.border.title=1}:}{ Integer scalar. The border width for the
@@ -2091,7 +2086,7 @@ title panels.}
 panels}
 
 \item{\code{lwd.grid=1}:}{ Numeric scalar. Default line width for grid
-lines, both when \code{type=="g"} in \code{\linkS4class{DataTrack}}s and when
+lines, both when \code{type=="g"} in \code{\link[=DataTrack-class]{DataTrack}}s and when
 display parameter \code{grid==TRUE}.}
 
 \item{\code{min.distance=1}:}{ Numeric scalar. The minimum pixel distance
@@ -2150,17 +2145,19 @@ options(Gviz.scheme = "myScheme")
 getOption("Gviz.scheme")
 
 data(geneModels)
-grtrack <- GeneRegionTrack(geneModels, genome = "hg19", chromosome = "chr7", name = "Gene Model")
+grtrack <- GeneRegionTrack(geneModels,
+    genome = "hg19", chromosome = "chr7", name = "Gene Model"
+)
 plotTracks(grtrack)
 }
 \seealso{
-\code{\linkS4class{AnnotationTrack}}
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}}
 
-\code{\linkS4class{DataTrack}}
+\code{\link[=DataTrack-class]{DataTrack}}
 
-\code{\linkS4class{DisplayPars}}
+\code{\link[=DisplayPars-class]{DisplayPars}}
 
-\code{\linkS4class{GdObject}}
+\code{\link[=GdObject-class]{GdObject}}
 
 \code{\link{availableDisplayPars}}
 

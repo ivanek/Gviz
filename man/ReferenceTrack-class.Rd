@@ -24,17 +24,22 @@ availableDefaultMapping(file, trackType)
 \item{trackType}{A \code{character} scalar with one of the available track types
 in the package.}
 
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
-\item{stream}{stream}
+\item{stream}{A function to stream the data from an indexed file. It has to
+accept the two arguments \code{file} and \code{selection}, and to return a \code{GRanges}
+object.}
 
-\item{reference}{reference}
+\item{reference}{A \code{character} scalar with the path to the referenced file.}
 
-\item{mapping}{mapping}
+\item{mapping}{A named \code{list} mapping the columns of the imported data to
+the metadata columns of the track's \code{GRanges} object.}
 
-\item{args}{ars}
+\item{args}{A \code{list} of the arguments the object has been constructed with.}
 
-\item{defaults}{defaults}
+\item{defaults}{A \code{list} of the constructor's default arguments, used to
+fill in whatever has not been provided in \code{args}.}
 }
 \value{
 Constructor functions of \code{AnnotationTrack}, \code{DataTrack}, \code{SequenceTrack}

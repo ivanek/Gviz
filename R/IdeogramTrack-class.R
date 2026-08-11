@@ -44,7 +44,7 @@ NULL
 #' be used when no connection to the internet is available or when the cytoband
 #' information has been cached locally to avoid the somewhat slow connection to
 #' UCSC.
-#' @param \dots Additional items which will all be interpreted as further
+#' @param ... Additional items which will all be interpreted as further
 #' display parameters.
 #' @param .Object The object being initialized (standard S4 `initialize`
 #' convention); not normally supplied directly by the user.

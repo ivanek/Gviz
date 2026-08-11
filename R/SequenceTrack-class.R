@@ -14,10 +14,8 @@ NULL
 #'
 #'
 #' @name SequenceTrack-class
-#' @param sequence
-#'
-#' A meta argument to handle the different input types, making the construction
-#' of a `SequenceTrack` as flexible as possible.
+#' @param sequence A meta argument to handle the different input types, making
+#' the construction of a `SequenceTrack` as flexible as possible.
 #'
 #' The different input options for `sequence` are:
 #'
@@ -96,7 +94,9 @@ NULL
 #' ## Direction indicator
 #' plotTracks(sTrack, from = 199970, to = 200000, add53 = TRUE)
 #' ## Sequence complement
-#' plotTracks(sTrack, from = 199970, to = 200000, add53 = TRUE, complement = TRUE)
+#' plotTracks(sTrack,
+#'     from = 199970, to = 200000, add53 = TRUE, complement = TRUE
+#' )
 #' ## Colors
 #' plotTracks(sTrack, from = 199970, to = 200000, add53 = TRUE, fontcolor = c(
 #'     A = 1,
@@ -116,9 +116,12 @@ NULL
 #' subseq(sTrack, start = 100000, width = 20)
 #' ## beyond the stored sequence range
 #' subseq(sTrack, start = length(sTrack), width = 20)
-#' @importClassesFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString
+#' @importClassesFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString
+#' @importClassesFrom Biostrings RNAString BString
 #' @importClassesFrom BSgenome  BSgenome MaskedBSgenome
-#' @importFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString RNAString BString reverseComplement readDNAStringSet DNA_ALPHABET stackStrings
+#' @importFrom Biostrings DNAStringSet RNAStringSet BStringSet DNAString
+#' @importFrom Biostrings RNAString BString reverseComplement readDNAStringSet
+#' @importFrom Biostrings DNA_ALPHABET stackStrings
 #' @importFrom BSgenome bsapply
 #' @importFrom biovizBase getBioColor
 #'
@@ -438,8 +441,8 @@ setClass("ReferenceSequenceTrack", contains = c("SequenceDNAStringSetTrack", "Re
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
 
-#' @describeIn ReferenceSequenceTrack-class Initialize the `ReferenceTrack` slots
-#' (`stream`, `reference`) before deferring to the
+#' @describeIn ReferenceSequenceTrack-class Initialize the `ReferenceTrack`
+#' slots (`stream`, `reference`) before deferring to the
 #' `SequenceDNAStringSetTrack` initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
@@ -634,8 +637,8 @@ setMethod("genome", "SequenceTrack", function(x) x@genome)
 
 ## For RangeTracks and SequenceTracks we want to set the chromosome
 
-#' @describeIn SequenceTrack-class Consolidate/
-#' Determine whether there is `chromosome` settings or not, and add this information.
+#' @describeIn SequenceTrack-class Consolidate/ Determine whether there is
+#' `chromosome` settings or not, and add this information.
 #' @param GdObject the input track object
 #' @param chromosome the currently active chromosome which may have to be set
 #' for a `RangeTrack` or a `SequenceTrack` object

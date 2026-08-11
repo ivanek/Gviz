@@ -94,8 +94,8 @@ AnnotationTrack(
 \S4method{show}{ReferenceAnnotationTrack}(object)
 }
 \arguments{
-\item{\dots}{Additional items which will all be interpreted as further
-display parameters. See \url{settings} and the "Display Parameters"
+\item{...}{Additional items which will all be interpreted as further
+display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
 \item{stream}{A logical flag indicating that the user-provided import
@@ -291,11 +291,12 @@ the \code{AnnotationTrack} initializer for the remaining slots.
 \item \code{AnnotationTrack()}: Constructor function for
 \code{AnnotationTrack-class}.
 
-\item \code{group(AnnotationTrack)}: extract the group membership for all track items.
+\item \code{group(AnnotationTrack)}: extract the group membership for all track
+items.
 
-\item \code{group(object = AnnotationTrack) <- value}: replace the grouping information for track items.
-The replacement value must be a factor of appropriate length or another
-vector that can be coerced into such.
+\item \code{group(object = AnnotationTrack) <- value}: replace the grouping information for track
+items. The replacement value must be a factor of appropriate length or
+another vector that can be coerced into such.
 
 \item \code{identifier(AnnotationTrack)}: return track item identifiers.
 Depending on the setting of the optional argument lowest, these are either
@@ -529,10 +530,14 @@ rownames(m) <- identifier(annTrack, "lowest")
 ## function is defined in. To avoid overwriting 'm' you should use a closure
 ## or environment to access 'm'.
 details <- function(identifier, ...) {
-    d <- data.frame(signal = m[identifier, ], group = rep(c("grp1", "grp2"), each = 50))
+    d <- data.frame(
+        signal = m[identifier, ],
+        group = rep(c("grp1", "grp2"), each = 50)
+    )
     print(densityplot(~signal,
         group = group, data = d, main = identifier,
-        scales = list(draw = FALSE, x = list(draw = TRUE)), ylab = "", xlab = "",
+        scales = list(draw = FALSE, x = list(draw = TRUE)),
+        ylab = "", xlab = "",
     ), newpage = FALSE, prefix = "plot")
 }
 

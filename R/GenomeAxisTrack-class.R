@@ -8,18 +8,18 @@ NULL
 #' A class representing a customizable genomic axis.
 #'
 #'
-#' A \code{GenomeAxisTrack} can be customized using the familiar display
-#' parameters. By providing a \code{GRanges} or \code{IRanges} object to the
+#' A `GenomeAxisTrack` can be customized using the familiar display
+#' parameters. By providing a `GRanges` or `IRanges` object to the
 #' constructor, ranges on the axis can be further highlighted.
 #'
-#' With the \code{scale} display parameter, a small scale indicator can be
+#' With the `scale` display parameter, a small scale indicator can be
 #' shown instead of the entire genomic axis. The scale can either be provided
 #' as a fraction of the plotting region (it will be rounded to the nearest
 #' human readable absolute value) or as an absolute value and is always
 #' displayed in bp, kb, mb or gb units. Note that most display parameters for
-#' the \code{GenomeAxisTrack} are ignored when a scale is used instead of the
-#' full axis. In particular, only the parameters \code{exponent}, \code{alpha},
-#' \code{lwd}, \code{col}, \code{cex}, \code{distFromAxis} and \code{labelPos}
+#' the `GenomeAxisTrack` are ignored when a scale is used instead of the
+#' full axis. In particular, only the parameters `exponent`, `alpha`,
+#' `lwd`, `col`, `cex`, `distFromAxis` and `labelPos`
 #' are used.
 #'
 #' @template GenomeAxisTrack-class_param
@@ -27,9 +27,9 @@ NULL
 #' @name GenomeAxisTrack-class
 #'
 #' @return The return value of the constructor function is a new object of class
-#' \code{GenomeAxisTrack}.
+#' `GenomeAxisTrack`.
 #'
-#' Objects can be created using the constructor function \code{GenomeAxisTrack}.
+#' Objects can be created using the constructor function `GenomeAxisTrack`.
 #'
 #' @author Florian Hahne
 #'
@@ -91,8 +91,10 @@ NULL
 #' data(cyp2b10)
 #' grTrack <- GeneRegionTrack(
 #'     start = 26682683, end = 26711643,
-#'     rstart = cyp2b10$start, rends = cyp2b10$end, chromosome = 7, genome = "mm39",
-#'     transcript = cyp2b10$transcript, gene = cyp2b10$gene, symbol = cyp2b10$symbol,
+#'     rstart = cyp2b10$start, rends = cyp2b10$end,
+#'     chromosome = 7, genome = "mm39",
+#'     transcript = cyp2b10$transcript, gene = cyp2b10$gene,
+#'     symbol = cyp2b10$symbol,
 #'     name = "Cyp2b10", strand = cyp2b10$strand
 #' )
 #'
@@ -219,12 +221,13 @@ setReplaceMethod("end", "GenomeAxisTrack", function(x, value) {
 #' @export
 setMethod("width", "GenomeAxisTrack", function(x) if (length(x)) as.integer(width(range(x))) else NULL)
 
-#' @describeIn GenomeAxisTrack-class return the number of items stored in the ranges slot.
+#' @describeIn GenomeAxisTrack-class return the number of items stored in the
+#' ranges slot.
 #' @export
 setMethod("length", "GenomeAxisTrack", function(x) length(ranges(x)))
 
-#' @describeIn GenomeAxisTrack-class return all additional annotation information
-#' except for the genomic coordinates for the track items.
+#' @describeIn GenomeAxisTrack-class return all additional annotation
+#' information except for the genomic coordinates for the track items.
 #' @export
 setMethod("values", "GenomeAxisTrack", function(x) as.data.frame(values(ranges(x))))
 
@@ -264,9 +267,10 @@ setMethod(
 
 ## Subset --------------------------------------------------------------------
 
-#' @describeIn GenomeAxisTrack-class subset the items in the `GenomeAxisTrack` object.
-#' This is essentially similar to subsetting of the `GRanges` object in the
-#' `range` slot. For most applications, the subset method may be more appropriate.
+#' @describeIn GenomeAxisTrack-class subset the items in the `GenomeAxisTrack`
+#' object. This is essentially similar to subsetting of the `GRanges` object in
+#' the `range` slot. For most applications, the subset method may be more
+#' appropriate.
 #' @export
 setMethod("[", signature(x = "GenomeAxisTrack"), function(x, i, j, ..., drop = TRUE) {
     x <- .deepCopyPars(x)

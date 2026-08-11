@@ -88,7 +88,8 @@ RNASequenceTrack(
 \S4method{show}{ReferenceSequenceTrack}(object)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{chromosome}{the currently active chromosome which may have to be set
 for a \code{RangeTrack} or a \code{SequenceTrack} object
@@ -101,12 +102,12 @@ information is extracted from the input \code{BSgenome} package. For a
 \code{DNAStringSet} it has too be provided or the constructor will fall back
 to the default value of \code{NA}.}
 
-\item{\dots}{Additional items which will all be interpreted as further
+\item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
-\item{sequence}{A meta argument to handle the different input types, making the construction
-of a \code{SequenceTrack} as flexible as possible.
+\item{sequence}{A meta argument to handle the different input types, making
+the construction of a \code{SequenceTrack} as flexible as possible.
 
 The different input options for \code{sequence} are:
 \itemize{
@@ -137,7 +138,7 @@ these defaults will be picked automatically based on the extension of the
 input file name. If the extension can not be mapped to any of the existing
 import function, an error is raised asking for a user-defined import
 function. Currently the following file types can be imported with the
-default functions: \code{fa/fasta} and \code{2bit}.
+default functions: \code{fa/fasta} and \verb{2bit}.
 Both file types support indexing by genomic coordinates, and it makes sense
 to only load the part of the file that is needed for plotting. To this end,
 the \code{Gviz} package defines the derived \code{ReferenceSequenceTrack}
@@ -173,9 +174,11 @@ Exactly two of the three must be provided; the third is derived from them.}
 
 \item{maxBase}{End of the sequence.}
 
-\item{prepare}{\code{logical}}
+\item{prepare}{\code{logical}. Run the drawing method in preparation rather than
+in production mode, i.e., only compute the track's layout without rendering
+anything to the device.}
 
-\item{object}{object}
+\item{object}{Object inheriting from \code{SequenceTrack-class}.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -244,8 +247,8 @@ scalar that can be reasonably coerced into one.
 Usually this has to be a valid UCSC identifier, however this is not
 formally enforced here.
 
-\item \code{consolidateTrack(SequenceTrack)}: Consolidate/
-Determine whether there is \code{chromosome} settings or not, and add this information.
+\item \code{consolidateTrack(SequenceTrack)}: Consolidate/ Determine whether there is
+\code{chromosome} settings or not, and add this information.
 
 \item \code{drawGD(SequenceTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
@@ -318,7 +321,9 @@ plotTracks(sTrack, from = 199970, to = 200000, noLetters = TRUE)
 ## Direction indicator
 plotTracks(sTrack, from = 199970, to = 200000, add53 = TRUE)
 ## Sequence complement
-plotTracks(sTrack, from = 199970, to = 200000, add53 = TRUE, complement = TRUE)
+plotTracks(sTrack,
+    from = 199970, to = 200000, add53 = TRUE, complement = TRUE
+)
 ## Colors
 plotTracks(sTrack, from = 199970, to = 200000, add53 = TRUE, fontcolor = c(
     A = 1,

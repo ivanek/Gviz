@@ -9,9 +9,11 @@
 \S4method{initialize}{SequenceBSgenomeTrack}(.Object, sequence = NULL, ...)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
-\item{sequence}{sequence}
+\item{sequence}{A \code{BSgenome} object with the full genomic sequence, or
+\code{NULL}.}
 
 \item{...}{Additional arguments.}
 }

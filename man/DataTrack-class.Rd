@@ -92,7 +92,8 @@ DataTrack(
 \S4method{show}{ReferenceDataTrack}(object)
 }
 \arguments{
-\item{.Object}{.Object}
+\item{.Object}{The object skeleton passed on by \code{new()} during class
+instantiation, to be filled in by the \code{initialize} method.}
 
 \item{data}{A numeric matrix of data points with the number of columns equal
 to the number of coordinates in \code{range}, or a numeric vector of
@@ -111,7 +112,7 @@ track items. Currently this has to be unique for the whole track and doesn't
 really have any visible consequences, but we might decide to make
 \code{DataTracks} strand-specific at a later stage.}
 
-\item{\dots}{Additional items which will all be interpreted as further
+\item{...}{Additional items which will all be interpreted as further
 display parameters.}
 
 \item{stream}{A logical flag indicating that the user-provided import
@@ -144,10 +145,10 @@ dimensions of the data matrix. If \code{data} is not \code{NULL}, this will
 always take precedence over anything defined in the \code{range} argument.
 See below for details.}
 
-\item{An \link[IRanges:IRanges-class]{IRanges} object:}{ this is very similar to the
-above case, except that the numeric data part now always has to be provided
-in the separate \code{data} argument. Also the chromosome information must
-be provided in the \code{chromosome} argument, because neither of the two
+\item{An \link[IRanges:IRanges-class]{IRanges} object:}{ this is very similar to
+the above case, except that the numeric data part now always has to be
+provided in the separate \code{data} argument. Also the chromosome information
+must be provided in the \code{chromosome} argument, because neither of the two
 can be directly encoded in an \code{IRange} object.}
 
 \item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
@@ -185,7 +186,7 @@ information based on the available inputs, and as a last resort will fall
 back to the value \code{chrNA}. Please note that by definition all objects
 in the \code{Gviz} package can only have a single active chromosome at a
 time (although internally the information for more than one chromosome may
-be present), and the user has to call the \code{chromosome<-} replacement
+be present), and the user has to call the \verb{chromosome<-} replacement
 method in order to change to a different active chromosome.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
@@ -274,8 +275,7 @@ multiple tracks, grid lines should preferentially be added by using the
 the coordinate ranges.}
 
 \item{\code{smooth}:}{ add a loess fit to the plot. The following display
-parameters can be used to control the loess calculation: \code{span, degree,
-family, evaluation}. See \link[lattice:panel.loess]{lattice::panel.loess} for details.}
+parameters can be used to control the loess calculation: \verb{span, degree, family, evaluation}. See \link[lattice:panel.loess]{lattice::panel.loess} for details.}
 
 \item{\code{histogram}:}{ plot data as a histogram, where the width of the
 histogram bars reflects the width of the genomic ranges in the \code{range}
@@ -283,21 +283,19 @@ slot.}
 
 \item{\code{mountain}:}{ plot a smoothed version of the data relative to a
 baseline, as defined by the \code{baseline} display parameter. The following
-display parameters can be used to control the smoothing: \code{span, degree,
-family, evaluation}. See \link[lattice:panel.loess]{lattice::panel.loess} for details. The layout
+display parameters can be used to control the smoothing: \verb{span, degree, family, evaluation}. See \link[lattice:panel.loess]{lattice::panel.loess} for details. The layout
 of the plot can be further customized via the following display parameters:
-\code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
+\verb{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 
 \item{\code{polygon}:}{ plot data as a polygon (similar to
 \code{mountain}-type but without smoothing). Data are plotted relative to a
 baseline, as defined by the \code{baseline} display parameter. The layout of
 the plot can be further customized via the following display parameters:
-\code{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
+\verb{col.mountain, lwd.mountain, lty.mountain, fill.mountain}.}
 
 \item{\code{boxplot}:}{ plot the data as box-and-whisker plots. The layout
 of the plot can be further customized via the following display parameters:
-\code{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-coef, do.out}. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
+\verb{box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats, coef, do.out}. See \link[lattice:panel.bwplot]{lattice::panel.bwplot} for details.}
 
 \item{\code{gradient}:}{ collapse the data across samples and plot this
 average value as a color-coded gradient. Essenitally this is similar to the
@@ -368,8 +366,9 @@ the data matrix in the \code{data} slot.
 track items, in the form '+' for the Watson strand, '-' for the Crick
 strand or '*' for either of the two.
 
-\item \code{strand(x = DataTrack) <- value}: replace the strand information for the track items.
-The replacement value needs to be an appropriate scalar or vector of strand values.
+\item \code{strand(x = DataTrack) <- value}: replace the strand information for the track
+items. The replacement value needs to be an appropriate scalar or vector of
+strand values.
 
 \item \code{split(x = DataTrack, f = ANY)}: Split a \code{DataTrack} object by an appropriate
 factor vector (or another vector that can be coerced into one).
@@ -386,9 +385,9 @@ This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
-\item \code{x = DataTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{DataTrack} object.
-This is essentially similar to subsetting of the \code{GRanges} object in the
-\code{range} slot. For most applications, the subset method may be more appropriate.
+\item \code{x = DataTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{DataTrack} object. This
+is essentially similar to subsetting of the \code{GRanges} object in the \code{range}
+slot. For most applications, the subset method may be more appropriate.
 
 \item \code{subset(DataTrack)}: Subset a \code{DataTrack} by coordinates
 and sort if necessary.

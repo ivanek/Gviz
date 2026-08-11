@@ -1,7 +1,11 @@
-#' @param .Object .Object
-#' @param GdObject Object of `GdObject-class`
-#' @param minBase,maxBase minBase,maxBase
-#' @param prepare `logical`
+#' @param .Object The object skeleton passed on by `new()` during class
+#' instantiation, to be filled in by the `initialize` method.
+#' @param GdObject Object of `GdObject-class`.
+#' @param minBase,maxBase Numeric scalar, the start and end coordinates of the
+#' plotting range.
+#' @param prepare `logical`. Run the drawing method in preparation rather than
+#' in production mode, i.e., only compute the track's layout without rendering
+#' anything to the device.
 
 #' @param fun A function that is being called for each entry in the
 #' `AnnotationTrack` object. See section 'Details' and 'Examples' for
@@ -46,6 +50,6 @@
 #' logical scalar. If the return value is `TRUE`, details will be drawn
 #' for the item, if it is `FALSE`, the details strip for the item is
 #' omitted.
-#' @param \dots Additional items which will all be interpreted as further
-#' display parameters. See [`settings`](settings) and the "Display Parameters"
+#' @param ... Additional items which will all be interpreted as further
+#' display parameters. See [`settings`] and the "Display Parameters"
 #' section below for details.
