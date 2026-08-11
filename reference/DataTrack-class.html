@@ -19,7 +19,7 @@ equal genomic coordinates for a single observation across samples."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -486,7 +486,7 @@ there is no grouping information for the ranges in a <code>DataTrack</code>.</p>
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>x[i</code>: subset the items in the <code>DataTrack</code> object.
+<li><p><code>x = DataTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>DataTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 <code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(DataTrack)</code>: Subset a <code>DataTrack</code> by coordinates

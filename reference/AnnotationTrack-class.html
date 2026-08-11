@@ -20,7 +20,7 @@ information for each range."><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -94,10 +94,10 @@ information for each range.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AnnotationTrack'</span></span>
-<span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span><span class="fu">group</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AnnotationTrack,character'</span></span>
-<span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span><span class="fu">group</span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'AnnotationTrack'</span></span>
 <span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span><span class="va">GdObject</span>, type <span class="op">=</span> <span class="fu">.dpOrDefault</span><span class="op">(</span><span class="va">GdObject</span>, <span class="st">"groupAnnotation"</span>, <span class="st">"group"</span><span class="op">)</span><span class="op">)</span></span>
@@ -365,7 +365,7 @@ the <code>AnnotationTrack</code> initializer for the remaining slots.</p></li>
 <li><p><code>AnnotationTrack()</code>: Constructor function for
 <code>AnnotationTrack-class</code>.</p></li>
 <li><p><code>group(AnnotationTrack)</code>: extract the group membership for all track items.</p></li>
-<li><p><code>group(GdObject = AnnotationTrack) &lt;- value</code>: replace the grouping information for track items.
+<li><p><code>group(object = AnnotationTrack) &lt;- value</code>: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.</p></li>
 <li><p><code>identifier(AnnotationTrack)</code>: return track item identifiers.
@@ -647,9 +647,9 @@ plotting space.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    test Group3 annTrack item 4       1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Grouping</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">group</span><span class="op">(</span><span class="va">annTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Group1" "Group2" "Group1" "Group3"</span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
+<span class="r-in"><span><span class="fu">group</span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chr7"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plotTracks.html">plotTracks</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="AnnotationTrack-class-3.png" alt="" width="700" height="433"></span>

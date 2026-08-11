@@ -19,7 +19,7 @@ and the associated genome.)"><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -274,7 +274,7 @@ items. The replacement value needs to be an appropriate scalar or vector
 of strand values.</p></li>
 <li><p><code>position(RangeTrack)</code>: the arithmetic mean of the track item's
 coordionates, i.e., <code>(end(obj)-start(obj))/2</code>.</p></li>
-<li><p><code>x[i</code>: subset the items in the <code>RangeTrack</code> object.
+<li><p><code>x = RangeTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>RangeTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 <code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(RangeTrack)</code>: subset a <code>RangeTrack</code> by coordinates and

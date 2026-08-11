@@ -19,7 +19,7 @@ when plotted."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/li
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@ space and on the object's track items and stacking settings.</p></li>
 stacking (which could have been passed in as a display parameter) before
 deferring to the <code>RangeTrack</code> method for the remaining consolidation
 steps.</p></li>
-<li><p><code>x[i</code>: subset the items in the <code>StackedTrack</code> object.
+<li><p><code>x = StackedTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>StackedTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 range slot. For most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(StackedTrack)</code>: subset a <code>StackedTrack</code> by coordinates and sort if necessary.</p></li>

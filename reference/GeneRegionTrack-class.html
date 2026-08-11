@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -114,10 +114,10 @@
 <span><span class="fu"><a href="GdObject-class.html">exon</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GeneRegionTrack'</span></span>
-<span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GeneRegionTrack,character'</span></span>
-<span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GeneRegionTrack'</span></span>
 <span><span class="fu"><a href="GdObject-class.html">identifier</a></span><span class="op">(</span></span>
@@ -399,6 +399,10 @@ functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</c
 <dd><p>Value to be set.</p></dd>
 
 
+<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
+<dd><p>object</p></dd>
+
+
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
 <dd><p>type</p></dd>
 
@@ -406,10 +410,6 @@ functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</c
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A valid track object class name, or the object itself, in which
 case the class is derived directly from it.</p></dd>
-
-
-<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>object</p></dd>
 
 </dl></div>
     <div id="value">
@@ -493,7 +493,7 @@ in the gene models.</p></li>
 in the gene model. The replacement value must be a character of appropriate
 length or another vector that can be coerced into such.</p></li>
 <li><p><code>group(GeneRegionTrack)</code>: extract the group membership for all track items.</p></li>
-<li><p><code>group(GdObject = GeneRegionTrack) &lt;- value</code>: replace the grouping information for track items.
+<li><p><code>group(object = GeneRegionTrack) &lt;- value</code>: replace the grouping information for track items.
 The replacement value must be a factor of appropriate length or another
 vector that can be coerced into such.</p></li>
 <li><p><code>identifier(GeneRegionTrack)</code>: return track item identifiers.
@@ -835,7 +835,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 23 ENSMUSG00000030483 Cyp2b10       1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Grouping</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">grTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000005477"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "ENSMUST00000005477" "ENSMUST00000072438" "ENSMUST00000005477"</span>
@@ -844,7 +844,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [16] "ENSMUST00000072438" "ENSMUST00000005477" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19] "ENSMUST00000005477" "ENSMUST00000005477" "ENSMUST00000072438"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] "ENSMUST00000005477" "ENSMUST00000072438"</span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Group 1"</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">transcript</a></span><span class="op">(</span><span class="va">subTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Group 1" "Group 1" "Group 1" "Group 1" "Group 1" "Group 1" "Group 1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Group 1" "Group 1" "Group 1" "Group 1" "Group 1"</span>

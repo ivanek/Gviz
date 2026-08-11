@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -202,7 +202,7 @@ strand or '*' for either of the two.</p></li>
 This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
-<li><p><code>x[i</code>: subset the items in the <code>GenomeAxisTrack</code> object.
+<li><p><code>x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>GenomeAxisTrack</code> object.
 This is essentially similar to subsetting of the <code>GRanges</code> object in the
 <code>range</code> slot. For most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(GenomeAxisTrack)</code>: subset a
@@ -326,7 +326,7 @@ is not necessary.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data frame with 0 columns and 3 rows</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Grouping</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="GdObject-class.html">group</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">axTrack</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## HTML image map</span></span></span>

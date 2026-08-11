@@ -21,7 +21,7 @@ called in order to assure that all necessary settings are present."><!-- mathjax
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
       </span>
     </div>
 
@@ -100,12 +100,10 @@ called in order to assure that all necessary settings are present.</p>
 <span><span class="co"># S4 method for class 'GdObject,character'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
-<span><span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
 <span><span class="co"># S4 method for class 'GdObject'</span></span>
-<span><span class="fu">group</span><span class="op">(</span><span class="va">GdObject</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/group.html" class="external-link">group</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">imageMap</span><span class="op">(</span><span class="va">GdObject</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -398,8 +396,7 @@ Most of the respective sub-classes inheriting from <code>GdObject</code> overwri
 method, the default is to return the unaltered input object.</p></li>
 <li><p><code>names(GdObject)</code>: return the value of the <code>name</code> slot.</p></li>
 <li><p><code>names(x = GdObject) &lt;- value</code>: set the value of the <code>name</code> slot.</p></li>
-<li><p><code>group()</code>: Generics for <code>group</code>.</p></li>
-<li><p><code>group(GdObject) &lt;- value</code>: Generics for <code>group&lt;-</code>.</p></li>
+<li><p><code>group(object) &lt;- value</code>: Generics for <code>group&lt;-</code>.</p></li>
 <li><p><code>group(GdObject)</code>: return grouping information for the individual
 items in the track. Unless overwritten in one of the sub-classes,
 this usually returns <code>NULL</code>.</p></li>
