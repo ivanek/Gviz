@@ -232,12 +232,12 @@ those whose names are prefixed with <code>.__</code>.</p></dd>
 
 
 <dt id="arg-imagemap">ImageMap<a class="anchor" aria-label="anchor" href="#arg-imagemap"></a></dt>
-<dd><p>Object of <code>ImageMap-class</code>, containing optional information
-for an HTML image map.</p></dd>
+<dd><p>Object of class <code><a href="ImageMap-class.html">ImageMap</a></code>, containing
+optional information for an HTML image map.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code>GdObject</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -251,115 +251,120 @@ for an HTML image map.</p></dd>
 <h3 id="display-parameters">Display Parameters<a class="anchor" aria-label="anchor" href="#display-parameters"></a></h3>
 
 
-<p>The following display parameters are set for objects of class <code>GdObject</code>
-upon instantiation, unless one or more of them have already been set by
-one of the optional sub-class initializers, which always get precedence
-over these global defaults. See <code>settings</code> for details on setting
-graphical parameters for tracks.</p><ul><li><p><code>alpha=1</code> Numeric scalar. The transparency for all track items.</p></li>
-<li><p><code>alpha.title=NULL</code> Numeric scalar. The transparency for the title panel.</p></li>
-<li><p><code>background.legend="transparent"</code> Integer or character scalar.
-The background colour for the legend.</p></li>
-<li><p><code>background.panel="transparent"</code> Integer or character scalar.
-The background colour of the content panel.</p></li>
-<li><p><code>background.title="lightgray"</code> Integer or character scalar.
-The background colour for the title panel.</p></li>
-<li><p><code>cex=1</code> Numeric scalar. The overall font expansion factor for all text
+<p>The following display parameters are set for objects of class
+<code>GdObject</code> upon instantiation, unless one or more of them
+have already been set by one of the optional sub-class initializers, which
+always get precedence over these global defaults. See <code><a href="settings.html">settings</a></code> for
+details on setting graphical parameters for tracks.</p><ul><li><p><code>alpha=1</code>: Numeric scalar. The transparency for all track items.</p></li>
+<li><p><code>alpha.title=NULL</code>: Numeric scalar. The transparency for the title panel.</p></li>
+<li><p><code>background.legend="transparent"</code>: Integer or character scalar.
+The background color for the legend.</p></li>
+<li><p><code>background.panel="transparent"</code>: Integer or character scalar.
+The background color of the content panel.</p></li>
+<li><p><code>background.title="lightgray"</code>: Integer or character scalar.
+The background color for the title panel.</p></li>
+<li><p><code>cex=1</code>: Numeric scalar. The overall font expansion factor for all text
 and glyphs, unless a more specific definition exists.</p></li>
-<li><p><code>cex.axis=NULL</code> Numeric scalar. The expansion factor for the axis
+<li><p><code>cex.axis=NULL</code>: Numeric scalar. The expansion factor for the axis
 annotation. Defaults to <code>NULL</code>, in which case it is automatically determined
 based on the available space.</p></li>
-<li><p><code>cex.title=NULL</code> Numeric scalar. The expansion factor for the title
-panel. This effects the font size of both the title and the axis, if any.
-Defaults to NULL, which means that the text size is automatically adjusted
+<li><p><code>cex.title=NULL</code>: Numeric scalar. The expansion factor for the title
+panel. This affects the font size of both the title and the axis, if any.
+Defaults to <code>NULL</code>, which means that the text size is automatically adjusted
 to the available space.</p></li>
-<li><p><code>col="#0080FF"</code> Integer or character scalar. Default line colour setting
+<li><p><code>col="#0080FF"</code>: Integer or character scalar. Default line color setting
 for all plotting elements, unless there is a more specific control defined
 elsewhere.</p></li>
-<li><p><code>col.axis="white"</code> Integer or character scalar. The font and line colour
+<li><p><code>col.axis="white"</code>: Integer or character scalar. The font and line color
 for the y axis, if any.</p></li>
-<li><p><code>col.border.title="white"</code> Integer or character scalar. The border
-colour for the title panels.</p></li>
-<li><p><code>col.frame="lightgray"</code> Integer or character scalar. The line colour
-used for the panel frame, if <code>frame==TRUE</code></p></li>
-<li><p><code>col.grid="#808080"</code> Integer or character scalar. Default line colour
-for grid lines, both when <code>type=="g"</code> in <code>DataTrack</code>s and when display
-parameter <code>grid==TRUE</code>.</p></li>
-<li><p><code>col.line=NULL</code> Integer or character scalar. Default colours for plot
-lines. Usually the same as the global col parameter.</p></li>
-<li><p><code>col.symbol=NULL</code> Integer or character scalar. Default colours for plot
-symbols. Usually the same as the global col parameter.</p></li>
-<li><p><code>col.title="white"</code> (Aliases <code>fontcolour.title</code>) Integer or character
-scalar. The border colour for the title panels</p></li>
-<li><p><code>collapse=TRUE</code> Boolean controlling whether to collapse the content of
+<li><p><code>col.border.title="white"</code>: Integer or character scalar. The border
+color for the title panels.</p></li>
+<li><p><code>col.frame="lightgray"</code>: Integer or character scalar. The line color
+used for the panel frame, if <code>frame==TRUE</code>.</p></li>
+<li><p><code>col.grid="#808080"</code>: Integer or character scalar. Default line color
+for grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code>
+objects and when the display parameter <code>grid==TRUE</code>.</p></li>
+<li><p><code>col.line=NULL</code>: Integer or character scalar. Default colors for plot
+lines. Usually the same as the global <code>col</code> parameter.</p></li>
+<li><p><code>col.symbol=NULL</code>: Integer or character scalar. Default colors for plot
+symbols. Usually the same as the global <code>col</code> parameter.</p></li>
+<li><p><code>col.title="white"</code>: (Aliases <code>fontcolour.title</code>) Integer or character
+scalar. The border color for the title panels.</p></li>
+<li><p><code>collapse=TRUE</code>: Boolean controlling whether to collapse the content of
 the track to accommodate the minimum current device resolution.
-See collapsing for details.</p></li>
-<li><p><code>fill="lightgray"</code> Integer or character scalar. Default fill colour
+See <code><a href="collapsing.html">collapsing</a></code> for details.</p></li>
+<li><p><code>fill="lightgray"</code>: Integer or character scalar. Default fill color
 setting for all plotting elements, unless there is a more specific control
 defined elsewhere.</p></li>
-<li><p><code>fontcolour="black"</code> Integer or character scalar. The font colour for
+<li><p><code>fontcolour="black"</code>: Integer or character scalar. The font color for
 all text, unless a more specific definition exists.</p></li>
-<li><p><code>fontface=1</code> Integer or character scalar. The font face for all text,
+<li><p><code>fontface=1</code>: Integer or character scalar. The font face for all text,
 unless a more specific definition exists.</p></li>
-<li><p><code>fontface.title=2</code> Integer or character scalar. The font face for the
+<li><p><code>fontface.title=2</code>: Integer or character scalar. The font face for the
 title panels.</p></li>
-<li><p><code>fontfamily="sans"</code> Integer or character scalar. The font family for all
+<li><p><code>fontfamily="sans"</code>: Integer or character scalar. The font family for all
 text, unless a more specific definition exists.</p></li>
-<li><p><code>fontfamily.title="sans"</code> Integer or character scalar. The font family
+<li><p><code>fontfamily.title="sans"</code>: Integer or character scalar. The font family
 for the title panels.</p></li>
-<li><p><code>fontsize=12</code> Numeric scalar. The font size for all text, unless a more
+<li><p><code>fontsize=12</code>: Numeric scalar. The font size for all text, unless a more
 specific definition exists.</p></li>
-<li><p><code>frame=FALSE</code> Boolean. Draw a frame around the track when plotting.</p></li>
-<li><p><code>grid=FALSE</code> Boolean, switching on/off the plotting of a grid.</p></li>
-<li><p><code>h=-1</code> Integer scalar. Parameter controlling the number of horizontal
-grid lines, see panel.grid for details.</p></li>
-<li><p><code>lineheight=1</code> Numeric scalar. The font line height for all text, unless
+<li><p><code>frame=FALSE</code>: Boolean. Draw a frame around the track when plotting.</p></li>
+<li><p><code>grid=FALSE</code>: Boolean, switching on/off the plotting of a grid.</p></li>
+<li><p><code>h=-1</code>: Integer scalar. Parameter controlling the number of horizontal
+grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></li>
+<li><p><code>lineheight=1</code>: Numeric scalar. The font line height for all text, unless
 a more specific definition exists.</p></li>
-<li><p><code>lty="solid"</code> Numeric scalar. Default line type setting for all plotting
+<li><p><code>lty="solid"</code>: Numeric scalar. Default line type setting for all plotting
 elements, unless there is a more specific control defined elsewhere.</p></li>
-<li><p><code>lty.grid="solid"</code> Integer or character scalar. Default line type for
-grid lines, both when <code>type=="g"</code> in <code>DataTrack</code>s and when display parameter
-<code>grid==TRUE</code>.</p></li>
-<li><p><code>lwd=1</code> Numeric scalar. Default line width setting for all plotting
+<li><p><code>lty.grid="solid"</code>: Integer or character scalar. Default line type for
+grid lines, both when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code> objects
+and when the display parameter <code>grid==TRUE</code>.</p></li>
+<li><p><code>lwd=1</code>: Numeric scalar. Default line width setting for all plotting
 elements, unless there is a more specific control defined elsewhere.</p></li>
-<li><p><code>lwd.border.title=1</code> Integer scalar. The border width for the title
+<li><p><code>lwd.border.title=1</code>: Integer scalar. The border width for the title
 panels.</p></li>
-<li><p><code>lwd.grid=1</code> Numeric scalar. Default line width for grid lines, both
-when <code>type=="g"</code> in <code>DataTrack</code>s and when display parameter <code>grid==TRUE</code>.</p></li>
-<li><p><code>lwd.title=1</code> Integer scalar. The border width for the title panels</p></li>
-<li><p><code>min.distance=1</code> Numeric scalar. The minimum pixel distance before
-collapsing range items, only if <code>collapse==TRUE</code>. See collapsing for details.</p></li>
-<li><p><code>min.height=3</code> Numeric scalar. The minimum range height in pixels to
+<li><p><code>lwd.grid=1</code>: Numeric scalar. Default line width for grid lines, both
+when <code>type=="g"</code> in <code><a href="DataTrack-class.html">DataTrack</a></code> objects and when the
+display parameter <code>grid==TRUE</code>.</p></li>
+<li><p><code>lwd.title=1</code>: Integer scalar. The border width for the title panels.</p></li>
+<li><p><code>min.distance=1</code>: Numeric scalar. The minimum pixel distance before
+collapsing range items, only if <code>collapse==TRUE</code>. See <code><a href="collapsing.html">collapsing</a></code> for
+details.</p></li>
+<li><p><code>min.height=3</code>: Numeric scalar. The minimum range height in pixels to
 display. All ranges are expanded to this size in order to avoid rendering
-issues. See collapsing for details.</p></li>
-<li><p><code>min.width=1</code> Numeric scalar. The minimum range width in pixels to
+issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></li>
+<li><p><code>min.width=1</code>: Numeric scalar. The minimum range width in pixels to
 display. All ranges are expanded to this size in order to avoid rendering
-issues. See collapsing for details.</p></li>
-<li><p><code>reverseStrand=FALSE</code> Logical scalar. Set up the plotting coordinates
-in 3' -&gt; 5' direction if <code>TRUE.</code> This will effectively mirror the plot
+issues. See <code><a href="collapsing.html">collapsing</a></code> for details.</p></li>
+<li><p><code>reverseStrand=FALSE</code>: Logical scalar. Set up the plotting coordinates
+in 3' -&gt; 5' direction if <code>TRUE</code>. This will effectively mirror the plot
 on the vertical axis.</p></li>
-<li><p><code>rotation=0</code> The rotation angle for all text unless a more specific
-definition exists.</p></li>
-<li><p><code>rotation.title=90</code> (Aliases rotation.title) The rotation angle for
-the text in the title panel. Even though this can be adjusted, the automatic
-resizing of the title panel will currently not work, so use at own risk.</p></li>
-<li><p><code>showAxis=TRUE</code> Boolean controlling whether to plot a y axis (only
+<li><p><code>rotation=0</code>: Numeric scalar. The rotation angle for all text unless a
+more specific definition exists.</p></li>
+<li><p><code>rotation.title=90</code>: (Aliases <code>rotation.title</code>) Numeric scalar. The
+rotation angle for the text in the title panel. Even though this can be
+adjusted, the automatic resizing of the title panel will currently not work,
+so use at your own risk.</p></li>
+<li><p><code>showAxis=TRUE</code>: Boolean controlling whether to plot a y axis (only
 applies to track types where axes are implemented).</p></li>
-<li><p><code>showTitle=TRUE</code> Boolean controlling whether to plot a title panel.
+<li><p><code>showTitle=TRUE</code>: Boolean controlling whether to plot a title panel.
 Although this can be set individually for each track, in multi-track plots
-as created by <code>plotTracks</code> there will still be an empty place holder in case
-any of the other tracks include a title. The same holds true for axes. Note
-that the the title panel background colour could be set to transparent in
+as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty place holder in
+case any of the other tracks include a title. The same holds true for axes.
+Note that the title panel background color could be set to transparent in
 order to completely hide it.</p></li>
-<li><p><code>size=1</code> Numeric scalar. The relative size of the track. Can be
-overridden in the <code>plotTracks</code> function.</p></li>
-<li><p><code>v=-1</code> Integer scalar. Parameter controlling the number of vertical
-grid lines, see panel.grid for details.</p></li>
-<li><p><code>...</code> additional display parameters are allowed. Those typically
-take the value of a valid R colour descriptors. The parameter names will
-later be matched to optional track item types as defined in the 'feature'
-range attribute, and all tracks of the matched types are coloured
-accordingly. See the documentation of the <code>GeneRegionTrack</code> and
-<code>AnnotationTrack</code> classes as well as grouping for details.</p></li>
+<li><p><code>size=1</code>: Numeric scalar. The relative size of the track. Can be
+overridden in the <code><a href="plotTracks.html">plotTracks</a></code> function.</p></li>
+<li><p><code>v=-1</code>: Integer scalar. Parameter controlling the number of vertical
+grid lines, see <code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code> for details.</p></li>
+<li><p><code>...</code>: Additional display parameters are allowed. Those typically
+take the value of valid R color descriptors. The parameter names will
+later be matched to optional track item types as defined in the <code>feature</code>
+range attribute, and all tracks of the matched types are colored
+accordingly. See the documentation of the
+<code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code> and
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> classes as well as <code><a href="grouping.html">grouping</a></code>
+for details.</p></li>
 </ul></div>
 
     </div>
@@ -369,8 +374,8 @@ accordingly. See the documentation of the <code>GeneRegionTrack</code> and
 <ul><li><p><code>initialize(GdObject)</code>: Initialize the object. This involves setting up a
 new environment for the display parameters and filling it up with the current
 settings. All arguments that have not been clobbered up by one of the
-sub-class initializers are considered to be additional display parameters
-and are also added to the environment. See <code>settings</code> for details on setting
+sub-class initializers are considered to be additional display parameters and
+are also added to the environment. See <code><a href="settings.html">settings</a></code> for details on setting
 graphical parameters for tracks.</p></li>
 <li><p><code>setPar(x = GdObject, value = character)</code>: set the single display parameter name to value.
 Note that display parameters in the <code>GdObject-class</code> are pass-by-reference,
@@ -381,20 +386,20 @@ list in value. Note that display parameters in the <code>GdObject-class</code> a
 pass-by-reference, so no re-assignment to the symbol <code>obj</code> is necessary.
 See settings for details on display parameters and customization.</p></li>
 <li><p><code>displayPars(x = GdObject) &lt;- value</code>: set display parameters using the values of the
-named list in <code>value</code>. See <code>settings</code> for details on display parameters
+named list in <code>value</code>. See <code><a href="settings.html">settings</a></code> for details on display parameters
 and customization.</p></li>
-<li><p><code>getPar(x = GdObject, name = character)</code>: Return the value of the display parameter
-<code>name</code>, delegating to the object's <code>DisplayPars</code> slot. <code>displayPars</code>
-is a more descriptive alias for this method.
-See <code>settings</code> for details on display parameters and customization.</p></li>
-<li><p><code>getPar(x = GdObject, name = missing)</code>: Return all display parameters, delegating to
-the object's <code>DisplayPars</code> slot. <code>displayPars</code> is a more descriptive
-alias for this method.
-See <code>settings</code> for details on display parameters and customization.</p></li>
+<li><p><code>getPar(x = GdObject, name = character)</code>: Return the value of the display parameter <code>name</code>,
+delegating to the object's <code><a href="DisplayPars-class.html">DisplayPars</a></code> slot.
+<code>displayPars</code> is a more descriptive alias for this method. See <code><a href="settings.html">settings</a></code>
+for details on display parameters and customization.</p></li>
+<li><p><code>getPar(x = GdObject, name = missing)</code>: Return all display parameters, delegating to the
+object's <code><a href="DisplayPars-class.html">DisplayPars</a></code> slot. <code>displayPars</code> is a more
+descriptive alias for this method. See <code><a href="settings.html">settings</a></code> for details on display
+parameters and customization.</p></li>
 <li><p><code>displayPars(x = GdObject, name = character)</code>: list the value of the display parameter name.
-See <code>settings</code> for details on display parameters and customization.</p></li>
+See <code><a href="settings.html">settings</a></code> for details on display parameters and customization.</p></li>
 <li><p><code>displayPars(x = GdObject, name = missing)</code>: list the value of all available display
-parameters. See <code>settings</code> for details on display parameters and
+parameters. See <code><a href="settings.html">settings</a></code> for details on display parameters and
 customization.</p></li>
 <li><p><code>coords(GdObject)</code>: return the coordinates from the internal image
 map.</p></li>
@@ -460,9 +465,9 @@ not, and add this information as the internal display parameter
 
 
 <dl><dt><code>dp</code></dt>
-<dd><p>Object of <code>DisplayPars-class</code>, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.</p></dd>
+<dd><p>Object of class <code><a href="DisplayPars-class.html">DisplayPars</a></code>, the display
+settings controlling the look and feel of a track. See <code><a href="settings.html">settings</a></code> for
+details on setting graphical parameters for tracks.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -471,9 +476,10 @@ that will be used in the track's annotation panel if necessary.</p></dd>
 
 
 <dt><code>imageMap</code></dt>
-<dd><p>Object of <code>ImageMap-class</code>, containing optional information
-for an HTML image map. This will be created by the <code>drawGD</code> methods when the
-track is plotted to a device and is usually not set by the user.</p></dd>
+<dd><p>Object of class <code><a href="ImageMap-class.html">ImageMap</a></code>, containing
+optional information for an HTML image map. This will be created by the
+<code>drawGD</code> methods when the track is plotted to a device and is usually not set
+by the user.</p></dd>
 
 
 </dl></div>
@@ -481,15 +487,15 @@ track is plotted to a device and is usually not set by the user.</p></dd>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p>GdObject</p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

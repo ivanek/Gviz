@@ -93,8 +93,8 @@ overlays of their content on the same region of the plot.</p>
 
 
 <dl><dt id="arg-tracklist">trackList<a class="anchor" aria-label="anchor" href="#arg-tracklist"></a></dt>
-<dd><p>A list of Gviz track objects that all have to inherit from
-class <code>GdObject</code>.</p></dd>
+<dd><p>A list of <code>Gviz</code> track objects that all have to inherit from
+class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -122,10 +122,11 @@ and axis, for all the other tracks only the panel content is plotted.</p>
     <h2>Functions</h2>
 
 <ul><li><p><code>initialize(OverlayTrack)</code>: Initialize the <code>trackList</code> slot before
-deferring to the <code>GdObject</code> initializer for the remaining slots.</p></li>
+deferring to the <code><a href="GdObject-class.html">GdObject</a></code> initializer for the remaining
+slots.</p></li>
 <li><p><code>OverlayTrack()</code>: Constructor function for <code>OverlayTrack-class</code>.</p></li>
 <li><p><code>displayPars(x = OverlayTrack) &lt;- value</code>: set display parameters using the values of
-the named list in value. See <a href="settings.html">settings</a> for details on
+the named list in value. See <code><a href="settings.html">settings</a></code> for details on
 display parameters and customization.</p></li>
 <li><p><code>length(OverlayTrack)</code>: return the number of subtracks.</p></li>
 <li><p><code>chromosome(OverlayTrack)</code>: return the chromosome for which the track
@@ -164,15 +165,15 @@ is not necessary.</p></li>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

@@ -55,7 +55,7 @@ plotTracks."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     <p>The UCSC data base provides a wealth of annotation information. This
 function can be used to access UCSC, to retrieve the data available there
 and to return it as an annotation track object amenable to plotting with
-<a href="plotTracks.html">plotTracks</a>.</p>
+<code><a href="plotTracks.html">plotTracks</a></code>.</p>
     </div>
 
     <div id="ref-usage">
@@ -90,18 +90,18 @@ browser at <a href="http://genome.ucsc.edu/cgi-bin/hgTables?command=start" class
 
 
 <dt id="arg-tracktype">trackType<a class="anchor" aria-label="anchor" href="#arg-tracktype"></a></dt>
-<dd><p>Character, one in <code>c("AnnotationTrack", "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")</code>. The function will try
+<dd><p>Character, one of <code>c("AnnotationTrack", "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")</code>. The function will try
 to coerce the downloaded data in an object of this class. See below for
 details.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
-<dd><p>Character, a valid USCS genome identifier for which to fetch
+<dd><p>Character, a valid UCSC genome identifier for which to fetch
 the data.</p></dd>
 
 
 <dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
-<dd><p>Character, a valid USCS character identifier for which to
+<dd><p>Character, a valid UCSC character identifier for which to
 fetch the data.</p></dd>
 
 
@@ -131,7 +131,7 @@ the <code>trackType</code> argument. See Details section for more information.</
 the session which are generated when connecting with the UCSC data base.</p>
 <p>The data stored at the UCSC data bases can be of different formats: gene or
 transcript model data, simple annotation features like CpG Island locations
-or SNPs, or numeric data like conservation or mapability. This function
+or SNPs, or numeric data like conservation or mappability. This function
 presents a unified API to download all kinds of data and to map them back to
 one of the annotation track objects defined in this package. The type of
 object to hold the data has to be given in the <code>trackType</code> argument, and
@@ -141,10 +141,11 @@ the constructor of choice, and single character scalars are replaced by the
 respective data columns in the downloaded UCSC tables if available. For
 instance, assuming the table for track 'foo' contains the columns 'id',
 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start end
-end location. In order to create an <a href="AnnotationTrack-class.html">AnnotationTrack</a>
-object from that data, we have to pass the additional named arguments
-<code>id="id"</code>, <code>feature="type"</code>, <code>start="fromLoc"</code> and <code>end="toLoc"</code> to the
-<code>UcscTrack</code> function. The complete function call could look like this:</p>
+end location. In order to create an
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> object from that data, we have to
+pass the additional named arguments <code>id="id"</code>, <code>feature="type"</code>,
+<code>start="fromLoc"</code> and <code>end="toLoc"</code> to the <code>UcscTrack</code> function. The complete
+function call could look like this:</p>
 <p><code>UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000, to=10000, trackType="AnnotationTrack", id="id", feature="type", start="from", end="to")</code></p>
 <p>To reduce the bandwidth, some caching of the UCSC connection takes place. In
 order to remove these cached session items, call <code>clearSessionCache</code>.</p>

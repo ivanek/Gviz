@@ -131,7 +131,7 @@ individual parameters, regardless of their type.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>object to set the displayPar value on</p></dd>
+<dd><p>Object to set the display parameter value on.</p></dd>
 
 
 <dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
@@ -150,7 +150,7 @@ those whose names are prefixed with <code>.__</code>.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
-<dd><p>named value to be set</p></dd>
+<dd><p>Value to be set.</p></dd>
 
 
 <dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
@@ -165,16 +165,24 @@ parameters on each of the contained sub-tracks.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>Object of <code>DisplayPars-class</code>.</p></dd>
+<dd><p>Object of class <code>DisplayPars</code>.</p></dd>
 
 
 <dt id="arg-class">class<a class="anchor" aria-label="anchor" href="#arg-class"></a></dt>
 <dd><p>Either character scalar or object. Supported classes are:
-<code>GdObject</code>, <code>GenomeAxisTrack</code>, <code>RangeTrack</code>, <code>NumericTrack</code>, <code>DataTrack</code>,
-<code>IdeogramTrack</code>, <code>StackedTrack</code>, <code>AnnotationTrack</code>, <code>DetailsAnnotationTrack</code>,
-<code>GeneRegionTrack</code>, <code>BiomartGeneRegionTrack</code>, <code>AlignmentsTrack</code>,
-<code>SequenceTrack</code>, <code>SequenceBSgenomeTrack</code>, <code>SequenceDNAStringSetTrack</code>,
-<code>SequenceRNAStringSetTrack</code></p></dd>
+<code><a href="GdObject-class.html">GdObject</a></code>, <code><a href="GenomeAxisTrack-class.html">GenomeAxisTrack</a></code>,
+<code><a href="RangeTrack-class.html">RangeTrack</a></code>, <code><a href="NumericTrack-class.html">NumericTrack</a></code>,
+<code><a href="DataTrack-class.html">DataTrack</a></code>, <code><a href="IdeogramTrack-class.html">IdeogramTrack</a></code>,
+<code><a href="StackedTrack-class.html">StackedTrack</a></code>,
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code>,
+<code><a href="DetailsAnnotationTrack-class.html">DetailsAnnotationTrack</a></code>,
+<code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code>,
+<code><a href="BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></code>,
+<code><a href="AlignmentsTrack-class.html">AlignmentsTrack</a></code>,
+<code><a href="SequenceTrack-class.html">SequenceTrack</a></code>,
+<code><a href="SequenceBSgenomeTrack-class.html">SequenceBSgenomeTrack</a></code>,
+<code><a href="SequenceDNAStringSetTrack-class.html">SequenceDNAStringSetTrack</a></code>,
+<code><a href="SequenceRNAStringSetTrack-class.html">SequenceRNAStringSetTrack</a></code></p></dd>
 
 </dl></div>
     <div id="value">
@@ -200,8 +208,8 @@ list, optionally hiding internal (<code>.__</code>-prefixed) parameters.</p></li
 <li><p><code>displayPars(x = DisplayPars, name = character)</code>: Returns the value of a subset of display
 parameters, as identified by <code>name</code>.</p></li>
 <li><p><code>as.list(DisplayPars)</code>: Converts <code>DisplayPars</code> to <code>list</code>.</p></li>
-<li><p><code>setPar()</code>: Generics for <code>SetPar</code>.</p>
-<p>SetPar generic function</p></li>
+<li><p><code>setPar()</code>: Generics for <code>setPar</code>.</p>
+<p>setPar generic function</p></li>
 <li><p><code>setPar(x = DisplayPars, value = list)</code>: Sets display parameters by the values of the
 named <code>list</code> in value. Note that display parameters in the
 <code>DisplayPars-class</code> are pass-by-reference, so no re-assignment to the symbol

@@ -60,16 +60,16 @@ the use of grouping information to build informative annotation plots.</p>
     <div id="details">
     <h2>Details</h2>
     <p>All track objects that inherit from class
-<a href="AnnotationTrack-class.html">AnnotationTrack</a> support the grouping feature. The
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> support the grouping feature. The
 information is usually passed on to the constructor function (for
-<code>AnnotationTrack</code> via the <code>group</code> argument and for
-<a href="GeneRegionTrack-class.html">GeneRegionTrack</a> objects via the <code>exon</code> argument)
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> via the <code>group</code> argument and for
+<code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code> objects via the <code>exon</code> argument)
 or automatically downloaded from an online annotation repository
-(<a href="BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a>). Group membership is specified
-by a factor vector with as many items as there are annotation items in the
-track (i.e., the value of <code>length(track)</code>). Upon plotting, the grouped
-annotation features are displayed together and will not be separated in the
-stacking of track items.</p>
+(<code><a href="BiomartGeneRegionTrack-class.html">BiomartGeneRegionTrack</a></code>). Group membership
+is specified by a factor vector with as many items as there are annotation
+items in the track (i.e., the value of <code>length(track)</code>). Upon plotting, the
+grouped annotation features are displayed together and will not be separated
+in the stacking of track items.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

@@ -86,8 +86,8 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 <dt id="arg-stream">stream<a class="anchor" aria-label="anchor" href="#arg-stream"></a></dt>
 <dd><p>A function to stream the data from an indexed file. It has to
-accept the two arguments <code>file</code> and <code>selection</code>, and to return a <code>GRanges</code>
-object.</p></dd>
+accept the two arguments <code>file</code> and <code>selection</code>, and to return a
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object.</p></dd>
 
 
 <dt id="arg-reference">reference<a class="anchor" aria-label="anchor" href="#arg-reference"></a></dt>
@@ -95,8 +95,9 @@ object.</p></dd>
 
 
 <dt id="arg-mapping">mapping<a class="anchor" aria-label="anchor" href="#arg-mapping"></a></dt>
-<dd><p>A named <code>list</code> mapping the columns of the imported data to
-the metadata columns of the track's <code>GRanges</code> object.</p></dd>
+<dd><p>A named <code>list</code> mapping the columns of the imported data to the
+metadata columns of the track's <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>
+object.</p></dd>
 
 
 <dt id="arg-args">args<a class="anchor" aria-label="anchor" href="#arg-args"></a></dt>
@@ -110,24 +111,26 @@ fill in whatever has not been provided in <code>args</code>.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Constructor functions of <code>AnnotationTrack</code>, <code>DataTrack</code>, <code>SequenceTrack</code>
-and <code>AlignmentsTrack</code> can create a special object of corresponding
-<code>Reference*Track</code> subclass with pointer to the referenced
-file.</p>
+    <p>Constructor functions of <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code>,
+<code><a href="DataTrack-class.html">DataTrack</a></code>, <code><a href="SequenceTrack-class.html">SequenceTrack</a></code> and
+<code><a href="AlignmentsTrack-class.html">AlignmentsTrack</a></code> can create a special object of
+corresponding <code>Reference*Track</code> subclass with pointer to the referenced file.</p>
 <p>A virtual class: No objects may be created from it.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The <code>availableDefaultMappings</code> function can be used to find out whether
-the package defines a mapping scheme between one of the many supported input
-file types and the metadata columns of the tracks' <code>GRanges</code> objects.</p>
+    <p>The <code>availableDefaultMappings</code> function can be used to find out whether the
+package defines a mapping scheme between one of the many supported input file
+types and the metadata columns of the tracks'
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> objects.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
 
 <ul><li><p><code>availableDefaultMapping()</code>: Function to find out whether the package
 defines a mapping scheme between one of the many supported input file types
-and the metadata columns of the tracks's <code>GRanges</code> objects.</p></li>
+and the metadata columns of the track's
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> objects.</p></li>
 <li><p><code>initialize(ReferenceTrack)</code>: Initialize all the <code>ReferenceTrack</code>
 slots (<code>stream</code>, <code>reference</code>, <code>mapping</code>, <code>args</code>, <code>defaults</code>) from the
 supplied arguments and validate the resulting object.</p></li>
@@ -137,10 +140,11 @@ supplied arguments and validate the resulting object.</p></li>
 
 
 <dl><dt><code>stream</code></dt>
-<dd><p>Object of class function. The import function to stream data
-of the file system. Needs to be able to handle the two mandatory arguments
-<code>file</code> (a <code>character</code> containing a valid file path) and <code>selection</code>
-(a <code>GRanges</code> object with the genomic region to plot).</p></dd>
+<dd><p>Object of class function. The import function to stream data of
+the file system. Needs to be able to handle the two mandatory arguments
+<code>file</code> (a <code>character</code> containing a valid file path) and <code>selection</code> (a
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object with the genomic region to
+plot).</p></dd>
 
 
 <dt><code>reference</code></dt>
@@ -149,9 +153,10 @@ containing the data.</p></dd>
 
 
 <dt><code>mapping</code></dt>
-<dd><p>Object of class <code>list</code>, a default mapping between the
-metadata columns of the returned <code>GRanges</code> object from the import function
-and the <code>elemenMetadata</code> columns that make up the final track object.</p></dd>
+<dd><p>Object of class <code>list</code>, a default mapping between the metadata
+columns of the returned <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object from
+the import function and the <code>elemenMetadata</code> columns that make up the final
+track object.</p></dd>
 
 
 <dt><code>args</code></dt>
@@ -170,15 +175,15 @@ used when neither mapping nor args provides the necessary information.</p></dd>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

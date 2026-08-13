@@ -95,7 +95,7 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-stacking">stacking<a class="anchor" aria-label="anchor" href="#arg-stacking"></a></dt>
-<dd><p>The stacking type for overlapping items of the track. One in
+<dd><p>The stacking type for overlapping items of the track. One of
 <code>c(hide, dense, squish, pack, full)</code>. Currently, only squish (make best use
 of the available space), dense (no stacking, collapse overlapping ranges),
 and hide (do not show any track items at all) are implemented.</p></dd>
@@ -106,7 +106,7 @@ and hide (do not show any track items at all) are implemented.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -133,7 +133,7 @@ dropped (if <code>f</code> is a factor).</p></dd>
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
 <dd><p>Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
+limit the tracks in. Note that <code>from</code> cannot be larger than <code>to</code>.</p></dd>
 
 
 <dt id="arg-sort">sort<a class="anchor" aria-label="anchor" href="#arg-sort"></a></dt>
@@ -142,7 +142,7 @@ after subsetting.</p></dd>
 
 
 <dt id="arg-stacks">stacks<a class="anchor" aria-label="anchor" href="#arg-stacks"></a></dt>
-<dd><p><code>logical</code>. Set if stacking should  be preserved.</p></dd>
+<dd><p><code>logical</code>. Set if stacking should be preserved.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -152,22 +152,24 @@ after subsetting.</p></dd>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(StackedTrack)</code>: Initialize the <code>stacking</code> slot (validating
-it against the allowed <code>stackingValues</code>) and reset the <code>stacks</code> slot,
-before deferring to the <code>RangeTrack</code> initializer for the remaining slots.</p></li>
+<ul><li><p><code>initialize(StackedTrack)</code>: Initialize the <code>stacking</code> slot (validating it
+against the allowed <code>stackingValues</code>) and reset the <code>stacks</code> slot, before
+deferring to the <code><a href="RangeTrack-class.html">RangeTrack</a></code> initializer for the
+remaining slots.</p></li>
 <li><p><code>stacking(StackedTrack)</code>: return the current stacking type.</p></li>
 <li><p><code>stacking(GdObject = StackedTrack) &lt;- value</code>: set the object's stacking type to one in
-<code>c(hide, dense, squish, pack,full)</code>.</p></li>
+<code>c(hide, dense, squish, pack, full)</code>.</p></li>
 <li><p><code>stacks(StackedTrack)</code>: return the stack indices for each track item.</p></li>
 <li><p><code>setStacks(StackedTrack)</code>: recompute the stacks based on the available
 space and on the object's track items and stacking settings.</p></li>
-<li><p><code>consolidateTrack(StackedTrack)</code>: For <code>StackedTrack</code> objects, set the
-stacking (which could have been passed in as a display parameter) before
-deferring to the <code>RangeTrack</code> method for the remaining consolidation
+<li><p><code>consolidateTrack(StackedTrack)</code>: For <code>StackedTrack</code> objects, set the stacking
+(which could have been passed in as a display parameter) before deferring to
+the <code><a href="RangeTrack-class.html">RangeTrack</a></code> method for the remaining consolidation
 steps.</p></li>
 <li><p><code>x = StackedTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>StackedTrack</code> object.
-This is essentially similar to subsetting of the <code>GRanges</code> object in the
-range slot. For most applications, the subset method may be more appropriate.</p></li>
+This is essentially similar to subsetting of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object in the range slot. For most
+applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(StackedTrack)</code>: subset a <code>StackedTrack</code> by coordinates and
 sort if necessary.</p></li>
 <li><p><code>drawGD(StackedTrack)</code>: plot the object to a graphics device.
@@ -184,9 +186,9 @@ usually called through inheritance and not particularly useful on its own.</p></
 
 
 <dl><dt><code>dp</code></dt>
-<dd><p>Object of <code>DisplayPars-class</code>, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.</p></dd>
+<dd><p>Object of class <code><a href="DisplayPars-class.html">DisplayPars</a></code>, the display
+settings controlling the look and feel of a track. See <code><a href="settings.html">settings</a></code> for
+details on setting graphical parameters for tracks.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -195,17 +197,21 @@ that will be used in the track's annotation panel if necessary.</p></dd>
 
 
 <dt><code>imageMap</code></dt>
-<dd><p>Object of <code>ImageMap-class</code>, containing optional information
-for an HTML image map. This will be created by the <code>drawGD</code> methods when the
-track is plotted to a device and is usually not set by the user.</p></dd>
+<dd><p>Object of class <code><a href="ImageMap-class.html">ImageMap</a></code>, containing
+optional information for an HTML image map. This will be created by the
+<code>drawGD</code> methods when the track is plotted to a device and is usually not set
+by the user.</p></dd>
 
 
 <dt><code>range</code></dt>
-<dd><p>Object of class <code>GRanges</code>, the genomic ranges of the track items
-as well as additional annotation information in its <code>elementMetaData</code> slot.
-Please not that the slot is actually implemented as a class union between
-<code>GRanges</code> and IRanges to increase efficiency, for instance for DataTrack
-objects. This usually does not concern the user.</p></dd>
+<dd><p>Object of class <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>, the
+genomic ranges of the track items as well as additional annotation
+information in its <code>elementMetadata</code> slot. Please note that the slot is
+actually implemented as a class union between
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> and
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> to increase efficiency, for instance for
+<code><a href="DataTrack-class.html">DataTrack</a></code> objects. This usually does not concern the
+user.</p></dd>
 
 
 <dt><code>chromosome</code></dt>
@@ -213,20 +219,20 @@ objects. This usually does not concern the user.</p></dd>
 track is defined. There can only be a single chromosome for one track. For
 certain subclasses, the space of allowed chromosome names is limited (e.g.,
 only those chromosomes that exist for a particular genome). Throughout the
-package, chromosome name have to be entered either as a single integer scalar
-or as a character scalar of the form chrXYZ, where XYZ may be an arbitrary
-character string.</p></dd>
+package, chromosome names have to be entered either as a single integer
+scalar or as a character scalar of the form <code>chrXYZ</code>, where <code>XYZ</code> may be an
+arbitrary character string.</p></dd>
 
 
 <dt><code>genome</code></dt>
 <dd><p>Object of class <code>character</code>, the genome for which the track is
-defined. For most sub-classes this has to be valid UCSC genome identifier,
+defined. For most sub-classes this has to be a valid UCSC genome identifier,
 however this may not always be formally checked upon object instantiation.</p></dd>
 
 
 <dt><code>stacking</code></dt>
 <dd><p>Object of class <code>character</code>, the stacking type of overlapping
-items on the final plot. One in <code>c(hide, dense, squish, pack,full)</code>.
+items on the final plot. One of <code>c(hide, dense, squish, pack, full)</code>.
 Currently, only <code>hide</code> (do not show the track items at all), <code>squish</code> (make
 best use of the available space) and <code>dense</code> (no stacking at all) are
 implemented.</p></dd>
@@ -244,15 +250,15 @@ plotting space.</p></dd>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

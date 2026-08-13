@@ -66,13 +66,13 @@ method which tries to adjust the plotted content to the available
 resolution, aims at reducing over-plotting and prevents rendering issues,
 e.g. when lines are too thin to be plotted. This feature can be toggled on
 or off using the <code>collapse</code> display parameter (see
-<code>settings</code> for details on setting these parameters).</p>
-<p>In the simplest case (for <code>AnnotationTrack</code> objects) this
-involves expanding all shown features to a minimum pixel width and height
-(using display parameters <code>min.width</code> and <code>min.height</code>) and
-collapsing overlapping annotation items (as defined by the parameter
-<code>min.distance</code>) into one single item to prevent over-plotting.</p>
-<p>For objects of class <code>DataTrack</code>, the data values
+<code><a href="settings.html">settings</a></code> for details on setting these parameters).</p>
+<p>In the simplest case (for <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> objects)
+this involves expanding all shown features to a minimum pixel width and
+height (using display parameters <code>min.width</code> and <code>min.height</code>) and collapsing
+overlapping annotation items (as defined by the parameter <code>min.distance</code>)
+into one single item to prevent over-plotting.</p>
+<p>For objects of class <code><a href="DataTrack-class.html">DataTrack</a></code>, the data values
 underlying collapsed regions will be summarized based on the <code>summary</code>
 display parameter. See the class' documentation for more details.</p>
     </div>

@@ -166,13 +166,14 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
-<dd><p>A <code>GRanges</code> object with the genomic coordinates of the track
-items, and any additional annotation stored in its metadata columns.</p></dd>
+<dd><p>A <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object with the
+genomic coordinates of the track items, and any additional annotation stored
+in its metadata columns.</p></dd>
 
 
 <dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
-<dd><p>the currently active chromosome which may have to be set
-for a <code>RangeTrack</code> or a <code>SequenceTrack</code> object</p></dd>
+<dd><p>The currently active chromosome, which may have to be set
+for a <code>RangeTrack</code> or a <code><a href="SequenceTrack-class.html">SequenceTrack</a></code> object.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
@@ -195,12 +196,12 @@ case the class is derived directly from it.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>the input track object</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
 <dd><p>Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
+limit the tracks in. Note that <code>from</code> cannot be larger than <code>to</code>.</p></dd>
 
 
 <dt id="arg-sort">sort<a class="anchor" aria-label="anchor" href="#arg-sort"></a></dt>
@@ -240,16 +241,16 @@ to split the track into a list of tracks.</p></dd>
     <h2>Functions</h2>
 
 <ul><li><p><code>initialize(RangeTrack)</code>: Initialize the <code>range</code>, <code>chromosome</code> and
-<code>genome</code> slots before deferring to the <code>GdObject</code> initializer for the
-remaining slots.</p></li>
+<code>genome</code> slots before deferring to the <code><a href="GdObject-class.html">GdObject</a></code>
+initializer for the remaining slots.</p></li>
 <li><p><code>ranges(RangeTrack)</code>: return the genomic coordinates for the track
 along with all additional annotation information as an object of
-class <code>GRanges</code>.</p></li>
-<li><p><code>ranges(RangeTrack) &lt;- value</code>: replace the genomic coordinates and
-associated annotation information for the track with a new <code>GRanges</code>
-object.</p></li>
+class <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>.</p></li>
+<li><p><code>ranges(RangeTrack) &lt;- value</code>: replace the genomic coordinates and associated
+annotation information for the track with a new
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object.</p></li>
 <li><p><code>range(RangeTrack)</code>: return the genomic coordinates for the
-track as an object of class <code>IRanges</code>.</p></li>
+track as an object of class <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code>.</p></li>
 <li><p><code>seqnames(RangeTrack)</code>: return the track's seqnames.</p></li>
 <li><p><code>seqlevels(RangeTrack)</code>: return the track's seqlevels.</p></li>
 <li><p><code>seqinfo(RangeTrack)</code>: return the track's seqinfo.</p></li>
@@ -285,11 +286,11 @@ strand or '*' for either of the two.</p></li>
 items. The replacement value needs to be an appropriate scalar or vector
 of strand values.</p></li>
 <li><p><code>position(RangeTrack)</code>: the arithmetic mean of the track item's
-coordionates, i.e., <code>(end(obj)-start(obj))/2</code>.</p></li>
+coordinates, i.e., <code>(end(obj)-start(obj))/2</code>.</p></li>
 <li><p><code>x = RangeTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>RangeTrack</code> object.
-This is essentially similar to subsetting of the <code>GRanges</code> object in the
-<code>range</code> slot. For most applications, the subset method may be more
-appropriate.</p></li>
+This is essentially similar to subsetting of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object in the <code>range</code> slot. For
+most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(RangeTrack)</code>: subset a <code>RangeTrack</code> by coordinates and
 sort if necessary.</p></li>
 <li><p><code>split(x = RangeTrack, f = ANY)</code>: split a <code>RangeTrack</code> object by an appropriate
@@ -298,19 +299,19 @@ of this operation is a list of objects of the same class as the input
 object, all inheriting from class <code>RangeTrack.</code></p></li>
 <li><p><code>values(RangeTrack)</code>: return all additional annotation information
 except for the genomic coordinates for the track items as a <code>data.frame</code>.</p></li>
-<li><p><code>feature(RangeTrack)</code>: return the grouping information for track
-items. For certain sub-classes, groups may be indicated by different colour
-schemes when plotting. See grouping or <code>AnnotationTrack</code> and
-<code>GeneRegionTrack</code> for details.
+<li><p><code>feature(RangeTrack)</code>: return the grouping information for track items.
+For certain sub-classes, groups may be indicated by different color schemes
+when plotting. See grouping or <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> and
+<code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code> for details.
 @export</p></li>
 <li><p><code>feature(GdObject = RangeTrack) &lt;- value</code>: set the grouping information for track items.
-This has to be a factor vector (or another type of vector that can be
-coerced into one) of the same length as the number of items in the
-<code>RangeTrack.</code> See grouping or <code>AnnotationTrack</code> and <code>GeneRegionTrack</code> for
-details.
+This has to be a factor vector (or another type of vector that can be coerced
+into one) of the same length as the number of items in the <code>RangeTrack.</code> See
+grouping or <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> and
+<code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code> for details.
 @export</p></li>
 <li><p><code>consolidateTrack(RangeTrack)</code>: Update the active chromosome (if provided)
-before deferring to the <code>GdObject</code> method for the remaining
+before deferring to the <code><a href="GdObject-class.html">GdObject</a></code> method for the remaining
 consolidation steps.</p></li>
 </ul></div>
     <div id="slots">
@@ -318,9 +319,9 @@ consolidation steps.</p></li>
 
 
 <dl><dt><code>dp</code></dt>
-<dd><p>Object of <code>DisplayPars-class</code>, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.</p></dd>
+<dd><p>Object of class <code><a href="DisplayPars-class.html">DisplayPars</a></code>, the display
+settings controlling the look and feel of a track. See <code><a href="settings.html">settings</a></code> for
+details on setting graphical parameters for tracks.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -329,17 +330,21 @@ that will be used in the track's annotation panel if necessary.</p></dd>
 
 
 <dt><code>imageMap</code></dt>
-<dd><p>Object of <code>ImageMap-class</code>, containing optional information
-for an HTML image map. This will be created by the <code>drawGD</code> methods when the
-track is plotted to a device and is usually not set by the user.</p></dd>
+<dd><p>Object of class <code><a href="ImageMap-class.html">ImageMap</a></code>, containing
+optional information for an HTML image map. This will be created by the
+<code>drawGD</code> methods when the track is plotted to a device and is usually not set
+by the user.</p></dd>
 
 
 <dt><code>range</code></dt>
-<dd><p>Object of class <code>GRanges</code>, the genomic ranges of the track items
-as well as additional annotation information in its <code>elementMetaData</code> slot.
-Please not that the slot is actually implemented as a class union between
-<code>GRanges</code> and IRanges to increase efficiency, for instance for DataTrack
-objects. This usually does not concern the user.</p></dd>
+<dd><p>Object of class <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>, the
+genomic ranges of the track items as well as additional annotation
+information in its <code>elementMetadata</code> slot. Please note that the slot is
+actually implemented as a class union between
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> and
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> to increase efficiency, for instance for
+<code><a href="DataTrack-class.html">DataTrack</a></code> objects. This usually does not concern the
+user.</p></dd>
 
 
 <dt><code>chromosome</code></dt>
@@ -347,14 +352,14 @@ objects. This usually does not concern the user.</p></dd>
 track is defined. There can only be a single chromosome for one track. For
 certain subclasses, the space of allowed chromosome names is limited (e.g.,
 only those chromosomes that exist for a particular genome). Throughout the
-package, chromosome name have to be entered either as a single integer scalar
-or as a character scalar of the form chrXYZ, where XYZ may be an arbitrary
-character string.</p></dd>
+package, chromosome names have to be entered either as a single integer
+scalar or as a character scalar of the form <code>chrXYZ</code>, where <code>XYZ</code> may be an
+arbitrary character string.</p></dd>
 
 
 <dt><code>genome</code></dt>
 <dd><p>Object of class <code>character</code>, the genome for which the track is
-defined. For most sub-classes this has to be valid UCSC genome identifier,
+defined. For most sub-classes this has to be a valid UCSC genome identifier,
 however this may not always be formally checked upon object instantiation.</p></dd>
 
 
@@ -363,15 +368,15 @@ however this may not always be formally checked upon object instantiation.</p></
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p>RangeTrack</p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

@@ -154,97 +154,84 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>A numeric matrix of data points with the number of columns equal
-to the number of coordinates in <code>range</code>, or a numeric vector of
-appropriate length that will be coerced into such a one-row matrix. Each
-individual row is supposed to contain data for a given sample, where the
-coordinates for each single observation are constant across samples.
-Depending on the plotting type of the data (see 'Details' and 'Display
-Parameters' sections), sample grouping or data aggregation may be available.
+to the number of coordinates in <code>range</code>, or a numeric vector of appropriate
+length that will be coerced into such a one-row matrix. Each individual row
+is supposed to contain data for a given sample, where the coordinates for
+each single observation are constant across samples. Depending on the
+plotting type of the data (see the 'Details' and 'Display Parameters'
+sections), sample grouping or data aggregation may be available.
 Alternatively, this can be a character vector of column names that point
-into the element metadata of the <code>range</code> object for subsetting.
-Naturally, this is only supported when the <code>range</code> argument is of class
-<code>GRanges</code>.</p></dd>
+into the element metadata of the <code>range</code> object for subsetting. Naturally,
+this is only supported when the <code>range</code> argument is of class
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>.</p></dd>
 
 
 <dt id="arg-strand">strand<a class="anchor" aria-label="anchor" href="#arg-strand"></a></dt>
 <dd><p>Character vector, the strand information for the individual
-track items. Currently this has to be unique for the whole track and doesn't
+track items. Currently this has to be unique for the whole track and does not
 really have any visible consequences, but we might decide to make
-<code>DataTracks</code> strand-specific at a later stage.</p></dd>
+<code>DataTrack</code> objects strand-specific at a later stage.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional items which will all be interpreted as further
-display parameters.</p></dd>
+display parameters. See <code><a href="settings.html">settings</a></code> and the "Display Parameters"
+section below for details.</p></dd>
 
 
 <dt id="arg-stream">stream<a class="anchor" aria-label="anchor" href="#arg-stream"></a></dt>
 <dd><p>A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 <code>selection</code> argument when accessing the data on disk. This causes the
-constructor to return a <code>ReferenceDataTrack</code> object which will grab the
-necessary data on the fly during each plotting operation.</p></dd>
+constructor to return a <code><a href="ReferenceDataTrack-class.html">ReferenceDataTrack</a></code>
+object which will grab the necessary data on the fly during each plotting
+operation.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
 <dd><p>An optional meta argument to handle the different input types.
 If the <code>range</code> argument is missing, all the relevant information to create
 the object has to be provided as individual function arguments (see below).</p>
-<p>The different input options for <code>range</code> are:</p>
-<dl><dt>A <code>GRanges</code> object:</dt>
-<dd><p>essentially all the necessary information
-to create a <code>DataTrack</code> can be contained in a single <code>GRanges</code>
-object. The track's coordinates are taken from the <code>start</code>, <code>end</code>
-and <code>seqnames</code> slots, the genome information from the genome slot, and
-the numeric data values can be extracted from additional metadata columns
-columns (please note that non-numeric columns are being ignored with a
-warning). As a matter of fact, calling the constructor on a <code>GRanges</code>
-object without further arguments, e.g.  <code>DataTrack(range=obj)</code> is
-equivalent to calling the coerce method <code>as(obj, "DataTrack")</code>.
-Alternatively, the <code>GRanges</code> object may only contain the coordinate
-information, in which case the numeric data part is expected to be present
-in the separate <code>data</code> argument, and the ranges have to match the
-dimensions of the data matrix. If <code>data</code> is not <code>NULL</code>, this will
-always take precedence over anything defined in the <code>range</code> argument.
-See below for details.</p></dd>
-
-
-<dt>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object:</dt>
-<dd><p>this is very similar to
-the above case, except that the numeric data part now always has to be
-provided in the separate <code>data</code> argument. Also the chromosome information
-must be provided in the <code>chromosome</code> argument, because neither of the two
-can be directly encoded in an <code>IRange</code> object.</p></dd>
-
-
-<dt>A <code>data.frame</code> object:</dt>
-<dd><p>the <code>data.frame</code> needs to contain
-at least the two mandatory columns <code>start</code> and <code>end</code> with the
-range coordinates. It may also contain a <code>chromosome</code> column with the
-chromosome information for each range. If missing it will be drawn from the
-separate <code>chromosome</code> argument. All additional numeric columns will be
-interpreted as data columns, unless the <code>data</code> argument is explicitely
-provided.</p></dd>
-
-
-<dt>A <code>character</code> scalar:</dt>
-<dd><p>in this case the value of the
-<code>range</code> argument is considered to be a file path to an annotation file
-on disk. A range of file types are supported by the <code>Gviz</code> package as
-identified by the file extension. See the <code>importFunction</code>
-documentation below for further details.</p></dd>
-
-
-
-</dl></dd>
+<p>The different input options for <code>range</code> are:</p><ul><li><p>A <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object: essentially all the
+necessary information to create a <code>DataTrack</code> can be
+contained in a single <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object. The
+track's coordinates are taken from the <code>start</code>, <code>end</code> and <code>seqnames</code> slots,
+the genome information from the <code>genome</code> slot, and the numeric data values
+can be extracted from additional metadata columns (please note that
+non-numeric columns are being ignored with a warning). As a matter of fact,
+calling the constructor on a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>
+object without further arguments, e.g. <code>DataTrack(range=obj)</code>, is equivalent
+to calling the coerce method <code>as(obj, "DataTrack")</code>. Alternatively, the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object may only contain the
+coordinate information, in which case the numeric data part is expected to be
+present in the separate <code>data</code> argument, and the ranges have to match the
+dimensions of the data matrix. If <code>data</code> is not <code>NULL</code>, this will always take
+precedence over anything defined in the <code>range</code> argument. See below for
+details.</p></li>
+<li><p>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object: this is very similar to the
+above case, except that the numeric data part now always has to be provided
+in the separate <code>data</code> argument. Also the chromosome information must be
+provided in the <code>chromosome</code> argument, because neither of the two can be
+directly encoded in an <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object.</p></li>
+<li><p>A <code>data.frame</code> object: the <code>data.frame</code> needs to contain at least the two
+mandatory columns <code>start</code> and <code>end</code> with the range coordinates. It may also
+contain a <code>chromosome</code> column with the chromosome information for each range.
+If missing, it will be drawn from the separate <code>chromosome</code> argument. All
+additional numeric columns will be interpreted as data columns, unless the
+<code>data</code> argument is explicitly provided.</p></li>
+<li><p>A <code>character</code> scalar: in this case the value of the <code>range</code> argument is
+considered to be a file path to an annotation file on disk. A range of file
+types is supported by the <code>Gviz</code> package as identified by the file extension.
+See the <code>importFunction</code> documentation below for further details.</p></li>
+</ul></dd>
 
 
 <dt id="arg-start-end-width">start, end, width<a class="anchor" aria-label="anchor" href="#arg-start-end-width"></a></dt>
-<dd><p>Integer vectors, giving the start and the end end
+<dd><p>Integer vectors, giving the start and the end
 coordinates for the individual track items, or their width. Two of the three
 need to be specified, and have to be of equal length or of length one, in
 which case the single value will be recycled accordingly. Otherwise, the
-usual R recycling rules for vectors do not apply and the function will cast
+usual R recycling rules for vectors do not apply and the function will throw
 an error.</p></dd>
 
 
@@ -253,22 +240,22 @@ an error.</p></dd>
 defined. A valid UCSC chromosome identifier if
 <code>options(ucscChromosomeNames=TRUE)</code>. Please note that in this case only
 syntactic checking takes place, i.e., the argument value needs to be an
-integer, numeric character or a character of the form <code>chrx</code>, where
-<code>x</code> may be any possible string. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome. If not
-provided here, the constructor will try to construct the chromosome
-information based on the available inputs, and as a last resort will fall
-back to the value <code>chrNA</code>. Please note that by definition all objects
-in the <code>Gviz</code> package can only have a single active chromosome at a
-time (although internally the information for more than one chromosome may
-be present), and the user has to call the <code>chromosome&lt;-</code> replacement
-method in order to change to a different active chromosome.</p></dd>
+integer, numeric character or a character of the form <code>chrx</code>, where <code>x</code> may
+be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome. If not provided here,
+the constructor will try to construct the chromosome information based on
+the available inputs, and as a last resort will fall back to the value
+<code>chrNA</code>. Please note that by definition all objects in the <code>Gviz</code> package can
+only have a single active chromosome at a time (although internally the
+information for more than one chromosome may be present), and the user has to
+call the <code>chromosome&lt;-</code> replacement method in order to change to a different
+active chromosome.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. If not provided here the constructor will try to
+checked at this point. If not provided here, the constructor will try to
 extract this information from the provided input, and eventually will fall
 back to the default value of <code>NA</code>.</p></dd>
 
@@ -283,32 +270,33 @@ when plotting.</p></dd>
 from a file. This only applies when the <code>range</code> argument is a character
 string with the path to the input data file. The function needs to accept an
 argument <code>file</code> containing the file path and has to return a proper
-<code>GRanges</code> object with the data part attached as numeric metadata
-columns. Essentially the process is equivalent to constructing a
-<code>DataTrack</code> directly from a <code>GRanges</code> object in that non-numeric
-columns will be dropped, and further subsetting can be archived by means of
-the <code>data</code> argument. A set of default import functions is already
-implemented in the package for a number of different file types, and one of
-these defaults will be picked automatically based on the extension of the
-input file name. If the extension can not be mapped to any of the existing
-import function, an error is raised asking for a user-defined import
-function. Currently the following file types can be imported with the
-default functions: <code>wig</code>, <code>bigWig/bw</code>, <code>bedGraph</code> and
-<code>bam</code>.</p>
-<p>Some file types support indexing by genomic coordinates (e.g., <code>bigWig</code>
-and <code>bam</code>), and it makes sense to only load the part of the file that
-is needed for plotting. To this end, the <code>Gviz</code> package defines the
-derived <code>ReferenceDataTrack</code> class, which supports streaming data from
-the file system. The user typically does not have to deal with this
-distinction but may rely on the constructor function to make the right
-choice as long as the default import functions are used. However, once a
-user-defined import function has been provided and if this function adds
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object with the data part attached
+as numeric metadata columns. Essentially the process is equivalent to
+constructing a <code>DataTrack</code> directly from a
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object in that non-numeric columns
+will be dropped, and further subsetting can be achieved by means of the
+<code>data</code> argument. A set of default import functions is already implemented in
+the package for a number of different file types, and one of these defaults
+will be picked automatically based on the extension of the input file name.
+If the extension cannot be mapped to any of the existing import functions, an
+error is raised asking for a user-defined import function. Currently the
+following file types can be imported with the default functions: <code>wig</code>,
+<code>bigWig/bw</code>, <code>bedGraph</code> and <code>bam</code>.</p>
+<p>Some file types support indexing by genomic coordinates (e.g., <code>bigWig</code> and
+<code>bam</code>), and it makes sense to only load the part of the file that is needed
+for plotting. To this end, the <code>Gviz</code> package defines the derived
+<code><a href="ReferenceDataTrack-class.html">ReferenceDataTrack</a></code> class, which supports
+streaming data from the file system. The user typically does not have to deal
+with this distinction but may rely on the constructor function to make the
+right choice as long as the default import functions are used. However, once
+a user-defined import function has been provided and if this function adds
 support for indexed files, you will have to make the constructor aware of
-this fact by setting the <code>stream</code> argument to <code>TRUE</code>. Please note
-that in this case the import function needs to accept a second mandatory
-argument <code>selection</code> which is a <code>GRanges</code> object containing the
-dimensions of the plotted genomic range. As before, the function has to
-return an appropriate <code>GRanges</code> object.</p></dd>
+this fact by setting the <code>stream</code> argument to <code>TRUE</code>. Please note that in
+this case the import function needs to accept a second mandatory argument
+<code>selection</code>, which is a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object
+containing the dimensions of the plotted genomic range. As before, the
+function has to return an appropriate
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -316,126 +304,72 @@ return an appropriate <code>GRanges</code> object.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>The return value of the constructor function is a new object of class
-<code>DataTrack</code> or <code>ReferenceDataTrack</code>.</p>
+<code>DataTrack</code> or <code><a href="ReferenceDataTrack-class.html">ReferenceDataTrack</a></code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>Depending on the setting of the <code>type</code> display parameter, the data can
 be plotted in various different forms as well as combinations thereof.
-Supported plotting types are:</p>
-<dl><dt><code>p</code>:</dt>
-<dd><p>simple xy-plot.</p></dd>
-
-
-<dt><code>l</code>:</dt>
-<dd><p>lines plot. In the case of multiple samples this plotting
-type is not overly usefull since the points in the data matrix are connected
-in column-wise order. Type <code>a</code> might be more appropriate in these
-situations.</p></dd>
-
-
-<dt><code>b</code>:</dt>
-<dd><p>combination of xy-plot and lines plot.</p></dd>
-
-
-<dt><code>a</code>:</dt>
-<dd><p>lines plot of the column-wise average values.</p></dd>
-
-
-<dt><code>s</code>:</dt>
-<dd><p>sort and connect data points along the x-axis</p></dd>
-
-
-<dt><code>S</code>:</dt>
-<dd><p>sort and connect data points along the y-axis</p></dd>
-
-
-<dt><code>g</code>:</dt>
-<dd><p>add grid lines. To ensure a consitant look and feel across
-multiple tracks, grid lines should preferentially be added by using the
-<code>grid</code> display parameter.</p></dd>
-
-
-<dt><code>r</code>:</dt>
-<dd><p>add a regression line to the plot.</p></dd>
-
-
-<dt><code>h</code>:</dt>
-<dd><p>histogram-like vertical lines centered in the middle of
-the coordinate ranges.</p></dd>
-
-
-<dt><code>smooth</code>:</dt>
-<dd><p>add a loess fit to the plot. The following display
-parameters can be used to control the loess calculation: <code>span, degree, family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details.</p></dd>
-
-
-<dt><code>histogram</code>:</dt>
-<dd><p>plot data as a histogram, where the width of the
-histogram bars reflects the width of the genomic ranges in the <code>range</code>
-slot.</p></dd>
-
-
-<dt><code>mountain</code>:</dt>
-<dd><p>plot a smoothed version of the data relative to a
-baseline, as defined by the <code>baseline</code> display parameter. The following
-display parameters can be used to control the smoothing: <code>span, degree, family, evaluation</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess</a> for details. The layout
-of the plot can be further customized via the following display parameters:
-<code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
-
-
-<dt><code>polygon</code>:</dt>
-<dd><p>plot data as a polygon (similar to
-<code>mountain</code>-type but without smoothing). Data are plotted relative to a
-baseline, as defined by the <code>baseline</code> display parameter. The layout of
-the plot can be further customized via the following display parameters:
-<code>col.mountain, lwd.mountain, lty.mountain, fill.mountain</code>.</p></dd>
-
-
-<dt><code>boxplot</code>:</dt>
-<dd><p>plot the data as box-and-whisker plots. The layout
-of the plot can be further customized via the following display parameters:
-<code>box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats, coef, do.out</code>. See <a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">lattice::panel.bwplot</a> for details.</p></dd>
-
-
-<dt><code>gradient</code>:</dt>
-<dd><p>collapse the data across samples and plot this
-average value as a color-coded gradient. Essenitally this is similar to the
-heatmap-type plot of a single sample. The layout of the plot can be further
-customized via the display parameters <code>ncolor</code> and <code>gradient</code>
-which control the number of gradient colors as well as the gradient base
-colors, respectively.</p></dd>
-
-
-<dt><code>heatmap</code>:</dt>
-<dd><p>plot the color-coded values for all samples in the
-form of a heatmap. The data for individual samples can be visually separated
-by setting the <code>separator</code> display parameter. It's value is taken as
-the amount of spacing in pixels in between two heatmap rows. The layout of
-the plot can be further customized via the display parameters <code>ncolor</code>
-and <code>gradient</code> which control the number of gradient colors as well as
-the gradient base colors, respectively.</p></dd>
-
-
-<dt><code>horizon</code>:</dt>
-<dd><p>plot continuous data by cutting the y range into
-segments and overplotting them with color representing the magnitude and
-direction of deviation. This is particularly useful when comparing multiple
-samples, in which case the horizon strips are stacked. See
-<a href="https://rdrr.io/pkg/latticeExtra/man/horizonplot.html" class="external-link">latticeExtra::panel.horizonplot</a> for details. Please note that the <code>origin</code>
-and <code>horizonscale</code> arguments of the Lattice <code>horizonplot</code> function
-are available as display parameters <code>horizon.origin</code> and
-<code>horizon.scale</code>.</p></dd>
-
-
-
-</dl><p>For some of the above plotting-types the <code>groups</code> display parameter can
+Supported plotting types are:</p><ul><li><p><code>p</code>: simple xy-plot.</p></li>
+<li><p><code>l</code>: lines plot. In the case of multiple samples this plotting type is not
+overly useful since the points in the data matrix are connected in
+column-wise order. Type <code>a</code> might be more appropriate in these situations.</p></li>
+<li><p><code>b</code>: combination of xy-plot and lines plot.</p></li>
+<li><p><code>a</code>: lines plot of the column-wise average values.</p></li>
+<li><p><code>s</code>: sort and connect data points along the x-axis.</p></li>
+<li><p><code>S</code>: sort and connect data points along the y-axis.</p></li>
+<li><p><code>g</code>: add grid lines. To ensure a consistent look and feel across multiple
+tracks, grid lines should preferentially be added by using the <code>grid</code>
+display parameter.</p></li>
+<li><p><code>r</code>: add a regression line to the plot.</p></li>
+<li><p><code>h</code>: histogram-like vertical lines centered in the middle of the coordinate
+ranges.</p></li>
+<li><p><code>smooth</code>: add a loess fit to the plot. The following display parameters can
+be used to control the loess calculation: <code>span</code>, <code>degree</code>, <code>family</code>,
+<code>evaluation</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess()</a></code> for details.</p></li>
+<li><p><code>histogram</code>: plot data as a histogram, where the width of the histogram
+bars reflects the width of the genomic ranges in the <code>range</code> slot.</p></li>
+<li><p><code>mountain</code>: plot a smoothed version of the data relative to a baseline, as
+defined by the <code>baseline</code> display parameter. The following display parameters
+can be used to control the smoothing: <code>span</code>, <code>degree</code>, <code>family</code>,
+<code>evaluation</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.loess.html" class="external-link">lattice::panel.loess()</a></code> for details. The layout of the
+plot can be further customized via the following display parameters:
+<code>col.mountain</code>, <code>lwd.mountain</code>, <code>lty.mountain</code>, <code>fill.mountain</code>.</p></li>
+<li><p><code>polygon</code>: plot data as a polygon (similar to <code>mountain</code>-type but without
+smoothing). Data are plotted relative to a baseline, as defined by the
+<code>baseline</code> display parameter. The layout of the plot can be further
+customized via the following display parameters: <code>col.mountain</code>,
+<code>lwd.mountain</code>, <code>lty.mountain</code>, <code>fill.mountain</code>.</p></li>
+<li><p><code>boxplot</code>: plot the data as box-and-whisker plots. The layout of the plot
+can be further customized via the following display parameters: <code>box.ratio</code>,
+<code>box.width</code>, <code>varwidth</code>, <code>notch</code>, <code>notch.frac</code>, <code>levels.fos</code>, <code>stats</code>,
+<code>coef</code>, <code>do.out</code>. See <code><a href="https://rdrr.io/pkg/lattice/man/panel.bwplot.html" class="external-link">lattice::panel.bwplot()</a></code> for details.</p></li>
+<li><p><code>gradient</code>: collapse the data across samples and plot this average value as
+a color-coded gradient. Essentially this is similar to the heatmap-type plot
+of a single sample. The layout of the plot can be further customized via the
+display parameters <code>ncolor</code> and <code>gradient</code>, which control the number of
+gradient colors as well as the gradient base colors, respectively.</p></li>
+<li><p><code>heatmap</code>: plot the color-coded values for all samples in the form of a
+heatmap. The data for individual samples can be visually separated by setting
+the <code>separator</code> display parameter. Its value is taken as the amount of
+spacing in pixels in between two heatmap rows. The layout of the plot can be
+further customized via the display parameters <code>ncolor</code> and <code>gradient</code>, which
+control the number of gradient colors as well as the gradient base colors,
+respectively.</p></li>
+<li><p><code>horizon</code>: plot continuous data by cutting the y range into segments and
+overplotting them with color representing the magnitude and direction of
+deviation. This is particularly useful when comparing multiple samples, in
+which case the horizon strips are stacked. See
+<code><a href="https://rdrr.io/pkg/latticeExtra/man/horizonplot.html" class="external-link">latticeExtra::panel.horizonplot()</a></code> for details. Please note that the
+<code>origin</code> and <code>horizonscale</code> arguments of the <code>lattice</code> <code>horizonplot</code> function
+are available as display parameters <code>horizon.origin</code> and <code>horizon.scale</code>.</p></li>
+</ul><p>For some of the above plotting-types the <code>groups</code> display parameter can
 be used to indicate sample sub-groupings. Its value is supposed to be a
 factor vector of similar length as the number of samples. In most cases, the
 groups are shown in different plotting colors and data aggregation
@@ -458,13 +392,14 @@ optimized to work on large numeric tables.</p>
     <div id="functions">
     <h2>Functions</h2>
 
-<ul><li><p><code>initialize(DataTrack)</code>: Initialize the <code>data</code> slot, and the <code>strand</code>
-slot if provided, before deferring to the <code>GdObject</code> initializer for the
-remaining slots.</p></li>
-<li><p><code>initialize(ReferenceDataTrack)</code>: Initialize the <code>ReferenceTrack</code> slots
-(<code>stream</code>, <code>reference</code>, <code>mapping</code>, <code>args</code>, <code>defaults</code>) before deferring to
-the <code>DataTrack</code> initializer for the remaining slots.</p></li>
-<li><p><code>DataTrack()</code>: Constructor function for <code>DataTrack-class</code></p></li>
+<ul><li><p><code>initialize(DataTrack)</code>: Initialize the <code>data</code> slot, and the <code>strand</code> slot
+if provided, before deferring to the <code><a href="GdObject-class.html">GdObject</a></code> initializer
+for the remaining slots.</p></li>
+<li><p><code>initialize(ReferenceDataTrack)</code>: Initialize the
+<code><a href="ReferenceTrack-class.html">ReferenceTrack</a></code> slots (<code>stream</code>, <code>reference</code>,
+<code>mapping</code>, <code>args</code>, <code>defaults</code>) before deferring to the <code>DataTrack</code>
+initializer for the remaining slots.</p></li>
+<li><p><code>DataTrack()</code>: Constructor function for <code>DataTrack-class</code>.</p></li>
 <li><p><code>values(DataTrack)</code>: return the raw data values of the object, i.e.,
 the data matrix in the <code>data</code> slot.</p></li>
 <li><p><code>values(DataTrack) &lt;- value</code>: Replace the data matrix in the <code>data</code> slot.</p></li>
@@ -486,12 +421,14 @@ This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
 <li><p><code>x = DataTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>DataTrack</code> object. This
-is essentially similar to subsetting of the <code>GRanges</code> object in the <code>range</code>
-slot. For most applications, the subset method may be more appropriate.</p></li>
+is essentially similar to subsetting of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object in the <code>range</code> slot. For
+most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(DataTrack)</code>: Subset a <code>DataTrack</code> by coordinates
 and sort if necessary.</p></li>
-<li><p><code>subset(ReferenceDataTrack)</code>: Subset a <code>ReferenceDataTrack</code> by coordinates
-and sort if necessary.</p></li>
+<li><p><code>subset(ReferenceDataTrack)</code>: Subset a
+<code><a href="ReferenceDataTrack-class.html">ReferenceDataTrack</a></code> by coordinates and sort if
+necessary.</p></li>
 <li><p><code>score(DataTrack)</code>: extract the (optionally subset and transformed)
 data values of the track as a numeric matrix, applying the <code>transformation</code>
 display parameter unless <code>transformation = FALSE</code>.</p></li>
@@ -519,15 +456,15 @@ is not necessary.</p></li>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p>DataTrack</p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

@@ -102,8 +102,8 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 
 <dt id="arg-tracklist">trackList<a class="anchor" aria-label="anchor" href="#arg-tracklist"></a></dt>
-<dd><p>A list of Gviz track objects that all have to inherit from
-class <code>GdObject</code>.</p></dd>
+<dd><p>A list of <code>Gviz</code> track objects that all have to inherit
+from class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -114,40 +114,30 @@ class <code>GdObject</code>.</p></dd>
 <dd><p>An optional meta argument to handle the different input types.
 If the <code>range</code> argument is missing, all the relevant information to create
 the object has to be provided as individual function arguments (see below).</p>
-<p>The different input options for <code>range</code> are:</p>
-<dl><dt>A <code>GRanges</code> object:</dt>
-<dd><p>the genomic ranges for the highlighting
-regions.</p></dd>
-
-
-<dt>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object:</dt>
-<dd><p>almost identical to the
-<code>GRanges</code> case, except that the chromosome information has to be
-provided in the separate <code>chromosome</code> argument, because it can not be
-directly encoded in an <code>IRanges</code> object.</p></dd>
-
-
-<dt>A <code>data.frame</code> object:</dt>
-<dd><p>the <code>data.frame</code> needs to contain
-at least the two mandatory columns <code>start</code> and <code>end</code> with the
-range coordinates. It may also contain a <code>chromosome</code> column with the
-chromosome information for each range. If missing, this information will be
-drawn from the constructor's <code>chromosome</code> argument.</p></dd>
-
-
-
-</dl></dd>
+<p>The different input options for <code>range</code> are:</p><ul><li><p>A <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object: the genomic ranges for
+the highlighting regions.</p></li>
+<li><p>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object: almost identical to the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> case, except that the chromosome
+information has to be provided in the separate <code>chromosome</code> argument,
+because it cannot be directly encoded in an
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object.</p></li>
+<li><p>A <code>data.frame</code> object: the <code>data.frame</code> needs to contain at least the two
+mandatory columns <code>start</code> and <code>end</code> with the range coordinates. It may also
+contain a <code>chromosome</code> column with the chromosome information for each range.
+If missing, this information will be drawn from the constructor's
+<code>chromosome</code> argument.</p></li>
+</ul></dd>
 
 
 <dt id="arg-start-end">start, end<a class="anchor" aria-label="anchor" href="#arg-start-end"></a></dt>
-<dd><p>An integer scalar with the genomic start or end coordinates
+<dd><p>An integer scalar with the genomic start or end coordinate
 for the highlighting range. Can also be supplied as part of the <code>range</code>
 argument.</p></dd>
 
 
 <dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
-<dd><p>An integer vector of widths for highlighting ranges. This can
-be used instead of either <code>start</code> or <code>end</code> to specify the range
+<dd><p>An integer vector of widths for the highlighting ranges. This
+can be used instead of either <code>start</code> or <code>end</code> to specify the range
 coordinates.</p></dd>
 
 
@@ -156,29 +146,29 @@ coordinates.</p></dd>
 defined. A valid UCSC chromosome identifier if
 <code>options(ucscChromosomeNames=TRUE)</code>. Please note that in this case only
 syntactic checking takes place, i.e., the argument value needs to be an
-integer, numeric character or a character of the form <code>chrx</code>, where
-<code>x</code> may be any possible string. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome. If not
-provided here, the constructor will try to build the chromosome information
-based on the available inputs, and as a last resort will fall back to the
-value <code>chrNA</code>. Please note that by definition all objects in the
-<code>Gviz</code> package can only have a single active chromosome at a time
-(although internally the information for more than one chromosome may be
-present), and the user has to call the <code>chromosome&lt;-</code> replacement
-method in order to change to a different active chromosome.</p></dd>
+integer, numeric character or a character of the form <code>chrx</code>, where <code>x</code> may
+be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome. If not provided here,
+the constructor will try to build the chromosome information based on the
+available inputs, and as a last resort will fall back to the value <code>chrNA</code>.
+Please note that by definition all objects in the <code>Gviz</code> package can only
+have a single active chromosome at a time (although internally the
+information for more than one chromosome may be present), and the user has to
+call the <code>chromosome&lt;-</code> replacement method in order to change to a different
+active chromosome.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. If not provided here the constructor will try to
+checked at this point. If not provided here, the constructor will try to
 extract this information from the provided inputs, and eventually will fall
 back to the default value of <code>NA</code>.</p></dd>
 
 
 <dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>Character scalar of the track's name. This is not really used
-and only exists fro completeness.</p></dd>
+and only exists for completeness.</p></dd>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
@@ -196,11 +186,11 @@ parameters on each of the contained sub-tracks.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>Object of <code>HighlightTrack-class</code>.</p></dd>
+<dd><p>Object of class <code>HighlightTrack</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -214,17 +204,18 @@ parameters on each of the contained sub-tracks.</p></dd>
 for the sole purpose of overlaying all the contained tracks with the same
 highlighting region as defined by the objects genomic ranges. During
 rendering the contained tracks will be treated as if they had been provided
-to the <code>plotTracks</code> function as individual objects.</p>
+to the <code><a href="plotTracks.html">plotTracks</a></code> function as individual objects.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
 
 <ul><li><p><code>initialize(HighlightTrack)</code>: Initialize the <code>trackList</code> slot before
-deferring to the <code>RangeTrack</code> initializer for the remaining slots.</p></li>
+deferring to the <code><a href="RangeTrack-class.html">RangeTrack</a></code> initializer for the
+remaining slots.</p></li>
 <li><p><code>HighlightTrack()</code>: Constructor function for
 <code>HighlightTrack-class</code>.</p></li>
 <li><p><code>displayPars(x = HighlightTrack) &lt;- value</code>: set display parameters using the values of
-the named list in value. See <a href="settings.html">settings</a> for details on display
+the named list in value. See <code><a href="settings.html">settings</a></code> for details on display
 parameters and customization.</p></li>
 <li><p><code>length(HighlightTrack)</code>: return the number of subtracks.</p></li>
 <li><p><code>chromosome(HighlightTrack) &lt;- value</code>: replace the value of the track's chromosome.
@@ -252,15 +243,15 @@ HighlightTrack by coordinates and sort if necessary.</p></li>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p>HighlightTrack</p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

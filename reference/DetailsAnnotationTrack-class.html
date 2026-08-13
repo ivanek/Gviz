@@ -85,55 +85,55 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 
 <dt id="arg-fun">fun<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>A function that is being called for each entry in the
-<code>AnnotationTrack</code> object. See section 'Details' and 'Examples' for
-further information. When called internally by the plotting machinery, a
-number of arguments are automatically passed on to this function, and the
-user needs to make sure that they can all be digested (i.e., either have all
-of them as formal named function arguments, or gobble up everything that is
-not needed in <code>...</code>). These arguments are:</p><ul><li><p><code>start</code>: the genomic start coordinate of the range item.</p></li>
-<li><p><code>end</code>: the genomic end coordinates of the range item.</p></li>
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> object. See sections 'Details'
+and 'Examples' for further information. When called internally by the
+plotting machinery, a number of arguments are automatically passed on to this
+function, and the user needs to make sure that they can all be digested
+(i.e., either have all of them as formal named function arguments, or gobble
+up everything that is not needed in <code>...</code>). These arguments are:</p><ul><li><p><code>start</code>: the genomic start coordinate of the range item.</p></li>
+<li><p><code>end</code>: the genomic end coordinate of the range item.</p></li>
 <li><p><code>strand</code>: the strand information for the range item.</p></li>
 <li><p><code>chromosome</code>: the chromosome of the range item.</p></li>
 <li><p><code>identifier</code>: the identifier of the range item, i.e., the result
 of calling <code>identifier(DetailsAnnotationTrack, lowest=TRUE)</code>. Typically
 those identifiers are passed on to the object constructor during
 instantiation as the <code>id</code> argument.</p></li>
-<li><p><code>index</code>: a counter enumerating the ranges. The <code>AnnotationTrack</code> object
-is sorted internally for visibility, and the <code>index</code> argument refers to
-the index of plotting.</p></li>
-<li><p><code>GdObject</code>: a reference to the currently plotted <code>DetailsAnnotationTrack</code>
-object.</p></li>
-<li><p><code>GdObject.original</code>: a reference to the <code>DetailsAnnotationTrack</code> before
-any processing like item collapsing has taken place. Essentially, this is
-the track object as it exists in your working environment.
-Additional arguments can be passed to the plotting function by means of the
+<li><p><code>index</code>: a counter enumerating the ranges. The
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> object is sorted internally for
+visibility, and the <code>index</code> argument refers to the index of plotting.</p></li>
+<li><p><code>GdObject</code>: a reference to the currently plotted
+<code>DetailsAnnotationTrack</code> object.</p></li>
+<li><p><code>GdObject.original</code>: a reference to the
+<code>DetailsAnnotationTrack</code> before any
+processing like item collapsing has taken place. Essentially, this is the
+track object as it exists in your working environment.</p></li>
+</ul><p>Additional arguments can be passed to the plotting function by means of the
 <code>detailsFunArgs</code> argument (see below). Note that the plot must use grid
-graphics (e.g. function in the 'lattice' package or low-level grid
-functions). To access a data object such a matrix or data frame within the
+graphics (e.g. functions in the <code>lattice</code> package or low-level grid
+functions). To access a data object such as a matrix or data frame within the
 function you can either store it as a variable in the global environment or,
 to avoid name space conflicts, you can make it part of the function
-environment by means of a closure. Alternatively, you may want to
-explicitely stick it into an environment or pass it along in the
-<code>detailsFunArgs</code> list. To figure out in your custom plotting function
-which annotation element is currently being plotted you can either use the
-identifier which has to be unique for each range element, or you may want to
-use the genomic position (start/end/strand/chromosome) e.g. if the data is
-stored in a <code>GRanges</code> object.</p></li>
-</ul></dd>
+environment by means of a closure. Alternatively, you may want to explicitly
+stick it into an environment or pass it along in the <code>detailsFunArgs</code> list.
+To figure out in your custom plotting function which annotation element is
+currently being plotted you can either use the identifier, which has to be
+unique for each range element, or you may want to use the genomic position
+(start/end/strand/chromosome), e.g. if the data is stored in a
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object.</p></dd>
 
 
 <dt id="arg-selectfun">selectFun<a class="anchor" aria-label="anchor" href="#arg-selectfun"></a></dt>
 <dd><p>A function that is being called for each entry in the
-<code>AnnotationTrack</code> object with exactly the same arguments as in
-<code>fun</code>. The purpose of this function is to decide for each track element
-whether details should be drawn, and consequently it has to return a single
-logical scalar. If the return value is <code>TRUE</code>, details will be drawn
-for the item, if it is <code>FALSE</code>, the details strip for the item is
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> object with exactly the same
+arguments as in <code>fun</code>. The purpose of this function is to decide for each
+track element whether details should be drawn, and consequently it has to
+return a single logical scalar. If the return value is <code>TRUE</code>, details will
+be drawn for the item; if it is <code>FALSE</code>, the details strip for the item is
 omitted.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg-minbase-maxbase">minBase, maxBase<a class="anchor" aria-label="anchor" href="#arg-minbase-maxbase"></a></dt>
@@ -151,24 +151,25 @@ anything to the device.</p></dd>
     <h2>Functions</h2>
 
 <ul><li><p><code>DetailsAnnotationTrack()</code>: Constructor function for
-<code>DetailsAnnotationTrack-class</code></p>
-<p>The <code>DetailsAnnotationTrack</code> class directly extends <code>AnnotationTrack</code>.
-The purpose of this track type is to add an arbitrarily detailed plot
-section (typically consisting of additional quantitative data) for each
-range element of an <code>AnnotationTrack</code>. This allows a locus-wide view of
-annotation elements together with any kind of details per feature or
-element that may, for instance, provide insight on how some complex
-quantitative measurements change according to their position in a locus.
-If the quantitative data is too complex for a <code>DataTrack</code>, e.g. because it
-requires extra space or a trellis-like representation, a
-<code>DetailsAnnotationTrack</code> can be used instead. Example: an <code>AnnotationTrack</code>
-shows the positions of a number of probes from a microarray, and you want
-a histogram of the signal intensity distribution derived from all samples
-at each of these probe locations. Another example usage would be to show,
-for each element of an <code>AnnotationTrack</code>, an xy-plot of the signal against
-some clinical measurement such as blood pressure. The limitation for
-applications of this type of track is basically only the available space
-of the device you are plotting to.</p>
+<code>DetailsAnnotationTrack-class</code>.</p>
+<p>The <code>DetailsAnnotationTrack</code> class directly
+extends <code>AnnotationTrack</code>. The purpose of this track type is to add an
+arbitrarily detailed plot section (typically consisting of additional
+quantitative data) for each range element of an <code>AnnotationTrack</code>. This
+allows a locus-wide view of annotation elements together with any kind of
+details per feature or element that may, for instance, provide insight on how
+some complex quantitative measurements change according to their position in
+a locus. If the quantitative data is too complex for a
+<code><a href="DataTrack-class.html">DataTrack</a></code>, e.g. because it requires extra space or a
+trellis-like representation, a
+<code>DetailsAnnotationTrack</code> can be used instead.
+Example: an <code>AnnotationTrack</code> shows the positions of a number of probes from
+a microarray, and you want a histogram of the signal intensity distribution
+derived from all samples at each of these probe locations. Another example
+usage would be to show, for each element of an <code>AnnotationTrack</code>, an xy-plot
+of the signal against some clinical measurement such as blood pressure. The
+limitation for applications of this type of track is basically only the
+available space of the device you are plotting to.</p>
 <p>This flexibility is possible by utilizing a simple function model
 to perform all the detailed plotting. The functionality of this plotting
 function fun is totally up to the user, and the function environment is
@@ -181,7 +182,7 @@ be passed on to these two function by means of the <code>detailsFunArgs</code> d
 parameter. This is expected to be a named list, and all list elements are
 passed along to the plotting function fun and to the selector function
 <code>selectFun</code> as additional named arguments. Please note that some argument
-names like <code>start</code>, <code>end</code> or <code>identifier</code> are reserved and can not be used
+names like <code>start</code>, <code>end</code> or <code>identifier</code> are reserved and cannot be used
 in the <code>detailsFunArgs</code> list. For examples of plotting functions,
 see the 'Examples' section.</p></li>
 <li><p><code>initialize(DetailsAnnotationTrack)</code>: Initialize the <code>fun</code> and <code>selectFun</code>
@@ -202,13 +203,14 @@ necessary.</p></li>
 
 
 <dl><dt><code>fun</code></dt>
-<dd><p>A function that is being called for each <code>AnnotationTrack</code>
-element to plot details.</p></dd>
+<dd><p>Object of class <code>function</code>, that is being called for each
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> element to plot details.</p></dd>
 
 
 <dt><code>selectFun</code></dt>
-<dd><p>A function that is being called for each <code>AnnotationTrack</code>
-element to decide whether details need to be plotted.</p></dd>
+<dd><p>Object of class <code>function</code>, that is being called for each
+<code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code> element to decide whether details
+need to be plotted.</p></dd>
 
 
 </dl></div>

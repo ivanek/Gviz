@@ -153,12 +153,12 @@ instantiation, to be filled in by the <code>initialize</code> method.</p></dd>
 <dt id="arg-start-end">start, end<a class="anchor" aria-label="anchor" href="#arg-start-end"></a></dt>
 <dd><p>An integer scalar with the genomic start or end coordinate
 for the gene model range. If those are missing, the default value will
-automatically be the smallest (or largest) value, respectively in
-<code>rstarts</code> and <code>rends</code> for the currently active chromosome. When
-building a <code>GeneRegionTrack</code> from a <code>TxDb</code> object, these arguments
-can be used to subset the desired annotation data by genomic coordinates.
-Please note this in that case the <code>chromosome</code> parameter must also be
-set.</p></dd>
+automatically be the smallest (or largest) value, respectively, in <code>rstarts</code>
+and <code>rends</code> for the currently active chromosome. When building a
+<code>GeneRegionTrack</code> from a
+<code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html" class="external-link">TxDb</a></code> object, these arguments can be used to
+subset the desired annotation data by genomic coordinates. Please note that
+in this case the <code>chromosome</code> parameter must also be set.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -171,8 +171,9 @@ section below for details.</p></dd>
 <dd><p>A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 <code>selection</code> argument when accessing the data on disk. This causes the
-constructor to return a <code>ReferenceGeneRegionTrack</code> object which will
-grab the necessary data on the fly during each plotting operation.</p></dd>
+constructor to return a
+<code><a href="ReferenceGeneRegionTrack-class.html">ReferenceGeneRegionTrack</a></code> object which
+will grab the necessary data on the fly during each plotting operation.</p></dd>
 
 
 <dt id="arg-reference">reference<a class="anchor" aria-label="anchor" href="#arg-reference"></a></dt>
@@ -181,7 +182,8 @@ grab the necessary data on the fly during each plotting operation.</p></dd>
 
 <dt id="arg-mapping">mapping<a class="anchor" aria-label="anchor" href="#arg-mapping"></a></dt>
 <dd><p>A named <code>list</code> mapping the columns of the imported data to
-the metadata columns of the track's <code>GRanges</code> object.</p></dd>
+the metadata columns of the track's <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>
+object.</p></dd>
 
 
 <dt id="arg-args">args<a class="anchor" aria-label="anchor" href="#arg-args"></a></dt>
@@ -197,125 +199,107 @@ fill in whatever has not been provided in <code>args</code>.</p></dd>
 <dd><p>An optional meta argument to handle the different input types.
 If the <code>range</code> argument is missing, all the relevant information to create
 the object has to be provided as individual function arguments (see below).</p>
-<p>The different input options for <code>range</code> are:</p>
-<dl><dt>A <code>TxDb</code> object:</dt>
-<dd><p>all the necessary gene model information
-including exon locations, transcript groupings and associated gene ids are
-contained in <code>TxDb</code> objects, and the coercion between the two is almost
-completely automated. If desired, the data to be fetched from the
-<code>TxDb</code> object can be restricted using the constructor's
-<code>chromosome</code>, <code>start</code> and <code>end</code> arguments. See below for
+<p>The different input options for <code>range</code> are:</p><ul><li><p>A <code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html" class="external-link">TxDb</a></code> object: all the necessary gene
+model information including exon locations, transcript groupings and
+associated gene ids are contained in
+<code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html" class="external-link">TxDb</a></code> objects, and the coercion between the
+two is almost completely automated. If desired, the data to be fetched from
+the <code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html" class="external-link">TxDb</a></code> object can be restricted using the
+constructor's <code>chromosome</code>, <code>start</code> and <code>end</code> arguments. See below for
 details. A direct coercion method <code>as(obj, "GeneRegionTrack")</code> is also
 available. A nice added benefit of this input option is that the UTR and
-coding region information that is part of the original <code>TxDb</code> object is
-retained in the <code>GeneRegionTrack</code>.</p></dd>
-
-
-<dt>A <code>GRanges</code> object:</dt>
-<dd><p>the genomic ranges for the
-<code>GeneRegion</code> track as well as the optional additional metadata columns
-<code>feature</code>, <code>transcript</code>, <code>gene</code>, <code>exon</code> and
-<code>symbol</code> (see description of the individual function parameters below
-for details). Calling the constructor on a <code>GRanges</code> object without
-further arguments, e.g.  <code>GeneRegionTrack(range=obj)</code> is equivalent to
-calling the coerce method <code>as(obj, "GeneRegionTrack")</code>.</p></dd>
-
-
-<dt>A <code>GRangesList</code> object:</dt>
-<dd><p>this is very similar to the previous
-case, except that the grouping information that is part of the list
-structure is preserved in the <code>GeneRegionTrack</code>. I.e., all the elements
-within one list item receive the same group id. For consistancy, there is
-also a coercion method from <code>GRangesLists</code> <code>as(obj, "GeneRegionTrack")</code>. Please note that unless the necessary information about
-gene ids, symbols, etc. is present in the individual <code>GRanges</code> meta
-data slots, the object will not be particularly useful, because all the
-identifiers will be set to a common default value.</p></dd>
-
-
-<dt>An <a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a> object:</dt>
-<dd><p>almost identical to the
-<code>GRanges</code> case, except that the chromosome and strand information as
-well as all additional data has to be provided in the separate
-<code>chromosome</code>, <code>strand</code>, <code>feature</code>, <code>transcript</code>,
-<code>symbol</code>, <code>exon</code> or <code>gene</code> arguments, because it can not be
-directly encoded in an <code>IRanges</code> object. Note that only the former two
-are mandatory (if not provided explicitely the more or less reasonable
-default values <code>chromosome=NA</code> and <code>strand=*</code> are used, but not
-providing information about the gene-to-transcript relationship or the
-human-readble symbols renders a lot of the class' functionality useles.</p></dd>
-
-
-<dt>A <code>data.frame</code> object:</dt>
-<dd><p>the <code>data.frame</code> needs to contain
-at least the two mandatory columns <code>start</code> and <code>end</code> with the
-range coordinates. It may also contain a <code>chromosome</code> and a
-<code>strand</code> column with the chromosome and strand information for each
-range. If missing, this information will be drawn from the constructor's
-<code>chromosome</code> or <code>strand</code> arguments. In addition, the
-<code>feature</code>, <code>exon</code>, <code>transcript</code>, <code>gene</code> and
-<code>symbol</code> data can be provided as columns in the <code>data.frame</code>. The
-above comments about potential default values also apply here.</p></dd>
-
-
-<dt>A <code>character</code> scalar:</dt>
-<dd><p>in this case the value of the
-<code>range</code> argument is considered to be a file path to an annotation file
-on disk. A range of file types are supported by the <code>Gviz</code> package as
-identified by the file extension. See the <code>importFunction</code>
-documentation below for further details.</p></dd>
-
-
-
-</dl></dd>
+coding region information that is part of the original
+<code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html" class="external-link">TxDb</a></code> object is retained in the
+<code>GeneRegionTrack</code>.</p></li>
+<li><p>A <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object: the genomic ranges for
+the <code>GeneRegion</code> track as well as the optional additional metadata columns
+<code>feature</code>, <code>transcript</code>, <code>gene</code>, <code>exon</code> and <code>symbol</code> (see description of the
+individual function parameters below for details). Calling the constructor on
+a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object without further arguments,
+e.g. <code>GeneRegionTrack(range=obj)</code>, is equivalent to calling the coerce method
+<code>as(obj, "GeneRegionTrack")</code>.</p></li>
+<li><p>A <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> object: this is very
+similar to the previous case, except that the grouping information that is
+part of the list structure is preserved in the <code>GeneRegionTrack</code>. I.e., all
+the elements within one list item receive the same group id. For consistency,
+there is also a coercion method from
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> objects,
+<code>as(obj, "GeneRegionTrack")</code>. Please note that unless the necessary
+information about gene ids, symbols, etc. is present in the individual
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> metadata slots, the object will not
+be particularly useful, because all the identifiers will be set to a common
+default value.</p></li>
+<li><p>An <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object: almost identical to the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> case, except that the chromosome
+and strand information as well as all additional data has to be provided in
+the separate <code>chromosome</code>, <code>strand</code>, <code>feature</code>, <code>transcript</code>, <code>symbol</code>,
+<code>exon</code> or <code>gene</code> arguments, because it cannot be directly encoded in an
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object. Note that only the former two are
+mandatory (if not provided explicitly the more or less reasonable default
+values <code>chromosome=NA</code> and <code>strand=*</code> are used), but not providing
+information about the gene-to-transcript relationship or the human-readable
+symbols renders a lot of the class' functionality useless.</p></li>
+<li><p>A <code>data.frame</code> object: the <code>data.frame</code> needs to contain at least the two
+mandatory columns <code>start</code> and <code>end</code> with the range coordinates. It may also
+contain a <code>chromosome</code> and a <code>strand</code> column with the chromosome and strand
+information for each range. If missing, this information will be drawn from
+the constructor's <code>chromosome</code> or <code>strand</code> arguments. In addition, the
+<code>feature</code>, <code>exon</code>, <code>transcript</code>, <code>gene</code> and <code>symbol</code> data can be provided as
+columns in the <code>data.frame</code>. The above comments about potential default
+values also apply here.</p></li>
+<li><p>A <code>character</code> scalar: in this case the value of the <code>range</code> argument is
+considered to be a file path to an annotation file on disk. A range of file
+types is supported by the <code>Gviz</code> package as identified by the file extension.
+See the <code>importFunction</code> documentation below for further details.</p></li>
+</ul></dd>
 
 
 <dt id="arg-rstarts">rstarts<a class="anchor" aria-label="anchor" href="#arg-rstarts"></a></dt>
 <dd><p>An integer vector of the start coordinates for the actual
 gene model items, i.e., for the individual exons. The relationship between
-exons is handled via the <code>gene</code> and <code>transcript</code> factors.
-Alternatively, this can be a vector of comma-separated lists of integer
-coordinates, one vector item for each transcript, and each comma-separated
-element being the start location of a single exon within that transcript.
-Those lists will be exploded upon object instantiation and all other
-annotation arguments will be recycled accordingly to regenerate the
-exon/transcript/gene relationship structure. This implies the approriate
-number of items in all annotation and coordinates arguments.</p></dd>
+exons is handled via the <code>gene</code> and <code>transcript</code> factors. Alternatively,
+this can be a vector of comma-separated lists of integer coordinates, one
+vector item for each transcript, and each comma-separated element being the
+start location of a single exon within that transcript. Those lists will be
+exploded upon object instantiation and all other annotation arguments will be
+recycled accordingly to regenerate the exon/transcript/gene relationship
+structure. This implies the appropriate number of items in all annotation and
+coordinate arguments.</p></dd>
 
 
 <dt id="arg-rends">rends<a class="anchor" aria-label="anchor" href="#arg-rends"></a></dt>
 <dd><p>An integer vector of the end coordinates for the actual gene
-model items. Both <code>rstarts</code> and <code>rends</code> have to be of equal
-length.</p></dd>
+model items. Both <code>rstarts</code> and <code>rends</code> have to be of equal length.</p></dd>
 
 
 <dt id="arg-rwidths">rwidths<a class="anchor" aria-label="anchor" href="#arg-rwidths"></a></dt>
 <dd><p>An integer vector of widths for the actual gene model items.
-This can be used instead of either <code>rstarts</code> or <code>rends</code> to specify
-the range coordinates.</p></dd>
+This can be used instead of either <code>rstarts</code> or <code>rends</code> to specify the range
+coordinates.</p></dd>
 
 
 <dt id="arg-strand">strand<a class="anchor" aria-label="anchor" href="#arg-strand"></a></dt>
 <dd><p>Character vector, the strand information for the individual
-track exons. It may be provided in the form <code>+</code> for the Watson strand,
-<code>-</code> for the Crick strand or <code>*</code> for either one of the two. Please
-note that all items within a single gene or transcript model need to be on
-the same strand, and erroneous entries will result in casting of an error.</p></dd>
+track exons. It may be provided in the form <code>+</code> for the Watson strand, <code>-</code>
+for the Crick strand or <code>*</code> for either one of the two. Please note that all
+items within a single gene or transcript model need to be on the same strand,
+and erroneous entries will result in an error.</p></dd>
 
 
 <dt id="arg-feature">feature<a class="anchor" aria-label="anchor" href="#arg-feature"></a></dt>
 <dd><p>Factor (or other vector that can be coerced into one), giving
-the feature types for the individual track exons.  When plotting the track
+the feature types for the individual track exons. When plotting the track
 to the device, if a display parameter with the same name as the value of
 <code>feature</code> is set, this will be used as the track item's fill color.
 Additionally, the feature type defines whether an element in the
-<code>GeneRegionTrack</code> is considered to be coding or non-coding. The details
-section as well as the section about the <code>thinBoxFeature</code> display
-parameter further below has more information on this. See also
-<code><a href="grouping.html">grouping</a></code> for details.</p></dd>
+<code>GeneRegionTrack</code> is considered to be coding or
+non-coding. The 'Details' section as well as the section about the
+<code>thinBoxFeature</code> display parameter further below has more information on
+this. See also <code><a href="grouping.html">grouping</a></code> for details.</p></dd>
 
 
 <dt id="arg-exon">exon<a class="anchor" aria-label="anchor" href="#arg-exon"></a></dt>
-<dd><p>Character vector of exon identifiers. It's values will be used
+<dd><p>Character vector of exon identifiers. Its values will be used
 as the identifier tag when plotting to the device if the display parameter
 <code>showExonId=TRUE</code>.</p></dd>
 
@@ -324,8 +308,8 @@ as the identifier tag when plotting to the device if the display parameter
 <dd><p>Factor (or other vector that can be coerced into one),
 giving the transcript memberships for the individual track exons. All items
 with the same transcript identifier will be visually connected when plotting
-to the device.  See <code><a href="grouping.html">grouping</a></code> for details. Will be used as
-labels when <code>showId=TRUE</code>, and <code>geneSymbol=FALSE</code>.</p></dd>
+to the device. See <code><a href="grouping.html">grouping</a></code> for details. Will be used as labels when
+<code>showId=TRUE</code> and <code>geneSymbol=FALSE</code>.</p></dd>
 
 
 <dt id="arg-gene">gene<a class="anchor" aria-label="anchor" href="#arg-gene"></a></dt>
@@ -335,7 +319,7 @@ the gene memberships for the individual track exons.</p></dd>
 
 <dt id="arg-symbol">symbol<a class="anchor" aria-label="anchor" href="#arg-symbol"></a></dt>
 <dd><p>A factor with human-readable gene name aliases which will be
-used as labels when <code>showId=TRUE</code>, and <code>geneSymbol=TRUE</code>.</p></dd>
+used as labels when <code>showId=TRUE</code> and <code>geneSymbol=TRUE</code>.</p></dd>
 
 
 <dt id="arg-chromosome">chromosome<a class="anchor" aria-label="anchor" href="#arg-chromosome"></a></dt>
@@ -343,33 +327,34 @@ used as labels when <code>showId=TRUE</code>, and <code>geneSymbol=TRUE</code>.<
 defined. A valid UCSC chromosome identifier if
 <code>options(ucscChromosomeNames=TRUE)</code>. Please note that in this case only
 syntactic checking takes place, i.e., the argument value needs to be an
-integer, numeric character or a character of the form <code>chrx</code>, where
-<code>x</code> may be any possible string. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome. If not
-provided here, the constructor will try to build the chromosome information
-based on the available inputs, and as a last resort will fall back to the
-value <code>chrNA</code>. Please note that by definition all objects in the
-<code>Gviz</code> package can only have a single active chromosome at a time
-(although internally the information for more than one chromosome may be
-present), and the user has to call the <code>chromosome&lt;-</code> replacement
-method in order to change to a different active chromosome. When creating a
-<code>GeneRegionTrack</code> from a <code>TxDb</code> object, the value of this
-parameter can be used to subset the data to fetch only transcripts from a
-single chromosome.</p></dd>
+integer, numeric character or a character of the form <code>chrx</code>, where <code>x</code> may
+be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome. If not provided here,
+the constructor will try to build the chromosome information based on the
+available inputs, and as a last resort will fall back to the value <code>chrNA</code>.
+Please note that by definition all objects in the <code>Gviz</code> package can only
+have a single active chromosome at a time (although internally the
+information for more than one chromosome may be present), and the user has to
+call the <code>chromosome&lt;-</code> replacement method in order to change to a different
+active chromosome. When creating a
+<code>GeneRegionTrack</code> from a
+<code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html" class="external-link">TxDb</a></code> object, the value of this parameter can
+be used to subset the data to fetch only transcripts from a single
+chromosome.</p></dd>
 
 
 <dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
 <dd><p>The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. If not provided here the constructor will try to
+checked at this point. If not provided here, the constructor will try to
 extract this information from the provided inputs, and eventually will fall
 back to the default value of <code>NA</code>.</p></dd>
 
 
 <dt id="arg-stacking">stacking<a class="anchor" aria-label="anchor" href="#arg-stacking"></a></dt>
-<dd><p>The stacking type for overlapping items of the track. One in
-<code>c(hide, dense, squish, pack,full)</code>. Currently, only hide (don't show
-the track items, squish (make best use of the available space) and dense (no
+<dd><p>The stacking type for overlapping items of the track. One of
+<code>c(hide, dense, squish, pack, full)</code>. Currently, only hide (do not show the
+track items), squish (make best use of the available space) and dense (no
 stacking at all) are implemented.</p></dd>
 
 
@@ -383,18 +368,18 @@ when plotting.</p></dd>
 from a file. This only applies when the <code>range</code> argument is a character
 string with the path to the input data file. The function needs to accept an
 argument <code>x</code> containing the file path and has to return a proper
-<code>GRanges</code> object with all the necessary metadata columns set. A set of
-default import functions is already implemented in the package for a number
-of different file types, and one of these defaults will be picked
-automatically based on the extension of the input file name. If the
-extension can not be mapped to any of the existing import function, an error
-is raised asking for a user-defined import function via this argument.
-Currently the following file types can be imported with the default
-functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</code>, <code>gtf</code>.</p></dd>
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object with all the necessary
+metadata columns set. A set of default import functions is already
+implemented in the package for a number of different file types, and one of
+these defaults will be picked automatically based on the extension of the
+input file name. If the extension cannot be mapped to any of the existing
+import functions, an error is raised asking for a user-defined import
+function via this argument. Currently the following file types can be
+imported with the default functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</code>, <code>gtf</code>.</p></dd>
 
 
 <dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
@@ -402,7 +387,8 @@ functions: <code>gff</code>, <code>gff1</code>, <code>gff2</code>, <code>gff3</c
 
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>Object inheriting from <code>GeneRegionTrack-class</code>.</p></dd>
+<dd><p>Object inheriting from
+<code>GeneRegionTrack</code>.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -423,56 +409,42 @@ case the class is derived directly from it.</p></dd>
     <div id="details">
     <h2>Details</h2>
     <p>A track containing all gene models in a particular region. The data are
-usually fetched dynamially from an online data store, but it is also
-possible to manully construct objects from local data. Connections to
+usually fetched dynamically from an online data store, but it is also
+possible to manually construct objects from local data. Connections to
 particular online data sources should be implemented as sub-classes, and
-<code>GeneRegionTrack</code> is just the commone denominator that is being used
+<code>GeneRegionTrack</code> is just the common denominator that is being used
 for plotting later on. There are several levels of data associated to a
-<code>GeneRegionTrack</code>:</p>
-<dl><dt>exon level:</dt>
-<dd><p>identifiers are stored in the exon column of the
-<a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a> object in the <code>range</code> slot. Data may
-be extracted using the <code>exon</code> method.</p></dd>
-
-
-<dt>transcript level:</dt>
-<dd><p>identifiers are stored in the transcript column of
-the <a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a> object. Data may be extracted
-using the <code>transcript</code> method.</p></dd>
-
-
-<dt>gene level:</dt>
-<dd><p>identifiers are stored in the gene column of the
-<a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a> object, more human-readable versions
-in the symbol column. Data may be extracted using the <code>gene</code> or the <code>symbol</code>
-methods.</p></dd>
-
-
-<dt>transcript-type level:</dt>
-<dd><p>information is stored in the feature column of
-the <a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a> object. If a display parameter of
-the same name is specified, the software will use its value for the
-coloring.</p></dd>
-
-
-
-</dl><p><code>GeneRegionTrack</code> objects also know about coding regions and non-coding
+<code>GeneRegionTrack</code>:</p><ul><li><p>exon level: identifiers are stored in the exon column of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object in the <code>range</code> slot. Data
+may be extracted using the <code>exon</code> method.</p></li>
+<li><p>transcript level: identifiers are stored in the transcript column of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object. Data may be extracted using
+the <code>transcript</code> method.</p></li>
+<li><p>gene level: identifiers are stored in the gene column of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object, more human-readable
+versions in the symbol column. Data may be extracted using the <code>gene</code> or the
+<code>symbol</code> methods.</p></li>
+<li><p>transcript-type level: information is stored in the feature column of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object. If a display parameter of
+the same name is specified, the software will use its value for the coloring.</p></li>
+</ul><p><code>GeneRegionTrack</code> objects also know about coding regions and non-coding
 regions (e.g., UTRs) in a transcript, and will indicate those by using
 different shapes (wide boxes for all coding regions, thinner boxes for
-non-coding regions). This is archived by setting the <code>feature</code> values
+non-coding regions). This is achieved by setting the <code>feature</code> values
 of the object for non-coding elements to one of the options that are
-provided in the <code>thinBoxFeature</code> display parameters. All other elements
+provided in the <code>thinBoxFeature</code> display parameter. All other elements
 are considered to be coding elements.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
 
 <ul><li><p><code>initialize(GeneRegionTrack)</code>: Initialize the <code>start</code> and <code>end</code> slots
-before deferring to the <code>AnnotationTrack</code> initializer for the remaining
-slots.</p></li>
-<li><p><code>initialize(ReferenceGeneRegionTrack)</code>: Initialize the <code>ReferenceTrack</code> slots
-(<code>stream</code>, <code>reference</code>, <code>mapping</code>, <code>args</code>, <code>defaults</code>) before deferring to
-the <code>GeneRegionTrack</code> initializer for the remaining slots.</p></li>
+before deferring to the <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code>
+initializer for the remaining slots.</p></li>
+<li><p><code>initialize(ReferenceGeneRegionTrack)</code>: Initialize the
+<code><a href="ReferenceTrack-class.html">ReferenceTrack</a></code> slots (<code>stream</code>, <code>reference</code>,
+<code>mapping</code>, <code>args</code>, <code>defaults</code>) before deferring to the <code>GeneRegionTrack</code>
+initializer for the remaining slots.</p></li>
 <li><p><code>GeneRegionTrack()</code>: Constructor function for
 <code>GeneRegionTrack-class</code>.</p></li>
 <li><p><code>gene(GeneRegionTrack)</code>: Extract the gene identifiers for all
@@ -481,7 +453,7 @@ gene models.</p></li>
 gene models.
 The replacement value must be a character of appropriate length or another
 vector that can be coerced into such.</p></li>
-<li><p><code>symbol(GeneRegionTrack)</code>: Extract the human-readble gene symbol
+<li><p><code>symbol(GeneRegionTrack)</code>: Extract the human-readable gene symbol
 for all gene models.</p></li>
 <li><p><code>symbol(GdObject = GeneRegionTrack) &lt;- value</code>: Replace the human-readable gene symbol
 for all gene models.
@@ -536,15 +508,15 @@ is not necessary.</p></li>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

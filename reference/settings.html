@@ -89,19 +89,20 @@ function parameters are being interpreted as additional display parameters
 and are automatically added to the aforementioned slot. The main difference
 here is that display parameters that are passed on to the constructor
 function are specific for an individual track object, whereas those supplied
-to the <code>plotTracks</code> function will be applied to all the objects in the
+to the <code><a href="plotTracks.html">plotTracks</a></code> function will be applied to all the objects in the
 plotting list. Not all display parameters have an effect on the plotting of
 all track classes, and those will be silently ignored.</p>
 <p>One can query the available display parameters for a given class as well as
-their default values by calling the <code><a href="DisplayPars-class.html">availableDisplayPars</a></code>
-function, or by inspecting the man pages of the individual track classes.
-The structure of the classes defined in this package is hierarchical, and so
-are the available display parameters, i.e., all objects inherit the
-parameters defined in the common <code>GdObject</code> parent class, and so on.</p>
+their default values by calling the <code><a href="DisplayPars-class.html">availableDisplayPars</a></code> function, or by
+inspecting the man pages of the individual track classes. The structure of
+the classes defined in this package is hierarchical, and so are the available
+display parameters, i.e., all objects inherit the parameters defined in the
+common <code><a href="GdObject-class.html">GdObject</a></code> parent class, and so on.</p>
 <p>Once a track object has been created, the display parameters are still open
 for modification. To this end, the <code><a href="DisplayPars-class.html">DisplayPars</a></code>
 replacement method is available for all objects inheriting from class
-<code>GdObject</code>. The method takes a named list of parameters as input, e.g.:</p>
+<code><a href="GdObject-class.html">GdObject</a></code>. The method takes a named list of parameters as
+input, e.g.:</p>
 <p><code>displayPars(foo) &lt;- list(col="red", lwd=2)</code></p>
 <p>In the same spirit, the currently set display parameters for the object
 <code>foo</code> can be inferred using the <code>displayPars</code> method directly,
@@ -123,17 +124,17 @@ location once and for all. To this end the Gviz package supports display
 parameter schemes. A scheme is essentially just a bunch of nested named
 lists, where the names on the first level of nesting should correspond to
 track class names, and the names on the second level to the display
-parameters to set. The currently active schmeme can be changed by setting
+parameters to set. The currently active scheme can be changed by setting
 the global option <code>Gviz.scheme</code>, and a new scheme can be registered by
 using the <code>addScheme</code> function, providing both the list and the name
 for the new scheme. The <code>getScheme</code> function is useful to get the
 current scheme as a list structure, for instance to use as a skeleton for
 your own custom scheme.</p>
-<p>In order to make these settings persitant across R sessions one can create
+<p>In order to make these settings persistent across R sessions one can create
 one or several schemes in the global environment in the special object
 <code>.GvizSchemes</code>, for instance by putting the necessary code in the
 <code>.Rprofile</code> file. This object needs to be a named list of schemes, and
-it will be collected when the Givz package loads. Its content is then
+it will be collected when the Gviz package loads. Its content is then
 automatically added to the collection of available schemes.</p>
 <p>Please note that because display parameters are stored with the track
 objects, a scheme change only has an effect on those objects that are
@@ -232,7 +233,7 @@ marks.</p></dd>
 
 <dt><code>lwd=2</code>:</dt>
 <dd><p>Numeric scalar. The line width for the axis
-elementes.</p></dd>
+elements.</p></dd>
 
 
 <dt><code>scale=NULL</code>:</dt>
@@ -269,7 +270,7 @@ lines and tickmarks.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -336,7 +337,7 @@ color for the title panels</p></dd>
 
 <dt><code>collapse=TRUE</code>:</dt>
 <dd><p>Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
@@ -441,7 +442,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 
 <dt><code>rotation=0</code>:</dt>
 <dd><p>The rotation angle for all text unless a more
-specific definiton exists.</p></dd>
+specific definition exists.</p></dd>
 
 
 <dt><code>showAxis=TRUE</code>:</dt>
@@ -486,7 +487,7 @@ it to <code>TRUE</code> fills empty positions with zeros, which is default.
 
 <dt><code>alpha.confint=0.3</code>:</dt>
 <dd><p>Numeric scalar. The transparency for the
-confidence intervalls in confint-type plots.</p></dd>
+confidence intervals in confint-type plots.</p></dd>
 
 
 <dt><code>amount=NULL</code>:</dt>
@@ -671,7 +672,7 @@ offer as much flexibility as this <code>gradient</code> parameter.</p></dd>
 
 
 <dt><code>groups=NULL</code>:</dt>
-<dd><p>Vector coercable to a factor.  Optional sample
+<dd><p>Vector coercible to a factor.  Optional sample
 grouping. See 'Details' section in <code><a href="DataTrack-class.html">DataTrack</a></code> for
 further information.</p></dd>
 
@@ -737,7 +738,7 @@ mountain-type and polygon-type plots, defaults to the setting of
 
 
 <dt><code>min.distance=0</code>:</dt>
-<dd><p>Numeric scalar. The mimimum distance in pixel
+<dd><p>Numeric scalar. The minimum distance in pixel
 below which to collapse ranges.</p></dd>
 
 
@@ -854,7 +855,7 @@ are computed.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -1040,7 +1041,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 
 <dt><code>rotation=0</code>:</dt>
 <dd><p>The rotation angle for all text unless a more
-specific definiton exists.</p></dd>
+specific definition exists.</p></dd>
 
 
 <dt><code>showAxis=TRUE</code>:</dt>
@@ -1053,7 +1054,7 @@ specific definiton exists.</p></dd>
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
@@ -1172,7 +1173,7 @@ Defaults to automatic size setting. Can also be overridden in the
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -1239,7 +1240,7 @@ color for the title panels</p></dd>
 
 <dt><code>collapse=TRUE</code>:</dt>
 <dd><p>Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
@@ -1322,7 +1323,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 
 <dt><code>rotation=0</code>:</dt>
 <dd><p>The rotation angle for all text unless a more
-specific definiton exists.</p></dd>
+specific definition exists.</p></dd>
 
 
 <dt><code>showAxis=TRUE</code>:</dt>
@@ -1509,7 +1510,7 @@ be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> funct
 
 
 
-</dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="StackedTrack-class.html">StackedTrack</a></code>:</em></strong></p>
 <dl><dt><code>stackHeight=0.75</code>:</dt>
 <dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
@@ -1527,7 +1528,7 @@ will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -1599,7 +1600,7 @@ color for the title panels</p></dd>
 
 <dt><code>collapse=TRUE</code>:</dt>
 <dd><p>Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
@@ -1698,7 +1699,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
@@ -1732,7 +1733,7 @@ taking into account different track <code>features</code>.</p></dd>
 
 <dt><code>collapseTranscripts=FALSE</code>:</dt>
 <dd><p>Logical or character scalar. Can
-be one in <code>gene</code>, <code>longest</code>, <code>shortest</code> or <code>meta</code>. Merge
+be one of <code>gene</code>, <code>longest</code>, <code>shortest</code> or <code>meta</code>. Merge
 all transcripts of the same gene into one single gene model. In the case of
 <code>gene</code> (or <code>TRUE</code>), this will only keep the start location of the
 first exon and the end location of the last exon from all transcripts of the
@@ -1788,7 +1789,7 @@ information as transcript labels. This can be a value in <code>symbol</code>,
 
 
 
-</dl><p><b><em>Inherited from class AnnotationTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code>:</em></strong></p>
 <dl><dt><code>cex.group=0.6</code>:</dt>
 <dd><p>Numeric scalar. The font expansion factor for
 the group-level annotation.</p></dd>
@@ -1929,7 +1930,7 @@ be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> funct
 
 
 
-</dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="StackedTrack-class.html">StackedTrack</a></code>:</em></strong></p>
 <dl><dt><code>stackHeight=0.75</code>:</dt>
 <dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
@@ -1947,7 +1948,7 @@ will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -2019,7 +2020,7 @@ color for the title panels</p></dd>
 
 <dt><code>collapse=TRUE</code>:</dt>
 <dd><p>Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
@@ -2112,7 +2113,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
@@ -2255,11 +2256,11 @@ annotation objects of type 'utr5'.</p></dd>
 
 <dt><code>verbose=FALSE</code>:</dt>
 <dd><p>Logical scalar. Report data loading events
-from Bioamart or retrieval from cache.</p></dd>
+from Biomart or retrieval from cache.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GeneRegionTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GeneRegionTrack-class.html">GeneRegionTrack</a></code>:</em></strong></p>
 <dl><dt><code>arrowHeadWidth=10</code>:</dt>
 <dd><p>Numeric scalar. The width of the arrow
 head in pixels if <code>shape</code> is <code>fixedArrow</code>.</p></dd>
@@ -2278,7 +2279,7 @@ taking into account different track <code>features</code>.</p></dd>
 
 <dt><code>collapseTranscripts=FALSE</code>:</dt>
 <dd><p>Logical or character scalar. Can
-be one in <code>gene</code>, <code>longest</code>, <code>shortest</code> or <code>meta</code>. Merge
+be one of <code>gene</code>, <code>longest</code>, <code>shortest</code> or <code>meta</code>. Merge
 all transcripts of the same gene into one single gene model. In the case of
 <code>gene</code> (or <code>TRUE</code>), this will only keep the start location of the
 first exon and the end location of the last exon from all transcripts of the
@@ -2334,7 +2335,7 @@ information as transcript labels. This can be a value in <code>symbol</code>,
 
 
 
-</dl><p><b><em>Inherited from class AnnotationTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="AnnotationTrack-class.html">AnnotationTrack</a></code>:</em></strong></p>
 <dl><dt><code>cex.group=0.6</code>:</dt>
 <dd><p>Numeric scalar. The font expansion factor for
 the group-level annotation.</p></dd>
@@ -2475,7 +2476,7 @@ be overridden in the <code><a href="plotTracks.html">plotTracks</a></code> funct
 
 
 
-</dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="StackedTrack-class.html">StackedTrack</a></code>:</em></strong></p>
 <dl><dt><code>stackHeight=0.75</code>:</dt>
 <dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
@@ -2493,7 +2494,7 @@ will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -2565,7 +2566,7 @@ color for the title panels</p></dd>
 
 <dt><code>collapse=TRUE</code>:</dt>
 <dd><p>Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See <code><a href="collapsing.html">collapsing</a></code> for details.</p></dd>
 
 
@@ -2658,7 +2659,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 
@@ -2871,19 +2872,19 @@ to control the read and stacking appearance.</p></dd>
 
 <dt><code>minCoverageHeight=50</code>:</dt>
 <dd><p>Integer scalar. The minimum height of
-the coverage section. Uselful in combination with a relative setting of
+the coverage section. Useful in combination with a relative setting of
 <code>coverageHeight</code>.</p></dd>
 
 
 <dt><code>minSashimiHeight=50</code>:</dt>
 <dd><p>Integer scalar. The minimum height of
-the sashimi section. Uselful in combination with a relative setting of
+the sashimi section. Useful in combination with a relative setting of
 <code>sashimiHeight</code>.</p></dd>
 
 
 <dt><code>noLetters=FALSE</code>:</dt>
 <dd><p>Logical scalar. Always plot colored boxes
-for mismatch bases regardles of the available space.</p></dd>
+for mismatch bases regardless of the available space.</p></dd>
 
 
 <dt><code>sashimiFilter=NULL</code>:</dt>
@@ -2952,15 +2953,15 @@ data.</p></dd>
 
 
 <dt><code>type=c("coverage", "pileup")</code>:</dt>
-<dd><p>Character vactor.  The type of
+<dd><p>Character vector.  The type of
 information to plot. For <code>coverage</code> a coverage plot, potentially
 augmented by base mismatch information, for <code>sashimi</code> a sashimi plot,
-showing the juctions, and for <code>pileup</code> the pileups of the individual
+showing the junctions, and for <code>pileup</code> the pileups of the individual
 reads. These three can be combined.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class StackedTrack:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="StackedTrack-class.html">StackedTrack</a></code>:</em></strong></p>
 <dl><dt><code>stackHeight=0.75</code>:</dt>
 <dd><p>Numeric between 0 and 1.  Controls the
 vertical size and spacing between stacked elements. The number defines the
@@ -2978,7 +2979,7 @@ will be moved to the top-most stack and vice versa.</p></dd>
 
 
 
-</dl><p><b><em>Inherited from class GdObject:</em></b></p>
+</dl><p><strong><em>Inherited from class <code><a href="GdObject-class.html">GdObject</a></code>:</em></strong></p>
 <dl><dt><code>alpha=1</code>:</dt>
 <dd><p>Numeric scalar. The transparency for all track
 items.</p></dd>
@@ -3151,7 +3152,7 @@ title panel will currently not work, so use at own risk.</p></dd>
 
 <dt><code>rotation=0</code>:</dt>
 <dd><p>The rotation angle for all text unless a more
-specific definiton exists.</p></dd>
+specific definition exists.</p></dd>
 
 
 <dt><code>showAxis=TRUE</code>:</dt>
@@ -3164,7 +3165,7 @@ specific definiton exists.</p></dd>
 panel. Although this can be set individually for each track, in multi-track
 plots as created by <code><a href="plotTracks.html">plotTracks</a></code> there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.</p></dd>
 
 

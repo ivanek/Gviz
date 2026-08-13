@@ -119,8 +119,10 @@
 
 
 <dl><dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
-<dd><p>Optional object of class <code>GRanges</code> or <code>IRanges</code> containing
-regions to be highlighted on the axis by coloured boxes.</p></dd>
+<dd><p>Optional object of class
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> or
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> containing regions to be highlighted on
+the axis by colored boxes.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -153,9 +155,10 @@ case the class is derived directly from it.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>A <code>GenomeAxisTrack</code> can be customized using the familiar display
-parameters. By providing a <code>GRanges</code> or <code>IRanges</code> object to the
-constructor, ranges on the axis can be further highlighted.</p>
+    <p>A <code>GenomeAxisTrack</code> can be customized using the familiar display parameters.
+By providing a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> or
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> object to the constructor, ranges on the
+axis can be further highlighted.</p>
 <p>With the <code>scale</code> display parameter, a small scale indicator can be
 shown instead of the entire genomic axis. The scale can either be provided
 as a fraction of the plotting region (it will be rounded to the nearest
@@ -170,17 +173,18 @@ are used.</p>
     <h2>Functions</h2>
 
 <ul><li><p><code>initialize(GenomeAxisTrack)</code>: Initialize the <code>range</code> slot (coercing an
-<code>IRanges</code> input to <code>GRanges</code> if necessary) before deferring to the
-<code>GdObject</code> initializer for the remaining slots.</p></li>
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> input to
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> if necessary) before deferring to
+the <code><a href="GdObject-class.html">GdObject</a></code> initializer for the remaining slots.</p></li>
 <li><p><code>GenomeAxisTrack()</code>: Constructor</p></li>
 <li><p><code>ranges(GenomeAxisTrack)</code>: return the genomic coordinates for the
 track along with all additional annotation information as an object of
-class <code>GRanges</code>.</p></li>
+class <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>.</p></li>
 <li><p><code>ranges(GenomeAxisTrack) &lt;- value</code>: replace the genomic coordinates and
-associated annotation information for the track with a new <code>GRanges</code>
-object.</p></li>
+associated annotation information for the track with a new
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object.</p></li>
 <li><p><code>range(GenomeAxisTrack)</code>: return the genomic coordinates for the
-track as an object of class <code>IRanges</code>.
+track as an object of class <code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code>.
 @export</p></li>
 <li><p><code>start(GenomeAxisTrack)</code>: return the start coordinates of the track
 items.</p></li>
@@ -204,9 +208,9 @@ This will collapse overlapping track items based on the available resolution
 and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.</p></li>
 <li><p><code>x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]</code>: subset the items in the <code>GenomeAxisTrack</code>
-object. This is essentially similar to subsetting of the <code>GRanges</code> object in
-the <code>range</code> slot. For most applications, the subset method may be more
-appropriate.</p></li>
+object. This is essentially similar to subsetting of the
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> object in the <code>range</code> slot. For
+most applications, the subset method may be more appropriate.</p></li>
 <li><p><code>subset(GenomeAxisTrack)</code>: subset a
 <code>GenomeAxisTrack</code> by coordinates and sort if necessary.</p></li>
 <li><p><code>drawGD(GenomeAxisTrack)</code>: plot the object to a graphics device.
@@ -224,15 +228,15 @@ is not necessary.</p></li>
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>

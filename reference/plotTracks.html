@@ -85,8 +85,8 @@ the UCSC Genome Browser, except for all of the interactivity.</p>
 
 
 <dl><dt id="arg-tracklist">trackList<a class="anchor" aria-label="anchor" href="#arg-tracklist"></a></dt>
-<dd><p>A list of Gviz track objects, all inheriting from
-class <a href="GdObject-class.html">GdObject</a>. The tracks will all be drawn to the
+<dd><p>A list of <code>Gviz</code> track objects, all inheriting from
+class <code><a href="GdObject-class.html">GdObject</a></code>. The tracks will all be drawn to the
 same genomic coordinates, either as defined by the <code>from</code> and <code>to</code>
 arguments if supplied, or by the maximum range across all individual items
 in the list.</p></dd>
@@ -94,7 +94,7 @@ in the list.</p></dd>
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
 <dd><p>Numeric scalar, giving the range of genomic coordinates to
-draw the tracks in. Note that <code>to</code> cannot be larger than <code>from</code>.
+draw the tracks in. Note that <code>from</code> cannot be larger than <code>to</code>.
 If <code>NULL</code>, the plotting ranges are derived from the individual tracks.
 See <code>extend.left</code> and <code>extend.right</code> below for the definition of
 the final plotting ranges.</p></dd>
@@ -105,7 +105,7 @@ the final plotting ranges.</p></dd>
 parameters to tweak the appearance of the plot. These parameters are global,
 meaning that they will be used for all tracks in the list where they
 actually make sense, and they override the track-internal settings. See
-<a href="settings.html">settings</a> for details on display parameters.</p></dd>
+<code><a href="settings.html">settings</a></code> for details on display parameters.</p></dd>
 
 
 <dt id="arg-sizes">sizes<a class="anchor" aria-label="anchor" href="#arg-sizes"></a></dt>
@@ -164,8 +164,9 @@ factor settings for the main header.</p></dd>
     <div id="value">
     <h2>Value</h2>
     <p>A list of Gviz tracks, each one augmented by the computed image map
-coordinates in the <code>imageMap</code> slot, along with the additional <code>ImageMap</code>
-object <code>titles</code> containing information about the title panels.</p>
+coordinates in the <code>imageMap</code> slot, along with the additional
+<code><a href="ImageMap-class.html">ImageMap</a></code> object <code>titles</code> containing information about the
+title panels.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -175,12 +176,12 @@ an optional axis for tracks containing numeric data, and a data section
 showing the actual data along genomic coordinates. In that sense, the output
 is very similar to the UCSC Genome Browser.</p>
 <p>The layout of the individual tracks is highly customizable though so called
-"display parameters". See <a href="settings.html">settings</a> for details.</p>
+"display parameters". See <code><a href="settings.html">settings</a></code> for details.</p>
 <p>While plotting a track, the software automatically computes HTML image map
 coordinates based on the current graphics device. These coordinates as well
 as the associated annotation information can later be used to embed images
 of the plots in semi-interactive HTML pages. See
-<a href="ImageMap-class.html">ImageMap</a> for details.</p>
+<code><a href="ImageMap-class.html">ImageMap</a></code> for details.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -234,7 +235,7 @@ of the plots in semi-interactive HTML pages. See
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Add a header</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">plotTracks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ax</span>, <span class="va">annTrack</span>, <span class="va">dt</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    main <span class="op">=</span> <span class="st">"A GenomGraphs plot"</span>,</span></span>
+<span class="r-in"><span>    main <span class="op">=</span> <span class="st">"A Gviz plot"</span>,</span></span>
 <span class="r-in"><span>    col.main <span class="op">=</span> <span class="st">"darkgray"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotTracks-4.png" alt="" width="700" height="433"></span>

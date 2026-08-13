@@ -67,12 +67,12 @@ contain numeric data. This class merely exists for dispatching purpose.</p>
 
 
 <dl><dt id="arg-gdobject">GdObject<a class="anchor" aria-label="anchor" href="#arg-gdobject"></a></dt>
-<dd><p>Object of <code>GdObject-class</code>.</p></dd>
+<dd><p>Object of class <code><a href="GdObject-class.html">GdObject</a></code>.</p></dd>
 
 
 <dt id="arg-from-to">from, to<a class="anchor" aria-label="anchor" href="#arg-from-to"></a></dt>
 <dd><p>Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.</code></p></dd>
+limit the tracks in. Note that <code>from</code> cannot be larger than <code>to</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -94,9 +94,9 @@ limit the tracks in. Note that <code>to</code> cannot be larger than <code>from.
 
 
 <dl><dt><code>dp</code></dt>
-<dd><p>Object of <code>DisplayPars-class</code>, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.</p></dd>
+<dd><p>Object of class <code><a href="DisplayPars-class.html">DisplayPars</a></code>, the display
+settings controlling the look and feel of a track. See <code><a href="settings.html">settings</a></code> for
+details on setting graphical parameters for tracks.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -105,17 +105,21 @@ that will be used in the track's annotation panel if necessary.</p></dd>
 
 
 <dt><code>imageMap</code></dt>
-<dd><p>Object of <code>ImageMap-class</code>, containing optional information
-for an HTML image map. This will be created by the <code>drawGD</code> methods when the
-track is plotted to a device and is usually not set by the user.</p></dd>
+<dd><p>Object of class <code><a href="ImageMap-class.html">ImageMap</a></code>, containing
+optional information for an HTML image map. This will be created by the
+<code>drawGD</code> methods when the track is plotted to a device and is usually not set
+by the user.</p></dd>
 
 
 <dt><code>range</code></dt>
-<dd><p>Object of class <code>GRanges</code>, the genomic ranges of the track items
-as well as additional annotation information in its <code>elementMetaData</code> slot.
-Please not that the slot is actually implemented as a class union between
-<code>GRanges</code> and IRanges to increase efficiency, for instance for DataTrack
-objects. This usually does not concern the user.</p></dd>
+<dd><p>Object of class <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code>, the
+genomic ranges of the track items as well as additional annotation
+information in its <code>elementMetadata</code> slot. Please note that the slot is
+actually implemented as a class union between
+<code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> and
+<code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code> to increase efficiency, for instance for
+<code><a href="DataTrack-class.html">DataTrack</a></code> objects. This usually does not concern the
+user.</p></dd>
 
 
 <dt><code>chromosome</code></dt>
@@ -123,14 +127,14 @@ objects. This usually does not concern the user.</p></dd>
 track is defined. There can only be a single chromosome for one track. For
 certain subclasses, the space of allowed chromosome names is limited (e.g.,
 only those chromosomes that exist for a particular genome). Throughout the
-package, chromosome name have to be entered either as a single integer scalar
-or as a character scalar of the form chrXYZ, where XYZ may be an arbitrary
-character string.</p></dd>
+package, chromosome names have to be entered either as a single integer
+scalar or as a character scalar of the form <code>chrXYZ</code>, where <code>XYZ</code> may be an
+arbitrary character string.</p></dd>
 
 
 <dt><code>genome</code></dt>
 <dd><p>Object of class <code>character</code>, the genome for which the track is
-defined. For most sub-classes this has to be valid UCSC genome identifier,
+defined. For most sub-classes this has to be a valid UCSC genome identifier,
 however this may not always be formally checked upon object instantiation.</p></dd>
 
 
@@ -139,15 +143,15 @@ however this may not always be formally checked upon object instantiation.</p></
     <h2>See also</h2>
     <div class="dont-index"><p><a href="DisplayPars-class.html">DisplayPars</a></p>
 <p><a href="GdObject-class.html">GdObject</a></p>
-<p><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code></p>
 <p><a href="HighlightTrack-class.html">HighlightTrack</a></p>
 <p><a href="ImageMap-class.html">ImageMap</a></p>
-<p><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></p>
+<p><code><a href="https://rdrr.io/pkg/IRanges/man/IRanges-class.html" class="external-link">IRanges</a></code></p>
 <p><a href="RangeTrack-class.html">RangeTrack</a></p>
 <p><a href="DataTrack-class.html">DataTrack</a></p>
 <p><a href="collapsing.html">collapsing</a></p>
 <p><a href="grouping.html">grouping</a></p>
-<p><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></p>
+<p><code><a href="https://rdrr.io/pkg/lattice/man/panel.functions.html" class="external-link">panel.grid</a></code></p>
 <p><a href="plotTracks.html">plotTracks</a></p>
 <p><a href="settings.html">settings</a></p></div>
     </div>
