@@ -19,7 +19,7 @@ UCSC."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Gviz</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.57.5</span>
       </span>
     </div>
 
@@ -273,9 +273,18 @@ items.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Construct the object</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">idTrack</span> <span class="op">&lt;-</span> <span class="fu">IdeogramTrack</span><span class="op">(</span>chromosome <span class="op">=</span> <span class="fl">7</span>, genome <span class="op">=</span> <span class="st">"mm39"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'getMethods' is deprecated.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'getMethodsForDispatch(f, TRUE)' instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated")</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'getMethods' is deprecated.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'getMethodsForDispatch(f, TRUE)' instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated")</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'getMethods' is deprecated.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'getMethodsForDispatch(f, TRUE)' instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated")</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Plotting</span></span></span>
@@ -292,98 +301,185 @@ items.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Accessors</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   chr7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> "chr7" </span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr7"</span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="GdObject-class.html">chromosome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"chrX"</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mm9"</span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg38"</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mm39"</span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">genome</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"hg38"</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Updating chromosome band information</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'getMethods' is deprecated.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'getMethodsForDispatch(f, TRUE)' instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated")</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'getMethods' is deprecated.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'getMethodsForDispatch(f, TRUE)' instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated")</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 20 ranges and 0 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IRanges object with 40 ranges and 0 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            start       end     width</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]         0  15943333  15943334</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]  15943333  19131999   3188667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]  19131999  29760888  10628890</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]  29760888  36138221   6377334</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]  36138221  39326888   3188668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]         0   4400000   4400001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]   4400000   6100000   1700001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]   6100000   9600000   3500001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]   9600000  17400000   7800001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]  17400000  19200000   1800001</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ...       ...       ...       ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [16] 116917775 124357997   7440223</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [17] 124357997 129140997   4783001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [18] 129140997 144021442  14880446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [19] 144021442 147741553   3720112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [20] 147741553 152524553   4783001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [36] 134500000 138900000   4400001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [37] 138900000 141200000   2300001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [38] 141200000 143000000   1800001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [39] 143000000 148000000   5000001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [40] 148000000 156040895   8040896</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/IRanges/man/range-squeezers.html" class="external-link">ranges</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 20 ranges and 2 metadata columns:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        seqnames              ranges strand |     name     type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;Rle&gt;           &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt; &lt;factor&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]      qA1          0-15943333      * |      qA1  gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]      qA2   15943333-19131999      * |      qA2  gneg   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]      qA3   19131999-29760888      * |      qA3  gpos33 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]      qB1   29760888-36138221      * |      qB1  gneg   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]      qB2   36138221-39326888      * |      qB2  gpos33 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ...      ...                 ...    ... .      ...      ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [16]      qF1 116917775-124357997      * |      qF1   gneg  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [17]      qF2 124357997-129140997      * |      qF2   gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [18]      qF3 129140997-144021442      * |      qF3   gneg  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [19]      qF4 144021442-147741553      * |      qF4   gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [20]      qF5 147741553-152524553      * |      qF5   gneg  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 40 ranges and 2 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        seqnames              ranges strand |        name        type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;Rle&gt;           &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [1]   p22.33           0-4400000      * |      p22.33        gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [2]   p22.32     4400000-6100000      * |      p22.32      gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [3]   p22.31     6100000-9600000      * |      p22.31        gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [4]    p22.2    9600000-17400000      * |       p22.2      gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [5]   p22.13   17400000-19200000      * |      p22.13        gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ...      ...                 ...    ... .         ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [36]    q26.3 134500000-138900000      * |       q26.3        gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [37]    q27.1 138900000-141200000      * |       q27.1      gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [38]    q27.2 141200000-143000000      * |       q27.2        gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [39]    q27.3 143000000-148000000      * |       q27.3     gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [40]      q28 148000000-156040895      * |         q28        gneg</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 97 sequences from an unspecified genome; no seqlengths</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 40 sequences from an unspecified genome; no seqlengths</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Annotation</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">values</a></span><span class="op">(</span><span class="va">idTrack</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    name    type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   qA1 gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   qA2    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   qA3  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   qB1    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   qB2  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   qB3    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   qB4  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   qB5    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9    qC gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  qD1    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  qD2  gpos66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  qD3    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  qE1 gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  qE2    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  qE3  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16  qF1    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17  qF2  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18  qF3    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19  qF4  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20  qF5    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      name    type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  p22.33    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  p22.32  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  p22.31    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   p22.2  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  p22.13    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  p22.12  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  p22.11    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   p21.3 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   p21.2    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  p21.1 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  p11.4    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  p11.3  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 p11.23    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 p11.22  gpos25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 p11.21    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  p11.1    acen</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17  q11.1    acen</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  q11.2    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19    q12  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  q13.1    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21  q13.2  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  q13.3    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23  q21.1 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24  q21.2    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 q21.31 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 q21.32    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 q21.33  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28  q22.1    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29  q22.2  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30  q22.3    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31    q23  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    q24    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33    q25 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34  q26.1    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35  q26.2  gpos25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36  q26.3    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37  q27.1  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38  q27.2    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39  q27.3 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    q28    gneg</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## coercion</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">idTrack</span>, <span class="st">"data.frame"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    X.seqnames   X.start     X.end  X.width X.strand X.name  X.type name    type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         qA1         0  15943333 15943334        *    qA1 gpos100  qA1 gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         qA2  15943333  19131999  3188667        *    qA2    gneg  qA2    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         qA3  19131999  29760888 10628890        *    qA3  gpos33  qA3  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         qB1  29760888  36138221  6377334        *    qB1    gneg  qB1    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         qB2  36138221  39326888  3188668        *    qB2  gpos33  qB2  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6         qB3  39326888  49955776 10628889        *    qB3    gneg  qB3    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7         qB4  49955776  56864554  6908779        *    qB4  gpos33  qB4  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8         qB5  56864554  63773332  6908779        *    qB5    gneg  qB5    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9          qC  63773332  74933665 11160334        *     qC gpos100   qC gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10        qD1  74933665  80779554  5845890        *    qD1    gneg  qD1    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11        qD2  80779554  84499665  3720112        *    qD2  gpos66  qD2  gpos66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12        qD3  84499665  94597109 10097445        *    qD3    gneg  qD3    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13        qE1  94597109 104694553 10097445        *    qE1 gpos100  qE1 gpos100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14        qE2 104694553 107351775  2657223        *    qE2    gneg  qE2    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15        qE3 107351775 116917775  9566001        *    qE3  gpos33  qE3  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16        qF1 116917775 124357997  7440223        *    qF1    gneg  qF1    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17        qF2 124357997 129140997  4783001        *    qF2  gpos33  qF2  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18        qF3 129140997 144021442 14880446        *    qF3    gneg  qF3    gneg</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19        qF4 144021442 147741553  3720112        *    qF4  gpos33  qF4  gpos33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20        qF5 147741553 152524553  4783001        *    qF5    gneg  qF5    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    X.seqnames   X.start     X.end X.width X.strand X.name  X.type   name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      p22.33         0   4400000 4400001        * p22.33    gneg p22.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      p22.32   4400000   6100000 1700001        * p22.32  gpos50 p22.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      p22.31   6100000   9600000 3500001        * p22.31    gneg p22.31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       p22.2   9600000  17400000 7800001        *  p22.2  gpos50  p22.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      p22.13  17400000  19200000 1800001        * p22.13    gneg p22.13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      p22.12  19200000  21900000 2700001        * p22.12  gpos50 p22.12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7      p22.11  21900000  24900000 3000001        * p22.11    gneg p22.11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       p21.3  24900000  29300000 4400001        *  p21.3 gpos100  p21.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       p21.2  29300000  31500000 2200001        *  p21.2    gneg  p21.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      p21.1  31500000  37800000 6300001        *  p21.1 gpos100  p21.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      p11.4  37800000  42500000 4700001        *  p11.4    gneg  p11.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      p11.3  42500000  47600000 5100001        *  p11.3  gpos75  p11.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13     p11.23  47600000  50100000 2500001        * p11.23    gneg p11.23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14     p11.22  50100000  54800000 4700001        * p11.22  gpos25 p11.22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15     p11.21  54800000  58100000 3300001        * p11.21    gneg p11.21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16      p11.1  58100000  61000000 2900001        *  p11.1    acen  p11.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17      q11.1  61000000  63800000 2800001        *  q11.1    acen  q11.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18      q11.2  63800000  65400000 1600001        *  q11.2    gneg  q11.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19        q12  65400000  68500000 3100001        *    q12  gpos50    q12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20      q13.1  68500000  73000000 4500001        *  q13.1    gneg  q13.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21      q13.2  73000000  74700000 1700001        *  q13.2  gpos50  q13.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22      q13.3  74700000  76800000 2100001        *  q13.3    gneg  q13.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23      q21.1  76800000  85400000 8600001        *  q21.1 gpos100  q21.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24      q21.2  85400000  87000000 1600001        *  q21.2    gneg  q21.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25     q21.31  87000000  92700000 5700001        * q21.31 gpos100 q21.31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26     q21.32  92700000  94300000 1600001        * q21.32    gneg q21.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27     q21.33  94300000  99100000 4800001        * q21.33  gpos75 q21.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28      q22.1  99100000 103300000 4200001        *  q22.1    gneg  q22.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29      q22.2 103300000 104500000 1200001        *  q22.2  gpos50  q22.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30      q22.3 104500000 109400000 4900001        *  q22.3    gneg  q22.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31        q23 109400000 117400000 8000001        *    q23  gpos75    q23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32        q24 117400000 121800000 4400001        *    q24    gneg    q24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33        q25 121800000 129500000 7700001        *    q25 gpos100    q25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34      q26.1 129500000 131300000 1800001        *  q26.1    gneg  q26.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35      q26.2 131300000 134500000 3200001        *  q26.2  gpos25  q26.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36      q26.3 134500000 138900000 4400001        *  q26.3    gneg  q26.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37      q27.1 138900000 141200000 2300001        *  q27.1  gpos75  q27.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38      q27.2 141200000 143000000 1800001        *  q27.2    gneg  q27.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39      q27.3 143000000 148000000 5000001        *  q27.3 gpos100  q27.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40        q28 148000000 156040895 8040896        *    q28    gneg    q28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  gpos25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16    acen</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17    acen</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29  gpos50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35  gpos25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37  gpos75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38    gneg</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 gpos100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40    gneg</span>
 </code></pre></div>
     </div>
   </div>
