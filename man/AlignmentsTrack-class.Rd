@@ -93,18 +93,20 @@ AlignmentsTrack(
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{stackRanges}{A \code{GRanges} object with the merged extent of each read
-group, i.e., the region spanned by a read and its mate. This is what the
-reads are stacked on, and its names match the \code{groupid} metadata column.}
+\item{stackRanges}{A \code{\link[GenomicRanges:GRanges-class]{GRanges}} object with
+the merged extent of each read group, i.e., the region spanned by a read and
+its mate. This is what the reads are stacked on, and its names match the
+\code{groupid} metadata column.}
 
-\item{stacks}{\code{logical}. Set if stacking should  be preserved.}
+\item{stacks}{\code{logical}. Set if stacking should be preserved.}
 
-\item{sequences}{A \code{DNAStringSet} with the read sequences.}
+\item{sequences}{A \code{\link[Biostrings:DNAStringSet-class]{DNAStringSet}} object
+with the read sequences.}
 
 \item{referenceSequence}{An optional \code{\link[=SequenceTrack-class]{SequenceTrack}}
 object containing the reference sequence against which the reads have been
 aligned. This is only needed when mismatch information has to be added to the
-plot (i.e., the \code{showMismatchs} display parameter is \code{TRUE}) because this is
+plot (i.e., the \code{showMismatches} display parameter is \code{TRUE}) because this is
 normally not encoded in the \code{BAM} file. If not provided through this
 argument, the \code{\link{plotTracks}} function is smart enough to detect the presence
 of a \code{\link[=SequenceTrack-class]{SequenceTrack}} object in the track list and will
@@ -115,13 +117,14 @@ display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
 \item{stream}{A function to stream the data from an indexed file. It has to
-accept the two arguments \code{file} and \code{selection}, and to return a \code{GRanges}
-object.}
+accept the two arguments \code{file} and \code{selection}, and to return a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object.}
 
 \item{reference}{A \code{character} scalar with the path to the referenced file.}
 
 \item{mapping}{A named \code{list} mapping the columns of the imported data to
-the metadata columns of the track's \code{GRanges} object.}
+the metadata columns of the track's \code{\link[GenomicRanges:GRanges-class]{GRanges}}
+object.}
 
 \item{args}{A \code{list} of the arguments the object has been constructed with.}
 
@@ -136,22 +139,23 @@ The different input options for \code{range} are:
 \itemize{
 \item \strong{A \code{character} string}: the path to a \code{BAM} file containing the read
 alignments. This results in the instantiation of a
-\code{ReferenceAlignmentsTrack} object, but for the user this implementation
-detail should be of no concern.
-\item \strong{A \code{GRanges} object}: the genomic ranges of the individual reads, along
-with the optional additional metadata columns \code{id}, \code{cigar}, \code{mapq},
-\code{flag}, \code{isize}, \code{groupid}, \code{status}, \code{md} and \code{seqs} (see the individual
-function parameters below for details). Calling the constructor on a
-\code{GRanges} object without further arguments, e.g.
-\code{AlignmentsTrack(range = obj)}, is equivalent to calling the coerce
-method \code{as(obj, "AlignmentsTrack")}.
-\item \strong{An \link[IRanges:IRanges-class]{IRanges} object}: almost identical to the
-\code{GRanges} case, except that the chromosome and strand information, as
-well as all additional metadata, has to be provided via the separate
-\code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id} arguments, since none
-of it can be encoded directly in an \code{IRanges} object. None of these
-inputs are mandatory; if not provided explicitly, the defaults
-\code{chromosome = NA} and \code{strand = "*"} are used.
+\code{\link[=ReferenceAlignmentsTrack-class]{ReferenceAlignmentsTrack}} object, but
+for the user this implementation detail should be of no concern.
+\item \strong{A \code{\link[GenomicRanges:GRanges-class]{GRanges}} object}: the genomic ranges
+of the individual reads, along with the optional additional metadata
+columns \code{id}, \code{cigar}, \code{mapq}, \code{flag}, \code{isize}, \code{groupid}, \code{status}, \code{md}
+and \code{seqs} (see the individual function parameters below for details).
+Calling the constructor on a \code{\link[GenomicRanges:GRanges-class]{GRanges}}
+object without further arguments, e.g. \code{AlignmentsTrack(range = obj)}, is
+equivalent to calling the coerce method \code{as(obj, "AlignmentsTrack")}.
+\item \strong{An \code{\link[IRanges:IRanges-class]{IRanges}} object}: almost identical to the
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} case, except that the chromosome
+and strand information, as well as all additional metadata, has to be
+provided via the separate \code{chromosome}, \code{strand}, \code{feature}, \code{group} or
+\code{id} arguments, since none of it can be encoded directly in an
+\code{\link[IRanges:IRanges-class]{IRanges}} object. None of these inputs are
+mandatory; if not provided explicitly, the defaults \code{chromosome = NA} and
+\code{strand = "*"} are used.
 \item \strong{A \code{data.frame} object}: must contain at least the two mandatory
 columns \code{start} and \code{end} with the range coordinates. It may also
 contain \code{chromosome} and \code{strand} columns; if these are absent, the
@@ -168,41 +172,39 @@ which case this single value will be recycled. Otherwise, the usual R
 recycling rules for vectors do not apply here.}
 
 \item{strand}{Character vector, the strand information for the reads. It may
-be provided in the form \code{+} for the Watson strand, \code{-} for the
-Crick strand or \code{*} for either one of the two. Needs to be of equal
-length as the provided genomic coordinates, or of length 1. Please note that
-paired reads need to be on opposite strands, and erroneous entries will
-result in casting of an error.}
+be provided in the form \code{+} for the Watson strand, \code{-} for the Crick strand
+or \code{*} for either one of the two. Needs to be of equal length as the provided
+genomic coordinates, or of length 1. Please note that paired reads need to be
+on opposite strands, and erroneous entries will result in an error.}
 
 \item{chromosome}{The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier if
 \code{options(ucscChromosomeNames=TRUE)}. Please note that in this case only
 syntactic checking takes place, i.e., the argument value needs to be an
-integer, numeric character or a character of the form \code{chrx}, where
-\code{x} may be any possible string. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome. If not
-provided here, the constructor will try to construct the chromosome
-information based on the available inputs, and as a last resort will fall
-back to the value \code{chrNA}. Please note that by definition all objects
-in the \code{Gviz} package can only have a single active chromosome at a
-time (although internally the information for more than one chromosome may
-be present), and the user has to call the \verb{chromosome<-} replacement
-method in order to change to a different active chromosome.}
+integer, numeric character or a character of the form \code{chrx}, where \code{x} may
+be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome. If not provided here,
+the constructor will try to construct the chromosome information based on
+the available inputs, and as a last resort will fall back to the value
+\code{chrNA}. Please note that by definition all objects in the \code{Gviz} package can
+only have a single active chromosome at a time (although internally the
+information for more than one chromosome may be present), and the user has to
+call the \verb{chromosome<-} replacement method in order to change to a different
+active chromosome.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. If not provided here the constructor will try to
+checked at this point. If not provided here, the constructor will try to
 extract this information from the provided input, and eventually will fall
 back to the default value of \code{NA}.}
 
-\item{stacking}{The stacking type for overlapping items of the track. One in
-\code{c(hide, dense, squish, pack, full)}. Currently, only squish (make best
-use of the available space), dense (no stacking, collapse overlapping
-ranges), and hide (do not show any track items at all) are implemented.}
+\item{stacking}{The stacking type for overlapping items of the track. One of
+\code{c(hide, dense, squish, pack, full)}. Currently, only squish (make best use
+of the available space), dense (no stacking, collapse overlapping ranges),
+and hide (do not show any track items at all) are implemented.}
 
 \item{id}{Character vector of read identifiers. Those identifiers have to be
-unique, i.e., each range representing a read needs to have a unique
-\code{id}.}
+unique, i.e., each range representing a read needs to have a unique \code{id}.}
 
 \item{cigar}{A character vector of valid CIGAR strings describing details of
 the alignment. Typically those include alignment gaps or insertions and
@@ -213,60 +215,59 @@ as the provided genomic coordinates, or of length 1.}
 \item{mapq}{A numeric vector of read mapping qualities. Needs to be of equal
 length as the provided genomic coordinates, or of length 1.}
 
-\item{flag}{A named integer vector of length 2, as is produced by
-Rsamtools::scanBamFlag(), used to filter out undesirable reads. If missing,
+\item{flag}{A named integer vector of length 2, as produced by
+\code{\link[Rsamtools:scanBamFlag]{Rsamtools::scanBamFlag()}}, used to filter out undesirable reads. If missing,
 all mapped reads will be included.}
 
 \item{isize}{A numeric vector of empirical insert sizes. This only applies
 if the reads are paired. Needs to be of equal length as the provided genomic
 coordinates, or of length 1. Currently not used.}
 
-\item{groupid}{A factor (or vector than can be coerced into one) defining
-the read pairs. Reads with the same \code{groupid} are considered to be
-mates. Please note that each read group may only have one or two members.
-Needs to be of equal length as the provided genomic coordinates, or of
-length 1.}
+\item{groupid}{A factor (or vector that can be coerced into one) defining
+the read pairs. Reads with the same \code{groupid} are considered to be mates.
+Please note that each read group may only have one or two members. Needs to
+be of equal length as the provided genomic coordinates, or of length 1.}
 
 \item{status}{A factor describing the mapping status of a read. Has to be
-one in \code{mated}, \code{unmated} or \code{ambiguous}. Needs to be of
-equal length as the provided genomic coordinates, or of length 1.}
+one of \code{mated}, \code{unmated} or \code{ambiguous}. Needs to be of equal length as the
+provided genomic coordinates, or of length 1.}
 
 \item{md}{A character vector describing the mapping details. This is
-effectively and alternative to the CIGAR encoding and it removes the
+effectively an alternative to the CIGAR encoding, and it removes the
 dependency on a reference sequence to figure out read mismatches. Needs to
 be of equal length as the provided genomic coordinates, or of length 1.
 Currently not used.}
 
-\item{seqs}{\code{DNAStringSet} of read sequences.}
+\item{seqs}{A \code{\link[Biostrings:DNAStringSet-class]{DNAStringSet}} object of read
+sequences.}
 
 \item{name}{Character scalar of the track's name used in the title panel
 when plotting.}
 
 \item{isPaired}{A logical scalar to determine whether the reads are paired
 or not. While this may be used to render paired-end data as single-end, the
-oppsite will typically not have any effect because the appropriate
-\code{groupid} settings will not be present.  Thus setting \code{isPaired}
-to \code{TRUE} can usually be used to autodetect the pairing state of the
-input data.}
+opposite will typically not have any effect because the appropriate
+\code{groupid} settings will not be present. Thus setting \code{isPaired} to \code{TRUE}
+can usually be used to autodetect the pairing state of the input data.}
 
 \item{importFunction}{A user-defined function to be used to import the data
 from a file. This only applies when the \code{range} argument is a character
 string with the path to the input data file. The function needs to accept an
-argument \code{x} containing the file path and a second argument
-\code{selection} with the desired plotting ranges. It has to return a proper
-\code{GRanges} object with all the necessary metadata columns set. A single
-default import function is already implemented in the package for \code{BAM}
-files.}
+argument \code{x} containing the file path and a second argument \code{selection} with
+the desired plotting ranges. It has to return a proper
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object with all the necessary
+metadata columns set. A single default import function is already implemented
+in the package for \code{BAM} files.}
 
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
 
-\item{GdObject}{Object of \code{GdObject-class}.}
+\item{GdObject}{Object of class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{value}{Value to be set.}
 
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
+limit the tracks in. Note that \code{from} cannot be larger than \code{to}.}
 
 \item{use.defaults}{\code{logical}. Derive the subsetting range from the track's
 own defaults rather than using \code{from} and \code{to} verbatim.}
@@ -281,11 +282,13 @@ anything to the device.}
 \item{subset}{\code{logical}. Subset the track to the current plotting range
 before drawing.}
 
-\item{object}{Object inheriting from \code{AlignmentsTrack-class}.}
+\item{object}{Object inheriting from
+\code{\link[=AlignmentsTrack-class]{AlignmentsTrack}}.}
 }
 \value{
 The return value of the constructor function is a new object of class
-\code{AlignmentsTrack} or \code{ReferenceAlignmentsTrack}.
+\code{AlignmentsTrack} or
+\code{\link[=ReferenceAlignmentsTrack-class]{ReferenceAlignmentsTrack}}.
 }
 \description{
 A class to represent short sequences that have been aligned to a reference
@@ -296,11 +299,12 @@ experiments.
 \itemize{
 \item \code{initialize(AlignmentsTrack)}: Initialize the \code{stackRanges}, \code{stacks},
 \code{sequences} and \code{referenceSequence} slots before deferring to the
-\code{StackedTrack} initializer for the remaining slots.
+\code{\link[=StackedTrack-class]{StackedTrack}} initializer for the remaining slots.
 
-\item \code{initialize(ReferenceAlignmentsTrack)}: Initialize the \code{ReferenceTrack} slots
-(\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) and the
-\code{referenceSequence} slot inherited from \code{AlignmentsTrack}.
+\item \code{initialize(ReferenceAlignmentsTrack)}: Initialize the
+\code{\link[=ReferenceTrack-class]{ReferenceTrack}} slots (\code{stream}, \code{reference},
+\code{mapping}, \code{args}, \code{defaults}) and the \code{referenceSequence} slot inherited
+from \code{AlignmentsTrack}.
 
 \item \code{AlignmentsTrack()}: Constructor for \code{AlignmentsTrack-class}.
 
@@ -321,8 +325,9 @@ space and on the object's track items and stacking settings.
 \item \code{subset(AlignmentsTrack)}: Subset an \code{AlignmentsTrack} by coordinates
 and sort if necessary.
 
-\item \code{subset(ReferenceAlignmentsTrack)}: Subset a \code{ReferenceAlignmentsTrack} by
-coordinates and sort if necessary.
+\item \code{subset(ReferenceAlignmentsTrack)}: Subset a
+\code{\link[=ReferenceAlignmentsTrack-class]{ReferenceAlignmentsTrack}} by coordinates
+and sort if necessary.
 
 \item \code{drawGrid(AlignmentsTrack)}: superpose a horizontal grid on the
 coverage portion of the track, based on the \code{grid}, \code{h}, \code{col.grid},
@@ -399,13 +404,13 @@ if (require(BSgenome.Hsapiens.UCSC.hg38)) {
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -415,7 +420,7 @@ if (require(BSgenome.Hsapiens.UCSC.hg38)) {
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

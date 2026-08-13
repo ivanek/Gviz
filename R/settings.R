@@ -18,21 +18,22 @@
 #' and are automatically added to the aforementioned slot. The main difference
 #' here is that display parameters that are passed on to the constructor
 #' function are specific for an individual track object, whereas those supplied
-#' to the `plotTracks` function will be applied to all the objects in the
+#' to the [`plotTracks`] function will be applied to all the objects in the
 #' plotting list. Not all display parameters have an effect on the plotting of
 #' all track classes, and those will be silently ignored.
 #'
 #' One can query the available display parameters for a given class as well as
-#' their default values by calling the [`availableDisplayPars`]
-#' function, or by inspecting the man pages of the individual track classes.
-#' The structure of the classes defined in this package is hierarchical, and so
-#' are the available display parameters, i.e., all objects inherit the
-#' parameters defined in the common `GdObject` parent class, and so on.
+#' their default values by calling the [`availableDisplayPars`] function, or by
+#' inspecting the man pages of the individual track classes. The structure of
+#' the classes defined in this package is hierarchical, and so are the available
+#' display parameters, i.e., all objects inherit the parameters defined in the
+#' common [`GdObject`][GdObject-class] parent class, and so on.
 #'
 #' Once a track object has been created, the display parameters are still open
 #' for modification. To this end, the [`DisplayPars`][DisplayPars-class]
 #' replacement method is available for all objects inheriting from class
-#' `GdObject`. The method takes a named list of parameters as input, e.g.:
+#' [`GdObject`][GdObject-class]. The method takes a named list of parameters as
+#' input, e.g.:
 #'
 #' `displayPars(foo) <- list(col="red", lwd=2)`
 #'
@@ -59,18 +60,18 @@
 #' parameter schemes. A scheme is essentially just a bunch of nested named
 #' lists, where the names on the first level of nesting should correspond to
 #' track class names, and the names on the second level to the display
-#' parameters to set. The currently active schmeme can be changed by setting
+#' parameters to set. The currently active scheme can be changed by setting
 #' the global option `Gviz.scheme`, and a new scheme can be registered by
 #' using the `addScheme` function, providing both the list and the name
 #' for the new scheme. The `getScheme` function is useful to get the
 #' current scheme as a list structure, for instance to use as a skeleton for
 #' your own custom scheme.
 #'
-#' In order to make these settings persitant across R sessions one can create
+#' In order to make these settings persistent across R sessions one can create
 #' one or several schemes in the global environment in the special object
 #' `.GvizSchemes`, for instance by putting the necessary code in the
 #' `.Rprofile` file. This object needs to be a named list of schemes, and
-#' it will be collected when the Givz package loads. Its content is then
+#' it will be collected when the Gviz package loads. Its content is then
 #' automatically added to the collection of available schemes.
 #'
 #' Please note that because display parameters are stored with the track
@@ -145,7 +146,7 @@
 #' marks.}
 #'
 #' \item{`lwd=2`:}{ Numeric scalar. The line width for the axis
-#' elementes.}
+#' elements.}
 #'
 #' \item{`scale=NULL`:}{ Numeric scalar. If not `NULL` a small scale
 #' is drawn instead of the full axis, if the value is between 0 and 1 it is
@@ -170,7 +171,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -215,7 +216,7 @@
 #' color for the title panels}
 #'
 #' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
-#' content of the track to accomodate the minimum current device resolution.
+#' content of the track to accommodate the minimum current device resolution.
 #' See [`collapsing`] for details.}
 #'
 #' \item{`fill="lightgray"`:}{ Integer or character scalar.  Default fill
@@ -282,7 +283,7 @@
 #' title panel will currently not work, so use at own risk.}
 #'
 #' \item{`rotation=0`:}{ The rotation angle for all text unless a more
-#' specific definiton exists.}
+#' specific definition exists.}
 #'
 #' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
@@ -316,7 +317,7 @@
 #' `FALSE` fills empty positions with `NA`.}
 #'
 #' \item{`alpha.confint=0.3`:}{ Numeric scalar. The transparency for the
-#' confidence intervalls in confint-type plots.}
+#' confidence intervals in confint-type plots.}
 #'
 #' \item{`amount=NULL`:}{ Numeric scalar. Amount of jittering in xy-type
 #' plots. See [lattice::panel.xyplot] for details.}
@@ -436,7 +437,7 @@
 #' however the gradient will always be from white to 'col' and thus does not
 #' offer as much flexibility as this `gradient` parameter.}
 #'
-#' \item{`groups=NULL`:}{ Vector coercable to a factor.  Optional sample
+#' \item{`groups=NULL`:}{ Vector coercible to a factor.  Optional sample
 #' grouping. See 'Details' section in [`DataTrack`][DataTrack-class] for
 #' further information.}
 #'
@@ -478,7 +479,7 @@
 #' mountain-type and polygon-type plots, defaults to the setting of
 #' `lwd`.}
 #'
-#' \item{`min.distance=0`:}{ Numeric scalar. The mimimum distance in pixel
+#' \item{`min.distance=0`:}{ Numeric scalar. The minimum distance in pixel
 #' below which to collapse ranges.}
 #'
 #' \item{`na.rm=FALSE`:}{ Boolean controlling whether to discard all NA
@@ -557,7 +558,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -677,7 +678,7 @@
 #' title panel will currently not work, so use at own risk.}
 #'
 #' \item{`rotation=0`:}{ The rotation angle for all text unless a more
-#' specific definiton exists.}
+#' specific definition exists.}
 #'
 #' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
@@ -686,7 +687,7 @@
 #' panel. Although this can be set individually for each track, in multi-track
 #' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
-#' true for axes. Note that the the title panel background color could be set
+#' true for axes. Note that the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
 #' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
@@ -764,7 +765,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -809,7 +810,7 @@
 #' color for the title panels}
 #'
 #' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
-#' content of the track to accomodate the minimum current device resolution.
+#' content of the track to accommodate the minimum current device resolution.
 #' See [`collapsing`] for details.}
 #'
 #' \item{`fontface.title=2`:}{ Integer or character scalar.  The font face
@@ -862,7 +863,7 @@
 #' title panel will currently not work, so use at own risk.}
 #'
 #' \item{`rotation=0`:}{ The rotation angle for all text unless a more
-#' specific definiton exists.}
+#' specific definition exists.}
 #'
 #' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
@@ -986,7 +987,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class StackedTrack:*}
+#' **_Inherited from class [`StackedTrack`][StackedTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1004,7 +1005,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -1052,7 +1053,7 @@
 #' color for the title panels}
 #'
 #' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
-#' content of the track to accomodate the minimum current device resolution.
+#' content of the track to accommodate the minimum current device resolution.
 #' See [`collapsing`] for details.}
 #'
 #' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
@@ -1115,7 +1116,7 @@
 #' panel. Although this can be set individually for each track, in multi-track
 #' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
-#' true for axes. Note that the the title panel background color could be set
+#' true for axes. Note that the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
 #' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
@@ -1140,7 +1141,7 @@
 #' taking into account different track `features`.}
 #'
 #' \item{`collapseTranscripts=FALSE`:}{ Logical or character scalar. Can
-#' be one in `gene`, `longest`, `shortest` or `meta`. Merge
+#' be one of `gene`, `longest`, `shortest` or `meta`. Merge
 #' all transcripts of the same gene into one single gene model. In the case of
 #' `gene` (or `TRUE`), this will only keep the start location of the
 #' first exon and the end location of the last exon from all transcripts of the
@@ -1184,7 +1185,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class AnnotationTrack:*}
+#' **_Inherited from class [`AnnotationTrack`][AnnotationTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1279,7 +1280,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class StackedTrack:*}
+#' **_Inherited from class [`StackedTrack`][StackedTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1297,7 +1298,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -1345,7 +1346,7 @@
 #' color for the title panels}
 #'
 #' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
-#' content of the track to accomodate the minimum current device resolution.
+#' content of the track to accommodate the minimum current device resolution.
 #' See [`collapsing`] for details.}
 #'
 #' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
@@ -1404,7 +1405,7 @@
 #' panel. Although this can be set individually for each track, in multi-track
 #' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
-#' true for axes. Note that the the title panel background color could be set
+#' true for axes. Note that the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
 #' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
@@ -1494,11 +1495,11 @@
 #' annotation objects of type 'utr5'.}
 #'
 #' \item{`verbose=FALSE`:}{ Logical scalar. Report data loading events
-#' from Bioamart or retrieval from cache.}
+#' from Biomart or retrieval from cache.}
 #'
 #' }
 #'
-#' \bold{*Inherited from class GeneRegionTrack:*}
+#' **_Inherited from class [`GeneRegionTrack`][GeneRegionTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1513,7 +1514,7 @@
 #' taking into account different track `features`.}
 #'
 #' \item{`collapseTranscripts=FALSE`:}{ Logical or character scalar. Can
-#' be one in `gene`, `longest`, `shortest` or `meta`. Merge
+#' be one of `gene`, `longest`, `shortest` or `meta`. Merge
 #' all transcripts of the same gene into one single gene model. In the case of
 #' `gene` (or `TRUE`), this will only keep the start location of the
 #' first exon and the end location of the last exon from all transcripts of the
@@ -1557,7 +1558,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class AnnotationTrack:*}
+#' **_Inherited from class [`AnnotationTrack`][AnnotationTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1652,7 +1653,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class StackedTrack:*}
+#' **_Inherited from class [`StackedTrack`][StackedTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1670,7 +1671,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -1718,7 +1719,7 @@
 #' color for the title panels}
 #'
 #' \item{`collapse=TRUE`:}{ Boolean controlling whether to collapse the
-#' content of the track to accomodate the minimum current device resolution.
+#' content of the track to accommodate the minimum current device resolution.
 #' See [`collapsing`] for details.}
 #'
 #' \item{`fontcolor="black"`:}{ Integer or character scalar.  The font
@@ -1777,7 +1778,7 @@
 #' panel. Although this can be set individually for each track, in multi-track
 #' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
-#' true for axes. Note that the the title panel background color could be set
+#' true for axes. Note that the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
 #' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of
@@ -1911,15 +1912,15 @@
 #' to control the read and stacking appearance.}
 #'
 #' \item{`minCoverageHeight=50`:}{ Integer scalar. The minimum height of
-#' the coverage section. Uselful in combination with a relative setting of
+#' the coverage section. Useful in combination with a relative setting of
 #' `coverageHeight`.}
 #'
 #' \item{`minSashimiHeight=50`:}{ Integer scalar. The minimum height of
-#' the sashimi section. Uselful in combination with a relative setting of
+#' the sashimi section. Useful in combination with a relative setting of
 #' `sashimiHeight`.}
 #'
 #' \item{`noLetters=FALSE`:}{ Logical scalar. Always plot colored boxes
-#' for mismatch bases regardles of the available space.}
+#' for mismatch bases regardless of the available space.}
 #'
 #' \item{`sashimiFilter=NULL`:}{ GRanges object. Only junctions which
 #' overlap equally with `sashimiFilter` GRanges are shown. Default
@@ -1966,15 +1967,15 @@
 #' its return value needs to be a numeric Rle of identical length as the input
 #' data.}
 #'
-#' \item{`type=c("coverage", "pileup")`:}{ Character vactor.  The type of
+#' \item{`type=c("coverage", "pileup")`:}{ Character vector.  The type of
 #' information to plot. For `coverage` a coverage plot, potentially
 #' augmented by base mismatch information, for `sashimi` a sashimi plot,
-#' showing the juctions, and for `pileup` the pileups of the individual
+#' showing the junctions, and for `pileup` the pileups of the individual
 #' reads. These three can be combined.}
 #'
 #' }
 #'
-#' \bold{*Inherited from class StackedTrack:*}
+#' **_Inherited from class [`StackedTrack`][StackedTrack-class]:_**
 #'
 #' \describe{
 #'
@@ -1992,7 +1993,7 @@
 #'
 #' }
 #'
-#' \bold{*Inherited from class GdObject:*}
+#' **_Inherited from class [`GdObject`][GdObject-class]:_**
 #'
 #' \describe{
 #'
@@ -2103,7 +2104,7 @@
 #' title panel will currently not work, so use at own risk.}
 #'
 #' \item{`rotation=0`:}{ The rotation angle for all text unless a more
-#' specific definiton exists.}
+#' specific definition exists.}
 #'
 #' \item{`showAxis=TRUE`:}{ Boolean controlling whether to plot a y axis
 #' (only applies to track types where axes are implemented).}
@@ -2112,7 +2113,7 @@
 #' panel. Although this can be set individually for each track, in multi-track
 #' plots as created by [`plotTracks`] there will still be an empty
 #' placeholder in case any of the other tracks include a title.  The same holds
-#' true for axes. Note that the the title panel background color could be set
+#' true for axes. Note that the title panel background color could be set
 #' to transparent in order to completely hide it.}
 #'
 #' \item{`v=-1`:}{ Integer scalar. Parameter controlling the number of

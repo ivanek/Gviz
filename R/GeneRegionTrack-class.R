@@ -11,41 +11,33 @@ NULL
 #'
 #'
 #' A track containing all gene models in a particular region. The data are
-#' usually fetched dynamially from an online data store, but it is also
-#' possible to manully construct objects from local data. Connections to
+#' usually fetched dynamically from an online data store, but it is also
+#' possible to manually construct objects from local data. Connections to
 #' particular online data sources should be implemented as sub-classes, and
-#' `GeneRegionTrack` is just the commone denominator that is being used
+#' `GeneRegionTrack` is just the common denominator that is being used
 #' for plotting later on. There are several levels of data associated to a
 #' `GeneRegionTrack`:
 #'
-#' \describe{
-#'
-#' \item{exon level:}{identifiers are stored in the exon column of the
-#' [GRanges][GenomicRanges::GRanges-class] object in the `range` slot. Data may
-#' be extracted using the `exon` method.}
-#'
-#' \item{transcript level:}{identifiers are stored in the transcript column of
-#' the [GRanges][GenomicRanges::GRanges-class] object. Data may be extracted
-#' using the `transcript` method.}
-#'
-#' \item{gene level:}{identifiers are stored in the gene column of the
-#' [GRanges][GenomicRanges::GRanges-class] object, more human-readable versions
-#' in the symbol column. Data may be extracted using the `gene` or the `symbol`
-#' methods.}
-#'
-#' \item{transcript-type level:}{information is stored in the feature column of
-#' the [GRanges][GenomicRanges::GRanges-class] object. If a display parameter of
-#' the same name is specified, the software will use its value for the
-#' coloring.}
-#'
-#' }
+#' * exon level: identifiers are stored in the exon column of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object in the `range` slot. Data
+#' may be extracted using the `exon` method.
+#' * transcript level: identifiers are stored in the transcript column of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object. Data may be extracted using
+#' the `transcript` method.
+#' * gene level: identifiers are stored in the gene column of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object, more human-readable
+#' versions in the symbol column. Data may be extracted using the `gene` or the
+#' `symbol` methods.
+#' * transcript-type level: information is stored in the feature column of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object. If a display parameter of
+#' the same name is specified, the software will use its value for the coloring.
 #'
 #' `GeneRegionTrack` objects also know about coding regions and non-coding
 #' regions (e.g., UTRs) in a transcript, and will indicate those by using
 #' different shapes (wide boxes for all coding regions, thinner boxes for
-#' non-coding regions). This is archived by setting the `feature` values
+#' non-coding regions). This is achieved by setting the `feature` values
 #' of the object for non-coding elements to one of the options that are
-#' provided in the `thinBoxFeature` display parameters. All other elements
+#' provided in the `thinBoxFeature` display parameter. All other elements
 #' are considered to be coding elements.
 #'
 #' @name GeneRegionTrack-class
@@ -56,65 +48,59 @@ NULL
 #'
 #' The different input options for `range` are:
 #'
-#' \describe{
-#'
-#' \item{A `TxDb` object:}{ all the necessary gene model information
-#' including exon locations, transcript groupings and associated gene ids are
-#' contained in `TxDb` objects, and the coercion between the two is almost
-#' completely automated. If desired, the data to be fetched from the
-#' `TxDb` object can be restricted using the constructor's
-#' `chromosome`, `start` and `end` arguments. See below for
+#' * A [`TxDb`][GenomicFeatures::TxDb-class] object: all the necessary gene
+#' model information including exon locations, transcript groupings and
+#' associated gene ids are contained in
+#' [`TxDb`][GenomicFeatures::TxDb-class] objects, and the coercion between the
+#' two is almost completely automated. If desired, the data to be fetched from
+#' the [`TxDb`][GenomicFeatures::TxDb-class] object can be restricted using the
+#' constructor's `chromosome`, `start` and `end` arguments. See below for
 #' details. A direct coercion method `as(obj, "GeneRegionTrack")` is also
 #' available. A nice added benefit of this input option is that the UTR and
-#' coding region information that is part of the original `TxDb` object is
-#' retained in the `GeneRegionTrack`.}
+#' coding region information that is part of the original
+#' [`TxDb`][GenomicFeatures::TxDb-class] object is retained in the
+#' `GeneRegionTrack`.
+#' * A [`GRanges`][GenomicRanges::GRanges-class] object: the genomic ranges for
+#' the `GeneRegion` track as well as the optional additional metadata columns
+#' `feature`, `transcript`, `gene`, `exon` and `symbol` (see description of the
+#' individual function parameters below for details). Calling the constructor on
+#' a [`GRanges`][GenomicRanges::GRanges-class] object without further arguments,
+#' e.g. `GeneRegionTrack(range=obj)`, is equivalent to calling the coerce method
+#' `as(obj, "GeneRegionTrack")`.
+#' * A [`GRangesList`][GenomicRanges::GRangesList-class] object: this is very
+#' similar to the previous case, except that the grouping information that is
+#' part of the list structure is preserved in the `GeneRegionTrack`. I.e., all
+#' the elements within one list item receive the same group id. For consistency,
+#' there is also a coercion method from
+#' [`GRangesList`][GenomicRanges::GRangesList-class] objects,
+#' `as(obj, "GeneRegionTrack")`. Please note that unless the necessary
+#' information about gene ids, symbols, etc. is present in the individual
+#' [`GRanges`][GenomicRanges::GRanges-class] metadata slots, the object will not
+#' be particularly useful, because all the identifiers will be set to a common
+#' default value.
+#' * An [`IRanges`][IRanges::IRanges-class] object: almost identical to the
+#' [`GRanges`][GenomicRanges::GRanges-class] case, except that the chromosome
+#' and strand information as well as all additional data has to be provided in
+#' the separate `chromosome`, `strand`, `feature`, `transcript`, `symbol`,
+#' `exon` or `gene` arguments, because it cannot be directly encoded in an
+#' [`IRanges`][IRanges::IRanges-class] object. Note that only the former two are
+#' mandatory (if not provided explicitly the more or less reasonable default
+#' values `chromosome=NA` and `strand=*` are used), but not providing
+#' information about the gene-to-transcript relationship or the human-readable
+#' symbols renders a lot of the class' functionality useless.
+#' * A `data.frame` object: the `data.frame` needs to contain at least the two
+#' mandatory columns `start` and `end` with the range coordinates. It may also
+#' contain a `chromosome` and a `strand` column with the chromosome and strand
+#' information for each range. If missing, this information will be drawn from
+#' the constructor's `chromosome` or `strand` arguments. In addition, the
+#' `feature`, `exon`, `transcript`, `gene` and `symbol` data can be provided as
+#' columns in the `data.frame`. The above comments about potential default
+#' values also apply here.
+#' * A `character` scalar: in this case the value of the `range` argument is
+#' considered to be a file path to an annotation file on disk. A range of file
+#' types is supported by the `Gviz` package as identified by the file extension.
+#' See the `importFunction` documentation below for further details.
 #'
-#' \item{A `GRanges` object:}{ the genomic ranges for the
-#' `GeneRegion` track as well as the optional additional metadata columns
-#' `feature`, `transcript`, `gene`, `exon` and
-#' `symbol` (see description of the individual function parameters below
-#' for details). Calling the constructor on a `GRanges` object without
-#' further arguments, e.g.  `GeneRegionTrack(range=obj)` is equivalent to
-#' calling the coerce method `as(obj, "GeneRegionTrack")`.}
-#'
-#' \item{A `GRangesList` object:}{ this is very similar to the previous
-#' case, except that the grouping information that is part of the list
-#' structure is preserved in the `GeneRegionTrack`. I.e., all the elements
-#' within one list item receive the same group id. For consistancy, there is
-#' also a coercion method from `GRangesLists` `as(obj,
-#' "GeneRegionTrack")`. Please note that unless the necessary information about
-#' gene ids, symbols, etc. is present in the individual `GRanges` meta
-#' data slots, the object will not be particularly useful, because all the
-#' identifiers will be set to a common default value.}
-#'
-#' \item{An [IRanges][IRanges::IRanges-class] object:}{ almost identical to the
-#' `GRanges` case, except that the chromosome and strand information as
-#' well as all additional data has to be provided in the separate
-#' `chromosome`, `strand`, `feature`, `transcript`,
-#' `symbol`, `exon` or `gene` arguments, because it can not be
-#' directly encoded in an `IRanges` object. Note that only the former two
-#' are mandatory (if not provided explicitely the more or less reasonable
-#' default values `chromosome=NA` and `strand=*` are used, but not
-#' providing information about the gene-to-transcript relationship or the
-#' human-readble symbols renders a lot of the class' functionality useles.}
-#'
-#' \item{A `data.frame` object:}{ the `data.frame` needs to contain
-#' at least the two mandatory columns `start` and `end` with the
-#' range coordinates. It may also contain a `chromosome` and a
-#' `strand` column with the chromosome and strand information for each
-#' range. If missing, this information will be drawn from the constructor's
-#' `chromosome` or `strand` arguments. In addition, the
-#' `feature`, `exon`, `transcript`, `gene` and
-#' `symbol` data can be provided as columns in the `data.frame`. The
-#' above comments about potential default values also apply here.}
-#'
-#' \item{A `character` scalar:}{ in this case the value of the
-#' `range` argument is considered to be a file path to an annotation file
-#' on disk. A range of file types are supported by the `Gviz` package as
-#' identified by the file extension. See the `importFunction`
-#' documentation below for further details.}
-#'
-#' }
 #' @template GeneRegionTrack-class_param
 #' @return
 #'
@@ -286,8 +272,8 @@ setClass("GeneRegionTrack",
 ## Initialize ----------------------------------------------------------------
 
 #' @describeIn GeneRegionTrack-class Initialize the `start` and `end` slots
-#' before deferring to the `AnnotationTrack` initializer for the remaining
-#' slots.
+#' before deferring to the [`AnnotationTrack`][AnnotationTrack-class]
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...) {
     if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
@@ -325,9 +311,10 @@ setClass("ReferenceGeneRegionTrack", contains = c("GeneRegionTrack", "ReferenceT
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritence has some strange features with regards to method selection
 
-#' @describeIn GeneRegionTrack-class Initialize the `ReferenceTrack` slots
-#' (`stream`, `reference`, `mapping`, `args`, `defaults`) before deferring to
-#' the `GeneRegionTrack` initializer for the remaining slots.
+#' @describeIn GeneRegionTrack-class Initialize the
+#' [`ReferenceTrack`][ReferenceTrack-class] slots (`stream`, `reference`,
+#' `mapping`, `args`, `defaults`) before deferring to the `GeneRegionTrack`
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), ...) {
@@ -680,7 +667,7 @@ setMethod("gene", signature(GdObject = "GeneRegionTrack"), function(GdObject) .g
 #' @export
 setReplaceMethod("gene", signature("GeneRegionTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "gene"))
 
-#' @describeIn GeneRegionTrack-class Extract the human-readble gene symbol
+#' @describeIn GeneRegionTrack-class Extract the human-readable gene symbol
 #' for all gene models.
 #' @export
 setMethod("symbol", signature(GdObject = "GeneRegionTrack"), function(GdObject) .getAnn(GdObject, "symbol"))

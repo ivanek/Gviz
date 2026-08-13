@@ -6,16 +6,16 @@
 #'
 #'
 #' All track objects that inherit from class
-#' [AnnotationTrack-class] support the grouping feature. The
+#' [`AnnotationTrack`][AnnotationTrack-class] support the grouping feature. The
 #' information is usually passed on to the constructor function (for
-#' `AnnotationTrack` via the `group` argument and for
-#' [GeneRegionTrack-class] objects via the `exon` argument)
+#' [`AnnotationTrack`][AnnotationTrack-class] via the `group` argument and for
+#' [`GeneRegionTrack`][GeneRegionTrack-class] objects via the `exon` argument)
 #' or automatically downloaded from an online annotation repository
-#' ([BiomartGeneRegionTrack-class]). Group membership is specified
-#' by a factor vector with as many items as there are annotation items in the
-#' track (i.e., the value of `length(track)`). Upon plotting, the grouped
-#' annotation features are displayed together and will not be separated in the
-#' stacking of track items.
+#' ([`BiomartGeneRegionTrack`][BiomartGeneRegionTrack-class]). Group membership
+#' is specified by a factor vector with as many items as there are annotation
+#' items in the track (i.e., the value of `length(track)`). Upon plotting, the
+#' grouped annotation features are displayed together and will not be separated
+#' in the stacking of track items.
 #'
 #' @name grouping
 #'

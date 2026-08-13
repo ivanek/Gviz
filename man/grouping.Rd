@@ -10,16 +10,16 @@ the use of grouping information to build informative annotation plots.
 }
 \details{
 All track objects that inherit from class
-\link[=AnnotationTrack-class]{AnnotationTrack} support the grouping feature. The
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}} support the grouping feature. The
 information is usually passed on to the constructor function (for
-\code{AnnotationTrack} via the \code{group} argument and for
-\link[=GeneRegionTrack-class]{GeneRegionTrack} objects via the \code{exon} argument)
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}} via the \code{group} argument and for
+\code{\link[=GeneRegionTrack-class]{GeneRegionTrack}} objects via the \code{exon} argument)
 or automatically downloaded from an online annotation repository
-(\link[=BiomartGeneRegionTrack-class]{BiomartGeneRegionTrack}). Group membership is specified
-by a factor vector with as many items as there are annotation items in the
-track (i.e., the value of \code{length(track)}). Upon plotting, the grouped
-annotation features are displayed together and will not be separated in the
-stacking of track items.
+(\code{\link[=BiomartGeneRegionTrack-class]{BiomartGeneRegionTrack}}). Group membership
+is specified by a factor vector with as many items as there are annotation
+items in the track (i.e., the value of \code{length(track)}). Upon plotting, the
+grouped annotation features are displayed together and will not be separated
+in the stacking of track items.
 }
 \seealso{
 \link[=AnnotationTrack-class]{AnnotationTrack}

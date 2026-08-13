@@ -8,32 +8,34 @@ NULL
 #'
 #' A class allow for on-demand streaming of data off the file system.
 #'
-#' The `availableDefaultMappings` function can be used to find out whether
-#' the package defines a mapping scheme between one of the many supported input
-#' file types and the metadata columns of the tracks' `GRanges` objects.
+#' The `availableDefaultMappings` function can be used to find out whether the
+#' package defines a mapping scheme between one of the many supported input file
+#' types and the metadata columns of the tracks'
+#' [`GRanges`][GenomicRanges::GRanges-class] objects.
 #'
 #' @name ReferenceTrack-class
 #'
-#' @slot stream Object of class function. The import function to stream data
-#' of the file system. Needs to be able to handle the two mandatory arguments
-#' `file` (a `character` containing a valid file path) and `selection`
-#' (a `GRanges` object with the genomic region to plot).
+#' @slot stream Object of class function. The import function to stream data of
+#' the file system. Needs to be able to handle the two mandatory arguments
+#' `file` (a `character` containing a valid file path) and `selection` (a
+#' [`GRanges`][GenomicRanges::GRanges-class] object with the genomic region to
+#' plot).
 #' @slot reference Object of class "character", the path to the file
 #' containing the data.
-#' @slot mapping Object of class `list`, a default mapping between the
-#' metadata columns of the returned `GRanges` object from the import function
-#' and the `elemenMetadata` columns that make up the final track object.
+#' @slot mapping Object of class `list`, a default mapping between the metadata
+#' columns of the returned [`GRanges`][GenomicRanges::GRanges-class] object from
+#' the import function and the `elemenMetadata` columns that make up the final
+#' track object.
 #' @slot args Object of class `list`, the passed in constructor arguments
 #' during object instantiation. Those will be needed when fetching the data
 #' in order to fill all necessary slots.
 #' @slot defaults Object of class `list`, the relevant default values to be
 #' used when neither mapping nor args provides the necessary information.
 #'
-#' @return
-#' Constructor functions of `AnnotationTrack`, `DataTrack`, `SequenceTrack`
-#' and `AlignmentsTrack` can create a special object of corresponding
-#' `Reference*Track` subclass with pointer to the referenced
-#' file.
+#' @return Constructor functions of [`AnnotationTrack`][AnnotationTrack-class],
+#' [`DataTrack`][DataTrack-class], [`SequenceTrack`][SequenceTrack-class] and
+#' [`AlignmentsTrack`][AlignmentsTrack-class] can create a special object of
+#' corresponding `Reference*Track` subclass with pointer to the referenced file.
 #'
 #' @return A virtual class: No objects may be created from it.
 #'

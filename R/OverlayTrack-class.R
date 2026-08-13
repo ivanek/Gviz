@@ -17,8 +17,8 @@ NULL
 #'
 #' @name OverlayTrack-class
 #'
-#' @param trackList A list of Gviz track objects that all have to inherit from
-#' class `GdObject`.
+#' @param trackList A list of `Gviz` track objects that all have to inherit from
+#' class [`GdObject`][GdObject-class].
 #' @param name Character scalar of the track's name. This is not really used
 #' and only exists for completeness.
 #' @param ... All additional parameters are ignored.
@@ -55,7 +55,8 @@ setClass("OverlayTrack",
 ## Initialize ----------------------------------------------------------------
 
 #' @describeIn OverlayTrack-class Initialize the `trackList` slot before
-#' deferring to the `GdObject` initializer for the remaining slots.
+#' deferring to the [`GdObject`][GdObject-class] initializer for the remaining
+#' slots.
 #' @export
 setMethod("initialize", "OverlayTrack", function(.Object, trackList, ...) {
     .Object <- .updatePars(.Object, "OverlayTrack")
@@ -81,7 +82,7 @@ OverlayTrack <- function(trackList = list(), name = "OverlayTrack", ...) {
 ## General accessors ---------------------------------------------------------
 
 #' @describeIn OverlayTrack-class set display parameters using the values of
-#' the named list in value. See [settings] for details on
+#' the named list in value. See [`settings`] for details on
 #' display parameters and customization.
 #' @export
 setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, recursive = FALSE, value) {

@@ -91,16 +91,17 @@ RNASequenceTrack(
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{chromosome}{the currently active chromosome which may have to be set
-for a \code{RangeTrack} or a \code{SequenceTrack} object
-parameters}
+\item{chromosome}{The currently active chromosome, which may have to be set
+for a \code{\link[=RangeTrack-class]{RangeTrack}} or a \code{SequenceTrack} object.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. For a \code{SequenceBSgenomeTrack} object, the genome
-information is extracted from the input \code{BSgenome} package. For a
-\code{DNAStringSet} it has too be provided or the constructor will fall back
-to the default value of \code{NA}.}
+checked at this point. For a
+\code{\link[=SequenceBSgenomeTrack-class]{SequenceBSgenomeTrack}} object, the genome
+information is extracted from the input
+\code{\link[BSgenome:BSgenome-class]{BSgenome}} package. For a
+\code{\link[Biostrings:DNAStringSet-class]{DNAStringSet}} it has to be provided, or
+the constructor will fall back to the default value of \code{NA}.}
 
 \item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
@@ -111,12 +112,13 @@ the construction of a \code{SequenceTrack} as flexible as possible.
 
 The different input options for \code{sequence} are:
 \itemize{
-\item \strong{An object of class \link[Biostrings:DNAStringSet-class]{DNAStringSet}}:
+\item \strong{An object of class \code{\link[Biostrings:DNAStringSet-class]{DNAStringSet}}}:
 the individual \code{DNAString}s are considered to be the different
 chromosome sequences.
-\item \strong{An object of class \link[BSgenome:BSgenome-class]{BSgenome}}: the \code{Gviz}
-package tries to follow the \code{BSgenome} philosophy in that the respective
-chromosome sequences are only realized once they are first accessed.
+\item \strong{An object of class \code{\link[BSgenome:BSgenome-class]{BSgenome}}}: the \code{Gviz}
+package tries to follow the \code{\link[BSgenome:BSgenome-class]{BSgenome}}
+philosophy in that the respective chromosome sequences are only realized
+once they are first accessed.
 \item \strong{A \code{character} scalar}: the value of the \code{sequence} argument is
 considered to be a file path to an annotation file on disk. A range of
 file types are supported by the \code{Gviz} package as identified by the file
@@ -128,37 +130,40 @@ details.
 when plotting.}
 
 \item{importFunction}{A user-defined function to be used to import the
-sequence data from a file. This only applies when the \code{sequence}
-argument is a character string with the path to the input data file. The
-function needs to accept an argument \code{file} containing the file path
-and has to return a proper \code{DNAStringSet} object with the sequence
-information per chromosome. A set of default import functions is already
-implemented in the package for a number of different file types, and one of
-these defaults will be picked automatically based on the extension of the
-input file name. If the extension can not be mapped to any of the existing
-import function, an error is raised asking for a user-defined import
-function. Currently the following file types can be imported with the
-default functions: \code{fa/fasta} and \verb{2bit}.
+sequence data from a file. This only applies when the \code{sequence} argument is
+a character string with the path to the input data file. The function needs
+to accept an argument \code{file} containing the file path and has to return a
+proper \code{\link[Biostrings:DNAStringSet-class]{DNAStringSet}} object with the
+sequence information per chromosome. A set of default import functions is
+already implemented in the package for a number of different file types, and
+one of these defaults will be picked automatically based on the extension of
+the input file name. If the extension cannot be mapped to any of the existing
+import functions, an error is raised asking for a user-defined import
+function. Currently the following file types can be imported with the default
+functions: \code{fa/fasta} and \verb{2bit}.
+
 Both file types support indexing by genomic coordinates, and it makes sense
 to only load the part of the file that is needed for plotting. To this end,
-the \code{Gviz} package defines the derived \code{ReferenceSequenceTrack}
-class, which supports streaming data from the file system. The user
-typically does not have to deal with this distinction but may rely on the
-constructor function to make the right choice as long as the default import
-functions are used. However, once a user-defined import function has been
-provided and if this function adds support for indexed files, you will have
-to make the constructor aware of this fact by setting the \code{stream}
-argument to \code{TRUE}. Please note that in this case the import function
-needs to accept a second mandatory argument \code{selection} which is a
-\code{GRanges} object containing the dimensions of the plotted genomic
-range. As before, the function has to return an appropriate
-\code{DNAStringSet} object.}
+the \code{Gviz} package defines the derived
+\code{\link[=ReferenceSequenceTrack-class]{ReferenceSequenceTrack}} class, which
+supports streaming data from the file system. The user typically does not
+have to deal with this distinction but may rely on the constructor function
+to make the right choice as long as the default import functions are used.
+However, once a user-defined import function has been provided and if this
+function adds support for indexed files, you will have to make the
+constructor aware of this fact by setting the \code{stream} argument to \code{TRUE}.
+Please note that in this case the import function needs to accept a second
+mandatory argument \code{selection}, which is a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object containing the dimensions of
+the plotted genomic range. As before, the function has to return an
+appropriate \code{\link[Biostrings:DNAStringSet-class]{DNAStringSet}} object.}
 
 \item{stream}{A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 \code{selection} argument when accessing the data on disk. This causes the
-constructor to return a \code{ReferenceSequenceTrack} object which will grab
-the necessary data on the fly during each plotting operation.}
+constructor to return a
+\code{\link[=ReferenceSequenceTrack-class]{ReferenceSequenceTrack}} object which will
+grab the necessary data on the fly during each plotting operation.}
 
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
@@ -166,38 +171,40 @@ case the class is derived directly from it.}
 \item{start, end, width}{Integer scalars defining the requested subsequence.
 Exactly two of the three must be provided; the third is derived from them.}
 
-\item{GdObject}{the input track object}
+\item{GdObject}{Object of class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{value}{Value to be set.}
 
-\item{minBase}{Start of the sequence.}
+\item{minBase}{Numeric scalar, the start coordinate of the sequence.}
 
-\item{maxBase}{End of the sequence.}
+\item{maxBase}{Numeric scalar, the end coordinate of the sequence.}
 
 \item{prepare}{\code{logical}. Run the drawing method in preparation rather than
 in production mode, i.e., only compute the track's layout without rendering
 anything to the device.}
 
-\item{object}{Object inheriting from \code{SequenceTrack-class}.}
+\item{object}{Object inheriting from \code{\link[=SequenceTrack-class]{SequenceTrack}}.}
 }
 \value{
 The return value of the constructor function is a new object of class
-\code{SequenceDNAStringSetTrack}, \code{SequenceBSgenomeTrack} or
-\code{ReferenceSequenceTrack}, depending on the constructor arguments.
-Typically the user will not have to be troubled with this distinction and
-can rely on the constructor to make the right choice.
+\code{\link[=SequenceDNAStringSetTrack-class]{SequenceDNAStringSetTrack}},
+\code{\link[=SequenceBSgenomeTrack-class]{SequenceBSgenomeTrack}} or
+\code{\link[=ReferenceSequenceTrack-class]{ReferenceSequenceTrack}}, depending on the
+constructor arguments. Typically the user will not have to be troubled with
+this distinction and can rely on the constructor to make the right choice.
 }
 \description{
 A track class to represent genomic sequences. The three child classes
-\code{SequenceDNAStringSetTrack}, \code{SequenceRNAStringSetTrack} and
-\code{SequenceBSgenomeTrack} do most of the work, however in practise they
-are of no particular relevance to the user.
+\code{\link[=SequenceDNAStringSetTrack-class]{SequenceDNAStringSetTrack}},
+\code{\link[=SequenceRNAStringSetTrack-class]{SequenceRNAStringSetTrack}} and
+\code{\link[=SequenceBSgenomeTrack-class]{SequenceBSgenomeTrack}} do most of the work,
+however in practise they are of no particular relevance to the user.
 }
 \section{Functions}{
 \itemize{
-\item \code{initialize(SequenceTrack)}: Initialize the display parameter defaults
-and the \code{chromosome}/\code{genome} slots before deferring to the \code{GdObject}
-initializer for the remaining slots.
+\item \code{initialize(SequenceTrack)}: Initialize the display parameter defaults and
+the \code{chromosome}/\code{genome} slots before deferring to the
+\code{\link[=GdObject-class]{GdObject}} initializer for the remaining slots.
 
 \item \code{SequenceTrack()}: Constructor
 
@@ -247,8 +254,8 @@ scalar that can be reasonably coerced into one.
 Usually this has to be a valid UCSC identifier, however this is not
 formally enforced here.
 
-\item \code{consolidateTrack(SequenceTrack)}: Consolidate/ Determine whether there is
-\code{chromosome} settings or not, and add this information.
+\item \code{consolidateTrack(SequenceTrack)}: Determine whether there are \code{chromosome}
+settings or not, and add this information.
 
 \item \code{drawGD(SequenceTrack)}: plot the object to a graphics device.
 The return value of this method is the input object, potentially updated
@@ -289,7 +296,7 @@ seqs <- DNAStringSet(c(chr1 = paste(sample(letters, 100000, TRUE),
 sTrack <- SequenceTrack(seqs, genome = "hg38")
 sTrack
 
-## Construct from BSGenome object
+## Construct from BSgenome object
 if (require(BSgenome.Hsapiens.UCSC.hg38)) {
     sTrack <- SequenceTrack(Hsapiens)
     sTrack
@@ -349,13 +356,13 @@ subseq(sTrack, start = length(sTrack), width = 20)
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -365,7 +372,7 @@ subseq(sTrack, start = length(sTrack), width = 20)
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

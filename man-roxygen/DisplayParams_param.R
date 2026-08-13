@@ -4,7 +4,7 @@
 #' case the class is derived directly from it.
 #' @param name Name of the retrieved parameter.
 #' @param value Value to be set.
-#' @param object Object of `DisplayPars-class`.
+#' @param object Object of class [`DisplayPars`][DisplayPars-class].
 #' @param interactive `logical`. Emit the message explaining that `setPar` no
 #' longer supports pass-by-reference semantics and that its result has to be
 #' reassigned.

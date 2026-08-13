@@ -12,8 +12,8 @@
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{sequence}{A \code{BSgenome} object with the full genomic sequence, or
-\code{NULL}.}
+\item{sequence}{A \code{\link[BSgenome:BSgenome-class]{BSgenome}} object with the full
+genomic sequence, or \code{NULL}.}
 
 \item{...}{Additional arguments.}
 }
@@ -30,10 +30,11 @@ for the remaining slots.
 \section{Slots}{
 
 \describe{
-\item{\code{sequence}}{A \code{BSgenome} object (or \code{NULL}), realized on demand as
-individual chromosome sequences are accessed.}
+\item{\code{sequence}}{A \code{\link[BSgenome:BSgenome-class]{BSgenome}} object (or \code{NULL}),
+realized on demand as individual chromosome sequences are accessed.}
 
-\item{\code{pointerCache}}{An environment holding pointers to the \code{BSgenome}
-sequences that have already been realized, to prevent garbage collection.}
+\item{\code{pointerCache}}{An environment holding pointers to the
+\code{\link[BSgenome:BSgenome-class]{BSgenome}} sequences that have already been
+realized, to prevent garbage collection.}
 }}
 

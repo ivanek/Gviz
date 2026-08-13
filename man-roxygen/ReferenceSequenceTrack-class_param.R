@@ -1,1 +1,2 @@
-#' @param reference Name of the file (for streatming).
+#' @param reference A `character` scalar with the path to the referenced file
+#' (for streaming).

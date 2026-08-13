@@ -23,23 +23,23 @@
 #' is very similar to the UCSC Genome Browser.
 #'
 #' The layout of the individual tracks is highly customizable though so called
-#' "display parameters". See [settings] for details.
+#' "display parameters". See [`settings`] for details.
 #'
 #' While plotting a track, the software automatically computes HTML image map
 #' coordinates based on the current graphics device. These coordinates as well
 #' as the associated annotation information can later be used to embed images
 #' of the plots in semi-interactive HTML pages. See
-#' [ImageMap-class] for details.
+#' [`ImageMap`][ImageMap-class] for details.
 #'
 #' @name plotTracks
 #'
-#' @param trackList A list of Gviz track objects, all inheriting from
-#' class [GdObject-class]. The tracks will all be drawn to the
+#' @param trackList A list of `Gviz` track objects, all inheriting from
+#' class [`GdObject`][GdObject-class]. The tracks will all be drawn to the
 #' same genomic coordinates, either as defined by the `from` and `to`
 #' arguments if supplied, or by the maximum range across all individual items
 #' in the list.
 #' @param from,to Numeric scalar, giving the range of genomic coordinates to
-#' draw the tracks in. Note that `to` cannot be larger than `from`.
+#' draw the tracks in. Note that `from` cannot be larger than `to`.
 #' If `NULL`, the plotting ranges are derived from the individual tracks.
 #' See `extend.left` and `extend.right` below for the definition of
 #' the final plotting ranges.
@@ -47,7 +47,7 @@
 #' parameters to tweak the appearance of the plot. These parameters are global,
 #' meaning that they will be used for all tracks in the list where they
 #' actually make sense, and they override the track-internal settings. See
-#' [settings] for details on display parameters.
+#' [`settings`] for details on display parameters.
 #' @param sizes A numeric vector of relative vertical sizes for the individual
 #' tracks of length equal to the number of tracks in `trackList`, or
 #' `NULL` to auto-detect the most appropriate vertical size proportions.
@@ -73,8 +73,9 @@
 #' @param chromosome Set the chromosome for all the tracks in the track list.
 #'
 #' @return A list of Gviz tracks, each one augmented by the computed image map
-#' coordinates in the `imageMap` slot, along with the additional `ImageMap`
-#' object `titles` containing information about the title panels.
+#' coordinates in the `imageMap` slot, along with the additional
+#' [`ImageMap`][ImageMap-class] object `titles` containing information about the
+#' title panels.
 #'
 #' @author Florian Hahne
 #'
@@ -133,7 +134,7 @@
 #'
 #' ## Add a header
 #' res <- plotTracks(list(ax, annTrack, dt),
-#'     main = "A GenomGraphs plot",
+#'     main = "A Gviz plot",
 #'     col.main = "darkgray"
 #' )
 #'

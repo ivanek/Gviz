@@ -12,8 +12,9 @@
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{sequence}{An \code{RNAStringSet} object with one RNA sequence per
-chromosome. The names have to match the chromosome identifiers.}
+\item{sequence}{An \code{\link[Biostrings:RNAStringSet-class]{RNAStringSet}} object
+with one RNA sequence per chromosome. The names have to match the chromosome
+identifiers.}
 
 \item{...}{Additional arguments.}
 }
@@ -23,14 +24,15 @@ The \code{RNAStringSet}-based version of the \code{SequenceTrack} class
 \section{Functions}{
 \itemize{
 \item \code{initialize(SequenceRNAStringSetTrack)}: Initialize the \code{sequence} slot
-(defaulting to an empty \code{RNAStringSet} if none is supplied) before
-deferring to the \code{SequenceTrack} initializer for the remaining slots.
+(defaulting to an empty \code{\link[Biostrings:RNAStringSet-class]{RNAStringSet}} if
+none is supplied) before deferring to the \code{SequenceTrack} initializer for the
+remaining slots.
 
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{sequence}}{A \code{RNAStringSet} object containing the sequence data, with
-one element per chromosome.}
+\item{\code{sequence}}{A \code{\link[Biostrings:RNAStringSet-class]{RNAStringSet}} object
+containing the sequence data, with one element per chromosome.}
 }}
 

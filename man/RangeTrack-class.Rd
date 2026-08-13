@@ -107,11 +107,12 @@
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{range}{A \code{GRanges} object with the genomic coordinates of the track
-items, and any additional annotation stored in its metadata columns.}
+\item{range}{A \code{\link[GenomicRanges:GRanges-class]{GRanges}} object with the
+genomic coordinates of the track items, and any additional annotation stored
+in its metadata columns.}
 
-\item{chromosome}{the currently active chromosome which may have to be set
-for a \code{RangeTrack} or a \code{SequenceTrack} object}
+\item{chromosome}{The currently active chromosome, which may have to be set
+for a \code{RangeTrack} or a \code{\link[=SequenceTrack-class]{SequenceTrack}} object.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
@@ -124,10 +125,10 @@ case the class is derived directly from it.}
 
 \item{value}{Value to be set.}
 
-\item{GdObject}{the input track object}
+\item{GdObject}{Object of class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
+limit the tracks in. Note that \code{from} cannot be larger than \code{to}.}
 
 \item{sort}{\code{logical}. Sort the track's ranges by their genomic coordinates
 after subsetting.}
@@ -157,19 +158,19 @@ and the associated genome.)
 \section{Functions}{
 \itemize{
 \item \code{initialize(RangeTrack)}: Initialize the \code{range}, \code{chromosome} and
-\code{genome} slots before deferring to the \code{GdObject} initializer for the
-remaining slots.
+\code{genome} slots before deferring to the \code{\link[=GdObject-class]{GdObject}}
+initializer for the remaining slots.
 
 \item \code{ranges(RangeTrack)}: return the genomic coordinates for the track
 along with all additional annotation information as an object of
-class \code{GRanges}.
+class \code{\link[GenomicRanges:GRanges-class]{GRanges}}.
 
-\item \code{ranges(RangeTrack) <- value}: replace the genomic coordinates and
-associated annotation information for the track with a new \code{GRanges}
-object.
+\item \code{ranges(RangeTrack) <- value}: replace the genomic coordinates and associated
+annotation information for the track with a new
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object.
 
 \item \code{range(RangeTrack)}: return the genomic coordinates for the
-track as an object of class \code{IRanges}.
+track as an object of class \code{\link[IRanges:IRanges-class]{IRanges}}.
 
 \item \code{seqnames(RangeTrack)}: return the track's seqnames.
 
@@ -224,12 +225,12 @@ items. The replacement value needs to be an appropriate scalar or vector
 of strand values.
 
 \item \code{position(RangeTrack)}: the arithmetic mean of the track item's
-coordionates, i.e., \code{(end(obj)-start(obj))/2}.
+coordinates, i.e., \code{(end(obj)-start(obj))/2}.
 
 \item \code{x = RangeTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{RangeTrack} object.
-This is essentially similar to subsetting of the \code{GRanges} object in the
-\code{range} slot. For most applications, the subset method may be more
-appropriate.
+This is essentially similar to subsetting of the
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object in the \code{range} slot. For
+most applications, the subset method may be more appropriate.
 
 \item \code{subset(RangeTrack)}: subset a \code{RangeTrack} by coordinates and
 sort if necessary.
@@ -242,54 +243,58 @@ object, all inheriting from class \code{RangeTrack.}
 \item \code{values(RangeTrack)}: return all additional annotation information
 except for the genomic coordinates for the track items as a \code{data.frame}.
 
-\item \code{feature(RangeTrack)}: return the grouping information for track
-items. For certain sub-classes, groups may be indicated by different colour
-schemes when plotting. See grouping or \code{AnnotationTrack} and
-\code{GeneRegionTrack} for details.
+\item \code{feature(RangeTrack)}: return the grouping information for track items.
+For certain sub-classes, groups may be indicated by different color schemes
+when plotting. See grouping or \code{\link[=AnnotationTrack-class]{AnnotationTrack}} and
+\code{\link[=GeneRegionTrack-class]{GeneRegionTrack}} for details.
 @export
 
 \item \code{feature(GdObject = RangeTrack) <- value}: set the grouping information for track items.
-This has to be a factor vector (or another type of vector that can be
-coerced into one) of the same length as the number of items in the
-\code{RangeTrack.} See grouping or \code{AnnotationTrack} and \code{GeneRegionTrack} for
-details.
+This has to be a factor vector (or another type of vector that can be coerced
+into one) of the same length as the number of items in the \code{RangeTrack.} See
+grouping or \code{\link[=AnnotationTrack-class]{AnnotationTrack}} and
+\code{\link[=GeneRegionTrack-class]{GeneRegionTrack}} for details.
 @export
 
 \item \code{consolidateTrack(RangeTrack)}: Update the active chromosome (if provided)
-before deferring to the \code{GdObject} method for the remaining
+before deferring to the \code{\link[=GdObject-class]{GdObject}} method for the remaining
 consolidation steps.
 
 }}
 \section{Slots}{
 
 \describe{
-\item{\code{dp}}{Object of \code{DisplayPars-class}, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.}
+\item{\code{dp}}{Object of class \code{\link[=DisplayPars-class]{DisplayPars}}, the display
+settings controlling the look and feel of a track. See \code{\link{settings}} for
+details on setting graphical parameters for tracks.}
 
 \item{\code{name}}{Object of class \code{character}, a human-readable name for the track
 that will be used in the track's annotation panel if necessary.}
 
-\item{\code{imageMap}}{Object of \code{ImageMap-class}, containing optional information
-for an HTML image map. This will be created by the \code{drawGD} methods when the
-track is plotted to a device and is usually not set by the user.}
+\item{\code{imageMap}}{Object of class \code{\link[=ImageMap-class]{ImageMap}}, containing
+optional information for an HTML image map. This will be created by the
+\code{drawGD} methods when the track is plotted to a device and is usually not set
+by the user.}
 
-\item{\code{range}}{Object of class \code{GRanges}, the genomic ranges of the track items
-as well as additional annotation information in its \code{elementMetaData} slot.
-Please not that the slot is actually implemented as a class union between
-\code{GRanges} and IRanges to increase efficiency, for instance for DataTrack
-objects. This usually does not concern the user.}
+\item{\code{range}}{Object of class \code{\link[GenomicRanges:GRanges-class]{GRanges}}, the
+genomic ranges of the track items as well as additional annotation
+information in its \code{elementMetadata} slot. Please note that the slot is
+actually implemented as a class union between
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} and
+\code{\link[IRanges:IRanges-class]{IRanges}} to increase efficiency, for instance for
+\code{\link[=DataTrack-class]{DataTrack}} objects. This usually does not concern the
+user.}
 
 \item{\code{chromosome}}{Object of class \code{character}, the chromosome on which the
 track is defined. There can only be a single chromosome for one track. For
 certain subclasses, the space of allowed chromosome names is limited (e.g.,
 only those chromosomes that exist for a particular genome). Throughout the
-package, chromosome name have to be entered either as a single integer scalar
-or as a character scalar of the form chrXYZ, where XYZ may be an arbitrary
-character string.}
+package, chromosome names have to be entered either as a single integer
+scalar or as a character scalar of the form \code{chrXYZ}, where \code{XYZ} may be an
+arbitrary character string.}
 
 \item{\code{genome}}{Object of class \code{character}, the genome for which the track is
-defined. For most sub-classes this has to be valid UCSC genome identifier,
+defined. For most sub-classes this has to be a valid UCSC genome identifier,
 however this may not always be formally checked upon object instantiation.}
 }}
 
@@ -329,13 +334,13 @@ plotTracks(annTrack)
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -345,7 +350,7 @@ plotTracks(annTrack)
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

@@ -29,13 +29,13 @@ NULL
 #'
 #' [GdObject-class]
 #'
-#' [GRanges][GenomicRanges::GRanges-class]
+#' [`GRanges`][GenomicRanges::GRanges-class]
 #'
 #' [HighlightTrack-class]
 #'
 #' [ImageMap-class]
 #'
-#' [IRanges][IRanges::IRanges-class]
+#' [`IRanges`][IRanges::IRanges-class]
 #'
 #' [RangeTrack-class]
 #'
@@ -45,7 +45,7 @@ NULL
 #'
 #' [grouping]
 #'
-#' [panel.grid][lattice::panel.grid]
+#' [`panel.grid`][lattice::panel.grid]
 #'
 #' [plotTracks]
 #'
@@ -150,8 +150,8 @@ setClass("GdObject",
 #' @describeIn GdObject-class Initialize the object. This involves setting up a
 #' new environment for the display parameters and filling it up with the current
 #' settings. All arguments that have not been clobbered up by one of the
-#' sub-class initializers are considered to be additional display parameters
-#' and are also added to the environment. See `settings` for details on setting
+#' sub-class initializers are considered to be additional display parameters and
+#' are also added to the environment. See [`settings`] for details on setting
 #' graphical parameters for tracks.
 #' @keywords internal
 setMethod("initialize", "GdObject", function(.Object, name, ...) {
@@ -195,7 +195,7 @@ setMethod("setPar", signature("GdObject", "list"), function(x, value, interactiv
 })
 
 #' @describeIn GdObject-class set display parameters using the values of the
-#' named list in `value`. See `settings` for details on display parameters
+#' named list in `value`. See [`settings`] for details on display parameters
 #' and customization.
 setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recursive = FALSE, value) {
     x <- setPar(x, value, interactive = FALSE)
@@ -204,24 +204,24 @@ setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recur
 
 ##  GdObject Methods Getters -------------------------------------------------
 
-#' @describeIn GdObject-class Return the value of the display parameter
-#' `name`, delegating to the object's `DisplayPars` slot. `displayPars`
-#' is a more descriptive alias for this method.
-#' See `settings` for details on display parameters and customization.
+#' @describeIn GdObject-class Return the value of the display parameter `name`,
+#' delegating to the object's [`DisplayPars`][DisplayPars-class] slot.
+#' `displayPars` is a more descriptive alias for this method. See [`settings`]
+#' for details on display parameters and customization.
 setMethod("getPar", c("GdObject", "character"), function(x, name, asIs = FALSE) getPar(x@dp, name, asIs = asIs))
 
-#' @describeIn GdObject-class Return all display parameters, delegating to
-#' the object's `DisplayPars` slot. `displayPars` is a more descriptive
-#' alias for this method.
-#' See `settings` for details on display parameters and customization.
+#' @describeIn GdObject-class Return all display parameters, delegating to the
+#' object's [`DisplayPars`][DisplayPars-class] slot. `displayPars` is a more
+#' descriptive alias for this method. See [`settings`] for details on display
+#' parameters and customization.
 setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal = TRUE) getPar(x@dp, hideInternal = hideInternal))
 
 #' @describeIn GdObject-class list the value of the display parameter name.
-#' See `settings` for details on display parameters and customization.
+#' See [`settings`] for details on display parameters and customization.
 setMethod("displayPars", c("GdObject", "character"), function(x, name) getPar(x, name))
 
 #' @describeIn GdObject-class list the value of all available display
-#' parameters. See `settings` for details on display parameters and
+#' parameters. See [`settings`] for details on display parameters and
 #' customization.
 setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal))
 

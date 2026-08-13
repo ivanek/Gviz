@@ -276,7 +276,7 @@ clearSessionCache <- function() {
 #' The UCSC data base provides a wealth of annotation information. This
 #' function can be used to access UCSC, to retrieve the data available there
 #' and to return it as an annotation track object amenable to plotting with
-#' [plotTracks].
+#' [`plotTracks`].
 #'
 #' `clearSessionCache` can be called to remove all cached items from
 #' the session which are generated when connecting with the UCSC data base.
@@ -284,7 +284,7 @@ clearSessionCache <- function() {
 #'
 #' The data stored at the UCSC data bases can be of different formats: gene or
 #' transcript model data, simple annotation features like CpG Island locations
-#' or SNPs, or numeric data like conservation or mapability. This function
+#' or SNPs, or numeric data like conservation or mappability. This function
 #' presents a unified API to download all kinds of data and to map them back to
 #' one of the annotation track objects defined in this package. The type of
 #' object to hold the data has to be given in the `trackType` argument, and
@@ -294,10 +294,11 @@ clearSessionCache <- function() {
 #' respective data columns in the downloaded UCSC tables if available. For
 #' instance, assuming the table for track 'foo' contains the columns 'id',
 #' 'type', 'fromLoc' and 'toLoc', giving the feature identifier, type, start end
-#' end location. In order to create an [AnnotationTrack][AnnotationTrack-class]
-#' object from that data, we have to pass the additional named arguments
-#' `id="id"`, `feature="type"`, `start="fromLoc"` and `end="toLoc"` to the
-#' `UcscTrack` function. The complete function call could look like this:
+#' end location. In order to create an
+#' [`AnnotationTrack`][AnnotationTrack-class] object from that data, we have to
+#' pass the additional named arguments `id="id"`, `feature="type"`,
+#' `start="fromLoc"` and `end="toLoc"` to the `UcscTrack` function. The complete
+#' function call could look like this:
 #'
 #' `UcscTrack(track="foo", genome="mm39", chromosome=3, from=1000,
 #' to=10000, trackType="AnnotationTrack", id="id", feature="type",
@@ -313,18 +314,18 @@ clearSessionCache <- function() {
 #' @aliases UcscTrack clearSessionCache
 #' @param track Character, the name of the track to fetch from UCSC. To find
 #' out about available tracks please consult the online table browser at
-#' \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.
+#' <http://genome.ucsc.edu/cgi-bin/hgTables?command=start>.
 #' @param table Character, the name of the table to fetch from UCSC, or
 #' `NULL`, in which case the default selection of tables is used. To find
 #' out about available tables for a given track please consult the online table
-#' browser at \url{http://genome.ucsc.edu/cgi-bin/hgTables?command=start}.
-#' @param trackType Character, one in `c("AnnotationTrack",
+#' browser at <http://genome.ucsc.edu/cgi-bin/hgTables?command=start>.
+#' @param trackType Character, one of `c("AnnotationTrack",
 #' "GeneRegionTrack", "DataTrack", "GenomeAxisTrack")`. The function will try
 #' to coerce the downloaded data in an object of this class. See below for
 #' details.
-#' @param genome Character, a valid USCS genome identifier for which to fetch
+#' @param genome Character, a valid UCSC genome identifier for which to fetch
 #' the data.
-#' @param chromosome Character, a valid USCS character identifier for which to
+#' @param chromosome Character, a valid UCSC character identifier for which to
 #' fetch the data.
 #' @param name Character, the name to use for the resulting track object.
 #' @param from,to A range of genomic locations for which to fetch data.

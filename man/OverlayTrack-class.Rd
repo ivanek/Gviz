@@ -39,8 +39,8 @@ OverlayTrack(trackList = list(), name = "OverlayTrack", ...)
 \S4method{show}{OverlayTrack}(object)
 }
 \arguments{
-\item{trackList}{A list of Gviz track objects that all have to inherit from
-class \code{GdObject}.}
+\item{trackList}{A list of \code{Gviz} track objects that all have to inherit from
+class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{...}{All additional parameters are ignored.}
 
@@ -64,12 +64,13 @@ and axis, for all the other tracks only the panel content is plotted.
 \section{Functions}{
 \itemize{
 \item \code{initialize(OverlayTrack)}: Initialize the \code{trackList} slot before
-deferring to the \code{GdObject} initializer for the remaining slots.
+deferring to the \code{\link[=GdObject-class]{GdObject}} initializer for the remaining
+slots.
 
 \item \code{OverlayTrack()}: Constructor function for \code{OverlayTrack-class}.
 
 \item \code{displayPars(x = OverlayTrack) <- value}: set display parameters using the values of
-the named list in value. See \link{settings} for details on
+the named list in value. See \code{\link{settings}} for details on
 display parameters and customization.
 
 \item \code{length(OverlayTrack)}: return the number of subtracks.
@@ -131,13 +132,13 @@ ot <- OverlayTrack(trackList = list(dt1, dt2))
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -147,7 +148,7 @@ ot <- OverlayTrack(trackList = list(dt1, dt2))
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

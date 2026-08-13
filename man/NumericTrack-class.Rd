@@ -12,10 +12,10 @@
 \S4method{drawGrid}{NumericTrack}(GdObject, from, to)
 }
 \arguments{
-\item{GdObject}{Object of \code{GdObject-class}.}
+\item{GdObject}{Object of class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
+limit the tracks in. Note that \code{from} cannot be larger than \code{to}.}
 
 \item{...}{Additional arguments.}
 }
@@ -36,33 +36,37 @@ contain numeric data. This class merely exists for dispatching purpose.
 \section{Slots}{
 
 \describe{
-\item{\code{dp}}{Object of \code{DisplayPars-class}, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.}
+\item{\code{dp}}{Object of class \code{\link[=DisplayPars-class]{DisplayPars}}, the display
+settings controlling the look and feel of a track. See \code{\link{settings}} for
+details on setting graphical parameters for tracks.}
 
 \item{\code{name}}{Object of class \code{character}, a human-readable name for the track
 that will be used in the track's annotation panel if necessary.}
 
-\item{\code{imageMap}}{Object of \code{ImageMap-class}, containing optional information
-for an HTML image map. This will be created by the \code{drawGD} methods when the
-track is plotted to a device and is usually not set by the user.}
+\item{\code{imageMap}}{Object of class \code{\link[=ImageMap-class]{ImageMap}}, containing
+optional information for an HTML image map. This will be created by the
+\code{drawGD} methods when the track is plotted to a device and is usually not set
+by the user.}
 
-\item{\code{range}}{Object of class \code{GRanges}, the genomic ranges of the track items
-as well as additional annotation information in its \code{elementMetaData} slot.
-Please not that the slot is actually implemented as a class union between
-\code{GRanges} and IRanges to increase efficiency, for instance for DataTrack
-objects. This usually does not concern the user.}
+\item{\code{range}}{Object of class \code{\link[GenomicRanges:GRanges-class]{GRanges}}, the
+genomic ranges of the track items as well as additional annotation
+information in its \code{elementMetadata} slot. Please note that the slot is
+actually implemented as a class union between
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} and
+\code{\link[IRanges:IRanges-class]{IRanges}} to increase efficiency, for instance for
+\code{\link[=DataTrack-class]{DataTrack}} objects. This usually does not concern the
+user.}
 
 \item{\code{chromosome}}{Object of class \code{character}, the chromosome on which the
 track is defined. There can only be a single chromosome for one track. For
 certain subclasses, the space of allowed chromosome names is limited (e.g.,
 only those chromosomes that exist for a particular genome). Throughout the
-package, chromosome name have to be entered either as a single integer scalar
-or as a character scalar of the form chrXYZ, where XYZ may be an arbitrary
-character string.}
+package, chromosome names have to be entered either as a single integer
+scalar or as a character scalar of the form \code{chrXYZ}, where \code{XYZ} may be an
+arbitrary character string.}
 
 \item{\code{genome}}{Object of class \code{character}, the genome for which the track is
-defined. For most sub-classes this has to be valid UCSC genome identifier,
+defined. For most sub-classes this has to be a valid UCSC genome identifier,
 however this may not always be formally checked upon object instantiation.}
 }}
 
@@ -71,13 +75,13 @@ however this may not always be formally checked upon object instantiation.}
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -87,7 +91,7 @@ however this may not always be formally checked upon object instantiation.}
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

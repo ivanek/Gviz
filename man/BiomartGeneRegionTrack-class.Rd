@@ -50,37 +50,36 @@ BiomartGeneRegionTrack(
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{start}{An integer scalar with the genomic start coordinates for the
+\item{start}{An integer scalar with the genomic start coordinate for the
 gene model range.}
 
-\item{end}{An integer scalar with the genomic end coordinates for the gene
+\item{end}{An integer scalar with the genomic end coordinate for the gene
 model range.}
 
-\item{biomart}{An optional \link[biomaRt:Mart-class]{Mart} object providing
-access to the EBI Biomart webservice. As default the appropriate Ensembl data
-source is selected based on the provided genome and chromosome.}
+\item{biomart}{An optional \code{\link[biomaRt:Mart-class]{Mart}} object providing
+access to the EBI Biomart webservice. By default the appropriate Ensembl
+data source is selected based on the provided genome and chromosome.}
 
 \item{filter}{A named \code{list} of additional filters to be applied in the
 Biomart query.}
 
-\item{range}{A \code{GRanges} object with the genomic coordinates of the gene
-model items.}
+\item{range}{A \code{\link[GenomicRanges:GRanges-class]{GRanges}} object with the
+genomic coordinates of the gene model items.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
 checked at this point. If no mapping from genome to Biomart Ensembl data
-source is possible, the \code{biomart} argument needs to be provided by the
-user.}
+source is possible, the \code{biomart} argument needs to be provided by the user.}
 
 \item{chromosome}{The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier. Please note that at this stage
 only syntactic checking takes place, i.e., the argument value needs to be a
-single integer, numeric character or a character of the form \code{chrx},
-where \code{x} may be any possible string. The user has to make sure that
-the respective chromosome is indeed defined for the the track's genome.}
+single integer, numeric character or a character of the form \code{chrx}, where
+\code{x} may be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome.}
 
 \item{strand}{Character scalar, the strand for which to fetch gene
-information from Biomart. One in \code{+}, \code{-}, or \verb{+-}.}
+information from Biomart. One of \code{+}, \code{-}, or \verb{+-}.}
 
 \item{featureMap}{Named character vector or list to map between the fields
 in the Biomart data base and the features as they are used to construct the
@@ -90,20 +89,20 @@ will use the first one that is defined in the selected Biomart.}
 \item{symbol, transcript, gene, entrez}{Character vector giving one or several
 gene symbols, Ensembl transcript identifiers, Ensembl gene identifiers, or
 ENTREZ gene identifiers, respectively. The genomic locus of their gene model
-will be fetch from Biomart instead of providing explicit start and end
+will be fetched from Biomart instead of providing explicit start and end
 coordinates.}
 
 \item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
 section below for details.}
 
-\item{stacking}{The stacking type for overlapping items of the track. One in
-\code{c(hide, dense, squish, pack,full)}. Currently, only hide (don't show
-the track items, squish (make best use of the available space) and dense (no
+\item{stacking}{The stacking type for overlapping items of the track. One of
+\code{c(hide, dense, squish, pack, full)}. Currently, only hide (do not show the
+track items), squish (make best use of the available space) and dense (no
 stacking at all) are implemented.}
 
 \item{filters}{A list of additional filters to be applied in the Biomart
-query. See \link[biomaRt:getBM]{biomaRt::getBM} for details.}
+query. See \code{\link[biomaRt:getBM]{biomaRt::getBM()}} for details.}
 
 \item{name}{Character scalar of the track's name used in the title panel
 when plotting.}
@@ -112,7 +111,7 @@ when plotting.}
 case the class is derived directly from it.}
 
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
-limit the tracks in. Note that \code{to} cannot be larger than \code{from.}}
+limit the tracks in. Note that \code{from} cannot be larger than \code{to}.}
 
 \item{use.defaults}{\code{logical}. Derive the subsetting range from the track's
 own defaults rather than using \code{from} and \code{to} verbatim.}
@@ -130,16 +129,17 @@ A track containing all gene models in a particular region as fetched from
 EBI's Biomart service. Usually the user does not have to take care of the
 Biomart connection, which will be established automatically based on the
 provided genome and chromosome information. However, for full flexibility a
-valid \link[biomaRt:Mart-class]{Mart} object may be passed on to the constructor.
-Please note that this assumes a connection to one of the Ensembl gene data
-sources, mapping the available query data back to the internal object slots.
+valid \code{\link[biomaRt:Mart-class]{Mart}} object may be passed on to the
+constructor. Please note that this assumes a connection to one of the Ensembl
+gene data sources, mapping the available query data back to the internal
+object slots.
 }
 \section{Functions}{
 \itemize{
 \item \code{initialize(BiomartGeneRegionTrack)}: Initialize display parameters and
 translate the various id/filter arguments (\code{symbol}, \code{gene}, \code{transcript},
 \code{entrez}, \code{filter}) into the internal biomaRt query filters before
-deferring to the \code{GeneRegionTrack} initializer.
+deferring to the \code{\link[=GeneRegionTrack-class]{GeneRegionTrack}} initializer.
 
 \item \code{BiomartGeneRegionTrack()}: Constructor function for
 \code{BiomartGeneRegionTrack-class}.
@@ -271,13 +271,13 @@ EBI Biomart webservice at \url{https://www.biomart.org}.
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -287,7 +287,7 @@ EBI Biomart webservice at \url{https://www.biomart.org}.
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

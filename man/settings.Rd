@@ -33,21 +33,22 @@ function parameters are being interpreted as additional display parameters
 and are automatically added to the aforementioned slot. The main difference
 here is that display parameters that are passed on to the constructor
 function are specific for an individual track object, whereas those supplied
-to the \code{plotTracks} function will be applied to all the objects in the
+to the \code{\link{plotTracks}} function will be applied to all the objects in the
 plotting list. Not all display parameters have an effect on the plotting of
 all track classes, and those will be silently ignored.
 
 One can query the available display parameters for a given class as well as
-their default values by calling the \code{\link{availableDisplayPars}}
-function, or by inspecting the man pages of the individual track classes.
-The structure of the classes defined in this package is hierarchical, and so
-are the available display parameters, i.e., all objects inherit the
-parameters defined in the common \code{GdObject} parent class, and so on.
+their default values by calling the \code{\link{availableDisplayPars}} function, or by
+inspecting the man pages of the individual track classes. The structure of
+the classes defined in this package is hierarchical, and so are the available
+display parameters, i.e., all objects inherit the parameters defined in the
+common \code{\link[=GdObject-class]{GdObject}} parent class, and so on.
 
 Once a track object has been created, the display parameters are still open
 for modification. To this end, the \code{\link[=DisplayPars-class]{DisplayPars}}
 replacement method is available for all objects inheriting from class
-\code{GdObject}. The method takes a named list of parameters as input, e.g.:
+\code{\link[=GdObject-class]{GdObject}}. The method takes a named list of parameters as
+input, e.g.:
 
 \code{displayPars(foo) <- list(col="red", lwd=2)}
 
@@ -74,18 +75,18 @@ location once and for all. To this end the Gviz package supports display
 parameter schemes. A scheme is essentially just a bunch of nested named
 lists, where the names on the first level of nesting should correspond to
 track class names, and the names on the second level to the display
-parameters to set. The currently active schmeme can be changed by setting
+parameters to set. The currently active scheme can be changed by setting
 the global option \code{Gviz.scheme}, and a new scheme can be registered by
 using the \code{addScheme} function, providing both the list and the name
 for the new scheme. The \code{getScheme} function is useful to get the
 current scheme as a list structure, for instance to use as a skeleton for
 your own custom scheme.
 
-In order to make these settings persitant across R sessions one can create
+In order to make these settings persistent across R sessions one can create
 one or several schemes in the global environment in the special object
 \code{.GvizSchemes}, for instance by putting the necessary code in the
 \code{.Rprofile} file. This object needs to be a named list of schemes, and
-it will be collected when the Givz package loads. Its content is then
+it will be collected when the Gviz package loads. Its content is then
 automatically added to the collection of available schemes.
 
 Please note that because display parameters are stored with the track
@@ -153,7 +154,7 @@ possible values are "above", "below" and "beside".}
 marks.}
 
 \item{\code{lwd=2}:}{ Numeric scalar. The line width for the axis
-elementes.}
+elements.}
 
 \item{\code{scale=NULL}:}{ Numeric scalar. If not \code{NULL} a small scale
 is drawn instead of the full axis, if the value is between 0 and 1 it is
@@ -178,7 +179,7 @@ lines and tickmarks.}
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -223,7 +224,7 @@ for plot symbols. Usually the same as the global \code{col} parameter.}
 color for the title panels}
 
 \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See \code{\link{collapsing}} for details.}
 
 \item{\code{fill="lightgray"}:}{ Integer or character scalar.  Default fill
@@ -290,7 +291,7 @@ title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.}
 
 \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
-specific definiton exists.}
+specific definition exists.}
 
 \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).}
@@ -324,7 +325,7 @@ it to \code{TRUE} fills empty positions with zeros, which is default.
 \code{FALSE} fills empty positions with \code{NA}.}
 
 \item{\code{alpha.confint=0.3}:}{ Numeric scalar. The transparency for the
-confidence intervalls in confint-type plots.}
+confidence intervals in confint-type plots.}
 
 \item{\code{amount=NULL}:}{ Numeric scalar. Amount of jittering in xy-type
 plots. See \link[lattice:panel.xyplot]{lattice::panel.xyplot} for details.}
@@ -441,7 +442,7 @@ the \code{col} parameter can be used to control the group color scheme,
 however the gradient will always be from white to 'col' and thus does not
 offer as much flexibility as this \code{gradient} parameter.}
 
-\item{\code{groups=NULL}:}{ Vector coercable to a factor.  Optional sample
+\item{\code{groups=NULL}:}{ Vector coercible to a factor.  Optional sample
 grouping. See 'Details' section in \code{\link[=DataTrack-class]{DataTrack}} for
 further information.}
 
@@ -483,7 +484,7 @@ baseline, defaults to the setting of \code{lwd}.}
 mountain-type and polygon-type plots, defaults to the setting of
 \code{lwd}.}
 
-\item{\code{min.distance=0}:}{ Numeric scalar. The mimimum distance in pixel
+\item{\code{min.distance=0}:}{ Numeric scalar. The minimum distance in pixel
 below which to collapse ranges.}
 
 \item{\code{na.rm=FALSE}:}{ Boolean controlling whether to discard all NA
@@ -562,7 +563,7 @@ are computed.}
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -682,7 +683,7 @@ title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.}
 
 \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
-specific definiton exists.}
+specific definition exists.}
 
 \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).}
@@ -691,7 +692,7 @@ specific definiton exists.}
 panel. Although this can be set individually for each track, in multi-track
 plots as created by \code{\link{plotTracks}} there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
@@ -769,7 +770,7 @@ Defaults to automatic size setting. Can also be overridden in the
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -814,7 +815,7 @@ for plot symbols. Usually the same as the global \code{col} parameter.}
 color for the title panels}
 
 \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See \code{\link{collapsing}} for details.}
 
 \item{\code{fontface.title=2}:}{ Integer or character scalar.  The font face
@@ -867,7 +868,7 @@ title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.}
 
 \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
-specific definiton exists.}
+specific definition exists.}
 
 \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).}
@@ -991,7 +992,7 @@ be overridden in the \code{\link{plotTracks}} function.}
 
 }
 
-\bold{\emph{Inherited from class StackedTrack:}}
+\strong{\emph{Inherited from class \code{\link[=StackedTrack-class]{StackedTrack}}:}}
 
 \describe{
 
@@ -1009,7 +1010,7 @@ will be moved to the top-most stack and vice versa.}
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -1057,7 +1058,7 @@ for plot symbols. Usually the same as the global \code{col} parameter.}
 color for the title panels}
 
 \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See \code{\link{collapsing}} for details.}
 
 \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
@@ -1120,7 +1121,7 @@ title panel will currently not work, so use at own risk.}
 panel. Although this can be set individually for each track, in multi-track
 plots as created by \code{\link{plotTracks}} there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
@@ -1145,7 +1146,7 @@ all track items. Defaults to using the same color as in \code{fill}, also
 taking into account different track \code{features}.}
 
 \item{\code{collapseTranscripts=FALSE}:}{ Logical or character scalar. Can
-be one in \code{gene}, \code{longest}, \code{shortest} or \code{meta}. Merge
+be one of \code{gene}, \code{longest}, \code{shortest} or \code{meta}. Merge
 all transcripts of the same gene into one single gene model. In the case of
 \code{gene} (or \code{TRUE}), this will only keep the start location of the
 first exon and the end location of the last exon from all transcripts of the
@@ -1188,7 +1189,7 @@ information as transcript labels. This can be a value in \code{symbol},
 
 }
 
-\bold{\emph{Inherited from class AnnotationTrack:}}
+\strong{\emph{Inherited from class \code{\link[=AnnotationTrack-class]{AnnotationTrack}}:}}
 
 \describe{
 
@@ -1283,7 +1284,7 @@ be overridden in the \code{\link{plotTracks}} function.}
 
 }
 
-\bold{\emph{Inherited from class StackedTrack:}}
+\strong{\emph{Inherited from class \code{\link[=StackedTrack-class]{StackedTrack}}:}}
 
 \describe{
 
@@ -1301,7 +1302,7 @@ will be moved to the top-most stack and vice versa.}
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -1349,7 +1350,7 @@ for plot symbols. Usually the same as the global \code{col} parameter.}
 color for the title panels}
 
 \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See \code{\link{collapsing}} for details.}
 
 \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
@@ -1408,7 +1409,7 @@ title panel will currently not work, so use at own risk.}
 panel. Although this can be set individually for each track, in multi-track
 plots as created by \code{\link{plotTracks}} there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
@@ -1498,11 +1499,11 @@ annotation objects of type 'utr3'.}
 annotation objects of type 'utr5'.}
 
 \item{\code{verbose=FALSE}:}{ Logical scalar. Report data loading events
-from Bioamart or retrieval from cache.}
+from Biomart or retrieval from cache.}
 
 }
 
-\bold{\emph{Inherited from class GeneRegionTrack:}}
+\strong{\emph{Inherited from class \code{\link[=GeneRegionTrack-class]{GeneRegionTrack}}:}}
 
 \describe{
 
@@ -1517,7 +1518,7 @@ all track items. Defaults to using the same color as in \code{fill}, also
 taking into account different track \code{features}.}
 
 \item{\code{collapseTranscripts=FALSE}:}{ Logical or character scalar. Can
-be one in \code{gene}, \code{longest}, \code{shortest} or \code{meta}. Merge
+be one of \code{gene}, \code{longest}, \code{shortest} or \code{meta}. Merge
 all transcripts of the same gene into one single gene model. In the case of
 \code{gene} (or \code{TRUE}), this will only keep the start location of the
 first exon and the end location of the last exon from all transcripts of the
@@ -1560,7 +1561,7 @@ information as transcript labels. This can be a value in \code{symbol},
 
 }
 
-\bold{\emph{Inherited from class AnnotationTrack:}}
+\strong{\emph{Inherited from class \code{\link[=AnnotationTrack-class]{AnnotationTrack}}:}}
 
 \describe{
 
@@ -1655,7 +1656,7 @@ be overridden in the \code{\link{plotTracks}} function.}
 
 }
 
-\bold{\emph{Inherited from class StackedTrack:}}
+\strong{\emph{Inherited from class \code{\link[=StackedTrack-class]{StackedTrack}}:}}
 
 \describe{
 
@@ -1673,7 +1674,7 @@ will be moved to the top-most stack and vice versa.}
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -1721,7 +1722,7 @@ for plot symbols. Usually the same as the global \code{col} parameter.}
 color for the title panels}
 
 \item{\code{collapse=TRUE}:}{ Boolean controlling whether to collapse the
-content of the track to accomodate the minimum current device resolution.
+content of the track to accommodate the minimum current device resolution.
 See \code{\link{collapsing}} for details.}
 
 \item{\code{fontcolor="black"}:}{ Integer or character scalar.  The font
@@ -1780,7 +1781,7 @@ title panel will currently not work, so use at own risk.}
 panel. Although this can be set individually for each track, in multi-track
 plots as created by \code{\link{plotTracks}} there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of
@@ -1914,15 +1915,15 @@ individual read in pixels. Can be used in combination with \code{max.height}
 to control the read and stacking appearance.}
 
 \item{\code{minCoverageHeight=50}:}{ Integer scalar. The minimum height of
-the coverage section. Uselful in combination with a relative setting of
+the coverage section. Useful in combination with a relative setting of
 \code{coverageHeight}.}
 
 \item{\code{minSashimiHeight=50}:}{ Integer scalar. The minimum height of
-the sashimi section. Uselful in combination with a relative setting of
+the sashimi section. Useful in combination with a relative setting of
 \code{sashimiHeight}.}
 
 \item{\code{noLetters=FALSE}:}{ Logical scalar. Always plot colored boxes
-for mismatch bases regardles of the available space.}
+for mismatch bases regardless of the available space.}
 
 \item{\code{sashimiFilter=NULL}:}{ GRanges object. Only junctions which
 overlap equally with \code{sashimiFilter} GRanges are shown. Default
@@ -1969,15 +1970,15 @@ prior to plotting. The function should accept exactly one input argument and
 its return value needs to be a numeric Rle of identical length as the input
 data.}
 
-\item{\code{type=c("coverage", "pileup")}:}{ Character vactor.  The type of
+\item{\code{type=c("coverage", "pileup")}:}{ Character vector.  The type of
 information to plot. For \code{coverage} a coverage plot, potentially
 augmented by base mismatch information, for \code{sashimi} a sashimi plot,
-showing the juctions, and for \code{pileup} the pileups of the individual
+showing the junctions, and for \code{pileup} the pileups of the individual
 reads. These three can be combined.}
 
 }
 
-\bold{\emph{Inherited from class StackedTrack:}}
+\strong{\emph{Inherited from class \code{\link[=StackedTrack-class]{StackedTrack}}:}}
 
 \describe{
 
@@ -1995,7 +1996,7 @@ will be moved to the top-most stack and vice versa.}
 
 }
 
-\bold{\emph{Inherited from class GdObject:}}
+\strong{\emph{Inherited from class \code{\link[=GdObject-class]{GdObject}}:}}
 
 \describe{
 
@@ -2106,7 +2107,7 @@ title panel. Even though this can be adjusted, the automatic resizing of the
 title panel will currently not work, so use at own risk.}
 
 \item{\code{rotation=0}:}{ The rotation angle for all text unless a more
-specific definiton exists.}
+specific definition exists.}
 
 \item{\code{showAxis=TRUE}:}{ Boolean controlling whether to plot a y axis
 (only applies to track types where axes are implemented).}
@@ -2115,7 +2116,7 @@ specific definiton exists.}
 panel. Although this can be set individually for each track, in multi-track
 plots as created by \code{\link{plotTracks}} there will still be an empty
 placeholder in case any of the other tracks include a title.  The same holds
-true for axes. Note that the the title panel background color could be set
+true for axes. Note that the title panel background color could be set
 to transparent in order to completely hide it.}
 
 \item{\code{v=-1}:}{ Integer scalar. Parameter controlling the number of

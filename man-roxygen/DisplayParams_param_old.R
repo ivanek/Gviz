@@ -10,11 +10,11 @@
 #' @param alpha=1 Numeric scalar. The transparency for all track items.
 #' @param alpha.title=NULL Numeric scalar. The transparency for the title panel.
 #' @param background.legend="transparent" Integer or character scalar.
-#' The background colour for the legend.
+#' The background color for the legend.
 #' @param background.panel="transparent" Integer or character scalar.
-#' The background colour of the content panel.
+#' The background color of the content panel.
 #' @param background.title="lightgray" Integer or character scalar.
-#' The background colour for the title panel.
+#' The background color for the title panel.
 #' @param cex=1 Numeric scalar. The overall font expansion factor for all text
 #' and glyphs, unless a more specific definition exists.
 #' @param cex.axis=NULL Numeric scalar. The expansion factor for the axis
@@ -24,31 +24,31 @@
 #' panel. This effects the font size of both the title and the axis, if any.
 #'  Defaults to NULL, which means that the text size is automatically adjusted
 #'   to the available space.
-#' @param col="#0080FF" Integer or character scalar. Default line colour setting
+#' @param col="#0080FF" Integer or character scalar. Default line color setting
 #' for all plotting elements, unless there is a more specific control defined
 #' elsewhere.
-#' @param col.axis="white" Integer or character scalar. The font and line colour
+#' @param col.axis="white" Integer or character scalar. The font and line color
 #' for the y axis, if any.
 #' @param col.border.title="white" Integer or character scalar. The border
-#' colour for the title panels.
-#' @param col.frame="lightgray" Integer or character scalar. The line colour
+#' color for the title panels.
+#' @param col.frame="lightgray" Integer or character scalar. The line color
 #' used for the panel frame, if `frame==TRUE`
-#' @param col.grid="#808080" Integer or character scalar. Default line colour
+#' @param col.grid="#808080" Integer or character scalar. Default line color
 #' for grid lines, both when `type=="g"` in `DataTrack`s and when display
 #' parameter `grid==TRUE`.
-#' @param col.line=NULL Integer or character scalar. Default colours for plot
+#' @param col.line=NULL Integer or character scalar. Default colors for plot
 #'  lines. Usually the same as the global col parameter.
-#' @param col.symbol=NULL Integer or character scalar. Default colours for plot
+#' @param col.symbol=NULL Integer or character scalar. Default colors for plot
 #' symbols. Usually the same as the global col parameter.
 #' @param col.title="white" (Aliases `fontcolour.title`) Integer or character
-#' scalar. The border colour for the title panels
+#' scalar. The border color for the title panels
 #' @param collapse=TRUE Boolean controlling whether to collapse the content of
 #' the track to accommodate the minimum current device resolution.
 #' See collapsing for details.
-#' @param fill="lightgray" Integer or character scalar. Default fill colour
+#' @param fill="lightgray" Integer or character scalar. Default fill color
 #' setting for all plotting elements, unless there is a more specific control
 #' defined elsewhere.
-#' @param fontcolour="black" Integer or character scalar. The font colour for
+#' @param fontcolour="black" Integer or character scalar. The font color for
 #' all text, unless a more specific definition exists.
 #' @param fontface=1 Integer or character scalar. The font face for all text,
 #' unless a more specific definition exists.
@@ -100,15 +100,15 @@
 #'  Although this can be set individually for each track, in multi-track plots
 #'  as created by `plotTracks` there will still be an empty place holder in case
 #'  any of the other tracks include a title. The same holds true for axes. Note
-#'  that the the title panel background colour could be set to transparent in
+#'  that the title panel background color could be set to transparent in
 #'  order to completely hide it.
 #' @param size=1 Numeric scalar. The relative size of the track. Can be
 #' overridden in the `plotTracks` function.
 #' @param v=-1 Integer scalar. Parameter controlling the number of vertical
 #' grid lines, see panel.grid for details.
 #' @param ... additional display parameters are allowed. Those typically
-#' take the value of a valid R colour descriptors. The parameter names will
+#' take the value of a valid R color descriptors. The parameter names will
 #' later be matched to optional track item types as defined in the 'feature'
-#' range attribute, and all tracks of the matched types are coloured
+#' range attribute, and all tracks of the matched types are colored
 #' accordingly. See the documentation of the `GeneRegionTrack` and
 #' `AnnotationTrack` classes as well as grouping for details.

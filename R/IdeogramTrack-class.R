@@ -29,7 +29,7 @@ NULL
 #' a valid UCSC chromosome identifier of the form `chrx`, or a single
 #' integer or numeric character unless
 #' `option(ucscChromosomeNames=FALSE)`. The user has to make sure that the
-#' respective chromosome is indeed defined for the the track's genome.
+#' respective chromosome is indeed defined for the track's genome.
 #' @param genome The genome on which to create the ideogram. This has to be a
 #' valid UCSC genome identifier if the ideogram data is to be fetched from the
 #' UCSC repository.

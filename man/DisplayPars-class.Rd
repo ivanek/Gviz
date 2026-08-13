@@ -61,7 +61,7 @@ availableDisplayPars(class)
 \item{...}{All named arguments are stored in the object's environment as
 individual parameters, regardless of their type.}
 
-\item{x}{object to set the displayPar value on}
+\item{x}{Object to set the display parameter value on.}
 
 \item{name}{Name of the retrieved parameter.}
 
@@ -72,7 +72,7 @@ for convenience.}
 \item{hideInternal}{\code{logical}. Omit the internal display parameters, i.e.,
 those whose names are prefixed with \code{.__}.}
 
-\item{value}{named value to be set}
+\item{value}{Value to be set.}
 
 \item{interactive}{\code{logical}. Emit the message explaining that \code{setPar} no
 longer supports pass-by-reference semantics and that its result has to be
@@ -81,14 +81,22 @@ reassigned.}
 \item{recursive}{\code{logical}. For composite tracks, also set the display
 parameters on each of the contained sub-tracks.}
 
-\item{object}{Object of \code{DisplayPars-class}.}
+\item{object}{Object of class \code{\link[=DisplayPars-class]{DisplayPars}}.}
 
 \item{class}{Either character scalar or object. Supported classes are:
-\code{GdObject}, \code{GenomeAxisTrack}, \code{RangeTrack}, \code{NumericTrack}, \code{DataTrack},
-\code{IdeogramTrack}, \code{StackedTrack}, \code{AnnotationTrack}, \code{DetailsAnnotationTrack},
-\code{GeneRegionTrack}, \code{BiomartGeneRegionTrack}, \code{AlignmentsTrack},
-\code{SequenceTrack}, \code{SequenceBSgenomeTrack}, \code{SequenceDNAStringSetTrack},
-\code{SequenceRNAStringSetTrack}}
+\code{\link[=GdObject-class]{GdObject}}, \code{\link[=GenomeAxisTrack-class]{GenomeAxisTrack}},
+\code{\link[=RangeTrack-class]{RangeTrack}}, \code{\link[=NumericTrack-class]{NumericTrack}},
+\code{\link[=DataTrack-class]{DataTrack}}, \code{\link[=IdeogramTrack-class]{IdeogramTrack}},
+\code{\link[=StackedTrack-class]{StackedTrack}},
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}},
+\code{\link[=DetailsAnnotationTrack-class]{DetailsAnnotationTrack}},
+\code{\link[=GeneRegionTrack-class]{GeneRegionTrack}},
+\code{\link[=BiomartGeneRegionTrack-class]{BiomartGeneRegionTrack}},
+\code{\link[=AlignmentsTrack-class]{AlignmentsTrack}},
+\code{\link[=SequenceTrack-class]{SequenceTrack}},
+\code{\link[=SequenceBSgenomeTrack-class]{SequenceBSgenomeTrack}},
+\code{\link[=SequenceDNAStringSetTrack-class]{SequenceDNAStringSetTrack}},
+\code{\link[=SequenceRNAStringSetTrack-class]{SequenceRNAStringSetTrack}}}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -137,9 +145,9 @@ parameters, as identified by \code{name}.
 
 \item \code{as.list(DisplayPars)}: Converts \code{DisplayPars} to \code{list}.
 
-\item \code{setPar()}: Generics for \code{SetPar}.
+\item \code{setPar()}: Generics for \code{setPar}.
 
-SetPar generic function
+setPar generic function
 
 \item \code{setPar(x = DisplayPars, value = list)}: Sets display parameters by the values of the
 named \code{list} in value. Note that display parameters in the

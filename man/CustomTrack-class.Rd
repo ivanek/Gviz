@@ -27,12 +27,13 @@ CustomTrack(
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{plottingFunction}{A user-defined function to be executed once the
-track coordinates have been properly set up. The function needs to accept
-two mandatory arguments: \code{GdObject}, the \code{CustomTrack} object to
-be plotted, and \code{prepare}, a logical flag indicating whether the
-function has been called in preparation mode or in drawing mode. It also
-needs to return the input \code{GdObject}, potentially with modifications.}
+\item{plottingFunction}{A user-defined function to be executed once the track
+coordinates have been properly set up. The function needs to accept two
+mandatory arguments: \code{\link[=GdObject-class]{GdObject}}, the \code{CustomTrack} object
+to be plotted, and \code{prepare}, a logical flag indicating whether the function
+has been called in preparation mode or in drawing mode. It also needs to
+return the input \code{\link[=GdObject-class]{GdObject}}, potentially with
+modifications.}
 
 \item{variables}{A list of additional variables for the user-defined
 plotting function.}
@@ -43,7 +44,7 @@ section below for details.}
 
 \item{name}{Character scalar of the track's name.}
 
-\item{GdObject}{Object of \code{GdObject-class}.}
+\item{GdObject}{Object of class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{minBase}{Numeric scalar, the start coordinate of the plotting range.}
 
@@ -53,7 +54,7 @@ section below for details.}
 in production mode, i.e., only compute the track's layout without rendering
 anything to the device.}
 
-\item{object}{Object of \code{CustomTrack-class}.}
+\item{object}{Object of class \code{\link[=CustomTrack-class]{CustomTrack}}.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -74,8 +75,8 @@ that all plotting operations need to utilize Grid graphics.
 \section{Functions}{
 \itemize{
 \item \code{initialize(CustomTrack)}: Initialize the \code{plottingFunction} and
-\code{variables} slots before deferring to the \code{GdObject} initializer for the
-remaining slots.
+\code{variables} slots before deferring to the \code{\link[=GdObject-class]{GdObject}}
+initializer for the remaining slots.
 
 \item \code{CustomTrack()}: Objects can be created using the constructor
 function.
@@ -104,13 +105,13 @@ CustomTrack()
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -120,7 +121,7 @@ CustomTrack()
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

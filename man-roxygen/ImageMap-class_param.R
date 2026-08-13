@@ -1,2 +1,2 @@
-#' @param ImageMap Object of `ImageMap-class`, containing optional information
-#' for an HTML image map.
+#' @param ImageMap Object of class [`ImageMap`][ImageMap-class], containing
+#' optional information for an HTML image map.

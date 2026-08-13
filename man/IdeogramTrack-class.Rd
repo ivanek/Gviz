@@ -62,7 +62,7 @@ UCSC repository.}
 a valid UCSC chromosome identifier of the form \code{chrx}, or a single
 integer or numeric character unless
 \code{option(ucscChromosomeNames=FALSE)}. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome.}
+respective chromosome is indeed defined for the track's genome.}
 
 \item{bands}{A \code{data.frame} with the cytoband information for all
 available chromosomes on the genome similar to the data that would be
@@ -239,13 +239,13 @@ as(idTrack, "data.frame")
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -255,7 +255,7 @@ as(idTrack, "data.frame")
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

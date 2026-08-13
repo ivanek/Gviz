@@ -78,9 +78,10 @@ setClass("StackedTrack",
 ## Initialize ----------------------------------------------------------------
 
 ## Need to fill the stacks slot here, don't want to recompute all the time
-#' @describeIn StackedTrack-class Initialize the `stacking` slot (validating
-#' it against the allowed `stackingValues`) and reset the `stacks` slot,
-#' before deferring to the `RangeTrack` initializer for the remaining slots.
+#' @describeIn StackedTrack-class Initialize the `stacking` slot (validating it
+#' against the allowed `stackingValues`) and reset the `stacks` slot, before
+#' deferring to the [`RangeTrack`][RangeTrack-class] initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
     ## the diplay parameter defaults
@@ -116,7 +117,7 @@ setMethod("stacking", "StackedTrack", function(GdObject) GdObject@stacking)
 
 
 #' @describeIn StackedTrack-class set the object's stacking type to one in
-#' `c(hide, dense, squish, pack,full)`.
+#' `c(hide, dense, squish, pack, full)`.
 #' @export
 setReplaceMethod(
     "stacking", c("StackedTrack", "character"),
@@ -165,9 +166,9 @@ setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
 
 ## Consolidate ---------------------------------------------------------------
 
-#' @describeIn StackedTrack-class For `StackedTrack` objects, set the
-#' stacking (which could have been passed in as a display parameter) before
-#' deferring to the `RangeTrack` method for the remaining consolidation
+#' @describeIn StackedTrack-class For `StackedTrack` objects, set the stacking
+#' (which could have been passed in as a display parameter) before deferring to
+#' the [`RangeTrack`][RangeTrack-class] method for the remaining consolidation
 #' steps.
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "StackedTrack"), function(GdObject, ...) {
@@ -199,8 +200,9 @@ setMethod("consolidateTrack", signature(GdObject = "StackedTrack"), function(GdO
 ## Subset --------------------------------------------------------------------
 
 #' @describeIn StackedTrack-class subset the items in the `StackedTrack` object.
-#' This is essentially similar to subsetting of the `GRanges` object in the
-#' range slot. For most applications, the subset method may be more appropriate.
+#' This is essentially similar to subsetting of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object in the range slot. For most
+#' applications, the subset method may be more appropriate.
 #' @export
 setMethod("[", signature(x = "StackedTrack"), function(x, i, j, ..., drop = TRUE) {
     x <- callNextMethod(x, i)

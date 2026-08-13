@@ -10,15 +10,15 @@
 #' resolution, aims at reducing over-plotting and prevents rendering issues,
 #' e.g. when lines are too thin to be plotted. This feature can be toggled on
 #' or off using the `collapse` display parameter (see
-#' `settings` for details on setting these parameters).
+#' [`settings`] for details on setting these parameters).
 #'
-#' In the simplest case (for `AnnotationTrack` objects) this
-#' involves expanding all shown features to a minimum pixel width and height
-#' (using display parameters `min.width` and `min.height`) and
-#' collapsing overlapping annotation items (as defined by the parameter
-#' `min.distance`) into one single item to prevent over-plotting.
+#' In the simplest case (for [`AnnotationTrack`][AnnotationTrack-class] objects)
+#' this involves expanding all shown features to a minimum pixel width and
+#' height (using display parameters `min.width` and `min.height`) and collapsing
+#' overlapping annotation items (as defined by the parameter `min.distance`)
+#' into one single item to prevent over-plotting.
 #'
-#' For objects of class `DataTrack`, the data values
+#' For objects of class [`DataTrack`][DataTrack-class], the data values
 #' underlying collapsed regions will be summarized based on the `summary`
 #' display parameter. See the class' documentation for more details.
 #'

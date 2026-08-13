@@ -67,8 +67,10 @@ GenomeAxisTrack(range = NULL, name = "Axis", id, ...)
 \S4method{show}{GenomeAxisTrack}(object)
 }
 \arguments{
-\item{range}{Optional object of class \code{GRanges} or \code{IRanges} containing
-regions to be highlighted on the axis by coloured boxes.}
+\item{range}{Optional object of class
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} or
+\code{\link[IRanges:IRanges-class]{IRanges}} containing regions to be highlighted on
+the axis by colored boxes.}
 
 \item{...}{Additional items which will all be interpreted as further
 display parameters. See \code{\link{settings}} and the "Display Parameters"
@@ -94,9 +96,10 @@ Objects can be created using the constructor function \code{GenomeAxisTrack}.
 A class representing a customizable genomic axis.
 }
 \details{
-A \code{GenomeAxisTrack} can be customized using the familiar display
-parameters. By providing a \code{GRanges} or \code{IRanges} object to the
-constructor, ranges on the axis can be further highlighted.
+A \code{GenomeAxisTrack} can be customized using the familiar display parameters.
+By providing a \code{\link[GenomicRanges:GRanges-class]{GRanges}} or
+\code{\link[IRanges:IRanges-class]{IRanges}} object to the constructor, ranges on the
+axis can be further highlighted.
 
 With the \code{scale} display parameter, a small scale indicator can be
 shown instead of the entire genomic axis. The scale can either be provided
@@ -111,21 +114,22 @@ are used.
 \section{Functions}{
 \itemize{
 \item \code{initialize(GenomeAxisTrack)}: Initialize the \code{range} slot (coercing an
-\code{IRanges} input to \code{GRanges} if necessary) before deferring to the
-\code{GdObject} initializer for the remaining slots.
+\code{\link[IRanges:IRanges-class]{IRanges}} input to
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} if necessary) before deferring to
+the \code{\link[=GdObject-class]{GdObject}} initializer for the remaining slots.
 
 \item \code{GenomeAxisTrack()}: Constructor
 
 \item \code{ranges(GenomeAxisTrack)}: return the genomic coordinates for the
 track along with all additional annotation information as an object of
-class \code{GRanges}.
+class \code{\link[GenomicRanges:GRanges-class]{GRanges}}.
 
 \item \code{ranges(GenomeAxisTrack) <- value}: replace the genomic coordinates and
-associated annotation information for the track with a new \code{GRanges}
-object.
+associated annotation information for the track with a new
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object.
 
 \item \code{range(GenomeAxisTrack)}: return the genomic coordinates for the
-track as an object of class \code{IRanges}.
+track as an object of class \code{\link[IRanges:IRanges-class]{IRanges}}.
 @export
 
 \item \code{start(GenomeAxisTrack)}: return the start coordinates of the track
@@ -159,9 +163,9 @@ and increase the width and height of all track objects to a minimum value
 to avoid rendering issues. See collapsing for details.
 
 \item \code{x = GenomeAxisTrack[i = ANY, j = ANY, drop = ANY]}: subset the items in the \code{GenomeAxisTrack}
-object. This is essentially similar to subsetting of the \code{GRanges} object in
-the \code{range} slot. For most applications, the subset method may be more
-appropriate.
+object. This is essentially similar to subsetting of the
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object in the \code{range} slot. For
+most applications, the subset method may be more appropriate.
 
 \item \code{subset(GenomeAxisTrack)}: subset a
 \code{GenomeAxisTrack} by coordinates and sort if necessary.
@@ -252,13 +256,13 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale = 0.5, labelPos = "below")))
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -268,7 +272,7 @@ plotTracks(list(grTrack, GenomeAxisTrack(scale = 0.5, labelPos = "below")))
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

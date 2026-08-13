@@ -28,13 +28,14 @@ in the package.}
 instantiation, to be filled in by the \code{initialize} method.}
 
 \item{stream}{A function to stream the data from an indexed file. It has to
-accept the two arguments \code{file} and \code{selection}, and to return a \code{GRanges}
-object.}
+accept the two arguments \code{file} and \code{selection}, and to return a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object.}
 
 \item{reference}{A \code{character} scalar with the path to the referenced file.}
 
-\item{mapping}{A named \code{list} mapping the columns of the imported data to
-the metadata columns of the track's \code{GRanges} object.}
+\item{mapping}{A named \code{list} mapping the columns of the imported data to the
+metadata columns of the track's \code{\link[GenomicRanges:GRanges-class]{GRanges}}
+object.}
 
 \item{args}{A \code{list} of the arguments the object has been constructed with.}
 
@@ -42,10 +43,10 @@ the metadata columns of the track's \code{GRanges} object.}
 fill in whatever has not been provided in \code{args}.}
 }
 \value{
-Constructor functions of \code{AnnotationTrack}, \code{DataTrack}, \code{SequenceTrack}
-and \code{AlignmentsTrack} can create a special object of corresponding
-\code{Reference*Track} subclass with pointer to the referenced
-file.
+Constructor functions of \code{\link[=AnnotationTrack-class]{AnnotationTrack}},
+\code{\link[=DataTrack-class]{DataTrack}}, \code{\link[=SequenceTrack-class]{SequenceTrack}} and
+\code{\link[=AlignmentsTrack-class]{AlignmentsTrack}} can create a special object of
+corresponding \code{Reference*Track} subclass with pointer to the referenced file.
 
 A virtual class: No objects may be created from it.
 }
@@ -53,15 +54,17 @@ A virtual class: No objects may be created from it.
 A class allow for on-demand streaming of data off the file system.
 }
 \details{
-The \code{availableDefaultMappings} function can be used to find out whether
-the package defines a mapping scheme between one of the many supported input
-file types and the metadata columns of the tracks' \code{GRanges} objects.
+The \code{availableDefaultMappings} function can be used to find out whether the
+package defines a mapping scheme between one of the many supported input file
+types and the metadata columns of the tracks'
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} objects.
 }
 \section{Functions}{
 \itemize{
 \item \code{availableDefaultMapping()}: Function to find out whether the package
 defines a mapping scheme between one of the many supported input file types
-and the metadata columns of the tracks's \code{GRanges} objects.
+and the metadata columns of the track's
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} objects.
 
 \item \code{initialize(ReferenceTrack)}: Initialize all the \code{ReferenceTrack}
 slots (\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) from the
@@ -71,17 +74,19 @@ supplied arguments and validate the resulting object.
 \section{Slots}{
 
 \describe{
-\item{\code{stream}}{Object of class function. The import function to stream data
-of the file system. Needs to be able to handle the two mandatory arguments
-\code{file} (a \code{character} containing a valid file path) and \code{selection}
-(a \code{GRanges} object with the genomic region to plot).}
+\item{\code{stream}}{Object of class function. The import function to stream data of
+the file system. Needs to be able to handle the two mandatory arguments
+\code{file} (a \code{character} containing a valid file path) and \code{selection} (a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object with the genomic region to
+plot).}
 
 \item{\code{reference}}{Object of class "character", the path to the file
 containing the data.}
 
-\item{\code{mapping}}{Object of class \code{list}, a default mapping between the
-metadata columns of the returned \code{GRanges} object from the import function
-and the \code{elemenMetadata} columns that make up the final track object.}
+\item{\code{mapping}}{Object of class \code{list}, a default mapping between the metadata
+columns of the returned \code{\link[GenomicRanges:GRanges-class]{GRanges}} object from
+the import function and the \code{elemenMetadata} columns that make up the final
+track object.}
 
 \item{\code{args}}{Object of class \code{list}, the passed in constructor arguments
 during object instantiation. Those will be needed when fetching the data
@@ -107,13 +112,13 @@ plotTracks(alTrack, from = afrom, to = ato, chromosome = "chr12")
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -123,7 +128,7 @@ plotTracks(alTrack, from = afrom, to = ato, chromosome = "chr12")
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

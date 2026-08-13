@@ -73,8 +73,8 @@ setClass("RangeTrack",
 
 ## Coercing all input to the appropriate form
 #' @describeIn RangeTrack-class Initialize the `range`, `chromosome` and
-#' `genome` slots before deferring to the `GdObject` initializer for the
-#' remaining slots.
+#' `genome` slots before deferring to the [`GdObject`][GdObject-class]
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genome, ...) {
     ## the diplay parameter defaults
@@ -339,12 +339,12 @@ setMethod(
 
 #' @describeIn RangeTrack-class return the genomic coordinates for the track
 #' along with all additional annotation information as an object of
-#' class `GRanges`.
+#' class [`GRanges`][GenomicRanges::GRanges-class].
 setMethod("ranges", "RangeTrack", function(x) x@range)
 
-#' @describeIn RangeTrack-class replace the genomic coordinates and
-#' associated annotation information for the track with a new `GRanges`
-#' object.
+#' @describeIn RangeTrack-class replace the genomic coordinates and associated
+#' annotation information for the track with a new
+#' [`GRanges`][GenomicRanges::GRanges-class] object.
 setReplaceMethod("ranges", "RangeTrack", function(x, value) {
     x@range <- value
     return(x)
@@ -354,7 +354,7 @@ setReplaceMethod("ranges", "RangeTrack", function(x, value) {
 ## of an object inheriting from RangeTrack
 
 #' @describeIn RangeTrack-class return the genomic coordinates for the
-#' track as an object of class `IRanges`.
+#' track as an object of class [`IRanges`][IRanges::IRanges-class].
 #' @export
 setMethod("range", "RangeTrack", function(x) ranges(x@range))
 
@@ -478,7 +478,7 @@ setReplaceMethod("strand", "RangeTrack", function(x, value) {
 })
 
 #' @describeIn RangeTrack-class the arithmetic mean of the track item's
-#' coordionates, i.e., `(end(obj)-start(obj))/2`.
+#' coordinates, i.e., `(end(obj)-start(obj))/2`.
 #' @export
 setMethod("position", signature("RangeTrack"), definition = function(GdObject, from = NULL, to = NULL, sort = FALSE, ...) {
     if (!is.null(from) && !is.null(to)) {
@@ -491,9 +491,9 @@ setMethod("position", signature("RangeTrack"), definition = function(GdObject, f
 ## RangeTrack Methods subsetting, split---------------------------------------
 
 #' @describeIn RangeTrack-class subset the items in the `RangeTrack` object.
-#' This is essentially similar to subsetting of the `GRanges` object in the
-#' `range` slot. For most applications, the subset method may be more
-#' appropriate.
+#' This is essentially similar to subsetting of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object in the `range` slot. For
+#' most applications, the subset method may be more appropriate.
 #' @export
 setMethod("[", signature(x = "RangeTrack"), function(x, i, j, ..., drop = TRUE) {
     x <- .deepCopyPars(x)
@@ -558,18 +558,18 @@ setMethod("split", signature("RangeTrack"),
 #' @export
 setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x))))
 
-#' @describeIn RangeTrack-class return the grouping information for track
-#' items. For certain sub-classes, groups may be indicated by different colour
-#'  schemes when plotting. See grouping or `AnnotationTrack` and
-#'  `GeneRegionTrack` for details.
+#' @describeIn RangeTrack-class return the grouping information for track items.
+#' For certain sub-classes, groups may be indicated by different color schemes
+#' when plotting. See grouping or [`AnnotationTrack`][AnnotationTrack-class] and
+#' [`GeneRegionTrack`][GeneRegionTrack-class] for details.
 #'  @export
 setMethod("feature", signature(GdObject = "RangeTrack"), function(GdObject) .getAnn(GdObject, "feature"))
 
 #' @describeIn RangeTrack-class set the grouping information for track items.
-#' This has to be a factor vector (or another type of vector that can be
-#' coerced into one) of the same length as the number of items in the
-#' `RangeTrack.` See grouping or `AnnotationTrack` and `GeneRegionTrack` for
-#'  details.
+#' This has to be a factor vector (or another type of vector that can be coerced
+#' into one) of the same length as the number of items in the `RangeTrack.` See
+#' grouping or [`AnnotationTrack`][AnnotationTrack-class] and
+#' [`GeneRegionTrack`][GeneRegionTrack-class] for details.
 #'  @export
 setReplaceMethod("feature", signature("RangeTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "feature"))
 
@@ -577,11 +577,11 @@ setReplaceMethod("feature", signature("RangeTrack", "character"), function(GdObj
 ## RangeTrack Methods consolidate --------------------------------------------
 
 #' @describeIn RangeTrack-class Update the active chromosome (if provided)
-#' before deferring to the `GdObject` method for the remaining
+#' before deferring to the [`GdObject`][GdObject-class] method for the remaining
 #' consolidation steps.
-#' @param GdObject the input track object
-#' @param chromosome the currently active chromosome which may have to be set
-#' for a `RangeTrack` or a `SequenceTrack` object
+#' @param GdObject Object of class [`GdObject`][GdObject-class].
+#' @param chromosome The currently active chromosome, which may have to be set
+#' for a `RangeTrack` or a [`SequenceTrack`][SequenceTrack-class] object.
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "RangeTrack"), function(GdObject, chromosome, ...) {
     if (!is.null(chromosome)) {

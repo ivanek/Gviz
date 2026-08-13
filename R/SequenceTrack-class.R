@@ -8,9 +8,10 @@ NULL
 #'
 #'
 #' A track class to represent genomic sequences. The three child classes
-#' `SequenceDNAStringSetTrack`, `SequenceRNAStringSetTrack` and
-#' `SequenceBSgenomeTrack` do most of the work, however in practise they
-#' are of no particular relevance to the user.
+#' [`SequenceDNAStringSetTrack`][SequenceDNAStringSetTrack-class],
+#' [`SequenceRNAStringSetTrack`][SequenceRNAStringSetTrack-class] and
+#' [`SequenceBSgenomeTrack`][SequenceBSgenomeTrack-class] do most of the work,
+#' however in practise they are of no particular relevance to the user.
 #'
 #'
 #' @name SequenceTrack-class
@@ -19,13 +20,14 @@ NULL
 #'
 #' The different input options for `sequence` are:
 #'
-#' - **An object of class [DNAStringSet][Biostrings::DNAStringSet-class]**:
+#' - **An object of class [`DNAStringSet`][Biostrings::DNAStringSet-class]**:
 #'   the individual `DNAString`s are considered to be the different
 #'   chromosome sequences.
 #'
-#' - **An object of class [BSgenome][BSgenome::BSgenome-class]**: the `Gviz`
-#'   package tries to follow the `BSgenome` philosophy in that the respective
-#'   chromosome sequences are only realized once they are first accessed.
+#' - **An object of class [`BSgenome`][BSgenome::BSgenome-class]**: the `Gviz`
+#'   package tries to follow the [`BSgenome`][BSgenome::BSgenome-class]
+#'   philosophy in that the respective chromosome sequences are only realized
+#'   once they are first accessed.
 #'
 #' - **A `character` scalar**: the value of the `sequence` argument is
 #'   considered to be a file path to an annotation file on disk. A range of
@@ -38,10 +40,11 @@ NULL
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' `SequenceDNAStringSetTrack`, `SequenceBSgenomeTrack` or
-#' `ReferenceSequenceTrack`, depending on the constructor arguments.
-#' Typically the user will not have to be troubled with this distinction and
-#' can rely on the constructor to make the right choice.
+#' [`SequenceDNAStringSetTrack`][SequenceDNAStringSetTrack-class],
+#' [`SequenceBSgenomeTrack`][SequenceBSgenomeTrack-class] or
+#' [`ReferenceSequenceTrack`][ReferenceSequenceTrack-class], depending on the
+#' constructor arguments. Typically the user will not have to be troubled with
+#' this distinction and can rely on the constructor to make the right choice.
 #' @section Objects from the class:
 #'
 #' Objects can be created using the constructor function `SequenceTrack`.
@@ -62,7 +65,7 @@ NULL
 #' sTrack <- SequenceTrack(seqs, genome = "hg38")
 #' sTrack
 #'
-#' ## Construct from BSGenome object
+#' ## Construct from BSgenome object
 #' if (require(BSgenome.Hsapiens.UCSC.hg38)) {
 #'     sTrack <- SequenceTrack(Hsapiens)
 #'     sTrack
@@ -154,9 +157,9 @@ setClass("SequenceTrack",
 
 ## Essentially we just update the display parameters here and set the chromosome and the genome
 
-#' @describeIn SequenceTrack-class Initialize the display parameter defaults
-#' and the `chromosome`/`genome` slots before deferring to the `GdObject`
-#' initializer for the remaining slots.
+#' @describeIn SequenceTrack-class Initialize the display parameter defaults and
+#' the `chromosome`/`genome` slots before deferring to the
+#' [`GdObject`][GdObject-class] initializer for the remaining slots.
 #' @export
 setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, ...) {
     ## the display parameter defaults
@@ -312,8 +315,8 @@ RNASequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack
 #'
 #' @template SequenceDNAStringSetTrack-class_param
 #'
-#' @slot sequence A `DNAStringSet` object containing the sequence data, with
-#' one element per chromosome.
+#' @slot sequence A [`DNAStringSet`][Biostrings::DNAStringSet-class] object
+#' containing the sequence data, with one element per chromosome.
 #'
 #' @name SequenceDNAStringSetTrack-class
 #' @exportClass SequenceDNAStringSetTrack
@@ -327,8 +330,9 @@ setClass("SequenceDNAStringSetTrack",
 )
 
 #' @describeIn SequenceDNAStringSetTrack-class Initialize the `sequence` slot
-#' (defaulting to an empty `DNAStringSet` if none is supplied) before
-#' deferring to the `SequenceTrack` initializer for the remaining slots.
+#' (defaulting to an empty [`DNAStringSet`][Biostrings::DNAStringSet-class] if
+#' none is supplied) before deferring to the `SequenceTrack` initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
     if (missing(sequence) || is.null(sequence)) {
@@ -350,8 +354,8 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
 #'
 #' @template SequenceRNAStringSetTrack-class_param
 #'
-#' @slot sequence A `RNAStringSet` object containing the sequence data, with
-#' one element per chromosome.
+#' @slot sequence A [`RNAStringSet`][Biostrings::RNAStringSet-class] object
+#' containing the sequence data, with one element per chromosome.
 #'
 #' @name SequenceRNAStringSetTrack-class
 #' @exportClass SequenceRNAStringSetTrack
@@ -365,8 +369,9 @@ setClass("SequenceRNAStringSetTrack",
 )
 
 #' @describeIn SequenceRNAStringSetTrack-class Initialize the `sequence` slot
-#' (defaulting to an empty `RNAStringSet` if none is supplied) before
-#' deferring to the `SequenceTrack` initializer for the remaining slots.
+#' (defaulting to an empty [`RNAStringSet`][Biostrings::RNAStringSet-class] if
+#' none is supplied) before deferring to the `SequenceTrack` initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence, ...) {
     if (missing(sequence) || is.null(sequence)) {
@@ -391,10 +396,11 @@ setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence,
 #'
 #' @template SequenceBSgenomeTrack-class_param
 #'
-#' @slot sequence A `BSgenome` object (or `NULL`), realized on demand as
-#' individual chromosome sequences are accessed.
-#' @slot pointerCache An environment holding pointers to the `BSgenome`
-#' sequences that have already been realized, to prevent garbage collection.
+#' @slot sequence A [`BSgenome`][BSgenome::BSgenome-class] object (or `NULL`),
+#' realized on demand as individual chromosome sequences are accessed.
+#' @slot pointerCache An environment holding pointers to the
+#' [`BSgenome`][BSgenome::BSgenome-class] sequences that have already been
+#' realized, to prevent garbage collection.
 #'
 #' @name SequenceBSgenomeTrack-class
 #' @exportClass SequenceBSgenomeTrack
@@ -441,9 +447,11 @@ setClass("ReferenceSequenceTrack", contains = c("SequenceDNAStringSetTrack", "Re
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
 
-#' @describeIn ReferenceSequenceTrack-class Initialize the `ReferenceTrack`
-#' slots (`stream`, `reference`) before deferring to the
-#' `SequenceDNAStringSetTrack` initializer for the remaining slots.
+#' @describeIn ReferenceSequenceTrack-class Initialize the
+#' [`ReferenceTrack`][ReferenceTrack-class] slots (`stream`, `reference`) before
+#' deferring to the
+#' [`SequenceDNAStringSetTrack`][SequenceDNAStringSetTrack-class] initializer
+#' for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream)
@@ -637,12 +645,11 @@ setMethod("genome", "SequenceTrack", function(x) x@genome)
 
 ## For RangeTracks and SequenceTracks we want to set the chromosome
 
-#' @describeIn SequenceTrack-class Consolidate/ Determine whether there is
-#' `chromosome` settings or not, and add this information.
-#' @param GdObject the input track object
-#' @param chromosome the currently active chromosome which may have to be set
-#' for a `RangeTrack` or a `SequenceTrack` object
-#' parameters
+#' @describeIn SequenceTrack-class Determine whether there are `chromosome`
+#' settings or not, and add this information.
+#' @param GdObject Object of class [`GdObject`][GdObject-class].
+#' @param chromosome The currently active chromosome, which may have to be set
+#' for a [`RangeTrack`][RangeTrack-class] or a `SequenceTrack` object.
 # #' @keywords internal
 #' @export
 setMethod("consolidateTrack", signature(GdObject = "SequenceTrack"), function(GdObject, chromosome, ...) {

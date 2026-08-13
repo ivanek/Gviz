@@ -46,8 +46,8 @@ HighlightTrack(
 \item{.Object}{The object skeleton passed on by \code{new()} during class
 instantiation, to be filled in by the \code{initialize} method.}
 
-\item{trackList}{A list of Gviz track objects that all have to inherit from
-class \code{GdObject}.}
+\item{trackList}{A list of \code{Gviz} track objects that all have to inherit
+from class \code{\link[=GdObject-class]{GdObject}}.}
 
 \item{...}{All additional parameters are ignored.}
 
@@ -56,56 +56,52 @@ If the \code{range} argument is missing, all the relevant information to create
 the object has to be provided as individual function arguments (see below).
 
 The different input options for \code{range} are:
-
-\describe{
-
-\item{A \code{GRanges} object:}{ the genomic ranges for the highlighting
-regions.}
-
-\item{An \link[IRanges:IRanges-class]{IRanges} object:}{ almost identical to the
-\code{GRanges} case, except that the chromosome information has to be
-provided in the separate \code{chromosome} argument, because it can not be
-directly encoded in an \code{IRanges} object.}
-
-\item{A \code{data.frame} object:}{ the \code{data.frame} needs to contain
-at least the two mandatory columns \code{start} and \code{end} with the
-range coordinates. It may also contain a \code{chromosome} column with the
-chromosome information for each range. If missing, this information will be
-drawn from the constructor's \code{chromosome} argument.}
-
+\itemize{
+\item A \code{\link[GenomicRanges:GRanges-class]{GRanges}} object: the genomic ranges for
+the highlighting regions.
+\item An \code{\link[IRanges:IRanges-class]{IRanges}} object: almost identical to the
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} case, except that the chromosome
+information has to be provided in the separate \code{chromosome} argument,
+because it cannot be directly encoded in an
+\code{\link[IRanges:IRanges-class]{IRanges}} object.
+\item A \code{data.frame} object: the \code{data.frame} needs to contain at least the two
+mandatory columns \code{start} and \code{end} with the range coordinates. It may also
+contain a \code{chromosome} column with the chromosome information for each range.
+If missing, this information will be drawn from the constructor's
+\code{chromosome} argument.
 }}
 
-\item{start, end}{An integer scalar with the genomic start or end coordinates
+\item{start, end}{An integer scalar with the genomic start or end coordinate
 for the highlighting range. Can also be supplied as part of the \code{range}
 argument.}
 
-\item{width}{An integer vector of widths for highlighting ranges. This can
-be used instead of either \code{start} or \code{end} to specify the range
+\item{width}{An integer vector of widths for the highlighting ranges. This
+can be used instead of either \code{start} or \code{end} to specify the range
 coordinates.}
 
 \item{chromosome}{The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier if
 \code{options(ucscChromosomeNames=TRUE)}. Please note that in this case only
 syntactic checking takes place, i.e., the argument value needs to be an
-integer, numeric character or a character of the form \code{chrx}, where
-\code{x} may be any possible string. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome. If not
-provided here, the constructor will try to build the chromosome information
-based on the available inputs, and as a last resort will fall back to the
-value \code{chrNA}. Please note that by definition all objects in the
-\code{Gviz} package can only have a single active chromosome at a time
-(although internally the information for more than one chromosome may be
-present), and the user has to call the \verb{chromosome<-} replacement
-method in order to change to a different active chromosome.}
+integer, numeric character or a character of the form \code{chrx}, where \code{x} may
+be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome. If not provided here,
+the constructor will try to build the chromosome information based on the
+available inputs, and as a last resort will fall back to the value \code{chrNA}.
+Please note that by definition all objects in the \code{Gviz} package can only
+have a single active chromosome at a time (although internally the
+information for more than one chromosome may be present), and the user has to
+call the \verb{chromosome<-} replacement method in order to change to a different
+active chromosome.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. If not provided here the constructor will try to
+checked at this point. If not provided here, the constructor will try to
 extract this information from the provided inputs, and eventually will fall
 back to the default value of \code{NA}.}
 
 \item{name}{Character scalar of the track's name. This is not really used
-and only exists fro completeness.}
+and only exists for completeness.}
 
 \item{x}{A valid track object class name, or the object itself, in which
 case the class is derived directly from it.}
@@ -115,9 +111,9 @@ parameters on each of the contained sub-tracks.}
 
 \item{value}{Value to be set.}
 
-\item{GdObject}{Object of \code{GdObject-class}.}
+\item{GdObject}{Object of class \code{\link[=GdObject-class]{GdObject}}.}
 
-\item{object}{Object of \code{HighlightTrack-class}.}
+\item{object}{Object of class \code{\link[=HighlightTrack-class]{HighlightTrack}}.}
 }
 \value{
 The return value of the constructor function is a new object of class
@@ -132,18 +128,19 @@ A track to conceptually group other Gviz track objects into a meta track
 for the sole purpose of overlaying all the contained tracks with the same
 highlighting region as defined by the objects genomic ranges. During
 rendering the contained tracks will be treated as if they had been provided
-to the \code{plotTracks} function as individual objects.
+to the \code{\link{plotTracks}} function as individual objects.
 }
 \section{Functions}{
 \itemize{
 \item \code{initialize(HighlightTrack)}: Initialize the \code{trackList} slot before
-deferring to the \code{RangeTrack} initializer for the remaining slots.
+deferring to the \code{\link[=RangeTrack-class]{RangeTrack}} initializer for the
+remaining slots.
 
 \item \code{HighlightTrack()}: Constructor function for
 \code{HighlightTrack-class}.
 
 \item \code{displayPars(x = HighlightTrack) <- value}: set display parameters using the values of
-the named list in value. See \link{settings} for details on display
+the named list in value. See \code{\link{settings}} for details on display
 parameters and customization.
 
 \item \code{length(HighlightTrack)}: return the number of subtracks.
@@ -189,13 +186,13 @@ ht <- HighlightTrack(trackList = list(gt, dt))
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -205,7 +202,7 @@ ht <- HighlightTrack(trackList = list(gt, dt))
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

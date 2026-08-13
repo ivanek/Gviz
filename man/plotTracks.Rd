@@ -25,14 +25,14 @@ plotTracks(
 )
 }
 \arguments{
-\item{trackList}{A list of Gviz track objects, all inheriting from
-class \link[=GdObject-class]{GdObject}. The tracks will all be drawn to the
+\item{trackList}{A list of \code{Gviz} track objects, all inheriting from
+class \code{\link[=GdObject-class]{GdObject}}. The tracks will all be drawn to the
 same genomic coordinates, either as defined by the \code{from} and \code{to}
 arguments if supplied, or by the maximum range across all individual items
 in the list.}
 
 \item{from, to}{Numeric scalar, giving the range of genomic coordinates to
-draw the tracks in. Note that \code{to} cannot be larger than \code{from}.
+draw the tracks in. Note that \code{from} cannot be larger than \code{to}.
 If \code{NULL}, the plotting ranges are derived from the individual tracks.
 See \code{extend.left} and \code{extend.right} below for the definition of
 the final plotting ranges.}
@@ -41,7 +41,7 @@ the final plotting ranges.}
 parameters to tweak the appearance of the plot. These parameters are global,
 meaning that they will be used for all tracks in the list where they
 actually make sense, and they override the track-internal settings. See
-\link{settings} for details on display parameters.}
+\code{\link{settings}} for details on display parameters.}
 
 \item{sizes}{A numeric vector of relative vertical sizes for the individual
 tracks of length equal to the number of tracks in \code{trackList}, or
@@ -78,8 +78,9 @@ factor settings for the main header.}
 }
 \value{
 A list of Gviz tracks, each one augmented by the computed image map
-coordinates in the \code{imageMap} slot, along with the additional \code{ImageMap}
-object \code{titles} containing information about the title panels.
+coordinates in the \code{imageMap} slot, along with the additional
+\code{\link[=ImageMap-class]{ImageMap}} object \code{titles} containing information about the
+title panels.
 }
 \description{
 \code{plotTracks} is the main interface when plotting single track objects,
@@ -95,13 +96,13 @@ showing the actual data along genomic coordinates. In that sense, the output
 is very similar to the UCSC Genome Browser.
 
 The layout of the individual tracks is highly customizable though so called
-"display parameters". See \link{settings} for details.
+"display parameters". See \code{\link{settings}} for details.
 
 While plotting a track, the software automatically computes HTML image map
 coordinates based on the current graphics device. These coordinates as well
 as the associated annotation information can later be used to embed images
 of the plots in semi-interactive HTML pages. See
-\link[=ImageMap-class]{ImageMap} for details.
+\code{\link[=ImageMap-class]{ImageMap}} for details.
 }
 \examples{
 ## Create some tracks to plot
@@ -149,7 +150,7 @@ res <- plotTracks(list(ax, annTrack, dt),
 
 ## Add a header
 res <- plotTracks(list(ax, annTrack, dt),
-    main = "A GenomGraphs plot",
+    main = "A Gviz plot",
     col.main = "darkgray"
 )
 

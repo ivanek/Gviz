@@ -2230,17 +2230,19 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 
 #' @describeIn ReferenceTrack-class Function to find out whether the package
 #' defines a mapping scheme between one of the many supported input file types
-#' and the metadata columns of the tracks's `GRanges` objects.
+#' and the metadata columns of the track's
+#' [`GRanges`][GenomicRanges::GRanges-class] objects.
 #'
 #' @param file A `character` scalar with a file name or just a file extension.
 #' @param trackType A `character` scalar with one of the available track types
 #' in the package.
 #' @param stream A function to stream the data from an indexed file. It has to
-#' accept the two arguments `file` and `selection`, and to return a `GRanges`
-#' object.
+#' accept the two arguments `file` and `selection`, and to return a
+#' [`GRanges`][GenomicRanges::GRanges-class] object.
 #' @param reference A `character` scalar with the path to the referenced file.
-#' @param mapping A named `list` mapping the columns of the imported data to
-#' the metadata columns of the track's `GRanges` object.
+#' @param mapping A named `list` mapping the columns of the imported data to the
+#' metadata columns of the track's [`GRanges`][GenomicRanges::GRanges-class]
+#' object.
 #' @param args A `list` of the arguments the object has been constructed with.
 #' @param defaults A `list` of the constructor's default arguments, used to
 #' fill in whatever has not been provided in `args`.

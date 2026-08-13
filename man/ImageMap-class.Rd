@@ -24,8 +24,8 @@ tags(ImageMap, ...)
 \S4method{tags}{ImageMap}(ImageMap)
 }
 \arguments{
-\item{ImageMap}{Object of \code{ImageMap-class}, containing optional information
-for an HTML image map.}
+\item{ImageMap}{Object of class \code{\link[=ImageMap-class]{ImageMap}}, containing
+optional information for an HTML image map.}
 }
 \value{
 Returns the coordinates from the image map.
@@ -57,9 +57,9 @@ hence the constructor function \code{ImageMap} is not exported in the name space
 \section{Slots}{
 
 \describe{
-\item{\code{coords}}{Object of class \code{matrix}, the image map coordinates. In the
-order x bl, y bl, x tr, y tr. Row names are mandatory for the matrix
-and have to be unique.}
+\item{\code{coords}}{Object of class \code{matrix}, the image map coordinates, in the
+order bottom-left x, bottom-left y, top-right x, top-right y. Row names are
+mandatory for the matrix and have to be unique.}
 
 \item{\code{tags}}{Object of class \code{list}, the individual HTML tags for the image
 map. The value of each list item has to be a named character vector, where

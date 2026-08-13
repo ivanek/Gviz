@@ -44,8 +44,8 @@ setClass("CustomTrack",
 ## Initialize ----------------------------------------------------------------
 
 #' @describeIn CustomTrack-class Initialize the `plottingFunction` and
-#' `variables` slots before deferring to the `GdObject` initializer for the
-#' remaining slots.
+#' `variables` slots before deferring to the [`GdObject`][GdObject-class]
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, variables, ...) {
     .Object <- .updatePars(.Object, "CustomTrack")
@@ -57,12 +57,13 @@ setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, varia
 
 ## Constructor ---------------------------------------------------------------
 
-#' @param plottingFunction A user-defined function to be executed once the
-#' track coordinates have been properly set up. The function needs to accept
-#' two mandatory arguments: `GdObject`, the `CustomTrack` object to
-#' be plotted, and `prepare`, a logical flag indicating whether the
-#' function has been called in preparation mode or in drawing mode. It also
-#' needs to return the input `GdObject`, potentially with modifications.
+#' @param plottingFunction A user-defined function to be executed once the track
+#' coordinates have been properly set up. The function needs to accept two
+#' mandatory arguments: [`GdObject`][GdObject-class], the `CustomTrack` object
+#' to be plotted, and `prepare`, a logical flag indicating whether the function
+#' has been called in preparation mode or in drawing mode. It also needs to
+#' return the input [`GdObject`][GdObject-class], potentially with
+#' modifications.
 #' @param variables A list of additional variables for the user-defined
 #' plotting function.
 #' @param name Character scalar of the track's name.

@@ -14,7 +14,7 @@ NULL
 #' for the sole purpose of overlaying all the contained tracks with the same
 #' highlighting region as defined by the objects genomic ranges. During
 #' rendering the contained tracks will be treated as if they had been provided
-#' to the `plotTracks` function as individual objects.
+#' to the [`plotTracks`] function as individual objects.
 #'
 #' @template HighlightTrack-class_param
 #'
@@ -55,7 +55,8 @@ setClass("HighlightTrack",
 ## Initialize ----------------------------------------------------------------
 
 #' @describeIn HighlightTrack-class Initialize the `trackList` slot before
-#' deferring to the `RangeTrack` initializer for the remaining slots.
+#' deferring to the [`RangeTrack`][RangeTrack-class] initializer for the
+#' remaining slots.
 #' @export
 setMethod("initialize", "HighlightTrack", function(.Object, trackList, ...) {
     .Object <- .updatePars(.Object, "HighlightTrack")
@@ -103,7 +104,7 @@ HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end =
 ## General accessors ---------------------------------------------------------
 
 #' @describeIn HighlightTrack-class set display parameters using the values of
-#' the named list in value. See [settings] for details on display
+#' the named list in value. See [`settings`] for details on display
 #' parameters and customization.
 #' @export
 setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x, recursive = FALSE, value) {

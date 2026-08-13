@@ -1,6 +1,6 @@
 #' @param x A valid track object class name, or the object itself, in which
 #' case the class is derived directly from it.
-#' @param GdObject Object of `GdObject-class`.
+#' @param GdObject Object of class [`GdObject`][GdObject-class].
 #' @param name Name of the retrieved parameter.
 #' @param value Value to be set.
 #' @param interactive `logical`. Emit the message explaining that `setPar` no

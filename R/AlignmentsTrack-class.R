@@ -26,24 +26,25 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #'
 #' - **A `character` string**: the path to a `BAM` file containing the read
 #'   alignments. This results in the instantiation of a
-#'   `ReferenceAlignmentsTrack` object, but for the user this implementation
-#'   detail should be of no concern.
+#'   [`ReferenceAlignmentsTrack`][ReferenceAlignmentsTrack-class] object, but
+#'   for the user this implementation detail should be of no concern.
 #'
-#' - **A `GRanges` object**: the genomic ranges of the individual reads, along
-#'   with the optional additional metadata columns `id`, `cigar`, `mapq`,
-#'   `flag`, `isize`, `groupid`, `status`, `md` and `seqs` (see the individual
-#'   function parameters below for details). Calling the constructor on a
-#'   `GRanges` object without further arguments, e.g.
-#'   `AlignmentsTrack(range = obj)`, is equivalent to calling the coerce
-#'   method `as(obj, "AlignmentsTrack")`.
+#' - **A [`GRanges`][GenomicRanges::GRanges-class] object**: the genomic ranges
+#'   of the individual reads, along with the optional additional metadata
+#'   columns `id`, `cigar`, `mapq`, `flag`, `isize`, `groupid`, `status`, `md`
+#'   and `seqs` (see the individual function parameters below for details).
+#'   Calling the constructor on a [`GRanges`][GenomicRanges::GRanges-class]
+#'   object without further arguments, e.g. `AlignmentsTrack(range = obj)`, is
+#'   equivalent to calling the coerce method `as(obj, "AlignmentsTrack")`.
 #'
-#' - **An [IRanges][IRanges::IRanges-class] object**: almost identical to the
-#'   `GRanges` case, except that the chromosome and strand information, as
-#'   well as all additional metadata, has to be provided via the separate
-#'   `chromosome`, `strand`, `feature`, `group` or `id` arguments, since none
-#'   of it can be encoded directly in an `IRanges` object. None of these
-#'   inputs are mandatory; if not provided explicitly, the defaults
-#'   `chromosome = NA` and `strand = "*"` are used.
+#' - **An [`IRanges`][IRanges::IRanges-class] object**: almost identical to the
+#'   [`GRanges`][GenomicRanges::GRanges-class] case, except that the chromosome
+#'   and strand information, as well as all additional metadata, has to be
+#'   provided via the separate `chromosome`, `strand`, `feature`, `group` or
+#'   `id` arguments, since none of it can be encoded directly in an
+#'   [`IRanges`][IRanges::IRanges-class] object. None of these inputs are
+#'   mandatory; if not provided explicitly, the defaults `chromosome = NA` and
+#'   `strand = "*"` are used.
 #'
 #' - **A `data.frame` object**: must contain at least the two mandatory
 #'   columns `start` and `end` with the range coordinates. It may also
@@ -58,7 +59,8 @@ setClassUnion("SequenceTrackOrNULL", c("SequenceTrack", "NULL"))
 #' @return
 #'
 #' The return value of the constructor function is a new object of class
-#' `AlignmentsTrack` or `ReferenceAlignmentsTrack`.
+#' `AlignmentsTrack` or
+#' [`ReferenceAlignmentsTrack`][ReferenceAlignmentsTrack-class].
 #' @section Objects from the Class:
 #'
 #' Objects can be created using the constructor function
@@ -188,7 +190,7 @@ setClass("AlignmentsTrack",
 
 #' @describeIn AlignmentsTrack-class Initialize the `stackRanges`, `stacks`,
 #' `sequences` and `referenceSequence` slots before deferring to the
-#' `StackedTrack` initializer for the remaining slots.
+#' [`StackedTrack`][StackedTrack-class] initializer for the remaining slots.
 #' @export
 setMethod("initialize", "AlignmentsTrack", function(.Object, stackRanges = GRanges(), stacks = numeric(), sequences = DNAStringSet(),
                                                     referenceSequence = NULL, ...) {
@@ -225,9 +227,10 @@ setClass("ReferenceAlignmentsTrack", contains = c("AlignmentsTrack", "ReferenceT
 
 #' @importClassesFrom Biostrings DNAStringSet
 #' @importFrom Biostrings DNAStringSet
-#' @describeIn AlignmentsTrack-class Initialize the `ReferenceTrack` slots
-#' (`stream`, `reference`, `mapping`, `args`, `defaults`) and the
-#' `referenceSequence` slot inherited from `AlignmentsTrack`.
+#' @describeIn AlignmentsTrack-class Initialize the
+#' [`ReferenceTrack`][ReferenceTrack-class] slots (`stream`, `reference`,
+#' `mapping`, `args`, `defaults`) and the `referenceSequence` slot inherited
+#' from `AlignmentsTrack`.
 #' @export
 setMethod("initialize", "ReferenceAlignmentsTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), stacks = numeric(),
@@ -422,8 +425,9 @@ setMethod("subset", signature(x = "AlignmentsTrack"), function(x, from = NULL, t
 
 ## ReferenceAlignmentsTracks need to stream the data from file and then pass the results on to the next method
 
-#' @describeIn AlignmentsTrack-class Subset a `ReferenceAlignmentsTrack` by
-#' coordinates and sort if necessary.
+#' @describeIn AlignmentsTrack-class Subset a
+#' [`ReferenceAlignmentsTrack`][ReferenceAlignmentsTrack-class] by coordinates
+#' and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "ReferenceAlignmentsTrack"), function(x, from, to, chromosome, ...) {
     ## We only need to reach out into the referenced file once if the range is already contained in the object

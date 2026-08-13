@@ -101,52 +101,52 @@ section below for details.}
 \item{stream}{A logical flag indicating that the user-provided import
 function can deal with indexed files and knows how to process the additional
 \code{selection} argument when accessing the data on disk. This causes the
-constructor to return a \code{ReferenceAnnotationTrack} object which will
-grab the necessary data on the fly during each plotting operation.}
+constructor to return a
+\code{\link[=ReferenceAnnotationTrack-class]{ReferenceAnnotationTrack}} object which
+will grab the necessary data on the fly during each plotting operation.}
 
 \item{range}{An optional meta argument to handle the different input types.
-If the \code{range} argument is missing, all the relevant information to
-create the object has to be provided as individual function arguments
-(see below).
+If the \code{range} argument is missing, all the relevant information to create
+the object has to be provided as individual function arguments (see below).
 
 The different input options for \code{range} are:
 \itemize{
-\item A \code{GRanges} object: the genomic ranges for the
-\code{Annotation} track as well as the optional additional metadata columns
-\code{feature}, \code{group} and \code{id} (see description of the
-individual function parameters below for details). Calling the constructor
-on a \code{GRanges} object without further arguments, e.g.
-\code{AnnotationTrack(range=obj)} is equivalent to calling the coerce method
+\item A \code{\link[GenomicRanges:GRanges-class]{GRanges}} object: the genomic ranges for
+the \code{Annotation} track as well as the optional additional metadata columns
+\code{feature}, \code{group} and \code{id} (see description of the individual function
+parameters below for details). Calling the constructor on a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object without further arguments,
+e.g. \code{AnnotationTrack(range=obj)}, is equivalent to calling the coerce method
 \code{as(obj, "AnnotationTrack")}.
-\item A \code{GRangesList} object: this is very similar to the previous
-case, except that the grouping information that is part of the list
-structure is preserved in the \code{AnnotationTrack}. I.e., all the elements
-within one list item receive the same group id. For consistency, there is
-also a coercion method from \code{GRangesLists} \code{as(obj,"AnnotationTrack")}.
-\item An \link[IRanges:IRanges-class]{IRanges} object: almost identical to the
-\code{GRanges} case, except that the chromosome and strand information as
-well as all additional metadata has to be provided in the separate
-\code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id}
-arguments, because it can not be directly encoded in an \code{IRange}
-object. Note that none of those inputs are mandatory, and if not provided
-explicitly the more or less reasonable default values \code{chromosome=NA}
-and \code{strand="*"} are used.
-\item A \code{data.frame} object: the \code{data.frame} needs to contain
-at least the two mandatory columns \code{start} and \code{end} with the
-range coordinates. It may also contain a \code{chromosome} and a
-\code{strand} column with the chromosome and strand information for each
-range. If missing it will be drawn from the separate \code{chromosome} or
-\code{strand} arguments. In addition, the \code{feature}, \code{group} and
-\code{id} data can be provided as additional columns. The above comments
-about potential default values also apply here.
-\item A \code{character} scalar: in this case the value of the
-\code{range} argument is considered to be a file path to an annotation file
-on disk. A range of file types are supported by the \code{Gviz} package as
-identified by the file extension. See the \code{importFunction}
-documentation below for further details.
+\item A \code{\link[GenomicRanges:GRangesList-class]{GRangesList}} object: this is very
+similar to the previous case, except that the grouping information that is
+part of the list structure is preserved in the
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}}. I.e., all the elements within one
+list item receive the same group id. For consistency, there is also a
+coercion method from \code{\link[GenomicRanges:GRangesList-class]{GRangesList}}
+objects, \code{as(obj, "AnnotationTrack")}.
+\item An \code{\link[IRanges:IRanges-class]{IRanges}} object: almost identical to the
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} case, except that the chromosome
+and strand information as well as all additional metadata has to be provided
+in the separate \code{chromosome}, \code{strand}, \code{feature}, \code{group} or \code{id} arguments,
+because it cannot be directly encoded in an
+\code{\link[IRanges:IRanges-class]{IRanges}} object. Note that none of those inputs
+are mandatory, and if not provided explicitly the more or less reasonable
+default values \code{chromosome=NA} and \code{strand="*"} are used.
+\item A \code{data.frame} object: the \code{data.frame} needs to contain at least the two
+mandatory columns \code{start} and \code{end} with the range coordinates. It may also
+contain a \code{chromosome} and a \code{strand} column with the chromosome and strand
+information for each range. If missing, it will be drawn from the separate
+\code{chromosome} or \code{strand} arguments. In addition, the \code{feature}, \code{group} and
+\code{id} data can be provided as additional columns. The above comments about
+potential default values also apply here.
+\item A \code{character} scalar: in this case the value of the \code{range} argument is
+considered to be a file path to an annotation file on disk. A range of file
+types is supported by the \code{Gviz} package as identified by the file extension.
+See the \code{importFunction} documentation below for further details.
 }}
 
-\item{start, end, width}{Integer vectors, giving the start and the end end
+\item{start, end, width}{Integer vectors, giving the start and the end
 coordinates for the individual track items, or their width. Two of the three
 need to be specified, and have to be of equal length or of length one, in
 which case this single value will be recycled. Otherwise, the usual R
@@ -155,138 +155,141 @@ recycling rules for vectors do not apply here.}
 \item{feature}{Factor (or other vector that can be coerced into one), giving
 the feature types for the individual track items. When plotting the track to
 the device, if a display parameter with the same name as the value of
-\code{feature} is set, this will be used as the track item's fill colour. See
-\code{grouping} for details.  Needs to be of equal length as the
-provided genomic coordinates, or of length 1.}
+\code{feature} is set, this will be used as the track item's fill color. See
+\code{\link{grouping}} for details. Needs to be of equal length as the provided genomic
+coordinates, or of length 1.}
 
 \item{group}{Factor (or other vector that can be coerced into one), giving
 the group memberships for the individual track items. When plotting to the
-device, all items in the same group will be connected.  See
-\code{grouping} for details. Needs to be of equal length as the
-provided genomic coordinates, or of length 1.}
+device, all items in the same group will be connected. See \code{\link{grouping}} for
+details. Needs to be of equal length as the provided genomic coordinates, or
+of length 1.}
 
 \item{id}{Character vector of track item identifiers. When plotting to the
-device, it's value will be used as the identifier tag if the display
-parameter \code{showFeatureId=TRUE}. Needs to be of equal length as the
-provided genomic ranges, or of length 1.}
+device, its value will be used as the identifier tag if the display
+parameter \code{showFeatureId=TRUE}. Needs to be of equal length as the provided
+genomic ranges, or of length 1.}
 
 \item{strand}{Character vector, the strand information for the individual
-track items. It may be provided in the form \code{+} for the Watson strand,
-\code{-} for the Crick strand or \code{*} for either one of the two. Needs
-to be of equal length as the provided genomic coordinates, or of length 1.
-Please note that grouped items need to be on the same strand, and erroneous
-entries will result in casting of an error.}
+track items. It may be provided in the form \code{+} for the Watson strand, \code{-}
+for the Crick strand or \code{*} for either one of the two. Needs to be of equal
+length as the provided genomic coordinates, or of length 1. Please note that
+grouped items need to be on the same strand, and erroneous entries will
+result in an error.}
 
 \item{chromosome}{The chromosome on which the track's genomic ranges are
 defined. A valid UCSC chromosome identifier if
 \code{options(ucscChromosomeNames=TRUE)}. Please note that in this case only
 syntactic checking takes place, i.e., the argument value needs to be an
-integer, numeric character or a character of the form \code{chrx}, where
-\code{x} may be any possible string. The user has to make sure that the
-respective chromosome is indeed defined for the the track's genome. If not
-provided here, the constructor will try to construct the chromosome
-information based on the available inputs, and as a last resort will fall
-back to the value \code{chrNA}. Please note that by definition all objects
-in the \code{Gviz} package can only have a single active chromosome at a
-time (although internally the information for more than one chromosome may
-be present), and the user has to call the \verb{chromosome<-} replacement
-method in order to change to a different active chromosome.}
+integer, numeric character or a character of the form \code{chrx}, where \code{x} may
+be any possible string. The user has to make sure that the respective
+chromosome is indeed defined for the track's genome. If not provided here,
+the constructor will try to construct the chromosome information based on
+the available inputs, and as a last resort will fall back to the value
+\code{chrNA}. Please note that by definition all objects in the \code{Gviz} package can
+only have a single active chromosome at a time (although internally the
+information for more than one chromosome may be present), and the user has to
+call the \verb{chromosome<-} replacement method in order to change to a different
+active chromosome.}
 
 \item{genome}{The genome on which the track's ranges are defined. Usually
 this is a valid UCSC genome identifier, however this is not being formally
-checked at this point. If not provided here the constructor will try to
+checked at this point. If not provided here, the constructor will try to
 extract this information from the provided input, and eventually will fall
 back to the default value of \code{NA}.}
 
-\item{stacking}{The stacking type for overlapping items of the track. One in
-\code{c(hide, dense, squish, pack,full)}. Currently, only squish (make best
-use of the available space), dense (no stacking, collapse overlapping
-ranges), and hide (do not show any track items at all) are implemented.}
+\item{stacking}{The stacking type for overlapping items of the track. One of
+\code{c(hide, dense, squish, pack, full)}. Currently, only squish (make best use
+of the available space), dense (no stacking, collapse overlapping ranges),
+and hide (do not show any track items at all) are implemented.}
 
 \item{name}{Character scalar of the track's name used in the title panel
 when plotting.}
 
 \item{fun}{A function that is being called for each entry in the
-\code{AnnotationTrack} object. See section 'Details' and 'Examples' for
-further information. When called internally by the plotting machinery, a
-number of arguments are automatically passed on to this function, and the
-user needs to make sure that they can all be digested (i.e., either have all
-of them as formal named function arguments, or gobble up everything that is
-not needed in \code{...}). These arguments are:
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}} object. See sections 'Details'
+and 'Examples' for further information. When called internally by the
+plotting machinery, a number of arguments are automatically passed on to this
+function, and the user needs to make sure that they can all be digested
+(i.e., either have all of them as formal named function arguments, or gobble
+up everything that is not needed in \code{...}). These arguments are:
 \itemize{
 \item \code{start}: the genomic start coordinate of the range item.
-\item \code{end}: the genomic end coordinates of the range item.
+\item \code{end}: the genomic end coordinate of the range item.
 \item \code{strand}: the strand information for the range item.
 \item \code{chromosome}: the chromosome of the range item.
 \item \code{identifier}: the identifier of the range item, i.e., the result
 of calling \code{identifier(DetailsAnnotationTrack, lowest=TRUE)}. Typically
 those identifiers are passed on to the object constructor during
 instantiation as the \code{id} argument.
-\item \code{index}: a counter enumerating the ranges. The \code{AnnotationTrack} object
-is sorted internally for visibility, and the \code{index} argument refers to
-the index of plotting.
-\item \code{GdObject}: a reference to the currently plotted \code{DetailsAnnotationTrack}
-object.
-\item \code{GdObject.original}: a reference to the \code{DetailsAnnotationTrack} before
-any processing like item collapsing has taken place. Essentially, this is
-the track object as it exists in your working environment.
+\item \code{index}: a counter enumerating the ranges. The
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}} object is sorted internally for
+visibility, and the \code{index} argument refers to the index of plotting.
+\item \code{GdObject}: a reference to the currently plotted
+\code{\link[=DetailsAnnotationTrack-class]{DetailsAnnotationTrack}} object.
+\item \code{GdObject.original}: a reference to the
+\code{\link[=DetailsAnnotationTrack-class]{DetailsAnnotationTrack}} before any
+processing like item collapsing has taken place. Essentially, this is the
+track object as it exists in your working environment.
 }
 
 Additional arguments can be passed to the plotting function by means of the
 \code{detailsFunArgs} argument (see below). Note that the plot must use grid
-graphics (e.g. function in the 'lattice' package or low-level grid
-functions). To access a data object such a matrix or data frame within the
+graphics (e.g. functions in the \code{lattice} package or low-level grid
+functions). To access a data object such as a matrix or data frame within the
 function you can either store it as a variable in the global environment or,
 to avoid name space conflicts, you can make it part of the function
-environment by means of a closure. Alternatively, you may want to
-explicitely stick it into an environment or pass it along in the
-\code{detailsFunArgs} list. To figure out in your custom plotting function
-which annotation element is currently being plotted you can either use the
-identifier which has to be unique for each range element, or you may want to
-use the genomic position (start/end/strand/chromosome) e.g. if the data is
-stored in a \code{GRanges} object.}
+environment by means of a closure. Alternatively, you may want to explicitly
+stick it into an environment or pass it along in the \code{detailsFunArgs} list.
+To figure out in your custom plotting function which annotation element is
+currently being plotted you can either use the identifier, which has to be
+unique for each range element, or you may want to use the genomic position
+(start/end/strand/chromosome), e.g. if the data is stored in a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object.}
 
 \item{selectFun}{A function that is being called for each entry in the
-\code{AnnotationTrack} object with exactly the same arguments as in
-\code{fun}. The purpose of this function is to decide for each track element
-whether details should be drawn, and consequently it has to return a single
-logical scalar. If the return value is \code{TRUE}, details will be drawn
-for the item, if it is \code{FALSE}, the details strip for the item is
+\code{\link[=AnnotationTrack-class]{AnnotationTrack}} object with exactly the same
+arguments as in \code{fun}. The purpose of this function is to decide for each
+track element whether details should be drawn, and consequently it has to
+return a single logical scalar. If the return value is \code{TRUE}, details will
+be drawn for the item; if it is \code{FALSE}, the details strip for the item is
 omitted.}
 
 \item{importFunction}{A user-defined function to be used to import the data
 from a file. This only applies when the \code{range} argument is a character
 string with the path to the input data file. The function needs to accept an
 argument \code{x} containing the file path and has to return a proper
-\code{GRanges} object with all the necessary metadata columns set. A set of
-default import functions is already implemented in the package for a number
-of different file types, and one of these defaults will be picked
-automatically based on the extension of the input file name. If the
-extension can not be mapped to any of the existing import function, an error
-is raised asking for a user-defined import function via this argument.
-Currently the following file types can be imported with the default
-functions: \code{gff}, \code{gff1}, \code{gff2}, \code{gff3}, \code{bed}, \code{bam}.}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} object with all the necessary
+metadata columns set. A set of default import functions is already
+implemented in the package for a number of different file types, and one of
+these defaults will be picked automatically based on the extension of the
+input file name. If the extension cannot be mapped to any of the existing
+import functions, an error is raised asking for a user-defined import
+function via this argument. Currently the following file types can be
+imported with the default functions: \code{gff}, \code{gff1}, \code{gff2}, \code{gff3}, \code{bed},
+\code{bam}.}
 }
 \value{
 The return value of the constructor function is a new object of class
-\code{AnnotationTrack} or of class \code{DetailsAnnotationTrack}, depending on the
-constructor arguments. Typically the user will not have to be troubled
-with this distinction and can rely on the constructor to make the right
-choice.
+\code{AnnotationTrack} or of class
+\code{\link[=DetailsAnnotationTrack-class]{DetailsAnnotationTrack}}, depending on the
+constructor arguments. Typically the user will not have to be troubled with
+this distinction and can rely on the constructor to make the right choice.
 }
 \description{
 A fairly generic track object for arbitrary genomic range annotations, with
-the option of grouped track items. The extended \code{DetailsAnnotationTrack}
-provides a more flexible interface to add user-defined custom
-information for each range.
+the option of grouped track items. The extended
+\code{\link[=DetailsAnnotationTrack-class]{DetailsAnnotationTrack}} provides a more
+flexible interface to add user-defined custom information for each range.
 }
 \section{Functions}{
 \itemize{
 \item \code{initialize(AnnotationTrack)}: Show method.
 
-\item \code{initialize(ReferenceAnnotationTrack)}: Initialize the \code{ReferenceTrack} slots
-(\code{stream}, \code{reference}, \code{mapping}, \code{args}, \code{defaults}) before deferring to
-the \code{AnnotationTrack} initializer for the remaining slots.
+\item \code{initialize(ReferenceAnnotationTrack)}: Initialize the
+\code{\link[=ReferenceTrack-class]{ReferenceTrack}} slots (\code{stream}, \code{reference},
+\code{mapping}, \code{args}, \code{defaults}) before deferring to the \code{AnnotationTrack}
+initializer for the remaining slots.
 
 \item \code{AnnotationTrack()}: Constructor function for
 \code{AnnotationTrack-class}.
@@ -323,8 +326,9 @@ to avoid rendering issues. See collapsing for details.
 \item \code{subset(AnnotationTrack)}: subset an \code{AnnotationTrack} by coordinates
 and sort if necessary.
 
-\item \code{subset(ReferenceAnnotationTrack)}: subset a \code{ReferenceAnnotationTrack} by
-coordinates and sort if necessary.
+\item \code{subset(ReferenceAnnotationTrack)}: subset a
+\code{\link[=ReferenceAnnotationTrack-class]{ReferenceAnnotationTrack}} by coordinates
+and sort if necessary.
 
 \item \code{drawGrid(AnnotationTrack)}: superpose a vertical grid across the
 track's plotting area, based on the \code{grid}, \code{v}, \code{col.grid}, \code{lty.grid}
@@ -348,37 +352,41 @@ is not necessary.
 \section{Slots}{
 
 \describe{
-\item{\code{dp}}{Object of \code{DisplayPars-class}, the display settings controlling the
-look and feel of a track. See settings for details on setting graphical
-parameters for tracks.}
+\item{\code{dp}}{Object of class \code{\link[=DisplayPars-class]{DisplayPars}}, the display
+settings controlling the look and feel of a track. See \code{\link{settings}} for
+details on setting graphical parameters for tracks.}
 
 \item{\code{name}}{Object of class \code{character}, a human-readable name for the track
 that will be used in the track's annotation panel if necessary.}
 
-\item{\code{imageMap}}{Object of \code{ImageMap-class}, containing optional information
-for an HTML image map. This will be created by the \code{drawGD} methods when the
-track is plotted to a device and is usually not set by the user.}
+\item{\code{imageMap}}{Object of class \code{\link[=ImageMap-class]{ImageMap}}, containing
+optional information for an HTML image map. This will be created by the
+\code{drawGD} methods when the track is plotted to a device and is usually not set
+by the user.}
 
-\item{\code{range}}{Object of class \code{GRanges}, the genomic ranges of the track items
-as well as additional annotation information in its \code{elementMetaData} slot.
-Please not that the slot is actually implemented as a class union between
-\code{GRanges} and IRanges to increase efficiency, for instance for DataTrack
-objects. This usually does not concern the user.}
+\item{\code{range}}{Object of class \code{\link[GenomicRanges:GRanges-class]{GRanges}}, the
+genomic ranges of the track items as well as additional annotation
+information in its \code{elementMetadata} slot. Please note that the slot is
+actually implemented as a class union between
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} and
+\code{\link[IRanges:IRanges-class]{IRanges}} to increase efficiency, for instance for
+\code{\link[=DataTrack-class]{DataTrack}} objects. This usually does not concern the
+user.}
 
 \item{\code{chromosome}}{Object of class \code{character}, the chromosome on which the
 track is defined. There can only be a single chromosome for one track. For
 certain subclasses, the space of allowed chromosome names is limited (e.g.,
 only those chromosomes that exist for a particular genome). Throughout the
-package, chromosome name have to be entered either as a single integer scalar
-or as a character scalar of the form chrXYZ, where XYZ may be an arbitrary
-character string.}
+package, chromosome names have to be entered either as a single integer
+scalar or as a character scalar of the form \code{chrXYZ}, where \code{XYZ} may be an
+arbitrary character string.}
 
 \item{\code{genome}}{Object of class \code{character}, the genome for which the track is
-defined. For most sub-classes this has to be valid UCSC genome identifier,
+defined. For most sub-classes this has to be a valid UCSC genome identifier,
 however this may not always be formally checked upon object instantiation.}
 
 \item{\code{stacking}}{Object of class \code{character}, the stacking type of overlapping
-items on the final plot. One in \code{c(hide, dense, squish, pack,full)}.
+items on the final plot. One of \code{c(hide, dense, squish, pack, full)}.
 Currently, only \code{hide} (do not show the track items at all), \code{squish} (make
 best use of the available space) and \code{dense} (no stacking at all) are
 implemented.}
@@ -512,7 +520,7 @@ coords(annTrack)
 tags(annTrack)
 
 ## DetailsAnnotationTrack
-library(lattice) # need to use grid grapics
+library(lattice) # need to use grid graphics
 
 ## generate two random distributions per row (probe/feature)
 ## the difference between the distributions increases from probe 1 to 4
@@ -566,13 +574,13 @@ plotTracks(deTrack)
 
 \link[=GdObject-class]{GdObject}
 
-\link[GenomicRanges:GRanges-class]{GRanges}
+\code{\link[GenomicRanges:GRanges-class]{GRanges}}
 
 \link[=HighlightTrack-class]{HighlightTrack}
 
 \link[=ImageMap-class]{ImageMap}
 
-\link[IRanges:IRanges-class]{IRanges}
+\code{\link[IRanges:IRanges-class]{IRanges}}
 
 \link[=RangeTrack-class]{RangeTrack}
 
@@ -582,7 +590,7 @@ plotTracks(deTrack)
 
 \link{grouping}
 
-\link[lattice:panel.grid]{panel.grid}
+\code{\link[lattice:panel.grid]{panel.grid}}
 
 \link{plotTracks}
 

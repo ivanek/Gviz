@@ -15,83 +15,59 @@ NULL
 #' be plotted in various different forms as well as combinations thereof.
 #' Supported plotting types are:
 #'
-#' \describe{
-#'
-#' \item{`p`:}{ simple xy-plot.}
-#'
-#' \item{`l`:}{ lines plot. In the case of multiple samples this plotting
-#' type is not overly usefull since the points in the data matrix are connected
-#' in column-wise order. Type `a` might be more appropriate in these
-#' situations.}
-#'
-#' \item{`b`:}{ combination of xy-plot and lines plot.}
-#'
-#' \item{`a`:}{ lines plot of the column-wise average values.}
-#'
-#' \item{`s`:}{ sort and connect data points along the x-axis}
-#'
-#' \item{`S`:}{ sort and connect data points along the y-axis}
-#'
-#' \item{`g`:}{ add grid lines. To ensure a consitant look and feel across
-#' multiple tracks, grid lines should preferentially be added by using the
-#' `grid` display parameter.}
-#'
-#' \item{`r`:}{ add a regression line to the plot.}
-#'
-#' \item{`h`:}{ histogram-like vertical lines centered in the middle of
-#' the coordinate ranges.}
-#'
-#' \item{`smooth`:}{ add a loess fit to the plot. The following display
-#' parameters can be used to control the loess calculation: `span, degree,
-#' family, evaluation`. See [lattice::panel.loess] for details.}
-#'
-#' \item{`histogram`:}{ plot data as a histogram, where the width of the
-#' histogram bars reflects the width of the genomic ranges in the `range`
-#' slot.}
-#'
-#' \item{`mountain`:}{ plot a smoothed version of the data relative to a
-#' baseline, as defined by the `baseline` display parameter. The following
-#' display parameters can be used to control the smoothing: `span, degree,
-#' family, evaluation`. See [lattice::panel.loess] for details. The layout
-#' of the plot can be further customized via the following display parameters:
-#' `col.mountain, lwd.mountain, lty.mountain, fill.mountain`.}
-#'
-#' \item{`polygon`:}{ plot data as a polygon (similar to
-#' `mountain`-type but without smoothing). Data are plotted relative to a
-#' baseline, as defined by the `baseline` display parameter. The layout of
-#' the plot can be further customized via the following display parameters:
-#' `col.mountain, lwd.mountain, lty.mountain, fill.mountain`.}
-#'
-#' \item{`boxplot`:}{ plot the data as box-and-whisker plots. The layout
-#' of the plot can be further customized via the following display parameters:
-#' `box.ratio, box.width, varwidt, notch, notch.frac, levels.fos, stats,
-#' coef, do.out`. See [lattice::panel.bwplot] for details.}
-#'
-#' \item{`gradient`:}{ collapse the data across samples and plot this
-#' average value as a color-coded gradient. Essenitally this is similar to the
-#' heatmap-type plot of a single sample. The layout of the plot can be further
-#' customized via the display parameters `ncolor` and `gradient`
-#' which control the number of gradient colors as well as the gradient base
-#' colors, respectively.}
-#'
-#' \item{`heatmap`:}{ plot the color-coded values for all samples in the
-#' form of a heatmap. The data for individual samples can be visually separated
-#' by setting the `separator` display parameter. It's value is taken as
-#' the amount of spacing in pixels in between two heatmap rows. The layout of
-#' the plot can be further customized via the display parameters `ncolor`
-#' and `gradient` which control the number of gradient colors as well as
-#' the gradient base colors, respectively.}
-#'
-#' \item{`horizon`:}{ plot continuous data by cutting the y range into
-#' segments and overplotting them with color representing the magnitude and
-#' direction of deviation. This is particularly useful when comparing multiple
-#' samples, in which case the horizon strips are stacked. See
-#' [latticeExtra::panel.horizonplot] for details. Please note that the `origin`
-#' and `horizonscale` arguments of the Lattice `horizonplot` function
-#' are available as display parameters `horizon.origin` and
-#' `horizon.scale`.}
-#'
-#' }
+#' * `p`: simple xy-plot.
+#' * `l`: lines plot. In the case of multiple samples this plotting type is not
+#' overly useful since the points in the data matrix are connected in
+#' column-wise order. Type `a` might be more appropriate in these situations.
+#' * `b`: combination of xy-plot and lines plot.
+#' * `a`: lines plot of the column-wise average values.
+#' * `s`: sort and connect data points along the x-axis.
+#' * `S`: sort and connect data points along the y-axis.
+#' * `g`: add grid lines. To ensure a consistent look and feel across multiple
+#' tracks, grid lines should preferentially be added by using the `grid`
+#' display parameter.
+#' * `r`: add a regression line to the plot.
+#' * `h`: histogram-like vertical lines centered in the middle of the coordinate
+#' ranges.
+#' * `smooth`: add a loess fit to the plot. The following display parameters can
+#' be used to control the loess calculation: `span`, `degree`, `family`,
+#' `evaluation`. See [lattice::panel.loess()] for details.
+#' * `histogram`: plot data as a histogram, where the width of the histogram
+#' bars reflects the width of the genomic ranges in the `range` slot.
+#' * `mountain`: plot a smoothed version of the data relative to a baseline, as
+#' defined by the `baseline` display parameter. The following display parameters
+#' can be used to control the smoothing: `span`, `degree`, `family`,
+#' `evaluation`. See [lattice::panel.loess()] for details. The layout of the
+#' plot can be further customized via the following display parameters:
+#' `col.mountain`, `lwd.mountain`, `lty.mountain`, `fill.mountain`.
+#' * `polygon`: plot data as a polygon (similar to `mountain`-type but without
+#' smoothing). Data are plotted relative to a baseline, as defined by the
+#' `baseline` display parameter. The layout of the plot can be further
+#' customized via the following display parameters: `col.mountain`,
+#' `lwd.mountain`, `lty.mountain`, `fill.mountain`.
+#' * `boxplot`: plot the data as box-and-whisker plots. The layout of the plot
+#' can be further customized via the following display parameters: `box.ratio`,
+#' `box.width`, `varwidth`, `notch`, `notch.frac`, `levels.fos`, `stats`,
+#' `coef`, `do.out`. See [lattice::panel.bwplot()] for details.
+#' * `gradient`: collapse the data across samples and plot this average value as
+#' a color-coded gradient. Essentially this is similar to the heatmap-type plot
+#' of a single sample. The layout of the plot can be further customized via the
+#' display parameters `ncolor` and `gradient`, which control the number of
+#' gradient colors as well as the gradient base colors, respectively.
+#' * `heatmap`: plot the color-coded values for all samples in the form of a
+#' heatmap. The data for individual samples can be visually separated by setting
+#' the `separator` display parameter. Its value is taken as the amount of
+#' spacing in pixels in between two heatmap rows. The layout of the plot can be
+#' further customized via the display parameters `ncolor` and `gradient`, which
+#' control the number of gradient colors as well as the gradient base colors,
+#' respectively.
+#' * `horizon`: plot continuous data by cutting the y range into segments and
+#' overplotting them with color representing the magnitude and direction of
+#' deviation. This is particularly useful when comparing multiple samples, in
+#' which case the horizon strips are stacked. See
+#' [latticeExtra::panel.horizonplot()] for details. Please note that the
+#' `origin` and `horizonscale` arguments of the `lattice` `horizonplot` function
+#' are available as display parameters `horizon.origin` and `horizon.scale`.
 #'
 #' For some of the above plotting-types the `groups` display parameter can
 #' be used to indicate sample sub-groupings. Its value is supposed to be a
@@ -122,7 +98,7 @@ NULL
 #'
 #' @return
 #' The return value of the constructor function is a new object of class
-#' `DataTrack` or `ReferenceDataTrack`.
+#' `DataTrack` or [`ReferenceDataTrack`][ReferenceDataTrack-class].
 #' @section Objects from the class:
 #'
 #' Objects can be created using the constructor function `DataTrack`.
@@ -214,92 +190,92 @@ NULL
 #'
 #' @exportClass DataTrack
 setClass("DataTrack",
-    contains = "NumericTrack",
-    representation = representation(data = "matrix", strand = "character"),
-    prototype = prototype(
-        columns = c("score"),
-        name = "DataTrack",
-        dp = DisplayPars(
-            aggregateGroups = FALSE,
-            aggregation = "mean",
-            missingAsZero = TRUE,
-            alpha.confint = 0.3,
-            amount = NULL,
-            baseline = NULL,
-            box.legend = FALSE,
-            box.ratio = 1,
-            box.width = NULL,
-            grid = FALSE,
-            cex.legend = 0.8,
-            cex.sampleNames = NULL,
-            cex = 0.7,
-            coef = 1.5,
-            col.baseline = NULL,
-            col.confint = NA,
-            col.boxplotFrame = .DEFAULT_SHADED_COL,
-            col.histogram = .DEFAULT_SHADED_COL,
-            col.horizon = NA,
-            col.mountain = NULL,
-            col.sampleNames = "white",
-            col = trellis.par.get("superpose.line")[["col"]],
-            collapse = FALSE,
-            degree = 1,
-            do.out = TRUE,
-            evaluation = 50,
-            factor = 0.5,
-            family = "symmetric",
-            fill.confint = NULL,
-            fill.histogram = NULL,
-            fill.horizon = c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
-            fill.mountain = c("#CCFFFF", "#FFCCFF"),
-            fontface.legend = NULL,
-            fontfamily.legend = NULL,
-            fontsize.legend = NULL,
-            fontcolor.legend = .DEFAULT_SHADED_COL,
-            gradient = RColorBrewer::brewer.pal(9, "Blues"),
-            groups = NULL,
-            horizon.origin = 0,
-            horizon.scale = NULL,
-            jitter.x = FALSE,
-            jitter.y = FALSE,
-            levels.fos = NULL,
-            legend = TRUE,
-            lineheight.legend = NULL,
-            lty.baseline = NULL,
-            lty.mountain = NULL,
-            lwd.baseline = NULL,
-            lwd.mountain = NULL,
-            min.distance = 0,
-            na.rm = FALSE,
-            ncolor = 100,
-            notch.frac = 0.5,
-            notch = FALSE,
-            pch = 20,
-            separator = 0,
-            showColorBar = TRUE,
-            showSampleNames = FALSE,
-            size = NULL,
-            span = 1 / 5,
-            stackedBars = TRUE,
-            stats = boxplot.stats,
-            transformation = NULL,
-            type = "p",
-            varwidth = FALSE,
-            window = NULL,
-            windowSize = NULL,
-            ylim = NULL,
-            yTicksAt = NULL
-        )
-    )
+         contains = "NumericTrack",
+         representation = representation(data = "matrix", strand = "character"),
+         prototype = prototype(
+             columns = c("score"),
+             name = "DataTrack",
+             dp = DisplayPars(
+                 aggregateGroups = FALSE,
+                 aggregation = "mean",
+                 missingAsZero = TRUE,
+                 alpha.confint = 0.3,
+                 amount = NULL,
+                 baseline = NULL,
+                 box.legend = FALSE,
+                 box.ratio = 1,
+                 box.width = NULL,
+                 grid = FALSE,
+                 cex.legend = 0.8,
+                 cex.sampleNames = NULL,
+                 cex = 0.7,
+                 coef = 1.5,
+                 col.baseline = NULL,
+                 col.confint = NA,
+                 col.boxplotFrame = .DEFAULT_SHADED_COL,
+                 col.histogram = .DEFAULT_SHADED_COL,
+                 col.horizon = NA,
+                 col.mountain = NULL,
+                 col.sampleNames = "white",
+                 col = trellis.par.get("superpose.line")[["col"]],
+                 collapse = FALSE,
+                 degree = 1,
+                 do.out = TRUE,
+                 evaluation = 50,
+                 factor = 0.5,
+                 family = "symmetric",
+                 fill.confint = NULL,
+                 fill.histogram = NULL,
+                 fill.horizon = c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
+                 fill.mountain = c("#CCFFFF", "#FFCCFF"),
+                 fontface.legend = NULL,
+                 fontfamily.legend = NULL,
+                 fontsize.legend = NULL,
+                 fontcolor.legend = .DEFAULT_SHADED_COL,
+                 gradient = RColorBrewer::brewer.pal(9, "Blues"),
+                 groups = NULL,
+                 horizon.origin = 0,
+                 horizon.scale = NULL,
+                 jitter.x = FALSE,
+                 jitter.y = FALSE,
+                 levels.fos = NULL,
+                 legend = TRUE,
+                 lineheight.legend = NULL,
+                 lty.baseline = NULL,
+                 lty.mountain = NULL,
+                 lwd.baseline = NULL,
+                 lwd.mountain = NULL,
+                 min.distance = 0,
+                 na.rm = FALSE,
+                 ncolor = 100,
+                 notch.frac = 0.5,
+                 notch = FALSE,
+                 pch = 20,
+                 separator = 0,
+                 showColorBar = TRUE,
+                 showSampleNames = FALSE,
+                 size = NULL,
+                 span = 1 / 5,
+                 stackedBars = TRUE,
+                 stats = boxplot.stats,
+                 transformation = NULL,
+                 type = "p",
+                 varwidth = FALSE,
+                 window = NULL,
+                 windowSize = NULL,
+                 ylim = NULL,
+                 yTicksAt = NULL
+             )
+         )
 )
 
 ## Initialize ----------------------------------------------------------------
 
 ## Only pass on the stuff to the GdObject initializer
 
-#' @describeIn DataTrack-class Initialize the `data` slot, and the `strand`
-#' slot if provided, before deferring to the `GdObject` initializer for the
-#' remaining slots.
+#' @describeIn DataTrack-class Initialize the `data` slot, and the `strand` slot
+#' if provided, before deferring to the [`GdObject`][GdObject-class] initializer
+#' for the remaining slots.
 #' @export
 setMethod("initialize", "DataTrack", function(.Object, data = matrix(), strand, ...) {
     ## the display parameter defaults
@@ -331,14 +307,15 @@ setClass("ReferenceDataTrack", contains = c("DataTrack", "ReferenceTrack"))
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
 
-#' @describeIn DataTrack-class Initialize the `ReferenceTrack` slots
-#' (`stream`, `reference`, `mapping`, `args`, `defaults`) before deferring to
-#' the `DataTrack` initializer for the remaining slots.
+#' @describeIn DataTrack-class Initialize the
+#' [`ReferenceTrack`][ReferenceTrack-class] slots (`stream`, `reference`,
+#' `mapping`, `args`, `defaults`) before deferring to the `DataTrack`
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, reference, mapping = list(),
                                                        args = list(), defaults = list(), ...) {
     .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
-        mapping = mapping, args = args, defaults = defaults)
+                                                            mapping = mapping, args = args, defaults = defaults)
     .Object <- callNextMethod(.Object, ...)
     return(.Object)
 })
@@ -358,7 +335,7 @@ setMethod("initialize", "ReferenceDataTrack", function(.Object, stream, referenc
 ##    o name: the name of the track. This will be used for the title panel.
 ## All additional items in ... are being treated as DisplayParameters
 
-#' @describeIn DataTrack-class Constructor function for `DataTrack-class`
+#' @describeIn DataTrack-class Constructor function for `DataTrack-class`.
 #' @export
 DataTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, data, chromosome, strand, genome,
                       name = "DataTrack", importFunction, stream = FALSE, ...) {
@@ -411,8 +388,8 @@ DataTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, data
     values(range) <- NULL
     if (!isStream) {
         return(new("DataTrack",
-            chromosome = chromosome, strand = as.character(strand(range)), range = range,
-            name = name, genome = genome, data = data, ...
+                   chromosome = chromosome, strand = as.character(strand(range)), range = range,
+                   name = name, genome = genome, data = data, ...
         ))
     } else {
         ## A bit hackish but for some functions we may want to know which track type we need but at the
@@ -421,9 +398,9 @@ DataTrack <- function(range = NULL, start = NULL, end = NULL, width = NULL, data
         e[["._trackType"]] <- "DataTrack"
         environment(slist[["stream"]]) <- e
         return(new("ReferenceDataTrack",
-            chromosome = chromosome, strand = as.character(strand(range)), range = range,
-            name = name, genome = genome, data = data, stream = slist[["stream"]], reference = slist[["reference"]],
-            mapping = slist[["mapping"]], args = args, defaults = defs, ...
+                   chromosome = chromosome, strand = as.character(strand(range)), range = range,
+                   name = name, genome = genome, data = data, stream = slist[["stream"]], reference = slist[["reference"]],
+                   mapping = slist[["mapping"]], args = args, defaults = defs, ...
         ))
     }
 }
@@ -483,18 +460,18 @@ setReplaceMethod("strand", "DataTrack", function(x, value) {
 #' The output of this operation is a list of `DataTrack` objects.
 #' @export
 setMethod("split", signature("DataTrack"),
-    definition = function(x, f, ...) {
-        f <- factor(f)
-        rs <- as.list(split(ranges(x), f))
-        ds <- split(t(values(x)), f)
-        nr <- nrow(values(x))
-        rnms <- rownames(values(x))
-        mapply(function(y, z) {
-            x@range <- y
-            x@data <- matrix(z, nrow = nr, byrow = TRUE, dimnames = list(rnms, NULL))
-            return(x)
-        }, rs, ds)
-    }
+          definition = function(x, f, ...) {
+              f <- factor(f)
+              rs <- as.list(split(ranges(x), f))
+              ds <- split(t(values(x)), f)
+              nr <- nrow(values(x))
+              rnms <- rownames(values(x))
+              mapply(function(y, z) {
+                  x@range <- y
+                  x@data <- matrix(z, nrow = nr, byrow = TRUE, dimnames = list(rnms, NULL))
+                  return(x)
+              }, rs, ds)
+          }
 )
 
 ## Annotation Accessors ------------------------------------------------------
@@ -521,13 +498,13 @@ setReplaceMethod("feature", signature("DataTrack", "character"), function(GdObje
     }
     fun <- if (is.character(agFun)) {
         switch(agFun,
-            "mean" = rowMeans,
-            "sum" = rowSums,
-            "median" = rowMedians,
-            "extreme" = function(x) apply(x, 1, .extreme),
-            "min" = Biobase::rowMin,
-            "max" = Biobase::rowMax,
-            rowMeans
+               "mean" = rowMeans,
+               "sum" = rowSums,
+               "median" = rowMedians,
+               "extreme" = function(x) apply(x, 1, .extreme),
+               "min" = Biobase::rowMin,
+               "max" = Biobase::rowMax,
+               rowMeans
         )
     } else {
         if (is.function(agFun)) {
@@ -549,23 +526,23 @@ setReplaceMethod("feature", signature("DataTrack", "character"), function(GdObje
     }
     fun <- if (is.character(agFun)) {
         switch(agFun,
-            "mean" = runmean,
-            "sum" = runsum,
-            "median" = runmed2 <- function(x, k, na.rm = FALSE, ...) {
-                na.action <- if (na.rm) {
-                    "na.omit"
-                } else {
-                    "+Big_alternate"
-                }
-                runmed(x = as.numeric(x), k = k, na.action = na.action)
-            },
-            "min" = runqmin <- function(x, k, i = 1, ...) {
-                runq(x = x, k = k, i = i, ...)
-            },
-            "max" = runqmax <- function(x, k, i = k, ...) {
-                runq(x = x, k = k, i = i, ...)
-            },
-            runmean
+               "mean" = runmean,
+               "sum" = runsum,
+               "median" = runmed2 <- function(x, k, na.rm = FALSE, ...) {
+                   na.action <- if (na.rm) {
+                       "na.omit"
+                   } else {
+                       "+Big_alternate"
+                   }
+                   runmed(x = as.numeric(x), k = k, na.action = na.action)
+               },
+               "min" = runqmin <- function(x, k, i = 1, ...) {
+                   runq(x = x, k = k, i = i, ...)
+               },
+               "max" = runqmax <- function(x, k, i = k, ...) {
+                   runq(x = x, k = k, i = i, ...)
+               },
+               runmean
         )
     } else {
         if (is.function(agFun)) {
@@ -754,10 +731,10 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
             }
             newScore <- if (is.character(agFun)) {
                 switch(agFun,
-                    "mean" = lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
-                    "sum" = lapply(vsplit, function(x) rowSums(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
-                    "median" = lapply(vsplit, function(x) rowMedians(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
-                    lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE))
+                       "mean" = lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
+                       "sum" = lapply(vsplit, function(x) rowSums(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
+                       "median" = lapply(vsplit, function(x) rowMedians(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE)),
+                       lapply(vsplit, function(x) rowMeans(matrix(x, nrow = nrow(sc), byrow = TRUE), na.rm = TRUE))
                 )
             } else {
                 if (is.function(agFun)) {
@@ -780,8 +757,9 @@ setMethod("collapseTrack", signature(GdObject = "DataTrack"), function(GdObject,
 ## Subset --------------------------------------------------------------------
 
 #' @describeIn DataTrack-class subset the items in the `DataTrack` object. This
-#' is essentially similar to subsetting of the `GRanges` object in the `range`
-#' slot. For most applications, the subset method may be more appropriate.
+#' is essentially similar to subsetting of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object in the `range` slot. For
+#' most applications, the subset method may be more appropriate.
 #' @export
 setMethod("[", signature(x = "DataTrack"), function(x, i, j, ..., drop = FALSE) {
     x <- .deepCopyPars(x)
@@ -824,8 +802,9 @@ setMethod("subset", signature(x = "DataTrack"), function(x, from = NULL, to = NU
 
 ## ReferenceDataTracks need to stream the data from file and then pass the results on to the next method
 
-#' @describeIn DataTrack-class Subset a `ReferenceDataTrack` by coordinates
-#' and sort if necessary.
+#' @describeIn DataTrack-class Subset a
+#' [`ReferenceDataTrack`][ReferenceDataTrack-class] by coordinates and sort if
+#' necessary.
 #' @export
 setMethod("subset", signature(x = "ReferenceDataTrack"), function(x, from, to, chromosome, ...) {
     ## We only need to reach out into the referenced file once if the range is already contained in the object
@@ -980,14 +959,14 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             ylim <- .dpOrDefault(GdObject, "ylim")
             if (!is.null(groups) && nlevels(groups) > 1) {
                 if (ncol(vals)) {
-                valsS <- split(vals, groups)
-                valsS <- do.call(cbind, lapply(seq_along(valsS), function(i) {
-                    tmp <- t(matrix(valsS[[i]], ncol = ncol(vals)))
-                    if (ncol(tmp)) {
-                        colnames(tmp) <- rep(names(valsS)[i], ncol(tmp))
-                    }
-                    tmp
-                }))
+                    valsS <- split(vals, groups)
+                    valsS <- do.call(cbind, lapply(seq_along(valsS), function(i) {
+                        tmp <- t(matrix(valsS[[i]], ncol = ncol(vals)))
+                        if (ncol(tmp)) {
+                            colnames(tmp) <- rep(names(valsS)[i], ncol(tmp))
+                        }
+                        tmp
+                    }))
                 } else {
                     valsS <- matrix(nrow = nlevels(groups), ncol = 0, dimnames = list(levels(groups)))
                 }
@@ -1014,7 +993,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 }
             } else {
                 if (is.null(ylim)) {
-                     valsA <- t(vals)
+                    valsA <- t(vals)
                     ylim <- if (!length(valsA)) c(-1, 1) else c(min(c(0, valsA), na.rm = TRUE), max(valsA, na.rm = TRUE))
                     if (length(type) > 1) {
                         ylim <- range(c(ylim, vals), na.rm = TRUE)
@@ -1175,9 +1154,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
         lty.mountain <- .dpOrDefault(GdObject, "lty.mountain", pcols$lty)[1]
         .panel.mountain(x, y,
-            col = col.mountain, fill = fill.mountain, span = span, degree = degree, family = family,
-            evaluation = evaluation, lwd = lwd.mountain, lty = lty.mountain, col.line = col.mountain, alpha = alpha,
-            baseline = mbaseline
+                        col = col.mountain, fill = fill.mountain, span = span, degree = degree, family = family,
+                        evaluation = evaluation, lwd = lwd.mountain, lty = lty.mountain, col.line = col.mountain, alpha = alpha,
+                        baseline = mbaseline
         )
         if (!is.na(mbaseline)) {
             panel.abline(h = mbaseline, col = col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
@@ -1192,9 +1171,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         lwd.mountain <- .dpOrDefault(GdObject, "lwd.mountain", pcols$lwd)[1]
         lty.mountain <- .dpOrDefault(GdObject, "lty.mountain", pcols$lty)[1]
         .panel.polygon(x, y,
-            col = col.mountain, fill = fill.mountain, lwd = lwd.mountain,
-            lty = lty.mountain, col.line = col.mountain, alpha = alpha,
-            baseline = mbaseline
+                       col = col.mountain, fill = fill.mountain, lwd = lwd.mountain,
+                       lty = lty.mountain, col.line = col.mountain, alpha = alpha,
+                       baseline = mbaseline
         )
         if (!is.na(mbaseline)) {
             panel.abline(h = mbaseline, col = col.baseline, lwd = lwd.baseline, lty = lty.baseline, alpha = alpha)
@@ -1219,34 +1198,34 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 off <- (width(GdObject) - (bw * nb) - ((nb + 2) * spacer)) / 2
                 xx <- rep(start(GdObject) + (j * spacer) + (j * bw) + off, each = nn) - (bw / 2)
                 .panel.bwplot(xx, as.numeric(by[[j]]),
-                    box.ratio = box.ratio, box.width = (bw / 2) / box.ratio, pch = pcols$pch[1],
-                    lwd = pcols$lwd[1], lty = pcols$lty[1], fontsize = fontsize,
-                    col = pcols$col.histogram, cex = bcex, font = font, fontfamily = font, fontface = fontface,
-                    fill = pcols$col[j], varwidth = .dpOrDefault(GdObject, "varwidth", FALSE),
-                    notch = .dpOrDefault(GdObject, "notch", FALSE), notch.frac = .dpOrDefault(GdObject, "notch.frac", 0.5),
-                    levels.fos = .dpOrDefault(GdObject, "level.fos", sort(unique(xx))),
-                    stats = .dpOrDefault(GdObject, "stats", boxplot.stats), coef = .dpOrDefault(GdObject, "coef", 1.5),
-                    do.out = .dpOrDefault(GdObject, "do.out", TRUE), alpha = alpha
+                              box.ratio = box.ratio, box.width = (bw / 2) / box.ratio, pch = pcols$pch[1],
+                              lwd = pcols$lwd[1], lty = pcols$lty[1], fontsize = fontsize,
+                              col = pcols$col.histogram, cex = bcex, font = font, fontfamily = font, fontface = fontface,
+                              fill = pcols$col[j], varwidth = .dpOrDefault(GdObject, "varwidth", FALSE),
+                              notch = .dpOrDefault(GdObject, "notch", FALSE), notch.frac = .dpOrDefault(GdObject, "notch.frac", 0.5),
+                              levels.fos = .dpOrDefault(GdObject, "level.fos", sort(unique(xx))),
+                              stats = .dpOrDefault(GdObject, "stats", boxplot.stats), coef = .dpOrDefault(GdObject, "coef", 1.5),
+                              do.out = .dpOrDefault(GdObject, "do.out", TRUE), alpha = alpha
                 )
             }
             diffY <- .pxResolution(coord = "y", 2)
             outline <- apply(vals, 2, range)
             grid.rect(start(GdObject), outline[1, ] - diffY,
-                width = width(GdObject), height = abs(outline[2, ] - outline[1, ]) + (2 * diffY),
-                gp = gpar(col = .dpOrDefault(GdObject, "col.boxplotFrame", .DEFAULT_SHADED_COL), fill = "transparent", alpha = alpha, lty = "dotted"),
-                default.units = "native", just = c("left", "bottom")
+                      width = width(GdObject), height = abs(outline[2, ] - outline[1, ]) + (2 * diffY),
+                      gp = gpar(col = .dpOrDefault(GdObject, "col.boxplotFrame", .DEFAULT_SHADED_COL), fill = "transparent", alpha = alpha, lty = "dotted"),
+                      default.units = "native", just = c("left", "bottom")
             )
         } else {
             bcex <- min(pcols$cex[1], ((box.width * 2) / diff) / 20)
             .panel.bwplot(x, y,
-                box.ratio = box.ratio, box.width = box.width, pch = pcols$pch[1],
-                lwd = pcols$lwd[1], lty = pcols$lty[1], fontsize = fontsize,
-                col = pcols$col.histogram, cex = bcex, font = font, fontfamily = font, fontface = fontface,
-                fill = pcols$fill[1], varwidth = .dpOrDefault(GdObject, "varwidth", FALSE),
-                notch = .dpOrDefault(GdObject, "notch", FALSE), notch.frac = .dpOrDefault(GdObject, "notch.frac", 0.5),
-                levels.fos = .dpOrDefault(GdObject, "level.fos", sort(unique(x))),
-                stats = .dpOrDefault(GdObject, "stats", boxplot.stats), coef = .dpOrDefault(GdObject, "coef", 1.5),
-                do.out = .dpOrDefault(GdObject, "do.out", TRUE), alpha = alpha
+                          box.ratio = box.ratio, box.width = box.width, pch = pcols$pch[1],
+                          lwd = pcols$lwd[1], lty = pcols$lty[1], fontsize = fontsize,
+                          col = pcols$col.histogram, cex = bcex, font = font, fontfamily = font, fontface = fontface,
+                          fill = pcols$fill[1], varwidth = .dpOrDefault(GdObject, "varwidth", FALSE),
+                          notch = .dpOrDefault(GdObject, "notch", FALSE), notch.frac = .dpOrDefault(GdObject, "notch.frac", 0.5),
+                          levels.fos = .dpOrDefault(GdObject, "level.fos", sort(unique(x))),
+                          stats = .dpOrDefault(GdObject, "stats", boxplot.stats), coef = .dpOrDefault(GdObject, "coef", 1.5),
+                          do.out = .dpOrDefault(GdObject, "do.out", TRUE), alpha = alpha
             )
         }
     }
@@ -1266,9 +1245,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                         offset <- yyy
                         offset[offset != yy] <- 0
                         grid.rect(start(GdObject), yyy,
-                            width = width(GdObject), height = valsS[, s] - offset,
-                            gp = gpar(col = "transparent", fill = pcols$col[colnames(valsS)[s]], lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
-                            just = c("left", "bottom")
+                                  width = width(GdObject), height = valsS[, s] - offset,
+                                  gp = gpar(col = "transparent", fill = pcols$col[colnames(valsS)[s]], lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
+                                  just = c("left", "bottom")
                         )
                         curMaxPos[sel] <- curMaxPos[sel] + (valsS[sel, s] - offset[sel])
                         curMinPos[!sel] <- curMinPos[!sel] + (valsS[!sel, s] - offset[!sel])
@@ -1278,10 +1257,10 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 tooNarrow <- width(GdObject) < diff
                 if (!all(tooNarrow)) {
                     grid.rect(start(GdObject)[!tooNarrow], curMinPos[!tooNarrow],
-                        width = width(GdObject)[!tooNarrow],
-                        height = (curMaxPos - curMinPos)[!tooNarrow],
-                        gp = gpar(fill = "transparent", col = pcols$col.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha),
-                        default.units = "native", just = c("left", "bottom")
+                              width = width(GdObject)[!tooNarrow],
+                              height = (curMaxPos - curMinPos)[!tooNarrow],
+                              gp = gpar(fill = "transparent", col = pcols$col.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha),
+                              default.units = "native", just = c("left", "bottom")
                     )
                 }
             } else {
@@ -1289,9 +1268,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 yOff <- .pxResolution(min.width = 1, coord = "y")
                 outline <- apply(valsS, 1, function(x) range(c(yy, x), na.rm = TRUE))
                 grid.rect(start(GdObject), outline[1, ] - yOff,
-                    width = width(GdObject), height = apply(outline, 2, diff) + (yOff * 2),
-                    gp = gpar(col = pcols$col.histogram, fill = pcols$fill.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
-                    just = c("left", "bottom")
+                          width = width(GdObject), height = apply(outline, 2, diff) + (yOff * 2),
+                          gp = gpar(col = pcols$col.histogram, fill = pcols$fill.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
+                          just = c("left", "bottom")
                 )
                 len <- ncol(valsS)
                 subW <- (width(GdObject) - (spacer * (len + 1))) / len
@@ -1304,21 +1283,21 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     subX <- rep(start(GdObject)[sel], len) + (subW * rep(seq_len(len) - 1, each = sum(sel))) +
                         (spacer * rep(seq_len(len), each = sum(sel)))
                     grid.rect(subX, yy,
-                        width = rep(subW, len), height = valsS - yy,
-                        gp = gpar(
-                            col = "transparent", fill = rep(pcols$col[seq_len(len)], each = sum(sel)),
-                            lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha
-                        ), default.units = "native",
-                        just = c("left", "bottom")
+                              width = rep(subW, len), height = valsS - yy,
+                              gp = gpar(
+                                  col = "transparent", fill = rep(pcols$col[seq_len(len)], each = sum(sel)),
+                                  lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha
+                              ), default.units = "native",
+                              just = c("left", "bottom")
                     )
                 }
             }
         } else {
             valsS <- t(vals)
             grid.rect(start(GdObject), yy,
-                width = width(GdObject), height = valsS - yy,
-                gp = gpar(col = pcols$col.histogram, fill = pcols$fill.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
-                just = c("left", "bottom")
+                      width = width(GdObject), height = valsS - yy,
+                      gp = gpar(col = pcols$col.histogram, fill = pcols$fill.histogram, lwd = pcols$lwd[1], lty = pcols$lty[1], alpha = alpha), default.units = "native",
+                      just = c("left", "bottom")
             )
         }
     }
@@ -1328,9 +1307,9 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
         gradient <- colorRampPalette(.dpOrDefault(GdObject, "gradient", brewer.pal(9, "Blues")))(ncolor)
         valsScaled <- .z2icol(colMeans(vals, na.rm = TRUE), ncolor, sort(ylim))
         grid.rect(start(GdObject), sort(ylim)[1],
-            width = width(GdObject), height = abs(diff(ylim)),
-            gp = gpar(col = gradient[valsScaled], fill = gradient[valsScaled], alpha = alpha),
-            default.units = "native", just = c("left", "bottom")
+                  width = width(GdObject), height = abs(diff(ylim)),
+                  gp = gpar(col = gradient[valsScaled], fill = gradient[valsScaled], alpha = alpha),
+                  default.units = "native", just = c("left", "bottom")
         )
     }
     ## heatmap does the same, but for each sample individually
@@ -1350,19 +1329,19 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                 gradient <- colorRampPalette(c("white", pcols$col[s]))(ncolor + 5)[-seq_len(5)]
                 valsScaled <- .z2icol(valsS[[s]], ncolor, sort(ylim))
                 grid.rect(rep(start(GdObject), each = freq[s]), yy[(cmf[s] + 1):cmf[s + 1]],
-                    width = rep(width(GdObject), each = freq[s]),
-                    height = max(ydiff, abs(diff(ylim)) * (1 / nr) - separator),
-                    gp = gpar(col = gradient[valsScaled], fill = gradient[valsScaled], alpha = alpha),
-                    default.units = "native", just = c("left", "top")
+                          width = rep(width(GdObject), each = freq[s]),
+                          height = max(ydiff, abs(diff(ylim)) * (1 / nr) - separator),
+                          gp = gpar(col = gradient[valsScaled], fill = gradient[valsScaled], alpha = alpha),
+                          default.units = "native", just = c("left", "top")
                 )
             }
         } else {
             gradient <- colorRampPalette(.dpOrDefault(GdObject, "gradient", brewer.pal(9, "Blues")))(ncolor)
             grid.rect(rep(start(GdObject), each = nr), rev(yy),
-                width = rep(width(GdObject), each = nr),
-                height = max(ydiff, abs(diff(ylim)) * (1 / nr) - separator),
-                gp = gpar(col = gradient[valsScaled], fill = gradient[valsScaled], alpha = alpha),
-                default.units = "native", just = c("left", "top")
+                      width = rep(width(GdObject), each = nr),
+                      height = max(ydiff, abs(diff(ylim)) * (1 / nr) - separator),
+                      gp = gpar(col = gradient[valsScaled], fill = gradient[valsScaled], alpha = alpha),
+                      default.units = "native", just = c("left", "top")
             )
         }
     }
@@ -1440,7 +1419,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
             } else if (length(na_idx) < 1) {
                 if (debugMode) message("\t Case 2: one continuous polygon")
                 panel.polygon(c(x, rev(x)), c(upper, rev(lower)),
-                    border = col, col = fill, alpha = alpha, ...
+                              border = col, col = fill, alpha = alpha, ...
                 )
                 ## case 3. have complete data with some or no missing points
             } else {
@@ -1452,7 +1431,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     ## complete the current poly
                     idx <- curr_start:(na_idx[curr_na_pos] - 1)
                     panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx], rev(lower[idx])),
-                        col = fill, border = col, alpha = alpha, ...
+                                  col = fill, border = col, alpha = alpha, ...
                     )
                     ## contiguous empty spots - skip
                     while ((na_idx[curr_na_pos + 1] == na_idx[curr_na_pos] + 1) && (curr_na_pos < length(na_idx))) {
@@ -1469,7 +1448,7 @@ setMethod("drawGD", signature("DataTrack"), function(GdObject, minBase, maxBase,
                     if (debugMode) message("\tWrapping last polygon")
                     idx <- curr_start:length(upper)
                     panel.polygon(c(x[idx], rev(x[idx])), c(upper[idx], rev(lower[idx])),
-                        col = fill, border = col, alpha = alpha, ...
+                                  col = fill, border = col, alpha = alpha, ...
                     )
                 }
             }
@@ -1591,8 +1570,8 @@ setMethod(
     function(object) {
         msg <- sprintf(
             paste("DataTrack '%s'\n| genome: %s\n| active chromosome: %s\n",
-                "| positions: %s\n| samples:%s\n| strand: %s",
-                sep = ""
+                  "| positions: %s\n| samples:%s\n| strand: %s",
+                  sep = ""
             ),
             names(object),
             genome(object),

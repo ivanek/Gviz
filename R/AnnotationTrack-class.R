@@ -8,9 +8,9 @@ NULL
 #' AnnotationTrack class and methods
 #'
 #' A fairly generic track object for arbitrary genomic range annotations, with
-#' the option of grouped track items. The extended `DetailsAnnotationTrack`
-#' provides a more flexible interface to add user-defined custom
-#' information for each range.
+#' the option of grouped track items. The extended
+#' [`DetailsAnnotationTrack`][DetailsAnnotationTrack-class] provides a more
+#' flexible interface to add user-defined custom information for each range.
 #'
 #' @name AnnotationTrack-class
 #'
@@ -141,7 +141,7 @@ NULL
 #' tags(annTrack)
 #'
 #' ## DetailsAnnotationTrack
-#' library(lattice) # need to use grid grapics
+#' library(lattice) # need to use grid graphics
 #'
 #' ## generate two random distributions per row (probe/feature)
 #' ## the difference between the distributions increases from probe 1 to 4
@@ -278,9 +278,10 @@ setClass("ReferenceAnnotationTrack", contains = c("AnnotationTrack", "ReferenceT
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
-#' @describeIn AnnotationTrack-class Initialize the `ReferenceTrack` slots
-#' (`stream`, `reference`, `mapping`, `args`, `defaults`) before deferring to
-#' the `AnnotationTrack` initializer for the remaining slots.
+#' @describeIn AnnotationTrack-class Initialize the
+#' [`ReferenceTrack`][ReferenceTrack-class] slots (`stream`, `reference`,
+#' `mapping`, `args`, `defaults`) before deferring to the `AnnotationTrack`
+#' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, reference, mapping = list(),
                                                              args = list(), defaults = list(), ...) {
@@ -317,12 +318,11 @@ setMethod("initialize", "ReferenceAnnotationTrack", function(.Object, stream, re
 #' @describeIn AnnotationTrack-class Constructor function for
 #' `AnnotationTrack-class`.
 #'
-#' @return
-#' The return value of the constructor function is a new object of class
-#' `AnnotationTrack` or of class `DetailsAnnotationTrack`, depending on the
-#' constructor arguments. Typically the user will not have to be troubled
-#' with this distinction and can rely on the constructor to make the right
-#' choice.
+#' @return The return value of the constructor function is a new object of class
+#' `AnnotationTrack` or of class
+#' [`DetailsAnnotationTrack`][DetailsAnnotationTrack-class], depending on the
+#' constructor arguments. Typically the user will not have to be troubled with
+#' this distinction and can rely on the constructor to make the right choice.
 #'
 #' @section Objects from the class:
 #'
@@ -445,25 +445,26 @@ setClass("DetailsAnnotationTrack",
 )
 
 #' @describeIn DetailsAnnotationTrack-class Constructor function for
-#' `DetailsAnnotationTrack-class`
+#' `DetailsAnnotationTrack-class`.
 #'
-#' The `DetailsAnnotationTrack` class directly extends `AnnotationTrack`.
-#' The purpose of this track type is to add an arbitrarily detailed plot
-#' section (typically consisting of additional quantitative data) for each
-#' range element of an `AnnotationTrack`. This allows a locus-wide view of
-#' annotation elements together with any kind of details per feature or
-#' element that may, for instance, provide insight on how some complex
-#' quantitative measurements change according to their position in a locus.
-#' If the quantitative data is too complex for a `DataTrack`, e.g. because it
-#' requires extra space or a trellis-like representation, a
-#' `DetailsAnnotationTrack` can be used instead. Example: an `AnnotationTrack`
-#' shows the positions of a number of probes from a microarray, and you want
-#' a histogram of the signal intensity distribution derived from all samples
-#' at each of these probe locations. Another example usage would be to show,
-#' for each element of an `AnnotationTrack`, an xy-plot of the signal against
-#' some clinical measurement such as blood pressure. The limitation for
-#' applications of this type of track is basically only the available space
-#' of the device you are plotting to.
+#' The [`DetailsAnnotationTrack`][DetailsAnnotationTrack-class] class directly
+#' extends `AnnotationTrack`. The purpose of this track type is to add an
+#' arbitrarily detailed plot section (typically consisting of additional
+#' quantitative data) for each range element of an `AnnotationTrack`. This
+#' allows a locus-wide view of annotation elements together with any kind of
+#' details per feature or element that may, for instance, provide insight on how
+#' some complex quantitative measurements change according to their position in
+#' a locus. If the quantitative data is too complex for a
+#' [`DataTrack`][DataTrack-class], e.g. because it requires extra space or a
+#' trellis-like representation, a
+#' [`DetailsAnnotationTrack`][DetailsAnnotationTrack-class] can be used instead.
+#' Example: an `AnnotationTrack` shows the positions of a number of probes from
+#' a microarray, and you want a histogram of the signal intensity distribution
+#' derived from all samples at each of these probe locations. Another example
+#' usage would be to show, for each element of an `AnnotationTrack`, an xy-plot
+#' of the signal against some clinical measurement such as blood pressure. The
+#' limitation for applications of this type of track is basically only the
+#' available space of the device you are plotting to.
 #'
 #' This flexibility is possible by utilizing a simple function model
 #' to perform all the detailed plotting. The functionality of this plotting
@@ -477,7 +478,7 @@ setClass("DetailsAnnotationTrack",
 #' parameter. This is expected to be a named list, and all list elements are
 #' passed along to the plotting function fun and to the selector function
 #' `selectFun` as additional named arguments. Please note that some argument
-#' names like `start`, `end` or `identifier` are reserved and can not be used
+#' names like `start`, `end` or `identifier` are reserved and cannot be used
 #' in the `detailsFunArgs` list. For examples of plotting functions,
 #' see the 'Examples' section.
 #' @export
@@ -875,8 +876,9 @@ setMethod("subset", signature(x = "AnnotationTrack"), function(x, from = NULL, t
 
 ## ReferenceDataTracks need to stream the data from file and then pass the results on to the next method
 
-#' @describeIn AnnotationTrack-class subset a `ReferenceAnnotationTrack` by
-#' coordinates and sort if necessary.
+#' @describeIn AnnotationTrack-class subset a
+#' [`ReferenceAnnotationTrack`][ReferenceAnnotationTrack-class] by coordinates
+#' and sort if necessary.
 #' @export
 setMethod("subset", signature(x = "ReferenceAnnotationTrack"), function(x, from, to, chromosome, ...) {
     ## We only need to reach out into the referenced file once if the range is already contained in the object

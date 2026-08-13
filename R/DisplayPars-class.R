@@ -112,7 +112,7 @@ DisplayPars <- function(...) {
 ## keyword/value pair. The DisplayPars class was first implemented as
 ## an environment, so we essentially had pass by reference semantic here,
 ## and the object could be modified without the need to reassign to a
-## symbol. However this somewhat broke the the R paradigm, and 'setPar'
+## symbol. However this somewhat broke the R paradigm, and 'setPar'
 ## has been deprecated in favour of the more standard 'DisplayPars<-'
 ## replacement method. The getter methods either return the list
 ## of all parameters, or a subset of parameters if their names are
@@ -183,12 +183,12 @@ setAs("DisplayPars", "list", function(from, to) if (!is.null(from)) as.list(from
 
 ### DisplayPars Methods Setters ----------------------------------------------
 
-#' @describeIn DisplayPars-class Generics for `SetPar`.
+#' @describeIn DisplayPars-class Generics for `setPar`.
 #'
-#' SetPar generic function
+#' setPar generic function
 #'
-#' @param x object to set the displayPar value on
-#' @param value named value to be set
+#' @param x Object to set the display parameter value on.
+#' @param value Value to be set.
 #'
 setGeneric("setPar", function(x, value, ...) standardGeneric("setPar"))
 
@@ -351,11 +351,19 @@ setMethod("show", "InferredDisplayPars", function(object) {
 ### availableDisplayPars function --------------------------------------------
 
 #' @param class Either character scalar or object. Supported classes are:
-#' `GdObject`, `GenomeAxisTrack`, `RangeTrack`, `NumericTrack`, `DataTrack`,
-#' `IdeogramTrack`, `StackedTrack`, `AnnotationTrack`, `DetailsAnnotationTrack`,
-#' `GeneRegionTrack`, `BiomartGeneRegionTrack`, `AlignmentsTrack`,
-#' `SequenceTrack`, `SequenceBSgenomeTrack`, `SequenceDNAStringSetTrack`,
-#' `SequenceRNAStringSetTrack`
+#' [`GdObject`][GdObject-class], [`GenomeAxisTrack`][GenomeAxisTrack-class],
+#' [`RangeTrack`][RangeTrack-class], [`NumericTrack`][NumericTrack-class],
+#' [`DataTrack`][DataTrack-class], [`IdeogramTrack`][IdeogramTrack-class],
+#' [`StackedTrack`][StackedTrack-class],
+#' [`AnnotationTrack`][AnnotationTrack-class],
+#' [`DetailsAnnotationTrack`][DetailsAnnotationTrack-class],
+#' [`GeneRegionTrack`][GeneRegionTrack-class],
+#' [`BiomartGeneRegionTrack`][BiomartGeneRegionTrack-class],
+#' [`AlignmentsTrack`][AlignmentsTrack-class],
+#' [`SequenceTrack`][SequenceTrack-class],
+#' [`SequenceBSgenomeTrack`][SequenceBSgenomeTrack-class],
+#' [`SequenceDNAStringSetTrack`][SequenceDNAStringSetTrack-class],
+#' [`SequenceRNAStringSetTrack`][SequenceRNAStringSetTrack-class]
 #'
 #' @return `availableDisplayPars` returns a list of the default display
 #' parameters.

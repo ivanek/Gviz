@@ -8,9 +8,10 @@ NULL
 #' A class representing a customizable genomic axis.
 #'
 #'
-#' A `GenomeAxisTrack` can be customized using the familiar display
-#' parameters. By providing a `GRanges` or `IRanges` object to the
-#' constructor, ranges on the axis can be further highlighted.
+#' A `GenomeAxisTrack` can be customized using the familiar display parameters.
+#' By providing a [`GRanges`][GenomicRanges::GRanges-class] or
+#' [`IRanges`][IRanges::IRanges-class] object to the constructor, ranges on the
+#' axis can be further highlighted.
 #'
 #' With the `scale` display parameter, a small scale indicator can be
 #' shown instead of the entire genomic axis. The scale can either be provided
@@ -141,8 +142,9 @@ setClass("GenomeAxisTrack",
 ## Only pass on the stuff to the GdObject initializer
 
 #' @describeIn GenomeAxisTrack-class Initialize the `range` slot (coercing an
-#' `IRanges` input to `GRanges` if necessary) before deferring to the
-#' `GdObject` initializer for the remaining slots.
+#' [`IRanges`][IRanges::IRanges-class] input to
+#' [`GRanges`][GenomicRanges::GRanges-class] if necessary) before deferring to
+#' the [`GdObject`][GdObject-class] initializer for the remaining slots.
 #' @export
 setMethod("initialize", "GenomeAxisTrack", function(.Object, range, ids, ...) {
     ## the diplay parameter defaults
@@ -174,19 +176,19 @@ GenomeAxisTrack <- function(range = NULL, name = "Axis", id, ...) {
 
 #' @describeIn GenomeAxisTrack-class return the genomic coordinates for the
 #' track along with all additional annotation information as an object of
-#' class `GRanges`.
+#' class [`GRanges`][GenomicRanges::GRanges-class].
 setMethod("ranges", "GenomeAxisTrack", function(x) x@range)
 
 #' @describeIn GenomeAxisTrack-class replace the genomic coordinates and
-#' associated annotation information for the track with a new `GRanges`
-#' object.
+#' associated annotation information for the track with a new
+#' [`GRanges`][GenomicRanges::GRanges-class] object.
 setReplaceMethod("ranges", "GenomeAxisTrack", function(x, value) {
     x@range <- value
     return(x)
 })
 
 #' @describeIn GenomeAxisTrack-class return the genomic coordinates for the
-#'  track as an object of class `IRanges`.
+#'  track as an object of class [`IRanges`][IRanges::IRanges-class].
 #'  @export
 setMethod("range", "GenomeAxisTrack", function(x) ranges(x@range))
 
@@ -268,9 +270,9 @@ setMethod(
 ## Subset --------------------------------------------------------------------
 
 #' @describeIn GenomeAxisTrack-class subset the items in the `GenomeAxisTrack`
-#' object. This is essentially similar to subsetting of the `GRanges` object in
-#' the `range` slot. For most applications, the subset method may be more
-#' appropriate.
+#' object. This is essentially similar to subsetting of the
+#' [`GRanges`][GenomicRanges::GRanges-class] object in the `range` slot. For
+#' most applications, the subset method may be more appropriate.
 #' @export
 setMethod("[", signature(x = "GenomeAxisTrack"), function(x, i, j, ..., drop = TRUE) {
     x <- .deepCopyPars(x)
