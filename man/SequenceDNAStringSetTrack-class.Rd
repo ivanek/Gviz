@@ -18,6 +18,10 @@ identifiers.}
 
 \item{...}{Additional arguments.}
 }
+\value{
+An initialized object of class
+\code{\link[=SequenceDNAStringSetTrack-class]{SequenceDNAStringSetTrack}}.
+}
 \description{
 The \code{DNAStringSet}-based version of the \code{SequenceTrack} class
 }

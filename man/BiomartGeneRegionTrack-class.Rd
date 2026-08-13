@@ -162,11 +162,12 @@ data(bmTrack)
 }
 
 ## Construct the object
-\dontrun{
+\donttest{
 # create biomaRt object first
+library(biomaRt)
 bm <- useEnsembl(
-biomart = "ENSEMBL_MART_ENSEMBL",
-dataset = "mmusculus_gene_ensembl"
+    biomart = "ENSEMBL_MART_ENSEMBL",
+    dataset = "mmusculus_gene_ensembl"
 )
 # pass it to the `BiomartGeneRegionTrack`
 bmTrack <- BiomartGeneRegionTrack(
@@ -195,7 +196,9 @@ plotTracks(bmTrack)
 ## Subsetting and splitting
 subTrack <- subset(bmTrack, from = 26700000, to = 26705000)
 length(subTrack)
-subTrack <- bmTrack[transcript(bmTrack) == "ENSMUST00000144140"]
+## Selecting all features for the first transcript only
+mytx <- sort(transcript(bmTrack))[[1]]
+subTrack <- bmTrack[transcript(bmTrack) == mytx]
 split(bmTrack, transcript(bmTrack))
 
 ## Accessors
@@ -209,10 +212,10 @@ strand(bmTrack)
 strand(subTrack) <- "-"
 
 chromosome(bmTrack)
-chromosome(subTrack) <- "chrX"
+chromosome(subTrack) <- "chr7"
 
 genome(bmTrack)
-genome(subTrack) <- "hg19"
+genome(subTrack) <- "mm10"
 
 range(bmTrack)
 ranges(bmTrack)
@@ -226,7 +229,7 @@ feature(bmTrack)
 feature(subTrack) <- "foo"
 
 exon(bmTrack)
-exon(subTrack) <- letters[1:2]
+exon(subTrack) <- letters[seq_len(length(subTrack))]
 
 gene(bmTrack)
 gene(subTrack) <- "bar"
@@ -235,7 +238,7 @@ symbol(bmTrack)
 symbol(subTrack) <- "foo"
 
 transcript(bmTrack)
-transcript(subTrack) <- c("foo", "bar")
+transcript(subTrack) <- c("foo")
 chromosome(subTrack) <- "chr7"
 plotTracks(subTrack)
 

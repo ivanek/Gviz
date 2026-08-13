@@ -55,8 +55,10 @@ NULL
 #' ## Plotting
 #' plotTracks(annTrack)
 #' @exportClass RangeTrack
-setClass("RangeTrack",
-    representation = representation("VIRTUAL",
+setClass(
+    "RangeTrack",
+    representation = representation(
+        "VIRTUAL",
         range = "GRangesOrIRanges",
         chromosome = "character",
         genome = "character"
@@ -76,22 +78,26 @@ setClass("RangeTrack",
 #' `genome` slots before deferring to the [`GdObject`][GdObject-class]
 #' initializer for the remaining slots.
 #' @export
-setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genome, ...) {
-    ## the diplay parameter defaults
-    .makeParMapping()
-    .Object <- .updatePars(.Object, "RangeTrack")
-    if (!missing(chromosome) && !is.null(chromosome)) {
-        .Object@chromosome <- .chrName(chromosome)[1]
+setMethod(
+    "initialize",
+    "RangeTrack",
+    function(.Object, range, chromosome, genome, ...) {
+        ## the diplay parameter defaults
+        .makeParMapping()
+        .Object <- .updatePars(.Object, "RangeTrack")
+        if (!missing(chromosome) && !is.null(chromosome)) {
+            .Object@chromosome <- .chrName(chromosome)[1]
+        }
+        if (!missing(genome) && !is.null(genome)) {
+            .Object@genome <- genome
+        }
+        if (!missing(range) && is(range, "GRanges")) {
+            .Object@range <- range
+        }
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
     }
-    if (!missing(genome) && !is.null(genome)) {
-        .Object@genome <- genome
-    }
-    if (!missing(range) && is(range, "GRanges")) {
-        .Object@range <- range
-    }
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+)
 
 
 ## .buildRange ---------------------------------------------------------------
@@ -106,8 +112,11 @@ setMethod("initialize", "RangeTrack", function(.Object, range, chromosome, genom
 
 #' @importFrom Biobase rowMax
 setMethod(
-    ".buildRange", signature(
-        "NULLOrMissing", "FactorOrCharacterOrNULL", "FactorOrCharacterOrNULL",
+    ".buildRange",
+    signature(
+        "NULLOrMissing",
+        "FactorOrCharacterOrNULL",
+        "FactorOrCharacterOrNULL",
         "FactorOrCharacterOrNULL"
     ),
     function(range, start, end, width, asIRanges = FALSE, ...) {
@@ -117,7 +126,11 @@ setMethod(
         }
         delim <- ","
         coords <- c("start", "end", "width")
-        lengths <- vapply(coords, function(x) length(get(x)), FUN.VALUE = numeric(1L))
+        lengths <- vapply(
+            coords,
+            function(x) length(get(x)),
+            FUN.VALUE = numeric(1L)
+        )
         items <- structure(as.list(rep(0, 3)), names = coords)
         by <- NULL
         for (i in coords) {
@@ -132,21 +145,48 @@ setMethod(
         }
         len <- max(lengths)
         if (!all(unlist(lapply(items, function(x) length(x) == 1 && x == 0)))) {
-            by <- Biobase::rowMax(do.call(cbind, lapply(items, function(x) {
-                if (length(x) == 1) rep(x, len) else if (length(x)) x else rep(0, len)
-            })))
+            by <- Biobase::rowMax(do.call(
+                cbind,
+                lapply(items, function(x) {
+                    if (length(x) == 1) {
+                        rep(x, len)
+                    } else if (length(x)) {
+                        x
+                    } else {
+                        rep(0, len)
+                    }
+                })
+            ))
         }
-        return(.buildRange(start = start, end = end, width = width, asIRanges = asIRanges, by = by, len = len, ...))
+        return(.buildRange(
+            start = start,
+            end = end,
+            width = width,
+            asIRanges = asIRanges,
+            by = by,
+            len = len,
+            ...
+        ))
     }
 )
 
 ## Helper function to handle settings and defaults
-.fillWithDefaults <- function(range = as.data.frame(matrix(ncol = 0, nrow = len)),
-                              defaults, args, len, by = NULL, ignore = NULL) {
+.fillWithDefaults <- function(
+  range = as.data.frame(matrix(ncol = 0, nrow = len)),
+  defaults,
+  args,
+  len,
+  by = NULL,
+  ignore = NULL
+) {
     for (a in setdiff(names(defaults), ignore)) {
         range[[a]] <- if (is.null(args[[a]])) {
             if (is.null(defaults[[a]])) {
-                stop("The mandatory argument '", a, "' is missing with no default")
+                stop(
+                    "The mandatory argument '",
+                    a,
+                    "' is missing with no default"
+                )
             }
             val <- defaults[[a]]
             if (length(val) == 1) {
@@ -173,8 +213,23 @@ setMethod(
 ## For numeric vectors we can immediately create a data frame after some sanity checking and pass that on to the next method.
 #' @noRd
 setMethod(
-    ".buildRange", signature("NULLOrMissing", "NumericOrNULL", "NumericOrNULL", "NumericOrNULL"),
-    function(range, start, end, width, asIRanges = FALSE, by = NULL, len, args, defaults, ...) {
+    ".buildRange",
+    signature(
+        "NULLOrMissing",
+        "NumericOrNULL",
+        "NumericOrNULL",
+        "NumericOrNULL"
+    ),
+    function(range,
+             start,
+             end,
+             width,
+             asIRanges = FALSE,
+             by = NULL,
+             len,
+             args,
+             defaults,
+             ...) {
         ## Some of the arguments are mutually exclusive and we want to catch this here.
         if (is.null(width)) {
             ## The inputs coordinates are all empty
@@ -194,7 +249,11 @@ setMethod(
                 stop("Can't pass all three of 'start', 'end' and 'width'")
             }
         }
-        if (length(start) != 1 && length(end) != 1 && length(start) != length(end)) {
+        if (
+            length(start) != 1 &&
+                length(end) != 1 &&
+                length(start) != length(end)
+        ) {
             stop("Start and end must be vectors of the same length")
         }
         if (missing(len)) {
@@ -203,11 +262,26 @@ setMethod(
         range <- data.frame()
         if (length(start) > 0) {
             if (asIRanges) {
-                return(IRanges(start = as.integer(start), end = as.integer(end)))
+                return(IRanges(
+                    start = as.integer(start),
+                    end = as.integer(end)
+                ))
             }
-            range <- .fillWithDefaults(data.frame(start = as.integer(start), end = as.integer(end)), defaults, args, len, by)
+            range <- .fillWithDefaults(
+                data.frame(start = as.integer(start), end = as.integer(end)),
+                defaults,
+                args,
+                len,
+                by
+            )
         }
-        return(.buildRange(range = range, asIRanges = asIRanges, args = args["genome"], defaults = defaults, ...))
+        return(.buildRange(
+            range = range,
+            asIRanges = asIRanges,
+            args = args["genome"],
+            defaults = defaults,
+            ...
+        ))
     }
 )
 
@@ -216,11 +290,27 @@ setMethod(
 ## and create the final GRanges object
 #' @noRd
 setMethod(
-    ".buildRange", signature("data.frame"),
-    function(range, asIRanges = FALSE, args = list(), defaults = list(), chromosome = NULL, trackType, ...) {
+    ".buildRange",
+    signature("data.frame"),
+    function(range,
+             asIRanges = FALSE,
+             args = list(),
+             defaults = list(),
+             chromosome = NULL,
+             trackType,
+             ...) {
         if (asIRanges) {
-            range <- .fillWithDefaults(range, defaults, args, len = nrow(range), ignore = setdiff(names(defaults), c("start", "end", "genome")))
-            return(IRanges(start = as.integer(range$start), end = as.integer(range$end)))
+            range <- .fillWithDefaults(
+                range,
+                defaults,
+                args,
+                len = nrow(range),
+                ignore = setdiff(names(defaults), c("start", "end", "genome"))
+            )
+            return(IRanges(
+                start = as.integer(range$start),
+                end = as.integer(range$end)
+            ))
         }
         mandArgs <- c("start", "end", "genome", names(defaults))
         ## Not quite sure how whether existing chromosome information in a GRanges object should generally have precedence over the
@@ -228,18 +318,57 @@ setMethod(
         if ("chromosome" %in% colnames(range)) {
             args$chromosome <- NULL
         }
-        missing <- setdiff(union(setdiff(mandArgs, c(colnames(range))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1L))))), "genome")
-        range <- .fillWithDefaults(range, defaults[missing], args[missing], len = nrow(range))
+        missing <- setdiff(
+            union(
+                setdiff(mandArgs, c(colnames(range))),
+                names(which(!vapply(args, is.null, FUN.VALUE = logical(1L))))
+            ),
+            "genome"
+        )
+        range <- .fillWithDefaults(
+            range,
+            defaults[missing],
+            args[missing],
+            len = nrow(range)
+        )
         range$chromosome <- .chrName(as.character(range$chromosome))
-        grange <- GRanges(ranges = IRanges(start = range$start, end = range$end), strand = range$strand, seqnames = range$chromosome)
-        mcols(grange) <- range[, setdiff(colnames(range), c(
-            "start", "end", "strand", "width", "chromosome", "genome", "seqnames",
-            "ranges", "seqlevels", "seqlengths", "isCircular", "element"
-        ))]
+        grange <- GRanges(
+            ranges = IRanges(start = range$start, end = range$end),
+            strand = range$strand,
+            seqnames = range$chromosome
+        )
+        mcols(grange) <- range[, setdiff(
+            colnames(range),
+            c(
+                "start",
+                "end",
+                "strand",
+                "width",
+                "chromosome",
+                "genome",
+                "seqnames",
+                "ranges",
+                "seqlevels",
+                "seqlengths",
+                "isCircular",
+                "element"
+            )
+        )]
         if (trackType != "DataTrack") {
-            mcols(grange) <- mcols(grange)[, intersect(names(defaults), colnames(mcols(grange)))]
+            mcols(grange) <- mcols(grange)[, intersect(
+                names(defaults),
+                colnames(mcols(grange))
+            )]
         }
-        suppressWarnings(genome(grange) <- unname(if (is.null(args[["genome"]])) defaults[["genome"]] else as.character(args[["genome"]])[[1]]))
+        suppressWarnings(
+            genome(grange) <- unname(
+                if (is.null(args[["genome"]])) {
+                    defaults[["genome"]]
+                } else {
+                    as.character(args[["genome"]])[[1]]
+                }
+            )
+        )
         return(grange)
     }
 )
@@ -249,8 +378,14 @@ setMethod(
 ## arguments (like feature, group, etc.)
 #' @noRd
 setMethod(
-    ".buildRange", signature("GRanges"),
-    function(range, asIRanges = FALSE, args = list(), defaults = list(), trackType = NULL, ...) {
+    ".buildRange",
+    signature("GRanges"),
+    function(range,
+             asIRanges = FALSE,
+             args = list(),
+             defaults = list(),
+             trackType = NULL,
+             ...) {
         if (asIRanges) {
             return(ranges(range))
         }
@@ -259,37 +394,107 @@ setMethod(
             ## Not quite sure how whether existing chromosome information in a GRanges object should generally have precedence over the
             ## chromosome constructor, but probably that should be the case
             args$chromosome <- NULL
-            range <- renameSeqlevels(range, setNames(.chrName(seqlevels(range)), seqlevels(range)))
-            missing <- setdiff(union(setdiff(mandArgs, c("chromosome", "strand", colnames(mcols(range)))), names(which(!vapply(args, is.null, FUN.VALUE = logical(1L))))), "genome")
-            newVars <- .fillWithDefaults(DataFrame(chromosome = as.character(seqnames(range)), strand = as.character(strand(range)), mcols(range), check.names = FALSE),
-                defaults[missing], args[missing],
-                len = length(range), ignore = c("flag")
+            range <- renameSeqlevels(
+                range,
+                setNames(.chrName(seqlevels(range)), seqlevels(range))
             )
-            if (any(c("start", "end", "strand", "chromosome") %in% colnames(newVars))) {
+            missing <- setdiff(
+                union(
+                    setdiff(
+                        mandArgs,
+                        c("chromosome", "strand", colnames(mcols(range)))
+                    ),
+                    names(which(
+                        !vapply(args, is.null, FUN.VALUE = logical(1L))
+                    ))
+                ),
+                "genome"
+            )
+            newVars <- .fillWithDefaults(
+                DataFrame(
+                    chromosome = as.character(seqnames(range)),
+                    strand = as.character(strand(range)),
+                    mcols(range),
+                    check.names = FALSE
+                ),
+                defaults[missing],
+                args[missing],
+                len = length(range),
+                ignore = c("flag")
+            )
+            if (
+                any(
+                    c("start", "end", "strand", "chromosome") %in%
+                        colnames(newVars)
+                )
+            ) {
                 gen <- genome(range)
                 range <- GRanges(
-                    seqnames = if (is.null(newVars[["chromosome"]])) seqnames(range) else (newVars[["chromosome"]]),
-                    strand = if (is.null(newVars[["strand"]])) strand(range) else (newVars[["strand"]]),
+                    seqnames = if (is.null(newVars[["chromosome"]])) {
+                        seqnames(range)
+                    } else {
+                        (newVars[["chromosome"]])
+                    },
+                    strand = if (is.null(newVars[["strand"]])) {
+                        strand(range)
+                    } else {
+                        (newVars[["strand"]])
+                    },
                     ranges = IRanges(
-                        start = if (is.null(newVars[["start"]])) start(range) else (newVars[["start"]]),
-                        end = if (is.null(newVars[["end"]])) end(range) else (newVars[["end"]])
+                        start = if (is.null(newVars[["start"]])) {
+                            start(range)
+                        } else {
+                            (newVars[["start"]])
+                        },
+                        end = if (is.null(newVars[["end"]])) {
+                            end(range)
+                        } else {
+                            (newVars[["end"]])
+                        }
                     )
                 )
                 if (length(unique(gen)) != 1) {
-                    warning("Tracks can only be defined for a single genome. Forcing all reads to belong to genome '", gen[1], "'")
+                    warning(
+                        "Tracks can only be defined for a single genome. Forcing all reads to belong to genome '",
+                        gen[1],
+                        "'"
+                    )
                 }
                 defaults[["genome"]] <- as.character(gen)[1]
             }
-            mcols(range) <- newVars[, setdiff(colnames(newVars), c(
-                "start", "end", "strand", "width", "chromosome", "genome", "seqnames",
-                "ranges", "seqlevels", "seqlengths", "isCircular", "element"
-            )), drop = FALSE]
+            mcols(range) <- newVars[,
+                setdiff(
+                    colnames(newVars),
+                    c(
+                        "start",
+                        "end",
+                        "strand",
+                        "width",
+                        "chromosome",
+                        "genome",
+                        "seqnames",
+                        "ranges",
+                        "seqlevels",
+                        "seqlengths",
+                        "isCircular",
+                        "element"
+                    )
+                ),
+                drop = FALSE
+            ]
         }
         if (trackType != "DataTrack") {
-            mcols(range) <- mcols(range)[, intersect(names(defaults), colnames(mcols(range)))]
+            mcols(range) <- mcols(range)[, intersect(
+                names(defaults),
+                colnames(mcols(range))
+            )]
         }
         ## The genome information may or may not be encoded in the GRanges object at this time but we want it in there for sure
-        genome <- if (!is.null(args[["genome"]])) args[["genome"]] else .getGenomeFromGRange(range, defaults[["genome"]])
+        genome <- if (!is.null(args[["genome"]])) {
+            args[["genome"]]
+        } else {
+            .getGenomeFromGRange(range, defaults[["genome"]])
+        }
         suppressWarnings(genome(range) <- unname(genome))[1]
         return(range)
     }
@@ -299,17 +504,36 @@ setMethod(
 ## (like feature, group, etc.) and create the final GRanges object
 #' @noRd
 setMethod(
-    ".buildRange", signature("IRanges"),
-    function(range, asIRanges = FALSE, args = list(), defaults = list(), chromosome = NULL, strand, ...) {
+    ".buildRange",
+    signature("IRanges"),
+    function(range,
+             asIRanges = FALSE,
+             args = list(),
+             defaults = list(),
+             chromosome = NULL,
+             strand,
+             ...) {
         if (asIRanges) {
             return(range)
         }
         if (missing(chromosome) || is.null(chromosome)) {
-            stop("Unable to find chromosome information in any of the arguments")
+            stop(
+                "Unable to find chromosome information in any of the arguments"
+            )
         }
-        range <- GRanges(seqnames = .chrName(chromosome), ranges = range, strand = if (!is.null(args$strand)) args$strand else "*")
+        range <- GRanges(
+            seqnames = .chrName(chromosome),
+            ranges = range,
+            strand = if (!is.null(args$strand)) args$strand else "*"
+        )
         if (length(range)) {
-            vals <- .fillWithDefaults(defaults = defaults, args = args, len = (length(range)), by = NULL, ignore = "strand")
+            vals <- .fillWithDefaults(
+                defaults = defaults,
+                args = args,
+                len = (length(range)),
+                by = NULL,
+                ignore = "strand"
+            )
             mcols(range) <- vals
         }
         return(range)
@@ -320,7 +544,8 @@ setMethod(
 ## structure, `unlist` and use the `GRanges` method
 #' @noRd
 setMethod(
-    ".buildRange", signature("GRangesList"),
+    ".buildRange",
+    signature("GRangesList"),
     function(range, groupId = "group", ...) {
         grps <- rep(names(range), elementNROWS(range))
         range <- unlist(range)
@@ -329,7 +554,6 @@ setMethod(
         return(.buildRange(range = range, ...))
     }
 )
-
 
 
 ## RangeTrack Methods ranges, range ------------------------------------------
@@ -362,7 +586,9 @@ setMethod("range", "RangeTrack", function(x) ranges(x@range))
 
 #' @describeIn RangeTrack-class return the track's seqnames.
 #' @export
-setMethod("seqnames", "RangeTrack", function(x) as.character(seqnames(ranges(x))))
+setMethod("seqnames", "RangeTrack", function(x) {
+    as.character(seqnames(ranges(x)))
+})
 
 #' @describeIn RangeTrack-class return the track's seqlevels.
 #' @export
@@ -403,7 +629,9 @@ setReplaceMethod("chromosome", "RangeTrack", function(GdObject, value) {
 #' @describeIn RangeTrack-class the start of the track items in genomic
 #' coordinates.
 #' @export
-setMethod("start", "RangeTrack", function(x) if (length(x)) as.integer(start(range(x))) else NULL)
+setMethod("start", "RangeTrack", function(x) {
+    if (length(x)) as.integer(start(range(x))) else NULL
+})
 
 #' @describeIn RangeTrack-class replace the start of the track items in
 #' genomic coordinates.
@@ -416,7 +644,9 @@ setReplaceMethod("start", "RangeTrack", function(x, value) {
 #' @describeIn RangeTrack-class the end of the track items in genomic
 #' coordinates.
 #' @export
-setMethod("end", "RangeTrack", function(x) if (length(x)) as.integer(end(range(x))) else NULL)
+setMethod("end", "RangeTrack", function(x) {
+    if (length(x)) as.integer(end(range(x))) else NULL
+})
 
 #' @describeIn RangeTrack-class replace the end of the track items in
 #' genomic coordinates.
@@ -429,7 +659,9 @@ setReplaceMethod("end", "RangeTrack", function(x, value) {
 #' @describeIn RangeTrack-class the width of the track items in genomic
 #' coordinates.
 #' @export
-setMethod("width", "RangeTrack", function(x) if (length(x)) as.integer(width(range(x))) else NULL)
+setMethod("width", "RangeTrack", function(x) {
+    if (length(x)) as.integer(width(range(x))) else NULL
+})
 
 #' @describeIn RangeTrack-class replace the width of the track items in genomic
 #' coordinates.
@@ -464,7 +696,10 @@ setMethod("strand", "RangeTrack", function(x) as.character(strand(ranges(x))))
 #' of strand values.
 #' @export
 setReplaceMethod("strand", "RangeTrack", function(x, value) {
-    if ((length(value) != 1 && length(value) != length(x)) || !all(value %in% c("+", "-", "*"))) {
+    if (
+        (length(value) != 1 && length(value) != length(x)) ||
+            !all(value %in% c("+", "-", "*"))
+    ) {
         stop(
             "Invalid replacement value or length of replacement value ",
             "for the strand information does not match the ",
@@ -480,13 +715,21 @@ setReplaceMethod("strand", "RangeTrack", function(x, value) {
 #' @describeIn RangeTrack-class the arithmetic mean of the track item's
 #' coordinates, i.e., `(end(obj)-start(obj))/2`.
 #' @export
-setMethod("position", signature("RangeTrack"), definition = function(GdObject, from = NULL, to = NULL, sort = FALSE, ...) {
-    if (!is.null(from) && !is.null(to)) {
-        GdObject <- subset(GdObject, from = from, to = to, sort = sort, ...)
+setMethod(
+    "position",
+    signature("RangeTrack"),
+    definition = function(GdObject, from = NULL, to = NULL, sort = FALSE, ...) {
+        if (!is.null(from) && !is.null(to)) {
+            GdObject <- subset(GdObject, from = from, to = to, sort = sort, ...)
+        }
+        pos <- if (length(GdObject)) {
+            rowMeans(cbind(start(GdObject), end(GdObject)))
+        } else {
+            numeric()
+        }
+        return(pos)
     }
-    pos <- if (length(GdObject)) rowMeans(cbind(start(GdObject), end(GdObject))) else numeric()
-    return(pos)
-})
+)
 
 ## RangeTrack Methods subsetting, split---------------------------------------
 
@@ -495,45 +738,65 @@ setMethod("position", signature("RangeTrack"), definition = function(GdObject, f
 #' [`GRanges`][GenomicRanges::GRanges-class] object in the `range` slot. For
 #' most applications, the subset method may be more appropriate.
 #' @export
-setMethod("[", signature(x = "RangeTrack"), function(x, i, j, ..., drop = TRUE) {
-    x <- .deepCopyPars(x)
-    x@range <- x@range[i, , drop = drop]
-    return(x)
-})
+setMethod(
+    "[",
+    signature(x = "RangeTrack"),
+    function(x, i, j, ..., drop = TRUE) {
+        x <- .deepCopyPars(x)
+        x@range <- x@range[i, , drop = drop]
+        return(x)
+    }
+)
 
 #' @describeIn RangeTrack-class subset a `RangeTrack` by coordinates and
 #' sort if necessary.
 #' @export
-setMethod("subset", signature(x = "RangeTrack"), function(x, from = NULL, to = NULL, sort = FALSE, drop = TRUE, use.defaults = TRUE, ...) {
-    ## Not needed anymore...
-    ## Subset to a single chromosome first
-    if (drop) {
-        csel <- seqnames(x) != chromosome(x)
-        if (any(csel)) {
-            x <- x[, !csel]
+setMethod(
+    "subset",
+    signature(x = "RangeTrack"),
+    function(x,
+             from = NULL,
+             to = NULL,
+             sort = FALSE,
+             drop = TRUE,
+             use.defaults = TRUE,
+             ...) {
+        ## Not needed anymore...
+        ## Subset to a single chromosome first
+        if (drop) {
+            csel <- seqnames(x) != chromosome(x)
+            if (any(csel)) {
+                x <- x[, !csel]
+            }
         }
-    }
-    if (!length(x)) {
+        if (!length(x)) {
+            return(x)
+        }
+        ranges <- if (use.defaults) {
+            .defaultRange(x, from = from, to = to)
+        } else {
+            c(
+                from = ifelse(is.null(from), -Inf, from),
+                to = ifelse(is.null(to), Inf, to)
+            )
+        }
+        lsel <- end(x) < ranges["from"]
+        if (any(lsel)) {
+            lsel[max(0, max(which(lsel)) - 1)] <- FALSE
+        }
+        rsel <- start(x) > ranges["to"]
+        if (any(rsel)) {
+            rsel[min(length(x), min(which(rsel)) + 1)] <- FALSE
+        }
+        if (any(lsel) || any(rsel)) {
+            x <- x[!(lsel | rsel), ]
+        }
+        if (sort) {
+            x <- x[order(range(x)), ]
+        }
         return(x)
     }
-    ranges <- if (use.defaults) .defaultRange(x, from = from, to = to) else c(from = ifelse(is.null(from), -Inf, from), to = ifelse(is.null(to), Inf, to))
-    lsel <- end(x) < ranges["from"]
-    if (any(lsel)) {
-        lsel[max(0, max(which(lsel)) - 1)] <- FALSE
-    }
-    rsel <- start(x) > ranges["to"]
-    if (any(rsel)) {
-        rsel[min(length(x), min(which(rsel)) + 1)] <- FALSE
-    }
-    if (any(lsel) || any(rsel)) {
-        x <- x[!(lsel | rsel), ]
-    }
-    if (sort) {
-        x <- x[order(range(x)), ]
-    }
-    return(x)
-})
-
+)
 
 
 #' @describeIn RangeTrack-class split a `RangeTrack` object by an appropriate
@@ -541,15 +804,13 @@ setMethod("subset", signature(x = "RangeTrack"), function(x, from = NULL, to = N
 #' of this operation is a list of objects of the same class as the input
 #' object, all inheriting from class `RangeTrack.`
 #' @export
-setMethod("split", signature("RangeTrack"),
-    definition = function(x, f, ...) {
-        rs <- split(ranges(x), factor(f))
-        lapply(rs, function(y) {
-            x@range <- y
-            return(x)
-        })
-    }
-)
+setMethod("split", signature("RangeTrack"), definition = function(x, f, ...) {
+    rs <- split(ranges(x), factor(f))
+    lapply(rs, function(y) {
+        x@range <- y
+        return(x)
+    })
+})
 
 ## RangeTrack Methods value, feature -----------------------------------------
 
@@ -563,7 +824,9 @@ setMethod("values", "RangeTrack", function(x) as.data.frame(values(ranges(x))))
 #' when plotting. See grouping or [`AnnotationTrack`][AnnotationTrack-class] and
 #' [`GeneRegionTrack`][GeneRegionTrack-class] for details.
 #'  @export
-setMethod("feature", signature(GdObject = "RangeTrack"), function(GdObject) .getAnn(GdObject, "feature"))
+setMethod("feature", signature(GdObject = "RangeTrack"), function(GdObject) {
+    .getAnn(GdObject, "feature")
+})
 
 #' @describeIn RangeTrack-class set the grouping information for track items.
 #' This has to be a factor vector (or another type of vector that can be coerced
@@ -571,7 +834,11 @@ setMethod("feature", signature(GdObject = "RangeTrack"), function(GdObject) .get
 #' grouping or [`AnnotationTrack`][AnnotationTrack-class] and
 #' [`GeneRegionTrack`][GeneRegionTrack-class] for details.
 #'  @export
-setReplaceMethod("feature", signature("RangeTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "feature"))
+setReplaceMethod(
+    "feature",
+    signature("RangeTrack", "character"),
+    function(GdObject, value) .setAnn(GdObject, value, "feature")
+)
 
 
 ## RangeTrack Methods consolidate --------------------------------------------
@@ -583,20 +850,24 @@ setReplaceMethod("feature", signature("RangeTrack", "character"), function(GdObj
 #' @param chromosome The currently active chromosome, which may have to be set
 #' for a `RangeTrack` or a [`SequenceTrack`][SequenceTrack-class] object.
 #' @export
-setMethod("consolidateTrack", signature(GdObject = "RangeTrack"), function(GdObject, chromosome, ...) {
-    if (!is.null(chromosome)) {
-        chromosome(GdObject) <- chromosome
+setMethod(
+    "consolidateTrack",
+    signature(GdObject = "RangeTrack"),
+    function(GdObject, chromosome, ...) {
+        if (!is.null(chromosome)) {
+            chromosome(GdObject) <- chromosome
+        }
+        GdObject <- callNextMethod(GdObject, ...)
+        return(GdObject)
     }
-    GdObject <- callNextMethod(GdObject, ...)
-    return(GdObject)
-})
+)
 
 ## RangeTrack SetAs ----------------------------------------------------------
-
 
 #' @noRd
 #' @keywords internal
 setAs(
-    "RangeTrack", "data.frame",
+    "RangeTrack",
+    "data.frame",
     function(from, to) as(as(ranges(from), "DataFrame"), "data.frame")
 )

@@ -82,8 +82,10 @@ NULL
 #' ## Plotting
 #' plotTracks(annTrack)
 #' @exportClass GdObject
-setClass("GdObject",
-    representation = representation("VIRTUAL",
+setClass(
+    "GdObject",
+    representation = representation(
+        "VIRTUAL",
         dp = "DisplayPars",
         name = "character",
         imageMap = "ImageMapOrNULL"
@@ -178,29 +180,41 @@ setMethod("initialize", "GdObject", function(.Object, name, ...) {
 #' Note that display parameters in the `GdObject-class` are pass-by-reference,
 #' so no re-assignment to the symbol `obj` is necessary. See settings for
 #' details on display parameters and customization.
-setMethod("setPar", signature("GdObject", "character"), function(x, name, value, interactive = TRUE) {
-    newDp <- setPar(x@dp, name, value, interactive = interactive)
-    x@dp <- newDp
-    return(x)
-})
+setMethod(
+    "setPar",
+    signature("GdObject", "character"),
+    function(x, name, value, interactive = TRUE) {
+        newDp <- setPar(x@dp, name, value, interactive = interactive)
+        x@dp <- newDp
+        return(x)
+    }
+)
 
 #' @describeIn GdObject-class set display parameters by the values of the named
 #' list in value. Note that display parameters in the `GdObject-class` are
 #' pass-by-reference, so no re-assignment to the symbol `obj` is necessary.
 #' See settings for details on display parameters and customization.
-setMethod("setPar", signature("GdObject", "list"), function(x, value, interactive = TRUE) {
-    newDp <- setPar(x@dp, value, interactive = interactive)
-    x@dp <- newDp
-    return(x)
-})
+setMethod(
+    "setPar",
+    signature("GdObject", "list"),
+    function(x, value, interactive = TRUE) {
+        newDp <- setPar(x@dp, value, interactive = interactive)
+        x@dp <- newDp
+        return(x)
+    }
+)
 
 #' @describeIn GdObject-class set display parameters using the values of the
 #' named list in `value`. See [`settings`] for details on display parameters
 #' and customization.
-setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recursive = FALSE, value) {
-    x <- setPar(x, value, interactive = FALSE)
-    return(x)
-})
+setReplaceMethod(
+    "displayPars",
+    signature("GdObject", "list"),
+    function(x, recursive = FALSE, value) {
+        x <- setPar(x, value, interactive = FALSE)
+        return(x)
+    }
+)
 
 ##  GdObject Methods Getters -------------------------------------------------
 
@@ -208,22 +222,34 @@ setReplaceMethod("displayPars", signature("GdObject", "list"), function(x, recur
 #' delegating to the object's [`DisplayPars`][DisplayPars-class] slot.
 #' `displayPars` is a more descriptive alias for this method. See [`settings`]
 #' for details on display parameters and customization.
-setMethod("getPar", c("GdObject", "character"), function(x, name, asIs = FALSE) getPar(x@dp, name, asIs = asIs))
+setMethod(
+    "getPar",
+    c("GdObject", "character"),
+    function(x, name, asIs = FALSE) getPar(x@dp, name, asIs = asIs)
+)
 
 #' @describeIn GdObject-class Return all display parameters, delegating to the
 #' object's [`DisplayPars`][DisplayPars-class] slot. `displayPars` is a more
 #' descriptive alias for this method. See [`settings`] for details on display
 #' parameters and customization.
-setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal = TRUE) getPar(x@dp, hideInternal = hideInternal))
+setMethod("getPar", c("GdObject", "missing"), function(x, hideInternal = TRUE) {
+    getPar(x@dp, hideInternal = hideInternal)
+})
 
 #' @describeIn GdObject-class list the value of the display parameter name.
 #' See [`settings`] for details on display parameters and customization.
-setMethod("displayPars", c("GdObject", "character"), function(x, name) getPar(x, name))
+setMethod("displayPars", c("GdObject", "character"), function(x, name) {
+    getPar(x, name)
+})
 
 #' @describeIn GdObject-class list the value of all available display
 #' parameters. See [`settings`] for details on display parameters and
 #' customization.
-setMethod("displayPars", c("GdObject", "missing"), function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal))
+setMethod(
+    "displayPars",
+    c("GdObject", "missing"),
+    function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal)
+)
 
 ##  GdObject Methods Coord and Tags  -----------------------------------------
 
@@ -248,7 +274,8 @@ setMethod("names", "GdObject", function(x) x@name)
 
 #' @describeIn GdObject-class set the value of the `name` slot.
 setReplaceMethod(
-    "names", signature("GdObject", "character"),
+    "names",
+    signature("GdObject", "character"),
     function(x, value) {
         x@name <- value[1]
         return(x)
@@ -285,13 +312,16 @@ setMethod("imageMap", "GdObject", function(GdObject) GdObject@imageMap)
 #' @exportMethod "imageMap<-"
 #' @describeIn GdObject-class Generics for `imageMap<-`.
 #' @keywords internal
-setGeneric("imageMap<-", function(GdObject, value) standardGeneric("imageMap<-"))
+setGeneric("imageMap<-", function(GdObject, value) {
+    standardGeneric("imageMap<-")
+})
 
 #' @describeIn  GdObject-class Replace the content of the `imageMap` slot.
 #' @keywords internal
 #' @export
 setReplaceMethod(
-    "imageMap", signature("GdObject", "ImageMapOrNULL"),
+    "imageMap",
+    signature("GdObject", "ImageMapOrNULL"),
     function(GdObject, value) {
         GdObject@imageMap <- value
         return(GdObject)
@@ -308,9 +338,13 @@ setGeneric("drawAxis", function(GdObject, ...) standardGeneric("drawAxis"))
 #' necessary. Unless overwritten in one of the sub-classes this usually
 #' does not plot anything and returns `NULL`.
 #' @export
-setMethod("drawAxis", signature(GdObject = "GdObject"), function(GdObject, ...) {
-    return(NULL)
-})
+setMethod(
+    "drawAxis",
+    signature(GdObject = "GdObject"),
+    function(GdObject, ...) {
+        return(NULL)
+    }
+)
 
 ##  GdObject Methods drawGrid ------------------------------------------------
 
@@ -321,9 +355,13 @@ setGeneric("drawGrid", function(GdObject, ...) standardGeneric("drawGrid"))
 #' Unless overwritten in one of the sub-classes this usually does not plot
 #' anything and returns `NULL`.
 #' @keywords internal
-setMethod("drawGrid", signature(GdObject = "GdObject"), function(GdObject, ...) {
-    return(NULL)
-})
+setMethod(
+    "drawGrid",
+    signature(GdObject = "GdObject"),
+    function(GdObject, ...) {
+        return(NULL)
+    }
+)
 
 ##  GdObject Methods drawGd --------------------------------------------------
 
@@ -340,7 +378,9 @@ setGeneric("drawGD", function(GdObject, ...) standardGeneric("drawGD"))
     v <- values(GdObject)
     if (length(value) > 1 && length(value) != nrow(v)) {
         stop(
-            "The length of the replacement value for the '", type, "' annotation does not match the number ",
+            "The length of the replacement value for the '",
+            type,
+            "' annotation does not match the number ",
             "of features in the track."
         )
     }
@@ -377,7 +417,9 @@ setGeneric("transcript", function(GdObject, ...) standardGeneric("transcript"))
 #' @exportMethod "transcript<-"
 #' @describeIn GdObject-class Generics for `transcript<-`.
 #' @keywords internal
-setGeneric("transcript<-", function(GdObject, value) standardGeneric("transcript<-"))
+setGeneric("transcript<-", function(GdObject, value) {
+    standardGeneric("transcript<-")
+})
 
 #' @exportMethod exon
 #' @describeIn GdObject-class Generics for `exon`.
@@ -407,7 +449,9 @@ setGeneric("identifier", function(GdObject, ...) standardGeneric("identifier"))
 #' @exportMethod "identifier<-"
 #' @describeIn GdObject-class Generics for `identifier<-`.
 #' @keywords internal
-setGeneric("identifier<-", function(GdObject, value) standardGeneric("identifier<-"))
+setGeneric("identifier<-", function(GdObject, value) {
+    standardGeneric("identifier<-")
+})
 
 
 ##  GdObject Methods  General accessors --------------------------------------
@@ -427,7 +471,9 @@ setMethod("chromosome", "GdObject", function(GdObject) {
 #' @exportMethod "chromosome<-"
 #' @describeIn GdObject-class Generics for `chromosome`.
 #' @keywords internal
-setGeneric("chromosome<-", function(GdObject, value) standardGeneric("chromosome<-"))
+setGeneric("chromosome<-", function(GdObject, value) {
+    standardGeneric("chromosome<-")
+})
 
 #' @describeIn GdObject-class replace the value of the track's chromosome. This
 #' has to be a valid UCSC chromosome identifier or an integer or character
@@ -458,23 +504,31 @@ setReplaceMethod("genome", "GdObject", function(x, value) {
 #' @exportMethod consolidateTrack
 #' @describeIn GdObject-class Generics for `consolidateTrack`.
 #' @keywords internal
-setGeneric("consolidateTrack", function(GdObject, ...) standardGeneric("consolidateTrack"))
+setGeneric("consolidateTrack", function(GdObject, ...) {
+    standardGeneric("consolidateTrack")
+})
 
 #' @describeIn GdObject-class Determine whether there is `alpha` settings or
 #' not, and add this information as the internal display parameter
 #' `.__hasAlphaSupport`.
 #' @export
-setMethod("consolidateTrack", signature(GdObject = "GdObject"), function(GdObject, alpha, ...) {
-    pars <- list(...)
-    pars <- pars[names(pars) != ""]
-    pars[[".__hasAlphaSupport"]] <- alpha
-    displayPars(GdObject) <- pars
-    return(GdObject)
-})
+setMethod(
+    "consolidateTrack",
+    signature(GdObject = "GdObject"),
+    function(GdObject, alpha, ...) {
+        pars <- list(...)
+        pars <- pars[names(pars) != ""]
+        pars[[".__hasAlphaSupport"]] <- alpha
+        displayPars(GdObject) <- pars
+        return(GdObject)
+    }
+)
 
 #' @noRd
 #' @keywords internal
-setGeneric("collapseTrack", function(GdObject, ...) standardGeneric("collapseTrack"))
+setGeneric("collapseTrack", function(GdObject, ...) {
+    standardGeneric("collapseTrack")
+})
 
 #' @exportMethod stacking
 #' @describeIn GdObject-class Generics for `stacking`.
@@ -484,7 +538,9 @@ setGeneric("stacking", function(GdObject, ...) standardGeneric("stacking"))
 #' @exportMethod "stacking<-"
 #' @describeIn GdObject-class Generics for `stacking<-`.
 #' @keywords internal
-setGeneric("stacking<-", function(GdObject, value) standardGeneric("stacking<-"))
+setGeneric("stacking<-", function(GdObject, value) {
+    standardGeneric("stacking<-")
+})
 
 #' @exportMethod stacks
 #' @describeIn GdObject-class Generics for `stacks`.
@@ -503,10 +559,14 @@ setMethod("setStacks", "GdObject", function(GdObject, ...) GdObject)
 #' @exportMethod setCoverage
 #' @describeIn GdObject-class Generics for `setCoverage`.
 #' @keywords internal
-setGeneric("setCoverage", function(GdObject, ...) standardGeneric("setCoverage"))
+setGeneric("setCoverage", function(GdObject, ...) {
+    standardGeneric("setCoverage")
+})
 
 ##  GdObject Methods Internal methods ----------------------------------------
 
 #' @noRd
 #' @keywords internal
-setGeneric(".buildRange", function(range, start, end, width, ...) standardGeneric(".buildRange"))
+setGeneric(".buildRange", function(range, start, end, width, ...) {
+    standardGeneric(".buildRange")
+})

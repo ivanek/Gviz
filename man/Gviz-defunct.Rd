@@ -3,6 +3,9 @@
 \name{Gviz-defunct}
 \alias{Gviz-defunct}
 \title{Defunct functions in package \code{Gviz}}
+\value{
+No return value, called for documentation purposes only.
+}
 \description{
 These functions are defunct and no longer available.
 \subsection{Defunct functions are:}{

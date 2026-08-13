@@ -80,6 +80,10 @@ plotting range.}
 in production mode, i.e., only compute the track's layout without rendering
 anything to the device.}
 }
+\value{
+The return value of the constructor function is a new object of
+class \code{\link[=DetailsAnnotationTrack-class]{DetailsAnnotationTrack}}.
+}
 \description{
 The purpose of this track type is to add an arbitrarily detailed plot
 section (typically consisting of additional quantitative data) for each
@@ -152,3 +156,22 @@ necessary.
 need to be plotted.}
 }}
 
+\examples{
+## A minimal plotting function for the details section, drawing the
+## feature identifier on a colored background
+details <- function(identifier, ...) {
+    grid::grid.rect(gp = grid::gpar(fill = "lightblue"))
+    grid::grid.text(identifier, gp = grid::gpar(cex = 0.7))
+}
+
+## Passing 'fun' to the AnnotationTrack constructor creates a
+## DetailsAnnotationTrack instead
+dat <- AnnotationTrack(
+    start = c(100, 300), width = 50,
+    chromosome = "chr1", genome = "hg19",
+    id = c("feature 1", "feature 2"), name = "details",
+    fun = details
+)
+plotTracks(dat)
+
+}

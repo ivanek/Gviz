@@ -9,6 +9,7 @@
 \alias{tags}
 \alias{tags,NULL-method}
 \alias{tags,ImageMap-method}
+\alias{show,ImageMap-method}
 \title{ImageMap: HTML image map information}
 \usage{
 coords(ImageMap, ...)
@@ -22,6 +23,8 @@ tags(ImageMap, ...)
 \S4method{tags}{NULL}(ImageMap)
 
 \S4method{tags}{ImageMap}(ImageMap)
+
+\S4method{show}{ImageMap}(object)
 }
 \arguments{
 \item{ImageMap}{Object of class \code{\link[=ImageMap-class]{ImageMap}}, containing
@@ -53,6 +56,8 @@ hence the constructor function \code{ImageMap} is not exported in the name space
 
 \item \code{tags(ImageMap)}: Returns the tags from the image map
 
+\item \code{show(ImageMap)}: Show method
+
 }}
 \section{Slots}{
 
@@ -67,7 +72,17 @@ the names must match back into the row names of the \code{coords} matrix.}
 }}
 
 \examples{
-## Not provided. This is an internal structure.
+## ImageMap objects are usually not created directly by the user, but
+## are populated as a side effect of plotting a GdObject. plotTracks()
+## returns the plotted tracks (with their ImageMap populated) invisibly,
+## and the coords() and tags() accessors can be used to query them.
+at <- AnnotationTrack(
+    start = c(100, 300), width = 50,
+    chromosome = "chr1", genome = "hg19", name = "features"
+)
+res <- plotTracks(at)
+coords(res[["features"]])
+tags(res[["features"]])
 
 }
 \keyword{internal}

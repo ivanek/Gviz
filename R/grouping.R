@@ -19,6 +19,8 @@
 #'
 #' @name grouping
 #'
+#' @return No return value, called for documentation purposes only.
+#'
 #' @author Florian Hahne
 #' @seealso
 #'

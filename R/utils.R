@@ -9,19 +9,45 @@
 .DEFAULT_SYMBOL_COL <- "#0080FF"
 .DEFAULT_LINE_COL <- "darkgray"
 .PLOT_TYPES <- c(
-    "p", "l", "b", "a", "s", "g", "r", "S",
-    "smooth", "polygon", "horizon", "histogram",
-    "mountain", "h", "boxplot", "gradient",
-    "heatmap", "confint"
+    "p",
+    "l",
+    "b",
+    "a",
+    "s",
+    "g",
+    "r",
+    "S",
+    "smooth",
+    "polygon",
+    "horizon",
+    "histogram",
+    "mountain",
+    "h",
+    "boxplot",
+    "gradient",
+    "heatmap",
+    "confint"
 )
 .ALIGNMENT_TYPES <- c("coverage", "sashimi", "pileup")
 .THIN_BOX_FEATURES <- c(
-    "utr", "ncRNA", "utr3", "utr5", "3UTR", "5UTR",
-    "miRNA", "lincRNA", "three_prime_UTR", "five_prime_UTR"
+    "utr",
+    "ncRNA",
+    "utr3",
+    "utr5",
+    "3UTR",
+    "5UTR",
+    "miRNA",
+    "lincRNA",
+    "three_prime_UTR",
+    "five_prime_UTR"
 )
 .DEFAULT_HORIZON_COL <- c(
-    "#B41414", "#E03231", "#F7A99C",
-    "#9FC8DC", "#468CC8", "#0165B3"
+    "#B41414",
+    "#E03231",
+    "#F7A99C",
+    "#9FC8DC",
+    "#468CC8",
+    "#0165B3"
 )
 ### Imports ------------------------------------------------------------------
 #' @import methods
@@ -61,17 +87,34 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ### Functions ----------------------------------------------------------------
 
 ## Check the class and structure of an object
-.checkClass <- function(x, class, length = NULL, verbose = FALSE, mandatory = TRUE) {
+.checkClass <- function(
+  x,
+  class,
+  length = NULL,
+  verbose = FALSE,
+  mandatory = TRUE
+) {
     if (mandatory && missing(x)) {
-        stop("Argument '", substitute(x), "' is missing with no default",
+        stop(
+            "Argument '",
+            substitute(x),
+            "' is missing with no default",
             call. = verbose
         )
     }
-    msg <- paste("'", substitute(x), "' must be an object of class ",
+    msg <- paste(
+        "'",
+        substitute(x),
+        "' must be an object of class ",
         paste("'", class, "'", sep = "", collapse = " or "),
         sep = ""
     )
-    fail <- !any(vapply(class, function(c, y) is(y, c), FUN.VALUE = logical(1L), y = x))
+    fail <- !any(vapply(
+        class,
+        function(c, y) is(y, c),
+        FUN.VALUE = logical(1L),
+        y = x
+    ))
     if (!is.null(length) && length(x) != length) {
         if (!is.null(x)) {
             fail <- TRUE
@@ -85,9 +128,11 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     }
 }
 
-## We want to deal with chromosomes in a reasonable way. This coerces likely inputs to a unified
-## chromosome name as understood by UCSC. Accepted inputs are:
-##    - a single integer or a character coercible to one or integer-character combinations
+## We want to deal with chromosomes in a reasonable way. This coerces likely
+## inputs to a unified chromosome name as understood by UCSC.
+## Accepted inputs are:
+##    - a single integer or a character coercible to one or integer-character
+##      combinations
 ##    - a character, starting with 'chr' (case insensitive)
 ## Arguments:
 ##    o x: a character string to be converted to a valid UCSC chromosome name
@@ -100,35 +145,41 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         return(as.character(x))
     }
     xu <- unique(x)
-    xum <- vapply(xu, function(y) {
-        xx <- suppressWarnings(as.integer(y))
-        if (!is.na(xx)) {
-            y <- xx
-        }
-        if (is.numeric(y)) {
-            y <- paste("chr", y, sep = "")
-        }
-        if (y == "MT") { # ensembl  `MT` to `chrM` in UCSC
-            y <- "chrM"
-        }
-        if (y %in% c("M", "X", "Y", "Z", "W")) { # mitochondrial genome and sex chromosomes
-            y <- paste("chr", y, sep = "")
-        }
-        head <- tolower(substring(y, 1, 3)) == "chr"
-        if (!head && force) {
-            y <- paste("chr", y, sep = "")
-            head <- TRUE
-        }
-        if (!head) {
-            stop(
-                sprintf("Invalid chromosome identifier '%s'\n", y),
-                "Please consider setting options(ucscChromosomeNames=FALSE) ",
-                "to allow for arbitrary chromosome identifiers."
-            )
-        }
-        substring(y, 1, 3) <- tolower(substring(y, 1, 3))
-        y
-    }, FUN.VALUE = character(1L))
+    xum <- vapply(
+        xu,
+        function(y) {
+            xx <- suppressWarnings(as.integer(y))
+            if (!is.na(xx)) {
+                y <- xx
+            }
+            if (is.numeric(y)) {
+                y <- paste("chr", y, sep = "")
+            }
+            if (y == "MT") {
+                # ensembl  `MT` to `chrM` in UCSC
+                y <- "chrM"
+            }
+            if (y %in% c("M", "X", "Y", "Z", "W")) {
+                # mitochondrial genome and sex chromosomes
+                y <- paste("chr", y, sep = "")
+            }
+            head <- tolower(substring(y, 1, 3)) == "chr"
+            if (!head && force) {
+                y <- paste("chr", y, sep = "")
+                head <- TRUE
+            }
+            if (!head) {
+                stop(
+                    sprintf("Invalid chromosome identifier '%s'\n", y),
+                    "Please consider setting options(ucscChromosomeNames=FALSE) ",
+                    "to allow for arbitrary chromosome identifiers."
+                )
+            }
+            substring(y, 1, 3) <- tolower(substring(y, 1, 3))
+            y
+        },
+        FUN.VALUE = character(1L)
+    )
     names(xum) <- xu
     return(as.vector(xum[as.character(x)]))
 }
@@ -143,18 +194,21 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 }
 
 
-
-## One central place to check which display types result in stacking. This may change at some point for some
-## unimplemented types...
+## One central place to check which display types result in stacking.
+## This may change at some point for some unimplemented types...
 ## Arguments:
 ##    o GdObject: an object inheriting from class GdObject
 ## Value: a logical scalar indicating whether stacking is needed or not
-.needsStacking <- function(GdObject) stacking(GdObject) %in% c("squish", "pack", "full")
+.needsStacking <- function(GdObject) {
+    stacking(GdObject) %in% c("squish", "pack", "full")
+}
 
 ## Get the coordinates for an HTML image map from the annotationTrack plot.
 ## Arguments:
-##     o coordinates: a numeric matrix of annotation region coordinates (the bounding box if not rectangular)
-## Value: valid HTML image map coordinates based on the current device dimensions
+##     o coordinates: a numeric matrix of annotation region coordinates
+##                    (the bounding box if not rectangular)
+## Value: valid HTML image map coordinates based
+##        on the current device dimensions
 
 #' @importFrom graphics par
 .getImageMap <- function(coordinates) {
@@ -166,10 +220,14 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     fw <- diff(xscale)
     fh <- diff(yscale)
     u2px <- function(x) ((x - xscale[1]) / fw * size[1]) + loc$location[1]
-    u2py <- function(y) (devSize[2] - loc$location[2]) - ((y - yscale[1]) / fh * size[2])
+    u2py <- function(y) {
+        (devSize[2] - loc$location[2]) - ((y - yscale[1]) / fh * size[2])
+    }
     return(data.frame(
-        x1 = u2px(coordinates[, 1]), y1 = u2py(coordinates[, 4]),
-        x2 = u2px(coordinates[, 3]), y2 = u2py(coordinates[, 2]),
+        x1 = u2px(coordinates[, 1]),
+        y1 = u2py(coordinates[, 4]),
+        x2 = u2px(coordinates[, 3]),
+        y2 = u2py(coordinates[, 2]),
         stringsAsFactors = FALSE
     ))
 }
@@ -181,7 +239,12 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     }
     str <- unlist(lapply(trackList, function(x) {
         if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
-            vapply(x@trackList, .dpOrDefault, par = "reverseStrand", FUN.VALUE = logical(1L))
+            vapply(
+                x@trackList,
+                .dpOrDefault,
+                par = "reverseStrand",
+                FUN.VALUE = logical(1L)
+            )
         } else {
             .dpOrDefault(x, "reverseStrand")
         }
@@ -190,22 +253,35 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 }
 
 
-
 ## A function returning the amount of vertical space needed for a track
 ## Arguments:
 ##    o x: an object inheriting from class GdObject
 ## Value: the relative vertical space needed for the track
 .verticalSpace <- function(x, totalSpace) {
     if (is(x, "DataTrack") && is.null(displayPars(x, "size"))) {
-        type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok = TRUE)
+        type <- match.arg(
+            .dpOrDefault(x, "type", "p"),
+            .PLOT_TYPES,
+            several.ok = TRUE
+        )
         size <- if (length(type) == 1L) {
-            if (type == "gradient") 1 else if (type == "heatmap") nrow(values(x)) else 5
+            if (type == "gradient") {
+                1
+            } else if (type == "heatmap") {
+                nrow(values(x))
+            } else {
+                5
+            }
         } else {
             5
         }
         return(size)
     }
-    if (is(x, "GenomeAxisTrack") || is(x, "IdeogramTrack") || is(x, "SequenceTrack")) {
+    if (
+        is(x, "GenomeAxisTrack") ||
+            is(x, "IdeogramTrack") ||
+            is(x, "SequenceTrack")
+    ) {
         nv <- displayPars(x, "neededVerticalSpace")
         size <- displayPars(x, "size")
         if (is.null(size)) {
@@ -220,19 +296,22 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     }
     size <- .dpOrDefault(x, "size", 1)
     if (is(x, "StackedTrack")) {
-        size <- max(size, min(floor(vpLocation()$size["height"] / 10), size * max(stacks(x))))
+        size <- max(
+            size,
+            min(floor(vpLocation()$size["height"] / 10), size * max(stacks(x)))
+        )
     }
     return(size)
 }
 
 
-
 ## Return a particular displayPars value or a default
 ## Arguments:
 ##    o GdObject: an object inheriting from class GdObject
-##    o par: the name of the displayPar, or a list of alternatives to go though before finally taking
-##       the supplied default value
-##    o default: a default value for the parameter if it can't be found in GdObject
+##    o par: the name of the displayPar, or a list of alternatives to go
+##           through before finally taking the supplied default value
+##    o default: a default value for the parameter if it can't be found in
+##               GdObject
 ## Value: the value of the displayPar
 .dpOrDefault <- function(GdObject, par, default = NULL, fromPrototype = FALSE) {
     val <- getPar(x = GdObject, name = par, asIs = TRUE)
@@ -254,15 +333,17 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 }
 
 
-
-## A special version of the above for font settings. This will try to extract the respective parent
-## defaults before finally taking the provided default value.
+## A special version of the above for font settings. This will try to extract
+## the respective parent defaults before finally taking the provided default
+## value.
 ## Arguments:
 ##    o GdObject: an object inheriting from class GdObject
-##    o par: the name of the displayPar. Can also be a vector in which case a number of alternatives
-##       is tested, then the parent default for the first element until finally moving to the supplied default
+##    o par: the name of the displayPar. Can also be a vector in which case
+##           a number of alternatives is tested, then the parent default for
+##           the first element until finally moving to the supplied default
 ##    o type: the sub-type
-##    o default: a default value for the parameter if it can't be found in GdObject
+##    o default: a default value for the parameter if it can't be found in
+##               GdObject
 ## Value: the value of the displayPar
 .dpOrDefaultFont <- function(GdObject, par, type = NULL, default) {
     name <- if (is.null(type)) par else sprintf("%s.%s", par, type)
@@ -285,11 +366,36 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         GdObject <- GdObject@trackList[[1]]
     }
     gp <- list(
-        fontsize = as.vector(.dpOrDefaultFont(GdObject, "fontsize", subtype, 12))[1],
-        fontface = as.vector(.dpOrDefaultFont(GdObject, "fontface", subtype, 1))[1],
-        fontfamily = as.character(as.vector(.dpOrDefaultFont(GdObject, "fontfamily", subtype, 1)))[1],
-        col = as.vector(.dpOrDefaultFont(GdObject, "fontcolor", subtype, "black"))[1],
-        lineheight = as.vector(.dpOrDefaultFont(GdObject, "lineheight", subtype, 1))[1],
+        fontsize = as.vector(.dpOrDefaultFont(
+            GdObject,
+            "fontsize",
+            subtype,
+            12
+        ))[1],
+        fontface = as.vector(.dpOrDefaultFont(
+            GdObject,
+            "fontface",
+            subtype,
+            1
+        ))[1],
+        fontfamily = as.character(as.vector(.dpOrDefaultFont(
+            GdObject,
+            "fontfamily",
+            subtype,
+            1
+        )))[1],
+        col = as.vector(.dpOrDefaultFont(
+            GdObject,
+            "fontcolor",
+            subtype,
+            "black"
+        ))[1],
+        lineheight = as.vector(.dpOrDefaultFont(
+            GdObject,
+            "lineheight",
+            subtype,
+            1
+        ))[1],
         alpha = as.vector(.dpOrDefaultFont(GdObject, "alpha", subtype, 1))[1],
         cex = as.vector(.dpOrDefaultFont(GdObject, "cex", subtype, 1))[1]
     )
@@ -307,19 +413,48 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     if (!is.list(objects)) {
         objects <- list(objects)
     }
-    atrack <- vapply(objects, function(x) {
-        is(x, "NumericTrack") ||
-            (is(x, "AlignmentsTrack") && "coverage" %in% match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES, several.ok = TRUE))
-    }, FUN.VALUE = logical(1L))
-    isOnlyHoriz <- vapply(objects, function(x) {
-        res <- FALSE
-        if (is(x, "DataTrack")) {
-            type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok = TRUE)
-            res <- length(setdiff(type, "horizon")) == 0 && !.dpOrDefault(x, "showSampleNames", FALSE)
-        }
-        res
-    }, FUN.VALUE = logical(1L))
-    return(atrack & vapply(objects, .dpOrDefault, par = "showAxis", default = TRUE, FUN.VALUE = logical(1L)) & !isOnlyHoriz)
+    atrack <- vapply(
+        objects,
+        function(x) {
+            is(x, "NumericTrack") ||
+                (is(x, "AlignmentsTrack") &&
+                    "coverage" %in%
+                        match.arg(
+                            .dpOrDefault(x, "type", .ALIGNMENT_TYPES),
+                            .ALIGNMENT_TYPES,
+                            several.ok = TRUE
+                        ))
+        },
+        FUN.VALUE = logical(1L)
+    )
+    isOnlyHoriz <- vapply(
+        objects,
+        function(x) {
+            res <- FALSE
+            if (is(x, "DataTrack")) {
+                type <- match.arg(
+                    .dpOrDefault(x, "type", "p"),
+                    .PLOT_TYPES,
+                    several.ok = TRUE
+                )
+                res <- length(setdiff(type, "horizon")) == 0 &&
+                    !.dpOrDefault(x, "showSampleNames", FALSE)
+            }
+            res
+        },
+        FUN.VALUE = logical(1L)
+    )
+    return(
+        atrack &
+            vapply(
+                objects,
+                .dpOrDefault,
+                par = "showAxis",
+                default = TRUE,
+                FUN.VALUE = logical(1L)
+            ) &
+            !isOnlyHoriz
+    )
 }
 
 ## Check a list of GdObjects whether a title needs to be drawn for each of them.
@@ -330,13 +465,23 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     if (!is.list(objects)) {
         objects <- list(objects)
     }
-    vapply(objects, function(x) {
-        if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
-            any(vapply(x@trackList, .dpOrDefault, par = "showTitle", default = TRUE, FUN.VALUE = logical(1L)))
-        } else {
-            .dpOrDefault(x, "showTitle", TRUE)
-        }
-    }, FUN.VALUE = logical(1L))
+    vapply(
+        objects,
+        function(x) {
+            if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
+                any(vapply(
+                    x@trackList,
+                    .dpOrDefault,
+                    par = "showTitle",
+                    default = TRUE,
+                    FUN.VALUE = logical(1L)
+                ))
+            } else {
+                .dpOrDefault(x, "showTitle", TRUE)
+            }
+        },
+        FUN.VALUE = logical(1L)
+    )
 }
 
 
@@ -353,9 +498,17 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ##    o nwrap: the final (wrapped) title text
 
 #' @importFrom grDevices extendrange
-.setupTextSize <- function(trackList, sizes, title.width, panelOnly = FALSE, spacing = 5) {
+.setupTextSize <- function(
+  trackList,
+  sizes,
+  title.width,
+  panelOnly = FALSE,
+  spacing = 5
+) {
     curVp <- vpLocation()
-    trackList <- lapply(trackList, function(x) if (is(x, "OverlayTrack")) x@trackList[[1]] else x)
+    trackList <- lapply(trackList, function(x) {
+        if (is(x, "OverlayTrack")) x@trackList[[1]] else x
+    })
     spaceNeeded <- if (is.null(sizes)) {
         lapply(trackList, .verticalSpace, curVp$size["height"])
     } else {
@@ -364,80 +517,173 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         }
         rev(sizes)
     }
-    whichAbs <- vapply(spaceNeeded, function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"), FUN.VALUE = logical(1L))
+    whichAbs <- vapply(
+        spaceNeeded,
+        function(x) !is.null(attr(x, "absolute")) && attr(x, "absolute"),
+        FUN.VALUE = logical(1L)
+    )
     spaceNeeded <- unlist(spaceNeeded)
     leftVetSpace <- curVp$size["height"] - sum(spaceNeeded[whichAbs])
-    spaceNeeded[!whichAbs] <- spaceNeeded[!whichAbs] / sum(spaceNeeded[!whichAbs]) * leftVetSpace
+    spaceNeeded[!whichAbs] <- spaceNeeded[!whichAbs] /
+        sum(spaceNeeded[!whichAbs]) *
+        leftVetSpace
     spaceNeeded <- spaceNeeded / sum(spaceNeeded)
     if (!panelOnly) {
-        ## Figure out the fontsize for the titles based on available space. If the space is too small (<atLeast)
-        ## we don't plot any text, and we also limit to 'maximum' to avoid overblown labels. If the displayPars
-        ## 'cex.title' or 'cex.axis are not NULL, those override everything else.
+        ## Figure out the fontsize for the titles based on available space.
+        ## If the space is too small (<atLeast) we don't plot any text,
+        ## and we also limit to 'maximum' to avoid overblown labels.
+        ## If the displayPars 'cex.title' or 'cex.axis are not NULL,
+        ## those override everything else.
         nn <- vapply(trackList, names, FUN.VALUE = character(1L))
-        nwrap <- vapply(nn, function(x) paste(strwrap(x, 10), collapse = "\n"), character(1))
+        nwrap <- vapply(
+            nn,
+            function(x) paste(strwrap(x, 10), collapse = "\n"),
+            character(1)
+        )
         needAxis <- .needsAxis(trackList)
-        isOnlyHoriz <- vapply(trackList, function(x) {
-            res <- FALSE
-            if (is(x, "DataTrack")) {
-                type <- match.arg(.dpOrDefault(x, "type", "p"), .PLOT_TYPES, several.ok = TRUE)
-                res <- length(setdiff(type, "horizon")) == 0
-            }
-            res
-        }, FUN.VALUE = logical(1L))
+        isOnlyHoriz <- vapply(
+            trackList,
+            function(x) {
+                res <- FALSE
+                if (is(x, "DataTrack")) {
+                    type <- match.arg(
+                        .dpOrDefault(x, "type", "p"),
+                        .PLOT_TYPES,
+                        several.ok = TRUE
+                    )
+                    res <- length(setdiff(type, "horizon")) == 0
+                }
+                res
+            },
+            FUN.VALUE = logical(1L)
+        )
         nwrap[needAxis] <- nn[needAxis]
         lengths <- as.numeric(convertWidth(stringWidth(nwrap), "inches")) + 0.2
         heights <- curVp$isize["height"] * spaceNeeded
         atLeast <- 0.5
         maximum <- 1.2
         allCex <- heights / lengths
-        parCex <- vapply(trackList, function(x) if (is.null(displayPars(x, "cex.title"))) NA else displayPars(x, "cex.title"), FUN.VALUE = numeric(1L))
+        parCex <- vapply(
+            trackList,
+            function(x) {
+                if (is.null(displayPars(x, "cex.title"))) {
+                    NA
+                } else {
+                    displayPars(x, "cex.title")
+                }
+            },
+            FUN.VALUE = numeric(1L)
+        )
         toSmall <- allCex < atLeast
-        cex <- rep(max(c(atLeast, min(c(allCex[!toSmall], maximum), na.rm = TRUE))), length(allCex))
+        cex <- rep(
+            max(c(atLeast, min(c(allCex[!toSmall], maximum), na.rm = TRUE))),
+            length(allCex)
+        )
         cex[!is.na(parCex)] <- parCex[!is.na(parCex)]
-        lengthsNoWrap <- as.numeric(convertWidth(stringWidth(nn), "inches")) * cex + 0.4
+        lengthsNoWrap <- as.numeric(convertWidth(stringWidth(nn), "inches")) *
+            cex +
+            0.4
         needsWrapping <- lengthsNoWrap > heights
         nwrap[allCex < atLeast & is.na(parCex)] <- ""
         nwrap[!needsWrapping] <- nn[!needsWrapping]
-        ## Figure out the title width based on the available tracks. If there is an axis for at least one of the tracks,
-        ## we add 1.5 time the width of a single line of text to accomodate for it.
+        ## Figure out the title width based on the available tracks.
+        ## If there is an axis for at least one of the tracks, we add 1.5 time
+        ## the width of a single line of text to accommodate for it.
         wfac <- curVp$isize["width"]
         leaveSpace <- ifelse(any(needAxis), 0.15, 0.2)
-        width <- (as.numeric(convertHeight(stringHeight(paste("g_T", nwrap, "g_T", sep = "")), "inches")) * cex + leaveSpace) / wfac
-        showtitle <- vapply(trackList, .dpOrDefault, "showTitle", TRUE, FUN.VALUE = logical(1L))
+        width <- (as.numeric(convertHeight(
+            stringHeight(paste("g_T", nwrap, "g_T", sep = "")),
+            "inches"
+        )) *
+            cex +
+            leaveSpace) /
+            wfac
+        showtitle <- vapply(
+            trackList,
+            .dpOrDefault,
+            "showTitle",
+            TRUE,
+            FUN.VALUE = logical(1L)
+        )
         width[!showtitle & !needAxis] <- 0
         width[!showtitle] <- 0
-        twfac <- if (missing(title.width) || is.null(title.width)) 1 else title.width
+        twfac <- if (missing(title.width) || is.null(title.width)) {
+            1
+        } else {
+            title.width
+        }
         title.width <- max(width, na.rm = TRUE)
         if (any(needAxis)) {
-            cex.axis <- structure(vapply(trackList, .dpOrDefault, "cex.axis", 0.6, FUN.VALUE = numeric(1L)), names = nn)
+            cex.axis <- structure(
+                vapply(
+                    trackList,
+                    .dpOrDefault,
+                    "cex.axis",
+                    0.6,
+                    FUN.VALUE = numeric(1L)
+                ),
+                names = nn
+            )
             axTicks <- unlist(lapply(trackList, function(GdObject) {
-                if (!is(GdObject, "NumericTrack") && !is(GdObject, "AlignmentsTrack")) {
+                if (
+                    !is(GdObject, "NumericTrack") &&
+                        !is(GdObject, "AlignmentsTrack")
+                ) {
                     return(NULL)
                 }
                 yvals <- values(GdObject)
-                ylim <- .dpOrDefault(GdObject, "ylim", if (!is.null(yvals) && length(yvals)) {
-                    range(yvals, na.rm = TRUE, finite = TRUE)
-                } else {
-                    c(-1, 1)
-                })
+                ylim <- .dpOrDefault(
+                    GdObject,
+                    "ylim",
+                    if (!is.null(yvals) && length(yvals)) {
+                        range(yvals, na.rm = TRUE, finite = TRUE)
+                    } else {
+                        c(-1, 1)
+                    }
+                )
                 if (diff(ylim) == 0) {
                     ylim <- ylim + c(-1, 1)
                 }
                 yscale <- extendrange(r = ylim, f = 0.05)
                 at <- pretty(yscale)
                 at[at >= sort(ylim)[1] & at <= sort(ylim)[2]]
-                atSpace <- max(as.numeric(convertWidth(stringWidth(at), "inches")) + 0.18) * cex.axis[names(GdObject)]
+                atSpace <- max(
+                    as.numeric(convertWidth(stringWidth(at), "inches")) + 0.18
+                ) *
+                    cex.axis[names(GdObject)]
                 if (is(GdObject, "DataTrack")) {
-                    type <- match.arg(.dpOrDefault(GdObject, "type", "p"), .PLOT_TYPES, several.ok = TRUE)
+                    type <- match.arg(
+                        .dpOrDefault(GdObject, "type", "p"),
+                        .PLOT_TYPES,
+                        several.ok = TRUE
+                    )
                     if (any(c("heatmap", "gradient") %in% type)) {
-                        nlevs <- max(1, nlevels(factor(getPar(GdObject, "groups")))) - 1
-                        atSpace <- atSpace + 0.3 * atSpace + as.numeric(convertWidth(unit(3, "points"), "inches")) * nlevs
+                        nlevs <- max(
+                            1,
+                            nlevels(factor(getPar(GdObject, "groups")))
+                        ) -
+                            1
+                        atSpace <- atSpace +
+                            0.3 * atSpace +
+                            as.numeric(convertWidth(
+                                unit(3, "points"),
+                                "inches"
+                            )) *
+                                nlevs
                     }
-                    if (any(type %in% c("heatmap", "horizon")) && .dpOrDefault(GdObject, "showSampleNames", FALSE)) {
+                    if (
+                        any(type %in% c("heatmap", "horizon")) &&
+                            .dpOrDefault(GdObject, "showSampleNames", FALSE)
+                    ) {
                         sn <- rownames(values(GdObject))
                         axSpace <- ifelse(isOnlyHoriz, 0, 10)
-                        wd <- max(as.numeric(convertWidth(stringWidth(sn) + unit(axSpace, "points"), "inches")))
-                        atSpace <- atSpace + (wd * .dpOrDefault(GdObject, "cex.sampleNames", 0.5))
+                        wd <- max(as.numeric(convertWidth(
+                            stringWidth(sn) + unit(axSpace, "points"),
+                            "inches"
+                        )))
+                        atSpace <- atSpace +
+                            (wd *
+                                .dpOrDefault(GdObject, "cex.sampleNames", 0.5))
                     }
                 }
                 atSpace
@@ -450,16 +696,23 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     }
     spacing <- as.numeric(convertWidth(unit(spacing, "points"), "npc"))
     title.width <- title.width * twfac
-    return(list(spaceNeeded = spaceNeeded, cex = cex, title.width = title.width, spacing = spacing, nwrap = nwrap))
+    return(list(
+        spaceNeeded = spaceNeeded,
+        cex = cex,
+        title.width = title.width,
+        spacing = spacing,
+        nwrap = nwrap
+    ))
 }
-
 
 
 ## This coerces likely inputs for the genomic strand  to a unified
 ## strand name. Accepted inputs are:
-##    o a single integer, where values <=0 indicate the plus strand, and values >=1 indicate the minus strand
+##    o a single integer, where values <=0 indicate the plus strand,
+##      and values >=1 indicate the minus strand
 ##    o a character, either "+" or "-"
-## If extended=TRUE, the additional values 2, "+-", "-+" and "*" are allowed, indicating to use both strands.
+## If extended=TRUE, the additional values 2, "+-", "-+" and "*" are allowed,
+## indicating to use both strands.
 ## Value: the validated strand name
 .strandName <- function(x, extended = FALSE) {
     fun <- function(x, extended) {
@@ -469,7 +722,9 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             } else if (is.character(x)) {
                 x <- match(x, c("+", "-")) - 1
                 if (any(is.na(x))) {
-                    stop("The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)")
+                    stop(
+                        "The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)"
+                    )
                 }
             }
         } else {
@@ -478,7 +733,9 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             } else if (is.character(x)) {
                 x <- min(c(2, match(x, c("+", "-", "+-", "-+", "*")) - 1))
                 if (any(is.na(x))) {
-                    stop("The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)")
+                    stop(
+                        "The strand has to be specified either as a character ('+' or '-'), or as an integer value (0 or 1)"
+                    )
                 }
             }
         }
@@ -488,32 +745,49 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 }
 
 
-
-## Compute native coordinate equivalent to 'min.width' pixel. This assumes that a graphics device is already
-## open, otherwise a new window will pop up, which could be a little annoying.
+## Compute native coordinate equivalent to 'min.width' pixel.
+## This assumes that a graphics device is already open, otherwise a new window
+## will pop up, which could be a little annoying.
 ## Arguments:
 ##    o min.width: the number of pixels
-##    o coord: the axis for which to compute the coordinats, one in c("x","y")
+##    o coord: the axis for which to compute the coordinates, one in c("x","y")
 ## Value: the equivalent of 'min.width' in native coordinates.
 .pxResolution <- function(min.width = 1, coord = c("x", "y")) {
     coord <- match.arg(coord, several.ok = TRUE)
     curVp <- vpLocation()
     co <- c(
-        x = as.vector(abs(diff(current.viewport()$xscale)) / (curVp$size["width"]) * min.width),
-        y = as.vector(abs(diff(current.viewport()$yscale)) / (curVp$size["height"]) * min.width)
+        x = as.vector(
+            abs(diff(current.viewport()$xscale)) /
+                (curVp$size["width"]) *
+                min.width
+        ),
+        y = as.vector(
+            abs(diff(current.viewport()$yscale)) /
+                (curVp$size["height"]) *
+                min.width
+        )
     )
     return(co[coord])
 }
 
 
-## Deal with composite exons and provide polygon plotting coordinates for them. For all normal exons simply return
-## the original bounding box data
+## Deal with composite exons and provide polygon plotting coordinates for them.
+## For all normal exons simply return the original bounding box data
 ## Arguments:
 ##    o box: the data frame with the bounding box information
-##    o type: the type of coordinates for the composite exons, one in 'box', 'arrow' or 'fixedArrow'
-## Value: a list with three elements: box, the non-composite exons, pols, the plotting coordinates for the merged composite exons,
+##    o type: the type of coordinates for the composite exons, one in 'box',
+##            'arrow' or 'fixedArrow'
+## Value: a list with three elements: box, the non-composite exons, pols,
+##        the plotting coordinates for the merged composite exons,
 ##        and polpars, a data.frame of plotting parameters for the polygons
-.handleComposite <- function(box, type = "box", W = 1 / 4, H = 1 / 3, min.width = 10, max.width = Inf) {
+.handleComposite <- function(
+  box,
+  type = "box",
+  W = 1 / 4,
+  H = 1 / 3,
+  min.width = 10,
+  max.width = Inf
+) {
     box <- box[order(box$start), ]
     boxFinal <- data.frame(stringsAsFactors = FALSE)
     polFinal <- data.frame(stringsAsFactors = FALSE)
@@ -531,78 +805,180 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
                 if (nrow(brs[[j]]) == 1) {
                     boxFinal <- rbind(boxFinal, brs[[j]])
                 } else {
-                    xlocs <- as.vector(t(brs[[j]][, c("cx1", "cx2"), drop = FALSE]))
+                    xlocs <- as.vector(t(brs[[j]][,
+                        c("cx1", "cx2"),
+                        drop = FALSE
+                    ]))
                     ylocs <- unlist(brs[[j]][, c("cy1", "cy2"), drop = FALSE])
                     fh <- seq_len(length(ylocs) / 2)
                     sh <- (length(ylocs) / 2 + 1):length(ylocs)
                     ylocs[sh] <- rev(ylocs[sh])
                     ylocs <- rep(ylocs, each = 2)
                     if (type == "box") {
-                        polFinal <- rbind(polFinal, data.frame(
-                            x = c(xlocs, rev(xlocs)), y = ylocs,
-                            id = paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                            stringsAsFactors = FALSE
-                        ))
-                        polPars <- rbind(polPars, data.frame(fill = brs[[j]][1, "fill"], col = brs[[j]][1, "col"], stringsAsFactors = FALSE))
+                        polFinal <- rbind(
+                            polFinal,
+                            data.frame(
+                                x = c(xlocs, rev(xlocs)),
+                                y = ylocs,
+                                id = paste(
+                                    brs[[j]][1, "transcript"],
+                                    brs[[j]][1, "exon"],
+                                    j
+                                ),
+                                stringsAsFactors = FALSE
+                            )
+                        )
+                        polPars <- rbind(
+                            polPars,
+                            data.frame(
+                                fill = brs[[j]][1, "fill"],
+                                col = brs[[j]][1, "col"],
+                                stringsAsFactors = FALSE
+                            )
+                        )
                     } else {
-                        polPars <- rbind(polPars, data.frame(fill = brs[[j]][1, "fill"], col = brs[[j]][1, "col"], stringsAsFactors = FALSE))
+                        polPars <- rbind(
+                            polPars,
+                            data.frame(
+                                fill = brs[[j]][1, "fill"],
+                                col = brs[[j]][1, "col"],
+                                stringsAsFactors = FALSE
+                            )
+                        )
                         str <- brs[[j]]$strand[1]
                         offset <- (abs(brs[[j]]$cy1 - brs[[j]]$cy2)) * H / 2
-                        if (str == "+" && abs(diff(xlocs[(length(xlocs) - 1):length(xlocs)])) > min.width) {
+                        if (
+                            str == "+" &&
+                                abs(diff(xlocs[
+                                    (length(xlocs) - 1):length(xlocs)
+                                ])) >
+                                    min.width
+                        ) {
                             offset <- rep(offset, each = 2)
                             asel <- (length(xlocs) - 1):length(xlocs)
                             bsel <- seq_len(min(asel) - 1)
                             d <- abs(diff(xlocs[asel]))
                             afp <- if (type == "arrow") {
-                                rep(xlocs[asel][1] + max(d * W, d - max.width), 2)
+                                rep(
+                                    xlocs[asel][1] + max(d * W, d - max.width),
+                                    2
+                                )
                             } else {
                                 rep(max(xlocs[asel][1], xlocs[asel][2] - W), 2)
                             }
-                            xlocs <- c(xlocs[bsel], xlocs[asel][1], afp, xlocs[asel][2], afp, xlocs[asel][1], rev(xlocs[bsel]))
+                            xlocs <- c(
+                                xlocs[bsel],
+                                xlocs[asel][1],
+                                afp,
+                                xlocs[asel][2],
+                                afp,
+                                xlocs[asel][1],
+                                rev(xlocs[bsel])
+                            )
                             mid <- length(ylocs) / 2
                             asel <- (mid - 1):(mid + 2)
                             bsel <- c(seq_len(mid - 2), (mid + 3):length(ylocs))
                             fh <- seq_len(length(bsel) / 2)
                             sh <- (length(bsel) / 2 + 1):length(bsel)
                             ylocs <- c(
-                                ylocs[bsel[fh]] + offset[fh], ylocs[asel][c(1, 2)] + tail(offset, 1), ylocs[asel][1],
-                                ylocs[asel][1] + abs(diff(ylocs[asel][c(1, 3)])) / 2, ylocs[asel][4],
-                                ylocs[asel][3:4] - tail(offset, 1), ylocs[bsel[sh]] - offset[fh]
+                                ylocs[bsel[fh]] + offset[fh],
+                                ylocs[asel][c(1, 2)] + tail(offset, 1),
+                                ylocs[asel][1],
+                                ylocs[asel][1] +
+                                    abs(diff(ylocs[asel][c(1, 3)])) / 2,
+                                ylocs[asel][4],
+                                ylocs[asel][3:4] - tail(offset, 1),
+                                ylocs[bsel[sh]] - offset[fh]
                             )
-                            polFinal <- rbind(polFinal, data.frame(
-                                x = c(xlocs, rev(xlocs)), y = ylocs,
-                                id = paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                                stringsAsFactors = FALSE
-                            ))
-                        } else if (str == "-" && abs(diff(xlocs[c(1, 2)])) > min.width) {
-                            yoffset <- c(rep(offset[-1], each = 2), -rev(rep(offset[-1], each = 2)))
+                            polFinal <- rbind(
+                                polFinal,
+                                data.frame(
+                                    x = c(xlocs, rev(xlocs)),
+                                    y = ylocs,
+                                    id = paste(
+                                        brs[[j]][1, "transcript"],
+                                        brs[[j]][1, "exon"],
+                                        j
+                                    ),
+                                    stringsAsFactors = FALSE
+                                )
+                            )
+                        } else if (
+                            str == "-" && abs(diff(xlocs[c(1, 2)])) > min.width
+                        ) {
+                            yoffset <- c(
+                                rep(offset[-1], each = 2),
+                                -rev(rep(offset[-1], each = 2))
+                            )
                             asel <- c(1, 2)
                             bsel <- seq(3, length(xlocs))
                             d <- abs(diff(xlocs[asel]))
                             afp <- if (type == "arrow") {
-                                rep(xlocs[asel][2] - max(d * W, d - max.width), 2)
+                                rep(
+                                    xlocs[asel][2] - max(d * W, d - max.width),
+                                    2
+                                )
                             } else {
                                 rep(min(xlocs[asel][2], xlocs[asel][1] + W), 2)
                             }
-                            xlocs <- c(xlocs[asel][1], afp, xlocs[asel][2], xlocs[bsel], rev(xlocs[bsel]), xlocs[asel][2], afp, xlocs[asel][1])
-                            asel <- c(1, 2, seq((length(ylocs) - 1), length(ylocs)))
+                            xlocs <- c(
+                                xlocs[asel][1],
+                                afp,
+                                xlocs[asel][2],
+                                xlocs[bsel],
+                                rev(xlocs[bsel]),
+                                xlocs[asel][2],
+                                afp,
+                                xlocs[asel][1]
+                            )
+                            asel <- c(
+                                1,
+                                2,
+                                seq((length(ylocs) - 1), length(ylocs))
+                            )
                             bsel <- seq(3, (length(ylocs) - 2))
                             ylocs <- c(
-                                ylocs[asel][1] + abs(diff(ylocs[asel][c(1, 3)])) / 2, ylocs[asel][1], rep(ylocs[asel][1] + offset[1], 2),
-                                ylocs[bsel] + yoffset, rep(ylocs[asel][3] - offset[1], 2), ylocs[asel][3], ylocs[asel][1] + abs(diff(ylocs[asel][c(1, 3)])) / 2
+                                ylocs[asel][1] +
+                                    abs(diff(ylocs[asel][c(1, 3)])) / 2,
+                                ylocs[asel][1],
+                                rep(ylocs[asel][1] + offset[1], 2),
+                                ylocs[bsel] + yoffset,
+                                rep(ylocs[asel][3] - offset[1], 2),
+                                ylocs[asel][3],
+                                ylocs[asel][1] +
+                                    abs(diff(ylocs[asel][c(1, 3)])) / 2
                             )
-                            polFinal <- rbind(polFinal, data.frame(
-                                x = xlocs, y = ylocs,
-                                id = paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                                stringsAsFactors = FALSE
-                            ))
+                            polFinal <- rbind(
+                                polFinal,
+                                data.frame(
+                                    x = xlocs,
+                                    y = ylocs,
+                                    id = paste(
+                                        brs[[j]][1, "transcript"],
+                                        brs[[j]][1, "exon"],
+                                        j
+                                    ),
+                                    stringsAsFactors = FALSE
+                                )
+                            )
                         } else {
-                            offset <- c(rep(offset, each = 2), -rev(rep(offset, each = 2)))
-                            polFinal <- rbind(polFinal, data.frame(
-                                x = c(xlocs, rev(xlocs)), y = ylocs + offset,
-                                id = paste(brs[[j]][1, "transcript"], brs[[j]][1, "exon"], j),
-                                stringsAsFactors = FALSE
-                            ))
+                            offset <- c(
+                                rep(offset, each = 2),
+                                -rev(rep(offset, each = 2))
+                            )
+                            polFinal <- rbind(
+                                polFinal,
+                                data.frame(
+                                    x = c(xlocs, rev(xlocs)),
+                                    y = ylocs + offset,
+                                    id = paste(
+                                        brs[[j]][1, "transcript"],
+                                        brs[[j]][1, "exon"],
+                                        j
+                                    ),
+                                    stringsAsFactors = FALSE
+                                )
+                            )
                         }
                     }
                 }
@@ -613,7 +989,8 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 }
 
 
-## Take coordinates for the bounding boxes of annotation regions and plot filled arrows inside.
+## Take coordinates for the bounding boxes of annotation regions and plot
+## filled arrows inside.
 ## Arguments:
 ##    o the data frame with the bounding box information
 ##    o W: the proportion of the total box width used for the arrow head
@@ -621,12 +998,32 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ##    o lwd: the boundary line width
 ##    o lty: the boundary line type
 ##    o alpha: the transparency
-##    o min.width: the minimum width of the arrow head. Below this size a simple box is drawn
-## Note that the last arguments 4-9 all have to be of the same length as number of rows in box.
-## Value: the function is called for its side-effects of drawing on the graphics device
-.filledArrow <- function(box, W = 1 / 4, H = 1 / 3, lwd, lty, alpha, min.width = 10, max.width = Inf, absoluteWidth = FALSE) {
+##    o min.width: the minimum width of the arrow head. Below this size a
+##                 simple box is drawn
+## Note that the last arguments 4-9 all have to be of the same length as number
+## of rows in box.
+## Value: the function is called for its side-effects of drawing
+##        on the graphics device
+.filledArrow <- function(
+  box,
+  W = 1 / 4,
+  H = 1 / 3,
+  lwd,
+  lty,
+  alpha,
+  min.width = 10,
+  max.width = Inf,
+  absoluteWidth = FALSE
+) {
     boxC <- if ("transcript" %in% colnames(box)) {
-        .handleComposite(box, ifelse(absoluteWidth, "fixedArrow", "arrow"), min.width = min.width, max.width = max.width, W = W, H = H)
+        .handleComposite(
+            box,
+            ifelse(absoluteWidth, "fixedArrow", "arrow"),
+            min.width = min.width,
+            max.width = max.width,
+            W = W,
+            H = H
+        )
     } else {
         list(box = box, pols = data.frame())
     }
@@ -643,89 +1040,205 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         offset <- (abs(B[osel, 2] - A[osel, 2]) * H / 2)
         yy <- c(rep(A[osel, 2] + offset, 2), rep(B[osel, 2] - offset, 2))
         id <- rep(seq_len(sum(osel)), 4)
-        pars <- data.frame(fill = box$fill, col = box$col, lwd = lwd, lty = lty, alpha = alpha, stringsAsFactors = FALSE)[osel, ]
+        pars <- data.frame(
+            fill = box$fill,
+            col = box$col,
+            lwd = lwd,
+            lty = lty,
+            alpha = alpha,
+            stringsAsFactors = FALSE
+        )[osel, ]
         ## Now the arrows facing right
         sel <- !osel & box$strand == "+"
-        id <- c(id, rep(seq(from = if (!length(id)) 1 else max(id) + 1, by = 1, len = sum(sel)), 7))
+        id <- c(
+            id,
+            rep(
+                seq(
+                    from = if (!length(id)) 1 else max(id) + 1,
+                    by = 1,
+                    len = sum(sel)
+                ),
+                7
+            )
+        )
         d <- abs(B[sel, 1] - A[sel, 1])
-        alp <- if (!absoluteWidth) rep(A[sel, 1] + pmax(d * W, d - rep(max.width, sum(sel))), 2) else rep(pmax(B[sel, 1] - W, pmin(B[sel, 1], A[sel, 1])), 2)
+        alp <- if (!absoluteWidth) {
+            rep(A[sel, 1] + pmax(d * W, d - rep(max.width, sum(sel))), 2)
+        } else {
+            rep(pmax(B[sel, 1] - W, pmin(B[sel, 1], A[sel, 1])), 2)
+        }
         xx <- c(xx, A[sel, 1], alp, B[sel, 1], alp, A[sel, 1])
         yy <- c(
-            yy, rep(A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) * H / 2), 2), A[sel, 2], A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) / 2), B[sel, 2],
+            yy,
+            rep(A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) * H / 2), 2),
+            A[sel, 2],
+            A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) / 2),
+            B[sel, 2],
             rep(B[sel, 2] - (abs(B[sel, 2] - A[sel, 2]) * H / 2), 2)
         )
-        pars <- rbind(pars, data.frame(fill = box$fill, col = box$col, lwd = lwd, lty = lty, alpha = alpha, stringsAsFactors = FALSE)[sel, ])
+        pars <- rbind(
+            pars,
+            data.frame(
+                fill = box$fill,
+                col = box$col,
+                lwd = lwd,
+                lty = lty,
+                alpha = alpha,
+                stringsAsFactors = FALSE
+            )[sel, ]
+        )
         ## And finally those facing left
         sel <- !osel & box$strand == "-"
-        id <- c(id, rep(seq(from = if (!length(id)) 1 else max(id) + 1, by = 1, len = sum(sel)), 7))
+        id <- c(
+            id,
+            rep(
+                seq(
+                    from = if (!length(id)) 1 else max(id) + 1,
+                    by = 1,
+                    len = sum(sel)
+                ),
+                7
+            )
+        )
         d <- abs(B[sel, 1] - A[sel, 1])
-        alp <- if (!absoluteWidth) rep(B[sel, 1] - pmax(d * W, d - rep(max.width, sum(sel))), 2) else rep(pmin(A[sel, 1] + W, pmax(B[sel, 1], A[sel, 1])), 2)
+        alp <- if (!absoluteWidth) {
+            rep(B[sel, 1] - pmax(d * W, d - rep(max.width, sum(sel))), 2)
+        } else {
+            rep(pmin(A[sel, 1] + W, pmax(B[sel, 1], A[sel, 1])), 2)
+        }
         xx <- c(xx, B[sel, 1], alp, A[sel, 1], alp, B[sel, 1])
         yy <- c(
-            yy, rep(A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) * H / 2), 2), A[sel, 2], A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) / 2), B[sel, 2],
+            yy,
+            rep(A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) * H / 2), 2),
+            A[sel, 2],
+            A[sel, 2] + (abs(B[sel, 2] - A[sel, 2]) / 2),
+            B[sel, 2],
             rep(B[sel, 2] - (abs(B[sel, 2] - A[sel, 2]) * H / 2), 2)
         )
-        pars <- rbind(pars, data.frame(fill = box$fill, col = box$col, lwd = lwd, lty = lty, alpha = alpha, stringsAsFactors = FALSE)[sel, ])
+        pars <- rbind(
+            pars,
+            data.frame(
+                fill = box$fill,
+                col = box$col,
+                lwd = lwd,
+                lty = lty,
+                alpha = alpha,
+                stringsAsFactors = FALSE
+            )[sel, ]
+        )
     }
     if (nrow(boxC$pols)) {
         xx <- c(xx, boxC$pols$x)
         yy <- c(yy, boxC$pols$y)
         id <- c(id, paste("pols", boxC$pols$id))
-        pars <- rbind(pars, data.frame(fill = boxC$polpars$fill, col = boxC$polpars$col, lwd = lwd, lty = lty, alpha = alpha, stringsAsFactors = FALSE))
+        pars <- rbind(
+            pars,
+            data.frame(
+                fill = boxC$polpars$fill,
+                col = boxC$polpars$col,
+                lwd = lwd,
+                lty = lty,
+                alpha = alpha,
+                stringsAsFactors = FALSE
+            )
+        )
     }
     grid.polygon(
-        x = xx, y = yy, gp = gpar(fill = pars$fill, col = pars$col, alpha = unique(pars$alpha), lwd = pars$lwd, lty = pars$lty), default.units = "native",
+        x = xx,
+        y = yy,
+        gp = gpar(
+            fill = pars$fill,
+            col = pars$col,
+            alpha = unique(pars$alpha),
+            lwd = pars$lwd,
+            lty = pars$lty
+        ),
+        default.units = "native",
         id = factor(id)
-    ) # fix for Sys.setenv(`_R_CHECK_LENGTH_1_CONDITION_`="true") Sys.setenv(`_R_CHECK_LENGTH_1_LOGIC2_`="true")
+    )
 }
 
 
-## Take coordinates for the bounding boxes of annotation regions and plot boxes, also making sure that
-## composite exons in GeneRegionTracks (i.e., overlapping coordinates and same exon id) are merged
+## Take coordinates for the bounding boxes of annotation regions and plot boxes,
+## also making sure that composite exons in GeneRegionTracks (i.e., overlapping
+## coordinates and same exon id) are merged
 ## appropriately
 ## Arguments:
 ##    o box: the data frame with the bounding box information
 ##    o lwd: the boundary line width
 ##    o lty: the boundary line type
 ##    o alpha: the transparency
-## Value: the function is called for its side-effects of drawing on the graphics device
+## Value: the function is called for its side-effects of drawing
+## on the graphics device
 .filledBoxes <- function(box, lwd, lty, alpha) {
     if ("transcript" %in% colnames(box)) {
         box <- .handleComposite(box, "box")
         if (nrow(box$box)) {
-            grid.rect(box$box$cx2, box$box$cy1,
-                width = box$box$cx2 - box$box$cx1, height = box$box$cy2 - box$box$cy1,
-                gp = gpar(col = as.character(box$box$col), fill = as.character(box$box$fill), lwd = lwd, lty = lty, alpha = alpha),
-                default.units = "native", just = c("right", "bottom")
+            grid.rect(
+                box$box$cx2,
+                box$box$cy1,
+                width = box$box$cx2 - box$box$cx1,
+                height = box$box$cy2 - box$box$cy1,
+                gp = gpar(
+                    col = as.character(box$box$col),
+                    fill = as.character(box$box$fill),
+                    lwd = lwd,
+                    lty = lty,
+                    alpha = alpha
+                ),
+                default.units = "native",
+                just = c("right", "bottom")
             )
         }
         if (nrow(box$pols)) {
             grid.polygon(
-                x = box$pols$x, y = box$pols$y, id = factor(box$pols$id),
-                gp = gpar(col = as.character(box$polpars$col), fill = as.character(box$polpars$fill), lwd = lwd, lty = lty, alpha = alpha),
+                x = box$pols$x,
+                y = box$pols$y,
+                id = factor(box$pols$id),
+                gp = gpar(
+                    col = as.character(box$polpars$col),
+                    fill = as.character(box$polpars$fill),
+                    lwd = lwd,
+                    lty = lty,
+                    alpha = alpha
+                ),
                 default.units = "native"
             )
         }
     } else {
-        grid.rect(box$cx2, box$cy1,
-            width = box$cx2 - box$cx1, height = box$cy2 - box$cy1,
-            gp = gpar(col = as.character(box$col), fill = as.character(box$fill), lwd = lwd, lty = lty, alpha = alpha),
-            default.units = "native", just = c("right", "bottom")
+        grid.rect(
+            box$cx2,
+            box$cy1,
+            width = box$cx2 - box$cx1,
+            height = box$cy2 - box$cy1,
+            gp = gpar(
+                col = as.character(box$col),
+                fill = as.character(box$fill),
+                lwd = lwd,
+                lty = lty,
+                alpha = alpha
+            ),
+            default.units = "native",
+            just = c("right", "bottom")
         )
     }
 }
 
 
-## Take start and end coordinates for genemodel-type annotations and draw a featherd line indicating
-## the strand direction
+## Take start and end coordinates for gene-model-type annotations and draw a
+## feathered line indicating the strand direction
 ## Arguments:
-##    o xx1, xx2: integer vectors of equal length indicating the start and end of the gene models.
-##    o strand: the strand information for each gene model. Needs to be of the same length as xx1 and xx2
+##    o xx1, xx2: integer vectors of equal length indicating the start and end
+##                of the gene models.
+##    o strand: the strand information for each gene model. Needs to be of the
+##              same length as xx1 and xx2
 ##    o coords: the coordinates of the exon features, needed to avoid overlaps.
-##    o y: the y value for the arrow bar, usually not set since it should always be 20
+##    o y: the y value for the arrow bar, usually not set since
+##         it should always be 20
 ##    o W: the width of the arrow feathers in pixels
 ##    o D: the distance between arrow feathers in pixels
-##    o H: the height of the arrow feathers in native coordinates (the total bounding box is usually 40)
+##    o H: the height of the arrow feathers in native coordinates
+##         (the total bounding box is usually 40)
 ##    o col: the boundary color
 ##    o lwd: the boundary line width
 ##    o lty: the boundary line type
@@ -733,9 +1246,25 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ##    o barOnly: only plot the bar, not the feathers
 ##    o diff: the current pixel resolution
 ##    o min.height: the minimum total height in pixels for the feathers (i.e., min.height/2 in each direction)
-## Value: the function is called for its side-effects of drawing on the graphics device
-.arrowBar <- function(xx1, xx2, strand, coords, y = 20, W = 3, D = 10, H, col, lwd, lty, alpha, barOnly = FALSE,
-                      diff = .pxResolution(coord = "y"), min.height = 3) {
+## Value: the function is called for its side-effects of drawing
+##        on the graphics device
+.arrowBar <- function(
+  xx1,
+  xx2,
+  strand,
+  coords,
+  y = 20,
+  W = 3,
+  D = 10,
+  H,
+  col,
+  lwd,
+  lty,
+  alpha,
+  barOnly = FALSE,
+  diff = .pxResolution(coord = "y"),
+  min.height = 3
+) {
     exons <- IRanges(start = coords[, 1], end = coords[, 3])
     levels <- split(exons, coords[, 2] %/% 1)
     if (!barOnly) {
@@ -750,11 +1279,21 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             x2 <- xx2[i]
             len <- diff(c(x1, x2)) / onePx
             if (len > D + W * 2) {
-                ax1 <- seq(from = x1 + (onePx * W), to = x1 + (len * onePx) - (onePx * W), by = onePx * D)
+                ax1 <- seq(
+                    from = x1 + (onePx * W),
+                    to = x1 + (len * onePx) - (onePx * W),
+                    by = onePx * D
+                )
                 ax2 <- ax1 + (onePx * W)
                 feathers <- IRanges(start = ax1 - onePx, end = ax2 + onePx)
                 cur.level <- y[i] %/% 1
-                sel <- queryHits(findOverlaps(feathers, resize(levels[[cur.level]], width = width(levels[[cur.level]]) - 1)))
+                sel <- queryHits(findOverlaps(
+                    feathers,
+                    resize(
+                        levels[[cur.level]],
+                        width = width(levels[[cur.level]]) - 1
+                    )
+                ))
                 if (length(sel)) {
                     ax1 <- ax1[-sel]
                     ax2 <- ax2[-sel]
@@ -767,10 +1306,23 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             }
         }
         if (!is.null(fx1) && length(fx1)) {
-            grid.segments(fx1, fy1, fx2, fy2, default.units = "native", gp = gpar(col = scol, lwd = lwd, lty = lty, alpha = alpha))
+            grid.segments(
+                fx1,
+                fy1,
+                fx2,
+                fy2,
+                default.units = "native",
+                gp = gpar(col = scol, lwd = lwd, lty = lty, alpha = alpha)
+            )
         }
     }
-    bars <- data.frame(x1 = xx1, x2 = xx2, y = y, col = col, stringsAsFactors = FALSE)
+    bars <- data.frame(
+        x1 = xx1,
+        x2 = xx2,
+        y = y,
+        col = col,
+        stringsAsFactors = FALSE
+    )
     cutBars <- data.frame()
     for (i in seq_len(nrow(bars))) {
         b <- bars[i, ]
@@ -778,29 +1330,49 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         ct <- if (cur.level != 0) {
             setdiff(
                 IRanges(start = b$x1, end = b$x2),
-                resize(levels[[cur.level]], width = width(levels[[cur.level]]) - 1)
+                resize(
+                    levels[[cur.level]],
+                    width = width(levels[[cur.level]]) - 1
+                )
             )
         } else {
             IRanges()
         }
         if (length(ct)) {
-            cutBars <- rbind(cutBars, data.frame(x1 = start(ct), x2 = end(ct), y = b$y, col = b$col, stringsAsFactors = FALSE))
+            cutBars <- rbind(
+                cutBars,
+                data.frame(
+                    x1 = start(ct),
+                    x2 = end(ct),
+                    y = b$y,
+                    col = b$col,
+                    stringsAsFactors = FALSE
+                )
+            )
         }
     }
-    ## fix bug when no introns are present
+    ## fix bug when no introns are present?
     if (nrow(cutBars)) {
-        grid.segments(cutBars$x1, cutBars$y, cutBars$x2, cutBars$y,
+        grid.segments(
+            cutBars$x1,
+            cutBars$y,
+            cutBars$x2,
+            cutBars$y,
             default.units = "native",
-            gp = gpar(col = cutBars$col, lwd = lwd, lty = lty, alpha = alpha, lineend = "square")
+            gp = gpar(
+                col = cutBars$col,
+                lwd = lwd,
+                lty = lty,
+                alpha = alpha,
+                lineend = "square"
+            )
         )
     }
-    ## grid.segments(xx1, y, xx2, y, default.units="native", gp=gpar(col=col, lwd=lwd, lty=lty, alpha=alpha, lineend="square"))
 }
 
 
-
-## Extract track color for different subtypes within the track and use the default
-## color value if no other is found, lightblue if no colors are set at all
+## Extract track color for different subtypes within the track and use the
+## default color value if no other is found, lightblue if no colors are set
 ## Arguments:
 ##    o GdObject: object inheriting from class GdObject
 ## Value: a color character
@@ -834,22 +1406,36 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 }
 
 
-
 ## A lattice-style panel function to draw smoothed 'mountain' plots
 ## Arguments:
 ##    o x, y: the x and y coordinates form the plot
 ##    o span, degree, family, evaluation: parameters that are passed on to loess
 ##    o lwd, lty, col: color, with and type of the plot lines
-##    o fill: fill colors for areas above and under the baseline, a vector of length two
+##    o fill: fill colors for areas above and under the baseline, a vector
+##            of length two
 ##    o col.line: color of the baseline
 ##    o baseline: the y value of the horizontal baseline
-##    o alpha: the transparancy
-## Value: the function is called for its side-effect of drawing on the graphics device
+##    o alpha: the transparency
+## Value: the function is called for its side-effect of drawing
+##        on the graphics device
 
 #' @importFrom stats loess.smooth
-.panel.mountain <- function(x, y, span = 2 / 3, degree = 1, family = c("symmetric", "gaussian"), evaluation = 50,
-                            lwd = plot.line$lwd, lty = plot.line$lty, col, col.line = plot.line$col,
-                            baseline, fill, alpha = 1, ...) {
+.panel.mountain <- function(
+  x,
+  y,
+  span = 2 / 3,
+  degree = 1,
+  family = c("symmetric", "gaussian"),
+  evaluation = 50,
+  lwd = plot.line$lwd,
+  lty = plot.line$lty,
+  col,
+  col.line = plot.line$col,
+  baseline,
+  fill,
+  alpha = 1,
+  ...
+) {
     x <- as.numeric(x)
     y <- as.numeric(y)
     fill <- rep(fill, 2)
@@ -863,9 +1449,13 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         }
     }
     plot.line <- lattice::trellis.par.get("plot.line")
-    smooth <- loess.smooth(x[ok], y[ok],
-        span = span, family = family,
-        degree = degree, evaluation = evaluation
+    smooth <- loess.smooth(
+        x[ok],
+        y[ok],
+        span = span,
+        family = family,
+        degree = degree,
+        evaluation = evaluation
     )
     tmp <- as.integer(smooth$y < baseline)
     changePoint <- NULL
@@ -874,8 +1464,10 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             changePoint <- c(changePoint, i)
         }
     }
-    m <- (smooth$y[changePoint] - smooth$y[changePoint - 1]) / (smooth$x[changePoint] - smooth$x[changePoint - 1])
-    xCross <- ((baseline - smooth$y[changePoint - 1]) / m) + smooth$x[changePoint - 1]
+    m <- (smooth$y[changePoint] - smooth$y[changePoint - 1]) /
+        (smooth$x[changePoint] - smooth$x[changePoint - 1])
+    xCross <- ((baseline - smooth$y[changePoint - 1]) / m) +
+        smooth$x[changePoint - 1]
     newX <- newY <- NULL
     j <- 1
     xx <- smooth$x
@@ -889,12 +1481,26 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             xvals <- c(xvals, smooth$x[i])
             yvals <- c(yvals, baseline)
             fcol <- if (mean(yvals) < baseline) fill[1] else fill[2]
-            panel.polygon(xvals, yvals, fill = fcol, col = fcol, border = fcol, alpha = alpha)
+            panel.polygon(
+                xvals,
+                yvals,
+                fill = fcol,
+                col = fcol,
+                border = fcol,
+                alpha = alpha
+            )
         } else if (i %in% changePoint) {
             xvals <- c(xvals, xCross[j])
             yvals <- c(yvals, baseline)
             fcol <- if (mean(yvals) < baseline) fill[1] else fill[2]
-            panel.polygon(xvals, yvals, fill = fcol, col = fcol, border = fcol, alpha = alpha)
+            panel.polygon(
+                xvals,
+                yvals,
+                fill = fcol,
+                col = fcol,
+                border = fcol,
+                alpha = alpha
+            )
             xvals <- c(xCross[j], smooth$x[i])
             yvals <- c(baseline, smooth$y[i])
             j <- j + 1
@@ -904,8 +1510,11 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         }
     }
     grid.lines(
-        x = xx, y = yy, gp = gpar(col = col.line, lty = lty, lwd = lwd, alpha = alpha),
-        default.units = "native", ...
+        x = xx,
+        y = yy,
+        gp = gpar(col = col.line, lty = lty, lwd = lwd, alpha = alpha),
+        default.units = "native",
+        ...
     )
 }
 
@@ -913,13 +1522,25 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 ## Arguments:
 ##    o x, y: the x and y coordinates form the plot
 ##    o lwd, lty, col: color, with and type of the plot lines
-##    o fill: fill colors for areas above and under the baseline, a vector of length two
+##    o fill: fill colors for areas above and under the baseline, a vector of
+##            length two
 ##    o col.line: color of the baseline
 ##    o baseline: the y value of the horizontal baseline
 ##    o alpha: the transparancy
-## Value: the function is called for its side-effect of drawing on the graphics device
-.panel.polygon <- function(x, y, lwd = plot.line$lwd, lty = plot.line$lty, col,
-                           col.line = plot.line$col, baseline, fill, alpha = 1, ...) {
+## Value: the function is called for its side-effect of drawing on the graphics
+##        device
+.panel.polygon <- function(
+  x,
+  y,
+  lwd = plot.line$lwd,
+  lty = plot.line$lty,
+  col,
+  col.line = plot.line$col,
+  baseline,
+  fill,
+  alpha = 1,
+  ...
+) {
     x <- as.numeric(x)
     y <- as.numeric(y)
     fill <- rep(fill, 2)
@@ -942,7 +1563,8 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             changePoint <- c(changePoint, i)
         }
     }
-    m <- (y[changePoint] - y[changePoint - 1]) / (x[changePoint] - x[changePoint - 1])
+    m <- (y[changePoint] - y[changePoint - 1]) /
+        (x[changePoint] - x[changePoint - 1])
     xCross <- ((baseline - y[changePoint - 1]) / m) + x[changePoint - 1]
     newX <- newY <- NULL
     j <- 1
@@ -955,12 +1577,26 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
             xvals <- c(xvals, x[i])
             yvals <- c(yvals, baseline)
             fcol <- if (mean(yvals) < baseline) fill[1] else fill[2]
-            panel.polygon(xvals, yvals, fill = fcol, col = fcol, border = fcol, alpha = alpha)
+            panel.polygon(
+                xvals,
+                yvals,
+                fill = fcol,
+                col = fcol,
+                border = fcol,
+                alpha = alpha
+            )
         } else if (i %in% changePoint) {
             xvals <- c(xvals, xCross[j])
             yvals <- c(yvals, baseline)
             fcol <- if (mean(yvals) < baseline) fill[1] else fill[2]
-            panel.polygon(xvals, yvals, fill = fcol, col = fcol, border = fcol, alpha = alpha)
+            panel.polygon(
+                xvals,
+                yvals,
+                fill = fcol,
+                col = fcol,
+                border = fcol,
+                alpha = alpha
+            )
             xvals <- c(xCross[j], x[i])
             yvals <- c(baseline, y[i])
             j <- j + 1
@@ -970,21 +1606,46 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         }
     }
     grid.lines(
-        x = x, y = y, gp = gpar(col = col.line, lty = lty, lwd = lwd, alpha = alpha),
-        default.units = "native", ...
+        x = x,
+        y = y,
+        gp = gpar(col = col.line, lty = lty, lwd = lwd, alpha = alpha),
+        default.units = "native",
+        ...
     )
 }
 
 
 ## A lattice-style panel function to draw box and whisker plots with groups
 ## Arguments: see ? panel.bwplot for details
-## Value: the function is called for its side-effect of drawing on the graphics device
+## Value: the function is called for its side-effect of drawing on the
+##        graphics device
 
 #' @importFrom grDevices boxplot.stats
-.panel.bwplot <- function(x, y, box.ratio = 1, box.width = box.ratio / (1 + box.ratio), lwd, lty, fontsize,
-                          pch, col, alpha, cex, font, fontfamily, fontface, fill, varwidth = FALSE, notch = FALSE,
-                          notch.frac = 0.5, ..., levels.fos = sort(unique(x)),
-                          stats = boxplot.stats, coef = 1.5, do.out = TRUE) {
+.panel.bwplot <- function(
+  x,
+  y,
+  box.ratio = 1,
+  box.width = box.ratio / (1 + box.ratio),
+  lwd,
+  lty,
+  fontsize,
+  pch,
+  col,
+  alpha,
+  cex,
+  font,
+  fontfamily,
+  fontface,
+  fill,
+  varwidth = FALSE,
+  notch = FALSE,
+  notch.frac = 0.5,
+  ...,
+  levels.fos = sort(unique(x)),
+  stats = boxplot.stats,
+  coef = 1.5,
+  do.out = TRUE
+) {
     if (all(is.na(x) | is.na(y))) {
         return()
     }
@@ -996,8 +1657,12 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
     if (!notch) {
         notch.frac <- 0
     }
-    blist <- tapply(y, factor(x, levels = levels.fos), stats,
-        coef = coef, do.out = do.out
+    blist <- tapply(
+        y,
+        factor(x, levels = levels.fos),
+        stats,
+        coef = coef,
+        do.out = do.out
     )
     blist.stats <- do.call(rbind, lapply(blist, "[[", "stats"))
     blist.out <- lapply(blist, "[[", "out")
@@ -1013,30 +1678,72 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         blist.stats[, c(2, 4), drop = FALSE]
     }
     ybnd <- cbind(
-        blist.stats[, 3], blist.conf[, 2], blist.stats[, 4], blist.stats[, 4], blist.conf[, 2],
-        blist.stats[, 3], blist.conf[, 1], blist.stats[, 2], blist.stats[, 2], blist.conf[, 1], blist.stats[, 3]
+        blist.stats[, 3],
+        blist.conf[, 2],
+        blist.stats[, 4],
+        blist.stats[, 4],
+        blist.conf[, 2],
+        blist.stats[, 3],
+        blist.conf[, 1],
+        blist.stats[, 2],
+        blist.stats[, 2],
+        blist.conf[, 1],
+        blist.stats[, 3]
     )
     xleft <- levels.fos - blist.height / 2
     xright <- levels.fos + blist.height / 2
     xbnd <- cbind(
-        xleft + notch.frac * blist.height / 2, xleft,
-        xleft, xright, xright, xright - notch.frac * blist.height / 2,
-        xright, xright, xleft, xleft, xleft + notch.frac *
-            blist.height / 2
+        xleft + notch.frac * blist.height / 2,
+        xleft,
+        xleft,
+        xright,
+        xright,
+        xright - notch.frac * blist.height / 2,
+        xright,
+        xright,
+        xleft,
+        xleft,
+        xleft +
+            notch.frac *
+                blist.height /
+                2
     )
     xs <- matrix(NA_real_, nrow = nrow(xbnd) * 2, ncol = ncol(xbnd))
     ys <- matrix(NA_real_, nrow = nrow(xbnd) * 2, ncol = ncol(xbnd))
-    xs[seq(along.with = levels.fos, by = 2), ] <- xbnd[seq(along.with = levels.fos), ]
-    ys[seq(along.with = levels.fos, by = 2), ] <- ybnd[seq(along.with = levels.fos), ]
-    panel.polygon(t(xs), t(ys), lwd = lwd, lty = lty, col = fill, alpha = alpha, border = col)
-    panel.segments(rep(levels.fos, 2), c(blist.stats[, 2], blist.stats[, 4]), rep(levels.fos, 2),
-        c(blist.stats[, 1], blist.stats[, 5]),
-        col = col, alpha = alpha,
-        lwd = lwd, lty = lty
+    xs[seq(along.with = levels.fos, by = 2), ] <- xbnd[
+        seq(along.with = levels.fos),
+    ]
+    ys[seq(along.with = levels.fos, by = 2), ] <- ybnd[
+        seq(along.with = levels.fos),
+    ]
+    panel.polygon(
+        t(xs),
+        t(ys),
+        lwd = lwd,
+        lty = lty,
+        col = fill,
+        alpha = alpha,
+        border = col
     )
-    panel.segments(levels.fos - blist.height / 2, c(blist.stats[, 1], blist.stats[, 5]), levels.fos + blist.height / 2,
+    panel.segments(
+        rep(levels.fos, 2),
+        c(blist.stats[, 2], blist.stats[, 4]),
+        rep(levels.fos, 2),
         c(blist.stats[, 1], blist.stats[, 5]),
-        col = col, alpha = alpha, lwd = lwd, lty = lty
+        col = col,
+        alpha = alpha,
+        lwd = lwd,
+        lty = lty
+    )
+    panel.segments(
+        levels.fos - blist.height / 2,
+        c(blist.stats[, 1], blist.stats[, 5]),
+        levels.fos + blist.height / 2,
+        c(blist.stats[, 1], blist.stats[, 5]),
+        col = col,
+        alpha = alpha,
+        lwd = lwd,
+        lty = lty
     )
     if (all(pch == "|")) {
         mult <- if (notch) {
@@ -1044,33 +1751,47 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         } else {
             1
         }
-        panel.segments(levels.fos - mult * blist.height / 2,
-            blist.stats[, 3], levels.fos + mult * blist.height / 2,
+        panel.segments(
+            levels.fos - mult * blist.height / 2,
             blist.stats[, 3],
-            lwd = lwd, lty = lty,
-            col = col, alpha = alpha
+            levels.fos + mult * blist.height / 2,
+            blist.stats[, 3],
+            lwd = lwd,
+            lty = lty,
+            col = col,
+            alpha = alpha
         )
     } else {
         panel.points(
-            x = levels.fos, y = blist.stats[, 3],
-            pch = pch, col = col, alpha = alpha, cex = cex,
-            fontfamily = fontfamily, fontface = .chooseFace(
+            x = levels.fos,
+            y = blist.stats[, 3],
+            pch = pch,
+            col = col,
+            alpha = alpha,
+            cex = cex,
+            fontfamily = fontfamily,
+            fontface = .chooseFace(
                 fontface,
                 font
-            ), fontsize = fontsize
+            ),
+            fontsize = fontsize
         )
     }
     panel.points(
         x = rep(levels.fos, vapply(blist.out, length, FUN.VALUE = numeric(1L))),
-        y = unlist(blist.out), pch = pch, col = col,
-        alpha = alpha, cex = cex,
-        fontfamily = fontfamily, fontface = .chooseFace(
+        y = unlist(blist.out),
+        pch = pch,
+        col = col,
+        alpha = alpha,
+        cex = cex,
+        fontfamily = fontfamily,
+        fontface = .chooseFace(
             fontface,
             font
-        ), fontsize = fontsize
+        ),
+        fontsize = fontsize
     )
 }
-
 
 
 ## Check which parameters have already been set for a GdObject, and
@@ -1083,12 +1804,21 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 .updatePars <- function(x, class) {
     current <- getPar(x, hideInternal = FALSE)
     defaults <- getPar(getClass(class)@prototype@dp, hideInternal = FALSE)
-    ## Check whether we need to adjust any of those defaults based on the selected scheme
+    ## Check whether we need to adjust any of those defaults
+    ## based on the selected scheme
     sid <- getOption("Gviz.scheme")
     scheme <- if (is.null(sid)) list() else .schemes[[sid]]
-    schemePars <- if (is.null(scheme) || is.null(scheme[[class]])) list() else scheme[[class]]
+    schemePars <- if (is.null(scheme) || is.null(scheme[[class]])) {
+        list()
+    } else {
+        scheme[[class]]
+    }
     if (!is.list(schemePars)) {
-        stop(sprintf("Corrupted parameter definition for class '%s' in scheme '%s'", class, sid))
+        stop(sprintf(
+            "Corrupted parameter definition for class '%s' in scheme '%s'",
+            class,
+            sid
+        ))
     }
     defaults[names(schemePars)] <- schemePars
     missing <- setdiff(names(defaults), names(current))
@@ -1103,11 +1833,14 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 
 ### Schemes ------------------------------------------------------------------
 
-## The scheme settings registry. This is essentially just a nested list of display parameters, and the values in this list
-## will be used to initialize the objects. Please note that a display parameter still needs to be defined in the class
-## definition for this to work, and that all parameters that are not set explicitly in the scheme will be taken from
-## the defaults in that class definition. Scheme parameters still override everything else, and even parameters that are
-## not defined for the class will be added from the scheme settings.
+## The scheme settings registry. This is essentially just a nested list of
+## display parameters, and the values in this list will be used to initialize
+## the objects. Please note that a display parameter still needs to be defined
+## in the class definition for this to work, and that all parameters that are
+## not set explicitly in the scheme will be taken from the defaults in that
+## class definition. Scheme parameters still override everything else, and even
+## parameters that are not defined for the class will be added from the
+## scheme settings.
 
 #' @importFrom grDevices boxplot.stats
 .schemes <- new.env()
@@ -1288,7 +2021,14 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
         factor = 0.5,
         family = "symmetric",
         fill.histogram = NULL,
-        fill.horizon = c("#B41414", "#E03231", "#F7A99C", "#9FC8DC", "#468CC8", "#0165B3"),
+        fill.horizon = c(
+            "#B41414",
+            "#E03231",
+            "#F7A99C",
+            "#9FC8DC",
+            "#468CC8",
+            "#0165B3"
+        ),
         fill.mountain = c("#CCFFFF", "#FFCCFF"),
         fontcolor.legend = .DEFAULT_SHADED_COL,
         gradient = RColorBrewer::brewer.pal(9, "Blues"),
@@ -1364,14 +2104,17 @@ setClassUnion("BSgenomeOrNULL", c("BSgenome", "NULL"))
 
 ### Scheme Functions ---------------------------------------------------------
 
-## A helper function to be called upon package load that tries to find a stored Gviz scheme in the working directory
+## A helper function to be called upon package load that tries to find
+## stored Gviz scheme in the working directory
 .collectSchemes <- function() {
     try(
         {
             if (".GvizSchemes" %in% base::ls(globalenv(), all.names = TRUE)) {
                 schemes <- get(".GvizSchemes", globalenv())
                 if (is.list(schemes) && !is.null(names(schemes))) {
-                    lapply(names(schemes), function(x) addScheme(schemes[[x]], x))
+                    lapply(names(schemes), function(x) {
+                        addScheme(schemes[[x]], x)
+                    })
                 }
             }
         },
@@ -1417,8 +2160,8 @@ addScheme <- function(scheme, name) {
 
 ### Helper Functions ---------------------------------------------------------
 
-
-## Helper function to compute native coordinate equivalent to 1 pixel and resize all ranges in a GRanges object accordingly
+## Helper function to compute native coordinate equivalent to 1 pixel
+## and resize all ranges in a GRanges object accordingly
 ## Arguments:
 ##    o r: object inheriting from class GdObject
 ##    o min.width: the minimal pixel width of a region
@@ -1432,7 +2175,10 @@ addScheme <- function(scheme, name) {
         xsel <- xdiff < minXDiff
         if (any(xsel)) {
             rr <- if (is(r, "GRanges")) ranges(r) else r
-            start(rr)[xsel] <- pmax(1, start(rr)[xsel] - (minXDiff - xdiff[xsel]) / 2)
+            start(rr)[xsel] <- pmax(
+                1,
+                start(rr)[xsel] - (minXDiff - xdiff[xsel]) / 2
+            )
             end(rr)[xsel] <- end(rr)[xsel] + (minXDiff - xdiff[xsel]) / 2
             if (is(r, "GRanges")) r@ranges <- rr else r <- rr
         }
@@ -1441,37 +2187,42 @@ addScheme <- function(scheme, name) {
 }
 
 ## Tables containing the UCSC to ENSEMBL genome mapping
-.biomartCurrentVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsNow.txt"), package = "Gviz"), as.is = TRUE)
-.biomartVersionTable <- read.delim(system.file(file.path("extdata", "biomartVersionsLatest.txt"), package = "Gviz"), as.is = TRUE)
+.biomartCurrentVersionTable <- read.delim(
+    system.file(
+        file.path("extdata", "biomartVersionsNow.txt"),
+        package = "Gviz"
+    ),
+    as.is = TRUE
+)
+.biomartVersionTable <- read.delim(
+    system.file(
+        file.path("extdata", "biomartVersionsLatest.txt"),
+        package = "Gviz"
+    ),
+    as.is = TRUE
+)
 
-## Helper function to map between UCSC and ENSEMBL genome information
+## Maps a UCSC genome ID to its organism + Ensembl build info
 ## Arguments:
 ##    o id: character scalar, a UCSC genome identifier
 ## Value: a list with ENSEMBL the genome information
-# .ucsc2Ensembl <- function(id) {
-#     mt <- match(tolower(id), tolower(.biomartCurrentVersionTable$ucscId))
-#     val <- .biomartCurrentVersionTable[mt, ]
-#     if (is.na(mt)) {
-#         mt <- match(tolower(id), tolower(.biomartVersionTable$ucscId))
-#         val <- .biomartVersionTable[mt, c("species", "value", "dataset", "ucscId", "speciesShort", "speciesLong", "date", "version")]
-#     }
-#     return(as.list(val))
-# }
-
-## Maps a UCSC genome ID to its organism + Ensembl build info
 .ucsc2Ensembl <- function(id) {
-    registry <- registered_UCSC_genomes()               # organism, genome, NCBI_assembly, ...
-    reg_row  <- registry[tolower(registry$genome) == tolower(id), ]
+    registry <- registered_UCSC_genomes() # organism, genome, NCBI_assembly, ...
+    reg_row <- registry[tolower(registry$genome) == tolower(id), ]
     if (nrow(reg_row) == 0) {
-        stop(sprintf("UCSC genome id '%s' is not registered in GenomeInfoDb", id))
+        stop(sprintf(
+            "UCSC genome id '%s' is not registered in GenomeInfoDb",
+            id
+        ))
     }
-    build <- mapGenomeBuilds(id, style = "Ensembl")      # ensemblID, ensemblVersion, ensemblDate, ucscID
+    # ensemblID, ensemblVersion, ensemblDate, ucscID
+    build <- mapGenomeBuilds(id, style = "Ensembl")
     list(
-        organism  = as.character(reg_row$organism[1]),
-        ucscId    = id,
+        organism = as.character(reg_row$organism[1]),
+        ucscId = id,
         ensemblID = build$ensemblID[1],
-        version   = build$ensemblVersion[1],
-        date      = build$ensemblDate[1]
+        version = build$ensemblVersion[1],
+        date = build$ensemblDate[1]
     )
 }
 
@@ -1488,67 +2239,34 @@ addScheme <- function(scheme, name) {
 ## Arguments:
 ##    o genome: character scalar, a UCSC genome identifier
 ## Value: a biomaRt object
-# .getBiomart <- function(genome) {
-#     map <- .ucsc2Ensembl(genome)
-#     if (map$date == "head") {
-#         bm <- useEnsembl(biomart = "ensembl", dataset = map$dataset)
-#         ds <- listDatasets(bm)
-#         mt <- ds[match(map$dataset, ds$dataset), "version"]
-#         if (is.na(mt)) {
-#             stop(sprintf(
-#                 "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-#                 genome, map$dataset
-#             ), "\nPlease manually provide biomaRt object")
-#         }
-#         if (mt != map$value) {
-#             stop(sprintf(
-#                 "Gviz thinks that the UCSC genome identifier '%s' should map to the current Biomart head as '%s', ",
-#                 genome, map$value, mt
-#             ), "but its current version is '%s'.\nPlease manually provide biomaRt object.")
-#         }
-#     } else {
-#         bm <- useEnsembl(biomart = "ENSEMBL_MART_ENSEMBL", dataset = map$dataset, host = sprintf("%s.archive.ensembl.org", tolower(sub(".", "", map$date, fixed = TRUE))))
-#         ds <- listDatasets(bm)
-#         mt <- ds[match(map$dataset, ds$dataset), "version"]
-#         if (is.na(mt)) {
-#             stop(sprintf(
-#                 "Gviz thinks that the UCSC genome identifier '%s' should map to the Biomart data set '%s' which is not correct.",
-#                 genome, map$dataset
-#             ), "\nPlease manually provide biomaRt object")
-#         }
-#         if (mt != map$value) {
-#             stop(
-#                 sprintf(
-#                     "Gviz thinks that the UCSC genome identifier '%s' should map to Biomart archive %s (version %s) as '%s',",
-#                     genome, sub(".", " ", map$date, fixed = TRUE), map$version, map$value, mt
-#                 ),
-#                 "but its version is '%s'.\nPlease manually provide biomaRt object"
-#             )
-#         }
-#     }
-#     return(bm)
-# }
-
 .getBiomart <- function(genome) {
-    map     <- .ucsc2Ensembl(genome)
+    map <- .ucsc2Ensembl(genome)
     dataset <- .datasetFromOrganism(map$organism)
 
     if (is.na(map$version) || identical(map$date, "head")) {
         bm <- useEnsembl(biomart = "genes", dataset = dataset)
     } else {
-        bm <- useEnsembl(biomart = "genes", dataset = dataset, version = map$version)
+        bm <- useEnsembl(
+            biomart = "genes",
+            dataset = dataset,
+            version = map$version
+        )
     }
 
-    ## --- Validation: does the dataset/build we connected to match what we expected? ---
+    ## Validation: does the dataset/build we connected to match what we expected
     ds <- listDatasets(bm)
     row <- ds[ds$dataset == dataset, ]
 
     if (nrow(row) == 0) {
-        stop(sprintf(
-            "UCSC genome id '%s' was mapped to Biomart dataset '%s',",
-            genome, dataset),
+        stop(
+            sprintf(
+                "UCSC genome id '%s' was mapped to Biomart dataset '%s',",
+                genome,
+                dataset
+            ),
             " which doesn't exist on this Ensembl host.\n",
-            "Please supply a biomaRt object manually.")
+            "Please supply a biomaRt object manually."
+        )
     }
 
     actual_build <- row$version[1]
@@ -1562,33 +2280,25 @@ addScheme <- function(scheme, name) {
 
     if (!build_matches) {
         stop(sprintf(
-            paste0(
-                "UCSC genome id '%s' was expected to map to Ensembl build '%s' ",
-                "(dataset '%s'), but the connected Biomart reports build '%s' instead.\n",
-                "This mismatch likely means the wrong Ensembl version/archive was used.\n",
-                "Please supply a biomaRt object manually."
-            ),
-            genome, expected_build, dataset, actual_build
+            "UCSC genome id '%s' was expected to map to Ensembl build '%s'
+(dataset '%s'), but the connected Biomart reports build '%s' instead.
+This mismatch likely means the wrong Ensembl version/archive was used.
+Please supply a biomaRt object manually.",
+            genome,
+            expected_build,
+            dataset,
+            actual_build
         ))
     }
 
     bm
 }
 
-## Helper function to translate from a UCSC genome name to a Biomart data set. This also caches the mart
-## object in order to speed up subsequent calls
+## Helper function to translate from a UCSC genome name to a Biomart data set.
+## This also caches the mart object in order to speed up subsequent calls
 ## Arguments:
 ##    o genome: character giving the UCSC genome
 ## Value: A BiomaRt connection object
-# .genome2Dataset <- function(genome) {
-#     map <- .ucsc2Ensembl(genome)
-#     if (is.na(map$date)) {
-#         stop(sprintf("Unable to automatically determine Biomart data set for UCSC genome identifier '%s'.\nPlease manually provide biomaRt object", genome))
-#     }
-#     cenv <- environment()
-#     bm <- .doCache(paste(map$dataset, genome, sep = "_"), expression(.getBiomart(genome)), .ensemblCache, cenv)
-#     return(bm)
-# }
 
 ## Replaces .genome2Dataset() (in-session cache instead of Gviz's .doCache)
 .ensemblCache <- new.env(parent = emptyenv())
@@ -1601,40 +2311,78 @@ addScheme <- function(scheme, name) {
 }
 
 
-
-
-## Return the plotting range for a GdObject, either from the contained ranges or from overrides.
+## Return the plotting range for a GdObject,
+## either from the contained ranges or from overrides.
 ## This function is vectorized and should also work for lists of GdObjects.
 
 #' @importMethodsFrom BSgenome seqnames
-.defaultRange <- function(GdObject, from = NULL, to = NULL, extend.left = 0, extend.right = 0, factor = 0.01, annotation = FALSE) {
+.defaultRange <- function(
+  GdObject,
+  from = NULL,
+  to = NULL,
+  extend.left = 0,
+  extend.right = 0,
+  factor = 0.01,
+  annotation = FALSE
+) {
     if (!is.list(GdObject)) {
         GdObject <- list(GdObject)
     }
-    GdObject <- c(GdObject, unlist(lapply(GdObject, function(x) if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) x@trackList else NULL)))
-    if (!length(GdObject) || !all(vapply(GdObject, is, "GdObject", FUN.VALUE = logical(1L)))) {
+    GdObject <- c(
+        GdObject,
+        unlist(lapply(GdObject, function(x) {
+            if (is(x, "HighlightTrack") || is(x, "OverlayTrack")) {
+                x@trackList
+            } else {
+                NULL
+            }
+        }))
+    )
+    if (
+        !length(GdObject) ||
+            !all(vapply(GdObject, is, "GdObject", FUN.VALUE = logical(1L)))
+    ) {
         stop("All items in the list must inherit from class 'GdObject'")
     }
-    GdObject <- GdObject[!vapply(GdObject, is, "OverlayTrack", FUN.VALUE = logical(1L))]
+    GdObject <- GdObject[
+        !vapply(GdObject, is, "OverlayTrack", FUN.VALUE = logical(1L))
+    ]
     tfrom <- lapply(GdObject, function(x) {
         tmp <- start(x)
-        if (is(x, "RangeTrack")) tmp <- tmp[seqnames(x) == chromosome(x)]
+        if (is(x, "RangeTrack")) {
+            tmp <- tmp[seqnames(x) == chromosome(x)]
+        }
         tmp
     })
-    tfrom <- if (is.null(unlist(tfrom))) Inf else min(vapply(tfrom[listLen(tfrom) > 0], min, FUN.VALUE = numeric(1L)))
+    tfrom <- if (is.null(unlist(tfrom))) {
+        Inf
+    } else {
+        min(vapply(tfrom[listLen(tfrom) > 0], min, FUN.VALUE = numeric(1L)))
+    }
     tto <- lapply(GdObject, function(x) {
         tmp <- end(x)
-        if (is(x, "RangeTrack")) tmp <- tmp[seqnames(x) == chromosome(x)]
+        if (is(x, "RangeTrack")) {
+            tmp <- tmp[seqnames(x) == chromosome(x)]
+        }
         tmp
     })
-    tto <- if (is.null(unlist(tto))) Inf else max(vapply(tto[listLen(tto) > 0], max, FUN.VALUE = numeric(1L)))
-    if ((is.null(from) || is.null(to)) && ((is.infinite(tfrom) || is.infinite(tto)) || is(GdObject, "GenomeAxisTrack"))) {
+    tto <- if (is.null(unlist(tto))) {
+        Inf
+    } else {
+        max(vapply(tto[listLen(tto) > 0], max, FUN.VALUE = numeric(1L)))
+    }
+    if (
+        (is.null(from) || is.null(to)) &&
+            ((is.infinite(tfrom) || is.infinite(tto)) ||
+                is(GdObject, "GenomeAxisTrack"))
+    ) {
         stop(
             "Unable to automatically determine plotting ranges from the supplied track(s).\nPlease provide ",
             "range coordinates through the 'from' and 'to' arguments of the plotTracks function."
         )
     }
-    ## FIX the cases with identical "tfrom" and "tto" (one base-pair plotting) by adding +1 to "tto"
+    ## FIX the cases with identical "tfrom" and "tto"
+    ## (one base-pair plotting) by adding +1 to "tto"
     if (tto == tfrom) {
         tto <- tto + 1
     }
@@ -1653,8 +2401,16 @@ addScheme <- function(scheme, name) {
     if (annotation) {
         rr <- unlist(lapply(GdObject, function(x) {
             gr <- .dpOrDefault(x, ".__groupRanges")
-            gw <- .dpOrDefault(x, ".__groupLabelWidths", data.frame(before = 0, after = 0))
-            if (is.null(gr) || length(gr) == 0) NULL else c(min(start(gr) + gw$before), max(end(gr) - gw$after))
+            gw <- .dpOrDefault(
+                x,
+                ".__groupLabelWidths",
+                data.frame(before = 0, after = 0)
+            )
+            if (is.null(gr) || length(gr) == 0) {
+                NULL
+            } else {
+                c(min(start(gr) + gw$before), max(end(gr) - gw$after))
+            }
         }))
         if (!is.null(rr)) {
             rr <- matrix(rr, ncol = 2, byrow = TRUE)
@@ -1677,7 +2433,9 @@ addScheme <- function(scheme, name) {
         to + extend.right
     }
     if (from > to) {
-        warning("'from' range can not be larger than 'to', reversing range coordinates")
+        warning(
+            "'from' range can not be larger than 'to', reversing range coordinates"
+        )
         tto <- from
         from <- to
         to <- tto
@@ -1686,7 +2444,8 @@ addScheme <- function(scheme, name) {
 }
 
 
-## Figure out the colors to use for a DataTrack object from the supplied display parameters
+## Figure out the colors to use for a DataTrack object
+## from the supplied display parameters
 .getPlottingFeatures <- function(GdObject) {
     pch <- .dpOrDefault(GdObject, "pch", 20)
     lty <- .dpOrDefault(GdObject, "lty", 1)
@@ -1694,7 +2453,9 @@ addScheme <- function(scheme, name) {
     cex <- .dpOrDefault(GdObject, "cex", 0.7)
     groups <- .dpOrDefault(GdObject, "groups")
     col <- .dpOrDefault(GdObject, "col", "#0080ff")
-    if (is.null(groups)) { ## When there are no groups we force a single color for all lines and points
+    if (is.null(groups)) {
+        ## When there are no groups
+        ## we force a single color for all lines and points
         col <- col[1]
         col.line <- .dpOrDefault(GdObject, "col.line", col)[1]
         col.symbol <- .dpOrDefault(GdObject, "col.symbol", col)[1]
@@ -1702,54 +2463,104 @@ addScheme <- function(scheme, name) {
         lwd <- lwd[1]
         lty <- lty[1]
         cex <- cex[1]
-    } else { ## Otherwise colors are being mapped to group factors
+    } else {
+        ## Otherwise colors are being mapped to group factors
         if (!is.factor(groups)) {
             groups <- factor(groups)
         }
         nms <- levels(groups)
-        col <- .dpOrDefault(GdObject, "col", lattice::trellis.par.get("superpose.line")$col)
+        col <- .dpOrDefault(
+            GdObject,
+            "col",
+            lattice::trellis.par.get("superpose.line")$col
+        )
         col <- rep(col, nlevels(groups))[seq_along(levels(groups))]
-        col.line <- rep(.dpOrDefault(GdObject, "col.line", col), nlevels(groups))[seq_along(levels(groups))]
-        col.symbol <- rep(.dpOrDefault(GdObject, "col.symbol", col), nlevels(groups))[seq_along(levels(groups))]
+        col.line <- rep(
+            .dpOrDefault(GdObject, "col.line", col),
+            nlevels(groups)
+        )[seq_along(levels(groups))]
+        col.symbol <- rep(
+            .dpOrDefault(GdObject, "col.symbol", col),
+            nlevels(groups)
+        )[seq_along(levels(groups))]
         lwd <- rep(lwd, nlevels(groups))[seq_along(levels(groups))]
         lty <- rep(lty, nlevels(groups))[seq_along(levels(groups))]
         pch <- rep(pch, nlevels(groups))[seq_along(levels(groups))]
         cex <- rep(cex, nlevels(groups))[seq_along(levels(groups))]
-        names(col) <- names(col.line) <- names(col.symbol) <- names(lwd) <- names(lty) <- names(pch) <- names(cex) <- nms
+        names(col) <- names(col.line) <- names(col.symbol) <- names(
+            lwd
+        ) <- names(lty) <- names(pch) <- names(cex) <- nms
     }
     col.baseline <- .dpOrDefault(GdObject, "col.baseline", col)[1]
     col.grid <- .dpOrDefault(GdObject, "col.grid", "#e6e6e6")[1]
     fill <- .dpOrDefault(GdObject, "fill", .DEFAULT_FILL_COL)[1]
     fill.histogram <- .dpOrDefault(GdObject, "fill.histogram", fill)[1]
-    col.histogram <- .dpOrDefault(GdObject, "col.histogram", .dpOrDefault(GdObject, "col", .DEFAULT_SHADED_COL))[1]
+    col.histogram <- .dpOrDefault(
+        GdObject,
+        "col.histogram",
+        .dpOrDefault(GdObject, "col", .DEFAULT_SHADED_COL)
+    )[1]
     lty.grid <- .dpOrDefault(GdObject, "lty.grid", 1)
     lwd.grid <- .dpOrDefault(GdObject, "lwd.grid", 1)
     return(list(
-        col = col, col.line = col.line, col.symbol = col.symbol, col.baseline = col.baseline,
-        col.grid = col.grid, col.histogram = col.histogram, fill = fill, fill.histogram = fill.histogram,
-        lwd = lwd, lty = lty, pch = pch, cex = cex, lwd.grid = lwd.grid, lty.grid = lty.grid
+        col = col,
+        col.line = col.line,
+        col.symbol = col.symbol,
+        col.baseline = col.baseline,
+        col.grid = col.grid,
+        col.histogram = col.histogram,
+        fill = fill,
+        fill.histogram = fill.histogram,
+        lwd = lwd,
+        lty = lty,
+        pch = pch,
+        cex = cex,
+        lwd.grid = lwd.grid,
+        lty.grid = lty.grid
     ))
 }
 
 
 .legendInfo <- function() {
-    legInfo <- matrix(FALSE, ncol = 7, nrow = 17, dimnames = list(
-        c(
-            "p", "b", "l", "a", "s", "S", "r", "h", "smooth",
-            "histogram", "boxplot", "heatmap", "gradient", "mountain", "g", "horizon", "confint"
-        ),
-        c("lty", "lwd", "pch", "col", "cex", "col.lines", "col.symbol")
-    ))
+    legInfo <- matrix(
+        FALSE,
+        ncol = 7,
+        nrow = 17,
+        dimnames = list(
+            c(
+                "p",
+                "b",
+                "l",
+                "a",
+                "s",
+                "S",
+                "r",
+                "h",
+                "smooth",
+                "histogram",
+                "boxplot",
+                "heatmap",
+                "gradient",
+                "mountain",
+                "g",
+                "horizon",
+                "confint"
+            ),
+            c("lty", "lwd", "pch", "col", "cex", "col.lines", "col.symbol")
+        )
+    )
     legInfo[seq(2, 9), c("lty", "lwd", "col.lines")] <- TRUE
     legInfo[seq(1, 2), c("pch", "cex", "col.symbol")] <- TRUE
     legInfo[seq(1, 12), "col"] <- TRUE
     return(legInfo)
 }
 
-## A helper function to get the currently active chromosomes, also if the track is one of the collection
-## track classes
+## A helper function to get the currently active chromosomes,
+## also if the track is one of the collection track classes
 .recChromosome <- function(GdObject) {
-    chroms <- if (is(GdObject, "HighlightTrack") || is(GdObject, "OverlayTrack")) {
+    chroms <- if (
+        is(GdObject, "HighlightTrack") || is(GdObject, "OverlayTrack")
+    ) {
         unlist(lapply(GdObject@trackList, .recChromosome))
     } else {
         chromosome(GdObject)
@@ -1758,14 +2569,14 @@ addScheme <- function(scheme, name) {
 }
 
 
-
-
-
-## Try to extract the (unique) genome information from a GRanges objects with the possibility to fall back to a default value
+## Try to extract the (unique) genome information from a GRanges objects
+## with the possibility to fall back to a default value
 .getGenomeFromGRange <- function(range, default = NULL) {
     gn <- genome(range)
     if (length(unique(gn)) > 1) {
-        warning("Only a single genome is supported for this object. Ignoring additional genome information")
+        warning(
+            "Only a single genome is supported for this object. Ignoring additional genome information"
+        )
     }
     if (length(gn) == 0 || all(is.na(gn))) {
         if (is.null(default)) {
@@ -1781,7 +2592,10 @@ addScheme <- function(scheme, name) {
     availSlots <- getObjectSlots(object)
     availSlotNames <- names(availSlots)
     definedSlotNames <- slotNames(object)
-    if (length(availSlotNames) == length(definedSlotNames) && all(sort(availSlotNames) == sort(definedSlotNames))) {
+    if (
+        length(availSlotNames) == length(definedSlotNames) &&
+            all(sort(availSlotNames) == sort(definedSlotNames))
+    ) {
         return(object)
     }
     commonSlots <- intersect(definedSlotNames, availSlotNames)
@@ -1794,19 +2608,22 @@ addScheme <- function(scheme, name) {
 }
 
 
-
 vpLocation <- function() {
     xres <- devRes()[1]
     yres <- devRes()[2]
     ## find location and pixel-size of current viewport
     devloc1 <- c(
         convertX(unit(0, "npc"), "inches"),
-        convertY(unit(0, "npc"), "inches"), 1
-    ) %*% current.transform()
+        convertY(unit(0, "npc"), "inches"),
+        1
+    ) %*%
+        current.transform()
     devloc2 <- c(
         convertX(unit(1, "npc"), "inches"),
-        convertY(unit(1, "npc"), "inches"), 1
-    ) %*% current.transform()
+        convertY(unit(1, "npc"), "inches"),
+        1
+    ) %*%
+        current.transform()
     x1 <- (devloc1 / devloc1[3])[1] * xres
     y1 <- (devloc1 / devloc1[3])[2] * yres
     x2 <- (devloc2 / devloc2[3])[1] * xres
@@ -1820,11 +2637,12 @@ vpLocation <- function() {
     isize <- size / c(xres, yres)
     names(size) <- c("width", "height")
     return(list(
-        location = loc, size = size, ilocation = iloc,
+        location = loc,
+        size = size,
+        ilocation = iloc,
         isize = isize
     ))
 }
-
 
 
 devRes <- function() {
@@ -1845,16 +2663,27 @@ devRes <- function() {
 }
 
 
-
 devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     f <- (((ncol + 1) * 0.1 + ncol + 1) / ((nrow + 1) * 0.1 + nrow + 1))
-    if ((missing(width) & missing(height) || !missing(width) & !missing(height))) {
+    if (
+        (missing(width) & missing(height) || !missing(width) & !missing(height))
+    ) {
         stop("Need either argument 'width' or argument 'height'")
     }
     if (missing(height)) {
-        return(list(width = width, height = width / f, pwidth = width * res, pheight = width / f * res))
+        return(list(
+            width = width,
+            height = width / f,
+            pwidth = width * res,
+            pheight = width / f * res
+        ))
     } else {
-        return(list(width = height * f, height, pwidth = height * f * res, pheight = height * res))
+        return(list(
+            width = height * f,
+            height,
+            pwidth = height * f * res,
+            pheight = height * res
+        ))
     }
 }
 
@@ -1863,17 +2692,29 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 #' @importFrom utils assignInNamespace
 .makeParMapping <- function() {
     classes <- c(
-        "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack", "IdeogramTrack", "StackedTrack",
-        "AnnotationTrack", "DetailsAnnotationTrack", "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack"
+        "GdObject",
+        "GenomeAxisTrack",
+        "RangeTrack",
+        "NumericTrack",
+        "DataTrack",
+        "IdeogramTrack",
+        "StackedTrack",
+        "AnnotationTrack",
+        "DetailsAnnotationTrack",
+        "GeneRegionTrack",
+        "BiomartGeneRegionTrack",
+        "AlignmentsTrack"
     )
-    defs <- try(lapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list")), silent = TRUE)
+    defs <- try(
+        lapply(classes, function(x) as(getClassDef(x)@prototype@dp, "list")),
+        silent = TRUE
+    )
     if (!is(defs, "try-error") && is.null(.parMappings)) {
         names(defs) <- classes
         assignInNamespace(x = ".parMappings", value = defs, ns = "Gviz")
     }
 }
 .parMappings <- NULL
-
 
 
 ## Compute ellipse outline coordinates for bounding boxes
@@ -1888,17 +2729,26 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     tau <- 0
     xt <- x + (a * cos(t) * cos(tau) - b * sin(t) * sin(tau))
     yt <- y + (a * cos(t) * sin(tau) + b * sin(t) * cos(tau))
-    return(data.frame(x1 = xt, y1 = yt, id = rep(seq_len(nrow(box)), each = np)))
+    return(data.frame(
+        x1 = xt,
+        y1 = yt,
+        id = rep(seq_len(nrow(box)), each = np)
+    ))
 }
 
 ## We store some presets in the options on package load
 .onLoad <- function(...) {
     .collectSchemes()
-    options("ucscChromosomeNames" = TRUE, "Gviz.scheme" = "default", "Gviz.ucscUrl" = NULL)
+    options(
+        "ucscChromosomeNames" = TRUE,
+        "Gviz.scheme" = "default",
+        "Gviz.ucscUrl" = NULL
+    )
 }
 
 
-## A helper function to replace missing function arguments in a list with NULL values. The function environment needs
+## A helper function to replace missing function arguments
+## in a list with NULL values. The function environment needs
 ## to be passed in as argument 'env' for this to work.
 .missingToNull <- function(symbol, env = parent.frame()) {
     for (i in symbol) {
@@ -1929,8 +2779,8 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 }
 
 
-## Prepare a data.frame or matrix containing the data for a DataTrack object. This involves trying to coerce
-## and dropping non-numeric columns with a warning
+## Prepare a data.frame or matrix containing the data for a DataTrack object.
+## This tries to coerce and dropping non-numeric columns with a warning
 
 #' @importFrom utils type.convert
 .prepareDtData <- function(data, len = 0) {
@@ -1943,7 +2793,8 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         isNum <- vapply(data, is.numeric, FUN.VALUE = logical(1L))
         if (any(!isNum)) {
             warning(sprintf(
-                "The following non-numeric data column%s been dropped: %s", ifelse(sum(!isNum) > 1, "s have", " has"),
+                "The following non-numeric data column%s been dropped: %s",
+                ifelse(sum(!isNum) > 1, "s have", " has"),
                 paste(colnames(data)[!isNum], collapse = ", ")
             ))
         }
@@ -1964,8 +2815,8 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 
 ### Import functions ---------------------------------------------------------
 
-## An import function for gff3 files that tries to resolve the parent-child relationship
-## between genes, transcripts and exons
+## An import function for gff3 files that tries to resolve the parent-child
+## relationship between genes, transcripts and exons
 .import.gff3 <- function(file) {
     dat <- import.gff3(file)
     res <- try({
@@ -1988,7 +2839,10 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
                 mcols(dat)[["transcript_name"]] <- tn
             }
             mt2 <- rep(NA, dim(mcols(dat))[1])
-            mt2[!is.na(mt)] <- match(as.character(tinfo[mt[!is.na(mt)], "Parent"]), as.character(ginfo$ID))
+            mt2[!is.na(mt)] <- match(
+                as.character(tinfo[mt[!is.na(mt)], "Parent"]),
+                as.character(ginfo$ID)
+            )
 
             if (!all(is.na(mt2))) {
                 if (!"gene_id" %in% colnames(mcols(dat))) {
@@ -2009,7 +2863,10 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         if (!"exon_id" %in% colnames(mcols(dat))) {
             mcols(dat)[["exon_id"]] <- mcols(dat)[["ID"]]
         }
-        if (!is.null(mcols(dat)[["gene_name"]]) && all(is.na(mcols(dat)[["gene_name"]]))) {
+        if (
+            !is.null(mcols(dat)[["gene_name"]]) &&
+                all(is.na(mcols(dat)[["gene_name"]]))
+        ) {
             mcols(dat)[["gene_name"]] <- NULL
         }
         if (all(is.na(mcols(dat)[["transcript_name"]]))) {
@@ -2018,16 +2875,19 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         dat
     })
     if (is(res, "try-error")) {
-        warning(sprintf(
-            "File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
-            file
-        ), "\nResults may not be what you expected!")
+        warning(
+            sprintf(
+                "File '%s' is not valid according to the GFF3 standard and can not be properly parsed.",
+                file
+            ),
+            "\nResults may not be what you expected!"
+        )
         res <- dat
     }
     return(res)
 }
 
-## An import function for bigWig files that knowns how to deal with missing seqnames
+## An import function for bigWig files that deals with missing seqnames
 
 #' @importFrom rtracklayer BigWigFile
 .import.bw <- function(file, selection) {
@@ -2036,8 +2896,12 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         rr <- import.bw(con = bwf)
     } else {
         si <- seqinfo(bwf)
-        rr <- if (!as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(bwf))) {
-            GRanges(seqnames(selection)[1], ranges = IRanges(1, 2), score = 1)[0]
+        rr <- if (
+            !as.character(seqnames(selection)[1]) %in% seqnames(seqinfo(bwf))
+        ) {
+            GRanges(seqnames(selection)[1], ranges = IRanges(1, 2), score = 1)[
+                0
+            ]
         } else {
             import.bw(con = bwf, selection = selection)
         }
@@ -2045,42 +2909,76 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     return(rr)
 }
 
-## An import function for bam files that distinguishes between DataTracks and AnnotationTracks
+## An import function for bam files that distinguishes between DataTracks
+## and AnnotationTracks
 ## FIXME: We probably want this to be able to deal with Gapped Alignments...
 .import.bam <- function(file, selection) {
-    if (!file.exists(paste(file, "bai", sep = ".")) &&
-        !file.exists(paste(paste(head(strsplit("xxx.bam", ".", fixed = TRUE)[[1]], -1), collapse = "."), "bai", sep = "."))) {
+    if (
+        !file.exists(paste(file, "bai", sep = ".")) &&
+            !file.exists(paste(
+                paste(
+                    head(strsplit("xxx.bam", ".", fixed = TRUE)[[1]], -1),
+                    collapse = "."
+                ),
+                "bai",
+                sep = "."
+            ))
+    ) {
         stop(
-            "Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
-            "library(Rsamtools)\n\tindexBam(\"", file, "\")"
+            "Unable to find index for BAM file '",
+            file,
+            "'. You can build an index using the following command:\n\t",
+            "library(Rsamtools)\n\tindexBam(\"",
+            file,
+            "\")"
         )
     }
     sinfo <- scanBamHeader(file)[[1]]
     if (parent.env(environment())[["._trackType"]] == "DataTrack") {
-        res <- if (!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)) {
+        res <- if (
+            !as.character(seqnames(selection)[1]) %in% names(sinfo$targets)
+        ) {
             mcols(selection) <- DataFrame(score = 0)
             selection
         } else {
-            param <- ScanBamParam(what = c("pos", "qwidth"), which = selection, flag = scanBamFlag(isUnmappedQuery = FALSE))
+            param <- ScanBamParam(
+                what = c("pos", "qwidth"),
+                which = selection,
+                flag = scanBamFlag(isUnmappedQuery = FALSE)
+            )
             x <- scanBam(file, param = param)[[1]]
             cov <- coverage(IRanges(x[["pos"]], width = x[["qwidth"]]))
             if (length(cov) == 0) {
                 mcols(selection) <- DataFrame(score = 0)
                 selection
             } else {
-                GRanges(seqnames = seqnames(selection), ranges = IRanges(start = start(cov), end = end(cov)), strand = "*", score = runValue(cov))
+                GRanges(
+                    seqnames = seqnames(selection),
+                    ranges = IRanges(start = start(cov), end = end(cov)),
+                    strand = "*",
+                    score = runValue(cov)
+                )
             }
         }
     } else {
-        res <- if (!as.character(seqnames(selection)[1]) %in% names(sinfo$targets)) {
+        res <- if (
+            !as.character(seqnames(selection)[1]) %in% names(sinfo$targets)
+        ) {
             mcols(selection) <- DataFrame(id = "NA", group = "NA")
             selection[0]
         } else {
-            param <- ScanBamParam(what = c("pos", "qwidth", "strand", "qname"), which = selection, flag = scanBamFlag(isUnmappedQuery = FALSE))
+            param <- ScanBamParam(
+                what = c("pos", "qwidth", "strand", "qname"),
+                which = selection,
+                flag = scanBamFlag(isUnmappedQuery = FALSE)
+            )
             x <- scanBam(file, param = param)[[1]]
             GRanges(
-                seqnames = seqnames(selection), ranges = IRanges(start = x[["pos"]], width = x[["qwidth"]]), strand = x[["strand"]],
-                id = make.unique(x[["qname"]]), group = x[["qname"]]
+                seqnames = seqnames(selection),
+                ranges = IRanges(start = x[["pos"]], width = x[["qwidth"]]),
+                strand = x[["strand"]],
+                id = make.unique(x[["qname"]]),
+                group = x[["qname"]]
             )
         }
     }
@@ -2106,8 +3004,12 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
     }
     if (is.null(index)) {
         stop(
-            "Unable to find index for BAM file '", file, "'. You can build an index using the following command:\n\t",
-            "library(Rsamtools)\n\tindexBam(\"", file, "\")"
+            "Unable to find index for BAM file '",
+            file,
+            "'. You can build an index using the following command:\n\t",
+            "library(Rsamtools)\n\tindexBam(\"",
+            file,
+            "\")"
         )
     }
     pairedEnd <- parent.env(environment())[["._isPaired"]]
@@ -2119,13 +3021,36 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         flag <- scanBamFlag(isUnmappedQuery = FALSE)
     }
     bf <- BamFile(file, index = index, asMates = pairedEnd)
-    param <- ScanBamParam(which = selection, what = scanBamWhat(), tag = "MD", flag = flag)
-    reads <- if (as.character(seqnames(selection)[1]) %in% names(scanBamHeader(bf)$targets)) scanBam(bf, param = param)[[1]] else list()
-    md <- if (is.null(reads$tag$MD)) rep(as.character(NA), length(reads$pos)) else reads$tag$MD
+    param <- ScanBamParam(
+        which = selection,
+        what = scanBamWhat(),
+        tag = "MD",
+        flag = flag
+    )
+    reads <- if (
+        as.character(seqnames(selection)[1]) %in%
+            names(scanBamHeader(bf)$targets)
+    ) {
+        scanBam(bf, param = param)[[1]]
+    } else {
+        list()
+    }
+    md <- if (is.null(reads$tag$MD)) {
+        rep(as.character(NA), length(reads$pos))
+    } else {
+        reads$tag$MD
+    }
     if (length(reads$pos)) {
         layed_seq <- project_sequences(reads$seq, reads$cigar)
         region <- unlist(bamWhich(param), use.names = FALSE)
-        ans <- stackStrings(layed_seq, start(region), end(region), shift = reads$pos - 1L, Lpadding.letter = "+", Rpadding.letter = "+")
+        ans <- stackStrings(
+            layed_seq,
+            start(region),
+            end(region),
+            shift = reads$pos - 1L,
+            Lpadding.letter = "+",
+            Rpadding.letter = "+"
+        )
         names(ans) <- seq_along(reads$qname)
     } else {
         ans <- DNAStringSet()
@@ -2138,11 +3063,20 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
         cigar = if (is.null(reads$cigar)) character() else reads$cigar,
         mapq = if (is.null(reads$mapq)) integer() else reads$mapq,
         flag = if (is.null(reads$flag)) integer() else reads$flag,
-        md = md, seq = ans,
+        md = md,
+        seq = ans,
         isize = if (is.null(reads$isize)) integer() else reads$isize,
-        groupid = if (pairedEnd) if (is.null(reads$groupid)) integer() else reads$groupid else seq_along(reads$pos),
+        groupid = if (pairedEnd) {
+            if (is.null(reads$groupid)) integer() else reads$groupid
+        } else {
+            seq_along(reads$pos)
+        },
         status = if (pairedEnd) {
-            if (is.null(reads$mate_status)) factor(levels = c("mated", "ambiguous", "unmated")) else reads$mate_status
+            if (is.null(reads$mate_status)) {
+                factor(levels = c("mated", "ambiguous", "unmated"))
+            } else {
+                reads$mate_status
+            }
         } else {
             rep(
                 factor("unmated", levels = c("mated", "ambiguous", "unmated")),
@@ -2153,22 +3087,29 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 }
 
 
-## An import function for fasta file that supports streaming if an index is present
+## An import function for fasta file that supports streaming if an index
+## is present
 #' @importFrom rtracklayer FastaFile
 .import.fasta <- function(file, selection, strict = TRUE) {
     ffile <- FastaFile(file)
     if (!file.exists(paste(file, "fai", sep = "."))) {
         if (strict) {
             stop(
-                "Unable to find index for fasta file '", file, "'. You can build an index using the following command:\n\t",
-                "library(Rsamtools)\n\tindexFa(\"", file, "\")"
+                "Unable to find index for fasta file '",
+                file,
+                "'. You can build an index using the following command:\n\t",
+                "library(Rsamtools)\n\tindexFa(\"",
+                file,
+                "\")"
             )
         } else {
             return(readDNAStringSet(file))
         }
     }
     idx <- scanFaIndex(file)
-    if (!as.character(seqnames(selection)[1]) %in% as.character(seqnames(idx))) {
+    if (
+        !as.character(seqnames(selection)[1]) %in% as.character(seqnames(idx))
+    ) {
         return(DNAStringSet())
     } else {
         return(scanFa(file, selection))
@@ -2190,9 +3131,10 @@ devDims <- function(width, height, ncol = 12, nrow = 8, res = 72) {
 }
 
 
-
-## A mapping of (lower-cased) file extensions to import function calls. Most of those are already implemented in the rtracklayer package.
-## If no mapping is found an error will be raised suggesting to provide a user-defined import function.
+## A mapping of (lower-cased) file extensions to import function calls.
+## Most of those are already implemented in the rtracklayer package.
+## If no mapping is found an error will be raised suggesting to provide
+## a user-defined import function.
 .registerImportFun <- function(file) {
     fileExt <- .fileExtension(file)
     file <- path.expand(file)
@@ -2280,14 +3222,31 @@ availableDefaultMapping <- function(file, trackType) {
 .computeAlignments <- function(range, drop.D.ranges = FALSE) {
     res <- list(range = range, stackRanges = GRanges(), stacks = numeric())
     if (length(range)) {
-        alg <- extractAlignmentRangesOnReference(range$cigar, drop.D.ranges = drop.D.ranges)
+        alg <- extractAlignmentRangesOnReference(
+            range$cigar,
+            drop.D.ranges = drop.D.ranges
+        )
         rp <- elementNROWS(alg)
-        if (is.null(range$flag)) range$flag <-  as.character(NA)
+        if (is.null(range$flag)) {
+            range$flag <- as.character(NA)
+        }
         range <- sort(GRanges(
-            seqnames = rep(seqnames(range), rp), strand = rep("*", sum(rp)), ranges = shift(unlist(alg), rep(start(range), rp) - 1),
-            id = rep(range$id, rp), entityId = rep(seq_along(rp), rp), cigar = rep(range$cigar, rp), md = rep(range$md, rp),
-            readStrand = rep(strand(range), rp), mapq = rep(range$mapq, rp), flag = rep(range$flag, rp), isize = rep(range$isize, rp),
-            groupid = rep(range$groupid, rp), status = factor(rep(range$status, rp), levels = c("mated", "ambiguous", "unmated")),
+            seqnames = rep(seqnames(range), rp),
+            strand = rep("*", sum(rp)),
+            ranges = shift(unlist(alg), rep(start(range), rp) - 1),
+            id = rep(range$id, rp),
+            entityId = rep(seq_along(rp), rp),
+            cigar = rep(range$cigar, rp),
+            md = rep(range$md, rp),
+            readStrand = rep(strand(range), rp),
+            mapq = rep(range$mapq, rp),
+            flag = rep(range$flag, rp),
+            isize = rep(range$isize, rp),
+            groupid = rep(range$groupid, rp),
+            status = factor(
+                rep(range$status, rp),
+                levels = c("mated", "ambiguous", "unmated")
+            ),
             uid = seq_len(sum(rp))
         ))
         if (length(range)) {
@@ -2295,7 +3254,11 @@ availableDefaultMapping <- function(file, trackType) {
             stackRanges <- unlist(range(stTmp))
             ss <- disjointBins(stackRanges)
             range$stack <- ss[match(range$groupid, names(stackRanges))]
-            res <- list(range = range, stackRanges = stackRanges, stacks = range$stack)
+            res <- list(
+                range = range,
+                stackRanges = stackRanges,
+                stacks = range$stack
+            )
         }
     }
     return(res)
@@ -2313,13 +3276,22 @@ availableDefaultMapping <- function(file, trackType) {
         }
     })
     options(warn = 2)
-    ok <- !is(try(
-        {
-            grob <- grid.rect(x = unit(0, "npc"), y = unit(0, "npc"), width = 0, height = 0, gp = gpar(alpha = 0.5))
-            ## grid.remove(grob$name)
-        },
-        silent = TRUE
-    ), "try-error")
+    ok <- !is(
+        try(
+            {
+                grob <- grid.rect(
+                    x = unit(0, "npc"),
+                    y = unit(0, "npc"),
+                    width = 0,
+                    height = 0,
+                    gp = gpar(alpha = 0.5)
+                )
+                ## grid.remove(grob$name)
+            },
+            silent = TRUE
+        ),
+        "try-error"
+    )
     return(ok)
 }
 
@@ -2328,7 +3300,11 @@ availableDefaultMapping <- function(file, trackType) {
 ## determined dynamically.
 .alpha <- function(GdObject, postfix = NULL) {
     support <- .dpOrDefault(GdObject, ".__hasAlphaSupport", .supportsAlpha())
-    wh <- if (is.null(postfix)) "alpha" else c(paste("alpha", postfix, sep = "."), "alpha")
+    wh <- if (is.null(postfix)) {
+        "alpha"
+    } else {
+        c(paste("alpha", postfix, sep = "."), "alpha")
+    }
     alpha <- .dpOrDefault(GdObject, wh, 1)
     if (alpha != 1 && !support) {
         alpha <- 1
@@ -2339,22 +3315,37 @@ availableDefaultMapping <- function(file, trackType) {
 ## Draw horizontal arrows into a viewport indicating cropped read alignments
 .moreInd <- function(n = 3, direction = "up", ...) {
     nn <- n * 2 + 1
-    x <- rep(seq(1 / nn, 1 - (1 / nn), len = nn - 2)[seq(1, nn - 2, by = 2)], each = n) + c(-1 / nn / 2, 0, 1 / nn / 2)
+    x <- rep(
+        seq(1 / nn, 1 - (1 / nn), len = nn - 2)[seq(1, nn - 2, by = 2)],
+        each = n
+    ) +
+        c(-1 / nn / 2, 0, 1 / nn / 2)
     y <- rep(if (direction == "up") c(0, 1, 0) else c(1, 0, 1), n)
     grid.polyline(x, y, id = rep(seq_len(n), each = 3), gp = gpar(...))
 }
 
 
-
-## Compute mismatches for AlignmentsTracks based on the read sequences and a reference sequence
+## Compute mismatches for AlignmentsTracks based on the read sequences
+## and a reference sequence
 #' @importFrom matrixStats colMaxs
 #' @importMethodsFrom Biostrings consensusMatrix consensusString
 .findMismatches <- function(GdObject) {
     rgo <- .dpOrDefault(GdObject, ".__plottingRange")
     mmPos <- mmSamp <- mmSeq <- mmStack <- NULL
     if (!is.null(rgo)) {
-        ref <- as.character(as(subseq(GdObject@referenceSequence, start = rgo["from"], end = rgo["to"]), "Rle"))
-        cm <- consensusMatrix(GdObject@sequences, as.prob = FALSE, baseOnly = TRUE)[-5, ]
+        ref <- as.character(as(
+            subseq(
+                GdObject@referenceSequence,
+                start = rgo["from"],
+                end = rgo["to"]
+            ),
+            "Rle"
+        ))
+        cm <- consensusMatrix(
+            GdObject@sequences,
+            as.prob = FALSE,
+            baseOnly = TRUE
+        )[-5, ]
         cmm <- colMaxs(cm)
         css <- colSums(cm)
         cmp <- rbind(t(t(cm) / css), 0)
@@ -2370,37 +3361,58 @@ availableDefaultMapping <- function(file, trackType) {
             if (any(sel)) {
                 varRegs <- varRegs[sel]
                 rvg <- rvg[sel]
-                mmTab <- do.call(rbind, lapply(varRegs, function(x) as.character(subseq(GdObject@sequences, x, width = 1))))
-                isMm <- t(rvg != "-" & mmTab != "+" & mmTab != "-" & mmTab != rvg)
+                mmTab <- do.call(
+                    rbind,
+                    lapply(varRegs, function(x) {
+                        as.character(subseq(GdObject@sequences, x, width = 1))
+                    })
+                )
+                isMm <- t(
+                    rvg != "-" & mmTab != "+" & mmTab != "-" & mmTab != rvg
+                )
                 mmRelPos <- col(isMm)[which(isMm)]
                 mmPos <- varRegs[mmRelPos] + rgo["from"] - 1
                 mmSampInd <- row(isMm)[which(isMm)]
                 mmSamp <- rownames(isMm)[mmSampInd]
                 mmSeq <- mmTab[ncol(isMm) * (mmSampInd - 1) + mmRelPos]
-                mmStack <- stacks(GdObject)[match(mmSamp, ranges(GdObject)$entityId)]
+                mmStack <- stacks(GdObject)[match(
+                    mmSamp,
+                    ranges(GdObject)$entityId
+                )]
             }
         }
     }
-    return(data.frame(position = mmPos, stack = mmStack, read = mmSamp, base = as.character(mmSeq), stringsAsFactors = TRUE))
+    return(data.frame(
+        position = mmPos,
+        stack = mmStack,
+        read = mmSamp,
+        base = as.character(mmSeq),
+        stringsAsFactors = TRUE
+    ))
 }
 
 
-
-
-
-## Return the default mappings between the metadata columns of an imported GRanges object and those
-## of the track's GRanges object.
+## Return the default mappings between the metadata columns of an
+## imported GRanges object and those of the track's GRanges object.
 
 #' @importFrom stats setNames
-.defaultVarMap <- function(inputType, trackType, stream, fromUser = FALSE, justMap = FALSE) {
+.defaultVarMap <- function(
+  inputType,
+  trackType,
+  stream,
+  fromUser = FALSE,
+  justMap = FALSE
+) {
     vm <- list(
-        gtf = list(GeneRegionTrack = list(
-            feature = "type",
-            gene = c("gene_id", "gene_name"),
-            exon = c("exon_name", "exon_id"),
-            transcript = c("transcript_name", "transcript_id"),
-            symbol = c("gene_name", "gene_id")
-        )),
+        gtf = list(
+            GeneRegionTrack = list(
+                feature = "type",
+                gene = c("gene_id", "gene_name"),
+                exon = c("exon_name", "exon_id"),
+                transcript = c("transcript_name", "transcript_id"),
+                symbol = c("gene_name", "gene_id")
+            )
+        ),
         gff = list(
             AnnotationTrack = list(
                 feature = "type",
@@ -2451,14 +3463,18 @@ availableDefaultMapping <- function(file, trackType) {
         bedgraph = list(DataTrack = list(score = "score")),
         wig = list(DataTrack = list(score = "score")),
         bed = list(AnnotationTrack = list(feature = "itemRgb", id = "name")),
-        bigwig = list(DataTrack = list(
-            score = "score",
-            .stream = TRUE
-        )),
-        bw = list(DataTrack = list(
-            score = "score",
-            .stream = TRUE
-        )),
+        bigwig = list(
+            DataTrack = list(
+                score = "score",
+                .stream = TRUE
+            )
+        ),
+        bw = list(
+            DataTrack = list(
+                score = "score",
+                .stream = TRUE
+            )
+        ),
         bam = list(
             DataTrack = list(
                 score = "score",
@@ -2490,59 +3506,92 @@ availableDefaultMapping <- function(file, trackType) {
         vm[[inputType]] <- setNames(list(list(".stream" = stream)), trackType)
     } else {
         if (is.null(vm[[inputType]]) || is.null(vm[[inputType]][[trackType]])) {
-            warning(sprintf(
-                "There are no default mappings from %s files to %s. Please provide a manual mapping",
-                inputType, trackType
-            ), " in the track constructor if you haven't already done so.")
-            vm[[inputType]] <- setNames(list(list(".stream" = stream)), trackType)
+            warning(
+                sprintf(
+                    "There are no default mappings from %s files to %s. Please provide a manual mapping",
+                    inputType,
+                    trackType
+                ),
+                " in the track constructor if you haven't already done so."
+            )
+            vm[[inputType]] <- setNames(
+                list(list(".stream" = stream)),
+                trackType
+            )
         }
     }
     return(vm[[inputType]][[trackType]])
 }
 
 
-## Helper function to go through the metadata columns of a DataFrame and match their colnames to a mapping if they
-## are available
+## Helper function to go through the metadata columns of a DataFrame and
+## match their colnames to a mapping if they are available
 .resolveColMapping <- function(data, args, defMap) {
     if (ncol(mcols(data))) {
-        colnames(mcols(data)) <- paste(colnames(mcols(data)), "orig", sep = "__.__")
+        colnames(mcols(data)) <- paste(
+            colnames(mcols(data)),
+            "orig",
+            sep = "__.__"
+        )
     }
     for (i in names(defMap)) {
-        if (is.character(args[[i]]) && length(args[[i]]) == 1 && paste(args[[i]], "orig", sep = "__.__") %in% colnames(mcols(data))) {
+        if (
+            is.character(args[[i]]) &&
+                length(args[[i]]) == 1 &&
+                paste(args[[i]], "orig", sep = "__.__") %in%
+                    colnames(mcols(data))
+        ) {
             defMap[[i]] <- args[[i]]
             args[[i]] <- NULL
         }
-        mt <- match(paste(defMap[[i]], "orig", sep = "__.__"), colnames(mcols(data)))
+        mt <- match(
+            paste(defMap[[i]], "orig", sep = "__.__"),
+            colnames(mcols(data))
+        )
         mt <- mt[!is.na(mt)][1]
         if (!is.na(mt)) {
             mcols(data)[[i]] <- mcols(data)[, mt]
         }
     }
-    mcols(data) <- mcols(data)[, !grepl("__.__", colnames(mcols(data))), drop = FALSE]
+    mcols(data) <- mcols(data)[,
+        !grepl("__.__", colnames(mcols(data))),
+        drop = FALSE
+    ]
     return(list(data = data, args = args, defMap = defMap))
 }
 
 
-## For an AnnotationTrack or a GeneRegionTrack, compute the actual ranges for a complete range element group
-## (i.e., a whole transcript or track group) and also add the necessary space for the text label if needed.
-## We add this information to the internal display parameters '.__groupRanges', '.__groupLabels' and
-## '.__groupLabelWidths'. This function has to be called before stacks are being computed because 'setStacks'
-## will use the values in '.__groupRanges'.
-## Note that the computed ranges are not quite right because we are only crudely guessing the size of the
-## title panels at this stage.
-.computeGroupRange <- function(GdObject, hasAxis = FALSE, hasTitle = .dpOrDefault(GdObject, "showTitle", TRUE), title.width = 1) {
+## For an AnnotationTrack or a GeneRegionTrack, compute the actual ranges for
+## a complete range element group (i.e., a whole transcript or track group)
+## and also add the necessary space for the text label if needed.
+## We add this information to the internal display parameters '.__groupRanges',
+## '.__groupLabels' and '.__groupLabelWidths'.
+## This function has to be called before stacks are being computed because
+## 'setStacks' will use the values in '.__groupRanges'.
+## Note that the computed ranges are not quite right because we are only
+## crudely guessing the size of the title panels at this stage.
+.computeGroupRange <- function(
+  GdObject,
+  hasAxis = FALSE,
+  hasTitle = .dpOrDefault(GdObject, "showTitle", TRUE),
+  title.width = 1
+) {
     if (is(GdObject, "AnnotationTrack")) {
         finalRanges <- IRanges()
         GdObjectOrig <- GdObject
         GdObject <- GdObject[seqnames(GdObject) == chromosome(GdObject)]
-        pr <- .dpOrDefault(GdObject, ".__plottingRange", data.frame(from = min(start(GdObject)), to = max(end(GdObject))))
+        pr <- .dpOrDefault(
+            GdObject,
+            ".__plottingRange",
+            data.frame(from = min(start(GdObject)), to = max(end(GdObject)))
+        )
         if (is.null(title.width)) {
             title.width <- 1
         }
         if (length(GdObject) > 0) {
             gp <- group(GdObject)
             if (!is.factor(gp)) {
-                gp <- factor(gp, levels=unique(gp))
+                gp <- factor(gp, levels = unique(gp))
             }
             needsGrp <- any(duplicated(gp))
             finalRanges <- if (needsGrp) {
@@ -2558,65 +3607,117 @@ availableDefaultMapping <- function(file, trackType) {
                 ## A crude guestimate of the space needed for a title
                 twidth <- if (hasTitle) {
                     fact <- title.width + (hasAxis * 2)
-                    .getStringDims(GdObject, "g_T", unit = "npc", subtype = "title")$height * fact
+                    .getStringDims(
+                        GdObject,
+                        "g_T",
+                        unit = "npc",
+                        subtype = "title"
+                    )$height *
+                        fact
                 } else {
                     0
                 }
                 tfact <- ifelse(twidth > 1, 1, 1 / (1 - twidth))
-                ## The labels and spacers are plotted in a temporary viewport to figure out their size
+                ## The labels and spacers are plotted in a temporary viewport
+                ## to figure out their size
                 labels <- if (needsGrp) {
-                    vapply(split(identifier(GdObject), gp), function(x) paste(sort(unique(x)), collapse = "/"), FUN.VALUE = character(1L))
+                    vapply(
+                        split(identifier(GdObject), gp),
+                        function(x) paste(sort(unique(x)), collapse = "/"),
+                        FUN.VALUE = character(1L)
+                    )
                 } else {
                     setNames(identifier(GdObject), gp)
                 }
-                xscale <- c(max(pr["from"], min(start(finalRanges))), min(pr["to"], max(end(finalRanges))))
+                xscale <- c(
+                    max(pr["from"], min(start(finalRanges))),
+                    min(pr["to"], max(end(finalRanges)))
+                )
                 if (diff(xscale) == 0) {
                     xscale[2] <- xscale[2] + 1
                 }
-                pushViewport(dataViewport(xscale = xscale, extension = 0, yscale = c(0, 1), gp = .fontGp(GdObject, "group")))
-                labelWidths <- setNames(as.numeric(convertWidth(stringWidth(labels), "native")) * tfact * 1.3, names(labels))
-                spaceBefore <- as.numeric(convertWidth(unit(3, "points"), "native")) * tfact
-                spaceAfter <- as.numeric(convertWidth(unit(7, "points"), "native")) * tfact
+                pushViewport(dataViewport(
+                    xscale = xscale,
+                    extension = 0,
+                    yscale = c(0, 1),
+                    gp = .fontGp(GdObject, "group")
+                ))
+                labelWidths <- setNames(
+                    as.numeric(convertWidth(stringWidth(labels), "native")) *
+                        tfact *
+                        1.3,
+                    names(labels)
+                )
+                spaceBefore <- as.numeric(convertWidth(
+                    unit(3, "points"),
+                    "native"
+                )) *
+                    tfact
+                spaceAfter <- as.numeric(convertWidth(
+                    unit(7, "points"),
+                    "native"
+                )) *
+                    tfact
                 popViewport(1)
                 switch(as.character(just),
                     "left" = {
                         if (!rev) {
-                            start(finalRanges) <- start(finalRanges) - (spaceBefore + labelWidths + spaceAfter)
+                            start(finalRanges) <- start(finalRanges) -
+                                (spaceBefore + labelWidths + spaceAfter)
                         } else {
-                            end(finalRanges) <- end(finalRanges) + spaceAfter + labelWidths + spaceBefore
+                            end(finalRanges) <- end(finalRanges) +
+                                spaceAfter +
+                                labelWidths +
+                                spaceBefore
                         }
                         sb <- spaceBefore
                         sa <- spaceAfter
                     },
                     "right" = {
                         if (!rev) {
-                            end(finalRanges) <- end(finalRanges) + spaceAfter + labelWidths + spaceBefore
+                            end(finalRanges) <- end(finalRanges) +
+                                spaceAfter +
+                                labelWidths +
+                                spaceBefore
                         } else {
-                            start(finalRanges) <- start(finalRanges) - (spaceBefore + labelWidths + spaceAfter)
+                            start(finalRanges) <- start(finalRanges) -
+                                (spaceBefore + labelWidths + spaceAfter)
                         }
                         sb <- spaceBefore
                         sa <- spaceAfter
                     },
                     "above" = {
                         featureWidths <- end(finalRanges) - start(finalRanges)
-                        additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
+                        additionalLabelSpace <- ceiling(
+                            (labelWidths - featureWidths) / 2
+                        )
                         additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                        end(finalRanges) <- end(finalRanges) + additionalLabelSpace
-                        start(finalRanges) <- start(finalRanges) - additionalLabelSpace
+                        end(finalRanges) <- end(finalRanges) +
+                            additionalLabelSpace
+                        start(finalRanges) <- start(finalRanges) -
+                            additionalLabelSpace
                         sa <- sb <- 0
                     },
                     "below" = {
                         featureWidths <- end(finalRanges) - start(finalRanges)
-                        additionalLabelSpace <- ceiling((labelWidths - featureWidths) / 2)
+                        additionalLabelSpace <- ceiling(
+                            (labelWidths - featureWidths) / 2
+                        )
                         additionalLabelSpace[additionalLabelSpace < 0] <- 0
-                        end(finalRanges) <- end(finalRanges) + additionalLabelSpace
-                        start(finalRanges) <- start(finalRanges) - additionalLabelSpace
+                        end(finalRanges) <- end(finalRanges) +
+                            additionalLabelSpace
+                        start(finalRanges) <- start(finalRanges) -
+                            additionalLabelSpace
                         sa <- sb <- 0
                     },
                     stop(sprintf("Unknown label justification '%s'", just))
                 )
                 displayPars(GdObjectOrig) <- list(
-                    ".__groupLabelWidths" = data.frame(before = sb, label = labelWidths, after = sa),
+                    ".__groupLabelWidths" = data.frame(
+                        before = sb,
+                        label = labelWidths,
+                        after = sa
+                    ),
                     ".__groupLabels" = labels
                 )
             }
@@ -2626,13 +3727,25 @@ availableDefaultMapping <- function(file, trackType) {
     return(GdObjectOrig)
 }
 
-## Calculate the vectorized string dimensions and return the results in a data.frame with columns 'width' and 'height'
-## The unit of the return value can be controlled, and additional parameters like font size and expansion factors can
-## be passed in as additional arguments (all in ... is passed on to 'gpar'). If needed, the font defaults for a
-## subtype can be extracted by providing the subtype argument.
-.getStringDims <- function(GdObject, string, unit = "native", subtype = NULL, ...) {
+## Calculate the vectorized string dimensions and return the results in a
+## data.frame with columns 'width' and 'height'. The unit of the return value
+## can be controlled, and additional parameters like font size and expansion
+## factors can be passed in as additional arguments (all in ... is passed on
+## to 'gpar'). If needed, the font defaults for a subtype can be extracted
+## by providing the subtype argument.
+.getStringDims <- function(
+  GdObject,
+  string,
+  unit = "native",
+  subtype = NULL,
+  ...
+) {
     gp <- .fontGp(GdObject, subtype, ...)
-    pushViewport(viewport(gp = gp, xscale = current.viewport()$xscale, yscale = current.viewport()$yscale))
+    pushViewport(viewport(
+        gp = gp,
+        xscale = current.viewport()$xscale,
+        yscale = current.viewport()$yscale
+    ))
     res <- data.frame(
         width = as.numeric(convertWidth(stringWidth(string), unit)),
         height = as.numeric(convertHeight(stringHeight(string), unit))
@@ -2647,7 +3760,8 @@ availableDefaultMapping <- function(file, trackType) {
     res <- FALSE
     if (is(GdObject, "GeneRegionTrack")) {
         ctrans <- .dpOrDefault(GdObject, "collapseTranscripts", FALSE)
-        res <- (is.logical(ctrans) && ctrans == TRUE) || ctrans %in% c("gene", "shortest", "longest", "meta")
+        res <- (is.logical(ctrans) && ctrans == TRUE) ||
+            ctrans %in% c("gene", "shortest", "longest", "meta")
     }
     return(res)
 }
@@ -2673,8 +3787,14 @@ availableDefaultMapping <- function(file, trackType) {
     range <- sort(range)
     range <- range[!duplicated(range$entityId)]
     ga <- GAlignments(
-        seqnames = seqnames(range), pos = start(range), cigar = range$cigar,
-        strand = if (is.null(range$readStrand)) strand(range) else range$readStrand,
+        seqnames = seqnames(range),
+        pos = start(range),
+        cigar = range$cigar,
+        strand = if (is.null(range$readStrand)) {
+            strand(range)
+        } else {
+            range$readStrand
+        },
         seqlengths = seqlengths(range)
     )
     ga
@@ -2687,11 +3807,19 @@ availableDefaultMapping <- function(file, trackType) {
     juns
 }
 
-.convert.summarizedJunctions.to.sashimi.junctions <- function(juns, score = 1L, lwd.max = 10, strand = "*", filter = NULL, filterTolerance = 0L, trans = NULL) {
+.convert.summarizedJunctions.to.sashimi.junctions <- function(
+  juns,
+  score = 1L,
+  lwd.max = 10,
+  strand = "*",
+  filter = NULL,
+  filterTolerance = 0L,
+  trans = NULL
+) {
     ## filter junctions
     if (!is.null(filter)) {
-        ## if filterTolerance is > 0 than pass it as maxgap parameter in findOverlaps
-        ## make sure it is positive value
+        ## if filterTolerance is > 0 than pass it as maxgap parameter
+        ## in findOverlaps, make sure it is positive value
         if (filterTolerance < 0) {
             filterTolerance <- abs(filterTolerance)
             warning(sprintf(
@@ -2699,8 +3827,18 @@ availableDefaultMapping <- function(file, trackType) {
                 filterTolerance
             ))
         }
-        ovs <- findOverlaps(juns, filter, type = "start", maxgap = filterTolerance)
-        ove <- findOverlaps(juns, filter, type = "end", maxgap = filterTolerance)
+        ovs <- findOverlaps(
+            juns,
+            filter,
+            type = "start",
+            maxgap = filterTolerance
+        )
+        ove <- findOverlaps(
+            juns,
+            filter,
+            type = "end",
+            maxgap = filterTolerance
+        )
         ## combine both Hits objects, select junctions present in both
         ovv <- rbind(as.matrix(ovs), as.matrix(ove))
         ovv <- ovv[duplicated(ovv), , drop = FALSE]
@@ -2713,12 +3851,22 @@ availableDefaultMapping <- function(file, trackType) {
         rownames(M) <- seq_len(nrow(M))
         ##
         filter$score <- 0L
-        filter$score[sort(unique(ovv[, "subjectHits"]))] <- tapply(M[ws], ovv[, "subjectHits"], sum)
+        filter$score[sort(unique(ovv[, "subjectHits"]))] <- tapply(
+            M[ws],
+            ovv[, "subjectHits"],
+            sum
+        )
         juns <- filter
     } else {
         ## if no filter ranges were defined
         ## select strand (default both)
-        juns$score <- if (strand == "+") juns$plus_score else if (strand == "-") juns$minus_score else juns$score
+        juns$score <- if (strand == "+") {
+            juns$plus_score
+        } else if (strand == "-") {
+            juns$minus_score
+        } else {
+            juns$score
+        }
     }
     ## filter based on evidence (default no filtering, 1 read)
     juns <- juns[juns$score >= score]
@@ -2733,7 +3881,9 @@ availableDefaultMapping <- function(file, trackType) {
         }
         if (!is.null(trans)) {
             if (!is.function(trans) || length(formals(trans)) != 1L) {
-                stop("Display parameter 'transformation' must be a function with a single argument")
+                stop(
+                    "Display parameter 'transformation' must be a function with a single argument"
+                )
             }
             test <- trans(juns$score)
             if (!is(test, "numeric") || length(test) != length(juns$score)) {
@@ -2745,12 +3895,16 @@ availableDefaultMapping <- function(file, trackType) {
             juns$score <- test
         }
         ## scale the score to lwd.max
-        juns$scaled <- (lwd.max - 1) / pmax((max(juns$score) - min(c(1, juns$score))), 1) * (juns$score - max(juns$score)) + lwd.max
+        juns$scaled <- (lwd.max - 1) /
+            pmax((max(juns$score) - min(c(1, juns$score))), 1) *
+            (juns$score - max(juns$score)) +
+            lwd.max
         ## create list
         juns <- list(
             x = as.numeric(rbind(
                 start(juns),
-                mid(ranges(juns)), end(juns)
+                mid(ranges(juns)),
+                end(juns)
             )),
             y = as.numeric(rbind(0, juns$y, 0)),
             id = rep(seq_len(length(juns)), each = 3),

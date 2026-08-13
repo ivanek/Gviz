@@ -46,7 +46,8 @@ NULL
 #' )
 #' ot <- OverlayTrack(trackList = list(dt1, dt2))
 #' @exportClass OverlayTrack
-setClass("OverlayTrack",
+setClass(
+    "OverlayTrack",
     representation = representation(trackList = "list"),
     contains = c("GdObject"),
     prototype = prototype(dp = DisplayPars())
@@ -73,7 +74,9 @@ OverlayTrack <- function(trackList = list(), name = "OverlayTrack", ...) {
     if (!is.list(trackList)) {
         trackList <- list(trackList)
     }
-    if (!all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))) {
+    if (
+        !all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))
+    ) {
         stop("All elements in 'trackList' must inherit from 'GdObject'")
     }
     return(new("OverlayTrack", trackList = trackList, name = name, ...))
@@ -85,16 +88,20 @@ OverlayTrack <- function(trackList = list(), name = "OverlayTrack", ...) {
 #' the named list in value. See [`settings`] for details on
 #' display parameters and customization.
 #' @export
-setReplaceMethod("displayPars", signature("OverlayTrack", "list"), function(x, recursive = FALSE, value) {
-    x <- setPar(x, value, interactive = FALSE)
-    if (recursive) {
-        x@trackList <- lapply(x@trackList, function(y) {
-            displayPars(y) <- value
-            return(y)
-        })
+setReplaceMethod(
+    "displayPars",
+    signature("OverlayTrack", "list"),
+    function(x, recursive = FALSE, value) {
+        x <- setPar(x, value, interactive = FALSE)
+        if (recursive) {
+            x@trackList <- lapply(x@trackList, function(y) {
+                displayPars(y) <- value
+                return(y)
+            })
+        }
+        return(x)
     }
-    return(x)
-})
+)
 
 #' @describeIn OverlayTrack-class return the number of subtracks.
 #' @export
@@ -140,10 +147,19 @@ setMethod("setStacks", "OverlayTrack", function(GdObject, ...) {
 #' slot.
 #' @keywords internal
 #' @export
-setMethod("consolidateTrack", signature(GdObject = "OverlayTrack"), function(GdObject, chromosome, ...) {
-    GdObject@trackList <- lapply(GdObject@trackList, consolidateTrack, chromosome = chromosome, ...)
-    return(GdObject)
-})
+setMethod(
+    "consolidateTrack",
+    signature(GdObject = "OverlayTrack"),
+    function(GdObject, chromosome, ...) {
+        GdObject@trackList <- lapply(
+            GdObject@trackList,
+            consolidateTrack,
+            chromosome = chromosome,
+            ...
+        )
+        return(GdObject)
+    }
+)
 
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
@@ -184,7 +200,9 @@ setMethod("drawGD", signature("OverlayTrack"), function(GdObject, ...) {
 #' @export
 setMethod("show", signature(object = "OverlayTrack"), function(object) {
     cat(sprintf(
-        "OverlayTrack '%s' containing %i subtrack%s\n", names(object), length(object),
+        "OverlayTrack '%s' containing %i subtrack%s\n",
+        names(object),
+        length(object),
         ifelse(length(object) == 1, "", "s")
     ))
 })

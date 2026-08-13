@@ -3,6 +3,9 @@
 \name{collapsing}
 \alias{collapsing}
 \title{Dynamic content based on the available resolution}
+\value{
+No return value, called for documentation purposes only.
+}
 \description{
 When plotting features linearly along genomic coordinates one frequently
 runs into the problem of too little resolution to adequately display all

@@ -17,6 +17,10 @@ genomic sequence, or \code{NULL}.}
 
 \item{...}{Additional arguments.}
 }
+\value{
+An initialized object of class
+\code{\link[=SequenceBSgenomeTrack-class]{SequenceBSgenomeTrack}}.
+}
 \description{
 The \code{BSgenome}-based version of the \code{SequenceTrack} class
 }

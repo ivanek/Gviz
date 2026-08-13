@@ -54,8 +54,10 @@ NULL
 #' ), isPaired = TRUE)
 #' plotTracks(alTrack, from = afrom, to = ato, chromosome = "chr12")
 #' @exportClass ReferenceTrack
-setClass("ReferenceTrack",
-    representation = representation("VIRTUAL",
+setClass(
+    "ReferenceTrack",
+    representation = representation(
+        "VIRTUAL",
         stream = "function",
         reference = "character",
         mapping = "list",
@@ -73,7 +75,13 @@ setClass("ReferenceTrack",
             msg <- "The streaming function in the 'stream' slot needs to define two arguments, 'file' and 'selection'"
         }
         if (!file.exists(object@reference)) {
-            msg <- c(msg, sprintf("The referenced file '%s' does not exist", object@reference))
+            msg <- c(
+                msg,
+                sprintf(
+                    "The referenced file '%s' does not exist",
+                    object@reference
+                )
+            )
         }
         return(if (is.null(msg)) TRUE else msg)
     }
@@ -85,16 +93,24 @@ setClass("ReferenceTrack",
 #' slots (`stream`, `reference`, `mapping`, `args`, `defaults`) from the
 #' supplied arguments and validate the resulting object.
 #' @export
-setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, mapping = list(),
-                                                   args = list(), defaults = list()) {
-    .Object@stream <- stream
-    .Object@reference <- reference
-    .Object@mapping <- mapping
-    .Object@args <- args
-    .Object@defaults <- defaults
-    validObject(.Object)
-    return(.Object)
-})
+setMethod(
+    "initialize",
+    "ReferenceTrack",
+    function(.Object,
+             stream,
+             reference,
+             mapping = list(),
+             args = list(),
+             defaults = list()) {
+        .Object@stream <- stream
+        .Object@reference <- reference
+        .Object@mapping <- mapping
+        .Object@args <- args
+        .Object@defaults <- defaults
+        validObject(.Object)
+        return(.Object)
+    }
+)
 
 ## .buildRange ---------------------------------------------------------------
 ##
@@ -110,13 +126,26 @@ setMethod("initialize", "ReferenceTrack", function(.Object, stream, reference, m
 ## and column assignments here.
 #' @noRd
 setMethod(
-    ".buildRange", signature("character"),
-    function(range, importFun = NULL, trackType, stream = FALSE, args, defaults, autodetect = is.null(importFun), ...) {
+    ".buildRange",
+    signature("character"),
+    function(range,
+             importFun = NULL,
+             trackType,
+             stream = FALSE,
+             args,
+             defaults,
+             autodetect = is.null(importFun),
+             ...) {
         .checkClass(range, "character", 1)
         .checkClass(importFun, c("NULL", "function"), mandatory = FALSE)
         .checkClass(stream, "logical", 1)
         ## We first check for the default column mapping and whether this is a streaming file
-        defMap <- .defaultVarMap(tolower(.fileExtension(range)), trackType, stream, !autodetect)
+        defMap <- .defaultVarMap(
+            tolower(.fileExtension(range)),
+            trackType,
+            stream,
+            !autodetect
+        )
         isStream <- !is.null(defMap[[".stream"]]) && defMap[[".stream"]]
         defMap[[".stream"]] <- NULL
         if (!isStream) {
@@ -124,14 +153,17 @@ setMethod(
                 .registerImportFun(range)
             } else {
                 if (!"file" %in% names(formals(importFun))) {
-                    stop("The user-defined import function needs to define a 'file' argument")
+                    stop(
+                        "The user-defined import function needs to define a 'file' argument"
+                    )
                 }
                 importFun(range)
             }
             if (!is(data, "GRanges")) {
                 stop(
                     "The import function did not provide a valid GRanges object. Unable to build track from file '",
-                    range, "'"
+                    range,
+                    "'"
                 )
             }
             if (trackType == "DataTrack") {
@@ -146,7 +178,13 @@ setMethod(
             }
             args[["chromosome"]] <- as.character(seqnames(data))
             args[["strand"]] <- as.character(strand(data))
-            return(.buildRange(range = data, args = args, defaults = defaults, trackType = trackType, ...))
+            return(.buildRange(
+                range = data,
+                args = args,
+                defaults = defaults,
+                trackType = trackType,
+                ...
+            ))
         } else {
             if (trackType != "DataTrack") {
                 for (i in names(defMap)) {
@@ -156,8 +194,13 @@ setMethod(
                 }
             }
             return(list(
-                reference = path.expand(range), mapping = defMap,
-                stream = if (is.null(importFun)) .registerImportFun(range) else importFun
+                reference = path.expand(range),
+                mapping = defMap,
+                stream = if (is.null(importFun)) {
+                    .registerImportFun(range)
+                } else {
+                    importFun
+                }
             ))
         }
     }
@@ -175,6 +218,14 @@ setMethod(
         object@reference
     ))
     if (length(object@mapping) && type != "ReferenceDataTrack") {
-        message(sprintf("| mapping: %s\n", paste(names(object@mapping), as.character(object@mapping), sep = "=", collapse = ", ")))
+        message(sprintf(
+            "| mapping: %s\n",
+            paste(
+                names(object@mapping),
+                as.character(object@mapping),
+                sep = "=",
+                collapse = ", "
+            )
+        ))
     }
 }

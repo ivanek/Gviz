@@ -171,7 +171,7 @@ pushViewport(viewport(height = 0.5, y = 0, just = "bottom"))
 grid.rect()
 plotTracks(dt, add = TRUE)
 popViewport(1)
-\dontrun{
+\donttest{
 library(lattice)
 myPanel <- function(x, ...) {
     plotTracks(annTrack,

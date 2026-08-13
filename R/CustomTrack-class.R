@@ -32,7 +32,8 @@ NULL
 #' ## An empty object
 #' CustomTrack()
 #' @export
-setClass("CustomTrack",
+setClass(
+    "CustomTrack",
     contains = c("GdObject"),
     representation = representation(
         plottingFunction = "function",
@@ -47,13 +48,17 @@ setClass("CustomTrack",
 #' `variables` slots before deferring to the [`GdObject`][GdObject-class]
 #' initializer for the remaining slots.
 #' @export
-setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, variables, ...) {
-    .Object <- .updatePars(.Object, "CustomTrack")
-    .Object@plottingFunction <- plottingFunction
-    .Object@variables <- variables
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+setMethod(
+    "initialize",
+    "CustomTrack",
+    function(.Object, plottingFunction, variables, ...) {
+        .Object <- .updatePars(.Object, "CustomTrack")
+        .Object@plottingFunction <- plottingFunction
+        .Object@variables <- variables
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
+    }
+)
 
 ## Constructor ---------------------------------------------------------------
 
@@ -73,8 +78,19 @@ setMethod("initialize", "CustomTrack", function(.Object, plottingFunction, varia
 #' @describeIn CustomTrack-class Objects can be created using the constructor
 #' function.
 #' @export
-CustomTrack <- function(plottingFunction = function(GdObject, prepare = FALSE, ...) {}, variables = list(), name = "CustomTrack", ...) {
-    return(new("CustomTrack", plottingFunction = plottingFunction, variables = variables, name = name, ...))
+CustomTrack <- function(
+  plottingFunction = function(GdObject, prepare = FALSE, ...) {},
+  variables = list(),
+  name = "CustomTrack",
+  ...
+) {
+    return(new(
+        "CustomTrack",
+        plottingFunction = plottingFunction,
+        variables = variables,
+        name = name,
+        ...
+    ))
 }
 
 ## General accessors ---------------------------------------------------------
@@ -99,19 +115,25 @@ CustomTrack <- function(plottingFunction = function(GdObject, prepare = FALSE, .
 #' is not necessary.
 #'
 #' @export
-setMethod("drawGD", signature("CustomTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, ...) {
-    rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
-    xscale <- if (!rev) c(minBase, maxBase) else c(maxBase, minBase)
-    pushViewport(viewport(xscale = xscale, clip = TRUE))
-    tmp <- GdObject@plottingFunction(GdObject, prepare = prepare)
-    if (!is(tmp, "CustomTrack")) {
-        warning("The plotting function of a CustomTrack has to return the input object. Using the original CustomTrack object now.")
-    } else {
-        GdObject <- tmp
+setMethod(
+    "drawGD",
+    signature("CustomTrack"),
+    function(GdObject, minBase, maxBase, prepare = FALSE, ...) {
+        rev <- .dpOrDefault(GdObject, "reverseStrand", FALSE)
+        xscale <- if (!rev) c(minBase, maxBase) else c(maxBase, minBase)
+        pushViewport(viewport(xscale = xscale, clip = TRUE))
+        tmp <- GdObject@plottingFunction(GdObject, prepare = prepare)
+        if (!is(tmp, "CustomTrack")) {
+            warning(
+                "The plotting function of a CustomTrack has to return the input object. Using the original CustomTrack object now."
+            )
+        } else {
+            GdObject <- tmp
+        }
+        popViewport(1)
+        return(invisible(GdObject))
     }
-    popViewport(1)
-    return(invisible(GdObject))
-})
+)
 
 ## SetAs ---------------------------------------------------------------------
 ## Show ----------------------------------------------------------------------

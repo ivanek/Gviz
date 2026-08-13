@@ -18,10 +18,22 @@ NULL
 #' @name ImageMap-class
 #'
 #' @examples
-#' ## Not provided. This is an internal structure.
+#' ## ImageMap objects are usually not created directly by the user, but
+#' ## are populated as a side effect of plotting a GdObject. plotTracks()
+#' ## returns the plotted tracks (with their ImageMap populated) invisibly,
+#' ## and the coords() and tags() accessors can be used to query them.
+#' at <- AnnotationTrack(
+#'     start = c(100, 300), width = 50,
+#'     chromosome = "chr1", genome = "hg19", name = "features"
+#' )
+#' res <- plotTracks(at)
+#' coords(res[["features"]])
+#' tags(res[["features"]])
 #'
 #' @export
-setClass("ImageMap", representation(coords = "matrix", tags = "list"),
+setClass(
+    "ImageMap",
+    representation(coords = "matrix", tags = "list"),
     prototype = prototype(coords = matrix(1, ncol = 4, nrow = 0), tags = list())
 )
 
@@ -41,8 +53,12 @@ ImageMap <- function(coords, tags) {
     if (is.null(rn)) {
         stop("Rownames must be set for the matrix in 'coords'")
     }
-    if (!is.list(tags) || is.null(names(tags)) || any(names(tags) == "") ||
-        !all(vapply(tags, is.character, logical(1)))) {
+    if (
+        !is.list(tags) ||
+            is.null(names(tags)) ||
+            any(names(tags) == "") ||
+            !all(vapply(tags, is.character, logical(1)))
+    ) {
         stop("'tags' must be a named list with character vector items.")
     }
     n <- unique(unlist(lapply(tags, names)))
@@ -60,7 +76,7 @@ ImageMap <- function(coords, tags) {
     new("ImageMap", coords = coords, tags = tags)
 }
 
-####  ImageMap Methods coords  and tags --------------------------------------
+####  ImageMap Methods coords and tags ---------------------------------------
 
 #' @describeIn ImageMap-class Generics for `coords`.
 #' @exportMethod coords
@@ -90,3 +106,24 @@ setMethod("tags", "NULL", function(ImageMap) NULL)
 #' @return Returns the tags from the image map.
 #' @export
 setMethod("tags", "ImageMap", function(ImageMap) ImageMap@tags)
+
+####  ImageMap Show ----------------------------------------------------------
+
+#' @describeIn ImageMap-class Show method
+#' @export
+setMethod("show", signature("ImageMap"), function(object) {
+    cat(sprintf("An object of class '%s'\n", class(object)))
+    n <- nrow(coords(object))
+    if (is.null(n) || n == 0L) {
+        cat("Empty image map\n")
+    } else {
+        cat(sprintf(
+            "Contains coordinates for %i image map item%s\n",
+            n, ifelse(n == 1L, "", "s")
+        ))
+        cat(sprintf(
+            "Available tags: %s\n",
+            paste(names(tags(object)), collapse = ", ")
+        ))
+    }
+})

@@ -3,6 +3,9 @@
 \name{Gviz-deprecated}
 \alias{Gviz-deprecated}
 \title{Deprecated functions in package \code{Gviz}}
+\value{
+No return value, called for documentation purposes only.
+}
 \description{
 These functions are provided for compatibility with older
 versions of \code{Gviz} only, and will be defunct at the next release.

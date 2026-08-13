@@ -129,8 +129,10 @@ NULL
 #' @importFrom biovizBase getBioColor
 #'
 #' @exportClass SequenceTrack
-setClass("SequenceTrack",
-    representation = representation("VIRTUAL",
+setClass(
+    "SequenceTrack",
+    representation = representation(
+        "VIRTUAL",
         chromosome = "character",
         genome = "character"
     ),
@@ -161,36 +163,56 @@ setClass("SequenceTrack",
 #' the `chromosome`/`genome` slots before deferring to the
 #' [`GdObject`][GdObject-class] initializer for the remaining slots.
 #' @export
-setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, ...) {
-    ## the display parameter defaults
-    .makeParMapping()
-    .Object <- .updatePars(.Object, "SequenceTrack")
-    if (!missing(chromosome) &&
-        !is.na(chromosome) &&
-        !is.null(chromosome)) {
-        if (!is.null(names(sequence))) {
-            .Object@chromosome <- .chrName(names(sequence)[1])[1]
-        } else {
-            .Object@chromosome <- .chrName(chromosome)[1]
+setMethod(
+    "initialize",
+    "SequenceTrack",
+    function(.Object, chromosome, genome, ...) {
+        ## the display parameter defaults
+        .makeParMapping()
+        .Object <- .updatePars(.Object, "SequenceTrack")
+        if (
+            !missing(chromosome) &&
+                !is.na(chromosome) &&
+                !is.null(chromosome)
+        ) {
+            if (!is.null(names(sequence))) {
+                .Object@chromosome <- .chrName(names(sequence)[1])[1]
+            } else {
+                .Object@chromosome <- .chrName(chromosome)[1]
+            }
         }
+        if (missing(genome) || is.na(genome) || is.null(genome)) {
+            genome <- as.character(NA)
+        }
+        .Object@genome <- genome
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
     }
-    if (missing(genome) || is.na(genome) || is.null(genome)) {
-        genome <- as.character(NA)
-    }
-    .Object@genome <- genome
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+)
 
 ## Constructors --------------------------------------------------------------
 
 #' @importMethodsFrom Biostrings seqtype "seqtype<-"
-.SequenceTrack <- function(SeqTrackType, seqtype, sequence, chromosome,
-                           genome, name = "SequenceTrack", importFunction,
-                           stream = FALSE, ...) {
+.SequenceTrack <- function(
+  SeqTrackType,
+  seqtype,
+  sequence,
+  chromosome,
+  genome,
+  name = "SequenceTrack",
+  importFunction,
+  stream = FALSE,
+  ...
+) {
     .missingToNull(c("chromosome", "genome", "sequence"))
     if (is.null(sequence)) {
-        return(new(SeqTrackType, chromosome = chromosome, genome = genome, name = name, ...))
+        return(new(
+            SeqTrackType,
+            chromosome = chromosome,
+            genome = genome,
+            name = name,
+            ...
+        ))
     }
     if (is(sequence, "BSgenome")) {
         if (is.null(genome)) {
@@ -199,7 +221,14 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
         if (is.null(chromosome)) {
             chromosome <- seqnames(sequence)[1]
         }
-        obj <- new("SequenceBSgenomeTrack", sequence = sequence, chromosome = chromosome, genome = genome, name = name, ...)
+        obj <- new(
+            "SequenceBSgenomeTrack",
+            sequence = sequence,
+            chromosome = chromosome,
+            genome = genome,
+            name = name,
+            ...
+        )
     } else if (is(sequence, "XStringSet")) {
         if (seqtype(sequence) != seqtype) {
             seqtype(sequence) <- seqtype
@@ -208,12 +237,23 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
             stop("The sequences in the ", seqtype, "StringSet must be named")
         }
         if (any(duplicated(names(sequence)))) {
-            stop("The sequence names in the ", seqtype, "StringSet must be unique")
+            stop(
+                "The sequence names in the ",
+                seqtype,
+                "StringSet must be unique"
+            )
         }
         if (is.null(chromosome)) {
             chromosome <- names(sequence)[1]
         }
-        obj <- new(SeqTrackType, sequence = sequence, chromosome = chromosome, genome = genome, name = name, ...)
+        obj <- new(
+            SeqTrackType,
+            sequence = sequence,
+            chromosome = chromosome,
+            genome = genome,
+            name = name,
+            ...
+        )
     } else if (is.character(sequence)) {
         sequence <- sequence[1]
         if (!file.exists(sequence)) {
@@ -222,20 +262,34 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
         ext <- .fileExtension(sequence)
         obj <- if (missing(importFunction) && ext %in% c("fa", "fasta")) {
             if (!file.exists(paste(sequence, "fai", sep = "."))) {
-                new("SequenceDNAStringSetTrack",
-                    sequence = readDNAStringSet(sequence), chromosome = chromosome,
-                    genome = genome, name = name, ...
+                new(
+                    "SequenceDNAStringSetTrack",
+                    sequence = readDNAStringSet(sequence),
+                    chromosome = chromosome,
+                    genome = genome,
+                    name = name,
+                    ...
                 )
             } else {
-                new("ReferenceSequenceTrack",
-                    chromosome = chromosome, genome = genome, name = name,
-                    stream = .import.fasta, reference = path.expand(sequence), ...
+                new(
+                    "ReferenceSequenceTrack",
+                    chromosome = chromosome,
+                    genome = genome,
+                    name = name,
+                    stream = .import.fasta,
+                    reference = path.expand(sequence),
+                    ...
                 )
             }
         } else if (missing(importFunction) && ext == "2bit") {
-            new("ReferenceSequenceTrack",
-                chromosome = chromosome, genome = genome, name = name,
-                stream = .import.2bit, reference = path.expand(sequence), ...
+            new(
+                "ReferenceSequenceTrack",
+                chromosome = chromosome,
+                genome = genome,
+                name = name,
+                stream = .import.2bit,
+                reference = path.expand(sequence),
+                ...
             )
         } else {
             if (missing(importFunction)) {
@@ -249,30 +303,50 @@ setMethod("initialize", "SequenceTrack", function(.Object, chromosome, genome, .
                     if (!is(seq, "DNAStringSet")) {
                         stop(
                             "The import function did not provide a valid DNAStringSet object. Unable to build track from file '",
-                            sequence, "'"
+                            sequence,
+                            "'"
                         )
                     }
-                    new("SequenceDNAStringSetTrack",
-                        sequence = importFunction(file = sequence), chromosome = chromosome,
-                        genome = genome, name = name, ...
+                    new(
+                        "SequenceDNAStringSetTrack",
+                        sequence = importFunction(file = sequence),
+                        chromosome = chromosome,
+                        genome = genome,
+                        name = name,
+                        ...
                     )
                 } else {
-                    new("ReferenceSequenceTrack",
-                        chromosome = chromosome, genome = genome, name = name,
-                        stream = importFunction, reference = path.expand(sequence), ...
+                    new(
+                        "ReferenceSequenceTrack",
+                        chromosome = chromosome,
+                        genome = genome,
+                        name = name,
+                        stream = importFunction,
+                        reference = path.expand(sequence),
+                        ...
                     )
                 }
             }
         }
     } else {
-        stop("Argument sequence must be of class 'BSgenome', 'XStringSet' or 'character'")
+        stop(
+            "Argument sequence must be of class 'BSgenome', 'XStringSet' or 'character'"
+        )
     }
     return(obj)
 }
 
 #' @describeIn SequenceTrack-class Constructor
 #' @export
-SequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack", importFunction, stream = FALSE, ...) {
+SequenceTrack <- function(
+  sequence,
+  chromosome,
+  genome,
+  name = "SequenceTrack",
+  importFunction,
+  stream = FALSE,
+  ...
+) {
     .SequenceTrack(
         "SequenceDNAStringSetTrack",
         "DNA",
@@ -285,7 +359,15 @@ SequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack", 
 
 #' @describeIn SequenceTrack-class Constructor
 #' @export
-RNASequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack", importFunction, stream = FALSE, ...) {
+RNASequenceTrack <- function(
+  sequence,
+  chromosome,
+  genome,
+  name = "SequenceTrack",
+  importFunction,
+  stream = FALSE,
+  ...
+) {
     .SequenceTrack(
         "SequenceRNAStringSetTrack",
         "RNA",
@@ -320,7 +402,8 @@ RNASequenceTrack <- function(sequence, chromosome, genome, name = "SequenceTrack
 #'
 #' @name SequenceDNAStringSetTrack-class
 #' @exportClass SequenceDNAStringSetTrack
-setClass("SequenceDNAStringSetTrack",
+setClass(
+    "SequenceDNAStringSetTrack",
     representation = representation(sequence = "DNAStringSet"),
     contains = "SequenceTrack",
     prototype = prototype(
@@ -333,15 +416,22 @@ setClass("SequenceDNAStringSetTrack",
 #' (defaulting to an empty [`DNAStringSet`][Biostrings::DNAStringSet-class] if
 #' none is supplied) before deferring to the `SequenceTrack` initializer for the
 #' remaining slots.
+#'
+#' @return An initialized object of class
+#' [`SequenceDNAStringSetTrack`][SequenceDNAStringSetTrack-class].
 #' @export
-setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence, ...) {
-    if (missing(sequence) || is.null(sequence)) {
-        sequence <- Biostrings::DNAStringSet()
+setMethod(
+    "initialize",
+    "SequenceDNAStringSetTrack",
+    function(.Object, sequence, ...) {
+        if (missing(sequence) || is.null(sequence)) {
+            sequence <- Biostrings::DNAStringSet()
+        }
+        .Object@sequence <- sequence
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
     }
-    .Object@sequence <- sequence
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+)
 
 
 ## SequenceRNAStringSetTrack -------------------------------------------------
@@ -359,7 +449,8 @@ setMethod("initialize", "SequenceDNAStringSetTrack", function(.Object, sequence,
 #'
 #' @name SequenceRNAStringSetTrack-class
 #' @exportClass SequenceRNAStringSetTrack
-setClass("SequenceRNAStringSetTrack",
+setClass(
+    "SequenceRNAStringSetTrack",
     representation = representation(sequence = "RNAStringSet"),
     contains = "SequenceTrack",
     prototype = prototype(
@@ -372,15 +463,22 @@ setClass("SequenceRNAStringSetTrack",
 #' (defaulting to an empty [`RNAStringSet`][Biostrings::RNAStringSet-class] if
 #' none is supplied) before deferring to the `SequenceTrack` initializer for the
 #' remaining slots.
+#'
+#' @return An initialized object of class
+#' [`SequenceRNAStringSetTrack`][SequenceRNAStringSetTrack-class].
 #' @export
-setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence, ...) {
-    if (missing(sequence) || is.null(sequence)) {
-        sequence <- Biostrings::RNAStringSet()
+setMethod(
+    "initialize",
+    "SequenceRNAStringSetTrack",
+    function(.Object, sequence, ...) {
+        if (missing(sequence) || is.null(sequence)) {
+            sequence <- Biostrings::RNAStringSet()
+        }
+        .Object@sequence <- sequence
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
     }
-    .Object@sequence <- sequence
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+)
 
 
 ## SequenceBSgenomeTrack -----------------------------------------------------
@@ -404,8 +502,12 @@ setMethod("initialize", "SequenceRNAStringSetTrack", function(.Object, sequence,
 #'
 #' @name SequenceBSgenomeTrack-class
 #' @exportClass SequenceBSgenomeTrack
-setClass("SequenceBSgenomeTrack",
-    representation = representation(sequence = "BSgenomeOrNULL", pointerCache = "environment"),
+setClass(
+    "SequenceBSgenomeTrack",
+    representation = representation(
+        sequence = "BSgenomeOrNULL",
+        pointerCache = "environment"
+    ),
     contains = "SequenceTrack",
     prototype = prototype(
         sequence = NULL,
@@ -416,14 +518,20 @@ setClass("SequenceBSgenomeTrack",
 #' @describeIn SequenceBSgenomeTrack-class Initialize the `sequence` and
 #' `pointerCache` slots before deferring to the `SequenceTrack` initializer
 #' for the remaining slots.
+#'
+#' @return An initialized object of class
+#' [`SequenceBSgenomeTrack`][SequenceBSgenomeTrack-class].
 #' @export
-setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence = NULL, ...) {
-    .Object@sequence <- sequence
-    .Object@pointerCache <- new.env()
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
-
+setMethod(
+    "initialize",
+    "SequenceBSgenomeTrack",
+    function(.Object, sequence = NULL, ...) {
+        .Object@sequence <- sequence
+        .Object@pointerCache <- new.env()
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
+    }
+)
 
 
 ## ReferenceSequenceTrack ----------------------------------------------------
@@ -442,7 +550,10 @@ setMethod("initialize", "SequenceBSgenomeTrack", function(.Object, sequence = NU
 #' @name ReferenceSequenceTrack-class
 #' @exportClass ReferenceSequenceTrack
 #' @keywords internal
-setClass("ReferenceSequenceTrack", contains = c("SequenceDNAStringSetTrack", "ReferenceTrack"))
+setClass(
+    "ReferenceSequenceTrack",
+    contains = c("SequenceDNAStringSetTrack", "ReferenceTrack")
+)
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritance has some strange features with regards to method selection
@@ -453,11 +564,19 @@ setClass("ReferenceSequenceTrack", contains = c("SequenceDNAStringSetTrack", "Re
 #' [`SequenceDNAStringSetTrack`][SequenceDNAStringSetTrack-class] initializer
 #' for the remaining slots.
 #' @export
-setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, reference, ...) {
-    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream)
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+setMethod(
+    "initialize",
+    "ReferenceSequenceTrack",
+    function(.Object, stream, reference, ...) {
+        .Object <- selectMethod("initialize", "ReferenceTrack")(
+            .Object = .Object,
+            reference = reference,
+            stream = stream
+        )
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
+    }
+)
 
 ## Initialize ----------------------------------------------------------------
 ## Constructor ---------------------------------------------------------------
@@ -466,7 +585,9 @@ setMethod("initialize", "ReferenceSequenceTrack", function(.Object, stream, refe
 #' @describeIn SequenceTrack-class return the names (i.e., the chromosome)
 #' of the sequences contained in the object.
 #' @export
-setMethod("seqnames", "SequenceTrack", function(x) as.character(names(x@sequence)))
+setMethod("seqnames", "SequenceTrack", function(x) {
+    as.character(names(x@sequence))
+})
 
 # setMethod("seqnames", "SequenceDNAStringSetTrack", function(x) as.character(names(x@sequence)))
 # setMethod("seqnames", "SequenceRNAStringSetTrack", function(x) as.character(names(x@sequence)))
@@ -474,12 +595,16 @@ setMethod("seqnames", "SequenceTrack", function(x) as.character(names(x@sequence
 #' @describeIn SequenceTrack-class return the names (i.e., the chromosome)
 #' of the sequences contained in the object.
 #' @export
-setMethod("seqnames", "SequenceBSgenomeTrack", function(x) as.character(seqnames(x@sequence)))
+setMethod("seqnames", "SequenceBSgenomeTrack", function(x) {
+    as.character(seqnames(x@sequence))
+})
 
 #' @describeIn SequenceTrack-class return the names (i.e., the chromosome)
 #' of the sequences contained in the object. Only those with length > 0.
 #' @export
-setMethod("seqlevels", "SequenceTrack", function(x) seqnames(x)[width(x@sequence) > 0])
+setMethod("seqlevels", "SequenceTrack", function(x) {
+    seqnames(x)[width(x@sequence) > 0]
+})
 
 # setMethod("seqlevels", "SequenceDNAStringSetTrack", function(x) seqnames(x)[width(x@sequence) > 0])
 # setMethod("seqlevels", "SequenceRNAStringSetTrack", function(x) seqnames(x)[width(x@sequence) > 0])
@@ -487,7 +612,17 @@ setMethod("seqlevels", "SequenceTrack", function(x) seqnames(x)[width(x@sequence
 #' @describeIn SequenceTrack-class return the names (i.e., the chromosome)
 #' of the sequences contained in the object. Only those with length > 0.
 #' @export
-setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) seqnames(x)[BSgenome::bsapply(new("BSParams", X = x@sequence, FUN = length, simplify = TRUE)) > 0]) # maybe seqnames only, to speed-up
+setMethod("seqlevels", "SequenceBSgenomeTrack", function(x) {
+    seqnames(x)[
+        BSgenome::bsapply(new(
+            "BSParams",
+            X = x@sequence,
+            FUN = length,
+            simplify = TRUE
+        )) >
+            0
+    ]
+}) # maybe seqnames only, to speed-up
 
 #' @describeIn SequenceTrack-class return the start coordinates of the track
 #' items.
@@ -508,7 +643,11 @@ setMethod("width", "SequenceTrack", function(x) NULL)
 #' active chromosome.
 #' @export
 setMethod("length", "SequenceTrack", function(x) {
-    if (chromosome(x) %in% seqnames(x)) length(x@sequence[[chromosome(x)]]) else 0
+    if (chromosome(x) %in% seqnames(x)) {
+        length(x@sequence[[chromosome(x)]])
+    } else {
+        0
+    }
 })
 
 #' @describeIn SequenceTrack-class extract a subsequence for the active
@@ -519,96 +658,123 @@ setMethod("length", "SequenceTrack", function(x) {
 #' Exactly two of the three must be provided; the third is derived from them.
 #' @importMethodsFrom Biostrings unmasked complement
 #' @export
-setMethod("subseq", "SequenceTrack", function(x, start = NA, end = NA, width = NA) {
-    padding <- "-"
-    if (!is.na(start[1] + end[1] + width[1])) {
-        warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
-        width <- NA
-    }
-    ## We want start and end to be set if width is provided
-    if (!is.na(width[1])) {
-        if (is.na(start) && is.na(end)) {
-            stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
+setMethod(
+    "subseq",
+    "SequenceTrack",
+    function(x, start = NA, end = NA, width = NA) {
+        padding <- "-"
+        if (!is.na(start[1] + end[1] + width[1])) {
+            warning(
+                "All 'start', 'stop' and 'width' are provided, ignoring 'width'"
+            )
+            width <- NA
+        }
+        ## We want start and end to be set if width is provided
+        if (!is.na(width[1])) {
+            if (is.na(start) && is.na(end)) {
+                stop(
+                    "Two out of the three in 'start', 'end' and 'width' have to be provided"
+                )
+            }
+            if (is.na(start)) {
+                start <- end - width[1] + 1
+            }
+            if (is.na(end)) {
+                end <- start + width[1] - 1
+            }
         }
         if (is.na(start)) {
-            start <- end - width[1] + 1
+            start <- 1
         }
-        if (is.na(end)) {
-            end <- start + width[1] - 1
+        w <- length(x)
+        if (w > 0) {
+            if (is.na(end)) {
+                end <- w
+            }
+            rstart <- max(1, start[1], na.rm = TRUE)
+            rend <- max(rstart, min(end[1], w, na.rm = TRUE))
+        } else {
+            if (is.na(end)) {
+                end <- start
+            }
+            rend <- end
+            rstart <- start
         }
-    }
-    if (is.na(start)) {
-        start <- 1
-    }
-    w <- length(x)
-    if (w > 0) {
-        if (is.na(end)) {
-            end <- w
+        if (rend < rstart || end < start) {
+            stop("'end' has to be bigger than 'start'")
         }
-        rstart <- max(1, start[1], na.rm = TRUE)
-        rend <- max(rstart, min(end[1], w, na.rm = TRUE))
-    } else {
-        if (is.na(end)) {
-            end <- start
+        if ((rend - rstart + 1) > 10e6) {
+            stop("Sequence is too big! Unable to extract")
         }
-        rend <- end
-        rstart <- start
+        seqtype <- try(seqtype(x@sequence), silent = TRUE)
+        if (is(seqtype, "try-error")) {
+            seqtype <- "DNA"
+        }
+        class <- paste0(seqtype, "String")
+        finalSeq <- rep(do.call(class, list(padding)), end - start + 1)
+        if (chromosome(x) %in% seqnames(x) && rend >= rstart) {
+            chrSeq <- x@sequence[[chromosome(x)]]
+            seq <- subseq(chrSeq, start = rstart, end = rend)
+            if (is(x, "SequenceBSgenomeTrack")) {
+                seq <- unmasked(seq)
+            }
+            subseq(
+                finalSeq,
+                ifelse(start < 1, abs(start) + 2, 1),
+                width = rend - rstart + 1
+            ) <- seq
+        }
+        if (is(x, "SequenceBSgenomeTrack") && chromosome(x) %in% seqnames(x)) {
+            x@pointerCache[[chromosome(x)]] <- x@sequence[[chromosome(x)]]
+        }
+        if (.dpOrDefault(x, "complement", FALSE)) {
+            finalSeq <- complement(finalSeq)
+        }
+        return(finalSeq)
     }
-    if (rend < rstart || end < start) {
-        stop("'end' has to be bigger than 'start'")
-    }
-    if ((rend - rstart + 1) > 10e6) {
-        stop("Sequence is too big! Unable to extract")
-    }
-    seqtype <- try(seqtype(x@sequence), silent = TRUE)
-    if (is(seqtype, "try-error")) {
-        seqtype <- "DNA"
-    }
-    class <- paste0(seqtype, "String")
-    finalSeq <- rep(do.call(class, list(padding)), end - start + 1)
-    if (chromosome(x) %in% seqnames(x) && rend >= rstart) {
-        chrSeq <- x@sequence[[chromosome(x)]]
-        seq <- subseq(chrSeq, start = rstart, end = rend)
-        if (is(x, "SequenceBSgenomeTrack")) seq <- unmasked(seq)
-        subseq(finalSeq, ifelse(start < 1, abs(start) + 2, 1), width = rend - rstart + 1) <- seq
-    }
-    if (is(x, "SequenceBSgenomeTrack") && chromosome(x) %in% seqnames(x)) {
-        x@pointerCache[[chromosome(x)]] <- x@sequence[[chromosome(x)]]
-    }
-    if (.dpOrDefault(x, "complement", FALSE)) {
-        finalSeq <- complement(finalSeq)
-    }
-    return(finalSeq)
-})
+)
 
 
 #' @describeIn SequenceTrack-class extract a subsequence for the active
 #' chromosome by streaming the required region from the referenced file,
 #' rather than from an in-memory sequence.
 #' @export
-setMethod("subseq", "ReferenceSequenceTrack", function(x, start = NA, end = NA, width = NA) {
-    if (sum(c(is.na(start[1]), is.na(end[1]), is.na(width[1]))) >= 2) {
-        stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
-    }
-    if (!is.na(start[1] + end[1] + width[1])) {
-        warning("All 'start', 'stop' and 'width' are provided, ignoring 'width'")
-        width <- NA
-    }
-    ## We want start and end to be set if width is provided
-    if (!is.na(width[1])) {
-        if (is.na(start) && is.na(end)) {
-            stop("Two out of the three in 'start', 'end' and 'width' have to be provided")
+setMethod(
+    "subseq",
+    "ReferenceSequenceTrack",
+    function(x, start = NA, end = NA, width = NA) {
+        if (sum(c(is.na(start[1]), is.na(end[1]), is.na(width[1]))) >= 2) {
+            stop(
+                "Two out of the three in 'start', 'end' and 'width' have to be provided"
+            )
         }
-        if (is.na(start)) {
-            start <- end - width[1] + 1
+        if (!is.na(start[1] + end[1] + width[1])) {
+            warning(
+                "All 'start', 'stop' and 'width' are provided, ignoring 'width'"
+            )
+            width <- NA
         }
-        if (is.na(end)) {
-            end <- start + width[1] - 1
+        ## We want start and end to be set if width is provided
+        if (!is.na(width[1])) {
+            if (is.na(start) && is.na(end)) {
+                stop(
+                    "Two out of the three in 'start', 'end' and 'width' have to be provided"
+                )
+            }
+            if (is.na(start)) {
+                start <- end - width[1] + 1
+            }
+            if (is.na(end)) {
+                end <- start + width[1] - 1
+            }
         }
+        x@sequence <- x@stream(
+            file = x@reference,
+            selection = GRanges(chromosome(x), ranges = IRanges(1, end))
+        )
+        return(callNextMethod())
     }
-    x@sequence <- x@stream(file = x@reference, selection = GRanges(chromosome(x), ranges = IRanges(1, end)))
-    return(callNextMethod())
-})
+)
 
 #' @describeIn SequenceTrack-class return the chromosome for which the track
 #' is defined.
@@ -652,13 +818,17 @@ setMethod("genome", "SequenceTrack", function(x) x@genome)
 #' for a [`RangeTrack`][RangeTrack-class] or a `SequenceTrack` object.
 # #' @keywords internal
 #' @export
-setMethod("consolidateTrack", signature(GdObject = "SequenceTrack"), function(GdObject, chromosome, ...) {
-    if (!is.null(chromosome)) {
-        chromosome(GdObject) <- chromosome
+setMethod(
+    "consolidateTrack",
+    signature(GdObject = "SequenceTrack"),
+    function(GdObject, chromosome, ...) {
+        if (!is.null(chromosome)) {
+            chromosome(GdObject) <- chromosome
+        }
+        GdObject <- callNextMethod(GdObject, ...)
+        return(GdObject)
     }
-    GdObject <- callNextMethod(GdObject, ...)
-    return(GdObject)
-})
+)
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
 ## DrawGD --------------------------------------------------------------------
@@ -674,88 +844,141 @@ setMethod("consolidateTrack", signature(GdObject = "SequenceTrack"), function(Gd
 #' is not necessary.
 #'
 #' @export
-setMethod("drawGD", signature("SequenceTrack"), function(GdObject, minBase, maxBase, prepare = FALSE, ...) {
-    debug <- .dpOrDefault(GdObject, "debug", FALSE)
-    if ((is.logical(debug) && debug) || debug == "prepare") {
-        browser()
-    }
-    fcol <- .dpOrDefault(GdObject, "fontcolor", getBioColor("DNA_BASES_N"))
-    cex <- max(0.3, .dpOrDefault(GdObject, "cex", 1))
-    xscale <- if (!.dpOrDefault(GdObject, "reverseStrand", FALSE)) c(minBase, maxBase) else c(maxBase, minBase)
-    pushViewport(viewport(xscale = xscale, clip = TRUE, gp = .fontGp(GdObject, cex = cex)))
-    if (prepare) {
-        pres <- .pxResolution()
-        nsp <- max(as.numeric(convertHeight(stringHeight(stringWidth(DNA_ALPHABET)), "native")))
-        nsp <- nsp / pres["y"] * 2
-        displayPars(GdObject) <- list("neededVerticalSpace" = nsp)
+setMethod(
+    "drawGD",
+    signature("SequenceTrack"),
+    function(GdObject, minBase, maxBase, prepare = FALSE, ...) {
+        fcol <- .dpOrDefault(GdObject, "fontcolor", getBioColor("DNA_BASES_N"))
+        cex <- max(0.3, .dpOrDefault(GdObject, "cex", 1))
+        xscale <- if (!.dpOrDefault(GdObject, "reverseStrand", FALSE)) {
+            c(minBase, maxBase)
+        } else {
+            c(maxBase, minBase)
+        }
+        pushViewport(viewport(
+            xscale = xscale,
+            clip = TRUE,
+            gp = .fontGp(GdObject, cex = cex)
+        ))
+        if (prepare) {
+            pres <- .pxResolution()
+            nsp <- max(as.numeric(convertHeight(
+                stringHeight(stringWidth(DNA_ALPHABET)),
+                "native"
+            )))
+            nsp <- nsp / pres["y"] * 2
+            displayPars(GdObject) <- list("neededVerticalSpace" = nsp)
+            popViewport(1)
+            return(invisible(GdObject))
+        }
+        imageMap(GdObject) <- NULL
+        delta <- maxBase - minBase
+        if (delta == 0) {
+            return(invisible(GdObject))
+        }
+        lwidth <- max(as.numeric(convertUnit(
+            stringWidth(DNA_ALPHABET),
+            "inches"
+        )))
+        perLetter <- vpLocation()$isize["width"] / (maxBase - minBase + 1)
+        diff <- .pxResolution(
+            .dpOrDefault(GdObject, "min.width", 2),
+            coord = "x"
+        )
+        ## FIXME: Need to deal with sequences that are too long.
+        if (diff > 1 || (maxBase - minBase + 1) >= 10e6) {
+            grid.lines(
+                x = unit(c(minBase, maxBase), "native"),
+                y = 0.5,
+                gp = gpar(
+                    col = .dpOrDefault(GdObject, "col", "darkgray"),
+                    lwd = .dpOrDefault(GdObject, "lwd", 2)
+                )
+            )
+        } else {
+            sequence <- as.character(as(
+                subseq(GdObject, start = minBase, end = maxBase - 1),
+                "Rle"
+            ))
+            at <- seq((minBase + 0.5), maxBase - 1 + 0.5, by = 1) # to align sequence (letters) with ticks position
+            sequence[sequence == "-"] <- ""
+            if (perLetter < 0.5 && .dpOrDefault(GdObject, "add53", FALSE)) {
+                sequence[c(1, length(sequence))] <- ""
+            }
+            col <- fcol[toupper(sequence)]
+            if (
+                lwidth < perLetter &&
+                    !.dpOrDefault(GdObject, "noLetters", FALSE)
+            ) {
+                grid.text(
+                    x = unit(at, "native"),
+                    y = 0.5,
+                    label = sequence,
+                    rot = .dpOrDefault(GdObject, "rotation", 0),
+                    gp = gpar(col = col)
+                )
+            } else {
+                grid.rect(
+                    x = unit(at, "native"),
+                    y = 0.05,
+                    width = unit(1, "native"),
+                    height = 0.9,
+                    gp = gpar(fill = col, col = "white"),
+                    just = c(0.5, 0)
+                )
+            }
+        }
+        ## The direction indicators
+        if (.dpOrDefault(GdObject, "add53", FALSE)) {
+            if (.dpOrDefault(GdObject, "complement", FALSE)) {
+                grid.text(
+                    label = expression("3'"),
+                    x = unit(minBase + 0.1, "native"),
+                    just = c(0, 0.5),
+                    gp = gpar(col = "#808080", cex = 0.8)
+                )
+                grid.text(
+                    label = expression("5'"),
+                    x = unit(maxBase - 0.1, "native"),
+                    just = c(1, 0.5),
+                    gp = gpar(col = "#808080", cex = 0.8)
+                )
+            } else {
+                grid.text(
+                    label = expression("5'"),
+                    x = unit(minBase + 0.1, "native"),
+                    just = c(0, 0.5),
+                    gp = gpar(col = "#808080", cex = 0.8)
+                )
+                grid.text(
+                    label = expression("3'"),
+                    x = unit(maxBase - 0.1, "native"),
+                    just = c(1, 0.5),
+                    gp = gpar(col = "#808080", cex = 0.8)
+                )
+            }
+        }
         popViewport(1)
         return(invisible(GdObject))
     }
-    if ((is.logical(debug) && debug) || debug == "draw") {
-        browser()
-    }
-    imageMap(GdObject) <- NULL
-    delta <- maxBase - minBase
-    if (delta == 0) {
-        return(invisible(GdObject))
-    }
-    lwidth <- max(as.numeric(convertUnit(stringWidth(DNA_ALPHABET), "inches")))
-    perLetter <- vpLocation()$isize["width"] / (maxBase - minBase + 1)
-    diff <- .pxResolution(.dpOrDefault(GdObject, "min.width", 2), coord = "x")
-    ## FIXME: Need to deal with sequences that are too long.
-    if (diff > 1 || (maxBase - minBase + 1) >= 10e6) {
-        grid.lines(
-            x = unit(c(minBase, maxBase), "native"), y = 0.5,
-            gp = gpar(
-                col = .dpOrDefault(GdObject, "col", "darkgray"),
-                lwd = .dpOrDefault(GdObject, "lwd", 2)
-            )
-        )
-    } else {
-        sequence <- as.character(as(subseq(GdObject, start = minBase, end = maxBase - 1), "Rle"))
-        at <- seq((minBase + 0.5), maxBase - 1 + 0.5, by = 1) # to align sequence (letters) with ticks position
-        sequence[sequence == "-"] <- ""
-        if (perLetter < 0.5 && .dpOrDefault(GdObject, "add53", FALSE)) {
-            sequence[c(1, length(sequence))] <- ""
-        }
-        col <- fcol[toupper(sequence)]
-        if (lwidth < perLetter && !.dpOrDefault(GdObject, "noLetters", FALSE)) {
-            grid.text(
-                x = unit(at, "native"), y = 0.5, label = sequence, rot = .dpOrDefault(GdObject, "rotation", 0),
-                gp = gpar(col = col)
-            )
-        } else {
-            grid.rect(
-                x = unit(at, "native"), y = 0.05, width = unit(1, "native"), height = 0.9,
-                gp = gpar(fill = col, col = "white"), just = c(0.5, 0)
-            )
-        }
-    }
-    ## The direction indicators
-    if (.dpOrDefault(GdObject, "add53", FALSE)) {
-        if (.dpOrDefault(GdObject, "complement", FALSE)) {
-            grid.text(label = expression("3'"), x = unit(minBase + 0.1, "native"), just = c(0, 0.5), gp = gpar(col = "#808080", cex = 0.8))
-            grid.text(label = expression("5'"), x = unit(maxBase - 0.1, "native"), just = c(1, 0.5), gp = gpar(col = "#808080", cex = 0.8))
-        } else {
-            grid.text(label = expression("5'"), x = unit(minBase + 0.1, "native"), just = c(0, 0.5), gp = gpar(col = "#808080", cex = 0.8))
-            grid.text(label = expression("3'"), x = unit(maxBase - 0.1, "native"), just = c(1, 0.5), gp = gpar(col = "#808080", cex = 0.8))
-        }
-    }
-    popViewport(1)
-    return(invisible(GdObject))
-})
+)
 
 ## SetAs ---------------------------------------------------------------------
 
-setAs("DNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
+setAs("DNAString", "Rle", function(from, to) {
+    Rle(strsplit(as.character(from), "")[[1]])
+})
 
-setAs("RNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), "")[[1]]))
+setAs("RNAString", "Rle", function(from, to) {
+    Rle(strsplit(as.character(from), "")[[1]])
+})
 
 ## Show ----------------------------------------------------------------------
 
 .sequenceTrackInfo <- function(object) {
     msg <- sprintf(
-        paste("Sequence track '%s':\n",
+        paste(
+            "Sequence track '%s':\n",
             "| genome: %s\n",
             "| chromosomes: %s\n",
             "| active chromosome: %s (%s nucleotides)\n",
@@ -768,7 +991,9 @@ setAs("RNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), ""
         length(object)
     )
     if (length(seqnames(object)) > 1) {
-        msg <- paste(msg, "Call seqnames() to list all available chromosomes\n",
+        msg <- paste(
+            msg,
+            "Call seqnames() to list all available chromosomes\n",
             "Call chromosome()<- to change the active chromosome\n",
             sep = ""
         )
@@ -778,15 +1003,17 @@ setAs("RNAString", "Rle", function(from, to) Rle(strsplit(as.character(from), ""
 
 ## We need to show the name, genome, information about the source BSgenome object as well as the currently active chromosome
 
-
 #' @describeIn  SequenceTrack-class Show method.
 #' @export
 setMethod(
-    "show", signature(object = "SequenceBSgenomeTrack"),
+    "show",
+    signature(object = "SequenceBSgenomeTrack"),
     function(object) {
-        cat(.sequenceTrackInfo(object),
+        cat(
+            .sequenceTrackInfo(object),
             sprintf(
-                paste("Parent BSgenome object:\n",
+                paste(
+                    "Parent BSgenome object:\n",
                     "| organism: %s\n",
                     "| provider: %s\n",
                     "| provider version: %s\n",
@@ -810,14 +1037,26 @@ setMethod(
 ## Here we only need the name, genome and currently active chromosome information
 #' @describeIn  SequenceTrack-class Show method.
 #' @export
-setMethod("show", signature(object = "SequenceDNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
+setMethod(
+    "show",
+    signature(object = "SequenceDNAStringSetTrack"),
+    function(object) cat(.sequenceTrackInfo(object))
+)
 
 #' @describeIn  SequenceTrack-class Show method.
 #' @export
-setMethod("show", signature(object = "SequenceRNAStringSetTrack"), function(object) cat(.sequenceTrackInfo(object)))
+setMethod(
+    "show",
+    signature(object = "SequenceRNAStringSetTrack"),
+    function(object) cat(.sequenceTrackInfo(object))
+)
 
 #' @describeIn  SequenceTrack-class Show method.
 #' @export
-setMethod("show", signature(object = "ReferenceSequenceTrack"), function(object) {
-    .referenceTrackInfo(object, "ReferenceSequenceTrack")
-})
+setMethod(
+    "show",
+    signature(object = "ReferenceSequenceTrack"),
+    function(object) {
+        .referenceTrackInfo(object, "ReferenceSequenceTrack")
+    }
+)

@@ -30,6 +30,18 @@
 \alias{dtHoriz}
 \alias{bmt}
 \title{Data sets}
+\format{
+A heterogeneous collection of pre-built objects, one per data
+set, used to avoid recomputing or re-downloading data in examples and
+the vignette. Depending on the data set, the object is either a
+ready-to-plot \code{Gviz} track (e.g. \code{\link[=AnnotationTrack-class]{AnnotationTrack}},
+\code{\link[=GeneRegionTrack-class]{GeneRegionTrack}},
+\code{\link[=GenomeAxisTrack-class]{GenomeAxisTrack}},
+\code{\link[=IdeogramTrack-class]{IdeogramTrack}}, \code{\link[=DataTrack-class]{DataTrack}} or
+\code{\link[=BiomartGeneRegionTrack-class]{BiomartGeneRegionTrack}}), a
+\code{\link[GenomicRanges:GRanges-class]{GRanges}} or \code{data.frame} of annotation data,
+or a numeric scalar (\code{from}, \code{to}) marking a genomic start or end coordinate.
+}
 \description{
 Some sample data sets used for the illustrative examples and the vignette.
 }

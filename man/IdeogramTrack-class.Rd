@@ -192,7 +192,7 @@ data(idTrack)
 }
 
 ## Construct the object
-\dontrun{
+\donttest{
 idTrack <- IdeogramTrack(chromosome = 7, genome = "mm39")
 }
 
@@ -216,13 +216,13 @@ plotTracks(idTrack, from = 5000000, to = 9000000)
 
 ## Accessors
 chromosome(idTrack)
-\dontrun{
+\donttest{
 chromosome(idTrack) <- "chrX"
 }
 
 genome(idTrack)
-\dontrun{
-genome(id) <- "hg38"
+\donttest{
+genome(idTrack) <- "hg38"
 }
 
 range(idTrack)

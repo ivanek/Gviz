@@ -3,7 +3,6 @@ NULL
 
 ## GeneRegionTrack Class -----------------------------------------------------
 
-
 #' GeneRegionTrack class and methods
 #'
 #'
@@ -141,8 +140,9 @@ NULL
 #' ## From a TxDb object
 #' if (require(GenomicFeatures)) {
 #'     samplefile <- system.file("extdata",
-#'                               "hg19_knownGene_sample.sqlite",
-#'                               package = "GenomicFeatures")
+#'         "hg19_knownGene_sample.sqlite",
+#'         package = "GenomicFeatures"
+#'     )
 #'     txdb <- loadDb(samplefile)
 #'     GeneRegionTrack(txdb)
 #'     GeneRegionTrack(txdb,
@@ -243,9 +243,13 @@ NULL
 #' coords(grTrack)
 #' tags(grTrack)
 #' @exportClass GeneRegionTrack
-setClass("GeneRegionTrack",
+setClass(
+    "GeneRegionTrack",
     contains = "AnnotationTrack",
-    representation = representation(start = "NumericOrNULL", end = "NumericOrNULL"),
+    representation = representation(
+        start = "NumericOrNULL",
+        end = "NumericOrNULL"
+    ),
     prototype = prototype(
         columns = c("feature", "transcript", "symbol", "gene", "exon"),
         stacking = "squish",
@@ -276,7 +280,11 @@ setClass("GeneRegionTrack",
 #' initializer for the remaining slots.
 #' @export
 setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...) {
-    if (is.null(list(...)$range) && is.null(list(...)$genome) && is.null(list(...)$chromosome)) {
+    if (
+        is.null(list(...)$range) &&
+            is.null(list(...)$genome) &&
+            is.null(list(...)$chromosome)
+    ) {
         return(.Object)
     }
     ## the diplay parameter defaults
@@ -303,10 +311,12 @@ setMethod("initialize", "GeneRegionTrack", function(.Object, start, end, ...) {
 #' @name ReferenceGeneRegionTrack-class
 #' @exportClass ReferenceGeneRegionTrack
 #' @keywords internal
-setClass("ReferenceGeneRegionTrack", contains = c("GeneRegionTrack", "ReferenceTrack"))
+setClass(
+    "ReferenceGeneRegionTrack",
+    contains = c("GeneRegionTrack", "ReferenceTrack")
+)
 
 ## Initialize ----------------------------------------------------------------
-
 
 ## This just needs to set the appropriate slots that are being inherited from ReferenceTrack because the
 ## multiple inheritence has some strange features with regards to method selection
@@ -316,13 +326,28 @@ setClass("ReferenceGeneRegionTrack", contains = c("GeneRegionTrack", "ReferenceT
 #' `mapping`, `args`, `defaults`) before deferring to the `GeneRegionTrack`
 #' initializer for the remaining slots.
 #' @export
-setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, reference, mapping = list(),
-                                                             args = list(), defaults = list(), ...) {
-    .Object <- selectMethod("initialize", "ReferenceTrack")(.Object = .Object, reference = reference, stream = stream,
-        mapping = mapping, args = args, defaults = defaults)
-    .Object <- callNextMethod(.Object, ...)
-    return(.Object)
-})
+setMethod(
+    "initialize",
+    "ReferenceGeneRegionTrack",
+    function(.Object,
+             stream,
+             reference,
+             mapping = list(),
+             args = list(),
+             defaults = list(),
+             ...) {
+        .Object <- selectMethod("initialize", "ReferenceTrack")(
+            .Object = .Object,
+            reference = reference,
+            stream = stream,
+            mapping = mapping,
+            args = args,
+            defaults = defaults
+        )
+        .Object <- callNextMethod(.Object, ...)
+        return(.Object)
+    }
+)
 
 ## Constructor ---------------------------------------------------------------
 
@@ -345,19 +370,56 @@ setMethod("initialize", "ReferenceGeneRegionTrack", function(.Object, stream, re
 #' @describeIn GeneRegionTrack-class Constructor function for
 #' `GeneRegionTrack-class`.
 #' @export
-GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths = NULL, strand, feature, exon,
-                            transcript, gene, symbol, chromosome, genome, stacking = "squish",
-                            name = "GeneRegionTrack", start = NULL, end = NULL, importFunction, stream = FALSE, ...) {
+GeneRegionTrack <- function(
+  range = NULL,
+  rstarts = NULL,
+  rends = NULL,
+  rwidths = NULL,
+  strand,
+  feature,
+  exon,
+  transcript,
+  gene,
+  symbol,
+  chromosome,
+  genome,
+  stacking = "squish",
+  name = "GeneRegionTrack",
+  start = NULL,
+  end = NULL,
+  importFunction,
+  stream = FALSE,
+  ...
+) {
     ## Some defaults
-    covars <- if (is.data.frame(range)) range else if (is(range, "GRanges")) as.data.frame(mcols(range)) else data.frame()
+    covars <- if (is.data.frame(range)) {
+        range
+    } else if (is(range, "GRanges")) {
+        as.data.frame(mcols(range))
+    } else {
+        data.frame()
+    }
     isStream <- FALSE
     if (!is.character(range)) {
-        n <- if (is.null(range)) max(c(length(start), length(end), length(width))) else if (is(range, "data.frame")) nrow(range) else length(range)
+        n <- if (is.null(range)) {
+            max(c(length(start), length(end), length(width)))
+        } else if (is(range, "data.frame")) {
+            nrow(range)
+        } else {
+            length(range)
+        }
         if (is.null(covars[["feature"]]) && missing(feature)) {
             feature <- paste("exon", seq_len(n), sep = "_")
         }
         if (is.null(covars[["exon"]]) && missing(exon)) {
-            exon <- make.unique(rep(if (!missing(feature) && !is.null(feature)) as.character(feature) else covars[["feature"]], n)[seq_len(n)])
+            exon <- make.unique(rep(
+                if (!missing(feature) && !is.null(feature)) {
+                    as.character(feature)
+                } else {
+                    covars[["feature"]]
+                },
+                n
+            )[seq_len(n)])
         }
         if (is.null(covars[["transcript"]]) && missing(transcript)) {
             transcript <- paste("transcript", seq_len(n), sep = "_")
@@ -367,18 +429,53 @@ GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths 
         }
     }
     ## Build a GRanges object from the inputs
-    .missingToNull(c("feature", "exon", "transcript", "gene", "symbol", "strand", "chromosome", "importFunction", "genome"))
+    .missingToNull(c(
+        "feature",
+        "exon",
+        "transcript",
+        "gene",
+        "symbol",
+        "strand",
+        "chromosome",
+        "importFunction",
+        "genome"
+    ))
     args <- list(
-        feature = feature, id = exon, exon = exon, transcript = transcript, gene = gene, symbol = symbol, strand = strand,
-        chromosome = chromosome, genome = genome
+        feature = feature,
+        id = exon,
+        exon = exon,
+        transcript = transcript,
+        gene = gene,
+        symbol = symbol,
+        strand = strand,
+        chromosome = chromosome,
+        genome = genome
     )
     defs <- list(
-        feature = "unknown", id = "unknown", exon = "unknown", transcript = "unknown", genome = NA,
-        gene = "unknown", symbol = "unknown", strand = "*", density = 1, chromosome = "chrNA"
+        feature = "unknown",
+        id = "unknown",
+        exon = "unknown",
+        transcript = "unknown",
+        genome = NA,
+        gene = "unknown",
+        symbol = "unknown",
+        strand = "*",
+        density = 1,
+        chromosome = "chrNA"
     )
     range <- .buildRange(
-        range = range, groupId = "transcript", start = rstarts, end = rends, width = rwidths, args = args, defaults = defs,
-        chromosome = chromosome, tstart = start, tend = end, trackType = "GeneRegionTrack", importFun = importFunction,
+        range = range,
+        groupId = "transcript",
+        start = rstarts,
+        end = rends,
+        width = rwidths,
+        args = args,
+        defaults = defs,
+        chromosome = chromosome,
+        tstart = start,
+        tend = end,
+        trackType = "GeneRegionTrack",
+        importFun = importFunction,
         genome = genome
     )
     if (is.list(range)) {
@@ -393,19 +490,44 @@ GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths 
         end <- if (!length(range)) NULL else max(end(range))
     }
     if (missing(chromosome) || is.null(chromosome)) {
-        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+        chromosome <- if (length(range) > 0) {
+            .chrName(as.character(seqnames(range)[1]))
+        } else {
+            "chrNA"
+        }
     }
-    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
+    genome <- .getGenomeFromGRange(
+        range,
+        ifelse(is.null(genome), character(), genome[1])
+    )
     if (!isStream) {
-        return(new("GeneRegionTrack",
-            start = start, end = end, chromosome = chromosome[1], range = range,
-            name = name, genome = genome, stacking = stacking, ...
+        return(new(
+            "GeneRegionTrack",
+            start = start,
+            end = end,
+            chromosome = chromosome[1],
+            range = range,
+            name = name,
+            genome = genome,
+            stacking = stacking,
+            ...
         ))
     } else {
-        return(new("ReferenceGeneRegionTrack",
-            start = start, end = end, chromosome = chromosome[1], range = range,
-            name = name, genome = genome, stacking = stacking, stream = slist[["stream"]],
-            reference = slist[["reference"]], mapping = slist[["mapping"]], args = args, defaults = defs, ...
+        return(new(
+            "ReferenceGeneRegionTrack",
+            start = start,
+            end = end,
+            chromosome = chromosome[1],
+            range = range,
+            name = name,
+            genome = genome,
+            stacking = stacking,
+            stream = slist[["stream"]],
+            reference = slist[["reference"]],
+            mapping = slist[["mapping"]],
+            args = args,
+            defaults = defs,
+            ...
         ))
     }
 }
@@ -420,7 +542,6 @@ GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths 
 ## have to be replicated accordingly. We handle this by passing along the repeat
 ## vector 'by' to the numeric method below.
 
-
 ## For TxDb objects we extract the grouping information and use the GRanges method
 
 #' @importClassesFrom GenomicFeatures TxDb
@@ -428,8 +549,15 @@ GeneRegionTrack <- function(range = NULL, rstarts = NULL, rends = NULL, rwidths 
 #' @importMethodsFrom GenomicFeatures fiveUTRsByTranscript threeUTRsByTranscript
 #' @importMethodsFrom GenomicFeatures transcriptsBy transcripts
 setMethod(
-    ".buildRange", signature("TxDb"),
-    function(range, groupId = "transcript", tstart, tend, chromosome, args, ...) {
+    ".buildRange",
+    signature("TxDb"),
+    function(range,
+             groupId = "transcript",
+             tstart,
+             tend,
+             chromosome,
+             args,
+             ...) {
         ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
         noSubset <- is.null(tstart) && is.null(tend)
         if (!is.null(chromosome)) {
@@ -452,10 +580,16 @@ setMethod(
                 tend <- sl[chromosome] + 1
                 tend[is.na(tend)] <- tstart[is.na(tend)] + 1
             }
-            sRange <- GRanges(seqnames = chromosome, ranges = IRanges(start = tstart, end = tend))
+            sRange <- GRanges(
+                seqnames = chromosome,
+                ranges = IRanges(start = tstart, end = tend)
+            )
         }
         ## First the mapping of internal transcript ID to transcript name
-        txs <- as.data.frame(values(transcripts(range, columns = c("tx_id", "tx_name"))))
+        txs <- as.data.frame(values(transcripts(
+            range,
+            columns = c("tx_id", "tx_name")
+        )))
         rownames(txs) <- txs[, "tx_id"]
         ## Now the CDS ranges
         t2c <- cdsBy(range, "tx")
@@ -487,7 +621,10 @@ setMethod(
         ## And finally all the non-coding transcripts
         nt2e <- exonsBy(range, "tx")
         names(nt2e) <- txs[names(nt2e), 2]
-        nt2e <- nt2e[!names(nt2e) %in% c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)]
+        nt2e <- nt2e[
+            !names(nt2e) %in%
+                c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)
+        ]
         tids <- rep(names(nt2e), elementNROWS(nt2e))
         nt2e <- unlist(nt2e)
         if (length(nt2e)) {
@@ -498,14 +635,44 @@ setMethod(
         colnames(values(t2c))[c(1, 2)] <- c("exon_id", "exon_name")
         ## t2e <- c(t2c, t2f, t2t, nt2e) ## This is super-slow, much more efficient if we build the GRanges object from the individual bits and pieces
         vals <- DataFrame(
-            exon_id = c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
-            exon_name = c(values(t2c)$exon_name, values(t2f)$exon_name, values(t2t)$exon_name, values(nt2e)$exon_name),
-            exon_rank = c(values(t2c)$exon_rank, values(t2f)$exon_rank, values(t2t)$exon_rank, values(nt2e)$exon_rank),
-            tx_id = c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id, values(nt2e)$tx_id),
-            feature_type = c(values(t2c)$feature_type, values(t2f)$feature_type, values(t2t)$feature_type, values(nt2e)$feature_type)
+            exon_id = c(
+                values(t2c)$exon_id,
+                values(t2f)$exon_id,
+                values(t2t)$exon_id,
+                values(nt2e)$exon_id
+            ),
+            exon_name = c(
+                values(t2c)$exon_name,
+                values(t2f)$exon_name,
+                values(t2t)$exon_name,
+                values(nt2e)$exon_name
+            ),
+            exon_rank = c(
+                values(t2c)$exon_rank,
+                values(t2f)$exon_rank,
+                values(t2t)$exon_rank,
+                values(nt2e)$exon_rank
+            ),
+            tx_id = c(
+                values(t2c)$tx_id,
+                values(t2f)$tx_id,
+                values(t2t)$tx_id,
+                values(nt2e)$tx_id
+            ),
+            feature_type = c(
+                values(t2c)$feature_type,
+                values(t2f)$feature_type,
+                values(t2t)$feature_type,
+                values(nt2e)$feature_type
+            )
         )
         t2e <- GRanges(
-            seqnames = c(seqnames(t2c), seqnames(t2f), seqnames(t2t), seqnames(nt2e)),
+            seqnames = c(
+                seqnames(t2c),
+                seqnames(t2f),
+                seqnames(t2t),
+                seqnames(nt2e)
+            ),
             ranges = IRanges(
                 start = c(start(t2c), start(t2f), start(t2t), start(nt2e)),
                 end = c(end(t2c), end(t2f), end(t2t), end(nt2e))
@@ -524,9 +691,26 @@ setMethod(
         gids <- rep(names(g2t), elementNROWS(g2t))
         g2t <- unlist(g2t)
         values(g2t)[["gene_id"]] <- gids
-        values(t2e)$gene_id <- gids[match(values(t2e)$tx_id, as.character(txs[as.character(values(g2t)$tx_id), 2]))]
-        vals <- values(t2e)[c("tx_id", "exon_name", "exon_rank", "feature_type", "tx_id", "gene_id")]
-        colnames(vals) <- c("transcript", "exon", "rank", "feature", "symbol", "gene")
+        values(t2e)$gene_id <- gids[match(
+            values(t2e)$tx_id,
+            as.character(txs[as.character(values(g2t)$tx_id), 2])
+        )]
+        vals <- values(t2e)[c(
+            "tx_id",
+            "exon_name",
+            "exon_rank",
+            "feature_type",
+            "tx_id",
+            "gene_id"
+        )]
+        colnames(vals) <- c(
+            "transcript",
+            "exon",
+            "rank",
+            "feature",
+            "symbol",
+            "gene"
+        )
         ## Add the genome information
         genome(t2e) <- unique(genome(range))
         ## Finally we re-assign, subset if necessary, and sort
@@ -538,7 +722,12 @@ setMethod(
             range <- range[range$transcript %in% txSel]
         }
         args <- list(genome = genome(range)[1])
-        return(.buildRange(range = sort(range), chromosome = chromosome, args = args, ...))
+        return(.buildRange(
+            range = sort(range),
+            chromosome = chromosome,
+            args = args,
+            ...
+        ))
     }
 )
 
@@ -548,8 +737,15 @@ setMethod(
 #' @importMethodsFrom ensembldb cdsBy exonsBy fiveUTRsByTranscript
 #' @importMethodsFrom ensembldb threeUTRsByTranscript transcriptsBy transcripts
 setMethod(
-    ".buildRange", signature("EnsDb"),
-    function(range, groupId = "transcript", tstart, tend, chromosome, args, ...) {
+    ".buildRange",
+    signature("EnsDb"),
+    function(range,
+             groupId = "transcript",
+             tstart,
+             tend,
+             chromosome,
+             args,
+             ...) {
         ## If chromosome (and optional start and end) information is present we only extract parts of the annotation data
         noSubset <- is.null(tstart) && is.null(tend)
         if (!is.null(chromosome)) {
@@ -562,11 +758,17 @@ setMethod(
                 tend <- sl[chromosome] + 1
                 tend[is.na(tend)] <- tstart[is.na(tend)] + 1
             }
-            sRange <- GRanges(seqnames = chromosome, ranges = IRanges(start = tstart, end = tend))
+            sRange <- GRanges(
+                seqnames = chromosome,
+                ranges = IRanges(start = tstart, end = tend)
+            )
             ## sRange <- GRangesFilter(sRange, type = "any") can we filter directly?
         }
         ## First the mapping of internal transcript ID to transcript name
-        txs <- as.data.frame(values(transcripts(range, columns = c("tx_id", "tx_name"))))
+        txs <- as.data.frame(values(transcripts(
+            range,
+            columns = c("tx_id", "tx_name")
+        )))
         rownames(txs) <- txs[, "tx_id"]
         ## Now the CDS ranges
         t2c <- cdsBy(range, "tx")
@@ -598,7 +800,10 @@ setMethod(
         ## And finally all the non-coding transcripts
         nt2e <- exonsBy(range, "tx")
         names(nt2e) <- txs[names(nt2e), 2]
-        nt2e <- nt2e[!names(nt2e) %in% c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)]
+        nt2e <- nt2e[
+            !names(nt2e) %in%
+                c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id)
+        ]
         tids <- rep(names(nt2e), elementNROWS(nt2e))
         nt2e <- unlist(nt2e)
         if (length(nt2e)) {
@@ -608,14 +813,44 @@ setMethod(
         ## Now we can merge the three back together (we need to change the column names of t2c to make them all the same)
         ## t2e <- c(t2c, t2f, t2t, nt2e) ## This is super-slow, much more efficient if we build the GRanges object from the individual bits and pieces
         vals <- DataFrame(
-            exon_id = c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
-            exon_name = c(values(t2c)$exon_id, values(t2f)$exon_id, values(t2t)$exon_id, values(nt2e)$exon_id),
-            exon_rank = c(values(t2c)$exon_rank, values(t2f)$exon_rank, values(t2t)$exon_rank, values(nt2e)$exon_rank),
-            tx_id = c(values(t2c)$tx_id, values(t2f)$tx_id, values(t2t)$tx_id, values(nt2e)$tx_id),
-            feature_type = c(values(t2c)$feature_type, values(t2f)$feature_type, values(t2t)$feature_type, values(nt2e)$feature_type)
+            exon_id = c(
+                values(t2c)$exon_id,
+                values(t2f)$exon_id,
+                values(t2t)$exon_id,
+                values(nt2e)$exon_id
+            ),
+            exon_name = c(
+                values(t2c)$exon_id,
+                values(t2f)$exon_id,
+                values(t2t)$exon_id,
+                values(nt2e)$exon_id
+            ),
+            exon_rank = c(
+                values(t2c)$exon_rank,
+                values(t2f)$exon_rank,
+                values(t2t)$exon_rank,
+                values(nt2e)$exon_rank
+            ),
+            tx_id = c(
+                values(t2c)$tx_id,
+                values(t2f)$tx_id,
+                values(t2t)$tx_id,
+                values(nt2e)$tx_id
+            ),
+            feature_type = c(
+                values(t2c)$feature_type,
+                values(t2f)$feature_type,
+                values(t2t)$feature_type,
+                values(nt2e)$feature_type
+            )
         )
         t2e <- GRanges(
-            seqnames = c(seqnames(t2c), seqnames(t2f), seqnames(t2t), seqnames(nt2e)),
+            seqnames = c(
+                seqnames(t2c),
+                seqnames(t2f),
+                seqnames(t2t),
+                seqnames(nt2e)
+            ),
             ranges = IRanges(
                 start = c(start(t2c), start(t2f), start(t2t), start(nt2e)),
                 end = c(end(t2c), end(t2f), end(t2t), end(nt2e))
@@ -634,9 +869,26 @@ setMethod(
         gids <- rep(names(g2t), elementNROWS(g2t))
         g2t <- unlist(g2t)
         values(g2t)[["gene_id"]] <- gids
-        values(t2e)$gene_id <- gids[match(values(t2e)$tx_id, as.character(txs[as.character(values(g2t)$tx_id), 2]))]
-        vals <- values(t2e)[c("tx_id", "exon_name", "exon_rank", "feature_type", "tx_id", "gene_id")]
-        colnames(vals) <- c("transcript", "exon", "rank", "feature", "symbol", "gene")
+        values(t2e)$gene_id <- gids[match(
+            values(t2e)$tx_id,
+            as.character(txs[as.character(values(g2t)$tx_id), 2])
+        )]
+        vals <- values(t2e)[c(
+            "tx_id",
+            "exon_name",
+            "exon_rank",
+            "feature_type",
+            "tx_id",
+            "gene_id"
+        )]
+        colnames(vals) <- c(
+            "transcript",
+            "exon",
+            "rank",
+            "feature",
+            "symbol",
+            "gene"
+        )
         ## Add the genome information
         genome(t2e) <- unique(genome(range))
         ## Finally we re-assign, subset if necessary, and sort
@@ -648,7 +900,12 @@ setMethod(
             range <- range[range$transcript %in% txSel]
         }
         args <- list(genome = genome(range)[1])
-        return(.buildRange(range = sort(range), chromosome = chromosome, args = args, ...))
+        return(.buildRange(
+            range = sort(range),
+            chromosome = chromosome,
+            args = args,
+            ...
+        ))
     }
 )
 
@@ -658,51 +915,76 @@ setMethod(
 #' @describeIn GeneRegionTrack-class Extract the gene identifiers for all
 #' gene models.
 #' @export
-setMethod("gene", signature(GdObject = "GeneRegionTrack"), function(GdObject) .getAnn(GdObject, "gene"))
+setMethod("gene", signature(GdObject = "GeneRegionTrack"), function(GdObject) {
+    .getAnn(GdObject, "gene")
+})
 
 #' @describeIn GeneRegionTrack-class Replace the gene identifiers for all
 #' gene models.
 #' The replacement value must be a character of appropriate length or another
 #' vector that can be coerced into such.
 #' @export
-setReplaceMethod("gene", signature("GeneRegionTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "gene"))
+setReplaceMethod(
+    "gene",
+    signature("GeneRegionTrack", "character"),
+    function(GdObject, value) .setAnn(GdObject, value, "gene")
+)
 
 #' @describeIn GeneRegionTrack-class Extract the human-readable gene symbol
 #' for all gene models.
 #' @export
-setMethod("symbol", signature(GdObject = "GeneRegionTrack"), function(GdObject) .getAnn(GdObject, "symbol"))
+setMethod(
+    "symbol",
+    signature(GdObject = "GeneRegionTrack"),
+    function(GdObject) .getAnn(GdObject, "symbol")
+)
 
 #' @describeIn GeneRegionTrack-class Replace the human-readable gene symbol
 #' for all gene models.
 #' The replacement value must be a character of appropriate length or another
 #' vector that can be coerced into such.
 #' @export
-setReplaceMethod("symbol", signature("GeneRegionTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "symbol"))
+setReplaceMethod(
+    "symbol",
+    signature("GeneRegionTrack", "character"),
+    function(GdObject, value) .setAnn(GdObject, value, "symbol")
+)
 
 #' @describeIn GeneRegionTrack-class Extract the transcript identifiers for all
 #' transcripts in the gene models.
 #' @export
-setMethod("transcript", signature(GdObject = "GeneRegionTrack"), function(GdObject) .getAnn(GdObject, "transcript"))
+setMethod(
+    "transcript",
+    signature(GdObject = "GeneRegionTrack"),
+    function(GdObject) .getAnn(GdObject, "transcript")
+)
 
 #' @describeIn GeneRegionTrack-class Replace the transcript identifiers for all
 #' transcripts in the gene model. The replacement value must be a character of
 #' appropriate length or another vector that can be coerced into such.
 #' @export
 setReplaceMethod(
-    "transcript", signature("GeneRegionTrack", "character"),
+    "transcript",
+    signature("GeneRegionTrack", "character"),
     function(GdObject, value) .setAnn(GdObject, value, "transcript")
 )
 
 #' @describeIn GeneRegionTrack-class Extract the exon identifiers for all exons
 #' in the gene models.
 #' @export
-setMethod("exon", signature(GdObject = "GeneRegionTrack"), function(GdObject) .getAnn(GdObject, "exon"))
+setMethod("exon", signature(GdObject = "GeneRegionTrack"), function(GdObject) {
+    .getAnn(GdObject, "exon")
+})
 
 #' @describeIn GeneRegionTrack-class replace the exon identifiers for all exons
 #' in the gene model. The replacement value must be a character of appropriate
 #' length or another vector that can be coerced into such.
 #' @export
-setReplaceMethod("exon", signature("GeneRegionTrack", "character"), function(GdObject, value) .setAnn(GdObject, value, "exon"))
+setReplaceMethod(
+    "exon",
+    signature("GeneRegionTrack", "character"),
+    function(GdObject, value) .setAnn(GdObject, value, "exon")
+)
 
 #' @describeIn GeneRegionTrack-class extract the group membership for all track
 #' items.
@@ -714,7 +996,8 @@ setMethod("group", "GeneRegionTrack", function(object) transcript(object))
 #' another vector that can be coerced into such.
 #' @export
 setReplaceMethod(
-    "group", signature("GeneRegionTrack", "character"),
+    "group",
+    signature("GeneRegionTrack", "character"),
     function(object, value) .setAnn(object, value, "transcript")
 )
 
@@ -722,44 +1005,53 @@ setReplaceMethod(
 #' Depending on the setting of the optional argument lowest, these are either
 #' the group identifiers or the individual item identifiers.
 #' export
-setMethod("identifier", "GeneRegionTrack", function(GdObject, type = .dpOrDefault(GdObject, "transcriptAnnotation", "symbol")) {
-    if (is.logical(type)) {
-        type <- ifelse("symbol", "gene", type[1])
+setMethod(
+    "identifier",
+    "GeneRegionTrack",
+    function(GdObject,
+             type = .dpOrDefault(GdObject, "transcriptAnnotation", "symbol")) {
+        if (is.logical(type)) {
+            type <- ifelse("symbol", "gene", type[1])
+        }
+        if (is.null(type)) {
+            type <- "symbol"
+        }
+        id <- switch(as.character(type),
+            "symbol" = symbol(GdObject),
+            "gene" = gene(GdObject),
+            "transcript" = transcript(GdObject),
+            "feature" = feature(GdObject),
+            "exon" = exon(GdObject),
+            "lowest" = exon(GdObject),
+            symbol(GdObject)
+        )
+        id[is.na(id)] <- "NA"
+        return(id)
     }
-    if (is.null(type)) {
-        type <- "symbol"
-    }
-    id <- switch(as.character(type),
-        "symbol" = symbol(GdObject),
-        "gene" = gene(GdObject),
-        "transcript" = transcript(GdObject),
-        "feature" = feature(GdObject),
-        "exon" = exon(GdObject),
-        "lowest" = exon(GdObject),
-        symbol(GdObject)
-    )
-    id[is.na(id)] <- "NA"
-    return(id)
-})
+)
 
 #' @describeIn GeneRegionTrack-class Set the track item identifiers.
 #' The replacement value has to be a character vector of appropriate length.
 #' This always replaces the group-level identifiers, so essentially it is
 #' similar to `groups<-`.
 #' @export
-setReplaceMethod("identifier", c("GeneRegionTrack", "character"), function(GdObject, value) {
-    type <- .dpOrDefault(GdObject, "transcriptAnnotation", "symbol")
-    switch(as.character(type),
-        "symbol" = symbol(GdObject) <- value,
-        "gene" = gene(GdObject) <- value,
-        "transcript" = transcript(GdObject) <- value,
-        "feature" = feature(GdObject) <- value,
-        "exon" = exon(GdObject) <- value,
-        "lowest" = exon(GdObject) <- value,
-        symbol(GdObject) <- value
-    )
-    return(GdObject)
-})
+setReplaceMethod(
+    "identifier",
+    c("GeneRegionTrack", "character"),
+    function(GdObject, value) {
+        type <- .dpOrDefault(GdObject, "transcriptAnnotation", "symbol")
+        switch(as.character(type),
+            "symbol" = symbol(GdObject) <- value,
+            "gene" = gene(GdObject) <- value,
+            "transcript" = transcript(GdObject) <- value,
+            "feature" = feature(GdObject) <- value,
+            "exon" = exon(GdObject) <- value,
+            "lowest" = exon(GdObject) <- value,
+            symbol(GdObject) <- value
+        )
+        return(GdObject)
+    }
+)
 
 ## Stacking ------------------------------------------------------------------
 ## Consolidate ---------------------------------------------------------------
@@ -771,10 +1063,14 @@ setReplaceMethod("identifier", c("GeneRegionTrack", "character"), function(GdObj
 #' @describeIn GeneRegionTrack-class Subset a GeneRegionTrack by coordinates
 #' and sort if necessary.
 #' @export
-setMethod("subset", signature(x = "ReferenceGeneRegionTrack"), function(x, ...) {
-    warning("ReferenceGeneRegionTrack objects are not supported yet.")
-    return(callNextMethod())
-})
+setMethod(
+    "subset",
+    signature(x = "ReferenceGeneRegionTrack"),
+    function(x, ...) {
+        warning("ReferenceGeneRegionTrack objects are not supported yet.")
+        return(callNextMethod())
+    }
+)
 
 ## Position ------------------------------------------------------------------
 ## DrawGrid ------------------------------------------------------------------
@@ -793,7 +1089,9 @@ setMethod("subset", signature(x = "ReferenceGeneRegionTrack"), function(x, ...) 
 #'
 #' @export
 setMethod("drawGD", signature("GeneRegionTrack"), function(GdObject, ...) {
-    displayPars(GdObject) <- list(showFeatureId = as.vector(.dpOrDefault(GdObject, "showExonId")))
+    displayPars(GdObject) <- list(
+        showFeatureId = as.vector(.dpOrDefault(GdObject, "showExonId"))
+    )
     GdObject <- callNextMethod()
     return(invisible(GdObject))
 })
@@ -802,57 +1100,109 @@ setMethod("drawGD", signature("GeneRegionTrack"), function(GdObject, ...) {
 
 #' @importFrom rtracklayer GenomicData
 setAs(
-    "GeneRegionTrack", "UCSCData",
+    "GeneRegionTrack",
+    "UCSCData",
     function(from, to) {
-        ranges <- cbind(as(as(ranges(from), "DataFrame"), "data.frame"),
+        ranges <- cbind(
+            as(as(ranges(from), "DataFrame"), "data.frame"),
             start = start(from),
-            end = end(from), color = .getBiotypeColor(from), strand = strand(from)
+            end = end(from),
+            color = .getBiotypeColor(from),
+            strand = strand(from)
         )
         ranges <- ranges[order(start(from)), ]
         ranges <- split(ranges, ranges[, "X.transcript"])
-        start <- vapply(ranges, function(x) min(x$start), FUN.VALUE = numeric(1L))
+        start <- vapply(
+            ranges,
+            function(x) min(x$start),
+            FUN.VALUE = numeric(1L)
+        )
         end <- vapply(ranges, function(x) max(x$end), FUN.VALUE = numeric(1L))
-        name <- vapply(ranges, function(x) as.character(unique(x$X.symbol)), FUN.VALUE = character(1L))
-        color <- vapply(ranges, function(x) as.character(unique(x$color)), FUN.VALUE = character(1L))
-        strand <- vapply(ranges, function(x) as.character(unique(x$strand)), FUN.VALUE = character(1L))
+        name <- vapply(
+            ranges,
+            function(x) as.character(unique(x$X.symbol)),
+            FUN.VALUE = character(1L)
+        )
+        color <- vapply(
+            ranges,
+            function(x) as.character(unique(x$color)),
+            FUN.VALUE = character(1L)
+        )
+        strand <- vapply(
+            ranges,
+            function(x) as.character(unique(x$strand)),
+            FUN.VALUE = character(1L)
+        )
         strand[strand == "*"] <- "+"
         id <- names(ranges)
         blocks <- vapply(ranges, nrow, FUN.VALUE = numeric(1L))
-        bsizes <- vapply(ranges, function(x) paste(x$end - x$start + 1, collapse = ","), FUN.VALUE = character(1L))
-        bstarts <- vapply(ranges, function(x) paste(x$start - min(x$start), collapse = ","), FUN.VALUE = character(1L))
+        bsizes <- vapply(
+            ranges,
+            function(x) paste(x$end - x$start + 1, collapse = ","),
+            FUN.VALUE = character(1L)
+        )
+        bstarts <- vapply(
+            ranges,
+            function(x) paste(x$start - min(x$start), collapse = ","),
+            FUN.VALUE = character(1L)
+        )
         dcolor <- as.integer(col2rgb(.dpOrDefault(from, "col")))
-        line <- new("BasicTrackLine",
+        line <- new(
+            "BasicTrackLine",
             name = names(from),
             description = names(from),
-            visibility = stacking(from), color = dcolor, itemRgb = TRUE
+            visibility = stacking(from),
+            color = dcolor,
+            itemRgb = TRUE
         )
-        new("UCSCData", rtracklayer::GenomicData(IRanges(start, end),
-            chrom = chromosome(from),
-            id = id, name = name, itemRgb = color, blockCount = blocks,
-            blockSizes = bsizes, blockStarts = bstarts,
-            strand = strand
-        ),
-        trackLine = line
+        new(
+            "UCSCData",
+            rtracklayer::GenomicData(
+                IRanges(start, end),
+                chrom = chromosome(from),
+                id = id,
+                name = name,
+                itemRgb = color,
+                blockCount = blocks,
+                blockSizes = bsizes,
+                blockStarts = bstarts,
+                strand = strand
+            ),
+            trackLine = line
         )
     }
 )
 
-setAs("GRanges", "GeneRegionTrack", function(from, to) GeneRegionTrack(range = from))
+setAs("GRanges", "GeneRegionTrack", function(from, to) {
+    GeneRegionTrack(range = from)
+})
 
-setAs("GRangesList", "GeneRegionTrack", function(from, to) GeneRegionTrack(range = from))
+setAs("GRangesList", "GeneRegionTrack", function(from, to) {
+    GeneRegionTrack(range = from)
+})
 
-setAs("TxDb", "GeneRegionTrack", function(from, to) GeneRegionTrack(range = from))
+setAs("TxDb", "GeneRegionTrack", function(from, to) {
+    GeneRegionTrack(range = from)
+})
 
 ## Show ----------------------------------------------------------------------
 
 #' @describeIn GeneRegionTrack-class Show method.
 #' @export
 setMethod("show", signature(object = "GeneRegionTrack"), function(object) {
-    cat(sprintf("GeneRegionTrack '%s'\n%s\n", names(object), .annotationTrackInfo(object)))
+    cat(sprintf(
+        "GeneRegionTrack '%s'\n%s\n",
+        names(object),
+        .annotationTrackInfo(object)
+    ))
 })
 
 #' @describeIn GeneRegionTrack-class Show method.
 #' @export
-setMethod("show", signature(object = "ReferenceGeneRegionTrack"), function(object) {
-    .referenceTrackInfo(object, "ReferenceGeneRegionTrack")
-})
+setMethod(
+    "show",
+    signature(object = "ReferenceGeneRegionTrack"),
+    function(object) {
+        .referenceTrackInfo(object, "ReferenceGeneRegionTrack")
+    }
+)

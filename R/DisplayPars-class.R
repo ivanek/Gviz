@@ -101,7 +101,9 @@ DisplayPars <- function(...) {
     }
     if (is.environment(x@pars)) {
         x@pars <- as.list(x@pars)
-        message("The DisplayPars object has been updated to a list-based representation.")
+        message(
+            "The DisplayPars object has been updated to a list-based representation."
+        )
     }
     return(x)
 }
@@ -133,7 +135,8 @@ setGeneric("getPar", def = function(x, name, ...) standardGeneric("getPar"))
 #' alias for it.
 #' @export
 setMethod(
-    "getPar", c("DisplayPars", "character"),
+    "getPar",
+    c("DisplayPars", "character"),
     function(x, name, asIs = FALSE) {
         aliasRes <- .dpAliasReverseTable[name]
         new <- is.na(aliasRes)
@@ -155,31 +158,43 @@ setMethod(
 #' @describeIn DisplayPars-class Return all display parameters as a named
 #' list, optionally hiding internal (`.__`-prefixed) parameters.
 #' @export
-setMethod("getPar", c("DisplayPars", "missing"), function(x, hideInternal = TRUE) {
-    pars <- as.list(x@pars)
-    if (hideInternal) {
-        pars <- pars[!grepl("^\\.__", names(pars))]
+setMethod(
+    "getPar",
+    c("DisplayPars", "missing"),
+    function(x, hideInternal = TRUE) {
+        pars <- as.list(x@pars)
+        if (hideInternal) {
+            pars <- pars[!grepl("^\\.__", names(pars))]
+        }
+        return(pars)
     }
-    return(pars)
-})
+)
 
 #' @describeIn DisplayPars-class Generics for `displayPars`.
 setGeneric("displayPars", function(x, name, ...) standardGeneric("displayPars"))
 
 #' @describeIn DisplayPars-class Returns all available display parameters.
 #' @export
-setMethod("displayPars", c("DisplayPars", "missing"), function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal))
+setMethod(
+    "displayPars",
+    c("DisplayPars", "missing"),
+    function(x, hideInternal = TRUE) getPar(x, hideInternal = hideInternal)
+)
 
 #' @describeIn DisplayPars-class Returns the value of a subset of display
 #' parameters, as identified by `name`.
 #' @export
-setMethod("displayPars", c("DisplayPars", "character"), function(x, name) getPar(x, name))
+setMethod("displayPars", c("DisplayPars", "character"), function(x, name) {
+    getPar(x, name)
+})
 
 #' @describeIn DisplayPars-class Converts `DisplayPars` to `list`.
 #' @export
 setMethod("as.list", "DisplayPars", function(x) as(x, "list"))
 
-setAs("DisplayPars", "list", function(from, to) if (!is.null(from)) as.list(from@pars) else list())
+setAs("DisplayPars", "list", function(from, to) {
+    if (!is.null(from)) as.list(from@pars) else list()
+})
 
 ### DisplayPars Methods Setters ----------------------------------------------
 
@@ -197,7 +212,8 @@ setGeneric("setPar", function(x, value, ...) standardGeneric("setPar"))
 #' `DisplayPars-class` are pass-by-reference, so no re-assignment to the symbol
 #' `obj` is necessary.
 setMethod(
-    "setPar", signature("DisplayPars", "list"),
+    "setPar",
+    signature("DisplayPars", "list"),
     function(x, value, interactive = TRUE) {
         x <- .updateDp(x, interactive)
         aliasRes <- .dpAliasReverseTable[names(value)]
@@ -213,9 +229,13 @@ setMethod(
 #' so no re-assignment to the symbol `obj` is necessary.
 #' @export
 setMethod(
-    "setPar", signature("DisplayPars", "character"),
+    "setPar",
+    signature("DisplayPars", "character"),
     function(x, name, value, interactive = TRUE) {
-        if (!(length(name) == 1 && is.null(value)) && length(name) != length(value)) {
+        if (
+            !(length(name) == 1 && is.null(value)) &&
+                length(name) != length(value)
+        ) {
             stop("'name' and 'value' must be of equal length")
         }
         x <- .updateDp(x, interactive)
@@ -231,7 +251,8 @@ setMethod(
 )
 
 #' @describeIn DisplayPars-class Generics for `displayPars<-`.
-setGeneric("displayPars<-",
+setGeneric(
+    "displayPars<-",
     signature = c("x", "value"),
     function(x, recursive = FALSE, value) standardGeneric("displayPars<-")
 )
@@ -239,10 +260,14 @@ setGeneric("displayPars<-",
 #' @describeIn DisplayPars-class Replaces or adds display parameters as provided
 #' by the named `list` items.
 #' @export
-setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, recursive = FALSE, value) {
-    x <- setPar(x, value, interactive = FALSE)
-    return(x)
-})
+setReplaceMethod(
+    "displayPars",
+    signature("DisplayPars", "list"),
+    function(x, recursive = FALSE, value) {
+        x <- setPar(x, value, interactive = FALSE)
+        return(x)
+    }
+)
 
 ### Display parameters lookup table ------------------------------------------
 
@@ -278,7 +303,10 @@ setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, re
 .dpAliasReverseTable <- character()
 .dpAliasReverseTable[names(.dpAliasTable)] <- names(.dpAliasTable)
 #' @importFrom Biobase listLen
-.dpAliasReverseTable[unlist(.dpAliasTable, use.names = FALSE)] <- rep(names(.dpAliasTable), Biobase::listLen(.dpAliasTable))
+.dpAliasReverseTable[unlist(.dpAliasTable, use.names = FALSE)] <- rep(
+    names(.dpAliasTable),
+    Biobase::listLen(.dpAliasTable)
+)
 .dpAliasReverseTable <- .dpAliasReverseTable[order(names(.dpAliasReverseTable))]
 
 ## Show ----------------------------------------------------------------------
@@ -287,8 +315,7 @@ setReplaceMethod("displayPars", signature("DisplayPars", "list"), function(x, re
 #' @export
 setMethod("show", "DisplayPars", function(object) {
     cat("Display parameters:\n")
-    for (i in base::ls(object@pars))
-    {
+    for (i in base::ls(object@pars)) {
         cat(i, " = ", sep = "")
         o <- try(as.character(object@pars[[i]]), silent = TRUE)
         if (is(o, "try-error")) print(object@pars[[i]]) else cat(o, "\n")
@@ -308,14 +335,19 @@ setMethod("show", "DisplayPars", function(object) {
 #' @return list
 #' @noRd
 #' @keywords internal
-setClass("InferredDisplayPars", representation(name = "character", inheritance = "character"), contains = "list")
+setClass(
+    "InferredDisplayPars",
+    representation(name = "character", inheritance = "character"),
+    contains = "list"
+)
 
 #' @describeIn DisplayPars-class  Return `InferredDisplayPars` as a `list`.
 #' @export
 setMethod("as.list", "InferredDisplayPars", function(x) as(x, "list"))
 
 setAs(
-    "InferredDisplayPars", "list",
+    "InferredDisplayPars",
+    "list",
     function(from, to) {
         ll <- from@.Data
         names(ll) <- names(from)
@@ -328,16 +360,30 @@ setAs(
 #' @describeIn DisplayPars-class  Show method.
 #' @export
 setMethod("show", "InferredDisplayPars", function(object) {
-    cat("\nThe following display parameters are available for '", object@name, "' objects:\n",
-        "(see ? ", object@name, " for details on their usage)\n\n",
+    cat(
+        "\nThe following display parameters are available for '",
+        object@name,
+        "' objects:\n",
+        "(see ? ",
+        object@name,
+        " for details on their usage)\n\n",
         sep = ""
     )
     for (i in names(object)) {
-        cat(i, ifelse(object@inheritance[i] == object@name, "",
-            paste(" (inherited from class '", object@inheritance[i], "')", sep = "")
-        ),
-        ": ",
-        sep = ""
+        cat(
+            i,
+            ifelse(
+                object@inheritance[i] == object@name,
+                "",
+                paste(
+                    " (inherited from class '",
+                    object@inheritance[i],
+                    "')",
+                    sep = ""
+                )
+            ),
+            ": ",
+            sep = ""
         )
         if (is.null(object[[i]])) {
             cat("NULL\n")
@@ -377,13 +423,27 @@ availableDisplayPars <- function(class) {
     if (!is.character(class)) {
         class <- class(class)
     }
-    class <- match.arg(class, c(
-        "GdObject", "GenomeAxisTrack", "RangeTrack", "NumericTrack", "DataTrack",
-        "IdeogramTrack", "StackedTrack", "AnnotationTrack", "DetailsAnnotationTrack",
-        "GeneRegionTrack", "BiomartGeneRegionTrack", "AlignmentsTrack",
-        "SequenceTrack", "SequenceBSgenomeTrack", "SequenceDNAStringSetTrack",
-        "SequenceRNAStringSetTrack"
-    ))
+    class <- match.arg(
+        class,
+        c(
+            "GdObject",
+            "GenomeAxisTrack",
+            "RangeTrack",
+            "NumericTrack",
+            "DataTrack",
+            "IdeogramTrack",
+            "StackedTrack",
+            "AnnotationTrack",
+            "DetailsAnnotationTrack",
+            "GeneRegionTrack",
+            "BiomartGeneRegionTrack",
+            "AlignmentsTrack",
+            "SequenceTrack",
+            "SequenceBSgenomeTrack",
+            "SequenceDNAStringSetTrack",
+            "SequenceRNAStringSetTrack"
+        )
+    )
     parents <- names(getClassDef(class)@contains)
     .makeParMapping()
     pars <- .parMappings[c(parents, class)]
@@ -394,8 +454,10 @@ availableDisplayPars <- function(class) {
     }
     finalPars <- finalPars[order(names(finalPars))]
     inherited <- inherited[order(names(inherited))]
-    return(new("InferredDisplayPars",
+    return(new(
+        "InferredDisplayPars",
         name = class,
-        inheritance = unlist(inherited), finalPars
+        inheritance = unlist(inherited),
+        finalPars
     ))
 }

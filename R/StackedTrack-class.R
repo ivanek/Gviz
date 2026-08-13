@@ -58,8 +58,10 @@ NULL
 #' stacking(annTrack) <- "dense"
 #' plotTracks(annTrack)
 #' @exportClass StackedTrack
-setClass("StackedTrack",
-    representation = representation("VIRTUAL",
+setClass(
+    "StackedTrack",
+    representation = representation(
+        "VIRTUAL",
         stacking = "character",
         stacks = "numeric"
     ),
@@ -91,8 +93,12 @@ setMethod("initialize", "StackedTrack", function(.Object, stacking, ...) {
     if (!missing(stacking)) {
         if (!all(stacking %in% pt@stackingValues)) {
             stop(
-                sprintf("Problem initializing %s, accepts the following values for 'stacking': ", class(.Object)),
-                paste(pt@stackingValues, collapse = ", "), "\n"
+                sprintf(
+                    "Problem initializing %s, accepts the following values for 'stacking': ",
+                    class(.Object)
+                ),
+                paste(pt@stackingValues, collapse = ", "),
+                "\n"
             )
         }
         .Object@stacking <- stacking
@@ -120,13 +126,15 @@ setMethod("stacking", "StackedTrack", function(GdObject) GdObject@stacking)
 #' `c(hide, dense, squish, pack, full)`.
 #' @export
 setReplaceMethod(
-    "stacking", c("StackedTrack", "character"),
+    "stacking",
+    c("StackedTrack", "character"),
     function(GdObject, value) {
         pt <- getClass("StackedTrack")@prototype
         if (!all(value %in% pt@stackingValues)) {
             stop(
                 "Problem initializing StackedTrack,  need the following values for 'stacking':",
-                paste(pt@stackingValues, collapse = ", "), "\n"
+                paste(pt@stackingValues, collapse = ", "),
+                "\n"
             )
         }
         GdObject@stacking <- value
@@ -150,16 +158,20 @@ setReplaceMethod(
 
 #' @describeIn StackedTrack-class return the stack indices for each track item.
 #' @export
-setMethod("stacks", "StackedTrack",
-    function(GdObject) if (length(GdObject@stacks)) GdObject@stacks else NULL
-)
+setMethod("stacks", "StackedTrack", function(GdObject) {
+    if (length(GdObject@stacks)) GdObject@stacks else NULL
+})
 
 
 #' @describeIn StackedTrack-class recompute the stacks based on the available
 #' space and on the object's track items and stacking settings.
 #' @export
 setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
-    bins <- if (!.needsStacking(GdObject)) rep(1, length(GdObject)) else disjointBins(range(GdObject))
+    bins <- if (!.needsStacking(GdObject)) {
+        rep(1, length(GdObject))
+    } else {
+        disjointBins(range(GdObject))
+    }
     GdObject@stacks <- bins
     return(GdObject)
 })
@@ -171,14 +183,18 @@ setMethod("setStacks", "StackedTrack", function(GdObject, ...) {
 #' the [`RangeTrack`][RangeTrack-class] method for the remaining consolidation
 #' steps.
 #' @export
-setMethod("consolidateTrack", signature(GdObject = "StackedTrack"), function(GdObject, ...) {
-    GdObject <- callNextMethod()
-    st <- .dpOrDefault(GdObject, "stacking")
-    if (!is.null(st)) {
-        stacking(GdObject) <- st
+setMethod(
+    "consolidateTrack",
+    signature(GdObject = "StackedTrack"),
+    function(GdObject, ...) {
+        GdObject <- callNextMethod()
+        st <- .dpOrDefault(GdObject, "stacking")
+        if (!is.null(st)) {
+            stacking(GdObject) <- st
+        }
+        return(GdObject)
     }
-    return(GdObject)
-})
+)
 
 ## Collapse  -----------------------------------------------------------------
 ## There is a natural limit of what can be plotted as individual features caused by the maximum resolution of the device.
@@ -204,22 +220,30 @@ setMethod("consolidateTrack", signature(GdObject = "StackedTrack"), function(GdO
 #' [`GRanges`][GenomicRanges::GRanges-class] object in the range slot. For most
 #' applications, the subset method may be more appropriate.
 #' @export
-setMethod("[", signature(x = "StackedTrack"), function(x, i, j, ..., drop = TRUE) {
-    x <- callNextMethod(x, i)
-    x@stacks <- x@stacks[i]
-    return(x)
-})
+setMethod(
+    "[",
+    signature(x = "StackedTrack"),
+    function(x, i, j, ..., drop = TRUE) {
+        x <- callNextMethod(x, i)
+        x@stacks <- x@stacks[i]
+        return(x)
+    }
+)
 
 #' @describeIn StackedTrack-class subset a `StackedTrack` by coordinates and
 #' sort if necessary.
 #' @export
-setMethod("subset", signature(x = "StackedTrack"), function(x, from = NULL, to = NULL, sort = FALSE, stacks = FALSE, ...) {
-    x <- callNextMethod(x = x, from = from, to = to, sort = sort)
-    if (stacks) {
-        x <- setStacks(x)
+setMethod(
+    "subset",
+    signature(x = "StackedTrack"),
+    function(x, from = NULL, to = NULL, sort = FALSE, stacks = FALSE, ...) {
+        x <- callNextMethod(x = x, from = from, to = to, sort = sort)
+        if (stacks) {
+            x <- setStacks(x)
+        }
+        return(x)
     }
-    return(x)
-})
+)
 
 
 ## Position ------------------------------------------------------------------
@@ -265,10 +289,6 @@ setMethod("subset", signature(x = "StackedTrack"), function(x, from = NULL, to =
 #' usually called through inheritance and not particularly useful on its own.
 #' @export
 setMethod("drawGD", signature("StackedTrack"), function(GdObject, ...) {
-    debug <- .dpOrDefault(GdObject, "debug", FALSE)
-    if ((is.logical(debug) && debug)) {
-        browser()
-    }
     st <- .dpOrDefault(GdObject, "stacking")
     if (!is.null(st)) {
         stacking(GdObject) <- st

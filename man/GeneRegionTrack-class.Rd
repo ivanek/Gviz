@@ -448,8 +448,9 @@ grTrack <- GeneRegionTrack(cyp2b10)
 ## From a TxDb object
 if (require(GenomicFeatures)) {
     samplefile <- system.file("extdata",
-                              "hg19_knownGene_sample.sqlite",
-                              package = "GenomicFeatures")
+        "hg19_knownGene_sample.sqlite",
+        package = "GenomicFeatures"
+    )
     txdb <- loadDb(samplefile)
     GeneRegionTrack(txdb)
     GeneRegionTrack(txdb,

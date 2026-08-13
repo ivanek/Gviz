@@ -89,7 +89,7 @@ to UCSC. For instance, one could switch to the European UCSC mirror by
 calling \code{options(Gviz.ucscUrl = "http://genome-euro.ucsc.edu/cgi-bin/")}.
 }
 \examples{
-\dontrun{
+\donttest{
 
 ## Create UcscTrack for Known Genes from mm39 genome
 from <- 65921878

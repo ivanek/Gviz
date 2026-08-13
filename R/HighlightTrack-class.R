@@ -42,14 +42,17 @@ NULL
 #'
 #' ht <- HighlightTrack(trackList = list(gt, dt))
 #' @exportClass HighlightTrack
-setClass("HighlightTrack",
+setClass(
+    "HighlightTrack",
     representation = representation(trackList = "list"),
     contains = c("RangeTrack"),
-    prototype = prototype(dp = DisplayPars(
-        col = "red",
-        fill = "#FFE3E6",
-        inBackground = TRUE
-    ))
+    prototype = prototype(
+        dp = DisplayPars(
+            col = "red",
+            fill = "#FFE3E6",
+            inBackground = TRUE
+        )
+    )
 )
 
 ## Initialize ----------------------------------------------------------------
@@ -70,8 +73,17 @@ setMethod("initialize", "HighlightTrack", function(.Object, trackList, ...) {
 #' @describeIn HighlightTrack-class Constructor function for
 #' `HighlightTrack-class`.
 #' @export
-HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end = NULL, width = NULL, chromosome, genome,
-                           name = "HighlightTrack", ...) {
+HighlightTrack <- function(
+  trackList = list(),
+  range = NULL,
+  start = NULL,
+  end = NULL,
+  width = NULL,
+  chromosome,
+  genome,
+  name = "HighlightTrack",
+  ...
+) {
     ## Some defaults
     covars <- .getCovars(range)
     n <- max(c(length(start), length(end), length(width)), nrow(covars))
@@ -80,8 +92,14 @@ HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end =
     args <- list(chromosome = chromosome, genome = genome)
     defs <- list(strand = "*", density = 1, chromosome = "chrNA", genome = NA)
     range <- .buildRange(
-        range = range, start = start, end = end, width = width,
-        args = args, defaults = defs, chromosome = chromosome, trackType = "HighlightTrack"
+        range = range,
+        start = start,
+        end = end,
+        width = width,
+        args = args,
+        defaults = defs,
+        chromosome = chromosome,
+        trackType = "HighlightTrack"
     )
     if (is.list(range)) {
         range <- GRanges()
@@ -89,16 +107,33 @@ HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end =
     if (!is.list(trackList)) {
         trackList <- list(trackList)
     }
-    if (!all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))) {
+    if (
+        !all(vapply(trackList, is, class2 = "GdObject", FUN.VALUE = logical(1)))
+    ) {
         stop("All elements in 'trackList' must inherit from 'GdObject'")
     }
     ## If no chromosome was explicitly asked for we just take the first one in the GRanges object
     if (missing(chromosome) || is.null(chromosome)) {
-        chromosome <- if (length(range) > 0) .chrName(as.character(seqnames(range)[1])) else "chrNA"
+        chromosome <- if (length(range) > 0) {
+            .chrName(as.character(seqnames(range)[1]))
+        } else {
+            "chrNA"
+        }
     }
     ## And finally the object instantiation
-    genome <- .getGenomeFromGRange(range, ifelse(is.null(genome), character(), genome[1]))
-    return(new("HighlightTrack", trackList = trackList, chromosome = chromosome[1], range = range, name = name, genome = genome, ...))
+    genome <- .getGenomeFromGRange(
+        range,
+        ifelse(is.null(genome), character(), genome[1])
+    )
+    return(new(
+        "HighlightTrack",
+        trackList = trackList,
+        chromosome = chromosome[1],
+        range = range,
+        name = name,
+        genome = genome,
+        ...
+    ))
 }
 
 ## General accessors ---------------------------------------------------------
@@ -107,16 +142,20 @@ HighlightTrack <- function(trackList = list(), range = NULL, start = NULL, end =
 #' the named list in value. See [`settings`] for details on display
 #' parameters and customization.
 #' @export
-setReplaceMethod("displayPars", signature("HighlightTrack", "list"), function(x, recursive = FALSE, value) {
-    x <- setPar(x, value, interactive = FALSE)
-    if (recursive) {
-        x@trackList <- lapply(x@trackList, function(y) {
-            displayPars(y) <- value
-            return(y)
-        })
+setReplaceMethod(
+    "displayPars",
+    signature("HighlightTrack", "list"),
+    function(x, recursive = FALSE, value) {
+        x <- setPar(x, value, interactive = FALSE)
+        if (recursive) {
+            x@trackList <- lapply(x@trackList, function(y) {
+                displayPars(y) <- value
+                return(y)
+            })
+        }
+        return(x)
     }
-    return(x)
-})
+)
 
 #' @describeIn HighlightTrack-class return the number of subtracks.
 #' @export
@@ -155,10 +194,19 @@ setMethod("setStacks", "HighlightTrack", function(GdObject, ...) {
 #' `consolidateTrack` method on each of the subtracks in the `trackList`
 #' slot.
 #' @export
-setMethod("consolidateTrack", signature(GdObject = "HighlightTrack"), function(GdObject, chromosome, ...) {
-    GdObject@trackList <- lapply(GdObject@trackList, consolidateTrack, chromosome = chromosome, ...)
-    return(GdObject)
-})
+setMethod(
+    "consolidateTrack",
+    signature(GdObject = "HighlightTrack"),
+    function(GdObject, chromosome, ...) {
+        GdObject@trackList <- lapply(
+            GdObject@trackList,
+            consolidateTrack,
+            chromosome = chromosome,
+            ...
+        )
+        return(GdObject)
+    }
+)
 
 ## Collapse  -----------------------------------------------------------------
 ## Subset --------------------------------------------------------------------
@@ -183,7 +231,10 @@ setMethod("subset", signature(x = "HighlightTrack"), function(x, ...) {
 #' @export
 setMethod("show", signature(object = "HighlightTrack"), function(object) {
     cat(sprintf(
-        "HighlightTrack '%s' containing %i subtrack%s\n%s\n", names(object), length(object),
-        ifelse(length(object) == 1, "", "s"), .annotationTrackInfo(object)
+        "HighlightTrack '%s' containing %i subtrack%s\n%s\n",
+        names(object),
+        length(object),
+        ifelse(length(object) == 1, "", "s"),
+        .annotationTrackInfo(object)
     ))
 })

@@ -61,7 +61,10 @@
 ## genePred (or doesn't have enough bigGenePred columns to convert).
 .bigGenePredToGenePredCompat <- function(tableDat) {
     bigGenePredCols <- c("chromStart", "chromEnd", "blockSizes", "chromStarts")
-    if (!is.data.frame(tableDat) || !all(bigGenePredCols %in% colnames(tableDat))) {
+    if (
+        !is.data.frame(tableDat) ||
+            !all(bigGenePredCols %in% colnames(tableDat))
+    ) {
         return(tableDat)
     }
     if (all(c("exonStarts", "exonEnds") %in% colnames(tableDat))) {
@@ -69,14 +72,22 @@
     }
     parseCsv <- function(x) as.integer(strsplit(sub(",+$", "", x), ",")[[1]])
     toCsv <- function(x) paste0(paste(x, collapse = ","), ",")
-    exonCoords <- Map(function(chromStart, blockStarts, blockSizes) {
-        starts <- chromStart + parseCsv(blockStarts)
-        ends <- starts + parseCsv(blockSizes)
-        list(starts = toCsv(starts), ends = toCsv(ends))
-    }, tableDat$chromStart, tableDat$chromStarts, tableDat$blockSizes)
+    exonCoords <- Map(
+        function(chromStart, blockStarts, blockSizes) {
+            starts <- chromStart + parseCsv(blockStarts)
+            ends <- starts + parseCsv(blockSizes)
+            list(starts = toCsv(starts), ends = toCsv(ends))
+        },
+        tableDat$chromStart,
+        tableDat$chromStarts,
+        tableDat$blockSizes
+    )
     tableDat$exonStarts <- vapply(exonCoords, `[[`, character(1), "starts")
     tableDat$exonEnds <- vapply(exonCoords, `[[`, character(1), "ends")
-    if (!"exonCount" %in% colnames(tableDat) && "blockCount" %in% colnames(tableDat)) {
+    if (
+        !"exonCount" %in% colnames(tableDat) &&
+            "blockCount" %in% colnames(tableDat)
+    ) {
         tableDat$exonCount <- tableDat$blockCount
     }
     if (!"txStart" %in% colnames(tableDat)) {
@@ -85,10 +96,15 @@
     if (!"txEnd" %in% colnames(tableDat)) {
         tableDat$txEnd <- tableDat$chromEnd
     }
-    if (!"cdsStart" %in% colnames(tableDat) && "thickStart" %in% colnames(tableDat)) {
+    if (
+        !"cdsStart" %in% colnames(tableDat) &&
+            "thickStart" %in% colnames(tableDat)
+    ) {
         tableDat$cdsStart <- tableDat$thickStart
     }
-    if (!"cdsEnd" %in% colnames(tableDat) && "thickEnd" %in% colnames(tableDat)) {
+    if (
+        !"cdsEnd" %in% colnames(tableDat) && "thickEnd" %in% colnames(tableDat)
+    ) {
         tableDat$cdsEnd <- tableDat$thickEnd
     }
     tableDat
@@ -112,16 +128,28 @@
 ## calling convention first and falls back to the legacy one so that
 ## UcscTrack() keeps working across rtracklayer versions.
 .ucscTableQueryCompat <- function(session, track, range = NULL) {
-    modernArgs <- c(list(session, table = track), if (!is.null(range)) list(range = range))
+    modernArgs <- c(
+        list(session, table = track),
+        if (!is.null(range)) list(range = range)
+    )
     res <- tryCatch(do.call(ucscTableQuery, modernArgs), error = function(e) e)
     if (inherits(res, "error")) {
-        legacyArgs <- c(list(session, track), if (!is.null(range)) list(range = range))
-        res <- tryCatch(do.call(ucscTableQuery, legacyArgs), error = function(e) e)
+        legacyArgs <- c(
+            list(session, track),
+            if (!is.null(range)) list(range = range)
+        )
+        res <- tryCatch(
+            do.call(ucscTableQuery, legacyArgs),
+            error = function(e) e
+        )
     }
     if (inherits(res, "error")) {
         stop(
-            "Unable to query UCSC track/table '", track, "'. This may be caused by an incompatible ",
-            "rtracklayer version or a change in the UCSC REST API. Original error: ", conditionMessage(res)
+            "Unable to query UCSC track/table '",
+            track,
+            "'. This may be caused by an incompatible ",
+            "rtracklayer version or a change in the UCSC REST API. Cause: ",
+            conditionMessage(res)
         )
     }
     res
@@ -147,7 +175,11 @@
     }
 }
 .cacheTracks <- function(genome, chromosome, track, env = .ucscCache) {
-    genomes <- .doCache("availableGenomes", expression(rtracklayer::ucscGenomes()), env)
+    genomes <- .doCache(
+        "availableGenomes",
+        expression(rtracklayer::ucscGenomes()),
+        env
+    )
     if (!genome %in% as.character(genomes[, "db"])) {
         stop("'", genome, "' is not a valid UCSC genome.")
     }
@@ -161,20 +193,35 @@
             tmp <- browserSession(url = .gvizUcscUrl())
             genome(tmp) <- genome
             tmp
-        }), env, cenv
+        }),
+        env,
+        cenv
     )
-    availTracks <- .doCache(tracksToken, expression(.flattenTableNames(tableNames(ucscTableQuery(session)))), env, cenv)
+    availTracks <- .doCache(
+        tracksToken,
+        expression(.flattenTableNames(tableNames(ucscTableQuery(session)))),
+        env,
+        cenv
+    )
     track <- match.arg(track, sort(c(availTracks, names(availTracks))))
     if (!is.na(availTracks[track])) {
         track <- names(availTracks[track])
     }
-    availTables <- .doCache(tablesToken, expression({
-        query <- .ucscTableQueryCompat(session, track)
-        sort(.flattenTableNames(tableNames(query)))
-    }), env, cenv)
+    availTables <- .doCache(
+        tablesToken,
+        expression({
+            query <- .ucscTableQueryCompat(session, track)
+            sort(.flattenTableNames(tableNames(query)))
+        }),
+        env,
+        cenv
+    )
     chrInfo <- seqlengths(session)
     return(list(
-        session = session, availTracks = availTracks, availTables = availTables, track = track,
+        session = session,
+        availTracks = availTracks,
+        availTables = availTables,
+        track = track,
         chrInfo = chrInfo
     ))
 }
@@ -185,44 +232,73 @@
     bands <- NULL
     if (!is.null(genome)) {
         cenv <- environment()
-        bands <- .doCache(genomesToken, expression({
-            if (!genome %in% as.character(genomes[, "db"])) {
-                stop("'", genome, "' is not a valid UCSC genome.")
-            }
-            sessionToken <- paste("session", genome, sep = "_")
-            session <- .doCache(
-                sessionToken,
-                expression({
-                    tmp <- browserSession(url = .gvizUcscUrl())
-                    genome(tmp) <- genome
-                    tmp
-                }), env, cenv
-            )
-            query <- tryCatch(ucscTableQuery(session, table = "cytoBandIdeo"), error = function(e) {
-                warning(
-                    "There doesn't seem to be any cytoband data available for genome '", genome,
-                    "' at UCSC or the service is temporarily down. Trying to fetch the chromosome length data."
+        bands <- .doCache(
+            genomesToken,
+            expression({
+                if (!genome %in% as.character(genomes[, "db"])) {
+                    stop("'", genome, "' is not a valid UCSC genome.")
+                }
+                sessionToken <- paste("session", genome, sep = "_")
+                session <- .doCache(
+                    sessionToken,
+                    expression({
+                        tmp <- browserSession(url = .gvizUcscUrl())
+                        genome(tmp) <- genome
+                        tmp
+                    }),
+                    env,
+                    cenv
                 )
-                tryCatch(ucscTableQuery(session, table = "chromInfo"), error = function(e) {
-                    stop(
-                        "There doesn't seem to be any chromosome length data available for genome '", genome,
-                        "' at UCSC or the service is temporarily down."
+                query <- tryCatch(
+                    ucscTableQuery(session, table = "cytoBandIdeo"),
+                    error = function(e) {
+                        warning(
+                            "There doesn't seem to be any cytoband data available for genome '",
+                            genome,
+                            "' at UCSC or the service is temporarily down. Trying to fetch the chromosome length data."
+                        )
+                        tryCatch(
+                            ucscTableQuery(session, table = "chromInfo"),
+                            error = function(e) {
+                                stop(
+                                    "There doesn't seem to be any chromosome length data available for genome '",
+                                    genome,
+                                    "' at UCSC or the service is temporarily down."
+                                )
+                            }
+                        )
+                    }
+                )
+                out <- getTable(query)
+                if (all(c("chrom", "size") %in% colnames(out))) {
+                    out <- data.frame(
+                        chrom = out$chrom,
+                        chromStart = 0,
+                        chromEnd = out$size,
+                        name = "",
+                        gieStain = "gneg",
+                        stringsAsFactors = FALSE
                     )
-                })
-            })
-            out <- getTable(query)
-            if (all(c("chrom", "size") %in% colnames(out))) {
-                out <- data.frame(chrom = out$chrom, chromStart = 0, chromEnd = out$size, name = "", gieStain = "gneg", stringsAsFactors = FALSE)
-            }
-            out
-        }), env, cenv)
+                }
+                out
+            }),
+            env,
+            cenv
+        )
     }
 
     return(list(availableGenomes = genomes, bands = bands))
 }
 .cacheMartData <- function(bmtrack, chromosome = NULL, staged = FALSE) {
     uid <- .bmGuid(bmtrack)
-    req <- if (!is.null(bmtrack@start) && !is.null(bmtrack@end)) GRanges(seqnames = chromosome[1], IRanges(start = bmtrack@start, bmtrack@end)) else NULL
+    req <- if (!is.null(bmtrack@start) && !is.null(bmtrack@end)) {
+        GRanges(
+            seqnames = chromosome[1],
+            IRanges(start = bmtrack@start, bmtrack@end)
+        )
+    } else {
+        NULL
+    }
     if (is.null(chromosome) || is.null(.martCache[[uid]])) {
         data <- .fetchBMData(bmtrack, chromosome, staged)
         if (!is.null(req)) {
@@ -231,7 +307,19 @@
             req <- range(data)
         }
         if (length(data) && .dpOrDefault(bmtrack, "verbose", FALSE)) {
-            message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse = " and "))
+            message(
+                "Loaded data from Biomart for region ",
+                paste(
+                    sprintf(
+                        "%s:%i-%i(%s)",
+                        seqnames(req),
+                        start(req),
+                        end(req),
+                        strand(req)
+                    ),
+                    collapse = " and "
+                )
+            )
         }
     } else {
         rr <- .martCache[[uid]][["ranges"]]
@@ -240,17 +328,40 @@
             genes <- unique(subsetByOverlaps(dd, req)$gene)
             data <- dd[seqnames(dd) == chromosome[1] & dd$gene %in% genes]
             if (.dpOrDefault(bmtrack, "verbose", FALSE)) {
-                message(sprintf("Retrieved data from cache for region %s:%i-%i(%s)", chromosome, start(req), end(req), strand(req)))
+                message(sprintf(
+                    "Retrieved data from cache for region %s:%i-%i(%s)",
+                    chromosome,
+                    start(req),
+                    end(req),
+                    strand(req)
+                ))
             }
         } else {
             data <- .fetchBMData(bmtrack, chromosome, staged)
             if (is.null(req)) {
                 req <- range(data)
             }
-            .martCache[[uid]][["data"]] <- suppressWarnings(c(.martCache[[uid]][["data"]], data[!(seqnames(data) == chromosome[1] & data$gene %in% dd$gene)]))
+            .martCache[[uid]][["data"]] <- suppressWarnings(c(
+                .martCache[[uid]][["data"]],
+                data[
+                    !(seqnames(data) == chromosome[1] & data$gene %in% dd$gene)
+                ]
+            ))
             .martCache[[uid]][["ranges"]] <- suppressWarnings(union(rr, req))
             if (length(req) && .dpOrDefault(bmtrack, "verbose", FALSE)) {
-                message("Loaded data from Biomart for region ", paste(sprintf("%s:%i-%i(%s)", seqnames(req), start(req), end(req), strand(req)), collapse = " and "))
+                message(
+                    "Loaded data from Biomart for region ",
+                    paste(
+                        sprintf(
+                            "%s:%i-%i(%s)",
+                            seqnames(req),
+                            start(req),
+                            end(req),
+                            strand(req)
+                        ),
+                        collapse = " and "
+                    )
+                )
             }
         }
     }
@@ -267,7 +378,6 @@ clearSessionCache <- function() {
 
 
 ## Constructor
-
 
 #' Meta-constructor for Gviz tracks fetched directly from the various
 #' UCSC data sources
@@ -350,7 +460,7 @@ clearSessionCache <- function() {
 #'
 #' [plotTracks]
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' ## Create UcscTrack for Known Genes from mm39 genome
 #' from <- 65921878
@@ -373,26 +483,52 @@ clearSessionCache <- function() {
 #' ## plotting
 #' plotTracks(knownGenes, chromosome = "chrX", from = 65920688, to = 65960068)
 #' @export
-UcscTrack <- function(track, table = NULL,
-                      trackType = c(
-                          "AnnotationTrack", "GeneRegionTrack",
-                          "DataTrack", "GenomeAxisTrack"
-                      ),
-                      genome, chromosome, name = NULL, from, to, ...) {
+UcscTrack <- function(
+  track,
+  table = NULL,
+  trackType = c(
+      "AnnotationTrack",
+      "GeneRegionTrack",
+      "DataTrack",
+      "GenomeAxisTrack"
+  ),
+  genome,
+  chromosome,
+  name = NULL,
+  from,
+  to,
+  ...
+) {
     trackType <- match.arg(trackType)
-    if (missing(genome) || !isSingleString(genome)) stop("Need to specify genome for creating a UcscTrack")
-    if (missing(chromosome)) stop("Need to specify chromosome for creating a UcscTrack")
+    if (missing(genome) || !isSingleString(genome)) {
+        stop("Need to specify genome for creating a UcscTrack")
+    }
+    if (missing(chromosome)) {
+        stop("Need to specify chromosome for creating a UcscTrack")
+    }
     chromosome <- .chrName(chromosome)[1]
-    sessionInfo <- .cacheTracks(genome = genome, chromosome = chromosome, track = track, env = .ucscCache)
+    sessionInfo <- .cacheTracks(
+        genome = genome,
+        chromosome = chromosome,
+        track = track,
+        env = .ucscCache
+    )
     if (missing(from)) {
         from <- 1
     }
     if (missing(to)) {
         to <- sessionInfo$chrInfo[chromosome]
     }
-    gr <- GRanges(ranges = IRanges(start = from, end = to), seqnames = chromosome)
+    gr <- GRanges(
+        ranges = IRanges(start = from, end = to),
+        seqnames = chromosome
+    )
     suppressWarnings(genome(gr) <- unname(genome))[1]
-    query <- .ucscTableQueryCompat(sessionInfo$session, sessionInfo$track, range = gr)
+    query <- .ucscTableQueryCompat(
+        sessionInfo$session,
+        sessionInfo$track,
+        range = gr
+    )
     if (!is.null(table)) {
         table <- match.arg(table, sessionInfo$availTables)
         tableName(query) <- table
@@ -418,18 +554,29 @@ UcscTrack <- function(track, table = NULL,
         }
     }
     if (is(tmp, "try-error") && nrow(tableDat) == 0) {
-        stop("Error fetching data from UCSC")
+        stop("Unable to fetch data from UCSC")
     }
     tableDat <- .bigGenePredToGenePredCompat(tableDat)
     if (trackType == "GeneRegionTrack") {
         dots <- list(...)
         for (colArg in c("rstarts", "rends")) {
             val <- dots[[colArg]]
-            if (is.character(val) && length(val) == 1 && !val %in% colnames(tableDat)) {
+            if (
+                is.character(val) &&
+                    length(val) == 1 &&
+                    !val %in% colnames(tableDat)
+            ) {
                 stop(
-                    "Column '", val, "' (", colArg, ") was not found in the data fetched from UCSC ",
-                    "for track '", track, "'. This can happen when UCSC changes a track's table schema. ",
-                    "Available columns are: ", paste(colnames(tableDat), collapse = ", ")
+                    "Column '",
+                    val,
+                    "' (",
+                    colArg,
+                    ") was not found in the data fetched from UCSC ",
+                    "for track '",
+                    track,
+                    "'. This can happen when UCSC changes a track's table schema. ",
+                    "Available columns are: ",
+                    paste(colnames(tableDat), collapse = ", ")
                 )
             }
         }
@@ -446,6 +593,12 @@ UcscTrack <- function(track, table = NULL,
         args$end <- to
     }
     args <- lapply(args, function(x) if (!length(x)) NULL else x)
-    trackObject <- do.call(trackType, args = c(list(chromosome = chromosome, genome = genome, name = name), args))
+    trackObject <- do.call(
+        trackType,
+        args = c(
+            list(chromosome = chromosome, genome = genome, name = name),
+            args
+        )
+    )
     return(trackObject)
 }

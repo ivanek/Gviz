@@ -42,10 +42,12 @@ exportTracks <- function(tracks, range, chromosome, file) {
         con
     )
     writeLines("browser hide all", con)
-    for (t in seq_along(tracks))
-    {
+    for (t in seq_along(tracks)) {
         track <- tracks[[t]]
-        if (length(track) > 0 && (is(track, "AnnotationTrack") || is(track, "GeneRegion"))) {
+        if (
+            length(track) > 0 &&
+                (is(track, "AnnotationTrack") || is(track, "GeneRegion"))
+        ) {
             track <- as(track, "UCSCData")
             writeLines(as(track@trackLine, "character"), con)
             ## nextMet <- selectMethod("export.bed", c("RangedData", "characterORconnection"))
@@ -57,11 +59,21 @@ exportTracks <- function(tracks, range, chromosome, file) {
 }
 
 ## This function is broken in the rtracklayer package
-.expBed <- function(object, con, variant = c("base", "bedGraph", "bed15"), color, append) {
+.expBed <- function(
+  object,
+  con,
+  variant = c("base", "bedGraph", "bed15"),
+  color,
+  append
+) {
     variant <- match.arg(variant)
     name <- strand <- thickStart <- thickEnd <- color <- NULL
     blockCount <- blockSizes <- blockStarts <- NULL
-    df <- data.frame(as.character(seqnames(object)), start(object) - 1, end(object))
+    df <- data.frame(
+        as.character(seqnames(object)),
+        start(object) - 1,
+        end(object)
+    )
     score <- score(object)
     if (!is.null(score)) {
         if (!is.numeric(score) || any(is.na(score))) {
@@ -89,11 +101,20 @@ exportTracks <- function(tracks, range, chromosome, file) {
             lastBlock <- function(x) sub(".*,", "", x)
             lastSize <- lastBlock(blockSizes)
             lastStart <- lastBlock(blockStarts)
-            if (any(df[[2]] + as.integer(lastSize) + as.integer(lastStart) != df[[3]]) ||
-                any(sub(",.*", "", blockStarts) != 0)) {
+            if (
+                any(
+                    df[[2]] + as.integer(lastSize) + as.integer(lastStart) !=
+                        df[[3]]
+                ) ||
+                    any(sub(",.*", "", blockStarts) != 0)
+            ) {
                 stop("blocks must span entire feature")
             }
-            blockCount <- vapply(strsplit(blockSizes, ","), length, FUN.VALUE = numeric(1L))
+            blockCount <- vapply(
+                strsplit(blockSizes, ","),
+                length,
+                FUN.VALUE = numeric(1L)
+            )
         }
         if (is.null(color)) {
             color <- object$itemRgb
@@ -144,8 +165,14 @@ exportTracks <- function(tracks, range, chromosome, file) {
     scipen <- getOption("scipen")
     options(scipen = 100)
     on.exit(options(scipen = scipen))
-    write.table(df, con,
-        sep = "\t", col.names = FALSE, row.names = FALSE,
-        quote = FALSE, na = ".", append = append
+    write.table(
+        df,
+        con,
+        sep = "\t",
+        col.names = FALSE,
+        row.names = FALSE,
+        quote = FALSE,
+        na = ".",
+        append = append
     )
 }

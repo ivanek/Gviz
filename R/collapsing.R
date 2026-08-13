@@ -24,6 +24,8 @@
 #'
 #' @name collapsing
 #'
+#' @return No return value, called for documentation purposes only.
+#'
 #' @seealso
 #' [AnnotationTrack-class]
 #'

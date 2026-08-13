@@ -3,6 +3,9 @@
 \name{grouping}
 \alias{grouping}
 \title{Grouping of annotation features}
+\value{
+No return value, called for documentation purposes only.
+}
 \description{
 Many annotation tracks are actually composed of a number of grouped
 sub-features, for instance exons in a gene model. This man page highlights
